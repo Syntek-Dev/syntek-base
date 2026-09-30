@@ -1,10 +1,10 @@
 # ADR-US004: The citation gate asks the filename, not copier, whether a citer ships
 
-**Status:** Accepted
+**Status:** Superseded
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** —
-**Superseded by:** —
+**Superseded by:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`
 **Related:** US004
 
 ---

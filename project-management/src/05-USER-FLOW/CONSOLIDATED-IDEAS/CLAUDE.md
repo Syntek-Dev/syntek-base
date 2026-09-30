@@ -22,7 +22,8 @@ per-story fragments into the end-to-end flow that wireframes and code follow.
   `US###` for any gap needing capability → re-export `../DIAGRAMS/flow-<area>-<screen>.png`.
 - **Definition of done:** no dead end anywhere in the journey; every seam logged with its
   verdict; every gap either resolved or raised as a story; every affected
-  `<exec-order>-STORY-PLAN-US###-*.md` corrected; British English; DD/MM/YYYY.
+  `<exec-order>-STORY-PLAN-US###-*.md` corrected; every affected manual testing guide's `Flow`
+  column set and any row the journey invalidated corrected; British English; DD/MM/YYYY.
 
 ## Guardrails
 
@@ -35,6 +36,11 @@ per-story fragments into the end-to-end flow that wireframes and code follow.
   `02-story-creation/`.
 - **A journey change must correct the affected story plans** — the developer codes from the
   plan, so a plan asserting a superseded flow silently undoes this work.
+- **A step number is cited, never keyed on.** `../IMPLEMENTATION/` Section 1 carries it and
+  each manual testing guide's `Flow` column cites it as `<AREA> <step>`, so renumbering a step
+  re-cites both in the same change; the guide's own row IDs never follow a step. Setting and
+  correcting the guides: `workflows/18-consolidate-design-work/` Step 7; the column's rules:
+  `../../18-TESTS/MANUAL/CLAUDE.md` → _The Flow and QA columns_.
 - **Wireframes follow this folder**, not `../USER-STORY-IDEAS/`.
 - **Documentation only** — never code, secrets, or PII sample data.
 
@@ -52,3 +58,9 @@ per-story fragments into the end-to-end flow that wireframes and code follow.
      story's position in the settled build order across the whole backlog and moves only on a
      re-plan — correct a plan's contents here, never its number (`../../17-STORY-PLANS/CLAUDE.md`).
 -->
+
+<!-- UPDATED 30/09/2026. _Definition of done_ and the guardrails gained the manual testing guide.
+     It is now authored at 17-story-plans, before this folder holds any journey, so its Flow
+     column starts as "—" and consolidation is the first point a step number exists to cite.
+     The step number stays owned here; the guide cites it and never keys a row on it. Why the
+     guide stopped reusing the step number as its row ID: "../../18-TESTS/MANUAL/CLAUDE.md". -->

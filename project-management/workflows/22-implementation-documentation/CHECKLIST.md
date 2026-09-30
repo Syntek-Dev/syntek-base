@@ -36,8 +36,8 @@ model: opus
 
 ## Test records
 
-- [ ] Both `src/18-TESTS/` records copied from their `US000-…` templates — `US###-TEST-STATUS.md`
-      and `US###-MANUAL-TESTING.md`, every story, whatever the suites returned
+- [ ] `src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md` copied from that folder's
+      `US000-TEST-STATUS.md` — every story, whatever the suites returned
 - [ ] Story's suites run through `code/src/scripts/tests/**/*.sh`, then
       `bash code/src/scripts/tests/test-record.sh US###` run **after** them — green or red
 - [ ] Nothing between `<!-- BEGIN GENERATED: test-record -->` and `<!-- END GENERATED -->`
@@ -46,14 +46,18 @@ model: opus
       exits 0, and an **unmarked test is silently absent from the record**
 - [ ] Every test the story owns declares it — `@pytest.mark.story("US###")` (or `pytestmark`
       on its class or module), `tags: [US###]` in a Bruno request's `meta` block
-- [ ] Manual guide **walked** by a tester or Claude Chrome, one section per journey area, every
-      row marked `Pass` or `Fail` — an empty `Result` is never a pass
+- [ ] Manual testing guide `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` present, as authored at
+      `17-story-plans` — or, if it was missing, authored here from the specs before the walk, and
+      recorded as a finding where the plan postdates 30/09/2026
+- [ ] Manual guide **walked** by a tester or Claude Chrome, every row — the rows the Red phase
+      automated included — marked `Pass` or `Fail` as it was executed; an empty `Result` is
+      never a pass
 - [ ] Every `Fail` carries its reason in `Notes` and a destination
-- [ ] Hand-written halves completed — reproduction, gaps, flaky tests and the status line in the
-      automated record; preconditions, failures and sign-off in the manual guide
+- [ ] Every deliberate departure from a row amended with its trail in `Notes` and recorded as a
+      finding — no row silently rewritten to match the code; an undecided departure marked `Fail`
+- [ ] Hand-written parts completed — reproduction, gaps, flaky tests and the status line in the
+      automated record; failures and sign-off in the manual guide
 - [ ] Both records cross-linked to `US###` and its `src/17-STORY-PLANS/` plan
-- [ ] Surface named in the manual guide's header (Browser / CLI / Gate / API), so a non-UI story
-      still has rows
 
 ---
 
@@ -69,6 +73,8 @@ model: opus
 - [ ] Nothing fixed in this pass — each finding states its smallest fix and is routed onward
       (`src/21-BUGS/`, `src/22-REFACTORING/`, `src/15-DECISIONS/`, `DEFERRED.md`, `GAPS.md`)
 - [ ] No rationale invented — absent explanations flagged, inferences marked `TODO(verify)`
+- [ ] Every manual-guide row amended at the walk recorded as a finding — and a missing guide, where
+      the plan postdates 30/09/2026
 - [ ] `Next story` rows carried into the next `src/17-STORY-PLANS/` plan
 - [ ] Every _Register claimed_ row on the story's feature map checked: retired entries closed
       here (`GAPS.md` → `✅ CLOSED DD/MM/YYYY`, `DEFERRED.md` → row removed) **against shipped
@@ -89,8 +95,8 @@ model: opus
 ## Definition of Done
 
 - [ ] All applicable IMPLEMENTATION records written, linked, and committed
-- [ ] Both `src/18-TESTS/` records written — generated block regenerated against the last suite
-      run, manual guide walked and every row marked
+- [ ] Automated record written with its generated block regenerated against the last suite run;
+      manual guide walked, every row marked and every amendment carrying its trail and finding
 - [ ] Findings record written and its `Next story` rows carried forward
 - [ ] Documentation hard gate met — docs complete and graph refreshed before any commit
 - [ ] Ready to proceed to `workflows/23-pr-and-review` (which now only verifies these records)

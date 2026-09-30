@@ -82,8 +82,8 @@ Security notes (read `src/10-SECURITY/CLAUDE.md` to place records correctly):
   `src/10-SECURITY/VULNERABILITIES/IMPLEMENTATION/` immediately.
 
 Where the QA record's evidence for a scenario is a **manual** verification, it may cite the
-`src/18-TESTS/` row ID that exercised it (`SIGNUP-03`) instead of a test name — see Step 4, and
-walk the guide before closing that row. An automated test name stays preferred where one exists.
+`src/18-TESTS/MANUAL/` row ID that exercised it (`SIGNUP-03`) instead of a test name — see Step 4,
+and walk the guide before closing that row. An automated test name stays preferred where one exists.
 
 Reuse the `PLANNING/` artefact's `<DESCRIPTOR>` (SCREAMING-KEBAB-CASE) so plan and record
 pair by name. A story that ships no public URL records `SEO: N/A` with a reason; a story
@@ -109,30 +109,41 @@ The SEO record is the **only** one whose evidence must be gathered from a runnin
 
 A dimension marked Pass without a rendered value or a measured number is not evidence.
 
-### Step 4 — Write the Two Test Records
+### Step 4 — Write the Automated Record and Walk the Manual Guide
 
-Unlike Step 3, this pair is **not** conditional on a `PLANNING/` artefact and has none. It is
-written for **every** story, because its subject is not plan-versus-built but whether executing
-the tests passed. Copy both templates out of `src/18-TESTS/`:
+<!-- UPDATED 30/09/2026. This step wrote both test records; it now writes the automated record
+     and WALKS the manual testing guide, which 17-story-plans authored from the specs before any
+     code. Argued in this folder's CLAUDE.md beside the 09/09/2026 comment that gave 22 the
+     pair. -->
 
-| Record    | Template                  | Record → destination                        |
-| --------- | ------------------------- | ------------------------------------------- |
-| Automated | `US000-TEST-STATUS.md`    | `US###-TEST-STATUS.md` → `src/18-TESTS/`    |
-| Manual    | `US000-MANUAL-TESTING.md` | `US###-MANUAL-TESTING.md` → `src/18-TESTS/` |
+Unlike Step 3, the test pair is **not** conditional on a `PLANNING/` artefact and has none. Both
+records are completed for **every** story, because their subject is not plan-versus-built but
+whether executing the tests passed. Which workflow touches which record, and when:
+`src/18-TESTS/CLAUDE.md` → _The record lifecycle_.
 
-**The automated record's generated block is generated, never typed.** Run the story's suites
+| Record    | At this step                  | Template → record                                                      |
+| --------- | ----------------------------- | ---------------------------------------------------------------------- |
+| Automated | **Written**                   | `src/18-TESTS/AUTOMATED/US000-TEST-STATUS.md` → `US###-TEST-STATUS.md` |
+| Manual    | **Walked** — authored at `17` | already present as `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`       |
+
+Read `src/18-TESTS/CLAUDE.md` and the sub-folder pair of each record before touching it. The
+lifecycle, the three-record boundary and the re-run rule are the root's; the generated-block ban
+is `AUTOMATED/CLAUDE.md`'s; the row IDs, the `Flow` and `QA` columns, the marking rule, the
+amendment trail and the browser-tool contract are `MANUAL/CLAUDE.md`'s. None is restated here.
+
+#### The automated record — written
+
+**Its generated block is generated, never typed.** Copy the template, run the story's suites
 through `code/src/scripts/tests/**/*.sh`, then run the generator over their report artefacts:
 
 ```bash
 bash code/src/scripts/tests/test-record.sh US###
 ```
 
-Run it **after the suites, green or red**. It is deliberately separate from the runners — their
-exit-code contract is untouched, so a **failing** run still records — and it is the only writer of
+Run it **after the suites, green or red** — a failing run still records. It is the only writer of
 everything between `<!-- BEGIN GENERATED: test-record -->` and `<!-- END GENERATED -->`, the
-coverage figures included; the ban on hand-editing inside them is `src/18-TESTS/CLAUDE.md`'s.
-Everything after the block — how to reproduce the run, the outstanding gaps and flaky
-tests, the status line — is yours to write.
+coverage figures included. Everything after the block — how to reproduce the run, the
+outstanding gaps and flaky tests, the status line — is yours to write.
 
 **A test only reaches the record if it declares its story.** A pytest test carries
 `@pytest.mark.story("US###")`, inheritable from its class or module via `pytestmark`; a Bruno
@@ -147,16 +158,20 @@ bash code/src/scripts/audits/story-markers.sh
 Because it never fails a build, **an unmarked test is silently absent from the record** — a short
 table is not evidence of a small suite. Read the audit's output before trusting one.
 
-**The manual guide is walked, not drafted** — marked row by row as each step is executed, by a
-human tester or by Claude Chrome against the same file. Drafting it from the code and marking it
-afterwards is the one way this record can lie.
+#### The manual guide — walked, not written
 
-Read `src/18-TESTS/CLAUDE.md` before writing either file. The three-record boundary, the
-journey-area sections and their `{AREA}-{NN}` row IDs, the `QA` citation column, the marking rule,
-the overwrite-on-re-run rule and the browser-tool contract are all owned there, and none of them is
-restated here.
+`17-story-plans` authored the guide from the specs before any code existed; here it is walked, by
+a human tester or by Claude Chrome against the same file. Walk and mark it per `MANUAL/CLAUDE.md`
+→ _Walking and marking_, reading its build captures per _Recorded during the build_; change a row
+only per _Changing a row after authoring_; and a guide missing at this step per _Authoring_.
 
-A red suite or a failed manual row is an **input** to Step 5, never a reason to skip this step.
+Two things are this step's own. **Every amendment made at the walk goes to Step 5 as a finding.**
+And **a missing guide is also a finding** where the story's plan was written after 30/09/2026,
+when `17-story-plans` Step 7.2 began authoring guides — a skipped step; a plan older than that
+never had the step.
+
+A red suite, a failed manual row or an amended row is an **input** to Step 5, never a reason to
+skip this step.
 
 ### Step 5 — Record Findings
 
@@ -168,6 +183,11 @@ Copy `src/20-FINDINGS/FINDING-US000-TEMPLATE.md` →
 `src/20-FINDINGS/FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`, reusing the story's
 `<DESCRIPTOR>`. Assess the delivered work against the governing guides — data-layer work
 against `code/docs/DATABASE.md`, and the guides it routes to.
+
+**Step 4 feeds this record.** Every manual-guide row amended at the walk is a finding — the spec it
+was authored from proved wrong, and the next plan should know — and so is a guide Step 4 found
+missing for a plan written after `17-story-plans` began authoring guides. The amended row's trail
+names its finding's `F-0NN`.
 
 Give every finding a stable `F-0NN` ID, a **retrofit cost** (`Cheap` / `Expensive`), and a
 disposition. Repeat the `Expensive` rows in their own section — schema shape, a missing
@@ -221,7 +241,8 @@ No spec is left with a `PLANNING/` record but no `IMPLEMENTATION/` record.
 
 The `src/18-TESTS/` pair has no `PLANNING/` side and is therefore outside that check. Confirm
 instead that **both** files exist for the story, that the generated block was regenerated against
-the last suite run, and that every manual row carries a `Pass` or a `Fail`.
+the last suite run, that every manual row carries a `Pass` or a `Fail`, and that every amended row
+carries its trail and a finding.
 
 ### Step 9 — Commit
 

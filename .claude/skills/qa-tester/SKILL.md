@@ -100,7 +100,7 @@ ToolSearch first) against the dev host. **Never a raw `pytest`, `pnpm`, `python`
 command.** Fix nothing you find.
 
 **The browser-run contract is not this skill's** — obey _Running the manual guide in the browser_
-in `project-management/src/18-TESTS/CLAUDE.md` as written, whatever the run is for. The one rule
+in `project-management/src/18-TESTS/MANUAL/CLAUDE.md` as written, whatever the run is for. The one rule
 of it that becomes output here: a control that cannot be found by its visible or accessible name
 is itself a WCAG 2.2 AA finding, never a reason to reach for a selector.
 
@@ -134,8 +134,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `project-management/workflows/11-qa-checks/` — the design-stage QA plan these findings test
 - `code/workflows/07-review/` — the review pass these findings feed
 - `project-management/workflows/22-implementation-documentation/` — where `QA-IMPL-US###` lands,
-  and where the two `src/18-TESTS/` test records are written; a walk driven from this pass feeds
-  them, never writes them
+  where the `src/18-TESTS/AUTOMATED/` record is written and the `src/18-TESTS/MANUAL/` guide is
+  walked; a walk driven from this pass feeds them, never writes them
 
 ## Cross-references
 

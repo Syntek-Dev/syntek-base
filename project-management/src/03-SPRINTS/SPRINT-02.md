@@ -165,7 +165,12 @@ born behind it.
   SPRINT-03" — the same direction, one sprint later on each side — and it agrees with the build
   order rather than fighting it.
 - **Both members read `doc-references.sh` as a diff against a recorded baseline, never as a
-  pass**, per `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
+  pass**, per `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+  (superseded 30/09/2026 by
+  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->),
   because the gate's own repair — US004 — now lands **after** this sprint. Every survivor US004's
   Verification Checks name at cutting belongs to a member of this sprint: the three
   `code/docs/ABSENCE.md` forward references are US003's and clear when the guide lands; the three
@@ -553,8 +558,8 @@ owns cited rather than restated.
      All of it was US004's, and it travelled to SPRINT-03 on 07/09/2026. -->
 
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
-- [ ] `project-management/src/18-TESTS/US002-MANUAL-TESTING.md` and
-      `project-management/src/18-TESTS/US003-MANUAL-TESTING.md` each carry a tester sign-off block
+- [ ] `project-management/src/18-TESTS/MANUAL/US002-MANUAL-TESTING.md` and
+      `project-management/src/18-TESTS/MANUAL/US003-MANUAL-TESTING.md` each carry a tester sign-off block
 - [ ] **No `[OPEN]` acceptance-criteria gap remains** in either member's QA plan —
       `project-management/src/11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` (eleven
       `AC-GAP` entries, all `[RESOLVED]`) or
@@ -571,7 +576,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 
 - [ ] US002 — the counted-line baseline, the full register inventory and the `doc-references.sh`
       finding set — by identity, not count — are recorded in
-      `project-management/src/18-TESTS/US002-MANUAL-TESTING.md` **before** any line is cut
+      `project-management/src/18-TESTS/MANUAL/US002-MANUAL-TESTING.md` **before** any line is cut
 - [ ] US002 — the three documentation gates named in its own flag run, and their output recorded
       in the same file, `doc-references.sh` read against that recorded baseline rather than
       against exit 0
@@ -586,14 +591,18 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
       the resulting figure recorded
 - [ ] US002 — a tester other than the author has signed the walk-through off
 - [ ] US003 — the five documentation gates named in its own flag run, and their output recorded
-      in `project-management/src/18-TESTS/US003-MANUAL-TESTING.md`
+      in `project-management/src/18-TESTS/MANUAL/US003-MANUAL-TESTING.md`
 - [ ] US003 — **the `doc-references.sh` baseline is captured before any file is edited, and the
       baseline-diff scenario stands as written.** This re-plan (07/09/2026) works US003 ahead of
       US004, so the regime its scenario was written for is the one it is worked under. The
       revision pass recorded on 05/09/2026 — recast the scenario, the before/after QA task and
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+      (superseded 30/09/2026 by
+      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+      which restates it unchanged but for the manual testing guide's path)
       as a plain pass once US004 has landed — applies **only** if US003 slips to SPRINT-03 and is
       worked after US004 there, and then travels with the carry
+      <!-- UPDATED 30/09/2026: successor added beside the superseded record, which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). The superseded record's citation is kept, not repointed. -->
 - [ ] US003 — the before/after `doc-references.sh` finding counts are recorded and the delta from
       US003's own shipped files is zero, the three forward references to `code/docs/ABSENCE.md`
       resolving the moment the guide lands
@@ -633,14 +642,18 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      documentation only, and per code/docs/GATE-REPORTING.md a skip is never reported as a pass. -->
 
 - [ ] `bash code/src/scripts/audits/doc-references.sh` — **read as a diff, not as a pass**, per
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
+      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+      (superseded 30/09/2026 by
+      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+      which restates it unchanged and is the record that names the MANUAL/ path below),
       because the gate's own repair — US004 — is in SPRINT-03 and lands after this sprint. Each
       member captures its baseline by identity before its first edit and records it in its own
-      `project-management/src/18-TESTS/US###-MANUAL-TESTING.md`; no shipped file either member
+      `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`; no shipped file either member
       writes or edits adds an unresolved citation of any class; every survivor is named with the
       story that owns it. The three `code/docs/ABSENCE.md` forward references clear when US003's
       guide lands; the three `code/src/scripts/audits/SLOP-FAMILY.md` citations are US002's to
       disposition. A bare pass is unavailable to this sprint
+      <!-- UPDATED 30/09/2026: successor added beside the superseded record, which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - [ ] `bash code/src/scripts/audits/docs-length.sh` — with `--path code/src/scripts/audits --limit 1`,
       `code/src/scripts/audits/CONTEXT.md` at or under **230** counted lines and
       `code/src/scripts/audits/CLAUDE.md` at or under **200**, both US002's; `code/docs/ABSENCE.md`

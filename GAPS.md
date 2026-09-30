@@ -441,6 +441,10 @@ the block containing the existence test is never entered; and Check 1's checkabl
 before its own existence test. **No gate checks a PM `src/` instance citation in either form.**
 Proof in the tree: `project-management/src/02-STORIES/US001.md` cites
 `../18-TESTS/US001-MANUAL-TESTING.md` twice, that file does not exist, and the audit exits 0.
+_(Example retired 30/09/2026: the `18-TESTS` split backfilled that guide at
+`project-management/src/18-TESTS/MANUAL/US001-MANUAL-TESTING.md` and repointed both citations, so
+this proof no longer reproduces. The gap it proved stands — still no gate checks a PM `src/`
+instance citation.)_
 Two further defects found by the same measurement — the alternation still carries `ADR-[0-9]{3}`,
 the counter retired 31/08/2026, and `QA-US[0-9]{3}` against the live
 `QA-PLAN-US###-<DESCRIPTOR>.md` spelling, so **no ADR or QA-plan filename is checkable in any
@@ -484,6 +488,11 @@ commit; US008's own change adds nothing to it — measured 09/09/2026 per file w
 file's count is unchanged at nine, and the story, its two ADRs and its one map edit contribute
 none, so the tree US008 lands on still runs at 253. Disposition while the gate stays red:
 `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`.
+_(Superseded 30/09/2026 by
+`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, <!-- doc-references: template-only -->
+which restates the disposition unchanged but for the manual testing guide's path, now under
+18-TESTS/MANUAL/ — settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18. The
+disposition stands; only the record that states it moved.)_
 
 **Blocked by / Action:** `project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` <!-- doc-references: template-only --> slice `S-06` owns the first edit to
 `doc-references.sh` and is itself blocked on that map's RESOLVE sitting. The fix is now **four

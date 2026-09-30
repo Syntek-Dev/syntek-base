@@ -1,11 +1,11 @@
 # US000 — Test Status
 
-_Template — copy to `US###-TEST-STATUS.md`, replace every `{PLACEHOLDER}` outside the generated block, then run the generator. The automated-test record for a single user story (US###): what each test checks, whether it passed, and the coverage the suites achieved against the floors._
+_Template — copy to `US###-TEST-STATUS.md` at `22-implementation-documentation` Step 4, replace every `{PLACEHOLDER}` outside the generated block, then run the generator. The automated-test record for a single user story (US###): what each test checks, whether it passed, and the coverage the suites achieved against the floors._
 
 **Last Updated**: {DD/MM/YYYY} · **Story**: US### · **Status**: {status: Green / Red / Partial}
 
-- **Story:** `../02-STORIES/US###.md` — {short title}
-- **Story plan:** `../17-STORY-PLANS/{XX}-STORY-PLAN-US###-{DESCRIPTOR}.md` — the code master this record closes the loop on
+- **Story:** `../../02-STORIES/US###.md` — {short title}
+- **Story plan:** `../../17-STORY-PLANS/{XX}-STORY-PLAN-US###-{DESCRIPTOR}.md` — the code master this record closes the loop on
 - **Branch:** `us###/{short-description}`
 
 > **Half this file is generated.** Everything between the `BEGIN GENERATED` and `END GENERATED`
@@ -134,10 +134,10 @@ lists what carries no marker; check it before trusting a short table.
 
 ## Cross-references
 
-- `../02-STORIES/US###.md` — the story under test
-- `../17-STORY-PLANS/{XX}-STORY-PLAN-US###-{DESCRIPTOR}.md` — the implementation plan this record closes
-- `US###-MANUAL-TESTING.md` — the paired manual walk-through; a manual `Fail` beside a green suite is a missing test
-- `../11-QA/IMPLEMENTATION/QA-IMPL-US###-{DESCRIPTOR}-DD-MM-YYYY.md` — whether the specified scenarios were met
+- `../../02-STORIES/US###.md` — the story under test
+- `../../17-STORY-PLANS/{XX}-STORY-PLAN-US###-{DESCRIPTOR}.md` — the implementation plan this record closes
+- `../MANUAL/US###-MANUAL-TESTING.md` — the paired manual testing guide, authored before code and walked after it; a manual `Fail` beside a green suite is a missing test
+- `../../11-QA/IMPLEMENTATION/QA-IMPL-US###-{DESCRIPTOR}-DD-MM-YYYY.md` — whether the specified scenarios were met
 - `code/docs/TESTING.md` — coverage floors, test structure, and mocking strategy
 - `code/src/scripts/tests/CLAUDE.md` — the runners, their exit-code contract, and the generator
 
@@ -152,3 +152,10 @@ lists what carries no marker; check it before trusting a short table.
      XML. The Notes column carries the failure reason on a failing row only. Settled by the
      grilling pass of 09/09/2026; the story-marker mechanism it filters on is argued in this
      folder's CLAUDE.md. -->
+
+<!-- UPDATED 30/09/2026. Moved into AUTOMATED/ when "../" split by record type; the record, its
+     generated block and the generator's contract are unchanged, and
+     "code/src/scripts/tests/test-record.sh" now writes here. Every relative path gained a level
+     for the new depth, and the paired manual guide is cited in "../MANUAL/", where it is now
+     authored before the code rather than beside this record after it. Why the folder split:
+     "../CLAUDE.md". -->

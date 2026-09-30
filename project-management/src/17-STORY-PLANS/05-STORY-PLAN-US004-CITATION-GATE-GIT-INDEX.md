@@ -62,7 +62,15 @@
 Implements `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` (Check 2 reads
 the citing file's name, never `is_template_only()`) and
 `../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md` (a registered path may
-name a class, with `###` translated to three digits exactly).
+name a class, with `###` translated to three digits exactly). Both were superseded on 30/09/2026,
+for the 18-TESTS split, by
+`../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md` and
+`../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`,
+which restate them unchanged but for the 18-TESTS paths; this plan implements the two decisions
+as those successors state them. <!-- UPDATED 30/09/2026: the successors are added beside the two
+superseded records (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026,
+16-sprint-plans grilling round 7 Q18). The superseded records' citations are kept, not
+repointed. -->
 
 > **Source authority.** Where this plan and `../02-STORIES/US004.md` differ on a **measurement**,
 > **this plan wins** — its figures were produced by executing a patched copy of the script, and
@@ -108,8 +116,13 @@ Three further defects compound it, all measured at `7a82095` plus the working tr
      comment heading, which survives an edit above it. -->
 
 The cost is live and recorded: every story since 01/09/2026 carries a written disposition for this
-script's output, and `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` binds
-the whole backlog to reading a red gate as a diff against a baseline **until this story lands**.
+script's output, and `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
+superseded 30/09/2026 by
+`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+which restates it unchanged, retirement terms included — binds
+the whole backlog to reading a red gate as a diff against a baseline **until this story lands**. <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 Whole-tree run at planning: **44 findings**, 989 files read, 87 exempt, 30,095 tokens, 5,665 path
 tests.
 
@@ -230,7 +243,7 @@ register's header state that a row may be patterned and carry the duty to add on
 **These cannot be split.** The arm alone reddens the tree by 22 findings, and the register rows
 are what makes them pass — landing the arm without the rows leaves the gate red on correct
 citations, which is the false-positive mirror of the defect this story fixes. Two rows only:
-`18-TESTS/US###-MANUAL-TESTING.md` and `18-TESTS/US###-TEST-STATUS.md`. **No `17-STORY-PLANS`
+`18-TESTS/MANUAL/US###-MANUAL-TESTING.md` and `18-TESTS/AUTOMATED/US###-TEST-STATUS.md`. **No `17-STORY-PLANS`
 row** — measured, nothing in the repository cites a story plan that does not exist, and a row for
 it would be the register answering a question in passing (AC-GAP-6).
 
@@ -339,7 +352,7 @@ edited script is this story's own expectation, and no project script satisfies i
 legs are ruff, markdownlint-cli2, ESLint and clippy (`code/src/scripts/syntax/CONTEXT.md`), and
 as of 08/09/2026 no script under `code/src/scripts/`, no CI job and no lefthook entry runs
 ShellCheck — only `# shellcheck source=` and `# shellcheck disable=` directives exist. It is run
-by hand and recorded in `../18-TESTS/US004-MANUAL-TESTING.md` as run or as not run, never as a
+by hand and recorded in `../18-TESTS/MANUAL/US004-MANUAL-TESTING.md` as run or as not run, never as a
 `lint.sh` pass (`code/docs/GATE-REPORTING.md`).
 
 <!-- Until 08/09/2026 this read "ShellCheck via `syntax/lint.sh` covers the edited script", and the
@@ -361,6 +374,9 @@ script's own `--self-test`, which carries both modes this story needs.
 | Whole tree (P5)     | Before/after counts, exit codes, and the runtime, all recorded                       |
 | Manual              | The tracked/untracked A/B reproduced before and after, index restored each time      |
 
+The rows a person walks are in `../18-TESTS/MANUAL/US004-MANUAL-TESTING.md`, authored from this
+plan before code (backfilled 30/09/2026) and walked at `22`.
+
 **Two rules from the QA plan bind every case:** a fixture that passes both scripts proves nothing,
 and no existing probe is weakened to accommodate a change — a moved expected count carries its
 justification in its own comment.
@@ -370,10 +386,18 @@ were wrong and both became AC-gaps. Every figure in this plan is reproduced at i
 
 ## Documentation Write-Ups (Implementation Records)
 
-`22-implementation-documentation` owns the records and writes
-`../18-TESTS/US004-TEST-STATUS.md` and `../18-TESTS/US004-MANUAL-TESTING.md` — **both of which
-this story's own P4 register rows make citable in advance**, which is the story demonstrating its
-own deliverable.
+`22-implementation-documentation` owns the records: it writes
+`../18-TESTS/AUTOMATED/US004-TEST-STATUS.md` — **which this story's own P4 register rows make
+citable in advance**, the story demonstrating its own deliverable — and walks
+`../18-TESTS/MANUAL/US004-MANUAL-TESTING.md`, authored before code from this plan (backfilled
+30/09/2026).
+
+<!-- 30/09/2026: read "writes ../18-TESTS/US004-TEST-STATUS.md and
+     ../18-TESTS/US004-MANUAL-TESTING.md — both of which this story's own P4 register rows make
+     citable in advance" until the 18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual
+     guide's authorship moved to 17-story-plans Step 7.2 (../18-TESTS/CLAUDE.md -> The record
+     lifecycle). The P4 register row for the manual guide still carries every later story's guide,
+     authored at 17 after the story that cites it is written. -->
 
 ## CONTEXT.md & Index Updates
 

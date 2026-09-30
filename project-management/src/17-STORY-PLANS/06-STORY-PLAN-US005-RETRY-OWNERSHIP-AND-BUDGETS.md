@@ -632,14 +632,22 @@ out** — a recomputation whose working is not recorded is indistinguishable fro
 `architecture/SERVICE-AND-MIDDLEWARE.md`.
 
 **A tester other than the author signs the walk-through off**, and the before/after budget
-inventory is recorded in `../18-TESTS/US005-MANUAL-TESTING.md` with all four accounted for.
+inventory is recorded in `../18-TESTS/MANUAL/US005-MANUAL-TESTING.md` with all four accounted for.
+The rows a person walks for the checks above are in that guide, authored from this plan before
+code (backfilled 30/09/2026) and walked at `22`.
 
 ## Documentation Write-Ups (Implementation Records)
 
-`22-implementation-documentation` owns the records and writes `../18-TESTS/US005-TEST-STATUS.md`
-and `../18-TESTS/US005-MANUAL-TESTING.md`. **It also owns this story's one register write** — the
-`DEFERRED.md` unenforced-window entry naming slice `S-05` as owner and the first client-wiring
-story as its deadline.
+`22-implementation-documentation` owns the records: it writes
+`../18-TESTS/AUTOMATED/US005-TEST-STATUS.md` and walks `../18-TESTS/MANUAL/US005-MANUAL-TESTING.md`,
+which was authored before code from this plan (backfilled 30/09/2026). **It also owns this
+story's one register write** — the `DEFERRED.md` unenforced-window entry naming slice `S-05` as
+owner and the first client-wiring story as its deadline.
+
+<!-- 30/09/2026: read "writes ../18-TESTS/US005-TEST-STATUS.md and
+     ../18-TESTS/US005-MANUAL-TESTING.md" until the 18-TESTS folder split into MANUAL/ and
+     AUTOMATED/ and the manual guide's authorship moved to 17-story-plans Step 7.2
+     (../18-TESTS/CLAUDE.md -> The record lifecycle). -->
 
 ## CONTEXT.md & Index Updates
 

@@ -27,15 +27,15 @@ the product, and the application skeleton is almost incidental.
 
 Generate a project from it and you get, on day one:
 
-| You get                      | What it means                                                                                                                                                       |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **A Django 6 monolith**      | Django Ninja JSON API + server-rendered templates, HTMX, Alpine, token CSS. One deployable, no bundler, no build step.                                              |
-| **A three-layer doc system** | `code/`, `how-to/`, `project-management/` — each with reference guides and numbered step-by-step workflows, grouped into families by what they do.                  |
-| **Skills, loaded on demand** | Stack idioms (Django, HTMX, FastMCP), design grilling, architecture vocabulary, operator-doc craft, session handoff, scale planning, legal and compliance drafting. |
-| **A working dev stack**      | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Nginx — plus scripts to drive them. Celery and S3 storage are declared, not wired (see below).       |
-| **CI that already bites**    | GitHub Actions covering lint, format, type-check, tests, secrets, dependency advisories, line-count, stub and CSS-token audits.                                     |
-| **Compliance scaffolding**   | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.                                                       |
-| **A test record per story**  | Two records per story in `project-management/src/18-TESTS/` — a manual journey walk-through, and an automated one generated from the suites' own reports.           |
+| You get                      | What it means                                                                                                                                                                                                         |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A Django 6 monolith**      | Django Ninja JSON API + server-rendered templates, HTMX, Alpine, token CSS. One deployable, no bundler, no build step.                                                                                                |
+| **A three-layer doc system** | `code/`, `how-to/`, `project-management/` — each with reference guides and numbered step-by-step workflows, grouped into families by what they do.                                                                    |
+| **Skills, loaded on demand** | Stack idioms (Django, HTMX, FastMCP), design grilling, architecture vocabulary, operator-doc craft, session handoff, scale planning, legal and compliance drafting.                                                   |
+| **A working dev stack**      | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Nginx — plus scripts to drive them. Celery and S3 storage are declared, not wired (see below).                                                         |
+| **CI that already bites**    | GitHub Actions covering lint, format, type-check, tests, secrets, dependency advisories, line-count, stub and CSS-token audits.                                                                                       |
+| **Compliance scaffolding**   | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.                                                                                                         |
+| **A test record per story**  | Two records per story in `project-management/src/18-TESTS/` — a manual testing guide written from the specs before any code and walked once it ships, and an automated record generated from the suites' own reports. |
 
 It is opinionated on purpose. The stack is fixed, the coverage floors are fixed, the file-length
 limits are fixed. What varies between projects is captured in the template tokens and nothing else.

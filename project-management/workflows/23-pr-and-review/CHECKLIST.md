@@ -40,9 +40,10 @@ If any applicable record below is missing or incomplete, return to
 - [ ] QA implementation review complete (`src/11-QA/IMPLEMENTATION/`)
 - [ ] SEO implementation review complete if story adds public-facing pages (`src/12-SEO/IMPLEMENTATION/`)
 - [ ] API design verification complete if story adds or changes the Django Ninja API (`src/13-API-DESIGN/IMPLEMENTATION/`)
-- [ ] Automated test record complete (`US###-TEST-STATUS.md` → `src/18-TESTS/`) — its generated block regenerated against the **last** suite run, not an earlier green one
+- [ ] Automated test record complete (`US###-TEST-STATUS.md` → `src/18-TESTS/AUTOMATED/`) — its generated block regenerated against the **last** suite run, not an earlier green one
 - [ ] A short per-test table checked against `bash code/src/scripts/audits/story-markers.sh` before it is read as coverage — an unmarked test is silently absent from the record, never reported as missing
-- [ ] Manual journey guide complete (`US###-MANUAL-TESTING.md` → `src/18-TESTS/`) — every row's `Result` marked `Pass` or `Fail`, none left empty (an empty `Result` means the step was not run)
+- [ ] Manual testing guide walked (`US###-MANUAL-TESTING.md` → `src/18-TESTS/MANUAL/`) — every row's `Result` marked `Pass` or `Fail`, a retired stub excepted, none left empty (an empty `Result` means the step was not run), and every _Recorded during the build_ slot filled or recorded as missed
+- [ ] Every amended manual row carries its trail in `Notes` and a matching finding in `src/20-FINDINGS/` — none silently rewritten to match the code
 - [ ] Every `Fail` carries its reason in `Notes` and a row in the manual guide's _Failures_ table, routed before merge exactly as `src/20-FINDINGS/` routes a finding
 - [ ] No green `TEST-STATUS` sitting beside a failing manual row — that is a missing test, not a passing story
 

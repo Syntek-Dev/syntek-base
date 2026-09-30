@@ -35,7 +35,8 @@ relaxed to make a report fit.
 
 The `src/` folders run in three tiers, and `18-TESTS` … `22-REFACTORING` are all **per-story**
 records: written after code ships, to close the loop on the story plan (17) a developer coded
-from.
+from. (The manual testing guide in `../18-TESTS/MANUAL/` is authored beside that plan, before
+code, and becomes a record when walked — still per story.)
 
 This folder is a record too, and deliberately **not** anchored to a story. An incident is not
 caused by one story, is not scoped to one story, and frequently has no story behind it at all —

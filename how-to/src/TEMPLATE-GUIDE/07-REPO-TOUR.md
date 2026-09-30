@@ -70,18 +70,18 @@ An oversized guide splits into a sub-directory beside it and the entry point bec
 **`code/src/scripts/` is the interface to everything** — around eighty shell scripts, grouped by
 what they do:
 
-| Group                            | Examples                                                                                                                                               |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `development/`                   | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `new-django-view.sh`, `template-update.sh`                                                    |
-| `database/`                      | `migrate.sh`, `reset.sh`, `backup.sh`, `restore.sh`, `manageusers.sh`, `verify-db-security.sh`                                                         |
-| `tests/`                         | `all.sh`, `backend.sh`, `api.sh`, `e2e-py.sh`, `backend-coverage.sh`, `mutmut.sh`, `test-record.sh` (writes the `18-TESTS` record's generated block)   |
-| `syntax/`                        | `lint.sh`, `check.sh`, `format.sh`                                                                                                                     |
-| `audits/`                        | 25 of them — `cloc.sh`, `docs-length.sh`, `docs-pairing.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`, `skill-conformance.sh` |
-| `dependencies/`                  | `update.sh` — add, upgrade or remove a dependency and re-resolve                                                                                       |
-| `deployment/`                    | a scaffold — the sanctioned deploy entry point is not written yet                                                                                      |
-| `mobile/` · `rust/` · `desktop/` | present only where the project opted into that surface                                                                                                 |
-| `_lib/`                          | shared helpers the other groups source, never run directly                                                                                             |
-| `reports/`                       | generated output, gitignored — the one place a `CONTEXT.md` pair is not required                                                                       |
+| Group                            | Examples                                                                                                                                                       |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `development/`                   | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `new-django-view.sh`, `template-update.sh`                                                            |
+| `database/`                      | `migrate.sh`, `reset.sh`, `backup.sh`, `restore.sh`, `manageusers.sh`, `verify-db-security.sh`                                                                 |
+| `tests/`                         | `all.sh`, `backend.sh`, `api.sh`, `e2e-py.sh`, `backend-coverage.sh`, `mutmut.sh`, `test-record.sh` (writes the `18-TESTS/AUTOMATED` record's generated block) |
+| `syntax/`                        | `lint.sh`, `check.sh`, `format.sh`                                                                                                                             |
+| `audits/`                        | 25 of them — `cloc.sh`, `docs-length.sh`, `docs-pairing.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`, `skill-conformance.sh`         |
+| `dependencies/`                  | `update.sh` — add, upgrade or remove a dependency and re-resolve                                                                                               |
+| `deployment/`                    | a scaffold — the sanctioned deploy entry point is not written yet                                                                                              |
+| `mobile/` · `rust/` · `desktop/` | present only where the project opted into that surface                                                                                                         |
+| `_lib/`                          | shared helpers the other groups source, never run directly                                                                                                     |
+| `reports/`                       | generated output, gitignored — the one place a `CONTEXT.md` pair is not required                                                                               |
 
 Every script takes `--help`. Never run `python`, `pytest`, `pnpm` or `docker` directly — the
 scripts handle the container, the environment and the compose overrides for your branch.

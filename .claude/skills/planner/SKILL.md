@@ -3,11 +3,11 @@ name: planner
 description: >-
   Architect a feature for <%PROJECT_NAME%> into a phased, independently-testable implementation
   plan before any code is written — scope, system impact, technical design, interfaces, risks
-  and open questions. Load when a story needs its `STORY-PLAN-US###` written, or when a design
-  has to be settled ahead of backend and frontend work. Not writing the story itself (`story`),
-  not slicing stories into sprints (`sprint`), not writing the code, migrations or tests
-  (`backend`, `database`, `frontend`, `test-writer`), and not sizing the deployment for a user
-  count (`scale-planning`).
+  and open questions. Load when a story needs its `STORY-PLAN-US###` and its manual testing guide
+  written, or when a design has to be settled ahead of backend and frontend work. Not writing the
+  story itself (`story`), not slicing stories into sprints (`sprint`), not writing the code,
+  migrations or tests (`backend`, `database`, `frontend`, `test-writer`), and not sizing the
+  deployment for a user count (`scale-planning`).
 model: opus
 metadata:
   skills: codebase-design domain-modelling global-workflow grilling stack-django stack-htmx-templates
@@ -89,18 +89,28 @@ the naming convention is `project-management/src/CONTEXT.md`'s. Each phase must 
 independently testable, sized for a focused session, with inter-phase dependencies explicit and
 no premature detail that locks in a decision the implementer should own.
 
+**A `STORY-PLAN-US###` has a second output: the story's manual testing guide**,
+`project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, authored **from the specs and
+the plan, never from code**, every `Result` left blank. The procedure — what is read, and in what
+order — is `project-management/workflows/17-story-plans/` Step 7.2; every rule of the guide is
+`project-management/src/18-TESTS/MANUAL/CLAUDE.md` → _Authoring — from the specs, never from the
+code_. The plan's _Manual testing_ section points at the guide rather than listing its own.
+
 ## Definition of done
 
 Scope agreed and out-of-scope stated; every phase independently testable with a named
 deliverable; permission and ownership checks stated per endpoint; risks tabled with mitigations;
-open questions listed rather than guessed; British English, DD/MM/YYYY, <%CURRENCY%>.
+open questions listed rather than guessed; for a story plan, its manual guide authored with every
+row traced to a spec and none guessed; British English, DD/MM/YYYY, <%CURRENCY%>.
 
 ## Handoff
 
-Report the plan's path and the phases it defines, then name what each later dispatch owns —
-`test-writer` for the failing tests per phase, `database` for the migration, `backend` for
-models, services and endpoints, `frontend` for components and templates, and `scale-planning`
-where the feature shifts a per-surface load curve. This skill plans; it does not sequence them.
+Report the plan's path and the phases it defines. For a story plan, report the manual guide's
+path too, and any row still waiting on an answer. Then name what each later dispatch owns —
+`test-writer` for the failing tests per phase, with the guide in its brief; `database` for the
+migration; `backend` for models, services and endpoints; `frontend` for components and
+templates; and `scale-planning` where the feature shifts a per-surface load curve. This skill
+plans; it does not sequence them.
 
 ## Governing procedures (route here — do not restate at length)
 

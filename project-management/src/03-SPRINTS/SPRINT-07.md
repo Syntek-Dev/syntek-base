@@ -1,6 +1,6 @@
 # SPRINT-07
 
-**Last Updated**: 27/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 30/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -118,9 +118,11 @@ Notes.
      block above" where each member's own row points at its Provenance block, which a sprint
      record does not have — the substitution recorded above for US011 on 20/09/2026, now made for
      US012 on the same ground. Everything else in both rows is the member's own.
-     US012'S VALUES ARE NOT FIRST-PASS. Its one gate that runs, `11-qa-checks`, closed on
-     21/09/2026 in project-management/src/11-QA/PLANNING/QA-PLAN-US012-SEED-PRESENCE-GATE.md with
-     all nine gaps resolved into the story and the QA value unchanged; `10-security-checks` is
+     US012'S VALUES ARE NOT FIRST-PASS. Its one gate that runs, `11-qa-checks`, wrote
+     project-management/src/11-QA/PLANNING/QA-PLAN-US012-SEED-PRESENCE-GATE.md on 21/09/2026,
+     Reviewed with all nine gaps resolved into the story and the QA value unchanged, and closed
+     on 30/09/2026, when that plan was signed off (CORRECTED 30/09/2026, below);
+     `10-security-checks` is
      skipped by its flag, which names that gate as the one entitled to overturn it. US011's half
      is still first-pass, for the reason stated above.
 
@@ -148,11 +150,23 @@ Notes.
      in content, because it carries gate `11`'s write-back, and that gate's plan,
      project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md, reads
      `Reviewed` as measured the same day, all thirteen gaps resolved into the story on 27/09/2026.
-     It is untracked, and is committed with US011.
+     It was committed with US011 in `b1ca05a` on 27/09/2026.
      AMENDED 27/09/2026 after two verified passes of that write-back. The last sentence read "But
      that gate's plan, [the same path], still reads `Draft` as measured today, and its close is for
      that gate's own step to record." The plan moved to `Reviewed` later that day. Both members'
-     tables were re-read then, and the union is unchanged by the move. -->
+     tables were re-read then, and the union is unchanged by the move.
+     AMENDED 28/09/2026 at the 16-sprint-plans gate. The sentence before the last amendment read
+     "It is untracked, and is committed with US011" until then; b1ca05a committed the plan with
+     US011. Both members' tables were re-read that day from their committed text and are
+     unchanged, so the union does not move.
+     CORRECTED 30/09/2026 at gate 11's close (settled 30/09/2026, 16-sprint-plans grilling round
+     3 Q9). The 21/09/2026 paragraph above read "Its one gate that runs, `11-qa-checks`, closed on
+     21/09/2026 in [the QA-PLAN-US012 path] with all nine gaps resolved into the story and the QA
+     value unchanged" until then. Gate 11 closes only when a QA plan reads Signed off, exactly as
+     gate 10 does, and <%DEVELOPER_NAME%> signed off both members' QA plans today, so gate 11
+     closed for US012 and for US011 on 30/09/2026; the plans' Reviewed of 21/09/2026 (US012's)
+     and 27/09/2026 (US011's) are history. Both members' tables were re-read today and are
+     unchanged by the sign-off, so the union does not move. -->
 
 | Flag       | Value                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -250,7 +264,12 @@ Notes.
 - **Neither member blocks on US004**, for the reason SPRINT-04 recorded for US006, SPRINT-05 for
   US008 and SPRINT-06 for US010.
   `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is a
-  reporting regime and sequences nothing. See Verification Checks.
+  reporting regime and sequences nothing. Its successor of 30/09/2026,
+  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  restates it unchanged but for the manual testing guide's path. See Verification Checks.
+  <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - **US012 has no upstream dependency.** It is cut from
   `project-management/src/01-FEATURE-MAPS/MAP-SCRIPT-GUARDS.md` slice `S-02`, node `N-005`,
   resolved 01/09/2026, on a map that reads `Frontier open: 0 · Blocking open: 0` and releases the
@@ -647,62 +666,85 @@ by a concurrent session and committed on 20/09/2026 in `50e22ad` — its header 
      project-management/src/03-SPRINTS/SPRINT-06.md -> Dependencies carries the same correction. -->
 
 **The close owes this record its plan, and `07-SPRINT-PLAN-07.md` is not written yet — owed, not
-omitted.** Closed with nothing reserved into it, the record's story set is settled, and
-`project-management/docs/planning/SPRINTS.md` -> _Two artefacts, two moments_ writes the plan
-"once, against a settled story set". <%DEVELOPER_NAME%>'s call names what the close owes:
-`16-sprint-plans` for this record, and `17-story-plans` for US012 at its reserved `11-` and for
-US011 at its reserved `12-`. **None of the three is written in the change that closed the record,
-and none is dated, because a prerequisite is unmet.**
+omitted, and its prerequisites now hold.** Closed with nothing reserved into it, the record's story
+set is settled, and `project-management/docs/planning/SPRINTS.md` -> _Two artefacts, two moments_
+writes the plan "once, against a settled story set". <%DEVELOPER_NAME%>'s call names what the
+close owes: `16-sprint-plans` for this record, and `17-story-plans` for US012 at its reserved `11-`
+and for US011 at its reserved `12-`. **None of the three was written in the change that closed the
+record, and none was dated, because a prerequisite was then unmet.**
 `project-management/workflows/16-sprint-plans/STEPS.md` Step 1 requires the gate documents to be
-"complete and committed before writing the sprint plan", and on 21/09/2026 neither member's are.
-US012's QA plan is complete — `Reviewed`, all nine gaps resolved, four of them settled by
-<%DEVELOPER_NAME%> — but untracked, so not committed. US011's belongs to the concurrent session:
-a `Draft` with thirteen `[OPEN]` gaps, whose resolutions that session holds back until this one's
-work is committed. **That hold lifted on 27/09/2026:** US012's work now runs alongside US010's and US011's
-(`project-management/src/02-STORIES/CUT-PLAN.md` P9), so neither waits for the other's commit;
-the commit prerequisite above still stands. US011's plan has since been written back: it reads
-`Reviewed`, all thirteen gaps resolved into the story on 27/09/2026, and is untracked until the
-US011 commit — complete, like US012's, and not yet committed. The two story plans wait on the sprint plan as well, because
-`project-management/workflows/17-story-plans/STEPS.md` Step 1 gathers it first. The plans are
-written once both members' gate documents are complete and committed, and not before. The ledger
-and the plan still count differently:
+"complete and committed before writing the sprint plan", and on 21/09/2026 neither member's were.
+US012's QA plan was complete in content — `Reviewed`, all nine gaps resolved, four of them
+settled by <%DEVELOPER_NAME%> — but untracked, so not committed. US011's belonged to the concurrent session:
+a `Draft` with thirteen `[OPEN]` gaps, whose resolutions that session held back until this one's
+work was committed. **That hold lifted on 27/09/2026:** US012's work now runs alongside US010's and
+US011's (`project-management/src/02-STORIES/CUT-PLAN.md` P9), so neither waits for the other's
+commit. US011's plan has since been written back: it reads `Reviewed`, all thirteen gaps resolved
+into the story on 27/09/2026. **Both members' gate documents are now complete and committed** —
+US012's QA plan committed with its story in `488e197`, US011's in `b1ca05a`, both on 27/09/2026,
+and both signed off by <%DEVELOPER_NAME%> on 30/09/2026, when gate `11` closed for each, a
+`Reviewed` plan not closing it (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9) — so
+Step 1's prerequisite is met. The sprint plan is written next, by `16-sprint-plans` in a change of
+its own (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1), and the two story plans follow
+it (settled 28/09/2026, 16-sprint-plans grilling round 1 Q4), because
+`project-management/workflows/17-story-plans/STEPS.md` Step 1 gathers the sprint plan first. The
+ledger and the plan still count differently:
 
 - **The ledger counts every admitted story: 10.** A story is admitted at gate `03` and the ledger
   moves then. 10 of 11 is not the fill trigger; what owes the plan is the call, not a fill.
-- **The plan counts only stories that have cleared the specify tier: 2, US012's.** `CADENCE.md` ->
-  _When a sprint plan is written_ names prerequisites that must hold for **every story in the
-  filling sprint**. **US012 meets them**, measured 21/09/2026: its QA plan,
-  `project-management/src/11-QA/PLANNING/QA-PLAN-US012-SEED-PRESENCE-GATE.md`, reads `Reviewed`
+- **The plan counts only stories that have cleared the specify tier: 10, US012's and US011's, from
+  30/09/2026.** `CADENCE.md` -> _When a sprint plan is written_ names prerequisites that must hold
+  for **every story in the filling sprint**. **US012 meets them, in full since 30/09/2026**:
+  measured 21/09/2026, its QA plan,
+  `project-management/src/11-QA/PLANNING/QA-PLAN-US012-SEED-PRESENCE-GATE.md`, read `Reviewed`
   with all nine `AC-GAP` entries resolved into the story, and the four that rested on a call
-  settled by <%DEVELOPER_NAME%> the same day; its `## Decisions` records none, so
+  settled by <%DEVELOPER_NAME%> the same day, and it was signed off on 30/09/2026, when gate `11`
+  closed for US012 (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9); its `## Decisions`
+  records none, so
   `15-decisions` has nothing to accept or decline; GDPR, Security, SEO and API are skipped by flag,
-  Security with its reason; and its acceptance criteria and estimate are complete. **US011 still
-  satisfies none**: measured 20/09/2026 and unchanged at 16:40 on 21/09/2026, it had no ADR and
-  recorded one ADR candidate in its own `## Decisions`; it was named by no artefact under
-  `project-management/src/10-SECURITY/` or `project-management/src/11-QA/`; and it has no story
+  Security with its reason; and its acceptance criteria and estimate are complete. **Security is
+  read by its flag** (settled 28/09/2026, 16-sprint-plans grilling round 1 Q2): a member whose
+  Security row reads `N/A` with its reason owes no threat model or assessment, as `CADENCE.md`'s
+  own "A downstream checklist reads the flag" requires. Step 1 and `CADENCE.md`'s prerequisite
+  list state that demand without the flag condition, and the defect is routed to `GAPS.md` through
+  US010's gate-`22` pass (`project-management/src/03-SPRINTS/SPRINT-06.md` -> Index and Seed
+  Tasks); the unconditional wording holds back neither member, both Security rows reading `N/A`.
+  **US011 satisfied none when measured** on 20/09/2026 and again at 16:40 on 21/09/2026: it had no
+  ADR and recorded one ADR candidate in its own `## Decisions`; it was named by no artefact under
+  `project-management/src/10-SECURITY/` or `project-management/src/11-QA/`; and it had no story
   plan, `12-` being a reserved number rather than a file. **A concurrent session has since put the
-  second clause out of date and bears on the first**, all untracked:
+  second clause out of date and answered the first**, all now committed:
   `project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md` and US010's two
   gate-`10` plans name US011, and
   `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`
-  (`Proposed`) lists US011 as related. **As read on 27/09/2026, US011 meets the QA prerequisite in
-  content and not yet the whole set.** Its QA plan reads `Reviewed`, all thirteen gaps resolved
-  into the story that day, but is untracked until the US011 commit, and
-  `project-management/workflows/16-sprint-plans/STEPS.md` Step 1 needs it committed; its decisions
-  prerequisite waits on the read-rule ADR, as the next sentences record; and its story plan is
-  unwritten. So US011 is not yet counted. Updated 21/09/2026 at `15-decisions`, written back
+  (`Accepted`) lists US011 as related. **As read on 30/09/2026, US011 meets the whole set.** Its
+  QA plan has read `Reviewed` since 27/09/2026, all thirteen gaps resolved into the story that
+  day; it is committed in `b1ca05a`, as `project-management/workflows/16-sprint-plans/STEPS.md`
+  Step 1 needs, and was signed off on 30/09/2026, when gate `11` closed for US011 (round 3 Q9);
+  its decisions prerequisite is met by the read-rule ADR, as the next sentences record; Security is
+  skipped by its flag with its reason, the control it leans on being US010's, whose gate-`10` plans
+  are signed off (28/09/2026); GDPR, SEO and API are skipped by flag; and its acceptance criteria
+  and estimate are complete. Its story plan at `12-` is unwritten, and no `CADENCE.md`
+  prerequisite asks for one — US012 is counted without one — while `17-story-plans` gathers the
+  sprint plan first. So US011 is counted. Updated 21/09/2026 at `15-decisions`, written back
   27/09/2026: US011's ADR candidate is subsumed by
   `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`, recorded
-  under US010. US011 carries no ADR of its own, and its decisions prerequisite is met when that
-  record is signed off `Accepted`. It still reads `Proposed`, and is accepted in this pass, after
-  an independent review and before the US010 commit (settled 27/09/2026, grilling round 4 Q27).
+  under US010. US011 carries no ADR of its own, and its decisions prerequisite is met, that record
+  reading `Accepted`: accepted after an independent review, it was committed `Accepted` with US010
+  in `0c5e635` on 27/09/2026 (settled 27/09/2026, grilling round 4 Q27).
 
-**So the plan the close owes waits on US011.** `CADENCE.md` binds every story in the filling
-sprint, and "a story that cannot satisfy these is not ready to be counted towards the sprint".
+**So the plan the close owes waits on nothing in the specify tier.** `CADENCE.md` binds every story
+in the filling sprint, and "a story that cannot satisfy these is not ready to be counted towards the
+sprint"; both members satisfy it from 30/09/2026, and `16-sprint-plans` writes the plan next
+(settled 28/09/2026, 16-sprint-plans grilling round 1 Q1).
 
 **Story cutting does not wait for it.** <%DEVELOPER_NAME%> settled on 21/09/2026 that
 `02-story-creation` continues into `SPRINT-08` while this record's plan, and `SPRINT-06`'s, wait on
-their members' gate documents, and that both are written once those are committed.
+their members' gate documents, and that both are written once those are committed. Updated
+28/09/2026: they are committed, and with US010's security plans signed off that day both plans are
+written next (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1). Updated 30/09/2026: the QA
+plans of all three members, US010, US012 and US011, are signed off, so gate `11` has closed for
+each (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9).
 `project-management/workflows/CONTEXT.md` -> _The planning cadence_ runs `16` and `17` "before
 planning resumes"; this is a recorded departure from that order, not an oversight. It has
 precedent, because US011 was cut and admitted after `SPRINT-06` closed on 20/09/2026 with no plan
@@ -732,13 +774,52 @@ story names US012 in its dependencies.
      paragraph above the bullets gains the plan's state beside US012's. Both counts are unchanged:
      the ledger at 10, the plan at 2, US011 still short of the whole set. -->
 
+<!-- AMENDED 28/09/2026 at the 16-sprint-plans gate (settled 28/09/2026, 16-sprint-plans grilling
+     round 1 Q1, Q2 and Q4). Until then the paragraph above the bullets opened "The close owes this
+     record its plan, and 07-SPRINT-PLAN-07.md is not written yet — owed, not omitted.", then read
+     "None of the three is written in the change that closed the record, and none is dated,
+     because a prerequisite is unmet", with its 21/09/2026 sentences in the present tense; "so
+     neither waits for the other's commit; the commit prerequisite above still stands"; "and is
+     untracked until the US011 commit — complete, like US012's, and not yet committed"; and "The
+     plans are written once both members' gate documents are complete and committed, and not
+     before." The plan bullet read "The plan counts only stories that have cleared the specify
+     tier: 2, US012's"; "US011 still satisfies none: measured 20/09/2026 and unchanged at 16:40 on
+     21/09/2026"; "and bears on the first, all untracked"; "(`Proposed`)"; "As read on 27/09/2026,
+     US011 meets the QA prerequisite in content and not yet the whole set. Its QA plan ... is
+     untracked until the US011 commit ...; its decisions prerequisite waits on the read-rule ADR
+     ...; and its story plan is unwritten. So US011 is not yet counted."; and "its decisions
+     prerequisite is met when that record is signed off `Accepted`. It still reads `Proposed`, and
+     is accepted in this pass, after an independent review and before the US010 commit". The
+     sentence after the bullets read "So the plan the close owes waits on US011."
+     The untracked and Proposed clauses were already false at 1edb2c4: b1ca05a and 488e197
+     committed both QA plans, and 0c5e635 the read-rule ADR as Accepted, all on 27/09/2026. The
+     story-plan clause held nothing: no CADENCE.md prerequisite asks for a story plan, and US012 was
+     counted without one. The Security read-by-flag sentence is new. The count moves from 2 to 10;
+     the ledger does not move, and the backlog register does not change. -->
+
+<!-- AMENDED 30/09/2026 at gate 11's close (settled 30/09/2026, 16-sprint-plans grilling round 3
+     Q9). Gate 11 closes only when a QA plan reads Signed off, and <%DEVELOPER_NAME%> signed off
+     US012's and US011's plans on 30/09/2026. The plan-count bullet's US012 clause read
+     "**US012 meets them**, measured 21/09/2026: its QA plan, [the QA-PLAN-US012 path], reads
+     `Reviewed` with all nine `AC-GAP` entries resolved into the story, and the four that rested
+     on a call settled by <%DEVELOPER_NAME%> the same day;" until then: on 21/09/2026 US012 met
+     them in content, and it met them in full at the sign-off. The count is dated from that day,
+     30/09/2026, and not from gate 10's sign-off of 28/09/2026, and US011's clause and the
+     paragraph above the bullets date its sign-off too. Q9 moves the day both members cleared the
+     specify tier, not the count of 10. The ledger and the backlog register do not move. -->
+
 `project-management/src/16-SPRINT-PLANS/CLAUDE.md` forbids a plan without a matching record — "do
 not create an orphan plan" — and nothing forbids a record without a plan; that is a record's
 ordinary state between opening and filling, and this record's between its close and the plan the
 close owes.
 
 **The citation gate is inherited red, and this record adds its own findings to it — expected, not a
-regression.** `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026` governs: the baseline is captured
+regression.** `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026`, superseded 30/09/2026 by
+`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+which restates it unchanged but for the manual testing guide's path, <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
+governs: the baseline is captured
 before the first edit, read as a diff, and never reported as the gate passing while the baseline
 stands. `copier.yml:157` excludes `/project-management/src/**`, so no record ships and the <!-- doc-references: template-only -->
 shipped-file citation rule does not apply to one; that is `GAPS.md`'s entry of 02/09/2026, whose fix
@@ -878,10 +959,15 @@ blank, with no syntek-base literal in any of them and no leak reported by
      mirrored below. The plan read `Draft` at that write-back, and reads `Reviewed` later the same
      day, all thirteen gaps resolved into the story; this comment said "The plan itself still reads
      `Draft`" until then (AMENDED 27/09/2026 after two verified passes of the write-back).
-     US012's rows are NOT first-pass: its gate 11 closed on 21/09/2026 in
-     project-management/src/11-QA/PLANNING/QA-PLAN-US012-SEED-PRESENCE-GATE.md, and the rows below
-     are drawn from the QA Acceptance Criteria that gate wrote back into its story. They lead the
-     list because US012 builds first. -->
+     US012's rows are NOT first-pass: its gate 11 wrote
+     project-management/src/11-QA/PLANNING/QA-PLAN-US012-SEED-PRESENCE-GATE.md on 21/09/2026, and
+     the rows below are drawn from the QA Acceptance Criteria that gate wrote back into its story.
+     They lead the list because US012 builds first.
+     CORRECTED 30/09/2026 at gate 11's close (settled 30/09/2026, 16-sprint-plans grilling round
+     3 Q9). The paragraph above read "its gate 11 closed on 21/09/2026 in" that plan until then.
+     Gate 11 closes only when a QA plan reads Signed off, and both members' plans were signed off
+     on 30/09/2026, which is when it closed for each; US012's plan read Reviewed from 21/09/2026
+     and US011's from 27/09/2026. No row below moves with the sign-off. -->
 
 - [ ] US012 — `bash .github/scripts/shipped-artefacts.sh --self-test <generated-tree>` exits 0 as
       `.github/workflows/audit-template.yml` runs it, in CI's `[3/4]` job on the pushed story
@@ -959,13 +1045,15 @@ blank, with no syntek-base literal in any of them and no leak reported by
      plain English describes an ADR to someone who has not read it, and that bar is `N-002`'s. -->
 
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
-- [ ] `project-management/src/18-TESTS/US011-MANUAL-TESTING.md` carries a tester sign-off block.
+- [ ] `project-management/src/18-TESTS/MANUAL/US011-MANUAL-TESTING.md` carries a tester sign-off block.
       US012's QA flag names no manual type, so it owes no manual-testing record
-- [ ] **No `[OPEN]` acceptance-criteria gap remains** in either member's QA plan. US012's closed on
-      21/09/2026 with all nine resolved. US011's had not been written at 16:40 that day; a
-      concurrent session opened it as a `Draft` with thirteen `[OPEN]` gaps, and on 27/09/2026 it
-      reads `Reviewed`, all thirteen resolved into the story. Both plans are untracked until their
-      stories' commits, and the row is ticked at close against the plans as committed, not before
+- [ ] **No `[OPEN]` acceptance-criteria gap remains** in either member's QA plan. US012's resolved
+      all nine on 21/09/2026 and read `Reviewed` from then. US011's had not been written at 16:40
+      that day; a concurrent session opened it as a `Draft` with thirteen `[OPEN]` gaps, and on
+      27/09/2026 it reads `Reviewed`, all thirteen resolved into the story. Both plans are committed
+      — US011's in `b1ca05a`, US012's in `488e197`, both on 27/09/2026 — and both were signed off on
+      30/09/2026, when gate `11` closed for each; the row is ticked at close against the plans as
+      committed, not before
 
 <!-- 21/09/2026, on US012's admission. The sign-off row named US011's record alone, and the last row
      read "in the member's QA plan — which gate `11` has yet to write; until it exists this row
@@ -976,7 +1064,13 @@ blank, with no syntek-base literal in any of them and no leak reported by
      closed "a concurrent session has since opened it as a `Draft` with thirteen `[OPEN]` gaps.
      Until they close this row cannot be ticked, and a `Draft` is not a pass" until that day, when
      project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md reached
-     `Reviewed`. Lifted out of the list for the same Prettier reason. -->
+     `Reviewed`. Lifted out of the list for the same Prettier reason.
+     AMENDED 28/09/2026 at the 16-sprint-plans gate. The QA-plan row read "Both plans are untracked
+     until their stories' commits" until then; b1ca05a and 488e197 committed them on 27/09/2026.
+     AMENDED 30/09/2026 at gate 11's close (settled 30/09/2026, 16-sprint-plans grilling round 3
+     Q9). The QA-plan row opened "US012's closed on 21/09/2026 with all nine resolved." until
+     then, and gains both plans' sign-off: gate 11 closes only at Signed off, and closed for both
+     members on 30/09/2026. -->
 
 ---
 
@@ -1078,7 +1172,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
       every render path the template offers (today: `INCLUDE_MOBILE` true and false)
 - [ ] US011 — run `shipped-artefacts.sh --self-test`, `shipped-registers.sh` (with `--self-test`)
       and `shipped-ai.sh --self-test`, and confirm US011's diff needs **no** edit to any of them,
-      with the result recorded in `project-management/src/18-TESTS/US011-TEST-STATUS.md`
+      with the result recorded in `project-management/src/18-TESTS/AUTOMATED/US011-TEST-STATUS.md`
 - [ ] US011 — run `doc-references.sh`, `docs-length.sh` and `docs-pairing.sh` over the changed tree,
       and the link-resolution check over the four indexes
 
@@ -1259,18 +1353,29 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] All sprint-level tasks checked off. Every row keyed `US012` binds on both branches; every row
       keyed `US011` is _deliver branch_, and on the drop branch reads **N/A — dropped**
 - [ ] All verification checks passed
-- [ ] No `[OPEN]` acceptance-criteria gap remains in either member's QA plan. US012's closed on
-      21/09/2026 with all nine resolved; US011's, written by gate `11` later on 21/09/2026, reads
-      `Reviewed` on 27/09/2026 with all thirteen resolved into the story, and binds as committed.
-      _Deliver branch_ for US011: on the drop branch its half reads **N/A — dropped**, the plan
-      binding nothing for a story that is not built, which is a skip and never a pass
+- [ ] No `[OPEN]` acceptance-criteria gap remains in either member's QA plan. US012's resolved all
+      nine on 21/09/2026; US011's, written by gate `11` later on 21/09/2026, reads `Reviewed` on
+      27/09/2026 with all thirteen resolved into the story; both were signed off on 30/09/2026,
+      when gate `11` closed for each, and bind as committed. _Deliver branch_ for US011: on the
+      drop branch its half reads **N/A — dropped**, the plan binding nothing for a story that is
+      not built, which is a skip and never a pass
 - [ ] The QA row of the FLAGS table, and the sections it governs, were recomputed when gate `11`
-      closed for each member, and the union still equals US012's table unioned with US011's.
-      US012's gate closed on 21/09/2026 with its QA value unchanged; US011's plan reached
-      `Reviewed` on 27/09/2026, and its half was recomputed from that write-back the same day (the
-      FLAGS comment), binding as recomputed. **The Security row is re-asked at gate `10` rather than assumed to stay `N/A`** — each
-      member's own flag names that gate as the one entitled to overturn it. US011's half is
-      _deliver branch_; on the drop branch no further gate runs for it, its half reads
+      closed for each member, and the union still equals US012's table unioned with US011's. Gate
+      `11` closed for both members on 30/09/2026, when their QA plans were signed off (settled
+      30/09/2026, 16-sprint-plans grilling round 3 Q9), and the sign-off moved neither member's
+      table. US012's plan read `Reviewed` from 21/09/2026 with its QA value unchanged; US011's plan
+      reached `Reviewed` on 27/09/2026, and its half was recomputed from that write-back the same
+      day (the FLAGS comment), binding as recomputed. **The Security row is read by each member's
+      flag, and stays `N/A`** (settled 28/09/2026, 16-sprint-plans grilling round 1 Q2): the flag
+      skips `10-security-checks` for both members, and nothing gate `10` wrote overturns either.
+      US010's gate-`10` plans, signed off on 28/09/2026, are the only security artefacts naming
+      US011, and they raise nothing that overturns its `N/A`. TM-09 and TM-10 bear on it most
+      directly, both LOW: TM-09 places seed presence with US012's loop and probe and content with
+      US010's ST06, and TM-10 routes the window after US011 ships to a `GAPS.md` entry at US011's
+      own gate-`22` pass. TM-03 and TM-08 name US011's rows and debt line as what US010's own ST03
+      and ST04 keep out of the seeds, and TM-11 the status read rule the two stories share, settled
+      by US010's read-rule ADR. US011 introduces and changes no control. US011's half is _deliver
+      branch_; on the drop branch no further gate runs for it, its half reads
       **N/A — dropped**, and the union narrows to US012's table, a member having left
 - [ ] No outstanding TODO or FIXME comments introduced in this sprint
 - [ ] All changes merged to `main` (or the active release branch)
@@ -1314,3 +1419,16 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      half reads **N/A — dropped, gate 11 not entered**"; gate 11 has run, so the drop branch now
      rests on the story not being built. The FLAGS row read "US011's half binds at its own close"
      and "on the drop branch its gates do not run". No row's obligation changed. -->
+
+<!-- AMENDED 30/09/2026 at gate 11's close and the 16-sprint-plans records pass. Two rows moved.
+     The QA-plan row opened "US012's closed on 21/09/2026 with all nine resolved;" and closed
+     "and binds as committed" until then; it now dates both plans' sign-off, gate 11 closing only
+     at Signed off (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9). The FLAGS row read
+     "US012's gate closed on 21/09/2026 with its QA value unchanged;" and "**The Security row is
+     re-asked at gate `10` rather than assumed to stay `N/A`** — each member's own flag names that
+     gate as the one entitled to overturn it." until then. Gate 11 closed for both members on
+     30/09/2026 (Q9). The Security sentence contradicted the settled reading that Security is read
+     by its flag (settled 28/09/2026, 16-sprint-plans grilling round 1 Q2): no gate 10 runs for a
+     member whose flag skips it, so nothing is re-asked there, and US010's signed-off gate-10
+     plans, the only security artefacts naming US011, leave its N/A standing (TM-09 and TM-10
+     most directly). No row's obligation changed. -->

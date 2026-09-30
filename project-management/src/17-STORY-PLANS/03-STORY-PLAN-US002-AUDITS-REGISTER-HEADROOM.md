@@ -152,14 +152,18 @@ carries are dropped because the story touches none of them, not to dodge a gate.
 ### The one lane — documentation
 
 **Step A: capture the baseline before touching anything.** Three measurements, recorded in
-`../18-TESTS/US002-MANUAL-TESTING.md`:
+`../18-TESTS/MANUAL/US002-MANUAL-TESTING.md`:
 
 1. `bash code/src/scripts/audits/docs-length.sh --path code/src/scripts/audits --limit 1` — the
    `--limit 1` form is required, because a bare run prints only files at or above 270 and would go
    silent about this file the moment the shrink succeeds.
 2. The register counts: 24 scripts, 26 Directory Tree rows, 24 inventory rows, 20 Dependencies rows.
 3. `bash code/src/scripts/audits/doc-references.sh` — **the finding identities, not just the
-   count**, per `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` <!-- doc-references: template-only -->.
+   count**, per `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` <!-- doc-references: template-only -->,
+   superseded 30/09/2026 by
+   `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` <!-- doc-references: template-only -->,
+   which restates it unchanged but for the manual testing guide's path.
+   <!-- UPDATED 30/09/2026: successor added beside the superseded record, which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 
 **Step B: create a **slop-family** sub-folder under `code/src/scripts/audits/` with its `CONTEXT.md` + `CLAUDE.md` pair.**
 The rationale lands in that `CONTEXT.md` — a basename `docs-length.sh` measures, unlike a bare
@@ -336,15 +340,24 @@ convenience: three of this story's acceptance criteria are decidable by nothing 
 | No new citation broken          | `doc-references.sh` diffed by identity against Step A's baseline             |
 | The rationale survived whole    | Human read-across of `SLOP-FAMILY.md` against the three enumerated arguments |
 | Each route lands on a real rule | Human read-across — open each route's target and confirm it states the rule  |
-| The register inventory balances | Before/after counts recorded in `../18-TESTS/US002-MANUAL-TESTING.md`        |
+| The register inventory balances | Before/after counts recorded in `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` |
 | The forward demand fits         | 27 rows dry-run into the shrunk file; it stays under 270                     |
+
+The rows a person walks for these checks are in `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md`,
+authored from this plan before code (backfilled 30/09/2026) and walked at `22`.
 
 ## Documentation Write-Ups (Implementation Records)
 
-Owned by `22-implementation-documentation`. This story produces
-`../18-TESTS/US002-MANUAL-TESTING.md` carrying the baseline, the before/after register inventory,
-the relocation-versus-deletion split required by `code/docs/DOCUMENTATION-LENGTH.md` Section 6, the
-27-row dry run, and the read-across sign-off.
+Owned by `22-implementation-documentation`, which walks rather than writes this story's manual
+guide: `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` was authored before code from this plan
+(backfilled 30/09/2026), and the walk records in it the baseline, the before/after register
+inventory, the relocation-versus-deletion split required by `code/docs/DOCUMENTATION-LENGTH.md`
+Section 6, the 27-row dry run, and the read-across sign-off.
+
+<!-- 30/09/2026: this section read "This story produces ../18-TESTS/US002-MANUAL-TESTING.md
+     carrying ..." until the 18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual
+     guide's authorship moved to 17-story-plans Step 7.2 (../18-TESTS/CLAUDE.md -> The record
+     lifecycle). -->
 
 ## CONTEXT.md & Index Updates
 
@@ -394,7 +407,7 @@ the relocation-versus-deletion split required by `code/docs/DOCUMENTATION-LENGTH
 - [ ] `docs-length.sh`, `docs-pairing.sh`, markdown lint and format all pass
 - [ ] `doc-references.sh` shows no new finding against the recorded baseline
 - [ ] `doctrine-drift.sh` recorded `N/A` with its cause — never as a pass
-- [ ] `../18-TESTS/US002-MANUAL-TESTING.md` carries the baseline, the inventory balance, the
+- [ ] `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` carries the baseline, the inventory balance, the
       deletion/relocation split and the 27-row dry run
 - [ ] A tester other than the author has signed the read-across off
 - [ ] Story `**Status:**` moved to `Completed`; this plan's row in

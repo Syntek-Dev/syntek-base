@@ -47,7 +47,8 @@ header outcome and needs nothing further.
 - `API-IMPL-US000-TEMPLATE.md` — the per-story verification template
 - `../PLANNING/` — the pre-implementation design contracts these records verify
 - `../CONTEXT.md` — the API-design folder overview and the PLANNING/IMPLEMENTATION split
-- `../../18-TESTS/` · `../../19-REVIEWS/` — downstream test status and code-review notes
+- `../../18-TESTS/AUTOMATED/` · `../../19-REVIEWS/` — the downstream automated test record and
+  code-review notes
 - `code/docs/API-DESIGN.md` · `code/docs/SECURITY.md` — the Django Ninja conventions and the
   permission/IDOR enforcement these records must stay consistent with
 - `project-management/workflows/22-implementation-documentation/` — where these records are written

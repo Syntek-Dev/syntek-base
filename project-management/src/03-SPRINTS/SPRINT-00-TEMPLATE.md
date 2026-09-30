@@ -311,12 +311,10 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 
 ### QA Tasks — Manual
 
-<!-- Remove this section when the QA flag names no manual type. -->
+<!-- Remove this section when the QA flag names no manual type. A pointer, never a list: each
+     story's manual tasks are the rows of its guide, written from its specs at 17-story-plans. -->
 
-- [ ] [UI behaviour not reachable by automation — e.g. drag-and-drop, colour picker, file upload]
-- [ ] Cross-browser: Chrome, Firefox, Safari (latest stable)
-- [ ] Responsive: verify layout at mobile, tablet, and desktop breakpoints (mobile-first) — Web (public pages)
-- [ ] Accessibility: keyboard navigation and screen reader on `[component]` — WCAG 2.2 AA
+- [ ] Every story's `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` (authored at `17-story-plans` Step 7.2) walked, every row marked
 
 ---
 

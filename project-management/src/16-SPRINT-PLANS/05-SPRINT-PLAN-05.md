@@ -1,6 +1,6 @@
 # SPRINT-PLAN-05 — The cookie doctrine lands with its advisory reaching a real operator, and the git hooks arm on purpose
 
-**Last Updated**: 17/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
+**Last Updated**: 30/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
 **Source sprint:** `../03-SPRINTS/SPRINT-05.md` · **Capacity:** 8 SP Must + 5 SP Should = 13 / 11 — at the grace ceiling, the full 2 SP taken on 17/09/2026, **CLOSED** · **Stories:** 2
 
 <!-- Written 17/09/2026 by a `16-sprint-plans` run, immediately after `15-decisions` closed for
@@ -52,23 +52,33 @@
 
 ## Sprint Reference Documents
 
-| Area               | Source                                                                                                                                                                                                                                                                                                                                                          |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sprint definition  | `../03-SPRINTS/SPRINT-05.md`                                                                                                                                                                                                                                                                                                                                    |
-| User stories       | `../02-STORIES/US008.md` · `../02-STORIES/US009.md`                                                                                                                                                                                                                                                                                                             |
-| Feature maps       | `../01-FEATURE-MAPS/MAP-SUBDOMAIN-ROUTING.md` slice `S-02` (US008) · `../01-FEATURE-MAPS/MAP-GATE-PARITY.md` slice `S-11` (US009)                                                                                                                                                                                                                               |
-| Database           | **N/A** — both stories read `DB: N/A`; no model, migration or RLS policy in scope                                                                                                                                                                                                                                                                               |
-| User flows         | **N/A** — both read `User Flow: N/A`; no user journey in scope                                                                                                                                                                                                                                                                                                  |
-| Brand & components | **N/A** — both read `Brand: N/A` and `Components: N/A`; no rendered surface                                                                                                                                                                                                                                                                                     |
-| Wireframes         | **N/A** — both read `Wireframes: N/A`; no screen                                                                                                                                                                                                                                                                                                                |
-| GDPR               | **N/A** — both read `GDPR: N/A`; no personal-data path. A session cookie is an identifier, and the doctrine narrows who can read it rather than widening what is collected                                                                                                                                                                                      |
-| Security           | **Live, both members, two artefacts each.** US008: `../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US008-HOST-ONLY-COOKIES.md` and `../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US008-HOST-ONLY-COOKIES.md`. US009: the matching `THREAT-MODEL-PLAN-US009-HOOK-ARMING.md` and `ASSESSMENT-PLAN-US009-HOOK-ARMING.md` under the same two folders |
-| QA                 | `../11-QA/PLANNING/QA-PLAN-US008-HOST-ONLY-COOKIES.md` — **Reviewed**, ten gaps found, ten resolved · `../11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md` — **Reviewed**, nine found, nine resolved                                                                                                                                                                |
-| SEO                | **N/A** — both read `SEO: N/A`; no public page                                                                                                                                                                                                                                                                                                                  |
-| API design         | **N/A** — both read `API: N/A`; no Django Ninja surface and no MCP tool                                                                                                                                                                                                                                                                                         |
-| Logging            | **N/A** — both read `Logging: N/A`; no log line. The advisory prints to a terminal, which is a report and not a log                                                                                                                                                                                                                                             |
-| Decisions          | **Six ADRs bind this sprint** — three authored by US008 at `15-decisions` on 17/09/2026, one by US009 the same day, one by US008 on 09/09/2026, one inherited. A seventh is superseded. Listed under _Sprint-wide Constraints_                                                                                                                                  |
-| **Story plans**    | **Both exist.** `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` — written 18/09/2026 under the reserved `08-` · `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md` — written the same day under the reserved `09-`, after a three-reviewer adversarial pass at Step 9. Both indexed here by that workflow's Step 10                            |
+| Area               | Source                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Sprint definition  | `../03-SPRINTS/SPRINT-05.md`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| User stories       | `../02-STORIES/US008.md` · `../02-STORIES/US009.md`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Feature maps       | `../01-FEATURE-MAPS/MAP-SUBDOMAIN-ROUTING.md` slice `S-02` (US008) · `../01-FEATURE-MAPS/MAP-GATE-PARITY.md` slice `S-11` (US009)                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Database           | **N/A** — both stories read `DB: N/A`; no model, migration or RLS policy in scope                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| User flows         | **N/A** — both read `User Flow: N/A`; no user journey in scope                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Brand & components | **N/A** — both read `Brand: N/A` and `Components: N/A`; no rendered surface                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Wireframes         | **N/A** — both read `Wireframes: N/A`; no screen                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| GDPR               | **N/A** — both read `GDPR: N/A`; no personal-data path. A session cookie is an identifier, and the doctrine narrows who can read it rather than widening what is collected                                                                                                                                                                                                                                                                                                                                                           |
+| Security           | **Live, both members, two artefacts each — written 17/09/2026 with gate `10` outstanding, signed off 28/09/2026.** All four read **Signed off**, corrected in place the same day; see _Sprint-wide Constraints_. US008: `../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US008-HOST-ONLY-COOKIES.md` and `../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US008-HOST-ONLY-COOKIES.md`. US009: the matching `THREAT-MODEL-PLAN-US009-HOOK-ARMING.md` and `ASSESSMENT-PLAN-US009-HOOK-ARMING.md` under the same two folders |
+| QA                 | `../11-QA/PLANNING/QA-PLAN-US008-HOST-ONLY-COOKIES.md` — **Signed off** 30/09/2026, `Reviewed` from 17/09/2026, ten gaps found, ten resolved · `../11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md` — **Signed off** 30/09/2026, `Reviewed` from 17/09/2026, nine found, nine resolved                                                                                                                                                                                                                                                   |
+| SEO                | **N/A** — both read `SEO: N/A`; no public page                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| API design         | **N/A** — both read `API: N/A`; no Django Ninja surface and no MCP tool                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| Logging            | **N/A** — both read `Logging: N/A`; no log line. The advisory prints to a terminal, which is a report and not a log                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Decisions          | **Six ADRs bind this sprint** — three authored by US008 at `15-decisions` on 17/09/2026, one by US009 the same day, one by US008 on 09/09/2026, one inherited. A seventh is superseded. Listed under _Sprint-wide Constraints_                                                                                                                                                                                                                                                                                                       |
+| **Story plans**    | **Both exist.** `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` — written 18/09/2026 under the reserved `08-` · `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md` — written the same day under the reserved `09-`, after a three-reviewer adversarial pass at Step 9. Both indexed here by that workflow's Step 10                                                                                                                                                                                                 |
+
+<!-- AMENDED 28/09/2026, at gate 10's sign-off. The Security row opened "**Live, both members, two
+     artefacts each.**" until then and named no status, although all four artefacts read Draft,
+     none reviewed by <%DEVELOPER_NAME%>, when this plan was written on 17/09/2026. They were
+     signed off on 28/09/2026 (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1); see
+     _Sprint-wide Constraints_ -> _Security_ for what that means for this plan.
+     AMENDED 30/09/2026, at gate 11's close. The QA row read "— **Reviewed**, ten gaps found, ten
+     resolved" and "— **Reviewed**, nine found, nine resolved" until then. <%DEVELOPER_NAME%>
+     signed both QA plans off on 30/09/2026, and gate 11 closes only at Signed off (settled
+     30/09/2026, 16-sprint-plans grilling round 3 Q9); see the paragraph below. -->
 
 **Every `N/A` above is a flag reading `N/A` in both stories, not a gate anyone forgot** — the
 distinction `code/docs/GATE-REPORTING.md` requires. Each skipped gate is recorded with its reason
@@ -80,12 +90,23 @@ this sprint unlike the last one.** US008 reads `Backend: Yes` because it ships a
 first sprint for which `code/src/scripts/syntax/check.sh` is not `N/A`. US009 reads `Backend: N/A`
 and ships bash and one manifest edit. `Frontend` is `N/A` in both.
 
-**Both QA plans read `Reviewed` rather than `Signed off`, and that word is reported as found.**
-Their Step 1 grilling passes did not run when they were written on 17/09/2026, at
-<%DEVELOPER_NAME%>'s direction; the interview ran later the same day at `15-decisions`, which is
-where all nineteen gaps were settled and fed back. Each plan records the deviation in its own
-header. The record treats both gates as closed; this plan mirrors the record and does not upgrade
-the word.
+**Both QA plans read `Reviewed` rather than `Signed off` when this plan was written, and gate `11`
+closed only when they were signed off, on 30/09/2026.** Their Step 1 grilling passes did not run
+when they were written on 17/09/2026, at <%DEVELOPER_NAME%>'s direction; the interview ran later
+the same day at `15-decisions`, which is where all nineteen gaps were settled and fed back. Each
+plan records the deviation in its own header. Gate `11` closes only when a QA plan reads
+`Signed off`, exactly as gate `10` does (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9),
+and <%DEVELOPER_NAME%> signed both off on 30/09/2026 — thirteen days after this plan was written
+against them. So this plan was written with gate `11` outstanding as well as gate `10`, and the
+record says so: `../03-SPRINTS/SPRINT-05.md` -> _Notes_ dates both closes and does not re-date
+the plan.
+
+<!-- AMENDED 30/09/2026, at gate 11's close (settled 30/09/2026, 16-sprint-plans grilling round 3
+     Q9). The paragraph above opened "**Both QA plans read `Reviewed` rather than `Signed off`,
+     and that word is reported as found.**" and closed "The record treats both gates as closed;
+     this plan mirrors the record and does not upgrade the word." until then. The record treated
+     gate 11 as closed on 17/09/2026 at Reviewed; Q9 closes it at the sign-off, and the record now
+     says 30/09/2026. The plan still mirrors the record. -->
 
 ---
 
@@ -144,14 +165,25 @@ _None._
 - **The eleven unsuppressed `pnpm install` invocations** — one local hook and ten across five
   workflow files, measured 17/09/2026. `ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md`
   declines them as its Option D. After US009 they no longer arm anything, because the script they
-  ran is gone; the surface stays open for the next lifecycle script anyone adds, and `GAPS.md`
-  carries it from 17/09/2026.
+  ran is gone; the surface stays open for the next lifecycle script anyone adds. The `GAPS.md` row
+  that carries it is owed and not written, measured 28/09/2026, and US009's
+  `22-implementation-documentation` pass opens it.
 - **Repairing `shared-ai-symlinks.sh`'s missing `06-GENERATION.md` register row** — found while
-  writing `ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` and filed as a `GAPS.md` row of
-  17/09/2026. US008 establishes the **form** a row with no version takes, because its own
+  writing `ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` and owed to `GAPS.md` from
+  17/09/2026, but never filed, measured 28/09/2026; US008's `22-implementation-documentation` pass
+  opens the row. US008 establishes the **form** a row with no version takes, because its own
   unversioned entry needs one; it does not backfill the earlier entry's row.
 - **Admitting a third story.** The record is at 13 / 11, the hard ceiling, and CLOSED. Anything
   arriving is refused on arithmetic before it is argued.
+
+<!-- AMENDED 28/09/2026. The bullets on the eleven invocations and on `shared-ai-symlinks.sh` ended
+     "and `GAPS.md` carries it from 17/09/2026" and "and filed as a `GAPS.md` row of 17/09/2026"
+     until then. Neither row was ever written: GAPS.md holds no entry for either, measured
+     28/09/2026. The two ADRs that promise them are not amended. Each owed row becomes a task on
+     its own story's `22-implementation-documentation` pass, which makes the ADR's claim true
+     (settled 28/09/2026, 16-sprint-plans grilling round 2 Q6), and
+     `../03-SPRINTS/SPRINT-05.md` -> _Tasks_ carries both. _Phase 4_ below already gave that gate
+     both openings, and stands but for their date, amended there the same day. -->
 
 ---
 
@@ -192,11 +224,17 @@ sprint prerequisite, not a story task and not something any member owns — sett
 `../15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` rules that a migration key is
 **derived at release against `git tag`**, never carried from a design-time record, because that is
 exactly how the record it supersedes was falsified eight days after it was written. Measured
-17/09/2026: `VERSION` reads `7.6.0` on `pm/story-creation` and `7.5.0` on `main`; there are 77 tags
+17/09/2026: `VERSION` reads `7.6.0` on `pm/story-creation` and `7.5.0` on `main`; there are 72 tags
 and the newest is `v7.5.0`; `CHANGELOG.md`'s `## [7.6.0] - 14/09/2026` describes the shared-AI /
 Codex release and nothing else. **No generated project has ever resolved to 7.6.0**, so the damage
 is prospective — and it becomes real the moment `v7.6.0` is tagged for a release that does not
 carry this doctrine, which is precisely what is about to happen and should.
+
+<!-- AMENDED 28/09/2026: the tag count above read "77" until then. It re-counts to 72, locally and
+     on origin, with `v7.5.0` the newest, as the US008 threat model's own correction of the same
+     day records. The 77 cannot be reconstructed, and
+     ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026 counted 72 on 09/09/2026. Nothing else in the
+     paragraph moves: there is still no `v7.6.0` tag. -->
 
 The sequence this plan requires:
 
@@ -333,11 +371,25 @@ ceremonial.
 ### Phase 4 — PR & Review (`../../workflows/23-pr-and-review`)
 
 Both stories, US008 then US009, each behind its own gate. `22-implementation-documentation` runs
-between the lane above and this phase and is a merge gate: it writes each story's test-status and
-manual-testing records under `../18-TESTS/`, and it owns this sprint's register writes — the
-`GAPS.md` **closure** of the 09/09/2026 preview-blindness row that US008 now repairs, and the two
-`GAPS.md` **openings** of 17/09/2026, for `shared-ai-symlinks.sh`'s missing register row and for
-the eleven unsuppressed `pnpm install` invocations.
+between the lane above and this phase and is a merge gate: it writes each story's test-status
+record under `../18-TESTS/AUTOMATED/` and walks its manual-testing guide under
+`../18-TESTS/MANUAL/`, authored from the specs before code, and it owns this sprint's register
+writes — the `GAPS.md` **closure** of the 09/09/2026 preview-blindness row that US008 now repairs,
+and the two `GAPS.md` **openings** owed from 17/09/2026, each dated the day it is written, for
+`shared-ai-symlinks.sh`'s missing register row and for the eleven unsuppressed `pnpm install`
+invocations.
+
+<!-- AMENDED 28/09/2026: the openings read "the two `GAPS.md` **openings** of 17/09/2026" until
+     then. Neither was written on that date, measured 28/09/2026. Each is now owed to its own
+     story's gate-22 pass (settled 28/09/2026, 16-sprint-plans grilling round 2 Q6), so each entry
+     is dated the day that pass writes it and names 17/09/2026 as the date it was owed from,
+     rather than being backdated. -->
+
+<!-- AMENDED 30/09/2026: read "it writes each story's test-status and manual-testing records under
+     ../18-TESTS/" until then, when the 18-TESTS folder split into MANUAL/ and AUTOMATED/ and the
+     manual guide's authorship moved to 17-story-plans Step 7.2. Both members' guides were
+     backfilled from their plans that day; 22 still writes the automated record and walks the
+     guide (../18-TESTS/CLAUDE.md -> The record lifecycle). -->
 
 ---
 
@@ -354,12 +406,36 @@ retention question and no lawful-basis question.
 
 ### Security (`../10-SECURITY/`)
 
-**Live for both members, four artefacts, and no `CRITICAL` or `HIGH` in either.** Fifteen threats
-across all six STRIDE categories for US008, twelve across five for US009. **That zero is a measured
-outcome with its reason, never "the security gate passed"** — every threat resolves to `MEDIUM` or
-below _because this repository deploys nothing and no generated project is known to be live_, and
-each model names the event that promotes it. **Five promote to `HIGH` in each story.** Nothing was
-written to `../10-SECURITY/VULNERABILITIES/PLANNING/`, and neither gate blocks on severity.
+**Live for both members, four artefacts, and no `CRITICAL` or `HIGH` in either — signed off on
+28/09/2026, eleven days after this plan was written against them.** Fifteen threats across all six
+STRIDE categories for US008, twelve across five for US009. **That zero is a measured outcome with
+its reason, never "the security gate passed"** — every threat resolves to `MEDIUM` or below
+_because this repository deploys nothing and no generated project is known to be live_, and each
+model names the event that promotes it. **Nine US008 threats promote to `HIGH`, across six trigger
+rows, and five US009 threats.** Nothing was written to `../10-SECURITY/VULNERABILITIES/PLANNING/`,
+and neither gate blocks on severity.
+
+**This plan was written on 17/09/2026 with gate `10` outstanding, and said nothing of it.** All
+four artefacts then read `Draft`, each not yet reviewed by <%DEVELOPER_NAME%>, and
+`../../docs/planning/CADENCE.md` asks for the threat model and assessment **complete** before a
+story counts towards a sprint plan. <%DEVELOPER_NAME%> signed all four off on 28/09/2026 (settled
+28/09/2026, 16-sprint-plans grilling round 1 Q1), and the stale text in each was corrected in place
+in the same change rather than superseded (round 2 Q5): no finding, ID or severity moved. The count
+this plan was written on — both members, 13 SP — is unchanged, and its honest date is 30/09/2026,
+when gate `11` closed last (see _QA_ below); `../03-SPRINTS/SPRINT-05.md` -> _Notes_ records that
+order rather than re-dating it. Reported as found, on the precedent of the QA paragraph under
+_Sprint Reference Documents_.
+
+<!-- AMENDED 28/09/2026, at gate 10's sign-off. The opening sentence read "**Live for both members,
+     four artefacts, and no `CRITICAL` or `HIGH` in either.**" and the promotion sentence
+     "**Five promote to `HIGH` in each story.**" until then. Five was true of US009 only: the
+     US008 threat model's Section 3a promotes all nine of its MEDIUM threats, across six rows, and
+     was corrected to say so the same day. The second paragraph is new.
+     ONE SIBLING CLAIM BECAME TRUE ONLY TODAY. The QA paragraph below says the TM-05 mechanism "is
+     corrected in both artefacts". The threat model's Section 4a note carried that correction
+     from 17/09/2026, but its TM-05 row, and the US008 assessment's Sections 1, 4, 6 and 7.5,
+     kept the superseded mechanism until the sign-off corrected them in place on 28/09/2026. The
+     paragraph is true as it now reads and is left as written. -->
 
 Three findings that shape what this sprint builds:
 
@@ -381,6 +457,21 @@ are `[RESOLVED] 17/09/2026`**, each fed back into its story as an acceptance cri
 Five were blocking: three on US008 and two on US009. `../11-QA/PLANNING/CLAUDE.md` gates a sprint
 plan on exactly this, and the gate is satisfied rather than waived.
 
+**Gate `11` closed on 30/09/2026, thirteen days after this plan was written.** Both plans read
+`Reviewed` from 17/09/2026 and were signed off by <%DEVELOPER_NAME%> on 30/09/2026, and a
+`Reviewed` plan does not close the gate (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9).
+The sign-off lands the QA write-back in `../03-SPRINTS/SPRINT-05.md` the same day — its QA
+criteria and tasks rewritten from both plans, among them the worktree probe, the `postinstall`
+probe and US008's preview proof (round 3 Q10). The two QA scenarios that had no story line,
+`QA-PLAN-US009` ES-06 (the `postinstall` still exits 0 without git) and `QA-PLAN-US008` ES-08 (a
+failed copy prints its tail once, exits 2 and still removes its log), were fed back into US009 and
+US008 as acceptance criteria the same day, and the record carries both (settled 30/09/2026,
+16-sprint-plans grilling round 5 Q16; `../../workflows/11-qa-checks/STEPS.md` Step 5). Neither is
+an acceptance-criteria gap: no gap reopened, and the nineteen above still stand resolved.
+
+<!-- ADDED 30/09/2026, at gate 11's close: the paragraph above is new, and nothing in this section
+     before it moved. -->
+
 **One gap was corrected rather than carried.** `QA-PLAN-US008` AC-GAP-3 and TM-05 both stated that
 Django takes the cookie's `Secure` flag from `request.is_secure()`. It does not. The finding
 survives the correction and its severity is unchanged; the mechanism is corrected in both artefacts
@@ -392,14 +483,22 @@ because **the mechanism is what the next reader reuses**.
 
 ### Decisions binding this sprint
 
-| ADR                                                                         | Authored at                | What it binds                                                                                |
-| --------------------------------------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------- |
-| `../15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`          | `15-decisions`, 17/09      | Two `_migrations:` entries, gated on state and on version; the key derived at release        |
-| `../15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`       | `15-decisions`, 17/09      | The `template-update.sh` preview repair, inside US008; and the rule beyond it                |
-| `../15-DECISIONS/ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION-17-09-2026.md` | `15-decisions`, 17/09      | The edge precondition, and the `EDGE-REQUIREMENTS.md` clause that carries it                 |
-| `../15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md`   | `15-decisions`, 17/09      | `prepare` removed, `install.sh` the sole arming path, the announcing `postinstall`           |
-| `../15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`          | `02-story-creation`, 09/09 | US008's citation criterion is the scoped run; the whole-tree figure is recorded, not claimed |
-| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`       | Inherited                  | Binds every story in this backlog until the gate is green; both supersession fields read `—` |
+| ADR                                                                         | Authored at                | What it binds                                                                                                                                                                                                                                                                                                                                 |
+| --------------------------------------------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `../15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`          | `15-decisions`, 17/09      | Two `_migrations:` entries, gated on state and on version; the key derived at release                                                                                                                                                                                                                                                         |
+| `../15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`       | `15-decisions`, 17/09      | The `template-update.sh` preview repair, inside US008; and the rule beyond it                                                                                                                                                                                                                                                                 |
+| `../15-DECISIONS/ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION-17-09-2026.md` | `15-decisions`, 17/09      | The edge precondition, and the `EDGE-REQUIREMENTS.md` clause that carries it                                                                                                                                                                                                                                                                  |
+| `../15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md`   | `15-decisions`, 17/09      | `prepare` removed, `install.sh` the sole arming path, the announcing `postinstall`                                                                                                                                                                                                                                                            |
+| `../15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`          | `02-story-creation`, 09/09 | US008's citation criterion is the scoped run; the whole-tree figure is recorded, not claimed                                                                                                                                                                                                                                                  |
+| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`       | Inherited                  | Binds every story in this backlog until the gate is green. Superseded 30/09/2026, outside US008, by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path; US008 edits neither record, and the successor's **Superseded by** reads `—` |
+
+<!-- AMENDED 30/09/2026: the baseline-diff row's last cell read "Binds every story in this backlog
+     until the gate is green; both supersession fields read `—`" until then, true until the 18-TESTS
+     split superseded that record that day, not US008 (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17;
+     settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). The row now names the successor, which
+     restates the regime unchanged but for the manual testing guide's path, and US008's Q13 criterion
+     reads against it: cited, unamended, not appended to and not superseded, its Superseded by still
+     reading `—` at close (settled 30/09/2026, 16-sprint-plans grilling round 8 Q19). -->
 
 **One record is superseded and is named rather than dropped.**
 `../15-DECISIONS/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` reads `Superseded` since
@@ -473,7 +572,8 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       close; the five-document read-across with the `CORS_ALLOWED_ORIGINS` sentence confirmed
       verbatim; the advisory dry run against a scratch tree with `SESSION_COOKIE_DOMAIN` planted;
       and **the preview proof** — a successful `template-update.sh` preview showing the migration
-      report before its "Preview only" line
+      report before its "Preview only" line, and a preview that fails on the copy printing its
+      failure tail once, exiting 2 and still removing its log (`QA-PLAN-US008` ES-08)
 - [ ] US009's three manual walks: clean clone then commit with the legs observed; a second
       `install.sh` run proving idempotence; a broken `lefthook install` proving exit 2
 - [ ] A tester other than the author has signed each walk-through off
@@ -482,12 +582,19 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 - [ ] All security acceptance criteria signed off — **applies to both members**
 - [ ] GDPR, Logging and SEO criteria — **N/A**, each flag reads `N/A` in both stories
 
+<!-- AMENDED 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 5 Q16): the US008
+     manual-walks item above ended at "a successful `template-update.sh` preview showing the
+     migration report before its "Preview only" line" until then. QA-PLAN-US008 ES-08 was fed back
+     into US008 as an acceptance criterion that day, and the story's manual guide walks it inside
+     the preview walk, as PREVIEW-04, so the walk count stays four. US009's ES-06 needs no item of
+     its own: it runs through the `postinstall` probe the item above already names. -->
+
 ---
 
 ## Sprint Definition of Done
 
 - [ ] **The `Must` story is Completed — US008.** Its plan's own DoD complete and verified by a
-      reviewer, once `17-story-plans` has written it
+      reviewer — `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`, written 18/09/2026
 - [ ] **US009 is Completed, or is dropped with its reason recorded in both records.** It is the
       stretch tier and the first work dropped if US008 overruns; dropping it does not fail the
       sprint. This is the give SPRINT-04 did not have
@@ -505,7 +612,9 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       none reopened
 - [ ] GDPR constraints implemented and verified — **N/A**, the sprint's GDPR flag reads `N/A`
 - [ ] Both stories' implementation records written by `22-implementation-documentation`;
-      `GAPS.md`'s 09/09/2026 preview-blindness row **closed**, and its two 17/09/2026 rows open
+      `GAPS.md`'s 09/09/2026 preview-blindness row **closed**, dated the day it closes, and the two
+      entries owed from 17/09/2026 open, each dated the day it is written and citing its ADR's
+      17/09/2026 claim — never backdated to it
 - [ ] No outstanding TODO or FIXME comments introduced in this sprint
 - [ ] PRs merged and the version bumped
 - [ ] `../03-SPRINTS/SPRINT-05.md` `**Status:**` set to `Done`
@@ -514,6 +623,15 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       `.claude/skills/sprint/SKILL.md` warns that a sprint _habitually_ running to grace means the
       ceiling is wrong, and `../../docs/planning/CADENCE.md` names revisiting both figures against
       measured velocity as the check
+
+<!-- AMENDED 28/09/2026: the first row above ended "once `17-story-plans` has written it" until
+     then. The plan it names was written on 18/09/2026, the day after this one.
+     AMENDED 30/09/2026: the implementation-records row ended "`GAPS.md`'s 09/09/2026
+     preview-blindness row **closed**, and its two 17/09/2026 rows open" until then. Neither row
+     exists to carry that date: each is owed to its story's gate-22 pass and dated when written
+     (settled 28/09/2026, 16-sprint-plans grilling round 2 Q6), as _Phase 4_ already says. The
+     close is dated the day it happens, never 17/09/2026, the date
+     ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026 names for it. -->
 
 ---
 
@@ -533,11 +651,18 @@ its own. **Neither table cell now carries a placeholder**, and the precedent is 
 
 **Both branches are cut from `main`, and not yet**, on the reasoning
 `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` recorded on 02/09/2026. Every planning artefact these
-stories depend on — the stories, this plan, the QA plans, the threat models, the four ADRs of
-17/09/2026 and the sprint record — is uncommitted on `pm/story-creation`, so a branch cut from
-`main` today could see none of it. The sequence is: every story completes its planning workflows →
-`pm/story-creation` is raised as a PR to `main` → **`v7.6.0` is tagged at `16aac54`** → the
-`us###/` branches are cut from `main` and the stories implemented.
+stories depend on — the stories, this plan, the QA plans, the threat models and assessments
+(signed off 28/09/2026), the four ADRs of 17/09/2026 and the sprint record — is committed on
+`pm/story-creation` but not merged to `main`, so a branch cut from `main` today could see none of
+it. The sequence is: every story completes its planning workflows → `pm/story-creation` is raised
+as a PR to `main` → **`v7.6.0` is tagged at `16aac54`** → the `us###/` branches are cut from `main`
+and the stories implemented.
+
+<!-- AMENDED 28/09/2026: read "the QA plans, the threat models, the four ADRs of 17/09/2026 and the
+     sprint record — is uncommitted on `pm/story-creation`" until then. All of them were
+     committed on that branch on 18/09/2026, in the commit that added this plan, and none is on
+     `main`, measured 28/09/2026: the conclusion stands and the premise did not. The assessments
+     were missing from the list. -->
 
 **That third step is new to this sprint** and is the one a reader is most likely to skip, which is
 why it appears in the sequence rather than only in its own section.

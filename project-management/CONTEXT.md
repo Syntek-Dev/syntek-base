@@ -54,7 +54,7 @@ project-management/
 │   ├── 17-STORY-PLANS/          ← per-story implementation plan (code master reference)
 │   │
 │   │   ── Implement & record (18–22, per story) ──
-│   ├── 18-TESTS/                ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
+│   ├── 18-TESTS/                ← MANUAL/US###-MANUAL-TESTING.md, AUTOMATED/US###-TEST-STATUS.md
 │   ├── 19-REVIEWS/              ← REVIEW-US###-*.md
 │   ├── 20-FINDINGS/             ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
 │   ├── 21-BUGS/                 ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
@@ -111,6 +111,8 @@ artefacts to a user story** via per-story `PLANNING/` + `IMPLEMENTATION/` templa
 
 The **story plan (17)** is what a developer codes from; it references its sprint plan
 (16), the decisions (15), and every 02–14 spec. Sprint plans (16) feed the story plans.
+Beside each plan, `17` also authors the story's **manual testing guide** into
+`src/18-TESTS/MANUAL/` — from the specs, before any code — which `22` walks once the code ships.
 
 ## Workflow gates
 

@@ -24,6 +24,7 @@ Every box must be ticked before `19-backend-code/` may begin.
      `project-management/src/17-STORY-PLANS/CLAUDE.md`. -->
 
 - [ ] Every story in the cycle has a completed `<exec-order>-STORY-PLAN-US###-*.md` in `src/17-STORY-PLANS/`
+- [ ] Every story in the cycle has its manual testing guide in `src/18-TESTS/MANUAL/`
 - [ ] Every sprint opened during planning has its `16-sprint-plans/` plan written
 - [ ] Every in-scope story has `USER-STORY-IDEAS/` artefacts, or an explicit `N/A` with a reason
 - [ ] `code/docs/DATABASE.md` and `code/docs/DESIGN-TOKENS.md` read
@@ -76,11 +77,14 @@ Every box must be ticked before `19-backend-code/` may begin.
 - [ ] Every consolidated artefact names the `US###` stories it supersedes
 - [ ] Every stage-1 artefact is either carried forward or explicitly recorded as superseded
 
-## Story-plan reconciliation
+## Story-plan and manual-guide reconciliation
 
 - [ ] Every `<exec-order>-STORY-PLAN-US###-*.md` that assumed a changed shape has been corrected
 - [ ] Each correction notes the consolidation that drove it
 - [ ] No story plan asserts a superseded design
+- [ ] Every manual testing guide's `Flow` column set — each cell a consolidated step or `—`
+- [ ] Every guide row this pass invalidated corrected in place, its ID kept and its `Notes` naming
+      the consolidation; no row renumbered, no `Result` filled
 
 ## Close-out
 

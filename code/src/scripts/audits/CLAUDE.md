@@ -95,9 +95,11 @@ audit. Full inventory: `CONTEXT.md`.
 - **`story-markers.sh` has no fail tier at all, and that is the design.** It lists every
   automated test carrying no `@pytest.mark.story("US###")` or Bruno `tags: [US###]` and exits
   `0` whatever it finds — a hard gate would block every shared helper and every test written
-  before the convention (`project-management/src/18-TESTS/CLAUDE.md`). Never promote it to one,
-  and never read its exit `0` as coverage: an unmarked test is **silently absent** from that
-  story's `US###-TEST-STATUS.md`, which is a quieter defect than a red gate, not a smaller one.
+  before the convention (`project-management/src/18-TESTS/AUTOMATED/CLAUDE.md` → _The story
+  marker_; argued in the 09/09/2026 comment of `project-management/src/18-TESTS/CLAUDE.md`).
+  Never promote it to one, and never read its exit `0` as coverage: an unmarked test is
+  **silently absent** from that story's `US###-TEST-STATUS.md`, which is a quieter defect than a
+  red gate, not a smaller one.
   **Its `--path` guard is the outstanding defect, and the rule above is not optional.** Swept
   09/09/2026: a path that does not exist and a bare `.` both return `0` over an empty scan, where
   the first must be `2` and the second must equal the unscoped run. Fix the guard before anyone

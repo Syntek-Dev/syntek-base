@@ -37,9 +37,10 @@ merged, verified feature.
   verified outcomes in the review; the review answers the plan, never backfills it.
 - **Per story** — one plan and one review per story, tied to a `US###`; there is no
   cross-cutting report folder.
-- QA here **precedes or accompanies** development; automated results and manual guides
-  live downstream in `src/18-TESTS/` — do not duplicate them here. Every new directory
-  needs a `CONTEXT.md`; instructional files stay ≤ 300 code lines.
+- QA here **precedes or accompanies** development; automated results live downstream in
+  `src/18-TESTS/AUTOMATED/` and the manual testing guides in `src/18-TESTS/MANUAL/`, which cite
+  the QA plan's scenario IDs — do not duplicate either here. Every new directory needs a
+  `CONTEXT.md`; instructional files stay ≤ 300 code lines.
 
 ## Output & naming
 

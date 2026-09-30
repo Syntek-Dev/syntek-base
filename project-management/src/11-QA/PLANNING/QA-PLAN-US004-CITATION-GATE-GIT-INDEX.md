@@ -31,7 +31,7 @@ before the sprint plan locks scope. Sign-off is <%DEVELOPER_NAME%>'s.
   row.** `is_registered()` (`code/src/scripts/audits/doc-references.sh:376-378`) is
   `grep -qxF` — fixed-string, whole-line — and all three existing rows in
   `how-to/src/PROJECT-PATHS.md` are literal paths. A row reading
-  `project-management/src/18-TESTS/US###-MANUAL-TESTING.md` matches no concrete citation, so
+  `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` matches no concrete citation, so
   covering the population would need one row per story, forever. **`is_registered()` becomes
   pattern-aware, translating `###` to `[0-9][0-9][0-9]` before matching**, and
   `code/docs/FORWARD-VOICE.md` Section 3 plus the register's own header state that a row may be
@@ -58,7 +58,7 @@ before the sprint plan locks scope. Sign-off is <%DEVELOPER_NAME%>'s.
   `CONTEXT.md`/`CLAUDE.md` pairs, every `*TEMPLATE*`, and a named allowlist —
   `00-ASSETS/scripts/*.sh`, `06-BRAND-GUIDE/guide-build/*`, `07-COMPONENTS/component-build/*`,
   `08-WIREFRAMES/SHARED/wireframe.css`, six `09-GDPR/*.md` registers,
-  `18-TESTS/US000-*`, `23-INCIDENTS/INCIDENT-INDEX.md` and the `WALK-TESTS/` pair. A glob would
+  `18-TESTS/{MANUAL,AUTOMATED}/US000-*`, `23-INCIDENTS/INCIDENT-INDEX.md` and the `WALK-TESTS/` pair. A glob would
   exempt roughly twenty shipped files, and two of them carry genuine findings today:
   `project-management/src/02-STORIES/CONTEXT.md:16` cites `US001.md` and
   `project-management/src/03-SPRINTS/CONTEXT.md:17` cites `SPRINT-01.md`. **The exemption instead
@@ -72,8 +72,8 @@ before the sprint plan locks scope. Sign-off is <%DEVELOPER_NAME%>'s.
   `project-management/src/*` arm newly produces, **every one cites
   `project-management/src/18-TESTS/`** — nothing in the repository cites a story plan that does
   not exist. `how-to/src/PROJECT-PATHS.md`'s own rule is that a row must never answer a question
-  in passing. **The two rows become `18-TESTS/US###-MANUAL-TESTING.md` and
-  `18-TESTS/US###-TEST-STATUS.md`.**
+  in passing. **The two rows become `18-TESTS/MANUAL/US###-MANUAL-TESTING.md` and
+  `18-TESTS/AUTOMATED/US###-TEST-STATUS.md`.**
 - **AC-GAP-7** `[RESOLVED]` — **the ~70-token figure behind the naming guard was never
   measured.** The story's Scenario 4 cited "roughly seventy naming patterns" as the reason the
   guard was needed. That count came from an ad-hoc grep applying no naming-row test. **Measured
@@ -111,12 +111,21 @@ direct predicate assertion in the `st_set_probe` style.
 - **HP-02** — The same story file, byte-identical, produces the same finding count untracked and
   tracked. Run `--path` against an instance artefact, record the count, `git add --intent-to-add`,
   re-run, compare, restore the index.
-- **HP-03** — A citation of `project-management/src/18-TESTS/US001-MANUAL-TESTING.md` from a story
-  passes on the patterned register row, and `is_registered` answers yes for the concrete form.
+- **HP-03** — A citation of "project-management/src/18-TESTS/AUTOMATED/US997-TEST-STATUS.md" from a
+  story passes on the patterned register row, and `is_registered` answers yes for the concrete form.
 - **HP-04** — A dead citation to a `project-management/src/` artefact that no register row covers
   is reported for the first time.
 - **HP-05** — `bash code/src/scripts/audits/doc-references.sh --self-test` exits 0 with its probe
   count risen by one case per repair.
+
+<!-- NOTE 30/09/2026. HP-03's premise broke that day: the backfill wrote
+     "project-management/src/18-TESTS/MANUAL/US001-MANUAL-TESTING.md", so a citation of it now
+     resolves because the file exists, not because of the patterned register row, and HP-03 no
+     longer tests the forward-reference path. The developer settled it the same day: HP-03 is
+     re-keyed to an automated record that cannot exist, matching the guide's REGISTER-03 row.
+     US997 rather than US001, because US001 is built before US004 (story plans 02 and 05), so
+     "US001-TEST-STATUS.md" would already resolve when this scenario is walked. It is quoted, not
+     backticked, as a path that does not exist. -->
 
 ### Error states (ES-nn)
 
@@ -133,7 +142,7 @@ direct predicate assertion in the `st_set_probe` style.
 
 ### Edge cases (EC-nn)
 
-- **EC-01** — `project-management/src/18-TESTS/US000-MANUAL-TESTING.md` is a real shipped file and
+- **EC-01** — `project-management/src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md` is a real shipped file and
   is instance-shaped. Assert it is **not** exempted as a citer, and that the register pattern
   matching `US###` does not make its absence unreportable.
 - **EC-02** — A `*TEMPLATE*` file under an exempt tree: the fall-through arm admits it, and the

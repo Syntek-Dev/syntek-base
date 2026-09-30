@@ -46,7 +46,8 @@ passed. Each owns its own rules; read them there rather than inferring them from
 - `../PLANNING/` — the pre-development QA plans these reviews verify
 - `../CONTEXT.md` — the QA folder overview and the per-story PLANNING/IMPLEMENTATION split
 - `../../02-STORIES/` — the user stories under review
-- `../../18-TESTS/` · `../../19-REVIEWS/` — downstream test status and code-review notes
+- `../../18-TESTS/MANUAL/` · `../../18-TESTS/AUTOMATED/` · `../../19-REVIEWS/` — the walked manual
+  testing guide, the automated test record and code-review notes
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `project-management/workflows/22-implementation-documentation/` — where these reviews are written
 

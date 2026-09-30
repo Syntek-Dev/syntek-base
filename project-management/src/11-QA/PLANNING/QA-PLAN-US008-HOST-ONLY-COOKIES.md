@@ -4,9 +4,17 @@
 | ------------- | -------------------------------------------------------------------------------------------------------------- |
 | **Story**     | US008 — Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule |
 | **Date**      | 17/09/2026                                                                                                     |
-| **Sprint**    | SPRINT-05 — this story is its `Must`, 8 of 11 SP                                                               |
+| **Sprint**    | SPRINT-05 — this story is its `Must`, 8 SP of 13 / 11 (grace taken)                                            |
 | **Wireframe** | N/A — this story ships settings, a shell audit and Markdown, not a screen                                      |
-| **Status**    | Reviewed — all ten gaps resolved into the story, 17/09/2026                                                    |
+| **Status**    | Signed off · **corrected in place 30/09/2026** — see below                                                     |
+
+<!-- SIGNED OFF 30/09/2026 by <%DEVELOPER_NAME%> (settled 30/09/2026, 16-sprint-plans grilling
+     round 3 Q9), against the tree at a18db0b with that gate's corrections applied. The Status row
+     read "Reviewed — all ten gaps resolved into the story, 17/09/2026" until then. The Sprint row
+     read "SPRINT-05 — this story is its `Must`, 8 of 11 SP": SPRINT-05 went to 13 / 11 at grace
+     on 17/09/2026, when `15-decisions` re-estimated US009 3 to 5 SP, and this row was not carried
+     across. The security assessment's Sprint row reads the same way since its own sign-off. What
+     else was corrected, and why, is the note below. -->
 
 <!-- STEP 1's GRILLING PASS DID NOT RUN. <%DEVELOPER_NAME%> directed on 17/09/2026 that gates 10
      and 11 be written for both SPRINT-05 members first and the decisions taken afterwards. Status
@@ -25,6 +33,74 @@
      it had moved for a reason outside this story. That is AC-GAP-1.
 
      code/docs/GATE-REPORTING.md: the absence of the interview is stated, not implied. -->
+
+<!-- AMENDED 30/09/2026. The comment above is the record of 17/09/2026 before `15-decisions` ran,
+     and is kept as that record. By the end of that day its "Status is therefore Draft", "every gap
+     below is [OPEN]" and "16-sprint-plans is BLOCKED on US008" had each stopped being true: the
+     Status row read Reviewed, and Section 1 marks all ten gaps [RESOLVED] 17/09/2026 and records
+     `16-sprint-plans` as unblocked on US008. The Status row reads Signed off since 30/09/2026. The
+     grilling pass itself still did not run at this gate. -->
+
+> **Corrected in place, 30/09/2026, at the `16-sprint-plans` gate, and signed off by
+> <%DEVELOPER_NAME%>**: gate 11 closes when a QA plan reads `Signed off`, as gate 10 does (settled
+> 30/09/2026, 16-sprint-plans grilling round 3 Q9). What the three Accepted records of 17/09/2026,
+> or a re-measurement, had already overtaken was corrected in the same pass rather than left under
+> a signature. The preview proof's HP-08 and the tag count were on the list round 3 Q11 settled (settled
+> 30/09/2026, 16-sprint-plans grilling round 3 Q11); the rest is a call made 30/09/2026 while
+> applying round 3, not one of its answers, on the pattern round 2 Q5 set for the gate-10 plans.
+> <%DEVELOPER_NAME%> reviewed every change made under this sign-off, each call labelled here and
+> in the dated comments below among them, and accepted them all (settled 30/09/2026,
+> 16-sprint-plans grilling round 5 Q16):
+>
+> - **The preview proof has its scenarios** (HP-08 round 3 Q11; HP-09 and ES-08 calls made while
+>   applying it, not its answers). AC-GAP-2 inverted the story's manual criterion on 17/09/2026, and
+>   `project-management/src/15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` put
+>   the `template-update.sh` repair inside US008, but no scenario here proved it. HP-08 proves the
+>   report visible in a successful preview, HP-09 that the repair is general, and ES-08 that the
+>   failure path it leaves alone still behaves as before. Section 5's operator bullet follows.
+> - **ES-08 is a story criterion as well** (settled 30/09/2026, 16-sprint-plans grilling
+>   round 5 Q16). No line of the story stated it, so it is fed back into
+>   `project-management/src/02-STORIES/US008.md` as a manual QA criterion beside the preview
+>   proof's two, `:1079-1085`, with its manual task at `:1186-1187`, and story and plan agree
+>   (`project-management/workflows/11-qa-checks/` Step 5). It is manual for HP-08's reason: the
+>   update it breaks needs a generated project.
+> - **The tag count was wrong** (round 3 Q11). A tag count of 77 re-counts to 72, locally and on origin,
+>   newest `v7.5.0`, as the threat model's own correction of 28/09/2026 found (AC-GAP-1, Section
+>   7). The record of 09/09/2026 counted 72 and was right; its argument fails on the missing
+>   `v7.6.0` alone.
+> - **The advisory scenarios follow the dual-gated record** (the call). HP-05, HP-06, EC-09, EC-10
+>   and EC-11 described the single `v7.6.0` advisory of 09/09/2026, which
+>   `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` split
+>   into the unversioned, state-gated `cookie-domain-conflict.sh` and the keyed
+>   `v<RELEASE>-host-only-cookies.sh`. EC-09 now tests the fix rather than demonstrating the
+>   defect; HP-10 carries the keyed entry's cutover notice, EC-12 the key derived at release and
+>   EC-13 the duplicate report the record accepts. Section 5's key bullet follows.
+> - **Three more statements were wrong** (the call). The `clean/` fixture tree is not flat: one of
+>   its thirteen files sits under `tests/` (AC-GAP-9, Section 7). All nine `MEDIUM`s promote to
+>   `HIGH`, across six trigger rows, not five (Section 5; the threat model's Section 3a as
+>   corrected on 28/09/2026). And the Sprint row still read 8 of 11 SP.
+> - **Every line citation was re-measured on 30/09/2026**, against the tree committed together
+>   with the 18-TESTS split, and every one holds or is re-pointed:
+>   `code/src/scripts/audits/negative-space.sh` `:59-65`, `:92`, `:252`, `:278`, `:407`, `:473`,
+>   `:481`, `:492-493` and `:506-508`; `code/src/django/config/settings/base.py:33`, `:59` and
+>   `:159-162`; `code/src/django/config/settings/staging.py:9-22` and
+>   `code/src/django/config/settings/production.py:9-22`, still byte-identical;
+>   `code/src/django/config/settings/CLAUDE.md:39-41`; `copier.yml:931-934`; and the three Django
+>   6.1.0 lines AC-GAP-3 cites, re-read in the local dependency set. No settings module,
+>   `negative-space.sh` or `template-update.sh` has changed since `1e00a4b`, where this plan was
+>   measured. `copier.yml` has: the 18-TESTS split adds two lines above the `v6.0.0` entry, so
+>   AC-GAP-1's `:929-932` sits at `:931-934`, its old number kept in the dated comment beneath
+>   Section 1's list. `code/src/scripts/audits/CONTEXT.md` has changed too: it read 299 of 300 as
+>   `docs-length.sh` counts it against the tree at `a18db0b`, and the split rewrites one of its
+>   lines in place and adds none. The new scenarios' citations into `template-update.sh`,
+>   `copier.yml`, the story and its story plan were measured the same day, against the same tree.
+> - **The section sign is gone.** The writing conventions ban it
+>   (`.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` Section 2); its twelve uses read
+>   "Section" now, in the dated quotations of superseded wording as well, as the gate-10 plans did.
+>
+> This is a correction rather than a supersession because no gap, finding or severity moved, and
+> no scenario was renumbered: each new scenario takes the next free ID in its table. Each
+> superseded wording is kept in a dated comment beside the text that replaced it.
 
 ---
 
@@ -55,14 +131,16 @@ suppressed; AC-GAP-3 is a security precondition the story read and did not notic
   has `7.6.0 < 7.6.0` false and **skips the advisory entirely** — while still carrying the old
   `URL-STRATEGY.md` Phase 2 mandate to set `SESSION_COOKIE_DOMAIN`. It then takes the `__Host-`
   names with its `Domain` line intact and every login fails behind a successful update. The ADR's
-  own supporting evidence has also gone: it argues the key fires because the repository "carries 72
-  tags including the minors `v7.1.0` to `v7.5.0`" — there are **77 tags today and no `v7.6.0`
-  among them**, and `Template.version` derives from tags through dunamai. `copier.yml:929-932`
+  own supporting evidence does not carry the key either: it argues the key fires because the
+  repository "carries 72 tags including the minors `v7.1.0` to `v7.5.0`". The count is right —
+  **72 tags, and no `v7.6.0` among them** (re-counted 30/09/2026, locally and on origin) — and
+  `Template.version` derives from tags through dunamai, so a `v7.6.0` key is not reached until
+  that tag exists. `copier.yml:931-934`
   states the governing rule on the `v6.0.0` entry and records this template breaking it once
   before: _"This repository has mis-keyed a migration by tagging a batch retroactively, which
   strands every project that updated in between."_ **Resolution is not a bigger number chosen here**
   — the doctrine's release has not been decided, the ADR has to be amended or superseded, and both
-  are `15-decisions`' work. Threat model TM-15 and Section 3b; assessment §7.13.
+  are `15-decisions`' work. Threat model TM-15 and Section 3b; assessment Section 7.13.
 - **AC-GAP-2** `[RESOLVED] 17/09/2026` · **blocking** — **the merge hazard's only mitigation is specified into a
   channel the story itself plans to prove is suppressed.** The story's design for a project that
   already set `SESSION_COOKIE_DOMAIN` is the `v7.6.0` advisory: copier's three-way merge keeps
@@ -75,7 +153,7 @@ suppressed; AC-GAP-3 is a security precondition the story read and did not notic
   and ships anyway.** That is the false-green shape `code/docs/GATE-REPORTING.md` exists to name.
   Either the blindness is repaired inside this story, or the doctrine gets a second channel a
   `--preview` operator sees, and neither has been decided. Threat model TM-03 + TM-04;
-  assessment §7.11.
+  assessment Section 7.11.
 - **AC-GAP-3** `[RESOLVED] 17/09/2026` · **blocking** — **the `__Host-` prefix depends on `Secure`, `Secure`
   depends on a client-suppliable header, and the story enumerated that header without noticing.**
   The first scenario's Given lists `staging.py:9-22` and `production.py:9-22` line by line,
@@ -107,14 +185,14 @@ suppressed; AC-GAP-3 is a security precondition the story read and did not notic
   canonical place), an environment-driven value read anywhere, and any settings module a project
   adds outside that directory. The clause is right; the criterion over-claims what it proves, and
   a reviewer ticking it reads a green gate as proof of a global rule. Threat model TM-08;
-  assessment §7.7.
+  assessment Section 7.7.
 - **AC-GAP-5** `[RESOLVED] 17/09/2026` · material — **the prefix is bound to two named modules, and the rule is
   not about modules.** `staging.py` and `production.py` get the names; the presence clause reads
   those two. Nothing states what a project deploying a third TLS-serving module must do, and
   nothing makes its absence visible — the gate is green either way, because the two it names both
   pass. The doctrine should bind **every module that serves TLS** and each clause should name the
   modules it read in its skip note, so an unchecked third module is visible rather than silent.
-  Threat model TM-02; assessment §7.2.
+  Threat model TM-02; assessment Section 7.2.
 - **AC-GAP-6** `[RESOLVED] 17/09/2026` · material — **`CSRF_COOKIE_HTTPONLY` is presented without its limit, and
   the limit is the important half.** The story's Security criterion says the CSRF cookie carries
   `HttpOnly`, no committed JavaScript reads it, and the token reaches HTMX only through the
@@ -123,24 +201,25 @@ suppressed; AC-GAP-3 is a security precondition the story read and did not notic
   carry "the two limits N-005 named", and there is a third: `{% csrf_token %}` renders the token
   into the DOM and `hx-headers` into a body attribute, both readable by injected script, so
   `HttpOnly` does **not** defend the token against XSS. Without that stated, the next reader takes
-  the setting as anti-theft and stops there. Threat model TM-06; assessment §7.6.
+  the setting as anti-theft and stops there. Threat model TM-06; assessment Section 7.6.
 - **AC-GAP-7** `[RESOLVED] 17/09/2026` · material — **"protection is per cookie name" is stated and its
   consequence for this app is not drawn.** `django.contrib.messages` is in `INSTALLED_APPS`
   (`base.py:33`) with `MessageMiddleware` in `MIDDLEWARE` (`:59`), and its default storage falls
   back to a cookie. That cookie is unprefixed and stays subdomain-writable after this story, as
   would any language cookie. The doctrine's scope is session and CSRF; saying so explicitly is
   what stops a reader concluding the cookie jar is now covered. Threat model TM-07;
-  assessment §7.6.
+  assessment Section 7.6.
 - **AC-GAP-8** `[RESOLVED] 17/09/2026` · material — **the deploy consequence is stated in one direction only.**
   The advisory is required to say the rename invalidates every live session and open CSRF token
   "so WHEN is a decision". Two things follow that nothing says: a **rollback** restores the plain
   names and invalidates everything a second time, so the reverse is not free; and a **rolling
   deploy** serves both names at once, logging a load-balanced user out repeatedly and surfacing as
   CSRF 403s rather than a login redirect. An operator planning this from the advisory as written
-  would reasonably choose a rolling deploy. Threat model TM-10, TM-11; assessment §7.9.
+  would reasonably choose a rolling deploy. Threat model TM-10, TM-11; assessment Section 7.9.
 - **AC-GAP-9** `[RESOLVED] 17/09/2026` · material — **the new fixture tree enters three other clauses' scan
-  surface, and nothing says it must stay inert there.** The existing fixtures are flat: nine files
-  under `broken/`, thirteen under `clean/`, with `settings.py`, `INVARIANTS.md`, `tsconfig.json`,
+  surface, and nothing says it must stay inert there.** The existing fixtures are nearly flat: nine
+  files under `broken/`, thirteen under `clean/`, one of them in `clean/tests/`, with
+  `settings.py`, `INVARIANTS.md`, `tsconfig.json`,
   `mcp.py` and `asgi.py` fixed by name in `point_scopes_at` and everything else found by recursive
   scan. The story adds `broken/settings/` and `clean/settings/` subtrees. `negative-space.sh:252`
   and `:278` both run `find "$dir" -type f -name '*.py'` with exclusions for `*/tests/*`,
@@ -157,6 +236,23 @@ suppressed; AC-GAP-3 is a security precondition the story read and did not notic
   whoever knows `ff24084` is reachable, and it will read as stale to everyone else. State the
   property (`dev.py` and `test.py` are unchanged by this story) and keep the commit as evidence
   rather than as the assertion.
+
+<!-- AMENDED 30/09/2026. Two statements in the list above were wrong when written and are
+     corrected in place. AC-GAP-1 read "The ADR's own supporting evidence has also gone: it argues
+     the key fires because the repository "carries 72 tags including the minors `v7.1.0` to
+     `v7.5.0`" — there are **77 tags today and no `v7.6.0` among them**, and `Template.version`
+     derives from tags through dunamai." (settled 30/09/2026, 16-sprint-plans grilling round 3
+     Q11): `git tag | wc -l` reads 72 and `git ls-remote --tags origin` the same, newest `v7.5.0`,
+     created 01/09/2026 and so before either count, and the 77 cannot be reconstructed. The ADR
+     counted the tags right, and its argument fails on the missing `v7.6.0` alone. AC-GAP-9 read
+     "The existing fixtures are flat: nine files under `broken/`, thirteen under `clean/`" (call
+     made 30/09/2026 while applying round 3): `clean/tests/test_guard.py` sits one level down, which
+     the threat model's correction of 28/09/2026 also found, and the `*/tests/*` exclusion at
+     `code/src/scripts/audits/negative-space.sh:252` already skips it. No gap, grading or
+     resolution moved. AC-GAP-1 cited the `v6.0.0` entry's rule as `copier.yml:929-932` until then,
+     measured against the tree at a18db0b; the 18-TESTS split, committed together with this
+     correction, adds two lines above it, and it sits at :931-934 in that tree, re-measured
+     30/09/2026, the text unchanged. -->
 
 <!-- TWO THINGS THIS PASS DID NOT FIND, recorded because their absence is informative. First,
      every settings line citation in the story holds: base.py:159-162, staging.py:9-22 and
@@ -176,46 +272,100 @@ the change lands, except where marked as requiring a generated project.
 
 ### Happy path (HP-nn)
 
-| ID    | Given                                                               | When                                                   | Then                                                                                                           |
-| ----- | ------------------------------------------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| HP-01 | The three settings modules after the change                         | `negative-space.sh` runs unscoped                      | Exit 0, and none of the three new clauses appears in the skip notes — they **ran**, they did not skip          |
-| HP-02 | `base.py` carrying `CSRF_COOKIE_HTTPONLY = True` exactly once       | Every environment module is read                       | No module re-assigns it (`config/settings/CLAUDE.md:39-41`)                                                    |
-| HP-03 | `staging.py` and `production.py` after the change                   | Each is read                                           | Both `__Host-` names sit beside `SESSION_COOKIE_SECURE` / `CSRF_COOKIE_SECURE` at `:21-22`, in the same module |
-| HP-04 | The dev stack up under dev's plain cookie names                     | Log in at `/control/`, POST a form, fire an HTMX write | All three succeed; the browser shows `csrftoken` flagged `HttpOnly`; no console error                          |
-| HP-05 | A scratch tree with `SESSION_COOKIE_DOMAIN` planted in `staging.py` | The `v7.6.0` advisory runs                             | It names that file and line, prints its operator notes, and exits 0 — **and prints no value from the file**    |
-| HP-06 | A clean tree                                                        | The advisory runs                                      | It prints nothing and exits 0                                                                                  |
-| HP-07 | The five guide edits landed                                         | `doc-references.sh --path code/docs` runs              | Exit 0, "Clean — every citation resolves." — the story's criterion (Q6), never the whole-tree figure           |
+| ID    | Given                                                                                                                                        | When                                                        | Then                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ----- | -------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| HP-01 | The three settings modules after the change                                                                                                  | `negative-space.sh` runs unscoped                           | Exit 0, and none of the three new clauses appears in the skip notes — they **ran**, they did not skip                                                                                                                                                                                                                                                                                                                                                                                                              |
+| HP-02 | `base.py` carrying `CSRF_COOKIE_HTTPONLY = True` exactly once                                                                                | Every environment module is read                            | No module re-assigns it (`config/settings/CLAUDE.md:39-41`)                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| HP-03 | `staging.py` and `production.py` after the change                                                                                            | Each is read                                                | Both `__Host-` names sit beside `SESSION_COOKIE_SECURE` / `CSRF_COOKIE_SECURE` at `:21-22`, in the same module                                                                                                                                                                                                                                                                                                                                                                                                     |
+| HP-04 | The dev stack up under dev's plain cookie names                                                                                              | Log in at `/control/`, POST a form, fire an HTMX write      | All three succeed; the browser shows `csrftoken` flagged `HttpOnly`; no console error                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| HP-05 | A scratch tree with `SESSION_COOKIE_DOMAIN` planted in `staging.py`                                                                          | `cookie-domain-conflict.sh`, the unversioned entry, runs    | It names that file, line and setting, prints its operator notes, and exits 0 — **and prints no value from the file**                                                                                                                                                                                                                                                                                                                                                                                               |
+| HP-06 | A clean tree                                                                                                                                 | `cookie-domain-conflict.sh` runs                            | It prints nothing and exits 0 — silent by design, because an entry that runs on every update must cost nothing when it has nothing to say                                                                                                                                                                                                                                                                                                                                                                          |
+| HP-07 | The five guide edits landed                                                                                                                  | `doc-references.sh --path code/docs` runs                   | Exit 0, "Clean — every citation resolves." — the story's criterion (Q6), never the whole-tree figure                                                                                                                                                                                                                                                                                                                                                                                                               |
+| HP-08 | A scratch copy of a generated project with `SESSION_COOKIE_DOMAIN` planted in `staging.py`, updating across the doctrine's release           | A **successful** `template-update.sh` preview, no `--apply` | The migration report — `cookie-domain-conflict.sh` naming that file, line and setting — appears in the preview's own output, in a report block on the success path beside `── What this update does ──` (`:162`), **before** "Preview only — your project is unchanged." (`:275`); exit 0. **The preview proof** (AC-GAP-2, TM-03, TM-04; `project-management/src/02-STORIES/US008.md:1084-1091`). Needs a generated project                                                                                       |
+| HP-09 | The same preview, from a project generated before `v3.0.0` so the update crosses every shipped key, with each advisory's own trigger planted | Its output is read                                          | The three print-only advisories already shipped — `v3.0.0`, `v5.0.0` and `v6.0.0`'s report-only third — each print into the same block. Each prints only when its own condition holds, which is why the fixture plants one trigger apiece. `v5.0.0`'s prints twice, being keyed at both `v4.0.0` and `v5.0.0` (`copier.yml:891`, `:905`). The repair surfaces what the migration stage printed, never a cookie-specific string (`project-management/src/02-STORIES/US008.md:1092-1094`). Needs a generated project |
+| HP-10 | A scratch tree, clean or planted                                                                                                             | `v<RELEASE>-host-only-cookies.sh`, the keyed entry, runs    | It prints the one-time cutover notice — every live session and open CSRF token invalidated at the first deploy, a rollback invalidating them again, a rolling deploy unsafe, and anything matching a cookie by name to repoint — ends in the proof step `bash code/src/scripts/audits/negative-space.sh`, and exits 0 always                                                                                                                                                                                       |
+
+<!-- AMENDED 30/09/2026 (call made 30/09/2026 while applying 16-sprint-plans grilling round 3). HP-05's
+     When read "The `v7.6.0` advisory runs" and its Then "It names that file and line, prints its
+     operator notes, and exits 0 — **and prints no value from the file**"; HP-06's When read "The
+     advisory runs" and its Then "It prints nothing and exits 0". Both described the single
+     advisory of 09/09/2026, which
+     `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` split
+     into two entries on 17/09/2026; HP-10 is new under the same call, the keyed entry's scenario.
+     ADDED 30/09/2026: HP-08 (settled 30/09/2026, 16-sprint-plans grilling round 3 Q11) and HP-09 (a call made 30/09/2026 while applying round 3 Q11, not one of its answers, accepted, settled 30/09/2026, 16-sprint-plans grilling round 5 Q16),
+     the preview proof the story's manual criteria have required since
+     `project-management/src/15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`
+     inverted them on 17/09/2026. The `template-update.sh`, `copier.yml` and story lines they cite
+     were measured 30/09/2026, against the tree committed together with the 18-TESTS split. -->
+
+**HP-08 is the scenario AC-GAP-2 was about, and the one it inverted.** Before the repair the same
+run prints "Preview only — your project is unchanged." over an advisory that fired and was
+swallowed: the copy runs with its output redirected wholesale to a log at `:143-144`, the log is
+tailed only on failure at `:148-151`, and `cleanup` deletes it on exit at `:122-123`. The
+red is reproducible before the cookie advisory exists: HP-09 run against the unedited script
+shows the three shipped advisories swallowed the same way, and HP-08 and HP-09 run after the
+repair must both pass.
 
 ### Error states (ES-nn)
 
 The visible failures here are gate findings and browser rejections. Each is a check that the
 control bites, not a defect to expect.
 
-| ID    | Given                                                                  | When                                 | Then                                                                                                                       |
-| ----- | ---------------------------------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| ES-01 | `base.py` with `CSRF_COOKIE_HTTPONLY` removed                          | `negative-space.sh` runs             | `csrf-cookie-httponly-absent` fires                                                                                        |
-| ES-02 | `staging.py` with the `__Host-` session name removed                   | The same                             | `cookie-host-prefix-absent` fires, naming `staging.py`                                                                     |
-| ES-03 | `production.py` with `SESSION_COOKIE_SECURE` removed but the name kept | The same                             | `cookie-host-prefix-absent` fires — the prefix without its precondition is the exact state the clause exists for           |
-| ES-04 | Any module assigning `SESSION_COOKIE_DOMAIN`                           | The same                             | `cookie-scope-widened` fires                                                                                               |
-| ES-05 | Any module assigning `CSRF_COOKIE_PATH = "/app"`                       | The same                             | `cookie-scope-widened` fires; `= "/"` does **not**                                                                         |
-| ES-06 | A `__Host-` name shipped alongside a `Domain` (the merge state)        | A browser receives the `Set-Cookie`  | **The cookie is silently discarded.** No error, no header, no log — the request arrives anonymous (TM-13; AC-GAP-2's case) |
-| ES-07 | A guide edit that breaks a citation under `code/docs`                  | `doc-references.sh --path code/docs` | Exit 1 — the scoped criterion is a plain pass or a plain fail, unlike the inherited-red whole-tree run                     |
+| ID    | Given                                                                  | When                                  | Then                                                                                                                                                                                                                                                                                                               |
+| ----- | ---------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ES-01 | `base.py` with `CSRF_COOKIE_HTTPONLY` removed                          | `negative-space.sh` runs              | `csrf-cookie-httponly-absent` fires                                                                                                                                                                                                                                                                                |
+| ES-02 | `staging.py` with the `__Host-` session name removed                   | The same                              | `cookie-host-prefix-absent` fires, naming `staging.py`                                                                                                                                                                                                                                                             |
+| ES-03 | `production.py` with `SESSION_COOKIE_SECURE` removed but the name kept | The same                              | `cookie-host-prefix-absent` fires — the prefix without its precondition is the exact state the clause exists for                                                                                                                                                                                                   |
+| ES-04 | Any module assigning `SESSION_COOKIE_DOMAIN`                           | The same                              | `cookie-scope-widened` fires                                                                                                                                                                                                                                                                                       |
+| ES-05 | Any module assigning `CSRF_COOKIE_PATH = "/app"`                       | The same                              | `cookie-scope-widened` fires; `= "/"` does **not**                                                                                                                                                                                                                                                                 |
+| ES-06 | A `__Host-` name shipped alongside a `Domain` (the merge state)        | A browser receives the `Set-Cookie`   | **The cookie is silently discarded.** No error, no header, no log — the request arrives anonymous (TM-13; AC-GAP-2's case)                                                                                                                                                                                         |
+| ES-07 | A guide edit that breaks a citation under `code/docs`                  | `doc-references.sh --path code/docs`  | Exit 1 — the scoped criterion is a plain pass or a plain fail, unlike the inherited-red whole-tree run                                                                                                                                                                                                             |
+| ES-08 | A scratch update that fails on the copy, the repair in place           | The `template-update.sh` preview runs | The failure tail at `:148-151` prints once and the script exits 2, as before; the success-path block does not run, and `cleanup` at `:122-123` still removes the log. The repair adds a block and reorders nothing (ADR-US008-MITIGATION-OWNS-ITS-CHANNEL; `project-management/src/02-STORIES/US008.md:1095-1101`) |
+
+<!-- ADDED 30/09/2026 (a call made 30/09/2026 while applying 16-sprint-plans grilling round 3 Q11, not one of its answers, accepted, settled 30/09/2026, 16-sprint-plans grilling round 5 Q16): ES-08 is new, the
+     other half of HP-08. The record's case for taking the repair inside US008 is that it touches
+     none of the failure machinery; this is the row that holds it to that. No story line stated
+     it, so it is fed back into the story as a manual QA criterion,
+     project-management/src/02-STORIES/US008.md:1095-1101, with its manual task at :1202-1203
+     (settled 30/09/2026, 16-sprint-plans grilling round 5 Q16;
+     project-management/workflows/11-qa-checks/ Step 5). -->
+
+**ES-08 is where a repair placed in the wrong spot shows itself.** A block that greps
+`$UPDATE_LOG` ahead of the failure check at `:148`, rather than after it on the success path,
+would print the migration report beside the failure tail as well — a regression in output an
+operator already reads when an update fails.
 
 ### Edge cases (EC-nn)
 
-| ID    | Given                                                                           | When                             | Then                                                                                                                          |
-| ----- | ------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| EC-01 | A settings module carrying `# SESSION_COOKIE_DOMAIN = ".example.com"` commented | The gate reads it                | **No finding.** Every match is assignment-anchored at line start, so a comment is neither a finding nor a pass                |
-| EC-02 | The widened `base.py:161-162` comment naming `CSRF_COOKIE_SECURE`               | The gate reads it                | **No finding and no pass** — same anchoring rule, applied to the story's own new prose                                        |
-| EC-03 | `config/settings/CONTEXT.md`, which gains six rows naming these very settings   | The absence clause runs          | It is not read as a module. The clause's scope is `*.py`, stated rather than inferred from "every module under the directory" |
-| EC-04 | `dev.py` and `test.py`, carrying no cookie setting at all                       | Both clause families run         | Neither fires either way — no presence claim is made of them, and there is no `Domain` to find                                |
-| EC-05 | `__init__.py`, which is zero bytes                                              | The absence clause runs          | No finding, and no crash on an empty file                                                                                     |
-| EC-06 | A settings module absent from the directory                                     | Its presence clause runs         | It **skips with a note** — an absent surface reported as such, never an absent tool reported as clean (`:407` idiom)          |
-| EC-07 | The new `broken/settings/` and `clean/settings/` fixture trees                  | The full `--self-test` runs      | The eleven pre-existing clause names behave exactly as before; only the three new names change the result (AC-GAP-9)          |
-| EC-08 | A fixture deliberately removed                                                  | `--self-test` runs               | Exit 2 with the missing-fixture message — **never a silent pass** (`:492-493`, unchanged)                                     |
-| EC-09 | A project generated at 7.6.0 carrying the old `Domain` mandate                  | `copier update` crosses `v7.6.0` | **The advisory does not fire.** `7.6.0 < 7.6.0` is false. This is AC-GAP-1, and it is a test that currently proves the defect |
-| EC-10 | A project holding a `*_COOKIE_DOMAIN` line **deliberately** — the N-005 case    | The advisory runs                | It reports and does not act; the operator judges and dismisses it                                                             |
-| EC-11 | The settings directory absent entirely                                          | The advisory runs                | Exit 0 early, printing nothing                                                                                                |
+| ID    | Given                                                                                                             | When                               | Then                                                                                                                                                                                                                                        |
+| ----- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| EC-01 | A settings module carrying `# SESSION_COOKIE_DOMAIN = ".example.com"` commented                                   | The gate reads it                  | **No finding.** Every match is assignment-anchored at line start, so a comment is neither a finding nor a pass                                                                                                                              |
+| EC-02 | The widened `base.py:161-162` comment naming `CSRF_COOKIE_SECURE`                                                 | The gate reads it                  | **No finding and no pass** — same anchoring rule, applied to the story's own new prose                                                                                                                                                      |
+| EC-03 | `config/settings/CONTEXT.md`, which gains six rows naming these very settings                                     | The absence clause runs            | It is not read as a module. The clause's scope is `*.py`, stated rather than inferred from "every module under the directory"                                                                                                               |
+| EC-04 | `dev.py` and `test.py`, carrying no cookie setting at all                                                         | Both clause families run           | Neither fires either way — no presence claim is made of them, and there is no `Domain` to find                                                                                                                                              |
+| EC-05 | `__init__.py`, which is zero bytes                                                                                | The absence clause runs            | No finding, and no crash on an empty file                                                                                                                                                                                                   |
+| EC-06 | A settings module absent from the directory                                                                       | Its presence clause runs           | It **skips with a note** — an absent surface reported as such, never an absent tool reported as clean (`:407` idiom)                                                                                                                        |
+| EC-07 | The new `broken/settings/` and `clean/settings/` fixture trees                                                    | The full `--self-test` runs        | The eleven pre-existing clause names behave exactly as before; only the three new names change the result (AC-GAP-9)                                                                                                                        |
+| EC-08 | A fixture deliberately removed                                                                                    | `--self-test` runs                 | Exit 2 with the missing-fixture message — **never a silent pass** (`:492-493`, unchanged)                                                                                                                                                   |
+| EC-09 | A project at `from_template.version` 7.6.0, or updating from an unreleased ref, carrying the old `Domain` mandate | `copier update` runs               | `cookie-domain-conflict.sh` **fires regardless of version**: it is unversioned and gated on the project's state, so no key can suppress it. The stranding AC-GAP-1 found cannot recur for the always-wrong state. Needs a generated project |
+| EC-10 | A project holding a `*_COOKIE_DOMAIN` line **deliberately** — the N-005 case                                      | `cookie-domain-conflict.sh` runs   | It reports and does not act, on every update, because it is state-gated; the operator judges and dismisses it each time                                                                                                                     |
+| EC-11 | The settings directory absent entirely                                                                            | `cookie-domain-conflict.sh` runs   | Exit 0 early, printing nothing                                                                                                                                                                                                              |
+| EC-12 | The release that ships the doctrine                                                                               | `copier.yml`'s keyed entry is read | Its key names a tag that exists — `git tag -l v<RELEASE>` prints it — tagged in the same act, never carried from design time; both new entries sit before the trailing unversioned staging-directory entry, which stays last (AC-GAP-1)     |
+| EC-13 | An update that crosses the key while carrying a `Domain` line                                                     | The preview runs                   | Two reports, one per entry. **Not a defect**: the duplicate is the cost the dual-gated record accepts, on `copier.yml:887-890`'s reasoning for the git-guide advisory keyed twice. Needs a generated project                                |
+
+<!-- AMENDED 30/09/2026 (call made 30/09/2026 while applying 16-sprint-plans grilling round 3). EC-09 read,
+     Given "A project generated at 7.6.0 carrying the old `Domain` mandate", When "`copier update`
+     crosses `v7.6.0`", Then "**The advisory does not fire.** `7.6.0 < 7.6.0` is false. This is
+     AC-GAP-1, and it is a test that currently proves the defect". EC-10's and EC-11's When read
+     "The advisory runs", and EC-10's Then "It reports and does not act; the operator judges and
+     dismisses it". All three described the single `v7.6.0` advisory, which
+     `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`
+     replaced on 17/09/2026 with an unversioned entry for the broken state and a keyed entry for
+     the cutover, the key derived at release. EC-09 now tests the fix; EC-12 and EC-13 are new. -->
+
+**EC-09 was the one scenario expected to fail until the key moved, and it no longer is.** No key
+can strand the always-wrong state, because the entry that reports it has none; EC-12 holds the
+half that still carries a key to being right at release.
 
 ### Permission and access (PA-nn)
 
@@ -265,22 +415,40 @@ is a security change, not a data-protection one.
 thirteen in `ASSESSMENT-PLAN-US008-HOST-ONLY-COOKIES.md` Section 7 are not restated here. Five are
 QA-visible and are what a tester checks directly:
 
-- **Presence in the same module** (§7.1) — a `__Host-` name and its `SECURE = True` precondition
+- **Presence in the same module** (Section 7.1) — a `__Host-` name and its `SECURE = True` precondition
   must be in **one** module, not satisfied across two. ES-03 is the case that proves it.
-- **Absence as the rule** (§7.3) — the tester's instinct is to check what is set. Here what is
+- **Absence as the rule** (Section 7.3) — the tester's instinct is to check what is set. Here what is
   _not_ set is the control, and EC-01/EC-02 exist because prose naming a banned setting must not
   register as either a finding or a pass.
-- **The skip note is a result** (§7.4) — HP-01 checks that the three clauses **ran**. A clause
+- **The skip note is a result** (Section 7.4) — HP-01 checks that the three clauses **ran**. A clause
   that skipped and a clause that passed print differently and must never be read as the same thing.
-- **The advisory reaches its operator** (§7.11, AC-GAP-2) — the manual walk reproduces the preview
-  blindness. Recording it as evidence is correct; recording it and shipping is the gap.
-- **The key fires** (§7.13, AC-GAP-1) — EC-09 is written as a test that currently demonstrates the
-  defect. It is the one scenario expected to **fail** until the key moves.
+- **The advisory reaches its operator** (Section 7.11, AC-GAP-2) — HP-08 proves the report visible in a
+  successful preview, before the "Preview only" line, and HP-09 that the repair is general. The
+  walk no longer reproduces the blindness as evidence; it proves the blindness gone, and ES-08
+  that the failure path is untouched.
+- **The always-wrong state is reported whatever the key** (Section 7.13, AC-GAP-1) — EC-09 is the test,
+  and EC-12 holds the keyed entry's tag to existing at release.
+
+<!-- AMENDED 30/09/2026. The last two bullets read "**The advisory reaches its operator**
+     (Section 7.11, AC-GAP-2) — the manual walk reproduces the preview blindness. Recording it as
+     evidence is correct; recording it and shipping is the gap." (settled 30/09/2026,
+     16-sprint-plans grilling round 3 Q11) and "**The key fires** (Section 7.13, AC-GAP-1) — EC-09
+     is written as a test that currently demonstrates the defect. It is the one scenario expected
+     to **fail** until the key moves." (call made 30/09/2026 while applying round 3). Both were
+     overtaken on 17/09/2026 by the two Accepted records that repaired the preview inside US008 and
+     split the advisory in two. -->
 
 **The severities are read with their promotion triggers.** 0 CRITICAL, 0 HIGH, 9 MEDIUM, 4 LOW,
 2 INFO is a fact about a template repository that serves nothing to a browser, not a verdict on
-the design: five findings promote to `HIGH`, four of them the moment a generated project deploys
-or updates. Per `code/docs/GATE-REPORTING.md` the zero is never reported as the gate passing.
+the design: all nine `MEDIUM`s promote to `HIGH`, across six trigger rows, most of them on the
+first generated project that deploys or updates. Per `code/docs/GATE-REPORTING.md` the zero is
+never reported as the gate passing.
+
+<!-- AMENDED 30/09/2026 (call made 30/09/2026 while applying 16-sprint-plans grilling round 3): the
+     severity paragraph read "five findings promote to `HIGH`, four of them the moment a generated
+     project deploys or updates" until then. The threat model's Section 3a
+     promotes nine threats, every MEDIUM, across six rows, as its own correction of 28/09/2026
+     records. -->
 
 ## 6. Developer notes — testability
 
@@ -306,7 +474,11 @@ or updates. Per `code/docs/GATE-REPORTING.md` the zero is never reported as the 
 - **The citation gate is inherited red and this story's criterion is the scoped run.**
   `--path code/docs` must exit 0 with "Clean — every citation resolves." The whole-tree figure is
   captured before the first edit and at close, recorded with HEAD and detector hash, and
-  **never reported as a pass** (`ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026`). Measured on
+  **never reported as a pass** (`ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026`, superseded
+  30/09/2026 by `ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026`, which
+  restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->). Measured on
   this branch at `1e00a4b`: whole tree **259, exit 1**; `--path code/docs` **Clean, exit 0**.
 - **`wc -l` is not the length gate's measure**, and `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md`
   is not in the gate's scope at all — `is_instructional()` binds a `CONTEXT.md`/`CLAUDE.md`
@@ -315,6 +487,21 @@ or updates. Per `code/docs/GATE-REPORTING.md` the zero is never reported as the 
 - **ShellCheck has no project script.** `lint.sh`'s legs are ruff, markdownlint-cli2, ESLint and
   clippy. Run it by hand over `negative-space.sh` and the advisory, and record it as run or as not
   run — never as a `lint.sh` pass.
+- **The preview proof needs a generated project, and this repository cannot be one.**
+  syntek-base's `.copier-answers.yml` is the template that renders a project's answers — it holds
+  no `_commit:` for `code/src/scripts/development/template-update.sh:108` to read — so there is nothing here to update from.
+  The story plan's P4 generates a scratch project from a ref below `v3.0.0`, commits it so the
+  clean-tree guard at `:104` passes, copies the edited script in and previews
+  (`project-management/src/17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md:287-301`, which
+  cites the two guards at `:100` and `:104`, re-pointed there on 30/09/2026 from `:102` and `:106`).
+  **No project script makes that scratch project**, and a raw `uvx copier copy` is what
+  `.claude/CLAUDE.md` Section 6 forbids — the same wall
+  `project-management/src/11-QA/PLANNING/QA-PLAN-US012-SEED-PRESENCE-GATE.md` AC-GAP-4 met. Record
+  the route taken beside the result; the route is the implementer's to settle, not this plan's.
+- **HP-09 is red before the repair, and that red is worth keeping.** Run it against the unedited
+  `template-update.sh` first, as the story plan's P4 does before the cookie advisory exists, and
+  record the swallowed reports; the same run green after the block lands is the proof that the
+  block, and nothing else, made the difference. HP-08 follows at P5, with the advisory in place.
 - **No pytest assertion over the five settings values.** The story declines one deliberately: the
   gate clause is the invariant's one named enforcement point (`code/docs/NEGATIVE-SPACE.md`), and a
   second enforcer of the same rule is the shape that guide forbids. `tests/all.sh` is run as a
@@ -327,16 +514,23 @@ handoff. **These are readings, not the story's baseline**: `ADR-US003-CITATION-G
 obliges a capture immediately before the first edit, under a re-asserted detector hash, and that
 capture has not happened because no edit has.
 
-| Reading                              | Value at `1e00a4b`                                                              |
-| ------------------------------------ | ------------------------------------------------------------------------------- |
-| `doc-references.sh` (whole tree)     | **259, exit 1** — unchanged from `fff578f`, per-file breakdown identical        |
-| `doc-references.sh --path code/docs` | **Clean, exit 0** — US008's own criterion, green today                          |
-| `VERSION`                            | **7.6.0** (14/09/2026) — see AC-GAP-1                                           |
-| `git tag` count · newest             | **77** · **`v7.5.0`** — no `v7.6.0` tag exists                                  |
-| `negative-space.sh` `EXPECTED`       | **11** clause names at `:506-508`; the story grows it to 14                     |
-| Fixtures                             | `broken/` **9** files, `clean/` **13** — flat; the story adds a subtree to each |
-| Cookie-settings sweep, `code/src`    | **Zero hits** across all nine search terms                                      |
-| Cookie-read sweep, `code/src/django` | **Zero hits** — `document.cookie`, `getCookie`, `csrftoken`                     |
+| Reading                              | Value at `1e00a4b`                                                                                  |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `doc-references.sh` (whole tree)     | **259, exit 1** — unchanged from `fff578f`, per-file breakdown identical                            |
+| `doc-references.sh --path code/docs` | **Clean, exit 0** — US008's own criterion, green today                                              |
+| `VERSION`                            | **7.6.0** (14/09/2026) — see AC-GAP-1                                                               |
+| `git tag` count · newest             | **72** · **`v7.5.0`** — no `v7.6.0` tag exists                                                      |
+| `negative-space.sh` `EXPECTED`       | **11** clause names at `:506-508`; the story grows it to 14                                         |
+| Fixtures                             | `broken/` **9** files, flat · `clean/` **13**, one under `tests/`; the story adds a subtree to each |
+| Cookie-settings sweep, `code/src`    | **Zero hits** across all nine search terms                                                          |
+| Cookie-read sweep, `code/src/django` | **Zero hits** — `document.cookie`, `getCookie`, `csrftoken`                                         |
+
+<!-- AMENDED 30/09/2026. The tag row read "**77** · **`v7.5.0`**" (settled 30/09/2026,
+     16-sprint-plans grilling round 3 Q11) and the fixture row "`broken/` **9** files, `clean/`
+     **13** — flat" (call made 30/09/2026 while applying round 3) until then. Both were wrong when read
+     on 17/09/2026: `git tag | wc -l` and `git ls-remote --tags origin` both read 72, and
+     `clean/tests/test_guard.py` sits one level down. Re-measured 30/09/2026; every other row is
+     unchanged as a reading of that day. -->
 
 **One figure the next reader should not re-measure.** `code/src/scripts/audits/CONTEXT.md` is at
 **299** of 300 as the gate counts, not 298, and the `GAPS.md` entry of 17/09/2026 holds it. The
@@ -371,8 +565,18 @@ because the next reader will otherwise raise them again.
 - `project-management/src/02-STORIES/US008.md` — the story this plan tests; all ten gaps above are `[RESOLVED] 17/09/2026` in it
 - `project-management/src/03-SPRINTS/SPRINT-05.md` — the record this story is the `Must` of; its QA and Security rows are first-pass values recomputed at each gate's close
 - `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US008-HOST-ONLY-COOKIES.md` · `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US008-HOST-ONLY-COOKIES.md` — the security gate whose Section 7 constraints this plan exercises
-- `project-management/src/15-DECISIONS/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` — the record AC-GAP-1 invalidates; `15-decisions` owns the repair
-- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the regime Section 7 runs under
+- `project-management/src/15-DECISIONS/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` — the record AC-GAP-1 invalidated, superseded 17/09/2026 by `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`, which HP-05, HP-06, HP-10 and EC-09 to EC-13 test
+- `project-management/src/15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` — the preview repair HP-08, HP-09 and ES-08 prove; `project-management/src/15-DECISIONS/ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION-17-09-2026.md` — AC-GAP-3's resolution
+- `project-management/src/17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` — P4 and P5, where the preview proof is run
+- `code/src/scripts/development/template-update.sh` — the script the preview proof runs
+- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the regime Section 7 runs under, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide
 - `project-management/workflows/11-qa-checks/` — the workflow that produced this plan
 - `code/docs/GATE-REPORTING.md` — the rule the `N/A` sections, the unrunnable `PA` rows, Section 7 and Section 8 rest on
+
+<!-- AMENDED 30/09/2026 at the sign-off (call made 30/09/2026 while applying 16-sprint-plans grilling
+     round 3): the FIRST-MINOR entry read "the record AC-GAP-1 invalidates; `15-decisions` owns
+     the repair" until then, written before `15-decisions` superseded it the same day. The
+     MITIGATION, FORWARDED-PROTO, story-plan and `template-update.sh` entries are new. -->

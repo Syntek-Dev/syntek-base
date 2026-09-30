@@ -274,11 +274,18 @@ constraints put it there:
   US003 was only ever blocked in ordering, not in content — its baseline-diff scenario is written
   for exactly the regime it is now worked under. Two consequences follow. The **revision pass** of
   05/09/2026 — recast that scenario, its before/after QA task and
-  `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` as a plain pass once US004
+  `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (superseded 30/09/2026 by
+  `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which
+  restates it unchanged but for the manual testing guide's path) as a plain pass once US004
   has landed — is **inapplicable while US003 is worked here**, and revives only if US003 carries
   into SPRINT-03 and is worked after US004 there. And **US004, landing second, reads US003's
   disposition**: the `code/docs/ABSENCE.md` survivors its Verification Checks name at cutting will
   have cleared before it is worked.
+  <!-- UPDATED 30/09/2026: successor added beside the superseded record, which the 18-TESTS split
+  superseded for the manual testing guide's path alone
+  (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17;
+  settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). The superseded record's citation
+  is kept, not repointed. -->
 - **Downstream, and concrete: US002 before US004, now SPRINT-02 → SPRINT-03.** US002 shrinks
   `code/src/scripts/audits/CONTEXT.md` from **298 to 230 counted lines**, and US004 must edit a row
   in that file against a 300-line hard limit — recorded as `AC-GAP-9` of
@@ -461,9 +468,15 @@ register-inventory balance, US003's Codd primary-source check — which is why t
 ### Phase 4 — PR & Review (`../../workflows/23-pr-and-review`)
 
 Both stories, US002 then US003. `22-implementation-documentation` runs between the lane above and
-this phase and is a merge gate — it writes each story's `../18-TESTS/US###-TEST-STATUS.md` and
-`US###-MANUAL-TESTING.md`, and both members' baselines, inventories and read-across records land
-in the latter.
+this phase and is a merge gate — it writes each story's `../18-TESTS/AUTOMATED/US###-TEST-STATUS.md`
+and walks its `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, authored from the specs before code,
+and both members' baselines, inventories and read-across records land in the latter.
+
+<!-- Read "it writes each story's ../18-TESTS/US###-TEST-STATUS.md and US###-MANUAL-TESTING.md"
+     until 30/09/2026, when the 18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual
+     guide's authorship moved to 17-story-plans Step 7.2. Both members' guides were backfilled
+     from their plans that day; 22 still writes the automated record and walks the guide
+     (../18-TESTS/CLAUDE.md -> The record lifecycle). -->
 
 ---
 
@@ -515,14 +528,14 @@ to match the other.**
 
 ### Decisions binding this sprint
 
-| ADR                                                                    | Binds                                                                                                                        |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `../15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md` | The AI-slop rationale splits into `slop-family/CONTEXT.md`, a path `docs-length.sh` measures — never a bare sibling          |
-| `../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md`   | A gate that cannot open the files under test leaves the `QA` manifest; one that reads them but cannot decide stays, narrowed |
-| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`  | A red `doc-references.sh` is read as an identity diff against a recorded baseline. **Still in force** — see below            |
-| `../15-DECISIONS/ADR-US003-CRIB-SELF-CONTAINED-AT-BIRTH-02-09-2026.md` | US003's crib cells cite nothing that does not yet exist; `S-02`, `S-03` and `S-04` retro-fit their own back-links            |
-| `../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`  | Prose doctrine is verified by human read-across; `doctrine-drift.sh` is a regression guard only                              |
-| `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` | No gate verifies a PM `src/` instance citation in either form; every such citation here is human-checked                     |
+| ADR                                                                    | Binds                                                                                                                                                                                                                                                                                                    |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `../15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md` | The AI-slop rationale splits into `slop-family/CONTEXT.md`, a path `docs-length.sh` measures — never a bare sibling                                                                                                                                                                                      |
+| `../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md`   | A gate that cannot open the files under test leaves the `QA` manifest; one that reads them but cannot decide stays, narrowed                                                                                                                                                                             |
+| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`  | A red `doc-references.sh` is read as an identity diff against a recorded baseline. **Still in force** — see below. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path |
+| `../15-DECISIONS/ADR-US003-CRIB-SELF-CONTAINED-AT-BIRTH-02-09-2026.md` | US003's crib cells cite nothing that does not yet exist; `S-02`, `S-03` and `S-04` retro-fit their own back-links                                                                                                                                                                                        |
+| `../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`  | Prose doctrine is verified by human read-across; `doctrine-drift.sh` is a regression guard only                                                                                                                                                                                                          |
+| `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` | No gate verifies a PM `src/` instance citation in either form; every such citation here is human-checked                                                                                                                                                                                                 |
 
 **One ADR in the set supersedes another, and the superseded record is not listed.**
 `ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH` supersedes
@@ -535,6 +548,13 @@ bound by no length gate. The superseded record's own header says so.
 green**, a conjunction, and it calls for a superseding record nobody has yet written. US004 now
 lands in SPRINT-03, **after** this sprint, so the baseline discipline stands for both members here
 with no plain-pass reading available to either.
+
+<!-- UPDATED 30/09/2026: the table's baseline-diff row gains that record's successor, beside the
+     record the 18-TESTS split superseded that day. The successor restates the regime unchanged,
+     retirement terms included, but for the manual testing guide's path (settled 30/09/2026,
+     16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7
+     Q18). It is not the superseding record the paragraph above means: that one retires the
+     regime, and remains unwritten. The superseded record's citation is kept, not repointed. -->
 
 <!-- Until 07/09/2026 the table held four ADRs — ADR-US004-INSTANCE-ARTEFACT-CITER-TEST ("Check 2
      reads the citing file's name, never is_template_only()"), ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS
@@ -566,7 +586,7 @@ repair the third is a sprint away.** Three rules apply throughout, from `code/do
   05/09/2026 figure in `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` predates this re-plan's edits to
   four sprint records, and a count is only comparable against a run in the same git-index state;
   the figure that matters is the one each member records by identity in its own
-  `../18-TESTS/US###-MANUAL-TESTING.md`.
+  `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md`.
 - **A baseline is only comparable against a run in the same git-index state.** US004's QA plan
   measured a 24-finding swing on this tree between the same bytes untracked and tracked, every one
   a `[template-only citation]`. Record the index state beside any figure, and do **not** silence the

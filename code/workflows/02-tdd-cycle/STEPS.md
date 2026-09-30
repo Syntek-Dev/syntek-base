@@ -78,7 +78,26 @@ reachable edge case. Two rules hold on every assertion: the expected value comes
 truth** (a known literal, a worked example, or the acceptance criteria) and is never recomputed the
 way the code computes it (**no tautological tests**); and every assertion runs **through the public
 interface** so it survives Phases 2–3 unchanged. Framing:
-`code/docs/testing/COVERAGE.md` → **Test Discipline**.
+`code/docs/testing/COVERAGE.md` → **Test Discipline**. The same pass settles every open question
+in the story's manual testing guide — each row whose `Notes` reads `Awaiting answer` — and the rows
+are rewritten from the answers before `test-writer` is briefed, because a forked skill cannot ask
+(`project-management/src/18-TESTS/MANUAL/CLAUDE.md` → _Authoring_).
+
+**The story's manual testing guide is a named input** —
+`project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, authored from the specs at
+`project-management/workflows/17-story-plans/` Step 7.2 before any code. Brief it to
+`test-writer` beside the story and its acceptance criteria. `test-writer` triages every row —
+automatable rows become story-marked tests, manual-only rows stay manual — and names the triage
+in its handoff; the rule is its own (`.claude/skills/test-writer/SKILL.md` → _Triage the manual
+guide_). The guide is read here, never edited, and every row is still walked at
+`22-implementation-documentation`, whichever way it was triaged.
+
+<!-- UPDATED 30/09/2026. Phase 1 gained the manual testing guide as an input. The guide is now
+     authored from the specs at 17-story-plans, before code, so it exists when this phase runs and
+     is an independent oracle for it; triaging its rows here is what turns "a manual Fail beside a
+     green suite is a missing test" from a verdict at the walk into a test written up front. The
+     argument for moving authorship: "project-management/src/18-TESTS/CLAUDE.md". Phase 4's
+     heading also said "PM 19" while its body named 22; 22 is the closeout. -->
 
 Cover all four tiers relevant to the scope:
 
@@ -176,7 +195,7 @@ Check coverage floors are still met:
 
 ---
 
-## Phase 4 — Implementation Documentation (hand off to PM 19)
+## Phase 4 — Implementation Documentation (hand off to PM 22)
 
 Hand the story to `project-management/workflows/22-implementation-documentation/`. That
 workflow **owns** the closeout and is its single source of truth — do not restate the record
@@ -189,7 +208,9 @@ doc-writer
 > **↳ New dispatch:** `general-purpose` · **Skill:** `doc-writer` · **Model:** opus · **MCP:** code-review-graph
 
 It covers the IMPLEMENTATION record for every applicable spec (GDPR, security, QA, SEO, API),
-the story's findings record in `project-management/src/20-FINDINGS/`, the `/GAPS.md` and
+the story's automated test record `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md`
+written and its manual guide `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`
+walked, the story's findings record in `project-management/src/20-FINDINGS/`, the `/GAPS.md` and
 `/DEFERRED.md` routing, the `CONTEXT.md`/`CLAUDE.md` closeout across every touched layer, and
 the code-review-graph refresh.
 

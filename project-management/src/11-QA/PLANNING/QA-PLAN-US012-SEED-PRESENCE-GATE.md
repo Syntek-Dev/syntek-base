@@ -6,7 +6,7 @@
 | **Date**      | 21/09/2026                                                                                                                  |
 | **Sprint**    | SPRINT-07 — admitted as its `Must`, 2 SP taking the record to 10 / 11; the record itself is written by `03-sprint-planning` |
 | **Wireframe** | N/A — this story edits one bash script under `.github/scripts/`, not a screen                                               |
-| **Status**    | Reviewed — all nine gaps resolved into the story; AC-GAP-2, -4, -5 and -6 settled by <%DEVELOPER_NAME%>, all 21/09/2026     |
+| **Status**    | Signed off · **corrected in place 30/09/2026** — see below                                                                  |
 
 <!-- STEP 1's GRILLING PASS IS THE 21/09/2026 MAP-SCRIPT-GUARDS INTERVIEW ROUND, not a second one.
      Q1 settled that this story owns both the check-4 `SEEDED` loop and the seeded-deletion probe,
@@ -45,7 +45,37 @@
      into the repository and the fixture was deleted afterwards. Fixture readings are indicative;
      the proof of record is CI's generated tree (AC-GAP-4). Every citation the story makes into
      the script, `copier.yml`, `audit-template.yml`, the two maps and SPRINT-07 was re-opened the
-     same day, and every one holds. -->
+     same day, and every one holds.
+
+     SIGNED OFF 30/09/2026 by <%DEVELOPER_NAME%> (settled 30/09/2026, 16-sprint-plans grilling
+     round 3 Q9), against the tree at a18db0b with that gate's corrections applied. The Status row
+     read "Reviewed — all nine gaps resolved into the story; AC-GAP-2,
+     -4, -5 and -6 settled by <%DEVELOPER_NAME%>, all 21/09/2026" until then, and the two sentences
+     above that say Status reads Reviewed are the record of 21/09/2026, kept as written. -->
+
+> **Corrected in place, 30/09/2026, at the `16-sprint-plans` gate, and signed off by
+> <%DEVELOPER_NAME%>**: gate 11 closes when a QA plan reads `Signed off`, as gate 10 does (settled
+> 30/09/2026, 16-sprint-plans grilling round 3 Q9), and this plan's sign-off closes it for US012.
+> One citation is corrected in the same pass, a call made 30/09/2026 while applying round 3, not
+> one of its answers. <%DEVELOPER_NAME%> reviewed every change made under this sign-off, that call
+> and its dated comment in Section 7 among them, and accepted them all (settled 30/09/2026,
+> 16-sprint-plans grilling round 5 Q16):
+>
+> - **Every line citation was re-measured on 30/09/2026**, against the tree committed together
+>   with the 18-TESTS split, and holds or is re-pointed. Two had moved, both in `copier.yml`, which
+>   the split changes above the seed task: AC-GAP-6's `:973-984` sits at `:994-1005` and Section 5's
+>   `:967-972` at `:988-993`, each old number kept in a dated comment beside it. The split also
+>   rewrites two `NAMED_SHIPPED` entries of `.github/scripts/shipped-artefacts.sh` in place, moving
+>   none of its lines; every other file this plan cites by line is unchanged since `71a32d7`, where
+>   it was measured (Section 7). It cites none of the story's lines, so the story's correction on
+>   30/09/2026 moves nothing here. The copier 9.18.2 source it cites, `_main.py:441-445`, was
+>   re-read in the local cache.
+> - **One citation named the story as a bare filename**, which the citation audit reads as an
+>   unresolvable instance citation. Section 7's lead now gives the full path; the reading it
+>   records is unchanged.
+>
+> No gap, finding or scenario moved. The superseded wording is kept in a dated comment beside the
+> text that replaced it.
 
 ---
 
@@ -134,7 +164,7 @@ stat ...`, **exit 1, no cross line for the probe, and a leaked temporary directo
   moves the last entry of `SEEDED`, by that index expression, and no second probe is added.
 - **AC-GAP-6** `[RESOLVED] 21/09/2026` · minor — **the `Must` rationale's "no job goes red" is
   too strong for the seed it names.** The `_tasks` entry is one `&&` chain ending `rmdir .copier`
-  (`copier.yml:973-984`), and Copier raises `TaskError` on a non-zero task (read in the cached
+  (`copier.yml:994-1005`), and Copier raises `TaskError` on a non-zero task (read in the cached
   copier 9.18.2, `_main.py:441-445`). So a seed file removed with its `mv` kept, or an `mv` removed
   with its seed kept, fails generation at `audit-template.yml:151-163`. A seed and its `mv` removed
   together, or a retargeted `mv`, leaves `MAP-SCALE-PLANNING.md`'s citations unseeded, and
@@ -168,6 +198,11 @@ stat ...`, **exit 1, no cross line for the probe, and a leaked temporary directo
   "either" answer set where its When read "both"; it now names the two trees `[3/4]` generates.
   The ShellCheck criterion was headed "clean" while allowing "not run" — and `shellcheck` is not
   installed on this host (Section 7) — so it now reads "result recorded". qa-tester items 9 and 11.
+
+<!-- AMENDED 30/09/2026: AC-GAP-6 cited the seed task as `copier.yml:973-984` until then, measured
+     against `71a32d7` and unchanged at a18db0b. The 18-TESTS split, committed together with this
+     correction, adds 21 lines above the task, which sits at :994-1005 in that tree, re-measured
+     30/09/2026, the text unchanged. -->
 
 ---
 
@@ -240,9 +275,14 @@ move it.
 **One QA-visible constraint has a security shape, and it is AC-GAP-1's and AC-GAP-2's reason.**
 For a seed whose target path is populated in-tree — every index US010 adds — a `!` negation renders
 syntek-base's own rows into a project wherever the copy-gated `mv` does not run behind it, which is
-every `copier update`: the one-way door `copier.yml:967-972` names. A finding or a closing paragraph
+every `copier update`: the one-way door `copier.yml:988-993` names. A finding or a closing paragraph
 that advises the negation is therefore not a wording fault; it is advice to open that door. ES-02
 and EC-07 are the tests, and the negative half of EC-07 is read at review.
+
+<!-- AMENDED 30/09/2026: the paragraph above cited the one-way door as `copier.yml:967-972` until
+     then, measured against `71a32d7` and unchanged at a18db0b. The 18-TESTS split, committed
+     together with this correction, adds 21 lines above it, and it sits at :988-993 in that tree,
+     re-measured 30/09/2026, the text unchanged. -->
 
 **The wrong-reason red leaks a temporary directory** holding a copy of the generated tree (ES-05).
 A generated tree carries no secret, so this is hygiene, not exposure; it is recorded so that a
@@ -284,8 +324,23 @@ developer who sees `/tmp/tmp.*` accumulate knows where it came from.
 
 ## 7. Gate readings, measured 21/09/2026 — indicative, not baselines
 
-Taken on `pm/story-creation` at `71a32d7`, with three modified PM files and `US012.md` untracked.
-The fixture rows are a minimal tree, not a generation.
+Taken on `pm/story-creation` at `71a32d7`, with three modified PM files and
+`project-management/src/02-STORIES/US012.md` untracked. The fixture rows are a minimal tree, not a
+generation.
+
+<!-- AMENDED 30/09/2026 at the sign-off (call made 30/09/2026 while applying 16-sprint-plans grilling
+     round 3): the lead read "with three modified PM files and US012.md untracked", the filename
+     in backticks, until then, a bare instance citation the citation audit cannot resolve
+     (doc-references.sh --path over this plan, one finding, measured 30/09/2026). It carries the
+     full path now; the reading is unchanged. -->
+
+**Every citation in this plan was re-measured on 30/09/2026**, against the tree committed together
+with the 18-TESTS split. `.github/workflows/audit-template.yml`, `audit-doc-references.yml` and
+`lefthook.yml` are unchanged since `71a32d7`. `.github/scripts/shipped-artefacts.sh` has two
+`NAMED_SHIPPED` entries rewritten in place by the split, no line moved, and `copier.yml` gains
+lines above the seed task, re-pointed in Sections 1 and 5. The fixture readings below stay readings
+of that day: `SEEDED` still holds one entry at `.github/scripts/shipped-artefacts.sh:105`, and the
+five probes still sit at `:269`, `:274`, `:279`, `:284` and `:293`.
 
 | Reading                                           | Value                                                                                                       |
 | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |

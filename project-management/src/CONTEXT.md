@@ -37,6 +37,12 @@ The **story plan (17) is the master reference the developer codes from** — it 
 back up to its sprint plan (16), the decisions (15), and every 02–14 spec. Sprint plans
 (16) feed the story plans; the sprint plan sets the goal, story set, and sequence.
 
+**One record starts before the code.** The manual testing guide in `18-TESTS/MANUAL/` is
+authored from the specs beside the story plan, at `17-story-plans`, and walked at
+`22-implementation-documentation` once the code ships — a guide written before the build cannot
+have been shaped by it. Which workflow touches which test record, and when:
+`18-TESTS/CLAUDE.md` → _The record lifecycle_.
+
 ---
 
 ## Full Directory Tree
@@ -73,7 +79,7 @@ project-management/src/
 ├── 17-STORY-PLANS/     ← per-story implementation plan (the code master reference)
 │
 │   ── Implement & record, per story (18–22) ──
-├── 18-TESTS/           ← US###-TEST-STATUS.md, US###-MANUAL-TESTING.md
+├── 18-TESTS/           ← MANUAL/US###-MANUAL-TESTING.md, AUTOMATED/US###-TEST-STATUS.md
 ├── 19-REVIEWS/         ← REVIEW-US###-<DESCRIPTOR>.md
 ├── 20-FINDINGS/        ← FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md
 ├── 21-BUGS/            ← BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md
@@ -137,7 +143,7 @@ in a directory the current template no longer defines.
 | `ADR-###-<TITLE>.md`                                                    | `15-DECISIONS/`                                                                                      |
 | `##-SPRINT-PLAN-##.md`                                                  | `16-SPRINT-PLANS/`                                                                                   |
 | `<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md`                         | `17-STORY-PLANS/`                                                                                    |
-| `US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md`                      | `18-TESTS/`                                                                                          |
+| `US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md`                      | `18-TESTS/AUTOMATED/` · `18-TESTS/MANUAL/`                                                           |
 | `REVIEW-US###-<DESCRIPTOR>.md`                                          | `19-REVIEWS/`                                                                                        |
 | `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                              | `20-FINDINGS/`                                                                                       |
 | `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                                  | `21-BUGS/`                                                                                           |

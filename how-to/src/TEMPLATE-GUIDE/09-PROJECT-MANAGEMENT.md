@@ -54,7 +54,7 @@ against what was really built is mapped against reality.
 15-DECISIONS   ← ADRs; end of the per-story loop
 16-SPRINT-PLANS┐
 17-STORY-PLANS ┘ ← fire when the sprint fills
-18-TESTS       ┐
+18-TESTS       ┐ ← bar the manual guide in MANUAL/, authored at 17 before code
 19-REVIEWS     │
 20-FINDINGS    ├─ records, written after the code ships
 21-BUGS        │
@@ -76,8 +76,11 @@ tracker you named at generation time. Do not go looking for `workflows/23-incide
 usual way to look for a folder that does not exist: `workflows/18-consolidate-design-work` writes
 into the design folders `04`–`08` rather than into a `src/18`, and `src/18-TESTS` … `src/22-REFACTORING`
 are written by the build and record phases (`19`–`22`) rather than by the workflow sharing each
-number — the two test records in `src/18-TESTS` are written by
-`workflows/22-implementation-documentation` and only **verified** at `23-pr-and-review`.
+number. `src/18-TESTS` holds two records, and they do not even share a writer: the manual testing
+guide in `src/18-TESTS/MANUAL/` is **authored** by `workflows/17-story-plans`, from the specs and
+before any code, and walked at `workflows/22-implementation-documentation`; the automated record
+in `src/18-TESTS/AUTOMATED/` is written at `22`; both are only **verified** at `23-pr-and-review`
+(`project-management/src/18-TESTS/CLAUDE.md` → _The record lifecycle_).
 `src/23-INCIDENTS` has no workflow at all, and `workflows/23-pr-and-review` and
 `24-release` have no `src/` folder.
 
@@ -158,7 +161,7 @@ shortcut.
 | `13-API-DESIGN`   | It adds or changes Django Ninja surface                   |
 | `14-LOGGING`      | It emits anything worth an operator seeing                |
 | `15-DECISIONS`    | A choice is hard to reverse                               |
-| `16`, `17`        | When the sprint fills                                     |
+| `16`, `17`        | When the sprint fills — `17` also writes the manual guide |
 | `18`–`22`         | After the code ships                                      |
 | `23-INCIDENTS`    | Something broke in staging or production — never a story  |
 

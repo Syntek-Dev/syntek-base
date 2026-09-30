@@ -40,9 +40,11 @@ per-story plans, as in 09-GDPR).
 ## Relationship to 18-TESTS/
 
 QA artefacts here precede or accompany development. Whether **executing** the tests passed
-is a different question, recorded per story in `project-management/src/18-TESTS/` — written
-in the same documentation closeout as the `IMPLEMENTATION/` review, not after the merge, and
-not a copy of anything here.
+is a different question, recorded per story in `project-management/src/18-TESTS/` in two
+records, and neither is a copy of anything here. The manual testing guide in `MANUAL/` is
+authored beside the story plan from this folder's `PLANNING/` scenarios, before any code, and
+walked in the same documentation closeout as the `IMPLEMENTATION/` review; the automated record
+in `AUTOMATED/` is written at that closeout. Neither waits for the merge.
 
 ## Cross-references
 
@@ -53,6 +55,7 @@ not a copy of anything here.
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `project-management/src/08-WIREFRAMES/` · `src/10-SECURITY/` — the design and security
   artefacts a QA plan is written against
-- `project-management/src/18-TESTS/` — post-development test status and manual guides
+- `project-management/src/18-TESTS/` — the manual testing guides (authored before code, walked
+  after it) and the automated test records
 
 **Last Updated**: <%DATE%>

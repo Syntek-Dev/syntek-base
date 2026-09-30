@@ -418,8 +418,8 @@ that moved has left its old one, and every pointer reaches the new one.
      Per code/docs/GATE-REPORTING.md the skip is recorded here rather than left to be inferred. -->
 
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
-- [ ] `project-management/src/18-TESTS/US007-MANUAL-TESTING.md` and
-      `project-management/src/18-TESTS/US001-MANUAL-TESTING.md` each carry a tester sign-off block
+- [ ] `project-management/src/18-TESTS/MANUAL/US007-MANUAL-TESTING.md` and
+      `project-management/src/18-TESTS/MANUAL/US001-MANUAL-TESTING.md` each carry a tester sign-off block
 - [ ] **No `[OPEN]` acceptance-criteria gap remains** in either member's QA plan —
       `project-management/src/11-QA/PLANNING/QA-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` (six
       found, six resolved), and
@@ -450,7 +450,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 ### QA Tasks — Manual
 
 - [ ] US007 — the five gates named in its own flag run, and their output recorded in
-      `project-management/src/18-TESTS/US007-MANUAL-TESTING.md`, with `doc-references.sh` and
+      `project-management/src/18-TESTS/MANUAL/US007-MANUAL-TESTING.md`, with `doc-references.sh` and
       `skill-conformance.sh` recorded against baselines captured by identity immediately before
       the first edit — an empty baseline recorded as empty — rather than against a state quoted
       from the story
@@ -466,7 +466,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
       by any artefact, and routed to whoever owns US005's plan
 - [ ] US007 — a tester other than the author has signed the walk-through off
 - [ ] US001 — the four documentation gates run, and their output recorded in
-      `project-management/src/18-TESTS/US001-MANUAL-TESTING.md`
+      `project-management/src/18-TESTS/MANUAL/US001-MANUAL-TESTING.md`
 - [ ] US001 — a reader who opens `code/docs/TASK-AUTHORING.md` cold reaches the migrated rules in
       one hop
 - [ ] US001 — each of the three repointed sites re-read in place, and the sentence still reads true
@@ -503,10 +503,14 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       is a bare pass while a non-empty baseline stands.** US007 reads it as an identity diff against
       the baseline captured before its first edit
       (`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
-      which binds every story in this backlog until US004 — now in SPRINT-03 — retires it). US001's
+      which binds every story in this backlog until US004 — now in SPRINT-03 — retires it;
+      superseded 30/09/2026 by
+      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+      which restates it unchanged but for the manual testing guide's path). US001's
       flag predates that ADR and is deliberately left as it stands, per
       `project-management/src/16-SPRINT-PLANS/01-SPRINT-PLAN-01.md`: every citation resolves, and
       no pointer is left aiming at a moved rule
+      <!-- UPDATED 30/09/2026: successor added beside the superseded record, which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - [ ] `bash code/src/scripts/audits/doctrine-drift.sh` — **regression only, for both members.** It
       reads fenced code and both stories' doctrine is prose
       (`project-management/src/15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`);

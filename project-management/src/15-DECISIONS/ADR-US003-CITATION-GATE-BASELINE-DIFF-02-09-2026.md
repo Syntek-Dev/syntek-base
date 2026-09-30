@@ -1,10 +1,10 @@
 # ADR-US003: A red citation gate is read as a diff against a recorded baseline
 
-**Status:** Accepted
+**Status:** Superseded
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** —
-**Superseded by:** —
+**Superseded by:** `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`
 **Related:** US003
 
 ---

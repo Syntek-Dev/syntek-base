@@ -285,7 +285,7 @@ Then the state changes in the browser with no server round-trip
 ### QA Acceptance Criteria — Automated
 
 <!-- Remove this section when the QA flag is N/A.
-     Closed by `../18-TESTS/US###-TEST-STATUS.md`. -->
+     Closed by `../18-TESTS/AUTOMATED/US###-TEST-STATUS.md`. -->
 
 - [ ] Coverage is at or above 75 % line and branch for all modules (at or above 90 % for auth-related paths) after this story — one floor: template, django-component, and HTMX-partial tests are pytest tests and count towards it
 - [ ] Unit tests cover the success path, validation error, and permission error for `[service_function]`
@@ -296,7 +296,8 @@ Then the state changes in the browser with no server round-trip
 ### QA Acceptance Criteria — Manual
 
 <!-- Remove this section when the QA flag names no manual type.
-     Closed by `../18-TESTS/US###-MANUAL-TESTING.md`. -->
+     Closed by `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` — authored against these criteria at
+     17-story-plans Step 7.2, before any code, and walked at 22-implementation-documentation. -->
 
 - [ ] Manual checks cover any UI behaviour not reachable by automation (e.g. [drag-and-drop, colour picker])
 - [ ] Every scenario class named in the QA flag has a walk-through with a stated expected result
@@ -460,12 +461,10 @@ All tasks below map directly to an acceptance criterion above. Mark each complet
 
 ### QA Tasks — Manual
 
-<!-- Remove this section when the QA flag names no manual type. -->
+<!-- Remove this section when the QA flag names no manual type. A pointer, never a list: the
+     manual tasks are the guide's rows, written from this story's specs at 17-story-plans. -->
 
-- [ ] [UI behaviour not reachable by automation — e.g. drag-and-drop reorder, colour picker render]
-- [ ] Cross-browser: Chrome, Firefox, Safari (latest stable)
-- [ ] Responsive: verify layout at mobile, tablet, and desktop breakpoints (mobile-first) — Web (public pages)
-- [ ] Accessibility: keyboard navigation and screen reader on `[component]` — WCAG 2.2 AA
+- [ ] Walk and mark every row of `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` (authored at `17-story-plans` Step 7.2)
 
 ---
 

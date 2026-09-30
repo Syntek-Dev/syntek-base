@@ -39,7 +39,7 @@ for the handful of things the Django test client cannot see.
   `@pytest.mark.story("US###")`, or `pytestmark` on the module where the whole file belongs to
   one. Without it the test still runs and still gates, but it is **silently absent** from that
   story's `US###-TEST-STATUS.md`; `bash code/src/scripts/audits/story-markers.sh` lists what
-  carries none. The rule's owner is `project-management/src/18-TESTS/CLAUDE.md`.
+  carries none. The rule's owner is `project-management/src/18-TESTS/AUTOMATED/CLAUDE.md`.
 - **Every `SUPPRESSIONS` entry carries a ticket.** `id`, `selector`, `justification`, and
   a non-empty `ticket` — an undocumented waiver is rejected in review.
 - **Never add `django_db` or a model import here.** These tests do not own the database

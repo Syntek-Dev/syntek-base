@@ -50,4 +50,7 @@ tests are pytest tests and count towards the same floor.
 - `code/docs/testing/FRONTEND-TESTING.md` — template, component, and HTMX-partial tests; markup-level accessibility
 - `code/docs/TESTING.md` — full TDD taxonomy, test matrix, and running tests
 - `code/docs/testing/API-TESTING.md` — when story includes API layer
+- `project-management/src/18-TESTS/MANUAL/` — the story's manual testing guide, authored from
+  the specs before code and read at Red; which stage touches it when is
+  `project-management/src/18-TESTS/CLAUDE.md` → _The record lifecycle_
 - `code/docs/coding-principles/PRACTICAL-RULES.md` — shapes what unit vs integration testing means

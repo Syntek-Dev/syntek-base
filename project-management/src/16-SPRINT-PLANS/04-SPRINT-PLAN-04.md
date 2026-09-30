@@ -384,12 +384,19 @@ is why the manual rows in `../03-SPRINTS/SPRINT-04.md` -> _Tasks_ are not ceremo
 
 Both stories, US005 then US006, each behind its own gate — US005's behind US001 landing.
 `22-implementation-documentation` runs between the lane above and this phase and is a merge gate:
-it writes each story's test-status and manual-testing records under `../18-TESTS/` — US005's
+it writes each story's test-status record under `../18-TESTS/AUTOMATED/` and walks its
+manual-testing guide under `../18-TESTS/MANUAL/`, authored from the specs before code — US005's
 baseline, inventory, arithmetic strings and read-across; US006's twenty-one observed exit codes and
 messages, and the ShellCheck run recorded as run or as not run — and it owns the two register
 writes this sprint produces: the `DEFERRED.md` entry for US005's unenforced window, naming slice
 `S-05` as owner and the first client-wiring story as its deadline, and the `GAPS.md` closure of the
 31/08/2026 posture entry `../01-FEATURE-MAPS/MAP-SCRIPT-GUARDS.md` slice `S-01` claims.
+
+<!-- Read "it writes each story's test-status and manual-testing records under ../18-TESTS/" until
+     30/09/2026, when the 18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual guide's
+     authorship moved to 17-story-plans Step 7.2. Both members' guides were backfilled from their
+     plans that day; 22 still writes the automated record and walks the guide
+     (../18-TESTS/CLAUDE.md -> The record lifecycle). -->
 
 ---
 
@@ -480,8 +487,14 @@ them; US006's flag names no script, and neither story's own flag is rewritten to
 | `../15-DECISIONS/ADR-US006-POSTURE-CARRIER-FAILS-CLOSED-05-09-2026.md`    | **`.copier-answers.yml` is the one carrier, read once per invocation from `$PROJECT_ROOT` resolved via `BASH_SOURCE`, and the guard fails closed on every state but two** — a rendered carrier naming `development`, or a template checkout proven by `copier.yml` at the root, tested only after the carrier holds no legal posture. No state defaults to `development`; a refusal exits `4`; a damaged carrier has no override, its recovery path is repair; the helper is a new `_lib/` return contract (0 permit, 4 refuse, never `exit`) <!-- doc-references: template-only -->                       |
 | `../15-DECISIONS/ADR-US006-OVERRIDE-NAMES-THE-LIVE-POSTURE-05-09-2026.md` | **The override is `--force-posture <posture>`, space-separated, and must name the posture the project is at now**, so an invocation pasted from history dies when the posture rises. It buys nothing else: `--yes` is inert above `development`; the flag, not the terminal, carries the authorisation; it is not honoured where no posture can be read; it is forwarded verbatim across the `server.sh` -> `seed-dev.sh` shell-out; the CI literal has a named owner and `\|\| true` is dropped. **Erratum, dated:** the fail-closed set is eight, not seven — the unrecognised carrier value was omitted |
 | `../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`     | Prose doctrine is verified by human read-across; `doctrine-drift.sh` is a regression guard only. Binds US005's four rules and the guard's contract alike — neither adds a claims row                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`     | A red `doc-references.sh` is read as a diff against a recorded baseline, never as a bare pass. **Contingent here**: it retires by its own terms when US004 lands and the gate goes green, and SPRINT-03 is built before this sprint — see _Gate honesty_                                                                                                                                                                                                                                                                                                                                                   |
-| `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`    | Check 2 of the citation gate reads the citing file's name; instance citations of PM artefacts by a PM artefact are exempt. It is the class the record names for the 24 findings US006's staged artefacts add, none of which this sprint owns                                                                                                                                                                                                                                                                                                                                                               |
+| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`     | A red `doc-references.sh` is read as a diff against a recorded baseline, never as a bare pass. **Contingent here**: it retires by its own terms when US004 lands and the gate goes green, and SPRINT-03 is built before this sprint — see _Gate honesty_. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged, retirement terms included, but for the manual testing guide's path                                                                                                                                |
+| `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`    | Check 2 of the citation gate reads the citing file's name; instance citations of PM artefacts by a PM artefact are exempt. It is the class the record names for the 24 findings US006's staged artefacts add, none of which this sprint owns. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the 18-TESTS template paths in its allowlist                                                                                                                                                          |
+
+<!-- UPDATED 30/09/2026: the baseline-diff and instance-citer rows gain their successors, beside
+     the two records the 18-TESTS split superseded that day. Each successor restates its record's
+     decision unchanged, and only the 18-TESTS paths moved (settled 30/09/2026, 16-sprint-plans
+     grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). The count of
+     three inherited records below is unchanged: each successor stands in its record's row. -->
 
 The first three are the ADRs the two stories authored at their own gates. The three inherited are
 the records `../03-SPRINTS/SPRINT-04.md` -> _Verification Checks_ cites for the gates both members

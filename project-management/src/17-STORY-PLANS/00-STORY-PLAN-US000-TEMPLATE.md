@@ -325,7 +325,7 @@ is fixed by prior decisions vs what this story is free to choose.]
 - **Rendering:** [Template / HTMX / Alpine boundary per `rendering/TEMPLATES-AND-INTERACTIVITY.md`; data-fetch strategy.]
 - **Responsive:** [breakpoints + mobile-first per `responsive/*`; 13-breakpoint wireframe check.]
 - **Accessibility:** [WCAG 2.2 AA; keyboard/focus per `accessibility/INTERACTION.md`; verified by
-  the manual WCAG 2.2 AA checklist.]
+  the accessibility journey of the manual testing guide (_Manual testing_ below).]
 - **SEO** (public pages): metadata, JSON-LD, sitemap, robots — `project-management/docs/SEO-CHECKLIST.md`.
 
 ---
@@ -457,7 +457,7 @@ re-run after each `--fix` until clean). Each maps 1:1 to the pre-PR hook (`.clau
 
 - Confirm the change actually works in the running app: `bash code/src/scripts/development/server.sh up`,
   then exercise the path in a browser; for UI, run `bash code/src/scripts/tests/e2e-py.sh`
-  (pytest-playwright) and walk the manual accessibility checklist.
+  (pytest-playwright) and walk the manual testing guide's accessibility journey.
 
 ### Stage 5 — PR & release
 
@@ -571,7 +571,7 @@ fixtures; parametrise; no stubs / `NotImplementedError` in green code.
 
 ### Manual testing
 
-- [Steps a human follows — captured in `project-management/src/18-TESTS/US###-MANUAL-TESTING.md`.]
+- `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` — authored from the specs beside this plan at `17-story-plans` Step 7.2. A pointer, never a list of its own.
 
 ---
 
@@ -598,7 +598,8 @@ fixtures; parametrise; no stubs / `NotImplementedError` in green code.
 | API implementation record                  | `API-IMPL-US###-<DESC>-DD-MM-YYYY.md`                               | `…/src/13-API-DESIGN/IMPLEMENTATION/`                                                            | PM `20-api-code` (write-back)                                                              | Conditional                |
 | Logging plan (pre-dev)                     | `LOGGING-PLAN-US###-<DESC>.md`                                      | `…/src/14-LOGGING/PLANNING/`                                                                     | PM `14-logging-checks`                                                                     | Conditional                |
 | Logging implementation record              | `LOGGING-IMPL-US###-<DESC>.md`                                      | `…/src/14-LOGGING/IMPLEMENTATION/`                                                               | PM `22-implementation-documentation`                                                       | Conditional                |
-| Test status / manual testing               | `US###-TEST-STATUS.md`, `US###-MANUAL-TESTING.md`                   | `…/src/18-TESTS/`                                                                                | PM `22-implementation-documentation`, verified at `23-pr-and-review`                       | Always                     |
+| Manual testing guide                       | `US###-MANUAL-TESTING.md`                                           | `…/src/18-TESTS/MANUAL/`                                                                         | PM `17-story-plans` Step 7.2 (authored), walked at `22`, verified at `23-pr-and-review`    | Always                     |
+| Automated test record                      | `US###-TEST-STATUS.md`                                              | `…/src/18-TESTS/AUTOMATED/`                                                                      | PM `22-implementation-documentation`, verified at `23-pr-and-review`                       | Always                     |
 | Code review record                         | `REVIEW-US###-<DESC>.md`                                            | `…/src/19-REVIEWS/`                                                                              | PM `23-pr-and-review` / code `07-review`                                                   | Always                     |
 | Bug report (if a bug surfaced)             | `BUG-<DESC>-DD-MM-YYYY.md`                                          | `…/src/21-BUGS/`                                                                                 | code `10-debug` / `09-debugging-with-logs`                                                 | Conditional                |
 | Refactoring record                         | `REFACTOR-<DESC>.md` / `REFACTORING-US###-*.md`                     | `…/src/22-REFACTORING/`                                                                          | code `11-refactor`                                                                         | Conditional                |
@@ -751,7 +752,7 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US###
 
 - [ ] All 8 quality gates pass locally **and** in Docker (no mismatch)
 - [ ] Coverage floors met (75% line/branch · 90% auth — 80% if targeting `staging`/`main`)
-- [ ] Accessibility verified for any UI — pytest markup assertions + the manual checklist
+- [ ] Accessibility verified for any UI — pytest markup assertions + the manual guide's accessibility journey
 - [ ] Every state-changing endpoint permission-checked; no IDOR
 - [ ] No PII in logs/errors; secrets via env only; `DEBUG=False` off-local
 - [ ] All implementation records written to correct folders (Section Documentation Write-Ups)

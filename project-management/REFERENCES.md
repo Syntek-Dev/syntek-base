@@ -52,7 +52,7 @@ under each of its four category folders rather than at its root.
 | `src/15-DECISIONS/`    | decide & plan | Architectural Decision Records (`ADR-###-<TITLE>.md`)                                                                     |
 | `src/16-SPRINT-PLANS/` | decide & plan | Detailed sprint execution plans (`##-SPRINT-PLAN-##.md`)                                                                  |
 | `src/17-STORY-PLANS/`  | decide & plan | Per-story implementation plans (`<exec-order>-STORY-PLAN-US###-*.md`) — the master reference for code                     |
-| `src/18-TESTS/`        | record        | Automated test record (`US###-TEST-STATUS.md`, half generated) + manual journey walk-through (`US###-MANUAL-TESTING.md`)  |
+| `src/18-TESTS/`        | record        | Manual testing guide (`MANUAL/`, authored before code, walked after) + automated record (`AUTOMATED/`, half generated)    |
 | `src/19-REVIEWS/`      | record        | Code review records (`REVIEW-US###-*.md`) per completed story                                                             |
 | `src/20-FINDINGS/`     | record        | Per-story findings (`FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`) — divergences, retrofit cost, what the next story carries |
 | `src/21-BUGS/`         | record        | Bug reports (`BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`) — story-anchored                                                     |
@@ -97,7 +97,7 @@ Each workflow `CONTEXT.md` with path and purpose.
 | `workflows/14-logging-checks/CONTEXT.md`               | Set the story's log surface and its exclusion list before code      |
 | `workflows/15-decisions/CONTEXT.md`                    | Author an Architectural Decision Record (ADR)                       |
 | `workflows/16-sprint-plans/CONTEXT.md`                 | Write detailed sprint plans after GDPR, security, and QA checks     |
-| `workflows/17-story-plans/CONTEXT.md`                  | Write the per-story implementation plan — the code master           |
+| `workflows/17-story-plans/CONTEXT.md`                  | Write the story plan (the code master) and its manual testing guide |
 | `workflows/18-consolidate-design-work/CONTEXT.md`      | Unify the per-story design and schema work into one system          |
 | `workflows/19-backend-code/CONTEXT.md`                 | Implement Django models, services, and business logic (TDD)         |
 | `workflows/20-api-code/CONTEXT.md`                     | Implement the Django Ninja API layer                                |

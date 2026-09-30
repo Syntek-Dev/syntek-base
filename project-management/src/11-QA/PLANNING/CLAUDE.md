@@ -33,8 +33,10 @@ and GDPR/security expectations from the wireframe before any code is written.
 - These are **pre-development** plans derived from wireframes and flows — the scenarios
   are _specified_ here and _verified_ against the build in `../IMPLEMENTATION/`; keep them
   consistent with `docs/QA-GUIDE.md`, `code/docs/ACCESSIBILITY.md`, and `code/docs/SECURITY.md`.
-- **Documentation only — no source, secrets, or `.env` content.** Automated results and
-  manual guides live downstream in `../../18-TESTS/`; do not duplicate them here.
+- **Documentation only — no source, secrets, or `.env` content.** Automated results live
+  downstream in `../../18-TESTS/AUTOMATED/`, and the manual testing guides in
+  `../../18-TESTS/MANUAL/` — authored from this plan at `17-story-plans`, citing its scenario IDs
+  in their `QA` column; do not duplicate either here.
 - One plan per story; do not batch multiple stories into one file.
 
 ## Output & naming

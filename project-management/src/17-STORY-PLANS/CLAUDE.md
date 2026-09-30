@@ -72,6 +72,8 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
 - **Hand-written:** every `<exec-order>-STORY-PLAN-US###-*.md` and `PLAN-<DESCRIPTOR>.md`, plus
   the story's row in its sprint plan's _Story Plans — the code master_ table next door.
   `CONTEXT.md` here carries no index.
+- **Not filed here:** the manual testing guide `17-story-plans` Step 7.2 authors beside each plan
+  — it goes in `../18-TESTS/MANUAL/`, whose `CLAUDE.md` owns every rule of it.
 - **Template:** `00-STORY-PLAN-US000-TEMPLATE.md` — the copy source; do not delete or repurpose.
   `00-` is reserved for it, mirroring `../16-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md`, and a
   real plan never takes that prefix.

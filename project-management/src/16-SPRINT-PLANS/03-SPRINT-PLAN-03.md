@@ -216,7 +216,11 @@ _None._
   index row. Adjacent to US004's subject and owned by no slice on any map; explicitly out.
 - **The `MAP-GATE-PARITY` question** — whether a gate means the same thing in a generated project.
   `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` is one instance of it and
-  claims none of its scope.
+  claims none of its scope; so is its successor of 30/09/2026,
+  `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  which restates it unchanged but for the 18-TESTS template paths. <!-- UPDATED 30/09/2026:
+  successor added beside the superseded record (settled 30/09/2026, 16-sprint-plans grilling
+  round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - **US005** — this plan's `Must` from 05/09/2026 until 07/09/2026, when it moved to
   `../03-SPRINTS/SPRINT-04.md` beside US006 in the US007 re-plan. Everything that waited on it —
   `../01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md` slices `S-04`, `S-05` and `S-06` — and the two
@@ -313,11 +317,19 @@ re-measured rather than inherited, which US004's own acceptance already requires
 lands, the intra-sprint order is **US004 then US003** — the original order of 02/09/2026 — and that
 order is what revives US003's revision pass: the Gherkin scenario _"The citation gate is read
 against a recorded baseline, never as a bare pass"_, the QA task recording before/after finding
-counts, and `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` are all written
-against a defect US004 will by then have removed, and the scenario is read as a plain pass. **That
-pass is not owed in SPRINT-02**, where US003 is worked under exactly the regime its scenario was
-written for; it is owed here in the carry case only, and it belongs to whoever picks US003 up, not
-to this plan.
+counts, and `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (superseded
+30/09/2026 by
+`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which
+restates it unchanged but for the manual testing guide's path) are all written against a defect
+US004 will by then have removed, and the scenario is read as a plain pass. **That pass is not owed
+in SPRINT-02**, where US003 is worked under exactly the regime its scenario was written for; it is
+owed here in the carry case only, and it belongs to whoever picks US003 up, not to this plan.
+
+<!-- UPDATED 30/09/2026: successor added beside the superseded record, which the 18-TESTS split
+     superseded for the manual testing guide's path alone
+     (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17;
+     settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). The superseded record's citation
+     is kept, not repointed. -->
 
 **The `build order N` on the story-plan headers is a recommendation, not a constraint**, on the
 precedent `01-SPRINT-PLAN-01.md` sets for saying so. Both headers were repointed by
@@ -525,10 +537,18 @@ is not re-added until the story is.
 ### Phase 4 — PR & Review (`../../workflows/23-pr-and-review`)
 
 US004 alone, behind no blocker. `22-implementation-documentation` runs between the lane above and
-this phase and is a merge gate — it writes the story's `../18-TESTS/US004-TEST-STATUS.md` and
-`../18-TESTS/US004-MANUAL-TESTING.md`, which **US004's own register rows make citable in advance**, and it owns
+this phase and is a merge gate — it writes the story's `../18-TESTS/AUTOMATED/US004-TEST-STATUS.md`,
+which **US004's own register rows make citable in advance**, and walks its
+`../18-TESTS/MANUAL/US004-MANUAL-TESTING.md`, authored from the specs before code; and it owns
 the `GAPS.md` write this sprint produces: closing the 02/09/2026 entry against all three of its
 retirement conditions, and correcting its stale blocked-by sentence rather than deleting it.
+
+<!-- Read "it writes the story's ../18-TESTS/US004-TEST-STATUS.md and
+     ../18-TESTS/US004-MANUAL-TESTING.md, which US004's own register rows make citable in advance"
+     until 30/09/2026, when the 18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual
+     guide's authorship moved to 17-story-plans Step 7.2. US004's guide was backfilled from its
+     plan that day, so it no longer waits on a register row to be citable; 22 still writes the
+     automated record and walks the guide (../18-TESTS/CLAUDE.md -> The record lifecycle). -->
 
 <!-- Read "Both stories, each behind its own blocker" and named "US005's unenforced-window entry"
      as the DEFERRED.md write this sprint produces, until 07/09/2026. That entry travelled to
@@ -624,13 +644,21 @@ US003's other twelve rows being `N/A`.
 
 ### Decisions binding this sprint
 
-| ADR                                                                      | Binds                                                                                                                                                                            |
-| ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`   | Check 2 reads the citing file's name, never `is_template_only()`                                                                                                                 |
-| `../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md` | A `PROJECT-PATHS.md` row may name a class; `###` is three digits exactly                                                                                                         |
-| `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`   | The full-path citation form, and that no gate verifies a PM `src/` instance citation. **US004 makes the second half false**, which the ADR names as its own retirement condition |
-| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`    | A red `doc-references.sh` is read as a diff. **Still in force** — see below                                                                                                      |
-| `../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`    | Prose doctrine is verified by human read-across; `doctrine-drift.sh` is a guard only                                                                                             |
+| ADR                                                                      | Binds                                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`   | Check 2 reads the citing file's name, never `is_template_only()`. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the 18-TESTS template paths in its allowlist                                          |
+| `../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md` | A `PROJECT-PATHS.md` row may name a class; `###` is three digits exactly. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the two rows' paths, now under `18-TESTS/MANUAL/` and `18-TESTS/AUTOMATED/` |
+| `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`   | The full-path citation form, and that no gate verifies a PM `src/` instance citation. **US004 makes the second half false**, which the ADR names as its own retirement condition                                                                                                                               |
+| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`    | A red `doc-references.sh` is read as a diff. **Still in force** — see below. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path                                             |
+| `../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`    | Prose doctrine is verified by human read-across; `doctrine-drift.sh` is a guard only                                                                                                                                                                                                                           |
+
+<!-- UPDATED 30/09/2026: the first, second and fourth rows gain their successors, beside the three
+     records the 18-TESTS split superseded that day. Each successor restates its record's decision
+     unchanged, and only the 18-TESTS paths moved (settled 30/09/2026, 16-sprint-plans grilling
+     round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18); US004 implements the
+     two ADR-US004 successors. The baseline-diff successor is not the new record the paragraph
+     below says nobody has written: that one retires the regime, and remains unwritten. The
+     superseded records' citations are kept, not repointed. -->
 
 The first four are the ADRs `../02-STORIES/US004.md` Decisions names. The fifth is inherited on
 the precedent `02-SPRINT-PLAN-02.md` set for the same story on 05/09/2026; the story's own list
@@ -678,7 +706,7 @@ apply throughout, from `code/docs/GATE-REPORTING.md`:
   classes this order cannot clear: US006's forward references to
   `code/src/scripts/_lib/posture-guard.sh` and US005's to `how-to/src/OUTBOUND-TIMEOUTS.md`. The
   set is **re-measured at implementation, never inherited from this list**, every survivor is
-  named with its owner in `../18-TESTS/US004-TEST-STATUS.md`, and a bare pass is reported only if
+  named with its owner in `../18-TESTS/AUTOMATED/US004-TEST-STATUS.md`, and a bare pass is reported only if
   the run actually exits 0.
 - **A baseline is only comparable against a run in the same git-index state** — and that
   dependence is the defect US004 removes, so it binds hardest before US004 lands.
@@ -714,7 +742,7 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 - [ ] `doc-references.sh` — read as a diff, never as a pass. No finding remains of the three
       classes US004 owns — the git-index class, the instance-citer class and the dangling
       `project-management/src/` class — and every survivor is named with its owner in
-      `../18-TESTS/US004-TEST-STATUS.md`, with the git-index state recorded beside every figure
+      `../18-TESTS/AUTOMATED/US004-TEST-STATUS.md`, with the git-index state recorded beside every figure
       taken before the fix. Which survivors stand depends on how SPRINT-02 closed; see _Gate
       honesty_
 - [ ] `doc-references.sh --self-test` exits 0, its probe count risen by one case per repair, and
@@ -736,7 +764,7 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       (`code/src/scripts/syntax/CONTEXT.md`), and as of 08/09/2026 no script under
       `code/src/scripts/`, no CI job and no lefthook entry runs ShellCheck — only
       `# shellcheck source=` and `# shellcheck disable=` directives exist. Run by hand and
-      recorded in `../18-TESTS/US004-MANUAL-TESTING.md` as run or as not run, never as a
+      recorded in `../18-TESTS/MANUAL/US004-MANUAL-TESTING.md` as run or as not run, never as a
       `lint.sh` pass (`code/docs/GATE-REPORTING.md`)
 - [ ] The before/after whole-tree run is recorded with both finding counts, both exit codes and
       the delta; the tracked-versus-untracked A/B is reproduced before any edit and again after,

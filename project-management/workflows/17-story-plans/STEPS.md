@@ -43,6 +43,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 | Naming           | src/17-STORY-PLANS/CONTEXT.md → _The plans index_ — no folder index; where a reservation lives |
 | Build order      | src/16-SPRINT-PLANS/ — the sprint plans in `<exec-order>` sequence; their _Story Plans_ tables |
 | Gathering inputs | **Internal — Live Artefacts** → src/16-SPRINT-PLANS/, src/15-DECISIONS/                        |
+| Step 7.2         | src/18-TESTS/MANUAL/CLAUDE.md — the guide's rules; its template US000-MANUAL-TESTING.md        |
 
 ---
 
@@ -158,18 +159,60 @@ sections — do not re-derive them:
 Every mutation the plan introduces must carry an explicit permission check and ownership
 verification in the plan's Security table — no exceptions.
 
-### Step 7 — Define the Test Strategy
+### Step 7 — Define the Test Strategy, then Author the Manual Testing Guide
+
+<!-- UPDATED 30/09/2026. Step 7 gained sub-step 7.2: this workflow now authors the story's manual
+     testing guide, which "../22-implementation-documentation/" used to write after the code.
+     Settled by the grilling pass of 30/09/2026; the argument for authoring before code is in
+     "../../src/18-TESTS/CLAUDE.md". It went in as a sub-step rather than a new Step 8 because
+     Steps 8 to 11 are cited by number in dated history across the repository — "17-story-plans
+     Step 9" and "Step 10" among them — and renumbering would re-point every one of those
+     citations. The test strategy that was the whole of Step 7 is now 7.1, unchanged but for its
+     manual-testing item, which 7.2 now carries. -->
+
+#### 7.1 — Define the test strategy
 
 Complete the plan's Testing section per layer: unit & integration (services), template /
-component / HTMX-partial rendering, API permission-check tests, markup-level accessibility,
-browser e2e (a11y scan + responsive overflow), and manual testing — one coverage floor per
-`code/docs/TESTING.md` (75% line and branch, 90% auth). The browser suite is excluded from
-coverage; it exercises a running stack over HTTP and instruments nothing.
+component / HTMX-partial rendering, API permission-check tests, markup-level accessibility, and
+browser e2e (a11y scan + responsive overflow) — one coverage floor per `code/docs/TESTING.md`
+(75% line and branch, 90% auth). The browser suite is excluded from coverage; it exercises a
+running stack over HTTP and instruments nothing. The plan's _Manual testing_ section is a pointer
+to the guide 7.2 authors, not a list of its own.
+
+#### 7.2 — Author the manual testing guide
+
+Copy `src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md` to
+`src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` and author it **from the specs, never from code** —
+there is no code yet, and the guide is an independent oracle only because it predates the build.
+Read each of these the story has, and name every one read on the guide's _Authored from_ line:
+
+- **The story** — `src/02-STORIES/US###.md`; its _QA Acceptance Criteria — Manual_ is the bar the
+  guide is judged against
+- **Its stage-1 design** — `src/04-DATABASE/`, `src/05-USER-FLOW/`, `src/06-BRAND-GUIDE/`,
+  `src/07-COMPONENTS/`, `src/08-WIREFRAMES/`
+- **Its compliance specs** — the `PLANNING/` artefacts in `src/09-GDPR/`, `src/10-SECURITY/`,
+  `src/11-QA/`, `src/12-SEO/`, `src/13-API-DESIGN/` and `src/14-LOGGING/`; the QA plan's scenario
+  IDs fill the `QA` column
+- **Its decisions and sprint** — the ADRs in `src/15-DECISIONS/` and its sprint plan in
+  `src/16-SPRINT-PLANS/`
+- **This plan** — its approach, key decisions and test strategy as fixed in Steps 3 to 7.1
+
+Every row takes its permanent `{AREA}-{NN}` ID, `Flow` as `—` — no consolidated flow exists
+before `18-consolidate-design-work` — and a blank `Result`. How each column is filled, and every
+other rule of the guide: `src/18-TESTS/MANUAL/CLAUDE.md` → _Authoring — from the specs, never
+from the code_, _Row IDs_ and _The Flow and QA columns_.
+
+**A row the records cannot decide goes to <%DEVELOPER_NAME%> as a question, never a guess** —
+raise it through `.claude/skills/grill-with-docs`, which records the answer in the artefact that
+should have held it, then write the row from that answer.
+
+Finally, point the plan's _Manual testing_ section at the guide.
 
 ### Step 8 — Run the Planner Agent
 
 ```text
-planner [story, sprint plan, ADRs, and every 02–14 spec gathered in Step 1]
+planner [story, sprint plan, ADRs, and every 02–14 spec gathered in Step 1; for Step 7.2,
+         src/18-TESTS/MANUAL/CLAUDE.md and src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md]
 ```
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:** none
@@ -180,7 +223,8 @@ planner [story, sprint plan, ADRs, and every 02–14 spec gathered in Step 1]
 
 Spawn 2–3 independent reviewers to critique the draft before it is treated as codeable:
 missing layers, unhandled GDPR/security, wrong doc references, dependency-order errors,
-unscoped deferrals. Resolve every finding.
+unscoped deferrals — and, in the manual testing guide, a row no spec supports, a QA-plan scenario
+no row exercises, or an expected outcome that guesses. Resolve every finding.
 
 ### Step 10 — Save, Index, and Cross-Reference
 
@@ -198,7 +242,9 @@ unscoped deferrals. Resolve every finding.
    folder-level index is deferred to the register-index work charted in
    `src/01-FEATURE-MAPS/`, which names its own file when it lands
 3. Reference the plan in the driving user story (`src/02-STORIES/US###.md`)
-4. Proceed to `workflows/19-backend-code/` to begin implementation
+4. Cross-link the manual testing guide: its header names this plan at the filename saved in item
+   1, and the plan's _Manual testing_ section names `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`
+5. Proceed to `workflows/19-backend-code/` to begin implementation
 
 ### Step 11 — Commit
 

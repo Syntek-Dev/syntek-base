@@ -29,14 +29,35 @@ skeleton).
 ## The brief arrives settled
 
 A fork cannot confirm a scope, so the brief must carry **the story and its acceptance
-criteria** — tests cover that story's scope and nothing else — and **the seams to cover**: the
-service boundaries, endpoints, or component contracts on the critical path. Testing every
-reachable edge case instead of the named seams is how a suite becomes unmaintainable.
+criteria** — tests cover that story's scope and nothing else — **the story's manual testing
+guide**, `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, and **the seams to
+cover**: the service boundaries, endpoints, or component contracts on the critical path. Testing
+every reachable edge case instead of the named seams is how a suite becomes unmaintainable.
 
 **If the seam list is missing, name the seams you infer from the acceptance criteria and say so
-in the handoff** — that is recoverable. **If the acceptance criteria are missing, return**;
-without them there is no independent source of truth and every assertion becomes tautological.
-Where the seams are genuinely open, that is a `grilling` pass run inline first.
+in the handoff** — that is recoverable. **So is a missing guide: say so in the handoff and never
+write one here** — it is authored from the specs, never at the Red phase. **If the acceptance
+criteria are missing, return**; without them there is no independent source of truth and every
+assertion becomes tautological. Where the seams are genuinely open, that is a `grilling` pass
+run inline first.
+
+## Triage the manual guide — every row, one of two ways
+
+The guide was authored from the specs before any code existed, so each row's _Expected outcome_
+is exactly the independent source of truth the rules below demand. Read every row and put it in
+one of two classes:
+
+- **Automatable** — the outcome is observable through a public interface a test can reach: a
+  response, database state, rendered output, a script's exit code and what it prints. It becomes
+  a test here, asserting that outcome and story-marked like any other.
+- **Manual-only** — the outcome needs a person or a real assistive technology: focus order,
+  contrast, a screen reader, visual judgement. It stays manual.
+
+**The triage is named in the handoff, never marked in the guide**, which this phase only reads
+(`project-management/src/18-TESTS/MANUAL/CLAUDE.md` → _Guardrails_). It decides what gains a
+test, not what gets walked (_Walking and marking_ there). A row that reads wrong against the
+story, or whose `Notes` reads `Awaiting answer`, goes into the handoff as a question for
+<%DEVELOPER_NAME%> — never tested to, and never corrected here.
 
 ## Two hard rules on every assertion
 
@@ -78,8 +99,8 @@ Placement follows `code/docs/TESTING.md`: backend beside its app
 ## Every test declares its story
 
 The suites run whole-project and their report artefacts carry no story attribution, so the
-per-story record in `project-management/src/18-TESTS/` is generated from a marker, never from a
-path or a branch diff:
+per-story record in `project-management/src/18-TESTS/AUTOMATED/` is generated from a marker,
+never from a path or a branch diff:
 
 - **pytest** — `@pytest.mark.story("US###")`, inheritable from the class or module via
   `pytestmark` and repeatable where a second story genuinely tests the same behaviour.
@@ -131,9 +152,11 @@ name exists.
 ## Handoff
 
 Report the files created, **the red test names**, the seams they cover, and any seam you
-inferred rather than were given. Then name what is owed: `backend` or `frontend` to implement
-against them, `qa-tester` for the adversarial pass over what the tests do not reach, `cicd` to
-wire anything new into the pipeline, and `completion` to record the test task.
+inferred rather than were given. Then **the guide's triage**: each automatable row by ID beside
+the test that now asserts it, each manual-only row by ID with the reason, and any row you
+questioned or any guide that was missing. Then name what is owed: `backend` or `frontend` to
+implement against them, `qa-tester` for the adversarial pass over what the tests do not reach,
+`cicd` to wire anything new into the pipeline, and `completion` to record the test task.
 
 ## Governing procedures (route here — do not restate at length)
 
@@ -146,6 +169,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `code/docs/TESTING.md` — test structure, mocking strategy, framework choice
+- `project-management/src/18-TESTS/MANUAL/CLAUDE.md` — the guide's rules: how it is authored,
+  its row IDs and columns, and the walk it still gets at `22`
 - `code/docs/testing/COVERAGE.md` — the floors (75% line and branch, 90% auth) and the discipline
 - `code/docs/testing/TAXONOMY.md` · `code/docs/testing/API-TESTING.md` — the story marker and the
   Bruno `meta` tag that is its other half

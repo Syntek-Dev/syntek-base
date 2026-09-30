@@ -103,7 +103,7 @@ scripts — never raw `pytest` / `pnpm` / `docker` / `python`.
 
 ### 3.6 Accessibility (WCAG 2.2 AA)
 
-- [ ] Accessibility verified on affected route(s) — pytest markup assertions plus the manual WCAG 2.2 AA checklist.
+- [ ] Accessibility verified on affected route(s) — pytest markup assertions plus the accessibility journey walked in `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md`.
 - [ ] Keyboard operable; logical focus order; visible focus ring; focus trap in any modal.
 - [ ] Labels, contrast, and reduced-motion honoured; primary/secondary actions equal
       weight (no dark patterns).
@@ -149,7 +149,8 @@ rationale, or a forward-compatibility pattern accepted. Keep it factual.
 
 - `../02-STORIES/US###.md` — the story under review
 - `../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` — the plan this code was written from
-- `../18-TESTS/US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md` — the test records this review reads against
+- `../18-TESTS/AUTOMATED/US###-TEST-STATUS.md` · `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` — the
+  test records this review reads against
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` — the paired QA review from the same PR
 - `../21-BUGS/` — file a `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` for any defect this review surfaces
 - `code/docs/SECURITY.md` — the OWASP / IDOR obligations Section 3.1 checks against

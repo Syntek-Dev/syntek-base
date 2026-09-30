@@ -39,7 +39,9 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   `code/`; keep them consistent with `code/docs/SECURITY.md`.
 - **Respect the tiers** — `00-ASSETS` is pre-workflow reference; `02–14` specify; `15–17`
   decide (ADRs) then plan sprints then plan stories, all before code; `18–22` record
-  tests, reviews, findings, bugs, and refactoring after code. The **story plan (17) is the master
+  tests, reviews, findings, bugs, and refactoring after code — bar the manual testing guide in
+  `18-TESTS/MANUAL/`, authored at `17` before code and walked after it
+  (`18-TESTS/CLAUDE.md` → _The record lifecycle_). The **story plan (17) is the master
   the developer codes from**; it references its sprint plan (16) and the decisions (15).
   Do not invent a new top-level folder without a matching workflow — **with one shipped
   exception, `23-INCIDENTS`, and the reason generalises**: an incident is _unplanned_, so it has

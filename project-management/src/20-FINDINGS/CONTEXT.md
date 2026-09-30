@@ -44,6 +44,10 @@ target, raised as a bug, or accepted with a reason.
 Findings are recorded, **not fixed in place**. The record states the smallest fix; the fix
 itself lands in a later story, a bug report, or a refactor.
 
+**Manual testing guide rows amended at the walk arrive here too** — a spec that proved wrong is
+the input the next plan needs. The rule and the trail's format:
+`../18-TESTS/MANUAL/CLAUDE.md` → _Changing a row after authoring_.
+
 ## When to write it
 
 At story completion, during
@@ -57,6 +61,7 @@ nothing, record that explicitly rather than skipping the file.
 - `../02-STORIES/` — the stories findings are anchored to
 - `../17-STORY-PLANS/` — the code master a finding closes the loop on, and the next plan it feeds
 - `../19-REVIEWS/` — the merge-gating review from the same PR
+- `../18-TESTS/MANUAL/` — the walked manual testing guides whose amended rows arrive here
 - `../21-BUGS/` — where a finding that is a defect is escalated
 - `../22-REFACTORING/` — where a finding that is structural debt is actioned
 - `../15-DECISIONS/` — where a finding that settles a hard-to-reverse trade-off graduates

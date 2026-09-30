@@ -498,11 +498,17 @@ or hardcoded IDs introduced — and the Verification Checks carry it.
   fourth sprint plan on 08/09/2026), several of which carry pre-existing findings, and every
   edit above one shifts its line.
 - **The procedure, as it should be executed and pasted into
-  `project-management/src/18-TESTS/US007-MANUAL-TESTING.md`** — which does not exist today and is
-  created by `22-implementation-documentation` from `project-management/src/18-TESTS/US000-MANUAL-TESTING.md`.
+  `project-management/src/18-TESTS/MANUAL/US007-MANUAL-TESTING.md`** — the manual guide, authored
+  before code (backfilled 30/09/2026) and walked, not written, by `22-implementation-documentation`.
   Each captured set goes into the record as a fenced block, an empty set as an empty block with
   the gate's own zero-count line above it. Artefacts under `project-management/src/` are exempt
   from the 300-line rule, so a 254-line block is admissible there.
+
+  <!-- 30/09/2026: the bullet above read "— which does not exist today and is created by
+       22-implementation-documentation from project-management/src/18-TESTS/US000-MANUAL-TESTING.md"
+       until the 18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual guide's
+       authorship moved to 17-story-plans Step 7.2 (project-management/src/18-TESTS/CLAUDE.md ->
+       The record lifecycle). This story's guide was backfilled that day. -->
 
   ```bash
   # 1 — the pre-edit tree, by SHA, and its index state
@@ -652,10 +658,14 @@ full-path citation this plan and the story make into PM artefacts produces **no 
 direction** — silent, not verified. **Corrected later on 08/09/2026: true of Checks 1 and 2, and
 of Check 3 only while the citing file is tracked** — an untracked file is read as shipping, and
 its citations of excluded artefacts fire `[template-only citation]` until it is staged; the
-measurement is in Section 1's closing subsection. And `project-management/src/18-TESTS/US007-MANUAL-TESTING.md`,
-cited by the story, this plan and both sprint artefacts, **does not exist today**; it is a forward
-reference to the file the implementation creates, correct as intent and dead as of this date, and
-the gate cannot see it either way.
+measurement is in Section 1's closing subsection. And `project-management/src/18-TESTS/MANUAL/US007-MANUAL-TESTING.md`,
+cited by the story, this plan and both sprint artefacts, **did not exist when this was written**;
+it was a forward reference, correct as intent and dead as of that date, until the guide was
+backfilled on 30/09/2026 — and the gate cannot see it either way.
+
+<!-- 30/09/2026: the sentence above read "does not exist today; it is a forward reference to the
+     file the implementation creates, correct as intent and dead as of this date" until the
+     18-TESTS folder split and the manual guide's authorship moved to 17-story-plans Step 7.2. -->
 
 ## 8. Three candidates refuted, and why they are recorded
 
@@ -686,7 +696,7 @@ reader does not raise them again.
 - `project-management/src/02-STORIES/US007.md` — the story this plan tests, which took the seven gaps on 08/09/2026
 - `project-management/src/03-SPRINTS/SPRINT-01.md` — the sprint record that admitted US007 on 07/09/2026, whose QA criterion the open gaps now bind
 - `project-management/src/16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` — the sprint plan whose QA reference row took this file's path on 08/09/2026 and names it Signed off, seven found and seven resolved
-- `project-management/src/18-TESTS/US007-MANUAL-TESTING.md` — **does not exist**; the record the baseline, the hashes and every read-across land in, created at implementation
+- `project-management/src/18-TESTS/MANUAL/US007-MANUAL-TESTING.md` — the manual guide the baseline, the hashes and every read-across land in; authored before code (backfilled 30/09/2026) and walked at `22-implementation-documentation`
 - `project-management/src/17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — the story plan, written by `17-story-plans` on 08/09/2026 under the number reserved for it, after the gaps resolved and in the same commit as this plan; it defers to this plan's Section 6 for the capture-and-diff procedure
 
 <!-- Until 09/09/2026 two rows above read otherwise. The sprint-plan row:
@@ -701,7 +711,16 @@ reader does not raise them again.
      US007-MANUAL-TESTING.md row between them is untouched: that file is still absent, and is
      created at implementation. -->
 
-- `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` · `ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` · `ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` · `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the four records the story rests on; the last is the regime Section 6 executes and AC-GAP-1 and AC-GAP-2 sharpen
+<!-- 30/09/2026: the US007-MANUAL-TESTING.md row above read "project-management/src/18-TESTS/
+     US007-MANUAL-TESTING.md — **does not exist**; the record the baseline, the hashes and every
+     read-across land in, created at implementation" until the 18-TESTS folder split into MANUAL/
+     and AUTOMATED/, the manual guide's authorship moved to 17-story-plans Step 7.2, and this
+     story's guide was backfilled. The comment above is the 09/09/2026 record and is left as it
+     stood. -->
+
+- `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` · `ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` · `ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` · `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the four records the story rests on; the last is the regime Section 6 executes and AC-GAP-1 and AC-GAP-2 sharpen, and since 30/09/2026 is superseded by `ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - `GAPS.md` — the entry of 01/09/2026 this story closes at its Definition of Done
 - `code/src/scripts/audits/doc-references.sh` · `doctrine-drift.sh` · `skill-conformance.sh` — the three gates whose behaviour Section 1 turns on; the first edited today, uncommitted
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US006-POSTURE-GUARD.md` — the sibling plan whose Section 7 first recorded a citation-gate figure with its HEAD and index state

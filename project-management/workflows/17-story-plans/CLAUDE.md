@@ -29,7 +29,8 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 The final decide-&-plan workflow before code — turn a sprint-slotted, ADR-grounded story
 into `<exec-order>-STORY-PLAN-US###-<descriptor>.md` in `src/17-STORY-PLANS/`: the single
-master reference a developer codes from.
+master reference a developer codes from — and author, from the same specs, the story's manual
+testing guide in `src/18-TESTS/MANUAL/`.
 
 ## How to work here
 
@@ -37,7 +38,8 @@ master reference a developer codes from.
   gates — `src/17-STORY-PLANS/CLAUDE.md` and the canonical
   `00-STORY-PLAN-US000-TEMPLATE.md` — must be read before Step 1. Inputs: the story's sprint
   plan (`src/16-SPRINT-PLANS/`), any ADRs it rests on (`src/15-DECISIONS/`), and every
-  relevant 02–14 spec.
+  relevant 02–14 spec. `src/18-TESTS/MANUAL/CLAUDE.md` is read before Step 7.2, which authors
+  the manual testing guide to its rules.
 - **Model:** Opus throughout — the plan's substance (approach, decisions table, dependency
   DAG, test strategy, risks) is substantive judgement; status flips and the story's row in its
   sprint plan's _Story Plans — the code master_ table are mechanical touches.
@@ -47,10 +49,11 @@ master reference a developer codes from.
   → copy `00-STORY-PLAN-US000-TEMPLATE.md` → fix
   the technical approach and key decisions → break the story into phased
   implementation tasks mapped to `19-backend-code` → `20-api-code` → `21-frontend-code` →
-  define the test strategy → carry in GDPR/security/QA constraints from their source specs
-  → compute `<exec-order>` (`STEPS.md` Step 2) → write
-  `<exec-order>-STORY-PLAN-US###-<descriptor>.md` into `src/17-STORY-PLANS/` → point the
-  story's row in its sprint plan's _Story Plans — the code master_ table
+  define the test strategy → author the manual testing guide from the specs, putting every row
+  the records cannot decide to <%DEVELOPER_NAME%> (`STEPS.md` Step 7.2) → carry in
+  GDPR/security/QA constraints from their source specs → compute `<exec-order>` (`STEPS.md`
+  Step 2) → write `<exec-order>-STORY-PLAN-US###-<descriptor>.md` into `src/17-STORY-PLANS/` →
+  point the story's row in its sprint plan's _Story Plans — the code master_ table
   (`src/16-SPRINT-PLANS/`) at it, replacing any reserved-number placeholder → satisfy
   `CHECKLIST.md`.
 - **Definition of done:** the plan is named
@@ -61,9 +64,11 @@ master reference a developer codes from.
   security and QA constraints from the `02`–`14` specs are present and traced back to their
   source; a test strategy is defined per layer; the `Blocked by` / `Blocks` /
   `Can be done now` callout is accurate, because the parallel-worktree DAG depends on it;
-  and one adversarial pass has looked for missing layers, wrong references and
-  dependency-order errors. The plan is then what a developer codes from, and it unlocks
-  `workflows/19-backend-code/`.
+  the manual testing guide exists at `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, authored
+  from the specs to its folder's definition of done (`src/18-TESTS/MANUAL/CLAUDE.md`) and
+  cross-linked with the plan; and one adversarial pass has looked for missing layers, wrong
+  references and dependency-order errors. The plan is then what a developer codes from, and it
+  unlocks `workflows/19-backend-code/`.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
   `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see
   `.claude/CLAUDE.md` Section 2.5).
@@ -77,6 +82,9 @@ master reference a developer codes from.
 - **GDPR, security, and QA constraints are carried in from the 02–14 specs, not
   re-derived** — keep them consistent with `code/docs/SECURITY.md` and
   `project-management/docs/GDPR-GUIDE.md`.
+- **The manual testing guide is authored here, from the specs — never from code, and never
+  deferred to the closeout.** This workflow runs the rule; `src/18-TESTS/MANUAL/CLAUDE.md` owns
+  it, with every other rule of the guide.
 - **Keep the dependency callout honest** — a plan marked anything other than `Blocked`
   asserts its blockers are cleared; the parallel-worktree DAG depends on it.
 - **`<exec-order>` tracks build order, and is renumbered when build order changes.** It is
@@ -102,5 +110,17 @@ master reference a developer codes from.
   cross-linked to its `US###`, its sprint plan (16), and the ADRs it rests on (15).
 - **Template:** `00-STORY-PLAN-US000-TEMPLATE.md` — `00-` is reserved for it, mirroring
   `00-SPRINT-PLAN-00-TEMPLATE.md`, so no real plan takes that number.
+- **Produced by following it:** `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, copied from that
+  folder's `US000-MANUAL-TESTING.md` — its naming is that folder's `CLAUDE.md`.
 - Documentation `SCREAMING-SNAKE-CASE.md`; workflow folders `NN-kebab-case/`; dates
   DD/MM/YYYY.
+
+<!-- UPDATED 30/09/2026. This workflow now authors the story's manual testing guide
+     (`STEPS.md` Step 7.2), which `../22-implementation-documentation/` used to write after the
+     code — added to the purpose line, routing, concrete steps, definition of done, a guardrail
+     and Output & naming above. Settled by the grilling pass of 30/09/2026. Why the guide moved
+     before code: "../../src/18-TESTS/CLAUDE.md"; every rule the authoring follows:
+     "../../src/18-TESTS/MANUAL/CLAUDE.md". The guardrail names both halves of the move — the
+     guide is written from the specs, and it is written HERE — because the failure it prevents is
+     a plan shipped without its guide, which would leave 22 authoring it with the code already in
+     front of it. -->

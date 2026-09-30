@@ -118,7 +118,7 @@ touches none of them, not to dodge a gate.
 **Step A: capture the rule inventory before moving anything.** The story's Scenario 6 requires
 every rule in the three source sections to be accounted for as moved, kept or deliberately
 deleted. **That inventory is not reconstructible from the diff** once the sections are reduced, so
-it is captured first and recorded in `../18-TESTS/US001-MANUAL-TESTING.md`. This is US001's
+it is captured first and recorded in `../18-TESTS/MANUAL/US001-MANUAL-TESTING.md`. This is US001's
 AC-GAP-2 and it is the single highest-risk step in the story.
 
 Capture alongside it the `doc-references.sh` baseline — the finding **identities**, not the count.
@@ -276,23 +276,38 @@ rather than left to be inferred as a pass.
 | The migration lost nothing               | The Step A inventory balances: every rule moved, kept, or deleted with reason |
 | A cold reader reaches the migrated rules | Open `TASK-AUTHORING.md` cold and reach them in one hop                       |
 
+The rows a person walks for these checks are in `../18-TESTS/MANUAL/US001-MANUAL-TESTING.md`,
+authored from this plan before code (backfilled 30/09/2026) and walked at `22`.
+
 **On `doc-references.sh`:** US001's story carries a **flat must-pass**, which
 `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` <!-- doc-references: template-only --> records as
 inconsistent with its baseline-diff decision and **deliberately leaves standing** — that story
 predates the measurement, and editing a signed-off story to match a later record would hide that
 the reasoning moved. **The implementer should nonetheless capture the baseline in Step A**: the
 gate is red on the tree for reasons US001 does not own, and the diff is the only way to tell
-whether this story broke a citation.
+whether this story broke a citation. That record was superseded on 30/09/2026 by
+`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` <!-- doc-references: template-only -->,
+which restates it unchanged — the inconsistency it leaves standing included — but for the manual
+testing guide's path. <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 
 ## Documentation Write-Ups (Implementation Records)
 
-Owned by `22-implementation-documentation`. This story produces
-`../18-TESTS/US001-MANUAL-TESTING.md` carrying the before/after rule inventory, the
+Owned by `22-implementation-documentation`, which walks rather than writes this story's manual
+guide: `../18-TESTS/MANUAL/US001-MANUAL-TESTING.md` was authored before code from this plan
+(backfilled 30/09/2026), and the walk records in it the before/after rule inventory, the
 `doc-references.sh` baseline, the gate output, and the read-across sign-off.
 
-**That file is cited twice by `project-management/src/02-STORIES/US001.md` <!-- doc-references: template-only --> today and does not exist** — a live forward reference no
-gate catches, named in `ADR-US001-INSTANCE-CITATION-UNVERIFIED`. It is created by this story, which
-clears it.
+**That file was cited twice by `project-management/src/02-STORIES/US001.md` <!-- doc-references: template-only --> and did not exist** — a live forward reference no
+gate catches, named in `ADR-US001-INSTANCE-CITATION-UNVERIFIED`. The 30/09/2026 backfill created
+it, which cleared it.
+
+<!-- 30/09/2026: this section read "This story produces ../18-TESTS/US001-MANUAL-TESTING.md
+     carrying ..." and "That file is cited twice ... today and does not exist ... It is created by
+     this story, which clears it" until the 18-TESTS folder split into MANUAL/ and AUTOMATED/ and
+     the manual guide's authorship moved to 17-story-plans Step 7.2 (../18-TESTS/CLAUDE.md -> The
+     record lifecycle). -->
 
 ## CONTEXT.md & Index Updates
 
@@ -349,7 +364,7 @@ clears it.
 - [ ] Index rows exist in all four surfaces
 - [ ] Every new file under 270 counted lines at birth
 - [ ] `docs-length.sh`, `docs-pairing.sh`, `doc-references.sh`, `doctrine-drift.sh`, lint and format pass
-- [ ] `../18-TESTS/US001-MANUAL-TESTING.md` exists and its rule inventory balances
+- [ ] `../18-TESTS/MANUAL/US001-MANUAL-TESTING.md` is walked and its rule inventory balances
 - [ ] The human read-across is done and signed off by someone other than the author
 - [ ] Story `**Status:**` moved to `Completed`; this plan's row in
       `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` → _Story Plans — the code master_ mirrors it

@@ -21,12 +21,14 @@ are not part of the base repo.
 
 ```text
 15-DECISIONS → 16-SPRINT-PLANS → 17-STORY-PLANS → code → 18-22 records
-                                                          (this folder — 19)
+                                                          (this folder — 22)
 ```
 
 The specify (02–14) and decide & plan (15–17) tiers gate a feature into code; the record tier
-(18-TESTS, 19-REVIEWS, 20-FINDINGS, 21-BUGS, 22-REFACTORING) captures what happened after. A refactoring
-record is written during or after the code/PR phase, once the change has shipped.
+(18-TESTS, 19-REVIEWS, 20-FINDINGS, 21-BUGS, 22-REFACTORING) captures what happened after — bar
+the manual testing guide in `../18-TESTS/MANUAL/`, authored beside the story plan and walked
+after. A refactoring record is written during or after the code/PR phase, once the change has
+shipped.
 
 ## What the record captures
 

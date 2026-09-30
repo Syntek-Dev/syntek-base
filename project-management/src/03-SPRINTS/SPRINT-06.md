@@ -1,6 +1,6 @@
 # SPRINT-06
 
-**Last Updated**: 27/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 30/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -103,12 +103,21 @@ grace. The grace is deliberately available for that carry and for nothing else
      its QA row. Per code/docs/GATE-REPORTING.md these are gates not yet entered, reported as
      such — not gates that found nothing. Gates `10` and `11` have since run, both writing on
      21/09/2026, and both rows are recomputed from what they wrote, the write-back landing
-     27/09/2026 once grilling had settled their open questions (the recompute above). Neither gate
-     is signed off: both security plans read Draft, and QA-PLAN-US010 reads Reviewed, all
-     twenty-three of its gaps resolved into the story by 27/09/2026, AC-GAP-2 the last (grilling
-     round 7 Q34) — Reviewed, which is not Signed off. US010 still has no story plan. AMENDED
-     27/09/2026 at the final pass: the QA clause read "QA-PLAN-US010 reads Draft with AC-GAP-2
-     [OPEN] on grilling round 6 Q34" until then.
+     27/09/2026 once grilling had settled their open questions (the recompute above). Gate `10`
+     is signed off: both security plans read Signed off, corrected in place and reviewed by
+     <%DEVELOPER_NAME%> on 28/09/2026 (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1),
+     the correction moving no finding, severity or constraint, so neither row moves with it.
+     Gate `11` closed on 30/09/2026, when <%DEVELOPER_NAME%> signed QA-PLAN-US010 off: it closes
+     only at Signed off, exactly as gate `10` does (settled 30/09/2026, 16-sprint-plans grilling
+     round 3 Q9). The plan had read Reviewed since 27/09/2026, all twenty-three of its gaps
+     resolved into the story by then, AC-GAP-2 the last (grilling round 7 Q34). The sign-off moves
+     no value: US010's own Security and QA rows, re-read 30/09/2026, are unchanged, so neither row
+     here moves with it. US010 still has no story plan. AMENDED 27/09/2026 at the final pass: the
+     QA clause read "QA-PLAN-US010 reads Draft with AC-GAP-2 [OPEN] on grilling round 6 Q34" until
+     then. AMENDED 28/09/2026 at the security sign-off: the gate clause read "Neither gate is
+     signed off: both security plans read Draft, and QA-PLAN-US010 reads Reviewed" until then.
+     AMENDED 30/09/2026 at gate 11's close: the QA clause ended "— Reviewed, which is not Signed
+     off" until then, and the plan now is.
 
      AMENDED 27/09/2026 AFTER TWO VERIFIED PASSES OF THAT WRITE-BACK. This comment said gates
      `10`, `11` and `15` had "closed" on 21/09/2026 at three places until that day — "all closed
@@ -202,7 +211,12 @@ total is 13 SP, 8 committed and 5 stretch. It is not counted until it does.
   SPRINT-05 for US008.**
   `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is a
   reporting regime — "A story cannot be blocked on a gate it is forbidden to repair" — binding every
-  story until `doc-references.sh` goes green; it sequences nothing. See Verification Checks.
+  story until `doc-references.sh` goes green; it sequences nothing. Its successor of 30/09/2026,
+  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  restates it unchanged but for the manual testing guide's path. See Verification Checks.
+  <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - **US010 waits on no placed story, and the files it now shares with three of them are rebases,
   not waits.** Verified 20/09/2026 at cutting against US001 to US009, all `Status: Open`: none of
   them writes `copier.yml`'s `_tasks` list, `.github/scripts/shipped-artefacts.sh`'s `SEEDED`
@@ -408,20 +422,42 @@ whose absence is the defect — at 13 / 11, the shape SPRINT-03 has held since 0
 the weakness is real and is recorded the way SPRINT-03 recorded it on 07/09/2026 and SPRINT-05 on
 09/09/2026: "the weakness stands, and this record has no other give it can honestly hold".
 
-**No `06-SPRINT-PLAN-06.md` is written, and its absence is by rule, not omission.** The record's
-ledger and the plan's count are two different numbers, and this record is at neither trigger.
+**No `06-SPRINT-PLAN-06.md` is written yet, and it is owed, not omitted.** Two calls owe it.
+<%DEVELOPER_NAME%> settled on 21/09/2026 that this record's plan and SPRINT-07's are written once
+their members' gate documents are committed (`project-management/src/03-SPRINTS/SPRINT-07.md` ->
+_Notes_), and US010's were committed on 27/09/2026. On 28/09/2026 <%DEVELOPER_NAME%> signed off
+US010's threat model and assessment, and ruled that this record's plan and SPRINT-07's are then
+written (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1). `16-sprint-plans` writes it
+next, in a change of its own; this record does not. The record's ledger and the plan's count are
+two different numbers, and since 30/09/2026 they agree at 8.
 
 - **The ledger counts every admitted story: 8.**
   `project-management/docs/planning/SPRINTS.md` -> _Two artefacts, two moments_ makes the record
   "the running ledger", opened early, and `CADENCE.md`'s per-story loop runs gate `03` second, so a
-  story is admitted at cutting and the ledger moves then. 8 of 11 is not the fill trigger.
-- **The plan counts only stories that have cleared the specify tier: 0.** `CADENCE.md` -> _When a
-  sprint plan is written_ names the prerequisites that must hold for **every story in the filling
-  sprint** — `15-decisions` cleared, GDPR review, security threat model and assessment, a QA plan
-  with no unresolved `AC-GAP`, an SEO plan or `SEO: N/A` with a reason, an API contract or no Ninja
-  surface — and closes: "A story that cannot satisfy these is **not ready to be counted towards the
-  sprint**." US010 satisfied none of them on 20/09/2026, and on 27/09/2026 still does not satisfy
-  them all — see below.
+  story is admitted at cutting and the ledger moves then. 8 of 11 is not the fill trigger; what
+  owes the plan is the call, not a fill, as it is for SPRINT-07.
+- **The plan counts only stories that have cleared the specify tier: 8, from 30/09/2026.**
+  `CADENCE.md` -> _When a sprint plan is written_ names the prerequisites that must hold for
+  **every story in the filling sprint** — `15-decisions` cleared, GDPR review, security threat
+  model and assessment, a QA plan with no unresolved `AC-GAP`, an SEO plan or `SEO: N/A` with a
+  reason, an API contract or no Ninja surface — and closes: "A story that cannot satisfy these is
+  **not ready to be counted towards the sprint**." US010 satisfied none of them on 20/09/2026, not
+  all of them on 27/09/2026 or 28/09/2026, and every one from 30/09/2026, when gate `11` closed
+  last — see below.
+
+<!-- AMENDED 28/09/2026 at the 16-sprint-plans security sign-off. The bold sentence above read "No
+     06-SPRINT-PLAN-06.md is written, and its absence is by rule, not omission", and the sentence
+     after it "The record's ledger and the plan's count are two different numbers, and this record
+     is at neither trigger", until then. The ledger bullet ended "8 of 11 is not the fill trigger."
+     The plan bullet read "The plan counts only stories that have cleared the specify tier: 0" and
+     closed "and on 27/09/2026 still does not satisfy them all". "By rule" had already disagreed
+     with the call of 21/09/2026 that SPRINT-07's Notes record, and round 1 Q1 of 28/09/2026 made
+     the plan owed now. The ledger stays at 8 / 11, and the backlog register does not move. Lifted
+     out of the list for the Prettier reason SPRINT-05 recorded on 20/09/2026.
+     AMENDED 30/09/2026 at gate 11's close: the count is dated 30/09/2026, when QA-PLAN-US010 was
+     signed off, and not from gate 10's sign-off of 28/09/2026, gate 11 closing only at Signed off
+     (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9). Q9 moves the day US010 cleared the
+     specify tier, not whether it has. -->
 
 Measured 20/09/2026. US010 has no ADR and records two ADR candidates in its own `## Decisions` for
 `15-decisions` to accept or decline; on that date it was named by no artefact under
@@ -439,33 +475,47 @@ rule, and declines its first on the record:
 `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`, both written
 `Proposed` and accepted in the 27/09/2026 write-back pass, after an independent review and before
 the US010 commit (settled 27/09/2026, grilling round 4 Q27 to Q29). Each record's own `**Status:**`
-line is the record of that acceptance, not this paragraph; both read `Proposed` as read on
-27/09/2026, and the prerequisite is met when both read `Accepted`.
+line is the record of that acceptance, not this paragraph: both read `Accepted`, committed with
+US010 in `0c5e635` on 27/09/2026, so **the `15-decisions` prerequisite is met**.
 
 <!-- AMENDED 27/09/2026 at the final pass. The paragraph above read "both written `Proposed` and
      accepted in the 27/09/2026 write-back pass" without the qualifier round 4 Q27 set: the
      acceptance follows an independent review and precedes the US010 commit. The qualifier stays
-     until each ADR's own Status line flips. -->
+     until each ADR's own Status line flips.
+     AMENDED 28/09/2026 at the 16-sprint-plans security sign-off. The last sentence read "both read
+     `Proposed` as read on 27/09/2026, and the prerequisite is met when both read `Accepted`" until
+     then. 0c5e635, the US010 commit that carried that sentence, committed both records Accepted,
+     so it was false as committed; the qualifier above has fired and now stands as the history of
+     how the acceptance was made. -->
 
 **Gates `10` and `11` ran for US010 the same day, and three artefacts now name it**, committed with
 US010: `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US010-SEEDED-REGISTER-INDEXES.md`
 and `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US010-SEEDED-REGISTER-INDEXES.md`
 under `10-SECURITY/`, and `project-management/src/11-QA/PLANNING/QA-PLAN-US010-SEEDED-REGISTER-INDEXES.md`
-under `11-QA/`. **All three are written, none is signed off, and all three are untracked** until
-the US010 commit — measured 27/09/2026. The two security plans each read `Draft` and each says it
-is not yet reviewed by <%DEVELOPER_NAME%>. `project-management/docs/planning/CADENCE.md` requires
-the security threat model and assessment complete, not merely written, so **the security
-prerequisite is outstanding** — SPRINT-05's reading of its members' `Draft` security plans on
-20/09/2026, and per `code/docs/GATE-REPORTING.md` an artefact existing is not a gate passing. **The
-QA prerequisite is met in content and not yet as committed**, SPRINT-07's reading of US011's plan:
-the QA plan reads `Reviewed`, all twenty-three of its gaps `[RESOLVED]` by 27/09/2026, AC-GAP-2 the
-last (settled 27/09/2026, grilling round 7 Q34), so
+under `11-QA/`. **All three are written and committed** — with US010 in `0c5e635` on 27/09/2026
+— **and the two security plans are signed off.** Each reads `Signed off · corrected in place
+28/09/2026`, its Author row closing "reviewed by <%DEVELOPER_NAME%>" (settled 28/09/2026,
+16-sprint-plans grilling round 1 Q1 and round 2 Q5); the correction moved no finding, severity or
+constraint, the count standing at 0 CRITICAL, 0 HIGH, 4 MEDIUM, 12 LOW and 2 INFO, and no Section 3a
+promotion trigger has fired. `project-management/docs/planning/CADENCE.md` requires the security
+threat model and assessment complete, not merely written, so **the security prerequisite is met**
+from 28/09/2026. Until then it was outstanding — SPRINT-05's reading of its members' `Draft`
+security plans on 20/09/2026, an artefact existing not being a gate passing, per
+`code/docs/GATE-REPORTING.md`. **The QA prerequisite is met, and gate `11` closed on
+30/09/2026.** The QA plan has read `Reviewed` since 27/09/2026, all twenty-three of its gaps
+`[RESOLVED]` by then, AC-GAP-2 the last (settled 27/09/2026, grilling round 7 Q34), so
 `project-management/src/11-QA/PLANNING/CLAUDE.md`'s bar — no sprint plan while any gap stands
-`[OPEN]` — no longer holds it; but it is untracked until the US010 commit, and
-`project-management/workflows/16-sprint-plans/STEPS.md` Step 1 needs it committed. **So the plan's
-count stays 0**, and no sprint plan is written here: the record is still short of the fill trigger
-at 8 / 11, and its one member has not yet cleared every prerequisite — the security plans unsigned,
-the two ADRs not yet `Accepted`, and none of its gate documents yet committed.
+`[OPEN]` — no longer holds it; and it is committed, as
+`project-management/workflows/16-sprint-plans/STEPS.md` Step 1 needs. `Reviewed` did not close the
+gate: gate `11` closes only when the plan reads `Signed off`, exactly as gate `10` does (settled
+30/09/2026, 16-sprint-plans grilling round 3 Q9), and <%DEVELOPER_NAME%> signed it off on
+30/09/2026. No procedure writes that rule down yet — `project-management/docs/planning/CADENCE.md`'s
+own QA prerequisite is met by a `Reviewed` plan — and US010's gate-`22` pass routes the defect to
+`GAPS.md` (Index and Seed Tasks below). **So the plan's count is 8, from 30/09/2026.** The record is
+still short of the fill trigger at 8 / 11, and its one member has cleared every prerequisite — the
+security plans and the QA plan signed off, both ADRs `Accepted`, and every gate document committed.
+The plan is owed by call rather than by a fill, as the no-plan paragraph above records, and
+`16-sprint-plans` writes it next.
 
 <!-- CORRECTED 27/09/2026. Two clauses above were true when written on 20/09/2026 and are scoped to
      that date rather than struck: the dated paragraph read "it is named by no artefact under" the
@@ -483,7 +533,22 @@ the two ADRs not yet `Accepted`, and none of its gate documents yet committed.
      either: the QA plan reads `Draft`, twenty-two of its twenty-three gaps `[RESOLVED]` 27/09/2026
      and one, AC-GAP-2, `[OPEN]` on grilling round 6 Q34" until then. Round 7 Q34 settled AC-GAP-2
      and the plan reached `Reviewed`. The count still stays 0, now on the security plans, the ADRs
-     and the commit rather than on an open gap. -->
+     and the commit rather than on an open gap.
+     AMENDED 28/09/2026 AT THE 16-SPRINT-PLANS SECURITY SIGN-OFF. The gates paragraph read "**All
+     three are written, none is signed off, and all three are untracked** until the US010 commit —
+     measured 27/09/2026. The two security plans each read `Draft` and each says it is not yet
+     reviewed by <%DEVELOPER_NAME%>", "so **the security prerequisite is outstanding**", "**The QA
+     prerequisite is met in content and not yet as committed**", "but it is untracked until the
+     US010 commit", and "**So the plan's count stays 0**, and no sprint plan is written here ... the
+     security plans unsigned, the two ADRs not yet `Accepted`, and none of its gate documents yet
+     committed" until then. The untracked clauses and the ADR clause were false as committed:
+     0c5e635 carried all three artefacts and both ADRs `Accepted` beside this paragraph. The
+     security clauses went false at the sign-off (settled 28/09/2026, 16-sprint-plans grilling
+     round 1 Q1). The count moves from 0 to 8; the ledger does not move.
+     AMENDED 30/09/2026 AT GATE 11'S CLOSE (settled 30/09/2026, 16-sprint-plans grilling round 3
+     Q9). The QA clause quoted above closes the gate at the plan's sign-off rather than reading a
+     plan met in content as met, and the count of 8 is dated from that sign-off, 30/09/2026, not
+     from gate 10's of 28/09/2026. -->
 
 **This record was opened at gate `03`, not after `10`, `11` and `15`, on SPRINT-05's precedent of
 09/09/2026.** SPRINT-03 and SPRINT-04 opened after their members had cleared the specify tier,
@@ -494,19 +559,36 @@ rewritten at its gate's close. That cost is now paid, ahead of either gate's clo
 `11` wrote their artefacts on 21/09/2026, grilling settled their open questions on 27/09/2026, and
 both sections were rewritten from them that day, the edits having waited while a concurrent session
 held this file (grilling round 2 Q9) until the two sessions' holds on each other lifted
-(CUT-PLAN.md P9). Their artefacts are committed with US010. Neither gate is signed off: both
-security plans read `Draft`, and the QA plan reads `Reviewed` with all twenty-three gaps resolved,
-which is not `Signed off`, as the gates paragraph above records.
+(CUT-PLAN.md P9). Their artefacts are committed with US010. Gate `10` is signed off: both
+security plans read `Signed off`, reviewed by <%DEVELOPER_NAME%> on 28/09/2026, and the correction
+made in place moved no Section 7 constraint, so the Security section below stands as rewritten.
+Gate `11` closed on 30/09/2026, when the QA plan was signed off: it had read `Reviewed` with all
+twenty-three gaps resolved since 27/09/2026, which did not close it (settled 30/09/2026,
+16-sprint-plans grilling round 3 Q9), as the gates paragraph above records. US010's QA criteria
+did not move with the sign-off, so the QA sections below stand as rewritten too.
 
 <!-- AMENDED 27/09/2026 AFTER TWO VERIFIED PASSES OF THAT WRITE-BACK. The paragraph above read
      "That cost is now paid: gates `10` and `11` closed on 21/09/2026, and both sections were
      rewritten from them on 27/09/2026" until that day. The gates wrote on 21/09/2026 and are not
      closed; the sections were rewritten from what they wrote.
      AMENDED 27/09/2026 at the final pass: the last sentence read "and the QA plan reads `Draft`
-     with AC-GAP-2 `[OPEN]`" until then (grilling round 7 Q34). -->
+     with AC-GAP-2 `[OPEN]`" until then (grilling round 7 Q34).
+     AMENDED 28/09/2026 at the 16-sprint-plans security sign-off. The last sentence read "Neither
+     gate is signed off: both security plans read `Draft`, and the QA plan reads `Reviewed` ..."
+     until then (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1). "Ahead of either gate's
+     close" stays: the sections were rewritten on 27/09/2026, the day before gate 10 closed.
+     AMENDED 30/09/2026 at gate 11's close (settled 30/09/2026, 16-sprint-plans grilling round 3
+     Q9): the gate-11 sentence is new, and dates the close to the QA plan's sign-off, its
+     `Reviewed` of 27/09/2026 not closing the gate. "Ahead of either gate's close" still stays:
+     gate 11 closed three days after the rewrite. -->
 
 **The citation gate is inherited red, and this record adds its own findings to it — expected, not a
-regression.** `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+regression.** `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
+superseded 30/09/2026 by
+`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+which restates it unchanged but for the manual testing guide's path, <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 governs: the baseline is captured before the first edit, read as a diff, and "never reported as the
 gate passing while the baseline stands". The class is `instance citation` — a record in house style
 cites artefacts by full path in backticks, which is not what the gate flags; the bare `US###` and
@@ -613,7 +695,14 @@ project and a recopy receive.
      gains the seed-row clause and its probe, the host QA-PLAN-US010 AC-GAP-2 proposed for
      assessment 7.4's one permitted row (settled 27/09/2026, grilling round 7 Q34, option 1). It is
      a clause in the settled third family, not a second family, so round 2 Q12's trigger is not
-     reached, and no `ST` is added or renumbered. -->
+     reached, and no `ST` is added or renumbered.
+
+     SIGNED OFF 28/09/2026. <%DEVELOPER_NAME%> signed off both gate-10 plans that day, each
+     corrected in place (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1 and round 2 Q5).
+     No row below moves: the correction moved no finding, severity or constraint, so Sections 7.1
+     to 7.8 read as they did, and signing off ticks none of them — each is ticked at close against
+     the implementation assessment's evidence. The last-but-one row gains the sign-off; see the
+     comment beneath the list. -->
 
 - [ ] **Seed-once integrity** — all seven `_tasks` `mv` lines sit inside the one existing entry
       whose `when:` key tests `_copier_operation == 'copy'`, no second task, asserted in the diff,
@@ -659,9 +748,17 @@ project and a recopy receive.
 - [ ] **One-line form** — every line is `mv .copier/<NOUN>-INDEX.md`, its register target, then
       `&&`: no flag, no quoting, no `|| true`, no split across the folded scalar, because the three
       consumers of the line each parse it their own way (US010/ST08)
-- [ ] **No CRITICAL or HIGH finding is open** — gate `10` ran on 21/09/2026 and raised none; ticked
-      at close unless a promotion trigger in the threat model's Section 3a fires during the sprint
+- [ ] **No CRITICAL or HIGH finding is open** — gate `10` ran on 21/09/2026 and raised none, and
+      both its plans were signed off on 28/09/2026 at the same count, with no Section 3a trigger
+      fired (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1); ticked at close unless a
+      promotion trigger in the threat model's Section 3a fires during the sprint
 - [ ] No secrets, debug flags, or hardcoded credentials are introduced in this sprint
+
+<!-- AMENDED 28/09/2026 at the 16-sprint-plans security sign-off. The CRITICAL-or-HIGH row read
+     "gate `10` ran on 21/09/2026 and raised none; ticked at close unless ..." until then, without
+     the sign-off. It stays unticked: the sign-off closes the planning gate, and the row still
+     binds the sprint, ticked at its close. Lifted out of the list for the Prettier reason SPRINT-05
+     recorded on 20/09/2026. -->
 
 ### QA Acceptance Criteria — Automated
 
@@ -704,8 +801,18 @@ project and a recopy receive.
 - [ ] Coverage floors — **N/A**, and marked rather than deleted. The member ships Markdown, YAML,
       bash and one edit to the CI probe `.github/scripts/shipped-ai.py`; the Backend flag reads
       `N/A`, and the one Python file is a template-only CI script outside `code/src/django/`, so the
-      floor has nothing to bind. Unlike `project-management/src/03-SPRINTS/SPRINT-05.md`, which
-      left this open because its member shipped settings modules
+      floor has nothing to bind. Unlike `project-management/src/03-SPRINTS/SPRINT-05.md`, whose
+      member ships settings modules: that record does not mark the row `N/A`, and makes no floor
+      claim on the modules, which are configuration with no branch to cover, the suite being read
+      as a regression
+
+<!-- CORRECTED 30/09/2026. The coverage row above ended "Unlike
+     `project-management/src/03-SPRINTS/SPRINT-05.md`, which left this open because its member
+     shipped settings modules" until then. That was true when written on 27/09/2026 and is not
+     now: SPRINT-05's row was amended on 28/09/2026 to make no floor claim, the reading US008's own
+     Verification Checks had stated since 09/09/2026, and that amendment is committed in the same
+     change as this correction. The contrast stands; only its description of SPRINT-05 moved.
+     Lifted out of the list for the Prettier reason SPRINT-05 recorded on 20/09/2026. -->
 
 ### QA Acceptance Criteria — Manual
 
@@ -714,7 +821,7 @@ project and a recopy receive.
      bar is `N-002`'s, not this record's. -->
 
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
-- [ ] `project-management/src/18-TESTS/US010-MANUAL-TESTING.md` carries a tester sign-off block
+- [ ] `project-management/src/18-TESTS/MANUAL/US010-MANUAL-TESTING.md` carries a tester sign-off block
 - [ ] **No `[OPEN]` acceptance-criteria gap remains** in the member's QA plan,
       `project-management/src/11-QA/PLANNING/QA-PLAN-US010-SEEDED-REGISTER-INDEXES.md`, written at
       gate `11` on 21/09/2026. The row stays unticked while any of that plan's gaps is `[OPEN]`, and
@@ -732,28 +839,29 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      plus a generation seam — so its index, seed and documentation work is carried here on
      SPRINT-05's precedent, which carried US008's five-guide rewrite under its Backend Tasks. -->
 
-| Story | Task                                                                                                                                                                                                                                                                                                                                     | Done |
-| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
-| US010 | Design the shared spine once, and each register's tail columns and ordering rule; state the order in every file, with the dates and tie-breaks of grilling round 3 Q17                                                                                                                                                                   | [ ]  |
-| US010 | Create all seven index files in-tree on the `23-INCIDENTS/INCIDENT-INDEX.md` shape                                                                                                                                                                                                                                                       | [ ]  |
-| US010 | Backfill `MAP-INDEX.md` one row per map, **re-counting the folder at implementation time** under the positive instance pattern (grilling round 3 Q22) — the count moved 14 to 15 at cutting                                                                                                                                              | [ ]  |
-| US010 | Add the `Backfill owed — US011` line to four indexes, and **not** to `FINDING-INDEX.md` or `BUG-INDEX.md`                                                                                                                                                                                                                                | [ ]  |
-| US010 | Author seven `.copier/` seeds, the six non-map ones carrying only the placeholder row; give `.copier/MAP-INDEX.md` its one row mirroring the seeded map, `Not started` (grilling round 1 Q4)                                                                                                                                             | [ ]  |
-| US010 | Add seven `mv` lines to the `_tasks` entry, ahead of `rmdir .copier`, inside the existing `copy` gate                                                                                                                                                                                                                                    | [ ]  |
-| US010 | Grow `SEEDED` in `.github/scripts/shipped-artefacts.sh` from one entry to eight, and reword the comment above it as the allowlist check 3 reads; whichever of US010 and US012 lands second extends the other's wording                                                                                                                   | [ ]  |
-| US010 | Add the seven landed index paths to the `[3/4]` completeness step                                                                                                                                                                                                                                                                        | [ ]  |
-| US010 | Give `project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md:4` the fifth value, the format and each value's test from the map's own counts (grilling round 3 Q18), `Blockers clear` winning the one overlap (grilling round 6 Q31)                                                                                                  | [ ]  |
-| US010 | Rewrite every map's `**Status**` header to `<enum>` or `<enum> · <prose>`, one of five values, plain, derived by measurement                                                                                                                                                                                                             | [ ]  |
-| US010 | Tick or re-justify every map's `Gate to stories` index-row box, disposing of **all three** decline rationales                                                                                                                                                                                                                            | [ ]  |
-| US010 | Sweep every map's `Umbrella ADRs` row                                                                                                                                                                                                                                                                                                    | [ ]  |
-| US010 | Replace `## Map index` in `01-FEATURE-MAPS/CONTEXT.md`; add or rewrite the `## The index` H2 in the other six; leave `23-INCIDENTS`                                                                                                                                                                                                      | [ ]  |
-| US010 | Repoint every shipped instruction site in the story's site scenario, the `project-management/workflows/` sites included (ST05 widened a second time, grilling round 3 Q14)                                                                                                                                                               | [ ]  |
-| US010 | Add wayfinder's chart-step line: writing a map's first node fills its `**Charted**` date and writes the value its counts give — `Charting` while `Blocking open` is above 0, otherwise `Blockers clear — stories may start` — never asserting `Charting` (grilling round 3 Q24; round 6 Q31; reconciled by the call recorded 27/09/2026) | [ ]  |
-| US010 | Correct the seven sites that count the seed task's files as nine, the `--trust` disclosure at `how-to/src/TEMPLATE-GUIDE/04-QUICKSTART.md:22` among them, merging ahead of US015 (grilling round 3 Q14)                                                                                                                                  | [ ]  |
-| US010 | Remove the `PLAN-<DESCRIPTOR>.md` programme-plan permission from its seven sites in the three shipped `17-STORY-PLANS/` files — `CLAUDE.md`, `CONTEXT.md` and the story-plan template (grilling round 6 Q32, Q33)                                                                                                                        | [ ]  |
-| US010 | Document TM-14 and TM-18 in `how-to/src/TEMPLATE-GUIDE/14-UPDATING.md`, promising no fix the template does not ship (grilling round 3 Q15)                                                                                                                                                                                               | [ ]  |
-| US010 | Re-measure the Plans Index citation population from the tree as it stands, per `US007.md`                                                                                                                                                                                                                                                | [ ]  |
-| US010 | **Verify, do not re-cut** the `S-01`, `S-02` and `S-05` rows on `MAP-REGISTER-INDEXES.md`, against the wording of the map's 27/09/2026 RESOLVE sitting (grilling round 5 Q30)                                                                                                                                                            | [ ]  |
+| Story | Task                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Done |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| US010 | Design the shared spine once, and each register's tail columns and ordering rule; state the order in every file, with the dates and tie-breaks of grilling round 3 Q17                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | [ ]  |
+| US010 | Create all seven index files in-tree on the `23-INCIDENTS/INCIDENT-INDEX.md` shape                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | [ ]  |
+| US010 | Backfill `MAP-INDEX.md` one row per map, **re-counting the folder at implementation time** under the positive instance pattern (grilling round 3 Q22) — the count moved 14 to 15 at cutting                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | [ ]  |
+| US010 | Add the `Backfill owed — US011` line to four indexes, and **not** to `FINDING-INDEX.md` or `BUG-INDEX.md`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | [ ]  |
+| US010 | Author seven `.copier/` seeds, the six non-map ones carrying only the placeholder row; give `.copier/MAP-INDEX.md` its one row mirroring the seeded map, `Not started` (grilling round 1 Q4)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | [ ]  |
+| US010 | Add seven `mv` lines to the `_tasks` entry, ahead of `rmdir .copier`, inside the existing `copy` gate                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | [ ]  |
+| US010 | Grow `SEEDED` in `.github/scripts/shipped-artefacts.sh` from one entry to eight, and reword the comment above it as the allowlist check 3 reads; whichever of US010 and US012 lands second extends the other's wording                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | [ ]  |
+| US010 | Add the seven landed index paths to the `[3/4]` completeness step                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | [ ]  |
+| US010 | Give `project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md:4` the fifth value, the format and each value's test from the map's own counts (grilling round 3 Q18), `Blockers clear` winning the one overlap (grilling round 6 Q31)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | [ ]  |
+| US010 | Rewrite every map's `**Status**` header to `<enum>` or `<enum> · <prose>`, one of five values, plain, derived by measurement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | [ ]  |
+| US010 | Tick or re-justify every map's `Gate to stories` index-row box, disposing of **all three** decline rationales                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | [ ]  |
+| US010 | Sweep every map's `Umbrella ADRs` row                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | [ ]  |
+| US010 | Replace `## Map index` in `01-FEATURE-MAPS/CONTEXT.md`; add or rewrite the `## The index` H2 in the other six; leave `23-INCIDENTS`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | [ ]  |
+| US010 | Repoint every shipped instruction site in the story's site scenario, the `project-management/workflows/` sites included (ST05 widened a second time, grilling round 3 Q14)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | [ ]  |
+| US010 | Add wayfinder's chart-step line: writing a map's first node fills its `**Charted**` date and writes the value its counts give — `Charting` while `Blocking open` is above 0, otherwise `Blockers clear — stories may start` — never asserting `Charting` (grilling round 3 Q24; round 6 Q31; reconciled by the call recorded 27/09/2026)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | [ ]  |
+| US010 | Correct the seven sites that count the seed task's files as nine, the `--trust` disclosure at `how-to/src/TEMPLATE-GUIDE/04-QUICKSTART.md:22` among them, merging ahead of US015 (grilling round 3 Q14)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | [ ]  |
+| US010 | Remove the `PLAN-<DESCRIPTOR>.md` programme-plan permission from its seven sites in the three shipped `17-STORY-PLANS/` files — `CLAUDE.md`, `CONTEXT.md` and the story-plan template (grilling round 6 Q32, Q33)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | [ ]  |
+| US010 | Document TM-14 and TM-18 in `how-to/src/TEMPLATE-GUIDE/14-UPDATING.md`, promising no fix the template does not ship (grilling round 3 Q15)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | [ ]  |
+| US010 | Re-measure the Plans Index citation population from the tree as it stands, per `US007.md`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | [ ]  |
+| US010 | At this story's `22-implementation-documentation` pass, the sole writer of `GAPS.md`, open one entry for the prerequisites a sprint plan checks, which do not state the gates as they are settled. It names three defects. (1) The flag-blind Security prerequisite. (2) The flag-blind GDPR prerequisite. (3) The unwritten rule that gate 11 closes only when a QA plan reads `Signed off`, as gate 10 now does. The entry is dated the day gate 22 writes it, not the day any of its answers was settled. Routed here, not fixed here — each defect's sites are named in `project-management/src/02-STORIES/US010.md` -> Tasks (settled 28/09/2026, 16-sprint-plans grilling round 1 Q2; the GDPR bullet by the call recorded 28/09/2026 at that gate; settled 30/09/2026, 16-sprint-plans grilling round 3 Q9, the routing of the gate-11 rule here a call made 30/09/2026 while applying it, not one of its answers, accepted, settled 30/09/2026, 16-sprint-plans grilling round 5 Q16) | [ ]  |
+| US010 | **Verify, do not re-cut** the `S-01`, `S-02` and `S-05` rows on `MAP-REGISTER-INDEXES.md`, against the wording of the map's 27/09/2026 RESOLVE sitting (grilling round 5 Q30)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | [ ]  |
 
 <!-- AMENDED 27/09/2026 with US010's write-back of gates 10, 11 and 15 and grilling rounds 3 to 5,
      against US010's own Tasks as they then stood. Three rows read otherwise until that day: the
@@ -772,10 +880,15 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      left, Blockers clear winning. The SEEDED row read "reword the comment above it as the
      allowlist check 3 reads, for US012 to extend", which fixed a landing order CUT-PLAN.md P9 never
      set; it now carries the in-either-order rule. One row is new: the programme-plan permission
-     leaves its seven sites — 17-STORY-PLANS/CLAUDE.md:11, :72 and :79-80;
-     17-STORY-PLANS/CONTEXT.md:18 and :25; 00-STORY-PLAN-US000-TEMPLATE.md:254 and :713-714 —
+     leaves its seven sites — project-management/src/17-STORY-PLANS/CLAUDE.md:11, :72 and :81-82;
+     project-management/src/17-STORY-PLANS/CONTEXT.md:18 and :25;
+     project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md:254 and :714-715 —
      every file already in the write set, and ST05 already admitting project-management/src/ (Q32,
-     Q33).
+     Q33). CORRECTED 30/09/2026: the sites read "17-STORY-PLANS/CLAUDE.md:11, :72 and :79-80;
+     17-STORY-PLANS/CONTEXT.md:18 and :25; 00-STORY-PLAN-US000-TEMPLATE.md:254 and :713-714" until
+     then, measured 27/09/2026. The 18-TESTS split, committed together with this correction, moves
+     two of the seven down, the text unchanged; re-measured 30/09/2026 against the tree committed
+     together with it.
 
      AMENDED A THIRD TIME 27/09/2026, at the final pass, against US010's wayfinder task as it now
      stands. The wayfinder row read "writing a map's first node moves it from `Not started` to
@@ -784,7 +897,32 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      and writes the value the counts give, Charting while Blocking open is above 0 and otherwise
      Blockers clear — stories may start, never asserting Charting (the Q24 x Q31 reconciliation,
      call recorded 27/09/2026 and announced to the developer). The seed-row clause (round 7 Q34)
-     is rolled up under Security Tasks with the rest of its family, not here. -->
+     is rolled up under Security Tasks with the rest of its family, not here.
+
+     ONE ROW ADDED 28/09/2026, at the 16-sprint-plans gate: the GAPS.md entry above the verify
+     row (settled 28/09/2026, 16-sprint-plans grilling round 1 Q2). Security is read by its flag.
+     project-management/workflows/16-sprint-plans/STEPS.md Step 1, the security line of
+     project-management/workflows/16-sprint-plans/CHECKLIST.md, and
+     project-management/docs/planning/CADENCE.md -> When a sprint plan is written each demand the
+     security gate's work — a threat model and assessment, or security checks complete — of every
+     story, with no flag condition. That guide's own rule, "A downstream checklist reads the flag",
+     requires any such box to be written "for every in-scope story whose <flag> is not `N/A`",
+     here the Security flag. The defect is routed to GAPS.md rather than repaired here: round 1
+     Q2 routes it through US010's gate-22 pass, gate 22 being the only writer of GAPS.md, so the
+     row is keyed US010. It sits in this table because the entry is documentation work, which
+     this table carries for the member, on US011's precedent for the TM-10 entry in
+     project-management/src/03-SPRINTS/SPRINT-07.md -> Measurement and Backfill Tasks. The row
+     mirrors the Documentation Task added the same day to
+     project-management/src/02-STORIES/US010.md -> Tasks.
+
+     THE SAME ROW WIDENED 30/09/2026, with the story's task. Its one entry names three defects:
+     the Security one above; the GDPR prerequisite that
+     project-management/docs/planning/CADENCE.md states with no flag condition, where Step 1 and
+     the checklist already read the flag (the call recorded 28/09/2026 at that gate); and the
+     unwritten rule that gate 11 closes only when a QA plan reads Signed off (settled 30/09/2026,
+     16-sprint-plans grilling round 3 Q9; its routing here a call made 30/09/2026 while applying it, not one of its answers, accepted, settled 30/09/2026, 16-sprint-plans grilling round 5 Q16). Every sentence of the row is the story's own wording,
+     bar the pointer back to the story before the citations; the row stops short of the story's
+     site-by-site detail, which stays in the story, as this section's rollup rule says. -->
 
 ### Security Tasks
 
@@ -810,7 +948,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
 ### QA Tasks — Automated
 
 - [ ] US010 — run `shipped-artefacts.sh --self-test` with the enlarged `SEEDED` array, output
-      recorded in `project-management/src/18-TESTS/US010-TEST-STATUS.md`
+      recorded in `project-management/src/18-TESTS/AUTOMATED/US010-TEST-STATUS.md`
 - [ ] US010 — add the generated-tree grep asserting no syntek-base literal appears in any index, on
       **every render path the template offers** (today: `INCLUDE_MOBILE` true and false)
 - [ ] US010 — add the link check over the seven in-tree and the seven generated indexes
@@ -919,7 +1057,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       widened script asks for and `lint.sh` does not carry it**: its legs are ruff,
       markdownlint-cli2, ESLint and clippy, and no script under `code/src/scripts/`, no CI workflow
       and no lefthook entry runs ShellCheck. It is recorded in
-      `project-management/src/18-TESTS/US010-MANUAL-TESTING.md` as run or as not run, never as a
+      `project-management/src/18-TESTS/MANUAL/US010-MANUAL-TESTING.md` as run or as not run, never as a
       `lint.sh` pass, per `code/docs/GATE-REPORTING.md`
 - [ ] `bash code/src/scripts/syntax/check.sh` passes — **regression only.** Its basedpyright leg
       reads `code/src/django/` only (`pyproject.toml:184`), and this sprint's one Python edit,
@@ -991,8 +1129,9 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] No `[OPEN]` acceptance-criteria gap remains in the member's QA plan,
       `project-management/src/11-QA/PLANNING/QA-PLAN-US010-SEEDED-REGISTER-INDEXES.md`, which gate
       `11` wrote on 21/09/2026 — on 27/09/2026 it reads `Reviewed`, all twenty-three gaps resolved
-      into the story, AC-GAP-2 the last (grilling round 7 Q34). The plan is untracked until the
-      US010 commit, and the row is ticked at close against the plan as committed, not before
+      into the story, AC-GAP-2 the last (grilling round 7 Q34). The plan was committed with US010
+      in `0c5e635` on 27/09/2026 and signed off on 30/09/2026, when gate `11` closed, and the row
+      is ticked at close against the plan as committed, not before
 - [ ] The Security and QA rows of the FLAGS table, and the sections they govern, were recomputed
       when gates `10` and `11` closed. **Which union they must equal depends on the carry**, and
       both branches are named so that a reviewer ticking this row after a landed carry is not asked
@@ -1017,4 +1156,8 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      AMENDED 27/09/2026 at the final pass. The QA-plan row closed "on 27/09/2026 AC-GAP-2 alone
      stands `[OPEN]`, awaiting grilling round 6 Q34" until then. Round 7 Q34 settled that gap and
      the plan reached `Reviewed`, so the row now states the plan's final pre-commit state and when
-     it is ticked, SPRINT-07's wording for US011's plan. -->
+     it is ticked, SPRINT-07's wording for US011's plan.
+     AMENDED 28/09/2026 at the 16-sprint-plans security sign-off. The QA-plan row read "The plan is
+     untracked until the US010 commit" until then; 0c5e635 committed the plan beside that sentence,
+     so it was false as committed. On 30/09/2026 the row gained the plan's sign-off, the day gate
+     11 closed (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9). -->

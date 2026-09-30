@@ -338,7 +338,9 @@ that owns it, and the index state stated beside the figure.
 - `project-management/src/02-STORIES/US005.md` — the story this plan tests and fed fourteen of fifteen gaps back into
 - `project-management/src/03-SPRINTS/SPRINT-03.md` — the sprint whose flag union AC-GAP-15 recomputed
 - `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US005-RETRY-AMPLIFICATION.md` · `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US005-RETRY-AMPLIFICATION.md` — the security gate that raised AC-GAP-8, AC-GAP-11 and AC-GAP-15
-- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the regime Section 7 runs under
+- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the regime Section 7 runs under, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - `project-management/src/15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` — the rule the `doctrine-drift.sh` note rests on
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide
 - `project-management/workflows/11-qa-checks/` — the workflow that produced this plan

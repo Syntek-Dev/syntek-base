@@ -568,7 +568,9 @@ kept because the next reader will otherwise raise them again.
 - `project-management/src/03-SPRINTS/SPRINT-04.md` — the sprint this story opens, whose Notes carry AC-GAP-16's carry-over contingency
 - `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US006-POSTURE-GUARD.md` · `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US006-POSTURE-GUARD.md` — the security gate whose Section 7 this plan amends at 7.5, 7.6, 7.7 and 7.12
 - `project-management/src/15-DECISIONS/ADR-US006-POSTURE-CARRIER-FAILS-CLOSED-05-09-2026.md` · `project-management/src/15-DECISIONS/ADR-US006-OVERRIDE-NAMES-THE-LIVE-POSTURE-05-09-2026.md` — the two records AC-GAP-17 corrected before they were written
-- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the regime Section 7 runs under, and which US004 retires
+- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the regime Section 7 runs under, and which US004 retires; superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged, retirement terms included, but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - `project-management/src/01-FEATURE-MAPS/MAP-SCRIPT-GUARDS.md` — the map whose S-01 script list AC-GAP-2 re-cuts
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide
 - `project-management/workflows/11-qa-checks/` — the workflow that produced this plan

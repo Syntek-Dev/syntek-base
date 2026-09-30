@@ -35,16 +35,17 @@ sign-off before merge.
   Pass only with evidence (a test name, file, or observed behaviour). If the plan is
   missing, flag it; do not invent one.
 - **A hand-verified scenario may cite the manual row that exercised it** — a `{AREA}-{NN}` row ID
-  from `../../18-TESTS/US###-MANUAL-TESTING.md` — instead of a test name. Optional, and never the
-  reason a test was not written; the template's Section 3 carries the rule.
+  from `../../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` — instead of a test name. Optional, and never
+  the reason a test was not written; the template's Section 3 carries the rule.
 - **The sign-off blocks the merge** — an unresolved Fail or an unjustified deviation is a
   blocker, not a footnote.
 - One review per story; do not batch multiple stories into one file.
 - **Documentation only — no source, secrets, or `.env` content.** Keep accessibility,
   GDPR, and security claims consistent with `project-management/docs/QA-GUIDE.md` and
   `code/docs/SECURITY.md`.
-- Downstream automated status and manual guides live in `../../18-TESTS/`; code-review
-  notes in `../../19-REVIEWS/` — do not duplicate them here.
+- Automated status lives in `../../18-TESTS/AUTOMATED/`, the walked manual testing guides in
+  `../../18-TESTS/MANUAL/`, and code-review notes in `../../19-REVIEWS/` — do not duplicate them
+  here.
 
 ## Output & naming
 

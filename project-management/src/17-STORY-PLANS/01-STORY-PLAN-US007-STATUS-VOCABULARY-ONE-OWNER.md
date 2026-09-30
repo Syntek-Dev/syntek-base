@@ -34,7 +34,12 @@ by a human read-across; `doctrine-drift.sh` is a regression guard only),
 `../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` (a gate that reads the files
 under test but decides none of the question stays in the manifest, narrowed) and
 `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red `doc-references.sh`
-is read as an identity diff against a recorded baseline until US004 retires the regime).
+is read as an identity diff against a recorded baseline until US004 retires the regime; superseded
+30/09/2026 by
+`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+which restates it unchanged but for the manual testing guide's path). <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 
 **No new ADR, and that is on the record rather than an omission.**
 `../02-STORIES/US007.md` -> _Decisions_ closes with "No record is written at this gate": each of
@@ -399,8 +404,8 @@ already-correct third plan.
 legend in the sprint-plan template's column header routes to `STORIES.md` -> _Story statuses_,
 which ratifies the third plan's position.
 
-**The casing touch.** `../18-TESTS/US000-MANUAL-TESTING.md:5` is normalised `In progress` →
-`In Progress` as a casing correction inside that register's own three-value set; no word changes.
+**The casing touch.** `../18-TESTS/MANUAL/US000-MANUAL-TESTING.md:5` is normalised `In progress` →
+`In Progress` as a casing correction inside that register's own five-value set; no word changes.
 The other two lowercase sites — the skill's `:42` and the map's `:217` — clear as consequences of
 Phases 2 and 5 rather than as extra edits. Measured 08/09/2026:
 `git grep -nw "In progress" -- '*.md' '*.sh' '*.yml'` returns **11 hits**, of which **3 are
@@ -424,14 +429,23 @@ baseline: repoint it to the on-disk prefixed name, or, where a superseded name i
 being quoted, move it from backticks to "double quotes"** (QA plan ES-11). Then build the Scenario
 1 named-site inventory with its role column; run the casing `git grep` with its stated pathspecs;
 take the before/after list of the source fields; perform the human read-acrosses; and write all of
-it into "project-management/src/18-TESTS/US007-MANUAL-TESTING.md", which does not exist today and
-is created at implementation from `../18-TESTS/US000-MANUAL-TESTING.md`.
+it into `../18-TESTS/MANUAL/US007-MANUAL-TESTING.md` as the walk's results. The guide itself is
+not created here: it was authored before code from this plan (backfilled 30/09/2026) and is walked
+and marked at `22`.
 
 <!-- That path is in double quotes, not backticks, deliberately: the file does not exist, and
      `doc-references.sh` reads backticked tokens as paths. The same rule governs every
      work-yet-to-create name in this plan. `../02-STORIES/US001.md`'s plan backticks its own
      equivalent and is a live forward reference no gate catches — named in
      ADR-US001-INSTANCE-CITATION-UNVERIFIED and not repeated here. -->
+
+<!-- 30/09/2026: the comment above describes the path as it stood until this date. The paragraph
+     read "write all of it into "project-management/src/18-TESTS/US007-MANUAL-TESTING.md", which
+     does not exist today and is created at implementation from
+     ../18-TESTS/US000-MANUAL-TESTING.md". That day the 18-TESTS folder split into MANUAL/ and
+     AUTOMATED/, the manual guide's authorship moved to 17-story-plans Step 7.2, and this story's
+     guide was backfilled from this plan, so the path exists and is backticked. The double-quote
+     rule still governs every other work-yet-to-create name here. -->
 
 ### Phase dependencies
 
@@ -695,9 +709,12 @@ contract or browser test. `code/docs/TESTING.md`'s floors — 75% line and branc
 code, and none is added. Recorded rather than left to be inferred as a pass.
 
 **Every criterion closes by a recorded human read-across** in
-"project-management/src/18-TESTS/US007-MANUAL-TESTING.md", because **no gate in this repository
+`../18-TESTS/MANUAL/US007-MANUAL-TESTING.md`, because **no gate in this repository
 reads a status value or a doctrine claim expressed in prose or a table**: `doctrine-drift.sh` logs
 its scope as fenced code only, and the only two extraction sites accept any string.
+
+The rows a person walks for the checks below are in that guide, authored from this plan before
+code (backfilled 30/09/2026) and walked at `22`.
 
 | Check                                               | How it is decided                                                                                                                                                                                                             |
 | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -719,23 +736,30 @@ its scope as fenced code only, and the only two extraction sites accept any stri
 
 ## Documentation Write-Ups (Implementation Records)
 
-Owned by `22-implementation-documentation`. Of the records below, this story authors **one new one
-at implementation** — the manual-testing walk-through in `../18-TESTS/`. The QA implementation
-review and the code review record follow at `23-pr-and-review`, as they do for every story.
+Owned by `22-implementation-documentation`. Of the records below, this story authors **no new one
+at implementation** — the manual testing guide in `../18-TESTS/MANUAL/` was authored before code
+(backfilled 30/09/2026) and is walked, not written, at `22`. The QA implementation review and the
+code review record follow at `23-pr-and-review`, as they do for every story.
 
-| Record                                                 | Destination                                                      | This story                                                                                                                                                                                                                                                                                                                             |
-| ------------------------------------------------------ | ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **This plan**                                          | `../17-STORY-PLANS/`                                             | Always — written 08/09/2026                                                                                                                                                                                                                                                                                                            |
-| User story                                             | `../02-STORIES/US007.md`                                         | Always — exists, `Open`                                                                                                                                                                                                                                                                                                                |
-| QA plan (pre-dev)                                      | `../11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` | Always — exists, `Signed off`                                                                                                                                                                                                                                                                                                          |
-| QA implementation review                               | `../11-QA/IMPLEMENTATION/`                                       | Always — written at `23-pr-and-review`                                                                                                                                                                                                                                                                                                 |
-| **Manual testing record**                              | `../18-TESTS/`                                                   | Always — "project-management/src/18-TESTS/US007-MANUAL-TESTING.md" does not exist today; **created by this story at Phase 6** from `../18-TESTS/US000-MANUAL-TESTING.md`                                                                                                                                                               |
-| **Automated test status**                              | `../18-TESTS/`                                                   | **Not required, and decided rather than omitted** — the folder's pair exists for a story with an automated suite, and this one has none: no code path, so no green/red/partial to record and no coverage figure. `23-pr-and-review/CHECKLIST.md`'s test-status box is ticked `N/A` with this reason, per `code/docs/GATE-REPORTING.md` |
-| Code review record                                     | `../19-REVIEWS/`                                                 | Always — written at `23-pr-and-review`                                                                                                                                                                                                                                                                                                 |
-| Sprint plan                                            | `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md`                        | Always — exists; takes this plan's path and branch                                                                                                                                                                                                                                                                                     |
-| ADR                                                    | `../15-DECISIONS/`                                               | **Not required** — the reversibility test, argued under _Architecture Decision_                                                                                                                                                                                                                                                        |
-| Schema · GDPR · security · SEO · API · logging records | `../04-DATABASE/` … `../14-LOGGING/`                             | **Not required** — the matching flags read `N/A`                                                                                                                                                                                                                                                                                       |
-| Bug · refactoring · release                            | `../21-BUGS/` · `../22-REFACTORING/` · repo root                 | **Not required** — no bug, no restructure, no version bump                                                                                                                                                                                                                                                                             |
+<!-- 30/09/2026: the paragraph above read "this story authors one new one at implementation — the
+     manual-testing walk-through in ../18-TESTS/", and the manual row below read "created by this
+     story at Phase 6", until the 18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual
+     guide's authorship moved to 17-story-plans Step 7.2 (../18-TESTS/CLAUDE.md -> The record
+     lifecycle). -->
+
+| Record                                                 | Destination                                                      | This story                                                                                                                                                                                                                                                                                                                                |
+| ------------------------------------------------------ | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **This plan**                                          | `../17-STORY-PLANS/`                                             | Always — written 08/09/2026                                                                                                                                                                                                                                                                                                               |
+| User story                                             | `../02-STORIES/US007.md`                                         | Always — exists, `Open`                                                                                                                                                                                                                                                                                                                   |
+| QA plan (pre-dev)                                      | `../11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` | Always — exists, `Signed off`                                                                                                                                                                                                                                                                                                             |
+| QA implementation review                               | `../11-QA/IMPLEMENTATION/`                                       | Always — written at `23-pr-and-review`                                                                                                                                                                                                                                                                                                    |
+| **Manual testing guide**                               | `../18-TESTS/MANUAL/`                                            | Always — `../18-TESTS/MANUAL/US007-MANUAL-TESTING.md`, authored before code from this plan (backfilled 30/09/2026); **walked and marked at `22`**, Phase 6 writing its results into it — never created at implementation                                                                                                                  |
+| **Automated test status**                              | `../18-TESTS/AUTOMATED/`                                         | **Always** — "../18-TESTS/AUTOMATED/US007-TEST-STATUS.md", written at `22` with the generator's no-test block and Section 3 giving the reason: no code path, so no suite and no coverage figure (`../18-TESTS/AUTOMATED/CLAUDE.md` → _Guardrails_; corrected 30/09/2026 — this cell read "Not required, and decided rather than omitted") |
+| Code review record                                     | `../19-REVIEWS/`                                                 | Always — written at `23-pr-and-review`                                                                                                                                                                                                                                                                                                    |
+| Sprint plan                                            | `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md`                        | Always — exists; takes this plan's path and branch                                                                                                                                                                                                                                                                                        |
+| ADR                                                    | `../15-DECISIONS/`                                               | **Not required** — the reversibility test, argued under _Architecture Decision_                                                                                                                                                                                                                                                           |
+| Schema · GDPR · security · SEO · API · logging records | `../04-DATABASE/` … `../14-LOGGING/`                             | **Not required** — the matching flags read `N/A`                                                                                                                                                                                                                                                                                          |
+| Bug · refactoring · release                            | `../21-BUGS/` · `../22-REFACTORING/` · repo root                 | **Not required** — no bug, no restructure, no version bump                                                                                                                                                                                                                                                                                |
 
 **What is forward-referenced today, measured 08/09/2026.**
 "project-management/src/18-TESTS/US007-MANUAL-TESTING.md" is named by `../02-STORIES/US007.md`,
@@ -743,6 +767,13 @@ the QA plan and `../03-SPRINTS/SPRINT-01.md`; `../16-SPRINT-PLANS/01-SPRINT-PLAN
 pattern `../18-TESTS/US###-MANUAL-TESTING.md` only, not the instance.
 "project-management/src/18-TESTS/US007-TEST-STATUS.md" is named **nowhere in the tree**. The folder
 holds only its pair and the two `US000-` templates.
+
+<!-- 30/09/2026: the paragraph above is the 08/09/2026 measurement and is left as measured. Since
+     then the folder split into MANUAL/ and AUTOMATED/, each with its own pair, and the guide was
+     backfilled at ../18-TESTS/MANUAL/US007-MANUAL-TESTING.md, so it is no longer a forward
+     reference. The same day the developer settled that every story gets an automated record,
+     a plan unable to decide it away (../18-TESTS/AUTOMATED/CLAUDE.md -> Guardrails), so
+     "../18-TESTS/AUTOMATED/US007-TEST-STATUS.md" is a forward reference written at 22. -->
 
 ---
 
@@ -942,7 +973,7 @@ git grep -nw "In progress" -- '*.md' '*.sh' '*.yml' \
   ':!handoffs/' \
   ':!project-management/src/02-STORIES/US007.md' \
   ':!project-management/src/11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md' \
-  ':!project-management/src/18-TESTS/US007-MANUAL-TESTING.md'
+  ':!project-management/src/18-TESTS/MANUAL/US007-MANUAL-TESTING.md'
 ```
 
 - [ ] Every detector hash matches the value recorded at capture — otherwise the diff is
@@ -997,19 +1028,18 @@ git grep -nw "In progress" -- '*.md' '*.sh' '*.yml' \
       **no story plan's own `Status` field is edited**
 - [ ] `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md:215-219` is corrected as a **stated exception**; `:213`,
       `:456-469` and `:556` stand, and the one edit and three non-edits are recorded with reasons
-- [ ] `../18-TESTS/US000-MANUAL-TESTING.md` is normalised to `In Progress`, casing only
+- [ ] `../18-TESTS/MANUAL/US000-MANUAL-TESTING.md` is normalised to `In Progress`, casing only
 - [ ] The closing `git grep -nw "In progress"` returns zero over its stated population and
       pathspecs, recorded verbatim
 - [ ] Zero live source `**Status:**` values change but this story's own, whose trajectory is
       `Open` → `In Review` → `Completed` — two writes on one moving field
 - [ ] The named-site inventory exists with a **role** column, and shows exactly one definition row
       per set
-- [ ] "project-management/src/18-TESTS/US007-MANUAL-TESTING.md" exists and carries the baselines,
-      the detector hashes, the four identity diffs, the before/after source list, the six mirror
+- [ ] `../18-TESTS/MANUAL/US007-MANUAL-TESTING.md` is walked, every row marked, and carries the
+      baselines, the detector hashes, the four identity diffs, the before/after source list, the six mirror
       cells, the read-acrosses and the casing grep — every figure with its date
-- [ ] `23-pr-and-review/CHECKLIST.md`'s automated-test-status box is ticked **N/A** with its
-      reason — no code path, so no test status and no coverage figure — and no
-      "US007-TEST-STATUS.md" is authored
+- [ ] "../18-TESTS/AUTOMATED/US007-TEST-STATUS.md" is written at `22` — the generator's no-test
+      block, and Section 3 giving the reason: no code path, so no suite and no coverage figure
 - [ ] A tester other than the author has signed the walk-through off
 - [ ] All five gates recorded under their stated regimes, with **no plain pass reported where the
       gate could not decide the question**

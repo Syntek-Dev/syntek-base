@@ -63,6 +63,11 @@ A plan is created before implementation begins and documents:
 - Deferred items and risks
 - Docker & Nginx infrastructure — the per-story worktree isolation files
 
+**The plan's executable half is filed elsewhere.** Beside each plan the same workflow authors the
+story's manual testing guide, from the specs and before any code, into
+`../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` — it becomes a record once walked, so it lives with
+the records. The plan's _Manual testing_ section points at it rather than listing steps.
+
 **Per-story worktree isolation files** — each plan references four files that keep
 parallel worktrees from colliding (unique `127.0.0.N` IP + port block per story):
 

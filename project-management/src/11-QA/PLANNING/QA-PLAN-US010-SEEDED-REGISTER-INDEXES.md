@@ -6,7 +6,7 @@
 | **Date**      | 21/09/2026                                                                                                                                              |
 | **Sprint**    | SPRINT-06 — its sole member, 8 of 11 SP, holding a 5 SP reservation for US009's carry (13 / 11 SP at grace if it lands)                                 |
 | **Wireframe** | N/A — this story ships Markdown, one YAML `_tasks` chain, one bash array, one bash check family and one Python probe; no screen, no component, no route |
-| **Status**    | Reviewed — all twenty-three gaps resolved into the story, 27/09/2026                                                                                    |
+| **Status**    | Signed off · **corrected in place 30/09/2026** — see below                                                                                              |
 
 <!-- STEP 1's GRILLING PASS RAN on 21/09/2026: two rounds with the developer over US010 and US011
      together, frontier empty. Its decisions are cited below as "settled 21/09/2026, grilling round
@@ -65,7 +65,7 @@
      WRITTEN BACK 27/09/2026, AND ROUND 2 Q9'S HOLD IS LIFTED. CUT-PLAN.md P9 (27/09/2026) lifted
      the two sessions' holds on each other, so STEP 5 ran: US010.md now carries this plan's edits,
      gate 10's and gate 15's, applied together over the concurrent session's uncommitted edits
-     (US010.md:173-185), and the story's round-6 amendment followed (:187-197). Twenty-two gaps
+     (project-management/src/02-STORIES/US010.md:176-188), and the story's round-6 amendment followed (:190-200). Twenty-two gaps
      were [RESOLVED] 27/09/2026 at that write-back, each citing the story line its fix sat at.
      AC-GAP-2 stayed [OPEN] then: the seed-row agreement clause it proposed for the family was
      Q34, asked 27/09/2026 and cited here as round 6 Q34, and unanswered at that point.
@@ -84,7 +84,7 @@
      scale-planning seed's own Status header (.copier/MAP-SCALE-PLANNING.md:4) — with its own
      --self-test probe, a mutated seed pair yielding exactly one finding, as every check in that
      family ships one. It is a clause in the settled family, not a second family, so round 2 Q12's
-     trigger is not reached. The story carries it (its final-pass amendment, US010.md:199-212),
+     trigger is not reached. The story carries it (its final-pass amendment, project-management/src/02-STORIES/US010.md:202-215),
      AC-GAP-2 is [RESOLVED] 27/09/2026, and HP-03's Status half is automated by the clause, not a
      manual read. Two calls of the same day land with it: the Q24 x Q31 reconciliation, under which
      wayfinder's chart step fills Charted and writes the value the map's counts give and never
@@ -96,7 +96,58 @@
      the measure the paragraph above records. A US010.md or
      SPRINT-06.md line in a gap's description locates the text as it was on 21/09/2026 and is
      marked "(as read 21/09/2026)" rather than re-pointed (Section 1). SPRINT-06 is still being
-     edited in this pass, so its two 27/09/2026 citations are made by text, not by line. -->
+     edited in this pass, so its two 27/09/2026 citations are made by text, not by line.
+
+     SIGNED OFF 30/09/2026 by <%DEVELOPER_NAME%> (settled 30/09/2026, 16-sprint-plans grilling
+     round 3 Q9), against the tree at a18db0b with that gate's corrections applied. The Status
+     row read "Reviewed — all twenty-three gaps resolved into the story, 27/09/2026" until then. "US010.md does not change
+     again after the Stories phase" stopped holding when the 16-sprint-plans gate corrected the
+     story on 28/09/2026 and again on 30/09/2026, above lines this plan cites, and commit 0c5e635's
+     text is no longer where the citations land. Every live line citation into US010.md and
+     US011.md is re-measured against the stories as corrected that day; the numbers it replaces
+     are kept in the dated comments beside Section 1's list and the tables that carry them. What
+     else was corrected, and why, is the note below this comment. No gap, scenario or severity
+     moves. -->
+
+> **Corrected in place, 30/09/2026, at the `16-sprint-plans` gate, and signed off by
+> <%DEVELOPER_NAME%>**: gate 11 closes when a QA plan reads `Signed off`, as gate 10 does (settled
+> 30/09/2026, 16-sprint-plans grilling round 3 Q9). Three things had moved under the plan since its
+> final pass of 27/09/2026. Correcting them in the same pass rather than under a signature is a
+> call made 30/09/2026 while applying round 3, not one of its answers, on the pattern round 2 Q5
+> set for the gate-10 plans. <%DEVELOPER_NAME%> reviewed every change made under this sign-off,
+> this call among them, and accepted them all (settled 30/09/2026, 16-sprint-plans grilling
+> round 5 Q16):
+>
+> - **Story citations follow the stories.** Every "Written back" citation in Section 1, HP-03,
+>   and the TM-10 and TM-13 rows of Section 5 is re-measured against US010.md and US011.md as the
+>   16-sprint-plans gate corrected them on 28/09/2026 and 30/09/2026 — the text is unchanged,
+>   only its lines moved, bar one: the `GAPS.md` routing bullet AC-GAP-23 cites now names a fourth
+>   routed item and spans `project-management/src/02-STORIES/US010.md:426-442`. Citations marked
+>   "as read 21/09/2026" keep locating the text as it stood then.
+> - **Both US010 ADRs read `Accepted`**, not `Proposed` pending review: each file's `:3`, committed
+>   so at `0c5e635` after round 4 Q27's independent review. Corrected in the Cross-references; the
+>   "(Proposed)" in AC-GAP-4 and AC-GAP-5 records their state when settled on 21/09/2026.
+> - **Tree citations were re-measured on 30/09/2026**, against the tree committed together with the
+>   18-TESTS split. Commit `ceb2d70` (28/09/2026) moved four of AC-GAP-1's twenty-four sites in
+>   `project-management/workflows/17-story-plans/`, and the 18-TESTS split moves eight, those four
+>   among them, and the dated template comment the list cites as an example, each recorded beside
+>   the list that cites them. The split moves five other citations, each re-pointed with its old
+>   number kept in a dated comment beside it: the `copier.yml` one-way door and the
+>   `project-management/src/23-INCIDENTS/CONTEXT.md` precedent in Section 1, HP-04's seed task and
+>   HP-17's plans-index section, and EC-17's conditional `_exclude` entries. Every other citation
+>   into `copier.yml`, `.github/scripts/`, `.github/workflows/`, `code/src/scripts/`,
+>   `pyproject.toml`, the templates, the ADRs and the maps holds. The split rewrites lines in
+>   `copier.yml`, `.github/scripts/shipped-artefacts.sh`, `pyproject.toml` and the templates without
+>   moving any other line cited here, and every other file this plan cites by line among them is
+>   unchanged since `71a32d7`, where this plan was measured, bar the two ADRs, committed at
+>   `0c5e635` with the paragraphs cited where they were read, and `MAP-REGISTER-INDEXES.md`, which
+>   the RESOLVE sitting of 27/09/2026 corrected at the N-003 and Acceptance-cell lines AC-GAP-2,
+>   AC-GAP-8 and AC-GAP-17 cite as read 21/09/2026, as AC-GAP-17 records. Section 7's readings and
+>   the dated record of 21/09/2026 beneath Section 1's list stay readings of `71a32d7`. The story
+>   citations on lines changed at this gate carry their full repo-relative path since 30/09/2026.
+>
+> Corrected rather than superseded because no gap, finding, scenario or severity moved. Signing off
+> ticks no box in the story; the implementation review closes each scenario with evidence.
 
 ---
 
@@ -115,14 +166,17 @@ is `[OPEN]`", AC-GAP-2 standing "on round 6 Q34 alone".
 **Two kinds of story citation, never mixed.** A gap's description locates US010.md and
 SPRINT-06.md as the working copies read on 21/09/2026. The first line a description cites from
 each file is marked "(as read 21/09/2026)", every bare line number after it in that description
-reads the same way, and none is re-pointed. Each gap's "Written back" sentence carries the final
-line instead, re-measured 27/09/2026 against the final pre-commit US010.md by searching for the
-cited text, never by a shifted offset; US010.md does not change again after the Stories phase.
+reads the same way, and none is re-pointed. Each gap's "Written back" sentence carries the current
+line instead, re-measured 30/09/2026 against US010.md as the 16-sprint-plans gate corrected it on
+28/09/2026 and 30/09/2026, each moved line checked against its text and never taken on an offset
+alone. AMENDED 30/09/2026 at the sign-off: this read "re-measured 27/09/2026 against the final
+pre-commit US010.md by searching for the cited text, never by a shifted offset; US010.md does not
+change again after the Stories phase", which the gate's two corrections made false.
 
 **The three blocking gaps are criteria that cannot be delivered correctly as written**, the grading
 of `project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md`. Two of them are also
 one-way doors: a seed is seed-once, so a wrong seed row or a wrong ordering sentence ships into every
-project generated afterwards and no update can take it back (`copier.yml:967-972`). The third is a
+project generated afterwards and no update can take it back (`copier.yml:988-993`). The third is a
 pair of criteria that contradict each other.
 
 **Four gaps needed the developer's word rather than a wording repair:** the allowlist widening in
@@ -216,8 +270,8 @@ the final pass: this cited the row as SPRINT-06.md:622-625 and read "so AC-GAP-2
   **Merge order against US015** (provisional, RULE-OWNERSHIP S-02, which edits other lines of
   `06-GENERATION.md`, `15-TROUBLESHOOTING.md` and `TEMPLATE-TOKENS.md`): US010, in SPRINT-06, lands
   first, and US015 rebases. Q14 does not itself re-size the story (AC-GAP-20). Written back
-  27/09/2026: the site scenario is now at US010.md:656-666, ST05 at :782-795, and the
-  Documentation Tasks repairing the sites at :1006-1017, :1028-1035 and :1046-1054. Threat model
+  27/09/2026: the site scenario is now at project-management/src/02-STORIES/US010.md:686-696, ST05 at :812-825, and the
+  Documentation Tasks repairing the sites at :1036-1047, :1058-1065 and :1076-1084. Threat model
   TM-15; assessment Section 7.5.
 - **AC-GAP-2** `[RESOLVED] 27/09/2026` · **blocking** — **the map-index seed row contradicts
   itself, and it is a one-way door.** The generated-project scenario gives MAP-INDEX.md's seed row
@@ -246,11 +300,11 @@ started`, string-equal under the read rule to that map's own header; Instance a 
   with its own `--self-test` probe, a mutated seed pair yielding exactly one finding, as every
   check in that family ships one. It is a clause in the settled family, not a second family, so
   grilling round 2 Q12's trigger is not reached. HP-03 is therefore automated by this clause, not
-  a manual read. Written back 27/09/2026: the seed-row wording is now at US010.md:607, its
-  agreement asserted by the seed-row clause at :608; the clause in the seed family's scenario at
-  :636 and its probe at :637; ST03's seed-row clause at :765-773, within ST03 at :757-773; the
-  seed task at :976-980; the QA criterion naming the probe at :833-838; the Security Task at
-  :1118-1129; and the Verification Check at :1171-1176. AMENDED 27/09/2026 at the final pass: this
+  a manual read. Written back 27/09/2026: the seed-row wording is now at project-management/src/02-STORIES/US010.md:637, its
+  agreement asserted by the seed-row clause at :638; the clause in the seed family's scenario at
+  :666 and its probe at :667; ST03's seed-row clause at :795-803, within ST03 at :787-803; the
+  seed task at :1006-1010; the QA criterion naming the probe at :863-868; the Security Task at
+  :1193-1204; and the Verification Check at :1246-1251. AMENDED 27/09/2026 at the final pass: this
   gap read `[OPEN]`, called the clause "a proposal, not settled", said the gap "stays `[OPEN]` as a
   wording repair", and recorded HP-03 as a manual read of a generated tree if the clause were
   declined. Assessment Section 7.4; threat model TM-08.
@@ -283,7 +337,7 @@ started`, string-equal under the read rule to that map's own header; Instance a 
   DECISION-INDEX states. **The one detail Q17 left open is settled:** Q17 named no direction for
   the identifier tie-break, and index ties sort by identifier ascending (call recorded 27/09/2026
   with round 6), so the "ascending" first proposed here stands. Written back 27/09/2026: the
-  ordering sentence is now at US010.md:554, and the Index Task designing each order at :931-934,
+  ordering sentence is now at project-management/src/02-STORIES/US010.md:584, and the Index Task designing each order at :961-964,
   each crediting the direction to that call.
 - **AC-GAP-4** `[RESOLVED] 27/09/2026` · material — **the story has no rule for reading a Status, and its carrier
   inventory omits two registers.** US010.md:311 (as read 21/09/2026) says "mirrored verbatim" and :329 "string-equals
@@ -305,8 +359,8 @@ started`, string-equal under the read rule to that map's own header; Instance a 
   bullet is rewritten to name all five carrier shapes across the seven registers, with a
   double-backtick code span for the plan row and correct indentation. A new Index Task writes the
   rule into each index's "How to read a row". Written back 27/09/2026: the Status clause is now at
-  US010.md:555, the carrier task naming five shapes across seven registers at :931-943, and the
-  How to read a row task at :944-951. Assessment Section 7.9; threat model TM-11.
+  project-management/src/02-STORIES/US010.md:585, the carrier task naming five shapes across seven registers at :961-973, and the
+  How to read a row task at :974-981. Assessment Section 7.9; threat model TM-11.
 - **AC-GAP-5** `[RESOLVED] 27/09/2026` · material — **the status scenario, the manual check and the map task still
   carry four values and allow bold, and no task edits the definition site.** US010.md:323-329
   (as read 21/09/2026), :447-449 and :518-520.
@@ -351,9 +405,9 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   `scale-planning` charts through wayfinder, so it needs no line. AMENDED 27/09/2026 at the final
   pass: this read that the chart step "moves a map out of `Not started`, to `Charting`", which a
   first node that is not blocking would contradict under Q31. Written back 27/09/2026, Q31 and the
-  reconciliation included: the status scenario is now at US010.md:579-586, the manual check at
-  :876-883, the definition-site Map Task at :1077-1087, the re-derivation task at :1088-1095, and
-  the wayfinder line at :691-695 and :1018-1027. Assessment Section 7.10; threat model TM-12.
+  reconciliation included: the status scenario is now at project-management/src/02-STORIES/US010.md:609-616, the manual check at
+  :906-913, the definition-site Map Task at :1152-1162, the re-derivation task at :1163-1170, and
+  the wayfinder line at :721-725 and :1048-1057. Assessment Section 7.10; threat model TM-12.
 - **AC-GAP-6** `[RESOLVED] 27/09/2026` · material — **`Updated` has no source, and the manual check's source does
   not exist.** The spine scenario (US010.md:308, as read 21/09/2026) names the column and nothing more. The manual check
   (:443-446) requires every row's `Updated` to match "its map's own header", and a map header
@@ -368,7 +422,7 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   commit date — its author date, rendered DD/MM/YYYY in the commit's recorded offset — or `TBD` in
   a seed"; the manual check reads "every `Updated` equals its map's last commit date, re-checked
   after the landing commit exists". Written back 27/09/2026: the Updated clause is now at
-  US010.md:557, the manual check at :872-873, and the How to read a row task at :947-949.
+  project-management/src/02-STORIES/US010.md:587, the manual check at :902-903, and the How to read a row task at :977-979.
 - **AC-GAP-7** `[RESOLVED] 27/09/2026` · material — **the manual check names a count the map header does not carry,
   and the Instance label has no rule for descriptor-less registers.** "Slice count matches its map's
   own header" (US010.md:445, as read 21/09/2026) — no map header carries a slice count (MAP-000-TEMPLATE.md:3-5);
@@ -380,8 +434,8 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   count its header field, a slice count the rows of that map's Slices table"; the spine scenario
   gains "each Instance cell is a Markdown link labelled with the file's descriptor, or its
   identifier where the filename carries none"; each index's "How to read a row" says which.
-  Written back 27/09/2026: the Instance label clause is now at US010.md:556, the tail-count check
-  at :873-875, and the How to read a row task at :944-951.
+  Written back 27/09/2026: the Instance label clause is now at project-management/src/02-STORIES/US010.md:586, the tail-count check
+  at :903-905, and the How to read a row task at :974-981.
 - **AC-GAP-8** `[RESOLVED] 27/09/2026` · material — **the map instance test counts the index itself.** US010.md:314
   (as read 21/09/2026) defines a map instance as "a tracked MAP-\*.md file that is not MAP-000-TEMPLATE.md". N-003's
   test also excludes "the index itself" (MAP-REGISTER-INDEXES.md:231-233). Once this story lands
@@ -392,9 +446,9 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   in `17-STORY-PLANS`). **Resolution:** :314 reads "Given an instance is a tracked MAP-\*.md file
   that is neither MAP-000-TEMPLATE.md nor MAP-INDEX.md, each excluded by exact filename"; the
   backfill task (:476-479) says the same. Written back 27/09/2026: the MAP-INDEX scenario's Given
-  is now at US010.md:570 and the backfill task at :956-962. The story goes further on grilling
+  is now at project-management/src/02-STORIES/US010.md:600 and the backfill task at :986-992. The story goes further on grilling
   round 3 Q22: every register's instances are named by a positive filename pattern, every
-  `*TEMPLATE*` file and the index excluded by exact filename (:560-567).
+  `*TEMPLATE*` file and the index excluded by exact filename (:590-597).
 - **AC-GAP-9** `[RESOLVED] 27/09/2026` · material — **ST03's proof has no named host, and the story still calls
   the negation check a confirmation.** ST03 requires emptiness "proved by a check" (US010.md:409-412, as read 21/09/2026)
   and no task writes one. Settled 21/09/2026, grilling round 1 Q2: `.github/scripts/shipped-registers.sh`
@@ -416,12 +470,12 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   `_exclude` negation re-includes an index path — the family's negation check (ST06)". The Story
   Points comment gains grilling round 2 Q12's trigger: "if the `shipped-registers.sh` extension
   needs more than one new family plus its probes, this goes to 13 and back to `01-feature-map`".
-  Written back 27/09/2026: the family's scenario is now at US010.md:630-638, ST03 at :757-773, the
-  Security Task at :1118-1129, the negation task at :996-1000 and the Story Points trigger at
-  :301-310. The seed-row agreement clause is carried since the final pass (settled 27/09/2026,
+  Written back 27/09/2026: the family's scenario is now at project-management/src/02-STORIES/US010.md:660-668, ST03 at :787-803, the
+  Security Task at :1193-1204, the negation task at :1026-1030 and the Story Points trigger at
+  :304-313. The seed-row agreement clause is carried since the final pass (settled 27/09/2026,
   grilling round 7 Q34, option 1), as one clause of this family with its own probe: in the
-  family's scenario at :636-637, in ST03 at :765-773 and in the Security Task at :1122-1129, and
-  the Story Points comment records that Q12's trigger still has not fired (:321-323; AC-GAP-2).
+  family's scenario at :666-667, in ST03 at :795-803 and in the Security Task at :1197-1204, and
+  the Story Points comment records that Q12's trigger still has not fired (:324-326; AC-GAP-2).
   AMENDED 27/09/2026 at the final pass: this read "The seed-row agreement clause is not carried:
   it is AC-GAP-2's, round 6 Q34 is unanswered, and the story names its absence". Assessment
   Sections 7.3 and 7.6; threat model TM-02, TM-03, TM-04.
@@ -456,10 +510,10 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   lint leg reads the file (`code/src/scripts/syntax/lint.sh:262-265` reads Python under
   `code/src/django/` only; `pyproject.toml:184` scopes basedpyright the same way). SPRINT-06's five
   "no Python" statements (SPRINT-06.md:43-44, :462, :549, :599, :602, as read 21/09/2026) become
-  false and are corrected. Written back 27/09/2026: ST07 is now at US010.md:806-818, the
-  update-probe scenario at :613-621, the QA criterion at :843-847, the Security Task at
-  :1130-1135, the Verification Checks at :1171-1176 and :1187-1189, the Security and QA flags at
-  :222-223, and the Story Points note at :306-310. SPRINT-06 records its own correction in its
+  false and are corrected. Written back 27/09/2026: ST07 is now at project-management/src/02-STORIES/US010.md:836-848, the
+  update-probe scenario at :643-651, the QA criterion at :873-877, the Security Task at
+  :1205-1210, the Verification Checks at :1246-1251 and :1262-1264, the Security and QA flags at
+  :225-226, and the Story Points note at :309-313. SPRINT-06 records its own correction in its
   FLAGS comment, the paragraph beginning "CORRECTED 27/09/2026 from gate `11`", cited by its text
   because SPRINT-06 is still being edited in this pass (AMENDED 27/09/2026 at the final pass: this
   cited it as SPRINT-06.md:74-77). Assessment Section 7.7; threat model TM-01, TM-04, TM-05.
@@ -483,10 +537,10 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   counts-match-source; every repaired instruction site re-read". The render-path wording is
   path-neutral, settled 27/09/2026, grilling round 3 Q23, so only test code changes when
   MAP-NATIVE-MOBILE-SURFACE S-01 deletes the key. It replaces this gap's earlier "both
-  `INCLUDE_MOBILE` answer sets". Written back 27/09/2026: the QA flag is now at US010.md:223, the
-  integration criterion naming the completeness step at :839-842, the generated-project
-  scenario's completeness clause at :610, and the Seed Task adding the seven landed paths at
-  :1001-1002.
+  `INCLUDE_MOBILE` answer sets". Written back 27/09/2026: the QA flag is now at project-management/src/02-STORIES/US010.md:226, the
+  integration criterion naming the completeness step at :869-872, the generated-project
+  scenario's completeness clause at :640, and the Seed Task adding the seven landed paths at
+  :1031-1032.
 - **AC-GAP-12** `[RESOLVED] 27/09/2026` · material — **two security rationales are wrong, and three security
   criteria are missing.** ST01 says an ungated `mv` "overwrites a project's filled index with a blank
   stub on every `copier update`" (US010.md:403-405, as read 21/09/2026); read in Copier's source, the overwrite is
@@ -511,8 +565,8 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   one reads "(ST06, ST07)"; the
   Security flag widens as gate 10 returned it. **This is gate 10's edit** — if that gate returned the
   same text, it is applied once. SPRINT-06's mirrors (SPRINT-06.md:423-439, :509-512, as read
-  21/09/2026) follow. Written back 27/09/2026: ST01 to ST08 are now at US010.md:738-826, the
-  Security flag at :222, and the Verification Checks at :1171-1176 and :1184-1185.
+  21/09/2026) follow. Written back 27/09/2026: ST01 to ST08 are now at project-management/src/02-STORIES/US010.md:768-856, the
+  Security flag at :225, and the Verification Checks at :1246-1251 and :1259-1260.
 - **AC-GAP-13** `[RESOLVED] 27/09/2026` · material — **the Dependencies bullet on S-03 describes a sequence that
   was settled the other way.** US010.md:261-263 (as read 21/09/2026) says S-03 "ships after this story, not before", and
   the FLAGS comment's "ONE THING THIS GATE DID NOT SETTLE" (:114-119) leaves open whether to pull
@@ -534,10 +588,10 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   (`project-management/workflows/22-implementation-documentation`), and assessment Section 7.11 is
   rewritten to match. The window's `GAPS.md` entry is written at US011's gate-22 pass, the window
   opening when US011 ships (call recorded 27/09/2026 with round 6). Written back 27/09/2026: the
-  Dependencies bullet is now at US010.md:392-409, the entry's writer at :402-405, and the FLAGS
-  comment's settled note at :136-146. US011 carries the entry as a task and a Definition-of-Done
-  line of its own (US011.md:453-460 and :517-521), measured 27/09/2026 against the final
-  US011.md. Threat model TM-10; assessment Section 7.11.
+  Dependencies bullet is now at project-management/src/02-STORIES/US010.md:395-412, the entry's writer at :405-408, and the FLAGS
+  comment's settled note at :139-149. US011 carries the entry as a task and a Definition-of-Done
+  line of its own (project-management/src/02-STORIES/US011.md:470-477 and :534-538), re-measured 30/09/2026 against
+  the story as corrected that day. Threat model TM-10; assessment Section 7.11.
 - **AC-GAP-14** `[RESOLVED] 27/09/2026` · material — **the Decisions section reads "None" beside two candidates the
   settlement has disposed of, one on a ground that does not hold.** US010.md:271-285, as read 21/09/2026. Settled
   21/09/2026: candidate B earns **one** ADR (grilling round 2 Q11); the read rule earns its own
@@ -552,13 +606,13 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   names the unscheduled sign-off of
   `project-management/src/15-DECISIONS/ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL-08-09-2026.md` as the
   read-rule ADR's Follow-on, not edited here; the comment reads "six stale figures". Written back
-  27/09/2026: the Decisions section is now at US010.md:438-493 — the comment recording the
-  Provenance's six at :440-443, the two records at :461-481, the ADR-US004 Follow-on at :479-481,
-  and the debt line's "no record, and why", with its corrected ground, at :482-493. Both ADRs are
+  27/09/2026: the Decisions section is now at project-management/src/02-STORIES/US010.md:462-517 — the comment recording the
+  Provenance's six at :464-467, the two records at :485-505, the ADR-US004 Follow-on at :503-505,
+  and the debt line's "no record, and why", with its corrected ground, at :506-517. Both ADRs are
   accepted in the 27/09/2026 write-back pass only after an independent review, and before the
   US010 commit (settled 27/09/2026, grilling round 4 Q27). Each ADR's own Status line reads
   Proposed until that review is done and is the record of the acceptance, as the story's
-  Decisions comment says (:451-456).
+  Decisions comment says (:475-480).
 - **AC-GAP-15** `[RESOLVED] 27/09/2026` · material — **the citation criteria are flat, and the gate they name cannot
   see the links this story writes.** "`doc-references.sh` passes" at US010.md:433-434 (as read 21/09/2026), the QA task
   at :533 and the Verification Check at :552-553. Measured 21/09/2026 on the tracked working copy:
@@ -575,8 +629,8 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   AC-GAP-2, and a new finding in a file this story edits is this story's; a link check joins QA
   Automated — every Markdown link target in the seven in-tree indexes and in the generated tree's
   seven tested for existence from the file's own folder (Section 6). Written back 27/09/2026: the
-  baseline-diff criterion is now at US010.md:856-862, the link check at :851-853, the QA task at
-  :1146-1147 and the Verification Check at :1177-1179.
+  baseline-diff criterion is now at project-management/src/02-STORIES/US010.md:886-892, the link check at :881-883, the QA task at
+  :1221-1222 and the Verification Check at :1252-1254.
 - **AC-GAP-16** `[RESOLVED] 27/09/2026` · material — **the Umbrella ADRs sweep S-02 absorbed has a misplaced
   criterion and no task.** US010.md:321 (as read 21/09/2026) puts "no row asserts the retired no-ADR house rule in an
   Umbrella ADRs cell" in the MAP-INDEX scenario, but MAP-INDEX.md has no such cell; the rows are
@@ -588,8 +642,8 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   that this repository writes no ADRs or that none may be authored from a map"); a Map Task sweeps
   them against `project-management/src/15-DECISIONS/CLAUDE.md`'s wording, re-measured rather than
   inherited; the manual walk-through records each row read. Written back 27/09/2026: the scenario
-  is now at US010.md:704-708, the Map Task at :1099-1102, the manual check at :894-895 and the
-  recorded sweep at :1158.
+  is now at project-management/src/02-STORIES/US010.md:734-738, the Map Task at :1174-1177, the manual check at :924-925 and the
+  recorded sweep at :1233.
 - **AC-GAP-17** `[RESOLVED] 27/09/2026` · material — **the "verify, do not re-cut" task checks two Acceptance cells
   that the settlement has made stale.** US010.md:523-527 (as read 21/09/2026) confirms the S-01, S-02 and S-05 rows "still
   read as `02-story-creation` left them". S-01's cell gives MAP-INDEX.md's seed "one `TBD` row"
@@ -599,7 +653,7 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   `01-feature-map`. **Resolution:** the task reads "Confirm … and record S-01's `TBD` seed-row
   wording, S-02's four-value wording and S-05's 42 as known-stale against the settlements of
   21/09/2026 and routed to the map's next RESOLVE sitting — neither corrected here nor read as a
-  failed verification". Written back 27/09/2026, now at US010.md:1103-1114, one step further than
+  failed verification". Written back 27/09/2026, now at project-management/src/02-STORIES/US010.md:1178-1189, one step further than
   proposed: the map's RESOLVE sitting ran in the same pass (settled 27/09/2026, grilling round 5
   Q30) and corrected S-01's seed-row wording and S-02's value count, so the task verifies against
   that wording. S-05's 42 stays known-stale, routed to `01-feature-map`.
@@ -622,8 +676,8 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   (`project-management/export/clickup/README.md:9-11`), the route the US011 plan gives its own
   export. :339 reads "hold zero instances when this story is implemented, re-counted then — an
   instance found then gets its row here". Written back 27/09/2026: the lead is now at
-  US010.md:499-507, the Provenance's dated re-measure at :33-40, the Client Summary at :247-252,
-  the debt scenario's count at :590 and the legitimately-empty Given at :597. The export follows
+  project-management/src/02-STORIES/US010.md:523-531, the Provenance's dated re-measure at :33-40, the Client Summary at :250-255,
+  the debt scenario's count at :620 and the legitimately-empty Given at :627. The export follows
   its own regeneration route.
 - **AC-GAP-19** `[RESOLVED] 27/09/2026` · minor — **three sentences were left garbled where the copier delimiters
   were scrubbed** (KNOWN DEFECT 2): "if a `mv` lands outside `when:` gate keyed on" (US010.md:104, as read 21/09/2026);
@@ -632,7 +686,7 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   second. **Resolution:** "outside the task whose `when:` key tests `_copier_operation == 'copy'`";
   "gated by a `when:` key testing `_copier_operation == 'copy'`"; "Confirm the `when:` key testing
   `_copier_operation == 'copy'` covers all seven". None reproduces the delimiters. Written back
-  27/09/2026: the three sentences are now at US010.md:119-120, :738-739 and :986-987.
+  27/09/2026: the three sentences are now at project-management/src/02-STORIES/US010.md:119-120, :768-769 and :1016-1017.
 - **AC-GAP-20** `[RESOLVED] 27/09/2026` · minor — **"the six shipped files" are six sites across three files**
   (KNOWN DEFECT 4), and the count is wrong once AC-GAP-1 lands. US010.md:294 (as read 21/09/2026); SPRINT-06.md:10 and
   :410 (as read 21/09/2026) say "six shipped sites"; the manual check (:450-451), the QA task (:539), SPRINT-06.md:501
@@ -643,8 +697,8 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   instruction site". Neither recorded trigger for re-sizing counts sites: the `15-decisions`
   trigger counts `copier.yml` decisions, and round 2 Q12's counts families. The developer held
   US010 at 8 SP with the added sites counted (settled 27/09/2026, grilling round 4 Q26, now at
-  US010.md:312-320). Written back 27/09/2026: the lead is now at US010.md:503-504, the Story
-  Points comment at :294-295, the manual check at :884-886 and the QA task at :1153-1154.
+  project-management/src/02-STORIES/US010.md:315-323). Written back 27/09/2026: the lead is now at project-management/src/02-STORIES/US010.md:527-528, the Story
+  Points comment at :297-298, the manual check at :914-916 and the QA task at :1228-1229.
 - **AC-GAP-21** `[RESOLVED] 27/09/2026` · minor — **the MoSCoW comment counts five maps, then six** (KNOWN
   DEFECT 6). "FIVE maps have parked their unticked `Gate to stories` index-row box" (US010.md:175, as read 21/09/2026)
   and "This blocks more: six maps" (:184). Measured 21/09/2026: **six** maps carry an unticked
@@ -653,7 +707,7 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   pending a decision" rather than parked on this slice. **Resolution:** the comment reads "Six maps
   carry an unticked index-row box, measured 21/09/2026 — five parked on this slice and
   MAP-NATIVE-MOBILE-SURFACE.md withheld pending a decision of its own", and :184 reads "six maps".
-  Written back 27/09/2026, now at US010.md:268-279.
+  Written back 27/09/2026, now at project-management/src/02-STORIES/US010.md:271-282.
 - **AC-GAP-22** `[RESOLVED] 27/09/2026` · minor — **the shape of each file, and four small wording obligations, are
   unstated.** First, which files carry the empty-register placeholder row: the six seeds do (settled
   21/09/2026, grilling round 1 Q2); FINDING-INDEX.md and BUG-INDEX.md in-tree do (US010.md:341, as read 21/09/2026); the four
@@ -665,14 +719,14 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   `.github/scripts/shipped-registers.sh`'s header, usage text and closing message describe two
   registers (`:3`, `:19`, `:103-104`, `:327-329`). Fourth, `project-management/src/21-BUGS/CONTEXT.md`'s
   new section must cite its index by full path: the bare filename BUG-INDEX.md backticked in a link label,
-  the incident precedent's form (`project-management/src/23-INCIDENTS/CONTEXT.md:59`), is a
+  the incident precedent's form (`project-management/src/23-INCIDENTS/CONTEXT.md:60`), is a
   doc-references instance-citation finding with no escape (ES-15). **Resolution:** the debt and
   empty-register scenarios and the seed task state the placeholder per file; Seed Tasks rewrite the
   `SEEDED` comment and the family's header, usage and closing text in the same change; the CONTEXT
   scenario gains the full-path rule for `21-BUGS`. Written back 27/09/2026: the placeholder per
-  file is stated at US010.md:589, :599, :606 and :973-975; the `SEEDED` comment at :628 and
-  :988-995, worded for either landing order against US012; the family's header, usage and closing
-  text at :638 and :1127-1128; and the full-path rule for `21-BUGS` at :654 and :1011-1012.
+  file is stated at project-management/src/02-STORIES/US010.md:619, :629, :636 and :1003-1005; the `SEEDED` comment at :658 and
+  :1018-1025, worded for either landing order against US012; the family's header, usage and closing
+  text at :668 and :1202-1203; and the full-path rule for `21-BUGS` at :684 and :1041-1042.
 - **AC-GAP-23** `[RESOLVED] 27/09/2026` · minor — **gate 10 raised three questions it did not
   settle, and the story records none of them; its no-blocker check predates the widened write set.**
   TM-13 (seven shipped guide sites count the seed task's files as nine, outside ST05), TM-14 (a
@@ -683,7 +737,9 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   on 20/09/2026 against a write set that did not yet include `.github/scripts/shipped-registers.sh`,
   `.github/scripts/shipped-ai.py` or `.github/workflows/audit-template.yml`. Re-measured 21/09/2026:
   US009, still `Open` (US009.md:4), planned in SPRINT-05 with its carry reserved into SPRINT-06
-  (SPRINT-06.md:30-34, as read 21/09/2026), adds a grep to the same `[3/4]` job (US009.md:326-335), and US012 names both
+  (project-management/src/03-SPRINTS/SPRINT-06.md:30-34, as read 21/09/2026), adds a grep to the same `[3/4]` job (project-management/src/02-STORIES/US009.md:326-335,
+  as read 21/09/2026; :354-363 since the 16-sprint-plans gate's corrections of 30/09/2026 above
+  it, `ST08` among them, re-measured that day), and US012 names both
   the completeness step and `shipped-ai.py` (US012.md:30-31) — rebases, not blockers.
   **Resolution:** a Dependencies bullet names the three questions, their assessment numbers and
   their settlements; the no-blocker bullet is re-dated and names US009's and US012's overlaps as
@@ -698,9 +754,47 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   are routed to `GAPS.md` through gate 22
   (`project-management/workflows/22-implementation-documentation`, sole owner of `GAPS.md` writes)
   and are not built by US010. Written back 27/09/2026: the Dependencies bullet naming the three
-  questions is now at US010.md:410-422, the re-dated no-blocker bullet at :354-368, the `GAPS.md`
-  routing at :423-432, the template-guide scenario at :676-682, the updating-guide scenario at
-  :684-689, and their Documentation Tasks at :1055-1072.
+  questions is now at project-management/src/02-STORIES/US010.md:413-425, the re-dated no-blocker bullet at :357-371, the `GAPS.md`
+  routing at :426-442, the template-guide scenario at :706-712, the updating-guide scenario at
+  :714-719, and their Documentation Tasks at :1085-1102.
+
+<!-- AMENDED 30/09/2026 at the sign-off: every "Written back" and "now at" citation in the list
+     above, and the header comment's three, is re-measured against the stories as the
+     16-sprint-plans gate corrected them on 28/09/2026 and 30/09/2026. The numbers they replace
+     located the same text in US010.md and US011.md at 0c5e635 and b1ca05a, and each is recovered
+     by the offset of its block. US010.md: :1-126 unmoved; :127 became :127-130; :128-422 +3; :423
+     and :425-432 were rewritten as :426 and :428-442, the routing bullet gaining its fourth item;
+     :424 +3; :433-437 +10; fourteen lines inserted after :437; :438-538 +24; :539 became :563-569;
+     :540-664 +30; :665 rewritten at :695; :666-1048 +30; :1049-1051 rewritten at :1079-1081;
+     :1052-1073 +30; forty-five lines inserted after :1073; :1074-1204 +75. US011.md: :1-238
+     unmoved; :239-241 became :239-258; :242 onward +17. So AC-GAP-9's ST03 read :757-773 and is
+     now :787-803, AC-GAP-13's US011 task and Definition-of-Done line read :453-460 and :517-521
+     and are now :470-477 and :534-538, and AC-GAP-23's routing bullet read :423-432 and is now
+     :426-442. Each moved line was checked against its text, never taken on the offset alone.
+
+     AC-GAP-1's inventory is a sweep of 21/09/2026 and keeps that reading. Two changes have since
+     moved eight of its sites, the text unchanged each time. Commit ceb2d70 (28/09/2026) moved
+     four: project-management/workflows/17-story-plans/CLAUDE.md :87-91 to :89-93, STEPS.md
+     :101-102 and :192-195 to :105-106 and :196-199, and CHECKLIST.md :114-115 to :116-117. The
+     18-TESTS split, committed together with this correction (settled 30/09/2026, 16-sprint-plans
+     grilling round 4 Q13 and Q14), moves those four again and four more. Re-measured 30/09/2026
+     against the tree committed together with it, the sites sit at
+     project-management/workflows/17-story-plans/CLAUDE.md:97-101;
+     project-management/workflows/17-story-plans/STEPS.md:106-107 and :240-243;
+     project-management/workflows/17-story-plans/CHECKLIST.md:132-133;
+     project-management/workflows/17-story-plans/CONTEXT.md:63-64, :95-96 and :104-106, read as
+     :57-58, :87-88 and :96-98 until then; and
+     project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md:626, read as :625, the
+     same template's dated comment, cited above as :792-807, sitting at :793-808. STEPS.md :43, the
+     template's :16, the two 01-feature-map sites and every other site in the inventory did not
+     move. The story's own site scenario and site task carry the same numbers
+     (project-management/src/02-STORIES/US010.md:695 and :1079-1082), re-measured 30/09/2026 as
+     read here.
+     Two other tree citations in Section 1 move with the split, the text unchanged, re-measured
+     30/09/2026 against the tree committed together with it: the lead cited the one-way door as
+     `copier.yml:967-972`, now :988-993, and AC-GAP-22 cited the incident precedent as
+     project-management/src/23-INCIDENTS/CONTEXT.md:59, now :60, both measured against the tree at
+     a18db0b until then. -->
 
 <!-- WHAT THIS PASS DID NOT FIND, recorded because the absence is informative. Every copier.yml,
      shipped-artefacts.sh, shipped-registers.sh, shipped-ai.py and audit-template.yml citation the
@@ -723,29 +817,38 @@ S-01 deletes the key.
 
 ### Happy path (HP-nn)
 
-| ID    | Given                                                                     | When                                                                                                                                          | Then                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| ----- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| HP-01 | The change committed and pushed                                           | `[3/4]` generates on every render path the template offers (today: `INCLUDE_MOBILE` true and false), settled 27/09/2026, grilling round 3 Q23 | All seven index files sit at `project-management/src/<REGISTER>/<NOUN>-INDEX.md` in every generated tree, and `.copier/` is gone (`audit-template.yml:311-314`). The completeness step names the seven (AC-GAP-11)                                                                                                                                                                                                                                                                                                                                     |
-| HP-02 | Any generated tree                                                        | The six non-map seeds are read                                                                                                                | Each carries the spine, its tail, its ordering sentence, the read rule, the `## The register` marker and the placeholder row alone — no instance row and no debt line (ST03, ST04)                                                                                                                                                                                                                                                                                                                                                                     |
-| HP-03 | Any generated tree                                                        | The map index's one row is read                                                                                                               | Status `Not started`, string-equal under the read rule to the seeded map's :4; Instance a working link to MAP-SCALE-PLANNING.md; Summary generic or `TBD`; Updated `TBD` (AC-GAP-2). **Host:** the Status agreement is automated at template time by the family's seed-row clause and its probe (settled 27/09/2026, grilling round 7 Q34; US010.md:608, :636-637), never a manual read; the rest by the link check and the literal grep. AMENDED 27/09/2026 at the final pass: the clause was a proposal here, with a manual read if it were declined |
-| HP-04 | The diff to `copier.yml`                                                  | The one seed task is read                                                                                                                     | Seven new lines of the form `mv .copier/<NOUN>-INDEX.md project-management/src/<REGISTER>/<NOUN>-INDEX.md &&`, inside the task at `:973-984`, ahead of `rmdir .copier`; the task's `when:` key unchanged; no second task (ST01, ST02, ST08)                                                                                                                                                                                                                                                                                                            |
-| HP-05 | The template repository                                                   | `bash .github/scripts/shipped-registers.sh`, then `--self-test`                                                                               | Exit 0 with no finding; the self-test's nine existing probes pass with unchanged labels and expectations, plus one probe per new check, each seen red before green — the seed-row clause's among them, a mutated seed pair yielding exactly one finding (grilling round 7 Q34) (ST03, ST05, ST06)                                                                                                                                                                                                                                                      |
-| HP-06 | The fixture creating the six register folders in `fixture()`              | `bash .github/scripts/shipped-ai.sh --self-test` copies on both sets                                                                          | All seven indexes land in each project, and memory is seeded empty, as today (ST07, AC-GAP-10)                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| HP-07 | Each project edits every index and commits; the second tag changes seeds  | `run_update` to the second tag                                                                                                                | Every index is byte-identical to the project's committed edit; project memory survives; `.copier/` is gone (ST07, TM-01, TM-04)                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| HP-08 | The self-test mutation that removes the seed task's `when:` key           | The same copy, edit and update                                                                                                                | The probe fails on the byte-identity assertion's own message, and the self-test reports the detector rejecting the mutation (ST07)                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| HP-09 | Every generated tree                                                      | `shipped-artefacts.sh --self-test` on one, the full run on each                                                                               | Exit 0; `SEEDED` holds eight entries and none is reported as leaked; the self-test's existing probes pass unchanged (TM-09)                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| HP-10 | The maps folder at the landing commit                                     | The instance test runs, excluding two files by exact filename                                                                                 | MAP-INDEX.md has exactly one row per instance, no row for itself, a row for MAP-REGISTER-INDEXES.md; the count and HEAD are recorded beside the cut-time 14 (AC-GAP-8)                                                                                                                                                                                                                                                                                                                                                                                 |
-| HP-11 | Every map after the change                                                | Its `**Status**` header is read                                                                                                               | `<enum>` or `<enum> · <prose>` on the key's line, the value plain and one of five, and the one the map's own counts give under the criteria settled 27/09/2026, grilling round 3 Q18 and round 6 Q31 — a charted map with nothing resolved and `Blocking open` 0 reads `Blockers clear — stories may start`, never `Charting`; its MAP-INDEX row string-equals the read rule's output (AC-GAP-5)                                                                                                                                                       |
-| HP-12 | Every MAP-INDEX row                                                       | `Updated` is compared with its map's last commit date                                                                                         | Equal on every row, re-run after the landing commit exists (AC-GAP-6, EC-03)                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| HP-13 | Every MAP-INDEX row                                                       | Its tail counts and Summary are read against the map                                                                                          | Each header-derived count equals its header field; a slice count equals the rows of that map's Slices table; a second reader finds the Summary intelligible (AC-GAP-7)                                                                                                                                                                                                                                                                                                                                                                                 |
-| HP-14 | All seven index files                                                     | Their ordering sentences are read, and MAP-INDEX's rows top to bottom                                                                         | Each states the settled order with its date column and tie-break; MAP-INDEX's rows follow its sentence (AC-GAP-3)                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| HP-15 | Each register's carrier                                                   | The read rule is applied to the value after the key                                                                                           | A story reads `Open`; plan 06 reads `Blocked`; ADR-US004-CITED-PLAN-PREFIX's :11 reads `Proposed`; a companion-format map reads its enum; the finding and bug templates read their legends, unvalidated (AC-GAP-4)                                                                                                                                                                                                                                                                                                                                     |
-| HP-16 | The in-tree tree and every generated tree                                 | Every line holding "Backfill owed" is listed by file                                                                                          | Exactly STORY-, SPRINT-, DECISION- and STORY-PLAN-INDEX.md in-tree; none in FINDING- or BUG-INDEX.md; none in any seed or generated index (TM-10)                                                                                                                                                                                                                                                                                                                                                                                                      |
-| HP-17 | The seven register `CONTEXT.md` files                                     | Each is read                                                                                                                                  | A `## The index` section links its index; the `01-FEATURE-MAPS` table and its :53-56 prose are gone; `17-STORY-PLANS`'s :81-91 describes presence; `23-INCIDENTS/CONTEXT.md` is byte-identical                                                                                                                                                                                                                                                                                                                                                         |
-| HP-18 | Every site in the site scenario                                           | Each is read, then the joined-line search runs over a generated tree                                                                          | Each names its seeded index; the search returns nothing (AC-GAP-1)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| HP-19 | Every map's Gate-to-stories index-row box                                 | Read after the change                                                                                                                         | Ticked where the row exists, its text naming MAP-INDEX.md; any unticked box names a reason still true; none cites N-001                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| HP-20 | Every map's `Umbrella ADRs` header row, re-measured                       | Read after the change                                                                                                                         | None asserts the retired no-ADR rule (AC-GAP-16)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| HP-21 | `project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md` in a project | Its :4 is read                                                                                                                                | Five values, each value's count-derived criterion in its final form (settled 27/09/2026, grilling round 3 Q18, the overlap resolved the same day by round 6 Q31, Blockers clear winning), so that no map meets two, and a one-line format statement; the file ships through the `*TEMPLATE*` re-include at `copier.yml:164` (AC-GAP-5)                                                                                                                                                                                                                 |
+| ID    | Given                                                                     | When                                                                                                                                          | Then                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ----- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HP-01 | The change committed and pushed                                           | `[3/4]` generates on every render path the template offers (today: `INCLUDE_MOBILE` true and false), settled 27/09/2026, grilling round 3 Q23 | All seven index files sit at `project-management/src/<REGISTER>/<NOUN>-INDEX.md` in every generated tree, and `.copier/` is gone (`audit-template.yml:311-314`). The completeness step names the seven (AC-GAP-11)                                                                                                                                                                                                                                                                                                                                                                       |
+| HP-02 | Any generated tree                                                        | The six non-map seeds are read                                                                                                                | Each carries the spine, its tail, its ordering sentence, the read rule, the `## The register` marker and the placeholder row alone — no instance row and no debt line (ST03, ST04)                                                                                                                                                                                                                                                                                                                                                                                                       |
+| HP-03 | Any generated tree                                                        | The map index's one row is read                                                                                                               | Status `Not started`, string-equal under the read rule to the seeded map's :4; Instance a working link to MAP-SCALE-PLANNING.md; Summary generic or `TBD`; Updated `TBD` (AC-GAP-2). **Host:** the Status agreement is automated at template time by the family's seed-row clause and its probe (settled 27/09/2026, grilling round 7 Q34; project-management/src/02-STORIES/US010.md:638, :666-667), never a manual read; the rest by the link check and the literal grep. AMENDED 27/09/2026 at the final pass: the clause was a proposal here, with a manual read if it were declined |
+| HP-04 | The diff to `copier.yml`                                                  | The one seed task is read                                                                                                                     | Seven new lines of the form `mv .copier/<NOUN>-INDEX.md project-management/src/<REGISTER>/<NOUN>-INDEX.md &&`, inside the task at `:994-1005`, ahead of `rmdir .copier`; the task's `when:` key unchanged; no second task (ST01, ST02, ST08)                                                                                                                                                                                                                                                                                                                                             |
+| HP-05 | The template repository                                                   | `bash .github/scripts/shipped-registers.sh`, then `--self-test`                                                                               | Exit 0 with no finding; the self-test's nine existing probes pass with unchanged labels and expectations, plus one probe per new check, each seen red before green — the seed-row clause's among them, a mutated seed pair yielding exactly one finding (grilling round 7 Q34) (ST03, ST05, ST06)                                                                                                                                                                                                                                                                                        |
+| HP-06 | The fixture creating the six register folders in `fixture()`              | `bash .github/scripts/shipped-ai.sh --self-test` copies on both sets                                                                          | All seven indexes land in each project, and memory is seeded empty, as today (ST07, AC-GAP-10)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| HP-07 | Each project edits every index and commits; the second tag changes seeds  | `run_update` to the second tag                                                                                                                | Every index is byte-identical to the project's committed edit; project memory survives; `.copier/` is gone (ST07, TM-01, TM-04)                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| HP-08 | The self-test mutation that removes the seed task's `when:` key           | The same copy, edit and update                                                                                                                | The probe fails on the byte-identity assertion's own message, and the self-test reports the detector rejecting the mutation (ST07)                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| HP-09 | Every generated tree                                                      | `shipped-artefacts.sh --self-test` on one, the full run on each                                                                               | Exit 0; `SEEDED` holds eight entries and none is reported as leaked; the self-test's existing probes pass unchanged (TM-09)                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| HP-10 | The maps folder at the landing commit                                     | The instance test runs, excluding two files by exact filename                                                                                 | MAP-INDEX.md has exactly one row per instance, no row for itself, a row for MAP-REGISTER-INDEXES.md; the count and HEAD are recorded beside the cut-time 14 (AC-GAP-8)                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| HP-11 | Every map after the change                                                | Its `**Status**` header is read                                                                                                               | `<enum>` or `<enum> · <prose>` on the key's line, the value plain and one of five, and the one the map's own counts give under the criteria settled 27/09/2026, grilling round 3 Q18 and round 6 Q31 — a charted map with nothing resolved and `Blocking open` 0 reads `Blockers clear — stories may start`, never `Charting`; its MAP-INDEX row string-equals the read rule's output (AC-GAP-5)                                                                                                                                                                                         |
+| HP-12 | Every MAP-INDEX row                                                       | `Updated` is compared with its map's last commit date                                                                                         | Equal on every row, re-run after the landing commit exists (AC-GAP-6, EC-03)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| HP-13 | Every MAP-INDEX row                                                       | Its tail counts and Summary are read against the map                                                                                          | Each header-derived count equals its header field; a slice count equals the rows of that map's Slices table; a second reader finds the Summary intelligible (AC-GAP-7)                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| HP-14 | All seven index files                                                     | Their ordering sentences are read, and MAP-INDEX's rows top to bottom                                                                         | Each states the settled order with its date column and tie-break; MAP-INDEX's rows follow its sentence (AC-GAP-3)                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| HP-15 | Each register's carrier                                                   | The read rule is applied to the value after the key                                                                                           | A story reads `Open`; plan 06 reads `Blocked`; ADR-US004-CITED-PLAN-PREFIX's :11 reads `Proposed`; a companion-format map reads its enum; the finding and bug templates read their legends, unvalidated (AC-GAP-4)                                                                                                                                                                                                                                                                                                                                                                       |
+| HP-16 | The in-tree tree and every generated tree                                 | Every line holding "Backfill owed" is listed by file                                                                                          | Exactly STORY-, SPRINT-, DECISION- and STORY-PLAN-INDEX.md in-tree; none in FINDING- or BUG-INDEX.md; none in any seed or generated index (TM-10)                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| HP-17 | The seven register `CONTEXT.md` files                                     | Each is read                                                                                                                                  | A `## The index` section links its index; the `01-FEATURE-MAPS` table and its :53-56 prose are gone; `project-management/src/17-STORY-PLANS/CONTEXT.md:86-96` describes presence; `23-INCIDENTS/CONTEXT.md` is byte-identical                                                                                                                                                                                                                                                                                                                                                            |
+| HP-18 | Every site in the site scenario                                           | Each is read, then the joined-line search runs over a generated tree                                                                          | Each names its seeded index; the search returns nothing (AC-GAP-1)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| HP-19 | Every map's Gate-to-stories index-row box                                 | Read after the change                                                                                                                         | Ticked where the row exists, its text naming MAP-INDEX.md; any unticked box names a reason still true; none cites N-001                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| HP-20 | Every map's `Umbrella ADRs` header row, re-measured                       | Read after the change                                                                                                                         | None asserts the retired no-ADR rule (AC-GAP-16)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| HP-21 | `project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md` in a project | Its :4 is read                                                                                                                                | Five values, each value's count-derived criterion in its final form (settled 27/09/2026, grilling round 3 Q18, the overlap resolved the same day by round 6 Q31, Blockers clear winning), so that no map meets two, and a one-line format statement; the file ships through the `*TEMPLATE*` re-include at `copier.yml:164` (AC-GAP-5)                                                                                                                                                                                                                                                   |
+
+<!-- AMENDED 30/09/2026 at the sign-off: HP-03 cited US010.md:608 and :636-637 until then, the lines
+     re-measured 27/09/2026 against the story at 0c5e635. The 16-sprint-plans gate's corrections of
+     28/09/2026 and 30/09/2026 moved them to :638 and :666-667, the text unchanged. HP-04 cited
+     the seed task as `:973-984`, and HP-17 the plans-index section as "`17-STORY-PLANS`'s :81-91",
+     until then, both measured against the tree at a18db0b. The 18-TESTS split, committed together
+     with this correction, moves them to copier.yml:994-1005 and
+     project-management/src/17-STORY-PLANS/CONTEXT.md:86-96, the text unchanged, re-measured
+     30/09/2026 against the tree committed together with it. -->
 
 ### Error states (ES-nn)
 
@@ -792,12 +895,17 @@ S-01 deletes the key.
 | EC-14 | A seed whose prose names its own file, the seeded map, or a register's `000` template                           | The generated-tree literal grep runs          | No false positive: the grep excludes the file's own name, MAP-SCALE-PLANNING in the map index's one row, and the `000` template identifiers; anything else is a finding (ST04)                                                                                                                                                                                                                                                                                                                             |
 | EC-15 | Seeds edited but not committed                                                                                  | Generation runs                               | It renders `--vcs-ref=HEAD` (`audit-template.yml:154`) and proves nothing about uncommitted bytes                                                                                                                                                                                                                                                                                                                                                                                                          |
 | EC-16 | `20-FINDINGS` or `21-BUGS` gains an instance before this story lands                                            | The story runs                                | That index gets its row here, its register being this story's, and the "legitimately empty" Given is re-read rather than assumed (AC-GAP-18)                                                                                                                                                                                                                                                                                                                                                               |
-| EC-17 | A negation written single-quoted, with a trailing comment, or wrapped in the template's block-tag conditional   | The family's negation check parses `_exclude` | Each form is still found. The existing parse strips double quotes only and misses an entry with a trailing comment (`shipped-registers.sh:134-139`), and `copier.yml:192-214` already carries conditional entries                                                                                                                                                                                                                                                                                          |
+| EC-17 | A negation written single-quoted, with a trailing comment, or wrapped in the template's block-tag conditional   | The family's negation check parses `_exclude` | Each form is still found. The existing parse strips double quotes only and misses an entry with a trailing comment (`.github/scripts/shipped-registers.sh:134-139`), and `copier.yml:194-216` already carries conditional entries                                                                                                                                                                                                                                                                          |
 | EC-18 | US012 lands before or after this story                                                                          | `shipped-artefacts.sh` is rebased             | Either order goes green; if US012 is first, its last-entry probe moves onto an index seed the day this lands                                                                                                                                                                                                                                                                                                                                                                                               |
 | EC-19 | US009 lands first, adding a grep inside the same `[3/4]` job                                                    | This story edits the completeness step        | A rebase, not a wait                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | EC-20 | The concurrent session's edits to US010.md, SPRINT-06.md and two maps are still uncommitted                     | STEP 5 applies this plan's feedback edits     | Each edit is re-anchored on its quoted text against the committed file, never applied by line number                                                                                                                                                                                                                                                                                                                                                                                                       |
 | EC-21 | A project generated before US010 runs `copier update` across it                                                 | Its tree is read                              | No index arrives, but the re-included `CONTEXT.md` routes to all seven do. **Demonstrates TM-14** (assessment Section 7.14). Settled 27/09/2026, grilling round 3 Q15: US010 documents it in `how-to/src/TEMPLATE-GUIDE/14-UPDATING.md`, and the seed-if-absent migration goes to `GAPS.md` through gate 22, so this stays a demonstration until that fix lands                                                                                                                                            |
 | EC-22 | A map charted after this story lands                                                                            | The repointed instructions are followed       | Its row goes into MAP-INDEX.md in the same change as the map; nothing gates it until S-03. Wayfinder's chart step, writing the map's first node, fills `Charted` and moves it out of `Not started` to the value its counts give — `Charting` while `Blocking open` is above 0, otherwise `Blockers clear — stories may start` — and never asserts `Charting` (grilling round 3 Q24 and round 6 Q31, reconciled by the call recorded 27/09/2026; AMENDED 27/09/2026 at the final pass from "to `Charting`") |
+
+<!-- AMENDED 30/09/2026: EC-17 cited `copier.yml:192-214` until then, measured against the tree at
+     a18db0b. The 18-TESTS split, committed together with this correction, adds two lines above the
+     conditional entries, which sit at :194-216 in that tree, re-measured 30/09/2026, the text
+     unchanged. -->
 
 ### Permission and access (PA-nn)
 
@@ -847,26 +955,32 @@ zero is a severity reading with its reason, never a report that the seam is safe
 
 **Every threat and every ST, traced to the scenario that tests it:**
 
-| Threat | ST / Section 7   | Scenario(s)                  | Note                                                                                                                                                                                                                                                                                                                                                                                                       |
-| ------ | ---------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| TM-01  | ST01 · 7.1       | HP-04, HP-07, HP-08, ES-02   | Holds by construction on `update`; HP-08 turns the Copier reading into a measurement                                                                                                                                                                                                                                                                                                                       |
-| TM-02  | ST06 · 7.6       | ES-03, ES-04, EC-17, PA-01   | The leak the generated-tree gate cannot see                                                                                                                                                                                                                                                                                                                                                                |
-| TM-03  | ST03 · 7.3       | HP-02, HP-05, ES-05, ES-06   |                                                                                                                                                                                                                                                                                                                                                                                                            |
-| TM-04  | ST07 · 7.7       | HP-07, HP-08, ES-02, ES-20   | A probe whose seeds never change passes with or without the gate                                                                                                                                                                                                                                                                                                                                           |
-| TM-05  | ST07, ST08 · 7.7 | ES-09                        |                                                                                                                                                                                                                                                                                                                                                                                                            |
-| TM-06  | ST08 · 7.8       | ES-07, ES-10, ES-11          | ES-11 is review-only                                                                                                                                                                                                                                                                                                                                                                                       |
-| TM-07  | ST02 · 7.2       | ES-01                        | The rationale corrected; the criterion kept                                                                                                                                                                                                                                                                                                                                                                |
-| TM-08  | ST03, ST04 · 7.4 | HP-02, HP-03, HP-05, EC-14   | The generated-tree grep and review, and since 27/09/2026 ST03's seed-row clause, which asserts the seed row's Status against the seeded map at template time (grilling round 7 Q34; AC-GAP-2)                                                                                                                                                                                                              |
-| TM-09  | 7.12             | HP-09, ES-03, ES-08          | Presence is US012's loop                                                                                                                                                                                                                                                                                                                                                                                   |
-| TM-10  | 7.11             | HP-16                        | Stays LOW (settled 27/09/2026, grilling round 3 Q21). The window runs from US011 shipping until S-03 is cut, and S-03 is unscheduled (CUT-PLAN.md P8, map-order row 10). It is tracked in `GAPS.md`, the entry written at US011's gate-22 pass (call recorded 27/09/2026 with round 6) and carried as US011's own task and Definition-of-Done line (US011.md:453-460, :517-521), not closed by a test here |
-| TM-11  | 7.9              | HP-15, EC-08, EC-09, EC-10   |                                                                                                                                                                                                                                                                                                                                                                                                            |
-| TM-12  | 7.10             | HP-11, ES-12, EC-04 to EC-07 | The derivation is recorded by hand, against the count-derived criteria settled 27/09/2026, grilling round 3 Q18, their overlap resolved the same day by round 6 Q31 (Blockers clear wins); nothing validates it until S-03, and S-03 checks agreement only                                                                                                                                                 |
-| TM-13  | 7.13             | none — a manual re-read      | Settled: Q14 covers all seven count sites, the `--trust` disclosure among them (grilling round 3 Q14; call recorded 27/09/2026 with round 6). US010 corrects them inside the widened ST05 (US010.md:676-682, :1055-1065) and re-reads them by hand (:887-890) (AC-GAP-23)                                                                                                                                  |
-| TM-14  | 7.14             | EC-21                        | Settled 27/09/2026, grilling round 3 Q15: documented in `14-UPDATING.md`, the migration routed to `GAPS.md`. Still a demonstration                                                                                                                                                                                                                                                                         |
-| TM-15  | ST05 · 7.5       | PA-02, PA-03, HP-05          |                                                                                                                                                                                                                                                                                                                                                                                                            |
-| TM-16  | —                | ES-16                        | Caught twice by existing gates                                                                                                                                                                                                                                                                                                                                                                             |
-| TM-17  | —                | none                         | Accepted residual — nothing records who changed a row; named rather than tested                                                                                                                                                                                                                                                                                                                            |
-| TM-18  | 7.15             | PA-04                        | Settled 27/09/2026, grilling round 3 Q15: documented in `14-UPDATING.md`, the guard routed to `GAPS.md`. Still a demonstration, scratch fixture only                                                                                                                                                                                                                                                       |
+| Threat | ST / Section 7   | Scenario(s)                  | Note                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------ | ---------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TM-01  | ST01 · 7.1       | HP-04, HP-07, HP-08, ES-02   | Holds by construction on `update`; HP-08 turns the Copier reading into a measurement                                                                                                                                                                                                                                                                                                                                                         |
+| TM-02  | ST06 · 7.6       | ES-03, ES-04, EC-17, PA-01   | The leak the generated-tree gate cannot see                                                                                                                                                                                                                                                                                                                                                                                                  |
+| TM-03  | ST03 · 7.3       | HP-02, HP-05, ES-05, ES-06   |                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| TM-04  | ST07 · 7.7       | HP-07, HP-08, ES-02, ES-20   | A probe whose seeds never change passes with or without the gate                                                                                                                                                                                                                                                                                                                                                                             |
+| TM-05  | ST07, ST08 · 7.7 | ES-09                        |                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| TM-06  | ST08 · 7.8       | ES-07, ES-10, ES-11          | ES-11 is review-only                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| TM-07  | ST02 · 7.2       | ES-01                        | The rationale corrected; the criterion kept                                                                                                                                                                                                                                                                                                                                                                                                  |
+| TM-08  | ST03, ST04 · 7.4 | HP-02, HP-03, HP-05, EC-14   | The generated-tree grep and review, and since 27/09/2026 ST03's seed-row clause, which asserts the seed row's Status against the seeded map at template time (grilling round 7 Q34; AC-GAP-2)                                                                                                                                                                                                                                                |
+| TM-09  | 7.12             | HP-09, ES-03, ES-08          | Presence is US012's loop                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| TM-10  | 7.11             | HP-16                        | Stays LOW (settled 27/09/2026, grilling round 3 Q21). The window runs from US011 shipping until S-03 is cut, and S-03 is unscheduled (CUT-PLAN.md P8, map-order row 10). It is tracked in `GAPS.md`, the entry written at US011's gate-22 pass (call recorded 27/09/2026 with round 6) and carried as US011's own task and Definition-of-Done line (project-management/src/02-STORIES/US011.md:470-477, :534-538), not closed by a test here |
+| TM-11  | 7.9              | HP-15, EC-08, EC-09, EC-10   |                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| TM-12  | 7.10             | HP-11, ES-12, EC-04 to EC-07 | The derivation is recorded by hand, against the count-derived criteria settled 27/09/2026, grilling round 3 Q18, their overlap resolved the same day by round 6 Q31 (Blockers clear wins); nothing validates it until S-03, and S-03 checks agreement only                                                                                                                                                                                   |
+| TM-13  | 7.13             | none — a manual re-read      | Settled: Q14 covers all seven count sites, the `--trust` disclosure among them (grilling round 3 Q14; call recorded 27/09/2026 with round 6). US010 corrects them inside the widened ST05 (project-management/src/02-STORIES/US010.md:706-712, :1085-1095) and re-reads them by hand (:917-920) (AC-GAP-23)                                                                                                                                  |
+| TM-14  | 7.14             | EC-21                        | Settled 27/09/2026, grilling round 3 Q15: documented in `14-UPDATING.md`, the migration routed to `GAPS.md`. Still a demonstration                                                                                                                                                                                                                                                                                                           |
+| TM-15  | ST05 · 7.5       | PA-02, PA-03, HP-05          |                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| TM-16  | —                | ES-16                        | Caught twice by existing gates                                                                                                                                                                                                                                                                                                                                                                                                               |
+| TM-17  | —                | none                         | Accepted residual — nothing records who changed a row; named rather than tested                                                                                                                                                                                                                                                                                                                                                              |
+| TM-18  | 7.15             | PA-04                        | Settled 27/09/2026, grilling round 3 Q15: documented in `14-UPDATING.md`, the guard routed to `GAPS.md`. Still a demonstration, scratch fixture only                                                                                                                                                                                                                                                                                         |
+
+<!-- AMENDED 30/09/2026 at the sign-off: TM-10 cited US011.md:453-460 and :517-521, measured
+     27/09/2026 against the story at b1ca05a, and TM-13 cited US010.md:676-682, :1055-1065 and
+     :887-890, against the story at 0c5e635. The 16-sprint-plans gate's corrections of 28/09/2026
+     and 30/09/2026 moved them to project-management/src/02-STORIES/US011.md:470-477 and :534-538, and to project-management/src/02-STORIES/US010.md:706-712,
+     :1085-1095 and :917-920, the text unchanged. -->
 
 **One constraint must not be tested the obvious way.** HP-07 and HP-08 can only be run through
 `bash .github/scripts/shipped-ai.sh`, which builds its own template and project under a temporary
@@ -951,7 +1065,8 @@ call, and PA-04 against a real project destroys its uncommitted register edits.
   session's uncommitted edits; every line number in this plan is the working copy's at 17:39 on
   21/09/2026. AMENDED 27/09/2026 at the final pass: the held edits are applied, so this now holds
   of a gap's description only. Each "Written back" citation was re-measured 27/09/2026 against the
-  final pre-commit US010.md, and SPRINT-06's 27/09/2026 rows are cited by their text (Section 1).
+  final pre-commit US010.md, and again 30/09/2026 against the story as the 16-sprint-plans gate
+  corrected it, and SPRINT-06's 27/09/2026 rows are cited by their text (Section 1).
 - **No pytest, no coverage figure, no migration.** The Verification Checks' Python-suite and
   migration rows do not apply; the test record marks them `N/A` with the reason.
 
@@ -1013,14 +1128,16 @@ the five values and the re-derivation of every header stand, and no criterion ho
 ## Cross-references
 
 - `project-management/src/11-QA/IMPLEMENTATION/QA-IMPL-US000-TEMPLATE.md` — the post-implementation review that verifies this plan against the shipped change
-- `project-management/src/02-STORIES/US010.md` — the story this plan tests; all twenty-three gaps above are `[RESOLVED] 27/09/2026` in it, the citations re-measured that day against its final pre-commit text
+- `project-management/src/02-STORIES/US010.md` — the story this plan tests; all twenty-three gaps above are `[RESOLVED] 27/09/2026` in it, the citations re-measured 30/09/2026 against the story as the 16-sprint-plans gate corrected it (27/09/2026 against its pre-commit text until then)
 - `project-management/src/03-SPRINTS/SPRINT-06.md` — the record whose mirrored criteria follow the story's
 - `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US010-SEEDED-REGISTER-INDEXES.md` · `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US010-SEEDED-REGISTER-INDEXES.md` — the security gate Section 5 traces, TM-01 to TM-18 and Sections 7.1 to 7.15
-- `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` · `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the writer format and reader rule, both `Proposed`, accepted in the 27/09/2026 write-back pass only after an independent review and before the US010 commit (settled 27/09/2026, grilling round 4 Q27)
+- `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` · `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the writer format and reader rule, both `Accepted` — committed so at `0c5e635`, after the independent review round 4 Q27 required (settled 27/09/2026). AMENDED 30/09/2026: read "both `Proposed`, accepted in the 27/09/2026 write-back pass only after an independent review and before the US010 commit" until then
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md` — the sibling plan sharing AC-GAP-3 and AC-GAP-7
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US012-SEED-PRESENCE-GATE.md` — the seed presence loop this story's `SEEDED` growth meets
 - `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` — S-01, S-02, S-03 and N-001 to N-006
-- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the reporting regime AC-GAP-15 applies
+- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the reporting regime AC-GAP-15 applies, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide
 - `project-management/workflows/11-qa-checks/` — the workflow that produced this plan
 - `code/docs/GATE-REPORTING.md` — the rule the `N/A` sections, the demonstration rows, Section 7's unrun readings and Section 8 rest on

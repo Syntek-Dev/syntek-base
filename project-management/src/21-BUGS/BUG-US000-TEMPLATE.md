@@ -15,7 +15,7 @@ _Template — copy to `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`, replace every `{PL
 | **Date found**   | {DD/MM/YYYY}                                                      |
 | **Last Updated** | {DD/MM/YYYY}                                                      |
 | **Status**       | Open / Fixed / Verified                                           |
-| **Found during** | QA / review / production / debug session                          |
+| **Found during** | QA / manual walk / review / production / debug session            |
 | **Reporter**     | {name / agent / audit}                                            |
 
 ---
@@ -99,7 +99,7 @@ Blast radius, and every story or record this touches.
 
 - **Impact:** {who/what was affected, and how widely — one story, one route, or shared}.
 - **Related stories:** _[EXAMPLE] US### — {title} (shares the affected component)_.
-- **Related records:** _[EXAMPLE] `../19-REVIEWS/REVIEW-US###-<DESCRIPTOR>.md` · `../18-TESTS/US###-TEST-STATUS.md`_.
+- **Related records:** _[EXAMPLE] `../19-REVIEWS/REVIEW-US###-<DESCRIPTOR>.md` · `../18-TESTS/AUTOMATED/US###-TEST-STATUS.md` · `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` row `{AREA}-{NN}`_.
 
 ## 9. Verification
 
@@ -123,7 +123,7 @@ Commands are project scripts under `code/src/scripts/**/*.sh` — never raw pyte
 - `../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` — the code master the fix closes the loop on
 - `code/workflows/10-debug/` — the TDD debug procedure (failing test first)
 - `code/workflows/09-debugging-with-logs/` — tracing a defect through structured logs
-- `../19-REVIEWS/` · `../18-TESTS/` — the review and test records from the same PR
+- `../19-REVIEWS/` · `../18-TESTS/MANUAL/` · `../18-TESTS/AUTOMATED/` — the review, the walked manual testing guide and the automated test record from the same PR
 
 <!-- UPDATED 08/09/2026. Both story-plan citations gained the `<exec-order>-` build-order prefix;
      they read "STORY-PLAN-US###-<DESCRIPTOR>.md" before.

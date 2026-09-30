@@ -357,8 +357,8 @@ Django's ORM. Every state-changing endpoint needs a test that asserts the permis
 **denies** an unauthorised caller, not just that it allows the happy path.
 
 **The `story` marker is attribution, not selection** — it is what the per-story test record in
-`project-management/src/18-TESTS/` is generated from, and an unmarked test is silently absent from
-that record (`code/docs/testing/TAXONOMY.md` — _Markers_).
+`project-management/src/18-TESTS/AUTOMATED/` is generated from, and an unmarked test is silently
+absent from that record (`code/docs/testing/TAXONOMY.md` — _Markers_).
 
 ## Governing procedures (route here — do not restate at length)
 

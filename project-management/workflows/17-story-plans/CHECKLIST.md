@@ -73,12 +73,28 @@ Use this checklist to verify the story plan is complete before implementation be
 ## Test Strategy
 
 - [ ] Test strategy defined per layer: unit & integration, component, API/contract,
-      Django Ninja permission-check tests, accessibility/E2E, manual testing
+      Django Ninja permission-check tests, accessibility/E2E — manual testing is the guide below
 - [ ] Coverage floors referenced (`code/docs/TESTING.md`: 75% line and branch / auth 90% — one floor)
+
+## Manual Testing Guide
+
+- [ ] `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` copied from that folder's
+      `US000-MANUAL-TESTING.md` (STEPS.md Step 7.2) and `src/18-TESTS/MANUAL/CLAUDE.md` read first
+- [ ] Authored from the specs alone — its _Authored from_ line names every artefact read, and no
+      row was drawn from code, a branch or a prototype
+- [ ] Its _Surface_ (Browser / CLI / Gate / API) named in the header, so a story with no UI still
+      has rows a person can walk
+- [ ] Each of the story's _QA Acceptance Criteria — Manual_ is met by at least one row, and every
+      QA-plan scenario is exercised by a row or named under _Out of scope_ with its reason
+- [ ] Every row carries a permanent `{AREA}-{NN}` ID, `Flow` as `—`, a `QA` citation or `—`, and
+      a blank `Result`
+- [ ] Every row the records could not decide was put to <%DEVELOPER_NAME%> and written from the
+      recorded answer — none guessed
 
 ## Review
 
-- [ ] Plan reviewed by 2–3 independent adversarial passes; findings resolved
+- [ ] Plan and manual testing guide reviewed by 2–3 independent adversarial passes; findings
+      resolved
 - [ ] Deferred items and risks recorded, each with a target future story where applicable
 
 ## Context
@@ -116,4 +132,6 @@ Use this checklist to verify the story plan is complete before implementation be
 - [ ] Nothing added to `src/17-STORY-PLANS/CONTEXT.md` — it holds no index by recorded decision
       (its _The plans index_ section), and the folder-level index is deferred
 - [ ] Driving user story (`src/02-STORIES/US###.md`) updated with a reference to this plan
+- [ ] Manual testing guide saved to `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`; its header
+      names this plan's saved filename, and the plan's _Manual testing_ section names the guide
 - [ ] Ready to proceed to `project-management/workflows/19-backend-code/`

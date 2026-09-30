@@ -46,6 +46,12 @@ user story slotted into a sprint. This workflow produces
 `00-STORY-PLAN-US000-TEMPLATE.md`: the single master reference a developer codes from, fixing
 the technical approach, key decisions, dependencies, and risks before any code is written.
 
+It also authors the story's **manual testing guide**,
+`src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, from the same specs — the plan's executable half.
+It is written here, before any code exists, because a guide that predates the build is an
+independent oracle for it: `22-implementation-documentation` later walks it against what shipped,
+and a guide drafted from the code could only agree with the code.
+
 ## Why the filename carries a number
 
 The prefix is the story's **position in the settled build order across the whole backlog** —
@@ -81,6 +87,8 @@ disagree with: its prefix either tracks build order or means nothing.
   (`05-USER-FLOW`), wireframes (`08-WIREFRAMES`), GDPR (`09-GDPR`), security
   (`10-SECURITY`), QA (`11-QA`), SEO (`12-SEO`), API design (`13-API-DESIGN`)
 - `src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md` — the canonical superset template
+- `src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md` — the template the manual testing guide is
+  copied from; the full list of specs the guide is authored from is `STEPS.md` Step 7.2
 - The sprint plans in `src/16-SPRINT-PLANS/`, in their own `<exec-order>` sequence — the
   settled build order the new plan's `<exec-order>` prefix is counted against — and each one's
   _Story Plans — the code master_ table, where a plan is indexed against its sprint
@@ -96,6 +104,8 @@ disagree with: its prefix either tracks build order or means nothing.
   placeholder replaced. `src/17-STORY-PLANS/CONTEXT.md` gains no row: it holds no index by
   recorded decision (its _The plans index_ section), the folder-level index being deferred to
   the register-index work charted in `src/01-FEATURE-MAPS/`
+- `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` — the story's manual testing guide, authored from
+  the specs with every `Result` blank, cross-linked with the plan
 
 ## Key decisions
 
@@ -105,22 +115,24 @@ disagree with: its prefix either tracks build order or means nothing.
 3. Dependency matrix — blocked-by / blocks / can-start-now, kept honest against the DAG
 4. Phased implementation tasks mapped onto the code workflow chain
    (`19-backend-code` → `20-api-code` → `21-frontend-code`)
-5. Test strategy per layer, defined before any code is written
+5. Test strategy per layer, and the manual testing guide that exercises it, both fixed before
+   any code is written
 6. GDPR, security, and QA constraints carried in from the 02–14 specs, not re-derived
 7. Deferred items and risks, each named against a target future story
 
 ## Related workflows
 
-| Workflow                              | Relationship                                                                    |
-| ------------------------------------- | ------------------------------------------------------------------------------- |
-| `15-decisions`                        | Upstream — ADRs this plan cites as constraints on its approach                  |
-| `16-sprint-plans`                     | Upstream — sets the story's sprint, priority, and phase sequence                |
-| `02-story-creation` … `13-api-design` | Upstream — every design/compliance spec this plan carries constraints from      |
-| `19-backend-code`                     | Downstream — implementation begins from this plan                               |
-| `20-api-code`                         | Downstream — Django Ninja layer implementation follows this plan's API approach |
-| `21-frontend-code`                    | Downstream — UI implementation follows this plan's frontend approach            |
-| `22-implementation-documentation`     | Downstream — closes the plan with IMPLEMENTATION-side records against it        |
-| `23-pr-and-review`                    | Downstream — the plan's definition of done gates the PR                         |
+| Workflow                              | Relationship                                                                     |
+| ------------------------------------- | -------------------------------------------------------------------------------- |
+| `15-decisions`                        | Upstream — ADRs this plan cites as constraints on its approach                   |
+| `16-sprint-plans`                     | Upstream — sets the story's sprint, priority, and phase sequence                 |
+| `02-story-creation` … `13-api-design` | Upstream — every design/compliance spec this plan carries constraints from       |
+| `18-consolidate-design-work`          | Downstream — sets the guide's `Flow` column; corrects plan and guide if it must  |
+| `19-backend-code`                     | Downstream — implementation begins from this plan; its Red phase reads the guide |
+| `20-api-code`                         | Downstream — Django Ninja layer implementation follows this plan's API approach  |
+| `21-frontend-code`                    | Downstream — UI implementation follows this plan's frontend approach             |
+| `22-implementation-documentation`     | Downstream — closes the plan with IMPLEMENTATION records; walks the guide        |
+| `23-pr-and-review`                    | Downstream — the plan's definition of done gates the PR                          |
 
 ## Cross-references
 
@@ -132,6 +144,8 @@ disagree with: its prefix either tracks build order or means nothing.
   superset template every plan is copied from
 - `project-management/src/16-SPRINT-PLANS/CLAUDE.md` — the sibling `<exec-order>` rule this
   folder deliberately inverts; read both before renumbering either
+- `project-management/src/18-TESTS/MANUAL/CLAUDE.md` — every rule of the manual testing guide:
+  authoring from the specs, row IDs, the `Flow` and `QA` columns, the walk, amendments
 
 ### Related reading
 

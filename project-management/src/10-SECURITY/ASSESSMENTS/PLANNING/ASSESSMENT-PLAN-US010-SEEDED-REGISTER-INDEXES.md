@@ -4,9 +4,9 @@
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Story**      | US010 — The seven register indexes are born seeded, and the map index leaves the file that ships                                                                                                                  |
 | **Date**       | 21/09/2026                                                                                                                                                                                                        |
-| **Author**     | Claude Code — `security` skill, Opus · **not yet reviewed by <%DEVELOPER_NAME%>**                                                                                                                                 |
+| **Author**     | Claude Code — `security` skill, Opus · reviewed by <%DEVELOPER_NAME%>                                                                                                                                             |
 | **Sprint**     | SPRINT-06 — this story is its sole member, 8 of 11 SP, holding a 5 SP reservation for US009's carry (13 / 11 SP at grace if it lands; `project-management/src/03-SPRINTS/SPRINT-06.md:30-34`, as read 21/09/2026) |
-| **Status**     | Draft                                                                                                                                                                                                             |
+| **Status**     | Signed off · **corrected in place 28/09/2026** — see below                                                                                                                                                        |
 | **Frameworks** | STRIDE · OWASP Top 10 (A01–A10, 2025) · NIST CSF 2.0 (GV/ID/PR/DE/RS/RC)                                                                                                                                          |
 
 > This assessment establishes the security **baseline** for the story before any code is
@@ -51,7 +51,62 @@
      US011 citation here was re-measured 27/09/2026 against the final pre-commit text of both
      stories, which do not change again; a 21/09/2026 citation that locates text as it stood then
      is marked "as read 21/09/2026" rather than re-pointed, the Sprint row's SPRINT-06 citation
-     with them. No severity moves, and Status still reads Draft. -->
+     with them. No severity moves, and Status still reads Draft.
+
+     SIGNED OFF 28/09/2026 by <%DEVELOPER_NAME%> (settled 28/09/2026, 16-sprint-plans grilling
+     round 1 Q1 and round 2 Q5), against the tree at 1edb2c4. Status now reads Signed off,
+     corrected in place, and every "Status still reads Draft" above is history, kept as written.
+     The Author row read "Claude Code — `security` skill, Opus · **not yet reviewed by
+     <%DEVELOPER_NAME%>**" until then. The same gate corrects US010 and US011 above lines this
+     baseline cites, so the stories did change after the final pass above said they would not.
+     Every live line citation into them was re-measured on 30/09/2026 against the stories as this
+     gate corrects them, drafted 28/09/2026 and completed 30/09/2026, and the numbers it replaces
+     are kept in dated comments beside them. Every other path:line citation into this repository
+     was re-measured the same day against the tree committed together with the 18-TESTS split, one
+     commit (settled 30/09/2026, 16-sprint-plans grilling round 4 Q13 and Q14). That split moves
+     copier.yml, by two lines from the _exclude negations on and by 21 from the _migrations: block
+     on; each copier.yml citation here that it moves is re-pointed, the number it replaces kept in
+     a dated comment beside it. Every other citation still locates its text. What was corrected, and
+     why, is the note below this comment. No severity moves. -->
+
+> **Corrected in place, 28/09/2026, at the `16-sprint-plans` gate, and signed off by
+> <%DEVELOPER_NAME%>** (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1 and round 2 Q5).
+> Two statements here had been overtaken by commits of 27/09/2026, one citation was in a form the
+> audit cannot check, the story citations moved with the stories' own corrections at this gate,
+> and the `copier.yml` citations moved with the 18-TESTS split committed beside it:
+>
+> - **Both US010 ADRs read `Accepted`**, not `Proposed` pending review:
+>   `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md:3`
+>   and `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md:3`,
+>   committed Accepted at 0c5e635 after round 4 Q27's independent review. Corrected in Section
+>   2's Decisions row and the Cross-references entry.
+> - **The Security flag's widened value is written back.** Section 2 said the replacement text
+>   is returned to the story as data because a concurrent session holds uncommitted edits to it;
+>   the hold lifted, and gate 10's edits landed in `project-management/src/02-STORIES/US010.md`
+>   on 27/09/2026 (its Security row, at `:225` in the story as corrected at this gate), committed
+>   at 0c5e635.
+> - **7.12's 21/09/2026 citation of US011** named the bare file, which the citation audit cannot
+>   resolve; it now carries the full path, and the line range it locates is unchanged.
+> - **Story line citations follow the stories.** This gate also corrects US010 and US011, which
+>   moves text under the live citations in Section 2, 7.3, 7.4, 7.10, 7.11 and Section 8 item 1.
+>   Each was re-measured on 30/09/2026 against the stories as this gate corrects them. Citations
+>   marked "as read 21/09/2026" keep locating the text as it stood then.
+> - **`copier.yml` citations follow the 18-TESTS split**, which lands in one commit with this
+>   correction (settled 30/09/2026, 16-sprint-plans grilling round 4 Q13 and Q14). It adds two
+>   comment lines to `_exclude` and one ungated `_migrations:` entry, so Section 1's incident-index
+>   negation moves from `:186` to `:188`, Section 5's one-way-door rule from `:967-972` to
+>   `:988-993`, and 7.1's and 7.2's seed chain from `:973-984` to `:994-1005`, its `rmdir` at
+>   `:1004` and its gate at `:1005`. Each was re-measured on 30/09/2026 and re-pointed, the number
+>   it replaces kept in a dated comment beside it. Every other `path:line` citation into this
+>   repository was re-measured the same day against the tree committed together with the split
+>   and still locates its text.
+>
+> Corrected rather than superseded because no finding, severity or constraint moved: Section 6
+> reads 0 CRITICAL, 0 HIGH, 4 MEDIUM, 12 LOW and 2 INFO before and after, and none of the threat
+> model's Section 3a triggers has fired. Each superseded wording is kept in a dated comment
+> beside the table, paragraph or list it left. Signing off ticks no Section 7 box — the
+> implementation assessment closes each with evidence — and Section 8 item 3 stays open: the
+> Copier reading is a measurement 7.7's self-test owes, not a decision this sign-off settles.
 
 ---
 
@@ -76,10 +131,15 @@ negation re-including an index path would ship this repository's filled index to
 `update` — where the copy-gated `mv` never runs — while `copy` stays clean, because the `mv`
 overwrites the rendered file and `shipped-artefacts.sh` admits the path by name from `SEEDED`
 (TM-02). The story's own stated shape precedent, the incident index, ships by exactly such a
-negation (`copier.yml:186`). The grilling pass closed it with a no-negation clause in the new
+negation (`copier.yml:188`). The grilling pass closed it with a no-negation clause in the new
 `shipped-registers.sh` family (settled 21/09/2026, grilling round 1 Q2), which is why it is `MEDIUM`
 and not more. That check matches negations with `_exclude`'s own glob semantics, because a
 glob-form negation leaks exactly as a literal one does (7.6).
+
+<!-- AMENDED 30/09/2026: the paragraph above cited `copier.yml:186` until then, which located the
+     incident index's negation at a18db0b. The 18-TESTS split, committed with this correction, adds
+     two comment lines among the _exclude negations above it and moves it to :188; the text is
+     unchanged. -->
 
 **The second is that nothing would notice TM-01, and the obvious probe cannot fail** (TM-04).
 `shipped-registers.sh` greps the whole `_tasks` block, so it cannot tell a gated task from an
@@ -100,14 +160,20 @@ in the updating guide, and their complete fixes go to `GAPS.md` through gate 22 
 
 ## 2. Scope
 
-| Dimension  | Coverage                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Story      | US010 — seven index files, seven seeds, seven `mv` lines, one grown allowlist, one new check family, one extended update probe, a map-status header across 15 maps                                                                                                                                                                                                                                                                                       |
-| User flow  | **None** — the story adds no screen, route or journey                                                                                                                                                                                                                                                                                                                                                                                                    |
-| Wireframe  | **None**, and none is possible — the surface is Markdown, YAML and bash                                                                                                                                                                                                                                                                                                                                                                                  |
-| Schema     | **None** — no model, no migration, no PII. `DB` and `GDPR` both read `N/A`                                                                                                                                                                                                                                                                                                                                                                               |
-| Decisions  | Two ADRs under US010: the map-status enum prefix (writer format) and the index-status read rule (reader). Both `Proposed`, and accepted in the 27/09/2026 write-back pass, after an independent review and before the US010 commit (settled 27/09/2026, grilling round 4 Q27); each Status line reads `Proposed` until that review is done. AMENDED 27/09/2026 at the final pass: this read "both `Proposed` until signed off". The debt line earns none |
-| Frameworks | STRIDE · OWASP Top 10 (2025) · NIST CSF 2.0                                                                                                                                                                                                                                                                                                                                                                                                              |
+| Dimension  | Coverage                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Story      | US010 — seven index files, seven seeds, seven `mv` lines, one grown allowlist, one new check family, one extended update probe, a map-status header across 15 maps                                                                                                                                                                                                                                                                        |
+| User flow  | **None** — the story adds no screen, route or journey                                                                                                                                                                                                                                                                                                                                                                                     |
+| Wireframe  | **None**, and none is possible — the surface is Markdown, YAML and bash                                                                                                                                                                                                                                                                                                                                                                   |
+| Schema     | **None** — no model, no migration, no PII. `DB` and `GDPR` both read `N/A`                                                                                                                                                                                                                                                                                                                                                                |
+| Decisions  | Two ADRs under US010: the map-status enum prefix (writer format) and the index-status read rule (reader). Both `Accepted` at their own :3, accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (settled 27/09/2026, grilling round 4 Q27), and committed Accepted at 0c5e635. AMENDED 27/09/2026 at the final pass: this read "both `Proposed` until signed off". The debt line earns none |
+| Frameworks | STRIDE · OWASP Top 10 (2025) · NIST CSF 2.0                                                                                                                                                                                                                                                                                                                                                                                               |
+
+<!-- AMENDED 28/09/2026 at the 16-sprint-plans sign-off. The Decisions row read "Both
+     `Proposed`, and accepted in the 27/09/2026 write-back pass, after an independent review and
+     before the US010 commit (settled 27/09/2026, grilling round 4 Q27); each Status line reads
+     `Proposed` until that review is done" until then. The review is done: both records read
+     Accepted at :3, committed 27/09/2026 at 0c5e635. -->
 
 **Deviation, stated rather than silently absent.** `10-security-checks` Step 1 reviews user flows
 and wireframes. This story has neither and can have neither. The trust boundaries were derived from
@@ -125,8 +191,15 @@ the state list is right."_
 **That reasoning is vindicated here.** The manifest's QA states are "seed-lands, seed-blank"; the
 negation leak (TM-02), the unfailable probe (TM-04) and both corrected rationales (TM-01, TM-07)
 are outside that list, and none would have surfaced from `11-qa-checks` alone. The flag's value
-**widens** at this gate — the replacement text is returned to the story as data, because a
-concurrent session holds uncommitted edits to it.
+**widens** at this gate — the replacement text was returned to the story as data while a
+concurrent session held uncommitted edits to it, and was written back on 27/09/2026 once that
+hold lifted (`project-management/src/02-STORIES/US010.md:176-180`; the widened value is the
+Security row at `:225`).
+
+<!-- AMENDED 28/09/2026 at the 16-sprint-plans sign-off. The last sentence above read "The flag's
+     value widens at this gate — the replacement text is returned to the story as data, because a
+     concurrent session holds uncommitted edits to it" until then. Gate 10's edits were written
+     back into the story on 27/09/2026 and committed at 0c5e635. -->
 
 ## 3. Threat models referenced
 
@@ -159,12 +232,16 @@ read from Copier 9.18.2's source — is the reasoning behind 7.1, 7.7 and 7.15.
 
 | Fn  | Function | Design-stage posture                                                                                                                                                                                                                                                                                                                        |
 | --- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| GV  | Govern   | **Improved.** The one-way-door rule `copier.yml:967-972` states for three registers now covers ten, and the two hard-to-reverse calls are ADRs. Weak spot: the `--trust` disclosure (TM-13)                                                                                                                                                 |
+| GV  | Govern   | **Improved.** The one-way-door rule `copier.yml:988-993` states for three registers now covers ten, and the two hard-to-reverse calls are ADRs. Weak spot: the `--trust` disclosure (TM-13)                                                                                                                                                 |
 | ID  | Identify | **Strong, and the strongest part of this gate.** The three update renders were read rather than assumed, the masking path located, and 47 tracked instances and 12 of 15 maps measured                                                                                                                                                      |
 | PR  | Protect  | **Partial until 7.3, 7.6 and 7.8 land.** The gate holds by construction; blankness and the absence of a negation are asserted only once the new family exists                                                                                                                                                                               |
 | DE  | Detect   | **Weakest today.** No gate sees the gate's position, `SEEDED` admits by name, and the obvious update probe cannot fail. 7.7's shape is what moves this off Open                                                                                                                                                                             |
 | RS  | Respond  | **Adequate.** Every failure mode on this surface is loud and fails the build; 7.2 and 7.8 are the constraints that keep it so                                                                                                                                                                                                               |
 | RC  | Recover  | **Open for TM-14 and TM-18.** Today a pre-US010 project has no stated path to the seven files, and a recopy loses uncommitted register edits outright. US010 documents both in the updating guide; the complete fixes are `GAPS.md` entries (settled 27/09/2026, grilling round 3 Q15). For TM-01 the recovery is the project's own history |
+
+<!-- AMENDED 30/09/2026: the GV row cited `copier.yml:967-972` until then, which located the
+     one-way-door comment at a18db0b. The 18-TESTS split, committed with this correction, adds 21
+     lines above it and moves it to :988-993; the text is unchanged. -->
 
 ## 6. Findings
 
@@ -210,7 +287,7 @@ its one permitted row settled, `ST05` 7.5 with its allowlist widened. `ST06`–`
 7.6–7.8. No `ST` number is reused or renumbered.
 
 - [ ] **7.1** All seven `mv` lines sit inside the one existing `_tasks` entry at
-      `copier.yml:973-984`, under its `when:` key keyed on `_copier_operation == 'copy'` (`:984`) —
+      `copier.yml:994-1005`, under its `when:` key keyed on `_copier_operation == 'copy'` (`:1005`) —
       no second task. Asserted statically by 7.3's copy-gated-chain clause and behaviourally by 7.7.
       **Consequence corrected**: an ungated line would run in all three update renders; the
       project's own diff is replayed over the overwrite, so the result is invisible when the seed is
@@ -218,7 +295,7 @@ its one permitted row settled, `ST05` 7.5 with its allowlist widened. `ST06`–`
       or left with conflict markers. Holds by construction **on `update`** today; `copier recopy`
       opens the gate whatever the chain looks like, and is 7.15, not this criterion (A08, TM-01) —
       _`ST01`_
-- [ ] **7.2** All seven lines land **ahead of** `rmdir .copier` (`copier.yml:983`), and that line
+- [ ] **7.2** All seven lines land **ahead of** `rmdir .copier` (`copier.yml:1004`), and that line
       stays `rmdir`, never `rm -rf`: it is what makes a seed without its `mv` line fatal.
       **Rationale corrected**: a line after it does not silently no-op — `rmdir` exits 1 on a
       non-empty directory (measured 21/09/2026), the chain aborts, Copier raises `TaskError` and
@@ -235,7 +312,7 @@ its one permitted row settled, `ST05` 7.5 with its allowlist widened. `ST06`–`
       one finding. More than one new family plus its probes sends US010 to 13 SP and back to
       `01-feature-map` (settled 21/09/2026, grilling round 2 Q12); the seed-row clause is a clause
       in this family, not a second family, so that trigger is not reached. ST03 as it now stands is
-      at `project-management/src/02-STORIES/US010.md:757-773` (A08, TM-03, TM-04, TM-08) —
+      at `project-management/src/02-STORIES/US010.md:787-803` (A08, TM-03, TM-04, TM-08) —
       _`ST03`_
 - [ ] **7.4** No seed names a syntek-base map, story, sprint, decision, plan, finding or bug, and
       none carries the `Backfill owed` line. The one permitted literal is the map-index seed's row
@@ -254,8 +331,8 @@ its one permitted row settled, `ST05` 7.5 with its allowlist widened. `ST06`–`
       family, so round 2 Q12's trigger is not reached. This resolves the QA plan's AC-GAP-2, which
       proposed that host for this criterion, and HP-03's Status agreement is automated by it
       rather than read by hand in a generated tree. It lands at
-      `project-management/src/02-STORIES/US010.md:765-773` (ST03), `:636-637` (the seed-family
-      scenario), `:608` (the generated-project scenario) and `:1118-1129` (the Security Task).
+      `project-management/src/02-STORIES/US010.md:795-803` (ST03), `:666-667` (the seed-family
+      scenario), `:638` (the generated-project scenario) and `:1193-1204` (the Security Task).
       AMENDED 27/09/2026 at the final pass: this criterion had read that 7.3's family "checks row
       shape only" (A08, TM-08) — _`ST04`_
 - [ ] **7.5** The change introduces no new network fetch, no new credential read, and no write
@@ -308,6 +385,18 @@ its one permitted row settled, `ST05` 7.5 with its allowlist widened. `ST06`–`
       existing target exits 1 (measured), and a silent skip leaves the seed for `rmdir` to fail on
       (A08, TM-05, TM-06) — _`ST08`, new_
 
+<!-- AMENDED 28/09/2026 at the 16-sprint-plans sign-off, and re-measured 30/09/2026. Until then
+     7.3 cited ST03 at `project-management/src/02-STORIES/US010.md` :757-773, and 7.4 cited
+     :765-773 (ST03), :636-637 (the seed-family scenario), :608 (the generated-project scenario)
+     and :1118-1129 (the Security Task). Each located its text at 1edb2c4. The same gate's
+     correction of US010 moves them to :787-803, :795-803, :666-667, :638 and :1193-1204; the text
+     is unchanged. -->
+
+<!-- AMENDED 30/09/2026, re-measured against the tree committed together with the 18-TESTS split.
+     7.1 cited `copier.yml:973-984` and its gate at `:984`, and 7.2 `copier.yml:983`, until then,
+     each locating its text at a18db0b. The split, committed with this correction, adds 21 lines
+     above the chain and moves them to :994-1005, :1005 and :1004; the text is unchanged. -->
+
 Four further constraints are carried by other instruments and are **not** `ST` criteria:
 
 - [ ] **7.9** One `Status` read rule for all seven carriers — maps, stories, sprints, ADRs, plans,
@@ -327,13 +416,13 @@ Four further constraints are carried by other instruments and are **not** `ST` c
       grilling round 3 Q18). The overlap Q18 left is resolved — `Blockers clear` wins, so a charted
       map with nothing resolved and `Blocking open` 0 reads `Blockers clear — stories may start`
       (settled 27/09/2026, grilling round 6 Q31). The derivation criterion, Q31 included, is at
-      `project-management/src/02-STORIES/US010.md:584` (re-measured 27/09/2026 against the final
-      pre-commit text). AMENDED 27/09/2026 at the final pass: the one writer US010 instructs to
-      move a map out of `Not started`, wayfinder's chart step (settled 27/09/2026, grilling round 3
-      Q24), fills `Charted` and writes the value the counts give — `Charting` while
-      `Blocking open` is above 0, otherwise `Blockers clear — stories may start` — and never
+      `project-management/src/02-STORIES/US010.md:614` (re-measured 30/09/2026 against the story
+      as corrected at this gate). AMENDED 27/09/2026 at the final pass: the one writer US010
+      instructs to move a map out of `Not started`, wayfinder's chart step (settled 27/09/2026,
+      grilling round 3 Q24), fills `Charted` and writes the value the counts give — `Charting`
+      while `Blocking open` is above 0, otherwise `Blockers clear — stories may start` — and never
       asserts `Charting` (the Q24 x Q31 reconciliation, call recorded 27/09/2026;
-      `project-management/src/02-STORIES/US010.md:691-695` and `:1018-1027`) (A08, TM-12)
+      `project-management/src/02-STORIES/US010.md:721-725` and `:1048-1057`) (A08, TM-12)
 - [ ] **7.11** The window in which the four backfilled indexes read complete with no gate runs
       from US011 shipping until S-03 is cut, and S-03 is unscheduled (CUT-PLAN.md P8, map-order
       row 10). TM-10 stays `LOW`, and the window is tracked in `GAPS.md`, routed through gate 22
@@ -343,17 +432,27 @@ Four further constraints are carried by other instruments and are **not** `ST` c
       ("US011 lands and S-03 has not been cut") is retired by Q21: <%DEVELOPER_NAME%> chose LOW
       knowing S-03 is unscheduled (call recorded 27/09/2026 with round 6; threat model Section 3a).
       US011 carries the entry as a task and a Definition-of-Done line
-      (`project-management/src/02-STORIES/US011.md:453-460` and `:517-521`, measured 27/09/2026
-      against the final pre-commit text; cited AMENDED 27/09/2026 at the final pass).
+      (`project-management/src/02-STORIES/US011.md:470-477` and `:534-538`, re-measured
+      30/09/2026 against the story as corrected at this gate; cited AMENDED 27/09/2026 at the
+      final pass).
       AMENDED 27/09/2026: this criterion had read that the decision did not name which story's
       gate-22 pass writes the entry. This replaces the 21/09/2026 settlement that S-03 is
       cut into SPRINT-08 straight after these gates commit (grilling round 1 Q1 and grilling
       round 2 Q13), which P8 superseded: SPRINT-08 is RULE-OWNERSHIP's (US013, US014) (A08, TM-10)
 - [ ] **7.12** `SEEDED`'s presence half is US012's check-4 loop and deletion probe; every citation
       of `SEEDED` describes it as an allowlist, including US011's, cited 21/09/2026 at
-      `US011.md:73-75` and amended 27/09/2026 to read as one
+      `project-management/src/02-STORIES/US011.md:73-75` and amended 27/09/2026 to read as one
       (`project-management/src/02-STORIES/US011.md:99-103`, re-measured 27/09/2026 against the
       final pre-commit text) (A06, TM-09)
+
+<!-- AMENDED 28/09/2026 at the 16-sprint-plans sign-off, and re-measured 30/09/2026. 7.12's
+     21/09/2026 citation of US011 read "US011.md:73-75", the filename backticked, until then — a
+     bare filename the citation audit cannot resolve, now given its full path; the line range is
+     unchanged. Until then 7.10 cited US010 at :584, "re-measured 27/09/2026 against the final
+     pre-commit text", and at :691-695 and :1018-1027. 7.11 cited US011 at :453-460 and :517-521,
+     "measured 27/09/2026 against the final pre-commit text". Each located its text at 1edb2c4.
+     The same gate's correction of both stories moves them to US010 :614, :721-725 and
+     :1048-1057, and to US011 :470-477 and :534-538; the text is unchanged. -->
 
 Three gaps were open at this gate and were **not** settled here. Grilling round 3 settled all three
 on 27/09/2026 (Section 8), and each is now a constraint the implementation assessment closes with
@@ -403,8 +502,8 @@ not a decision:
    the other six for the story's write-back to confirm. The call settles it: Q14 covers the 24
    index sites and all seven count sites, the `--trust` disclosure among the seven, not the 24.
    US010 carries the seven in its own scenario and task
-   (`project-management/src/02-STORIES/US010.md:676-682` and `:1055-1065`, re-measured 27/09/2026
-   against the final pre-commit text).
+   (`project-management/src/02-STORIES/US010.md:706-712` and `:1085-1095`, re-measured 30/09/2026
+   against the story as corrected at this gate).
 2. **TM-14 — projects generated before US010.** `[RESOLVED] 27/09/2026` The cheap answer is a
    sentence in the updating guide, which depended on item 1. The complete answer is a
    seed-if-absent update migration, which is a second `copier.yml` decision and meets the story's
@@ -440,6 +539,12 @@ Recorded here rather than resolved at this gate, because a gate that invents an 
 question it never asked is worse than one that says it did not ask. The answers above are
 <%DEVELOPER_NAME%>'s, from grilling round 3, not this gate's.
 
+<!-- AMENDED 28/09/2026 at the 16-sprint-plans sign-off, and re-measured 30/09/2026. Item 1 cited
+     US010's own scenario and task at `project-management/src/02-STORIES/US010.md` :676-682 and
+     :1055-1065, "re-measured 27/09/2026 against the final pre-commit text", until then. Both
+     located their text at 1edb2c4. The same gate's correction of US010 moves them to :706-712 and
+     :1085-1095; the text is unchanged. -->
+
 ---
 
 ## Cross-references
@@ -449,9 +554,14 @@ question it never asked is worse than one that says it did not ask. The answers 
 - `project-management/src/10-SECURITY/AUDITS/PLANNING/` · `project-management/src/10-SECURITY/VULNERABILITIES/PLANNING/` — the sibling code audit and the escalated findings; this story writes to neither, and Section 6 states why
 - `project-management/src/02-STORIES/US010.md` — the story being assessed, whose `ST01`–`ST05` Section 7 carries
 - `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` — `S-01`'s manifest, and `S-03`, which this story precedes
-- `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` · `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the two records behind 7.10 and 7.9, both `Proposed`; accepted in the 27/09/2026 write-back pass, after an independent review and before the US010 commit (grilling round 4 Q27)
+- `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` · `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the two records behind 7.10 and 7.9, both `Accepted` (each record's :3), accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (grilling round 4 Q27), and committed Accepted at 0c5e635
 - `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US009-HOOK-ARMING.md` — the shape precedent for carrying a story's `ST` numbers into Section 7
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP Top 10 (2025), and NIST CSF 2.0 standards
 - `project-management/workflows/10-security-checks/` — the workflow that produces this
 - `code/docs/SECURITY.md` — the code-side enforcement these targets must stay consistent with
 - `code/docs/GATE-REPORTING.md` — why the zero in Section 6, the unexecuted Copier reading and Section 8 are stated rather than left implied
+
+<!-- AMENDED 28/09/2026 at the 16-sprint-plans sign-off. The two ADRs' entry above read "both
+     `Proposed`; accepted in the 27/09/2026 write-back pass, after an independent review and
+     before the US010 commit (grilling round 4 Q27)" until then. Both records read Accepted at :3,
+     committed 27/09/2026 at 0c5e635. -->

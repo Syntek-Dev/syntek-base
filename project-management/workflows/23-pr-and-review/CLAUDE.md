@@ -24,9 +24,10 @@ has been run.
   `code/docs/CODING-PRINCIPLES.md`, `code/docs/SECURITY.md`, and
   `security/OWASP-AND-CHECKLIST.md` → verify coverage floors
   (`testing/COVERAGE.md`: 75% line and branch / 90% auth — one floor) → verify the GDPR,
-  security, QA, SEO and API **implementation** records **and** the two test records in
-  `src/18-TESTS/` (all written in `workflows/22-implementation-documentation`) are complete,
-  and write the code-review record → merge through the promotion chain → satisfy
+  security, QA, SEO and API **implementation** records, the automated test record in
+  `src/18-TESTS/AUTOMATED/` **and** the walked manual testing guide in `src/18-TESTS/MANUAL/`
+  (all completed in `workflows/22-implementation-documentation`) are complete, and write the
+  code-review record → merge through the promotion chain → satisfy
   `CHECKLIST.md`. What "complete" means for the test records is `STEPS.md` Step 6 — it is a
   read, not a presence check.
 - **Definition of done:** PR reviewed and merged per the branch chain; the implementation
@@ -38,10 +39,11 @@ has been run.
 
 - **A PR is not mergeable until this workflow is signed off** — the branch promotion
   chain gates are blocking.
-- **Documentation hard gate:** the implementation records, both `src/18-TESTS/` test
-  records, and the `CONTEXT.md`/`CLAUDE.md` closeout (all authored in
-  `workflows/22-implementation-documentation`) must be complete before merge — this
-  workflow **verifies** them, it does not write them.
+- **Documentation hard gate:** the implementation records, the automated test record, the
+  walked manual testing guide, and the `CONTEXT.md`/`CLAUDE.md` closeout (all completed in
+  `workflows/22-implementation-documentation`; the guide itself authored at
+  `workflows/17-story-plans`) must be complete before merge — this workflow **verifies** them,
+  it does not write, walk or amend them.
 - Review verifies the non-negotiables actually hold in the diff: every mutation
   permission-checked, no IDOR, token-first CSS, coverage floors met.
 - Version bumps only via `docs/VERSIONING-GUIDE.md` / `version`. Instructional `.md`
@@ -51,8 +53,9 @@ has been run.
 
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`; and the one PR-stage record this workflow
   produces — the review record `REVIEW-US###-*.md` in `src/19-REVIEWS/`. The
-  GDPR/security/QA/SEO/API implementation records and both `src/18-TESTS/` test records are
-  authored in `workflows/22-implementation-documentation` and only verified here.
+  GDPR/security/QA/SEO/API implementation records and the automated test record are written,
+  and the manual testing guide walked, in `workflows/22-implementation-documentation`; all are
+  only verified here.
 - Documentation `SCREAMING-SNAKE-CASE.md`; workflow folders `NN-kebab-case/`; dates
   DD/MM/YYYY.
 
@@ -74,3 +77,12 @@ has been run.
      can sit with an empty Result, and a green automated half can sit beside a failing manual
      row. That last case is a MISSING TEST, not a passing story, which is why Step 6 sends it
      back to 22 rather than letting the suites speak for the walk. -->
+
+<!-- UPDATED 30/09/2026. The two test records moved into sub-folders of "src/18-TESTS/" —
+     AUTOMATED/ for US###-TEST-STATUS.md, MANUAL/ for US###-MANUAL-TESTING.md — and the manual
+     guide is now authored at 17-story-plans from the specs and only walked at 22. This workflow
+     still only verifies both; its paths were repointed, and Step 6 gained one check: an amended
+     manual row must carry its trail in Notes and a matching finding in 20-FINDINGS, because an
+     amendment without both is exactly the silent rewrite that would let a guide written before
+     the code quietly become a description of it. Settled by the grilling pass of 30/09/2026; the
+     rules are "../../src/18-TESTS/MANUAL/CLAUDE.md"'s. -->

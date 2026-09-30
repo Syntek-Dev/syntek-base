@@ -4,8 +4,8 @@
 #
 #                  Reads what the suites already produced and rewrites the region between
 #                  <!-- BEGIN GENERATED: test-record --> and <!-- END GENERATED --> in
-#                  project-management/src/18-TESTS/US###-TEST-STATUS.md. Nothing outside those
-#                  markers is touched.
+#                  project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md, a copy of
+#                  AUTOMATED/US000-TEST-STATUS.md. Nothing outside those markers is touched.
 #
 # WHY THIS IS NOT A FLAG ON A RUNNER. The suites carry an exit-code contract three CI workflows
 # depend on — 0 pass, 1 failure, 2 script error, never masked. A doc-writing flag on all.sh would
@@ -29,10 +29,15 @@
 # sibling writes only into the gitignored reports/. Said plainly because a reader assumes
 # otherwise.
 #
+# A RECORD STILL AT THE 18-TESTS/ ROOT IS REFUSED, NOT FOLLOWED. Records live in AUTOMATED/; one
+# left at the root is one the folder split never moved. The ordinary advice — copy the template —
+# would strand that record's hand-written half beside a blank copy, so the error names the move
+# instead, and nothing is written. An explicit --record is taken at its word and never checked.
+#
 # Usage: test-record.sh US### [OPTIONS]
 #
 #   --reports DIR      Read report artefacts from DIR   (default: scripts/tests/reports)
-#   --record PATH      Write to PATH instead of the conventional US###-TEST-STATUS.md
+#   --record PATH      Write to PATH instead of 18-TESTS/AUTOMATED/US###-TEST-STATUS.md
 #   --dry-run          Print the generated block to stdout; write nothing
 #   --quiet            Suppress progress output
 #   --help             This message
@@ -46,7 +51,8 @@
 #   <reports>/backend-coverage/coverage.xml         line + branch coverage
 #
 # Exit codes:  0 = block written, or printed under --dry-run
-#              1 = record missing, markers missing, or no report artefacts to read
+#              1 = record missing or still at the 18-TESTS/ root, markers missing, or no
+#                  report artefacts to read
 #              2 = script error (bad argument, python3 absent)
 #
 set -euo pipefail
@@ -64,7 +70,7 @@ die() { printf 'test-record.sh error: %s\n' "$*" >&2; exit 2; }
 fail() { printf 'test-record.sh: %s\n' "$*" >&2; exit 1; }
 log() { $QUIET || printf '[test-record] %s\n' "$*"; }
 
-usage() { sed -n '3,40p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; }
+usage() { awk 'NR < 3 { next } /^set -euo pipefail$/ { exit } { sub(/^# ?/, ""); print }' "${BASH_SOURCE[0]}"; }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -83,15 +89,23 @@ done
 [[ "$STORY" =~ ^US[0-9]{3}$ ]] || die "story must be US followed by three digits, got '$STORY'"
 command -v python3 >/dev/null 2>&1 || die "python3 is required and was not found."
 
-[[ -n "$RECORD_PATH" ]] || \
-  RECORD_PATH="$PROJECT_ROOT/project-management/src/18-TESTS/${STORY}-TEST-STATUS.md"
+TESTS_DIR="project-management/src/18-TESTS"
+TEMPLATE="$TESTS_DIR/AUTOMATED/US000-TEST-STATUS.md"
+PRE_SPLIT_PATH=""
+if [[ -z "$RECORD_PATH" ]]; then
+  RECORD_PATH="$PROJECT_ROOT/$TESTS_DIR/AUTOMATED/${STORY}-TEST-STATUS.md"
+  PRE_SPLIT_PATH="$PROJECT_ROOT/$TESTS_DIR/${STORY}-TEST-STATUS.md"
+fi
 
 if [[ ! -d "$REPORTS_DIR" ]]; then
   fail "no report artefacts at $REPORTS_DIR — run a suite first (see tests/CONTEXT.md). Nothing was written."
 fi
 
 if ! $DRY_RUN && [[ ! -f "$RECORD_PATH" ]]; then
-  fail "$RECORD_PATH does not exist — copy US000-TEST-STATUS.md to it first. Nothing was written."
+  if [[ -n "$PRE_SPLIT_PATH" && -f "$PRE_SPLIT_PATH" ]]; then
+    fail "$PRE_SPLIT_PATH is at the $TESTS_DIR/ root, where records sat before the folder split; it belongs at $RECORD_PATH. Move it there — the template's copier migration .copier/migrations/split-18-tests.sh moves every such record on copier update — then re-run. Nothing was written."
+  fi
+  fail "$RECORD_PATH does not exist — copy $TEMPLATE to it first. Nothing was written."
 fi
 
 log "story $STORY · reports $REPORTS_DIR"
@@ -506,8 +520,8 @@ if BEGIN not in body or END not in body:
     print(
         f"test-record.sh: {RECORD} carries no generated block — expected the markers\n"
         f"  {BEGIN}\n  {END}\n"
-        "Copy US000-TEST-STATUS.md again rather than pasting them by hand; the surrounding\n"
-        "sections changed with them. Nothing was written.",
+        "Copy project-management/src/18-TESTS/AUTOMATED/US000-TEST-STATUS.md again rather than\n"
+        "pasting them by hand; the surrounding sections changed with them. Nothing was written.",
         file=sys.stderr,
     )
     sys.exit(1)

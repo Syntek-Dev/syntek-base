@@ -33,7 +33,11 @@ every state but two — a rendered carrier naming `development`, or a template c
 `--force-posture <posture>`, space-separated, naming the posture the project is at now, buying
 nothing else, and a refusal exits `4`), under
 `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red `doc-references.sh`
-is read as a diff against a recorded baseline until US004 retires the regime).
+is read as a diff against a recorded baseline until US004 retires the regime; superseded 30/09/2026
+by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+which restates it unchanged but for the manual testing guide's path). <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 
 > **`Open` is literal, and it is not the `Blocked` next door.** `../17-STORY-PLANS/CLAUDE.md`
 > makes any value other than `Blocked` an assertion that the blockers are cleared, and this story
@@ -136,7 +140,7 @@ each of the twenty-one proof cases is proved.
 | The conflict-marker scan          | `code/src/scripts/_lib/conflict-markers.sh`                                                        | Sourced for the conflict-marked carrier state (TM-08) — never reproduced. It returns 0 always and signals on stdout, so the guard reads its output                                                                                                                                                                                    |
 | Reporting a gate's result         | `code/docs/GATE-REPORTING.md`                                                                      | Every `N/A` below carries its reason; ShellCheck is recorded as run or not run, never as a `lint.sh` pass; the security zero is never "the gate passed"                                                                                                                                                                               |
 | Length limit and the ratchet      | `code/docs/DOCUMENTATION-LENGTH.md`                                                                | `code/src/scripts/audits/CONTEXT.md` sits at 298 of 300 code lines and this story may not grow it — the proof lives in `migrate.sh` for that reason                                                                                                                                                                                   |
-| Forward-looking claims            | `code/docs/FORWARD-VOICE.md`                                                                       | The helper, the two test records and the four worktree files are forward references — written in quotes here, never marked `template-only`                                                                                                                                                                                            |
+| Forward-looking claims            | `code/docs/FORWARD-VOICE.md`                                                                       | The helper, the automated test record and the four worktree files are forward references — written in quotes here, never marked `template-only`; the manual guide exists (backfilled 30/09/2026) and is backticked                                                                                                                    |
 | Testing and the one floor         | `code/docs/TESTING.md` · `code/docs/testing/COVERAGE.md`                                           | 75% line and branch, 90% auth — one floor, and it has no Python path to measure here; the proof is the `--self-test`                                                                                                                                                                                                                  |
 | The scripts' exit-code convention | The six scripts' own `Exit codes:` header lines · `code/docs/GATE-REPORTING.md` Section 3          | Every header reserves 1 for a command that failed and 2 for a script error, and the syntax scripts take 3 for could-not-run; a correct command refused on policy is none of them, which is why `4` is new. `code/docs/MANAGEMENT-COMMANDS.md` is the Django command surface and reserves only 75 — a sibling convention, not this one |
 | What the code must never allow    | `code/docs/NEGATIVE-SPACE.md`                                                                      | The guard clause shape — a refusal is a named enforcement point with one home, never an `assert`                                                                                                                                                                                                                                      |
@@ -232,7 +236,7 @@ sprint plan records the same three `N/A` phases with their reasons.
 | P2    | The six callers wired — five refusing paths and one warn, `--force-posture` parsed and forwarded, `--yes` inert, exit `4` declared twelve times, the presence assertions and the structural cases green                               | P1                  |
 | P3    | The CI caller — the teardown step's explicit override, its `\|\| true` dropped, <%DEVELOPER_NAME%> named as the literal's owner and the commit that raises the carrier as its trigger, both written beside it                         | P2                  |
 | P4    | The documentation — the posture register, the `_lib/` pair, the CLI guide, the `seed-dev.sh` header, the five call-site documents, the map's one edit and its register row, the assessment's Section 7                                | P2                  |
-| —     | The two test records and the register reconciliation — **`22-implementation-documentation`'s**, not this story's to write                                                                                                             | P1 to P4            |
+| —     | The automated test record and the register reconciliation — **`22-implementation-documentation`'s**, not this story's to write; the manual guide, authored at `17` before code, is `22`'s to walk                                     | P1 to P4            |
 
 <!-- 08/09/2026, Step 9 review (L1): the P3 cell read "the owner and trigger written beside the
      literal" — the obligation without the identity. Story 7.10, as amended at gate 11, names
@@ -339,10 +343,11 @@ updated to the amended twelve, so the security record and the story stop disagre
 
 **What `22` owns, stated so this story does not write it twice.** `REFERENCES.md`'s ownership
 table gives every implementation record and every `GAPS.md` / `DEFERRED.md` write to
-`22-implementation-documentation`. So the two test records — "project-management/src/18-TESTS/US006-TEST-STATUS.md"
-with the twenty-one observed exit codes and messages and the ShellCheck result, and
-"project-management/src/18-TESTS/US006-MANUAL-TESTING.md" with the walk-throughs, the baselines and
-the second tester's sign-off — are `22`'s. **`GAPS.md` holds nothing for this story to close**:
+`22-implementation-documentation`. So the two test records are `22`'s — it writes
+"project-management/src/18-TESTS/AUTOMATED/US006-TEST-STATUS.md" with the twenty-one observed exit
+codes and messages and the ShellCheck result, and walks `../18-TESTS/MANUAL/US006-MANUAL-TESTING.md`,
+authored before code from this plan (backfilled 30/09/2026), recording the walk-throughs, the
+baselines and the second tester's sign-off. **`GAPS.md` holds nothing for this story to close**:
 the 31/08/2026 posture entry was removed from it at charting under the one-working-copy rule
 (measured 08/09/2026 — the register's only posture lines belong to a different map), so the closure
 the sprint plan's Definition of Done names is discharged by the map's _Register claimed_ row in P4
@@ -437,7 +442,11 @@ identically before and after the change (AC-GAP-6).
 **Which reading applies is contingent on US004, and both branches are named here rather than
 discovered at implementation** (AC-GAP-15). US004 is SPRINT-03's sole `Must` since the cascade of
 07/09/2026, it retires the baseline-diff regime of
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` by its own terms, and
+`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — superseded 30/09/2026 by
+`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+which restates it unchanged, retirement terms included <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). --> — by its own terms, and
 SPRINT-03 is built before this sprint — so the plain-pass branch is the expected one. **If US004
 has landed**, `doc-references.sh` exits 0 on a clean tree and is read as a plain pass. **If it has
 not**, it is read as a diff against the baseline P0 captures, and never as a bare pass.
@@ -452,8 +461,8 @@ a parallel session's two plan files untracked; **a figure without its index stat
 baseline**, which is why P0 records the state beside the number.
 
 **What this plan adds to the population, and why it is written the way it is.** Every path in
-this plan that does not exist yet — the helper, the two test records, the four worktree files, the
-two guides other stories create — is written in double quotes, never backticks, because the gate
+this plan that does not exist yet — the helper, the automated test record, the four worktree files,
+the two guides other stories create — is written in double quotes, never backticks, because the gate
 reads backticked tokens and a forward reference in backticks is a `[dangling path]` finding that
 never converges. Every PM artefact is cited by full relative path, never as a bare `US###`,
 `MAP-*`, `QA-*` or `SPRINT-##` token in backticks. Until this file is committed it draws spurious
@@ -461,6 +470,12 @@ never converges. Every PM artefact is cited by full relative path, never as a ba
 untracked file never enters the template-only set — the defect US004 exists to repair, and not one
 to silence with `doc-references: template-only` markers, which `code/docs/FORWARD-VOICE.md`
 reserves for a citation that is right and merely unprovable downstream.
+
+<!-- 30/09/2026: this paragraph, the Forward-looking claims row and the P0-to-P4 table's last row
+     named "the two test records" as forward references and both as 22's to write, until the
+     18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual guide's authorship moved to
+     17-story-plans Step 7.2. This story's guide was backfilled that day, so it exists and is
+     backticked; the automated record is still a forward reference, still 22's. -->
 
 ## Key Decisions
 
@@ -785,17 +800,26 @@ script that exits `4` for an unrelated reason cannot pass. **There is no pre-cha
 **The self-test is run in the state that matters.** It is dispatched with the stack down, invokes
 no `docker`, runs with no terminal on stdin, and writes only under a temporary directory removed by
 its `trap`. Its output — every case's observed exit code and message — is what
-"project-management/src/18-TESTS/US006-TEST-STATUS.md" records, alongside the ShellCheck result as
-run or as not run.
+"project-management/src/18-TESTS/AUTOMATED/US006-TEST-STATUS.md" records, alongside the ShellCheck
+result as run or as not run.
 
 **The manual record carries the baselines too.** P0's three figures with their index state,
 `docs-length.sh`'s reading of `code/src/scripts/audits/CONTEXT.md` at close, and the walk-throughs
-go into "project-management/src/18-TESTS/US006-MANUAL-TESTING.md", written by `22`.
+go into `../18-TESTS/MANUAL/US006-MANUAL-TESTING.md` when `22` walks it. The guide's rows were
+authored from this plan before code (backfilled 30/09/2026); `22` marks them, never writes them.
+
+<!-- 30/09/2026: the two paragraphs above, and the "What 22 owns" paragraph under P4, read that
+     "project-management/src/18-TESTS/US006-MANUAL-TESTING.md" is "written by 22", and the
+     Write-Ups line below read "writes both test records named above", until the 18-TESTS folder
+     split into MANUAL/ and AUTOMATED/ and the manual guide's authorship moved to 17-story-plans
+     Step 7.2 (../18-TESTS/CLAUDE.md -> The record lifecycle). The automated record is still
+     22's to write. -->
 
 ## Documentation Write-Ups (Implementation Records)
 
-`22-implementation-documentation` owns the records and writes both test records named above. It
-also owns this story's register reconciliation, which is a **discharge, not a write**: the
+`22-implementation-documentation` owns the records: it writes the automated record and walks the
+manual guide named above. It also owns this story's register reconciliation, which is a
+**discharge, not a write**: the
 31/08/2026 posture entry was removed from `GAPS.md` at charting, so the closure the sprint plan's
 Definition of Done names is the map's _Register claimed_ row marked discharged in P4 and nothing
 in `GAPS.md`. `DEFERRED.md` gains no row from this story unless `22` judges one of the deferrals
@@ -809,7 +833,7 @@ judgement is made rather than skipped.
 | User story · sprint plan · record  | `../02-STORIES/US006.md` · `../16-SPRINT-PLANS/04-SPRINT-PLAN-04.md` · `../03-SPRINTS/SPRINT-04.md`                              |
 | Security threat model · assessment | Both `PLANNING/` artefacts exist and read `Reviewed`; the `IMPLEMENTATION/` counterparts re-assess against shipped code, by `22` |
 | QA plan · QA implementation review | `../11-QA/PLANNING/QA-PLAN-US006-POSTURE-GUARD.md` `Signed off`; the `IMPLEMENTATION/` review at `23-pr-and-review`              |
-| Test status · manual testing       | Both, under `../18-TESTS/`, by `22`                                                                                              |
+| Test status · manual testing       | Test status written, manual guide walked, under `../18-TESTS/`, by `22` — the guide authored before code                         |
 | Code review record                 | `../19-REVIEWS/`, at `23-pr-and-review`                                                                                          |
 | GDPR · SEO · API · Logging records | **Not required** — each flag reads `N/A`, with its reason under the matching section above                                       |
 | Schema / ERD                       | **Not required** — `DB: N/A`                                                                                                     |
@@ -1035,7 +1059,8 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US006
       the amended twelve
 - [ ] Every gate above run and recorded per `code/docs/GATE-REPORTING.md`; nothing skipped
       silently and nothing not-run reported as clean
-- [ ] Both test records written by `22`, the manual one signed off by a second tester
+- [ ] The automated record written and the manual guide walked by `22`, the guide signed off by a
+      second tester
 - [ ] Code reviewed and approved (minimum 1 reviewer); the security pass re-read 7.1 to 7.12
       against the shipped text
 - [ ] No TODO or FIXME introduced; no secret, debug flag or hardcoded ID

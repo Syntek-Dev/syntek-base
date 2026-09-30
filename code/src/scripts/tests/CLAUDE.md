@@ -38,12 +38,15 @@ which turns what a run produced into a story's test record.
   error — CI's three test workflows depend on it; never mask a failure.
 - **`test-record.sh` is the only script here that writes outside `code/`.** Every other one
   writes into the gitignored `reports/` tree; this one rewrites a **tracked** file in another
-  layer — `project-management/src/18-TESTS/US###-TEST-STATUS.md`. It writes **only** between
-  `<!-- BEGIN GENERATED: test-record -->` and `<!-- END GENERATED -->`, fails loudly when either
-  marker is absent rather than appending at the end, and **never changes a suite's exit code**:
-  keep it a separate invocation and never a step inside a runner, so a red run still records.
-  Never hand-edit the block it owns — the next run discards the edit
-  (`project-management/src/18-TESTS/CLAUDE.md`).
+  layer — `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md`. It writes **only**
+  between `<!-- BEGIN GENERATED: test-record -->` and `<!-- END GENERATED -->`, fails loudly when
+  either marker is absent rather than appending at the end, and **never changes a suite's exit
+  code**: keep it a separate invocation and never a step inside a runner, so a red run still
+  records. Never hand-edit the block it owns — the next run discards the edit
+  (`project-management/src/18-TESTS/AUTOMATED/CLAUDE.md`).
+- **When `test-record.sh` refuses a record still at the `18-TESTS/` root, move that record into
+  `AUTOMATED/`** — the template's copier migration moves every such record on `copier update`.
+  Never answer the refusal by copying the template, which strands the record's hand-written half.
 - **Mutation testing (`mutmut.sh`) is local-only** — deliberately out of CI; do not
   wire it into a gate.
 - **The browser suite is the exception, not the default.** `e2e-py.sh` is only for what
@@ -61,5 +64,5 @@ which turns what a run produced into a story's test record.
 - **Generated (gitignored):** everything under `reports/<suite>/` — JUnit XML,
   coverage HTML/XML, and the per-page axe JSON in `reports/a11y/`.
 - **Generated, tracked, and not in this tree:** the block between the `test-record` markers in
-  `project-management/src/18-TESTS/US###-TEST-STATUS.md`.
+  `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md`.
 - Script files `kebab-case.sh`; documentation `SCREAMING-SNAKE-CASE.md`.

@@ -109,7 +109,12 @@ weakness, and it is worse than when the record opened**; see Notes.
   07/09/2026.** US006's citation-gate Verification Check is written against two different regimes
   depending on whether **US004** — now SPRINT-03's sole `Must`, moved there from SPRINT-02 in the
   cascade re-plan — has landed. US004 retires the baseline-diff regime of
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` by its
+  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
+  superseded 30/09/2026 by
+  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  which restates it unchanged, retirement terms included <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). --> — by its
   own terms, after which this gate exits `0` on a clean tree and is read as a plain pass. **US006
   does not block on US004** — the check names both branches explicitly, which is what
   `QA-PLAN-US006-POSTURE-GUARD` AC-GAP-15 closed — and SPRINT-03 is built before this sprint, so
@@ -597,8 +602,8 @@ through `migrate.sh --self-test` over twenty-one fixture cases with the stack do
 ### QA Acceptance Criteria — Manual
 
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
-- [ ] `project-management/src/18-TESTS/US005-MANUAL-TESTING.md` and
-      `project-management/src/18-TESTS/US006-MANUAL-TESTING.md` each carry a tester sign-off block
+- [ ] `project-management/src/18-TESTS/MANUAL/US005-MANUAL-TESTING.md` and
+      `project-management/src/18-TESTS/MANUAL/US006-MANUAL-TESTING.md` each carry a tester sign-off block
 - [ ] **No `[OPEN]` acceptance-criteria gap remains** in either member's QA plan —
       `project-management/src/11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` (all
       fifteen resolved 05/09/2026) or
@@ -628,7 +633,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 <!-- US006's alone; US005 has no automated type. -->
 
 - [ ] US006 — the `--self-test` runs and its output is recorded in
-      `project-management/src/18-TESTS/US006-TEST-STATUS.md`
+      `project-management/src/18-TESTS/AUTOMATED/US006-TEST-STATUS.md`
 - [ ] US006 — all twenty-one proof cases are present and each is recorded with its observed exit code
       and message
 - [ ] US006 — the damaged-carrier case is run **with** a validated override and **without** one, and
@@ -640,7 +645,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 ### QA Tasks — Manual
 
 - [ ] US005 — the three documentation gates named in its own flag run, and their output recorded in
-      `project-management/src/18-TESTS/US005-MANUAL-TESTING.md`, read as a diff against the
+      `project-management/src/18-TESTS/MANUAL/US005-MANUAL-TESTING.md`, read as a diff against the
       baseline captured in the QA plan's Section 7 (`doc-references.sh` at **56**, 05/09/2026, with
       US005's artefacts untracked) — **or as a plain pass if US004 has landed**; see Verification
       Checks
@@ -703,7 +708,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       markdownlint-cli2, ESLint and clippy (`code/src/scripts/syntax/CONTEXT.md`), and as of
       08/09/2026 no project script, CI job or lefthook entry runs ShellCheck. The expectation
       stands as US006's own and is recorded in
-      `project-management/src/18-TESTS/US006-MANUAL-TESTING.md` as run or as not run — never as a
+      `project-management/src/18-TESTS/MANUAL/US006-MANUAL-TESTING.md` as run or as not run — never as a
       `lint.sh` pass, per `code/docs/GATE-REPORTING.md`
 - [ ] `bash code/src/scripts/syntax/check.sh` — **N/A**, it type-checks Python, TypeScript and Rust
       and has no shell, YAML or Markdown leg; this sprint ships Markdown, a bash helper, six shell
@@ -713,6 +718,9 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       has landed — the expected case, SPRINT-03 being built before this sprint — the gate exits `0`
       on a clean tree and is read as a plain pass for both, the baseline-diff regime of
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+      (superseded 30/09/2026 by
+      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+      which restates it unchanged)
       having retired by its own terms. If it has not, each member is read as a diff against **its
       own** recorded baseline, and never as a bare pass — and the two baselines are **not**
       comparable with each other, because they were measured in different git-index states:
@@ -727,6 +735,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       tree gave 153 an hour earlier, when a parallel session's two plan files were still untracked
       and contributed 69 of the difference. A story worked here re-captures its own baseline
       immediately before its first edit, in the same index state it will be measured in
+      <!-- UPDATED 30/09/2026: successor added beside the superseded record, which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - [ ] `bash code/src/scripts/audits/docs-length.sh` — no file created or edited this sprint enters
       the warn tier without a dated allowance. Two files to watch: `code/docs/TASK-AUTHORING.md` at
       266, which US005 edits; and `code/src/scripts/audits/CONTEXT.md`, which US006 leaves unchanged

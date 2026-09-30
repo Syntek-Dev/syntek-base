@@ -39,7 +39,12 @@ is a stated precondition of the doctrine, and the requirement that satisfies it 
 `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` Section 6), under
 `../15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md` (this story's citation criterion
 is the scoped run) and `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red
-`doc-references.sh` is read as a diff against a recorded baseline until US004 retires the regime).
+`doc-references.sh` is read as a diff against a recorded baseline until US004 retires the regime;
+superseded 30/09/2026, outside this story, by
+`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+which restates it unchanged but for the manual testing guide's path). <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 
 `../15-DECISIONS/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` is **superseded** by the first
 of those and is cited here because a superseded record stays readable: its rule that a key names
@@ -66,24 +71,24 @@ Resolved: 26`, slice `S-02`'s Nodes cell reads `— (all settled)`, and no story
 > corrected in the QA plan in place and in the threat model's Section 4a comment and must not be reintroduced from either. Where this plan and
 > the sprint plan differ on sprint facts, `../03-SPRINTS/SPRINT-05.md` wins over both. On how a
 > gate's result is reported, `code/docs/GATE-REPORTING.md` wins over everything here. **Both
-> security artefacts read `Draft` and both QA plans read `Reviewed`, not `Signed off`** — quoted
-> as found and not upgraded; the record treats both gates as closed on 17/09/2026 with 0 CRITICAL
-> and 0 HIGH, and each artefact's own header records that its Step 1 grilling pass did not run at
-> the time; only `THREAT-MODEL-PLAN-US008` Section 4a records that the interview was taken later
-> the same day at `15-decisions`. `QA-PLAN-US008`'s header comment still reads `Draft` and
-> `[OPEN]` against a Status cell of `Reviewed` — the cell is quoted as found and the header's
-> disagreement is `11-qa-checks`' to reconcile.
+> security artefacts read `Draft` and both QA plans read `Reviewed` when this plan was written, and
+> all four read `Signed off` now**: the security artefacts from 28/09/2026 (settled 28/09/2026,
+> 16-sprint-plans grilling round 1 Q1) with 0 CRITICAL and 0 HIGH, the QA plans from 30/09/2026,
+> when gate `11` closed (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9). Each artefact's
+> own header records that its Step 1 grilling pass did not run at the time; only
+> `THREAT-MODEL-PLAN-US008` Section 4a records that the interview was taken later the same day at `15-decisions`. `QA-PLAN-US008` keeps its 17/09/2026 header comment, which reads `Draft` and
+> `[OPEN]`, as that day's record, and a comment dated 30/09/2026 beneath it reconciles it. <!-- CORRECTED 30/09/2026: from "**Both security artefacts" this paragraph read "**Both security artefacts read `Draft` and both QA plans read `Reviewed`, not `Signed off`** — quoted as found and not upgraded; the record treats both gates as closed on 17/09/2026 with 0 CRITICAL and 0 HIGH, and each artefact's own header records that its Step 1 grilling pass did not run at the time; only `THREAT-MODEL-PLAN-US008` Section 4a records that the interview was taken later the same day at `15-decisions`. `QA-PLAN-US008`'s header comment still reads `Draft` and `[OPEN]` against a Status cell of `Reviewed` — the cell is quoted as found and the header's disagreement is `11-qa-checks`' to reconcile." until then, true on 18/09/2026. Gate 10 closed at the sign-off of 28/09/2026 and gate 11 at that of 30/09/2026 -->
 >
 > **One bullet in the story's own _Not in scope_ list is stale, and is named here rather than
 > inherited.** `../02-STORIES/US008.md:277-278` still lists "fixing `template-update.sh`'s preview
-> blindness" as out of scope. The same story's acceptance criteria at `:912-916` and `:946-953`
-> **require** the repair, and `ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` decided it.
+> blindness" as out of scope (so it read on 18/09/2026; the clause was struck on 28/09/2026 and is kept in the dated comment at `project-management/src/02-STORIES/US008.md:288-294`, re-measured 30/09/2026). The same story's acceptance criteria at `:1050-1054` and `:1084-1091`
+> **require** the repair, and `ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` decided it. <!-- RE-POINTED 30/09/2026: the two criteria were cited as `:912-916` and `:946-953` until then, 41 lines short of the story as committed with this plan in 1a9da7c; the script criterion and the preview proof sit at :1050-1054 and :1084-1091 in the tree committed together with the 18-TESTS split -->
 > The criteria and the ADR are the corrected record and **P4 stands**; read literally, the
 > authority clause above would have put this plan's own P4 out of scope. Correcting the bullet
-> belongs to `02-story-creation`. **This does not tick the `17-story-plans`
-> Prerequisite, which reads "signed off".** Either `10-security-checks` and `11-qa-checks` advance
-> the four artefacts' status words before implementation begins, or <%DEVELOPER_NAME%> waives the
-> prerequisite in writing on this plan. Naming the deviation is not the same as clearing it.
+> belongs to `02-story-creation`. **This did not tick the `17-story-plans`
+> Prerequisite, which reads "signed off", when this plan was written; the four sign-offs above tick it.**
+> The four artefacts' status words were advanced at the `16-sprint-plans` gate, before any
+> implementation, and no waiver was needed. Naming the deviation was not the same as clearing it. <!-- CORRECTED 30/09/2026: from "**This does not tick" the paragraph read "**This does not tick the `17-story-plans` Prerequisite, which reads "signed off".** Either `10-security-checks` and `11-qa-checks` advance the four artefacts' status words before implementation begins, or <%DEVELOPER_NAME%> waives the prerequisite in writing on this plan. Naming the deviation is not the same as clearing it." until then; the first branch was taken, at the sign-offs of 28/09/2026 and 30/09/2026 -->
 
 **No Table of Contents, and the omission is house practice rather than a divergence.** The
 template marks the section optional — keep for large multi-phase plans, drop for small
@@ -136,9 +141,16 @@ script reads; `code/src/scripts/audits/CONTEXT.md`'s clause register, deliberate
 under-counting by three (Q3); the `shared-ai-symlinks.sh` register row missing since 14/09/2026
 (a `GAPS.md` row of 17/09/2026); `S-01`'s rule-section filename and content; `S-03`'s dev/test host
 hygiene; `S-04`'s Phase 2 table; and **amending, appending to or superseding
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which stays exactly as it
-is** (Q13, <%DEVELOPER_NAME%> explicit) — both its supersession fields read `—` today and must
-still read `—` at close.
+`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which stays exactly as it
+is** (Q13, <%DEVELOPER_NAME%> explicit, its object moved to that record: settled 30/09/2026, 16-sprint-plans grilling round 8 Q19) — its **Superseded by** reads `—` today and must
+still read `—` at close, its **Supersedes** names the record it replaced, and this story edits neither ADR. That record,
+`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, was superseded on 30/09/2026 —
+by the 18-TESTS split, not by this story. Q13's intent — this story leaves the binding record alone — is kept, and only its object has moved.
+<!-- CORRECTED 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 8 Q19): from "**amending" the
+sentence read "**amending, appending to or superseding `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which stays exactly as it is** (Q13, <%DEVELOPER_NAME%> explicit) — both its supersession fields read `—` today and must still read `—` at close." until then,
+true until the 18-TESTS split superseded that record on 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17;
+settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). Q13's criterion now reads against the successor, whose
+**Supersedes** names the 02/09/2026 record, so the field that must still read — at close is its **Superseded by**. -->
 
 **Layer scope (drives which sections survive).**
 
@@ -241,7 +253,7 @@ type and no transaction to describe.
 | P3    | The doctrine's owner and the four deferrals, plus the `EDGE-REQUIREMENTS.md` Section 6 clause and its verification entry                                                                                                           | P2                               |
 | P4    | The preview repair — an additive report block in `template-update.sh`, proved against the **three advisories already shipped blind**                                                                                               | P0                               |
 | P5    | The two `_migrations:` entries and their scripts, the two `06-GENERATION.md` register rows, the keyed entry's derived-at-release comment, and the proposed line in `24-release/CHECKLIST.md` (scope addition — implementer's call) | P2, P4, **and the `v7.6.0` tag** |
-| —     | The two test records and the register reconciliation — **`22-implementation-documentation`'s**, not this story's to write                                                                                                          | P1 to P5                         |
+| —     | The automated test record and the register reconciliation — **`22-implementation-documentation`'s**, not this story's to write; the manual guide, authored at `17` before code, is `22`'s to walk                                  | P1 to P5                         |
 
 **The gate comes before the settings, and that is not a preference.** The story's discriminating
 comparison is the **new** script run over the settings modules as they stand _before_ the change —
@@ -272,21 +284,21 @@ states and a second preview.
 key is derived. **Do not enter P5 until `git tag --sort=-v:refname | head -1` returns `v7.6.0`**;
 while it returns `v7.5.0`, P5 is not startable and P0 to P4 are the whole of the available work.
 
-**P4's proof needs a generated project, because `template-update.sh:102` refuses to run here.**
+**P4's proof needs a generated project, because `code/src/scripts/development/template-update.sh:100` refuses to run here.**
 That line dies with "No `.copier-answers.yml` — this project was not generated from a template",
 and **syntek-base's `.copier-answers.yml` is the Jinja template rendered into projects** — zero
 `_commit:` literals, measured 18/09/2026 — so the script cannot execute in this repository at all.
-Generate a scratch project from a ref **below `v3.0.0`**, commit it so `:106`'s clean-tree guard
+Generate a scratch project from a ref **below `v3.0.0`**, commit it so `:104`'s clean-tree guard
 passes, copy the edited `template-update.sh` in, and run the preview. Two consequences the earlier
 draft of this plan had wrong:
 
 - **The expected output is four banner lines from three advisories, not three.**
-  `v5.0.0-git-guide-split.sh` is declared **twice** in `copier.yml`, at `:889` under `version:
-v4.0.0` and at `:903` under `version: v5.0.0`, deliberately and with the reason at `:887-888`.
+  `v5.0.0-git-guide-split.sh` is declared **twice** in `copier.yml`, at `:891` under `version:
+v4.0.0` and at `:905` under `version: v5.0.0`, deliberately and with the reason at `:889-890`.
   A scratch copy old enough to cross both keys prints it twice.
-- **P4 cannot be run concurrently with uncommitted P1 to P3 work.** `template-update.sh:106` dies
+- **P4 cannot be run concurrently with uncommitted P1 to P3 work.** `code/src/scripts/development/template-update.sh:104` dies
   on a dirty tree. "P4 waits only on P0" is a dependency claim, not an execution one: take the
-  proof at a commit boundary.
+  proof at a commit boundary. <!-- RE-POINTED 30/09/2026: this section cited the two guards as `template-update.sh:102` and `:106` until then, each two lines out when written, the script being unchanged since 16/08/2026 (they sit at :100 and :104); and the duplicate key as `copier.yml` `:889`, `:903` and `:887-888`, right from this plan's writing to a18db0b, which the 18-TESTS split committed with this gate moved two lines down -->
 
 **If P2 lands before P1's capture anyway, the story is not lost.** `git stash` the settings edits,
 or check the pre-P2 commit out into a second worktree, and run the new script there. Record in the
@@ -310,7 +322,11 @@ recorded with the state it was measured in:
   re-asserted at close. The inherited figures are **253** at HEAD `ff24084` on a clean tree
   (135 instance, 106 dangling, 12 template-only, no plan-prefix finding) and **259** with the
   09/09/2026 change staged, the `+6` all `../03-SPRINTS/SPRINT-05.md`'s. Both are inherited readings, not this
-  branch's: `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` obliges a capture **immediately
+  branch's: `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (superseded 30/09/2026 by
+  `ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it
+  unchanged <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->) obliges a capture **immediately
   before the first edit**, and P0 is where that happens. **`git add -N` first** — because
   `build_template_only()` reads `git ls-files` and an untracked file is treated as shipping — **and
   again at close, which is where it bites.** At P0 the tree is clean and the call is a no-op; at
@@ -516,9 +532,9 @@ that guide being edited.
 
 ### The two migration entries (P5)
 
-`copier.yml` opens `_migrations:` at `:823` with nine entries — seven version-keyed and two
-unversioned, the `rm -rf` staging-directory entry at `:945` which must stay **last** because
-declaration order is run order. Both new entries go **before** it.
+`copier.yml` opens `_migrations:` at `:825` with ten entries — seven version-keyed and three
+unversioned, the `rm -rf` staging-directory entry at `:966` which must stay **last** because
+declaration order is run order. Both new entries go **before** it. <!-- RE-MEASURED 30/09/2026 against the tree committed together with the 18-TESTS split: this read "opens `_migrations:` at `:823` with nine entries — seven version-keyed and two unversioned, the `rm -rf` staging-directory entry at `:945`" until then, right from this plan's writing to a18db0b. The split adds a third unversioned entry, split-18-tests.sh, at :955, ahead of the `rm -rf` entry, which stays last -->
 
 | Entry                                                | Gated on    | Why that gate                                                                                                                                                               |
 | ---------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -569,16 +585,16 @@ before the release.
 > It had P5 writing `v7.7.0` at implementation time, on the reading that a placeholder was the
 > thing the ADR bans. **It is not.** All three binding records name the opposite act:
 > `ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md:149` — "A key written into `copier.yml`
-> **before the tag it names exists** is an unverified claim"; `../02-STORIES/US008.md:677` and
-> `../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md:197` — "writing an **untagged number** into
+> **before the tag it names exists** is an unverified claim"; `project-management/src/02-STORIES/US008.md:773-774` and
+> `project-management/src/16-SPRINT-PLANS/05-SPRINT-PLAN-05.md:249-250` — "writing an **untagged number** into
 > `copier.yml` is the unverified claim this story exists to stop repeating"; and the story's own
-> task at `:997` — "**never write an untagged number into `copier.yml`**". Writing `v7.7.0` at P5
+> task at `:1150` — "**never write an untagged number into `copier.yml`**". Writing `v7.7.0` at P5
 > is writing an untagged number, by this plan's own measurement. The resolution below is the
-> sources', and adopting it needs no ADR; the one it replaces would have needed one.
+> sources', and adopting it needs no ADR; the one it replaces would have needed one. <!-- RE-POINTED 30/09/2026: the story and sprint-plan sentences were cited as `../02-STORIES/US008.md:677` and `../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md:197`, and the story's two tasks, here and in the first numbered point below, as `:997` and `:996`, until then: numbers read on 18/09/2026 from both records before their final edits in 1a9da7c. In the tree committed together with the 18-TESTS split the sentences sit at project-management/src/02-STORIES/US008.md:773-774 and project-management/src/16-SPRINT-PLANS/05-SPRINT-PLAN-05.md:249-250, the tasks at project-management/src/02-STORIES/US008.md:1150 and :1149 -->
 
 1. **P5 writes both entries and the keyed one's comment, not its key.** The unversioned entry is
    complete at P5. The version-keyed entry lands with the **derived-at-release comment** the
-   story's task at `:996` requires — stating that the key names the release the doctrine ships in,
+   story's task at `:1149` requires — stating that the key names the release the doctrine ships in,
    that it is the first minor-keyed migration this template has carried, and that the value is
    written at release and not at design.
 2. **The key itself is written at `24-release`, in the same act as the tag.** The release derives
@@ -604,16 +620,21 @@ before the release.
    because the derive-at-release obligation then reaches no reader of that workflow at all.
 
 **`v7.7.0` is the expected value and it is a prediction, not a decision.** Measured 18/09/2026:
-`VERSION` reads `7.6.0` on `pm/story-creation` and `7.5.0` on `main`; there are **77 tags and the
-newest is `v7.5.0`**; `CHANGELOG.md`'s top released heading is `## [7.6.0] - 14/09/2026`,
-describing the shared-AI / Codex release and nothing else.
+`VERSION` reads `7.6.0` on `pm/story-creation` and `7.5.0` on `main`; there are **72 tags and the
+newest is `v7.5.0`** (corrected 30/09/2026; see the comment beneath the note below);
+`CHANGELOG.md`'s top released heading is `## [7.6.0] - 14/09/2026`, describing the shared-AI /
+Codex release and nothing else.
 
-> **`v7.6.0` is NOT yet tagged, and two binding records say otherwise in passing.**
+> **`v7.6.0` is NOT yet tagged, and two binding records said otherwise in passing; the ADR still
+> does.** The rest of this note is its 18/09/2026 reading, in that day's present tense: where it
+> says both records "read" the slip and that correcting "the other two" is not this plan's
+> licence, that held for both then and holds for the ADR alone now, the story having been
+> corrected at the `16-sprint-plans` gate on 30/09/2026 (see the comment beneath the note).
 > `../02-STORIES/US008.md:675` and
 > `../15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md:145` both read "`v7.6.0` is
-> tagged at `16aac54`". Re-measured 18/09/2026: **77 tags, newest `v7.5.0`, and `git tag
---points-at 16aac54` returns nothing.** Both documents contradict themselves elsewhere and are
-> right there — the story's own `:638-639` says "there is **NO** `v7.6.0` tag", and the ADR's
+> tagged at `16aac54`". Re-measured 18/09/2026, the count corrected 30/09/2026: **72 tags, newest
+> `v7.5.0`, and `git tag --points-at 16aac54` returns nothing.** Both documents contradict
+> themselves elsewhere and are right there — the story's own `:638-639` says "there is **NO** `v7.6.0` tag", and the ADR's
 > `:188` says "tagged at `16aac54` **when this branch merges**", which is the future form.
 > `../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md:175` has it right: "**must be** tagged". **This plan
 > carries the sprint plan's form throughout.** Correcting the other two is not a story plan's
@@ -621,11 +642,32 @@ describing the shared-AI / Codex release and nothing else.
 > the slip is named here once, with its measurement, so the next reader does not re-derive it and
 > does not build on the false premise. Settled 18/09/2026, Q3 of this plan's grilling pass.
 
+<!-- CORRECTED 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 4 Q15): the tag
+     count read "there are **77 tags and the newest is `v7.5.0`**" in the paragraph above the note
+     and "Re-measured 18/09/2026: **77 tags, newest `v7.5.0`, and `git tag --points-at 16aac54`
+     returns nothing.**" in the note until then. Measured 30/09/2026, `git tag | wc -l` reads 72
+     and `git ls-remote --tags origin` the same, newest `v7.5.0`, no `v7.6.0`, and
+     `git tag --points-at 16aac54` still returns nothing. The newest tag was created on
+     01/09/2026, before this plan's reading, and
+     ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026 counted 72 on 09/09/2026; the 77 cannot be
+     reconstructed. Nothing the note concludes moves: there is still no `v7.6.0` tag.
+     AMENDED 30/09/2026: the note's heading read "two binding records say otherwise in passing"
+     until then. The story no longer does: US008 was corrected on 30/09/2026 (settled
+     30/09/2026, 16-sprint-plans grilling round 3 Q11, the key-derivation Then by a call made that day while applying it, not one of its answers, accepted, settled 30/09/2026, 16-sprint-plans grilling round 5 Q16), its version-chain Given now reading "there
+     is NO v7.6.0 tag" at project-management/src/02-STORIES/US008.md:732 and its superseded key-derivation Then kept
+     in the dated comment at :891. The ADR's :145 still reads it and stays untouched. The note's
+     body, its present tense and its other line citations are the 18/09/2026 reading, as the
+     sentence after its heading says. -->
+
 ### The citation gate, as it stands for this story
 
 **This story is on the baseline-diff branch, full stop, and the regime is not contingent the way
 it was for US006.** US004 has not landed (SPRINT-03, `Open`), so the whole-tree run is inherited
-red and `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` applies: the baseline is captured
+red and `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (superseded 30/09/2026 by
+`ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it
+unchanged <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->) applies: the baseline is captured
 before the first edit, read as a diff, and "never reported as the gate passing while the baseline
 stands".
 
@@ -647,8 +689,8 @@ not superseded. Each takes one `--path <file>` run, exit 0:
 | `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` | **New to this sprint** — captured at P0             |
 
 **What this plan adds to the population, and why it is written the way it is.** Every path in this
-plan that does not exist yet — the two migration scripts, the four worktree files, the two test
-records, "code/docs/reliability/" — is written in **double quotes, never backticks**, because the
+plan that does not exist yet — the two migration scripts, the four worktree files, the automated
+test record, "code/docs/reliability/" — is written in **double quotes, never backticks**, because the
 gate reads backticked tokens and a forward reference in backticks is a `[dangling path]` finding
 that never converges. Every PM artefact is cited by full relative path, never as a bare `US###`,
 `MAP-*`, `QA-*` or `SPRINT-##` token in backticks. Until this file is committed it draws spurious
@@ -656,6 +698,12 @@ that never converges. Every PM artefact is cited by full relative path, never as
 untracked file never enters the template-only set — the defect US004 exists to repair, and **not**
 one to silence with `doc-references: template-only` markers, which `code/docs/FORWARD-VOICE.md`
 reserves for a citation that is right and merely unprovable downstream.
+
+<!-- 30/09/2026: this paragraph and the P0-to-P5 table's last row named "the two test records" as
+     forward references and both as 22's to write, until the 18-TESTS folder split into MANUAL/
+     and AUTOMATED/ and the manual guide's authorship moved to 17-story-plans Step 7.2. This
+     story's guide was backfilled that day, so it exists and is backticked; the automated record
+     is still a forward reference, still 22's. -->
 
 ---
 
@@ -812,9 +860,9 @@ After this story there are **fifteen** and the cell under-counts by three. That 
 of Q3**, not an oversight: the file's docs-length allowance at `:8` expires 01/12/2026, US002 owns
 its headroom, and the file sits at **299 of 300** as the gate measures it. The repair — extending
 the existing cell in place, which costs no counted line however much prose it gains — belongs to
-whoever next edits that file, with the register at `:170` the first thing they touch. TM-09 records
+whoever next edits that file, with the register at `:174` the first thing they touch. TM-09 records
 it as a quiet false negative, because the register is what a reader consults to learn what the gate
-checks.
+checks. <!-- RE-POINTED 30/09/2026: read "with the register at `:170`" until then, inherited from the story, whose :170 was right at ff24084; the cell sits at :174, as this section's first sentence and P0 already say -->
 
 ---
 
@@ -857,7 +905,7 @@ ran.
 ### PM workflow chain
 
 `02-story-creation` ✅ (09/09/2026) → `10-security-checks` ✅ (`Draft`, 17/09/2026, grilling
-deferred by direction) → `11-qa-checks` ✅ (`Reviewed`, 17/09/2026, ten gaps all `[RESOLVED]`) →
+deferred by direction; `Signed off` 28/09/2026) → `11-qa-checks` ✅ (`Reviewed`, 17/09/2026, ten gaps all `[RESOLVED]`; `Signed off` 30/09/2026, when gate `11` closed) → <!-- CORRECTED 30/09/2026: the two gates read "(`Draft`, 17/09/2026, grilling deferred by direction)" and "(`Reviewed`, 17/09/2026, ten gaps all `[RESOLVED]`)" until then, without the sign-offs (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1; settled 30/09/2026, 16-sprint-plans grilling round 3 Q9) -->
 `15-decisions` ✅ (three ADRs `Accepted`, one superseded, 17/09/2026) → `03-sprint-planning` ✅
 (record opened 09/09/2026, US009 admitted 17/09/2026) → `16-sprint-plans` ✅ (17/09/2026) →
 **`17-story-plans` (this document)** → the lane below → `22-implementation-documentation` →
@@ -1022,8 +1070,15 @@ behaviour and this repository's e2e suite has no cookie assertions.
 
 ### Manual testing — five walks, all load-bearing
 
-Captured in "project-management/src/18-TESTS/US008-MANUAL-TESTING.md", written by
-`22-implementation-documentation`.
+Captured in `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md` — the guide, authored from this plan
+before code (backfilled 30/09/2026) and walked, not written, by `22-implementation-documentation`.
+
+<!-- 30/09/2026: read "Captured in "project-management/src/18-TESTS/US008-MANUAL-TESTING.md",
+     written by 22-implementation-documentation", and the test-record row under Documentation
+     Write-Ups read "22's, not this story's", until the 18-TESTS folder split into MANUAL/ and
+     AUTOMATED/ and the manual guide's authorship moved to 17-story-plans Step 7.2
+     (../18-TESTS/CLAUDE.md -> The record lifecycle). The five walks below are the plan's own
+     content, kept; the guide was written from them. -->
 
 1. **The baseline capture and its close** — the whole-tree citation figure by identity with the
    detector's `git hash-object` beside it, taken before the first edit and re-asserted at close;
@@ -1040,10 +1095,17 @@ Captured in "project-management/src/18-TESTS/US008-MANUAL-TESTING.md", written b
 4. **The preview proof, inverted from what the story first specified** (AC-GAP-2). A **successful**
    `template-update.sh` preview shows the migration report in its own output, **before** the
    "Preview only — your project is unchanged" line at `:275`. Run twice: at P4 against the three
-   advisories already shipped blind, and at P5 with the cookie advisory in place.
+   advisories already shipped blind, and at P5 with the cookie advisory in place. At P5 a copy
+   made to fail as well: the failure tail at `template-update.sh:148-151` prints once, the script
+   exits 2, the success-path report block does not run, and `cleanup` still removes the log (ES-08).
 5. **The dev-stack cookie walk** — `server.sh up`, log in at `/control/`, submit a form, fire an
    HTMX write; all three succeed; the browser shows plain names in dev and `HttpOnly` on the
    `csrftoken` cookie; no console error.
+
+<!-- ADDED 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 5 Q16): walk 4's failed
+     copy. QA-PLAN-US008's ES-08 was fed back into US008 as a manual criterion and task that day,
+     so the plan carries it too; it is PREVIEW-04 in the guide, inside this walk, so the count of
+     five walks is unchanged. -->
 
 **Two scenarios cannot be run here and are recorded rather than omitted.** `PA-01` and `PA-02` in
 the QA plan — a sub host attempting to overwrite the apex's cookie, against the post-change and
@@ -1057,22 +1119,28 @@ not the thing**, and no record may report them as run.
 
 ## Documentation Write-Ups (Implementation Records)
 
-| Record                                     | Destination                                                                         | Produced by                           | This story                                                                                                                                                                    |
-| ------------------------------------------ | ----------------------------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **This plan**                              | `../17-STORY-PLANS/`                                                                | `17-story-plans`                      | **Always** — this file                                                                                                                                                        |
-| User story                                 | `../02-STORIES/US008.md`                                                            | `02-story-creation`                   | **Always** — exists                                                                                                                                                           |
-| Sprint plan                                | `../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md`                                           | `16-sprint-plans`                     | **Always** — exists; this plan repoints two tables                                                                                                                            |
-| ADRs                                       | `../15-DECISIONS/`                                                                  | `15-decisions`                        | **Always** — **five** bind this story, one superseded; the sprint's set of six includes US009's. **No new ADR is raised by this plan**; **no new ADR is raised by this plan** |
-| Threat model (planning)                    | `../10-SECURITY/THREAT-MODEL/PLANNING/`                                             | `10-security-checks`                  | **Always** — exists, `Draft`                                                                                                                                                  |
-| Assessment (planning)                      | `../10-SECURITY/ASSESSMENTS/PLANNING/`                                              | `10-security-checks`                  | **Always** — exists, thirteen constraints                                                                                                                                     |
-| Threat model / assessment (implementation) | `../10-SECURITY/**/IMPLEMENTATION/`                                                 | `22-implementation-documentation`     | **Always** — re-assesses the fifteen threats                                                                                                                                  |
-| QA plan (pre-dev)                          | `../11-QA/PLANNING/QA-PLAN-US008-HOST-ONLY-COOKIES.md`                              | `11-qa-checks`                        | **Always** — exists, `Reviewed`                                                                                                                                               |
-| QA implementation review                   | `../11-QA/IMPLEMENTATION/`                                                          | `23-pr-and-review`                    | **Always**                                                                                                                                                                    |
-| Test status / manual testing               | "project-management/src/18-TESTS/US008-TEST-STATUS.md" · "…US008-MANUAL-TESTING.md" | `22-implementation-documentation`     | **Always** — `22`'s, not this story's                                                                                                                                         |
-| Code review record                         | `../19-REVIEWS/`                                                                    | `23-pr-and-review` / code `07-review` | **Always**                                                                                                                                                                    |
-| Release (version bump)                     | root `VERSION`, `CHANGELOG.md`, `RELEASES.md`, `VERSION-HISTORY.md`                 | `24-release`                          | **Conditional** — a MINOR bump carries this doctrine                                                                                                                          |
-| GDPR · SEO · API design · Logging · Schema | —                                                                                   | —                                     | **Not required** — each flag reads `N/A`                                                                                                                                      |
-| Bug / refactoring record                   | `../21-BUGS/` · `../22-REFACTORING/`                                                | code `10-debug` · `11-refactor`       | **Conditional** — only if a walk surfaces one                                                                                                                                 |
+| Record                                     | Destination                                                                      | Produced by                           | This story                                                                                                                                     |
+| ------------------------------------------ | -------------------------------------------------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **This plan**                              | `../17-STORY-PLANS/`                                                             | `17-story-plans`                      | **Always** — this file                                                                                                                         |
+| User story                                 | `../02-STORIES/US008.md`                                                         | `02-story-creation`                   | **Always** — exists                                                                                                                            |
+| Sprint plan                                | `../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md`                                        | `16-sprint-plans`                     | **Always** — exists; this plan repoints two tables                                                                                             |
+| ADRs                                       | `../15-DECISIONS/`                                                               | `15-decisions`                        | **Always** — **five** bind this story, one superseded; the sprint's set of six includes US009's. **No new ADR is raised by this plan**         |
+| Threat model (planning)                    | `../10-SECURITY/THREAT-MODEL/PLANNING/`                                          | `10-security-checks`                  | **Always** — exists, `Signed off` 28/09/2026                                                                                                   |
+| Assessment (planning)                      | `../10-SECURITY/ASSESSMENTS/PLANNING/`                                           | `10-security-checks`                  | **Always** — exists, thirteen constraints                                                                                                      |
+| Threat model / assessment (implementation) | `../10-SECURITY/**/IMPLEMENTATION/`                                              | `22-implementation-documentation`     | **Always** — re-assesses the fifteen threats                                                                                                   |
+| QA plan (pre-dev)                          | `../11-QA/PLANNING/QA-PLAN-US008-HOST-ONLY-COOKIES.md`                           | `11-qa-checks`                        | **Always** — exists, `Signed off` 30/09/2026                                                                                                   |
+| QA implementation review                   | `../11-QA/IMPLEMENTATION/`                                                       | `23-pr-and-review`                    | **Always**                                                                                                                                     |
+| Test status / manual testing               | "…/18-TESTS/AUTOMATED/US008-TEST-STATUS.md" · "…/MANUAL/US008-MANUAL-TESTING.md" | `22-implementation-documentation`     | **Always** — `22` writes the status and walks the guide; the guide was authored at `17` before code (backfilled 30/09/2026), not by this story |
+| Code review record                         | `../19-REVIEWS/`                                                                 | `23-pr-and-review` / code `07-review` | **Always**                                                                                                                                     |
+| Release (version bump)                     | root `VERSION`, `CHANGELOG.md`, `RELEASES.md`, `VERSION-HISTORY.md`              | `24-release`                          | **Conditional** — a MINOR bump carries this doctrine                                                                                           |
+| GDPR · SEO · API design · Logging · Schema | —                                                                                | —                                     | **Not required** — each flag reads `N/A`                                                                                                       |
+| Bug / refactoring record                   | `../21-BUGS/` · `../22-REFACTORING/`                                             | code `10-debug` · `11-refactor`       | **Conditional** — only if a walk surfaces one                                                                                                  |
+
+<!-- CORRECTED 30/09/2026: the threat-model row's last cell read "**Always** — exists, `Draft`"
+     and the QA-plan row's "**Always** — exists, `Reviewed`" until then. The threat model was
+     signed off on 28/09/2026 (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1) and the QA
+     plan on 30/09/2026, when gate 11 closed (settled 30/09/2026, 16-sprint-plans grilling round 3
+     Q9). -->
 
 **`22-implementation-documentation` owns every `GAPS.md` write**, and this sprint has three:
 the **closure** of the 09/09/2026 preview-blindness row that P4 repairs, and the two **openings** of
@@ -1090,7 +1158,7 @@ not rewritten here.
 | `../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md`              | Point US008's row in _Story Plans — the code master_ at this file, replacing `_none yet — 08- reserved_`; fill the Stories table's `Story plan` and `Git branch` cells; fill the _Branch Naming Reference_ row with `us008/host-only-cookies`                                                                                                                                                                                                                          |
 | `../02-STORIES/US008.md`                               | Add the story-plan citation, in the form US006 and US007 use — its _Decisions_ section currently reads "**No story plan is cited yet**"                                                                                                                                                                                                                                                                                                                                |
 | `code/src/django/config/settings/CONTEXT.md`           | Six rows in the Critical Settings table; the Module Map's `staging.py` cell naming the `__Host-` divergence; **Last Updated** refreshed. `code/src/django/config/settings/CLAUDE.md:23-24` makes the table update compulsory                                                                                                                                                                                                                                           |
-| `code/src/scripts/audits/CONTEXT.md`                   | **Not edited** (Q3). The `:170` under-count is a named cost, recorded in the test record                                                                                                                                                                                                                                                                                                                                                                               |
+| `code/src/scripts/audits/CONTEXT.md`                   | **Not edited** (Q3). The `:174` under-count is a named cost, recorded in the test record                                                                                                                                                                                                                                                                                                                                                                               |
 | `project-management/workflows/24-release/CHECKLIST.md` | **One checklist line**: re-derive every version-keyed `copier.yml` `_migrations:` key against the tag about to be cut, with `git tag --sort=-v:refname \| head -1`, and write it in the same act as the tag. Measured 18/09/2026, that workflow's `STEPS.md` and `CHECKLIST.md` contain zero occurrences of `migration`, `copier` or `key` — **this is the channel this story's own key is delivered through** (`ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`) |
 | `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md`           | One register row per migration entry                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md`  | The Section 6 clause plus a post-deploy verification entry                                                                                                                                                                                                                                                                                                                                                                                                             |
@@ -1102,7 +1170,7 @@ pair is owed. `broken/settings/` and `clean/settings/` are exempt from `docs-pai
 by rule — `is_exempt_from_enumeration()` at `code/src/scripts/audits/docs-pairing.sh:227-237`, the
 reason at `:218-226`: "a pair added inside one becomes live input to the audit reading it". **The
 pass is the exemption doing its job rather than an absence of new directories**, and must be
-reported that way.
+reported that way. <!-- RE-POINTED 30/09/2026: the table's `code/src/scripts/audits/CONTEXT.md` row read "The `:170` under-count" until then, inherited from the story, whose :170 was right at ff24084; the negative-space.sh cell sits at :174, as the register-under-count section and P0 already say -->
 
 ---
 
@@ -1361,11 +1429,11 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US008
       success path, a sibling of `:162`, touching neither `:151` nor `:122`, reordering no section
       and changing no exit code — **and the three advisories already shipped blind are proved
       visible in a preview**
-- [ ] Two `_migrations:` entries exist before the trailing unversioned entry at `:945`, which stays
+- [ ] Two `_migrations:` entries exist before the trailing unversioned entry at `:966`, which stays
       last: the **unversioned, state-gated** `cookie-domain-conflict.sh`, silent when it finds
       nothing and exiting 0 always; and the **version-keyed** cutover advisory, carrying the
       invalidation in both directions, the rolling-deploy hazard and the name-matching warning, and
-      ending in the `negative-space.sh` proof step
+      ending in the `negative-space.sh` proof step <!-- RE-POINTED 30/09/2026: cited the trailing entry at `:945` until then, right from this plan's writing to a18db0b; the 18-TESTS split committed with this gate moved it to :966 -->
 - [ ] **P5 wrote the keyed entry with its derived-at-release comment and no key**, and the key was
       written at `24-release` with `git tag --sort=-v:refname | head -1`, in the same act as the
       tag. **No untagged number ever entered `copier.yml`** — the act all three binding records
@@ -1379,11 +1447,15 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US008
       obligation reaches the workflow that executes it rather than living only in this plan —
       **or, if the implementer declines the scope addition (<%DEVELOPER_NAME%> left the call to
       them, 18/09/2026), a `GAPS.md` row stands in its place.** One of the two, never neither
-- [ ] `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is **cited and
-      unchanged** — both its supersession fields still read `—` (Q13, <%DEVELOPER_NAME%> explicit)
+- [ ] `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` is **cited and
+      unchanged** — not amended, appended to or superseded, its **Superseded by** still reading `—` (Q13, <%DEVELOPER_NAME%> explicit, its object moved to this record: settled 30/09/2026, 16-sprint-plans grilling round 8 Q19).
+      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which it superseded 30/09/2026 for the 18-TESTS split, outside this story, is
+      cited beside it and not edited by this story either
+      <!-- CORRECTED 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 8 Q19): the item read "`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is **cited and unchanged** — both its supersession fields still read `—` (Q13, <%DEVELOPER_NAME%> explicit)" until then, true until the 18-TESTS split superseded that record on 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18); Q13's criterion now reads against its successor, as the out-of-scope list above says. -->
 - [ ] Every gate above run and recorded per `code/docs/GATE-REPORTING.md`; nothing skipped silently
       and nothing not-run reported as clean
-- [ ] Both test records written by `22`, the manual one signed off by a second tester
+- [ ] The automated record written and the manual guide walked by `22`, the guide signed off by a
+      second tester
 - [ ] Code reviewed and approved (minimum 1 reviewer); the security pass re-read 7.1 to 7.13
       against the shipped text
 - [ ] No TODO or FIXME introduced; no secret, debug flag or hardcoded ID

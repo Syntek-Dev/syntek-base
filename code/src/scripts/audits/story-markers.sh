@@ -6,7 +6,8 @@
 #                    inheritable from its class or module via pytestmark; a Bruno request
 #                    declares the same value in its meta block as tags: [US###]. That marker is
 #                    what code/src/scripts/tests/test-record.sh selects on when it writes a
-#                    story's automated test record into project-management/src/18-TESTS/.
+#                    story's automated test record into
+#                    project-management/src/18-TESTS/AUTOMATED/.
 #
 # THIS WARNS AND EXITS 0, ALWAYS. It is not a gate and must not become one without a decision:
 # failing on an unmarked test would block every shared helper and all the tests that predate the

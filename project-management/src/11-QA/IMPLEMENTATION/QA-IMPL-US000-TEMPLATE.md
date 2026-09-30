@@ -42,9 +42,9 @@ running build, with evidence (test name, file, or observed behaviour). Keep the 
 **An automated test name stays the preferred evidence wherever a test exists** — a name a suite
 re-runs outlives a claim about one afternoon. Where a scenario was verified **by hand**, Evidence
 **may** instead cite the manual row that exercised it: a `{AREA}-{NN}` row ID from
-`../../18-TESTS/US###-MANUAL-TESTING.md` (for example `SIGNUP-03`), whose own `QA` column cites
-this scenario back, so the two records point at each other. That citation is an alternative, not
-an equal: it is right for a scenario no test can reach, and wrong as a way of not writing one.
+`../../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` (for example `SIGNUP-03`), whose own `QA` column
+cites this scenario back, so the two records point at each other. That citation is an alternative,
+not an equal: it is right for a scenario no test can reach, and wrong as a way of not writing one.
 
 ### Happy Path
 
@@ -91,7 +91,9 @@ valid entry.
 ## 5. New edge cases discovered
 
 Failure paths or boundary conditions found during implementation that were **not** in the
-plan. Note whether each should be folded back into the plan/AC.
+plan. Note whether each should be folded back into the plan/AC. A walked manual row whose `QA`
+column is `—` lands here too, its `{AREA}-{NN}` ID as Evidence
+(`../../18-TESTS/MANUAL/CLAUDE.md` → _The Flow and QA columns_).
 
 | ID              | Scenario           | Result | Evidence      | Fold back? |
 | --------------- | ------------------ | ------ | ------------- | ---------- |
@@ -133,7 +135,7 @@ Where the story touches personal data, evidence that the shipped code protects i
 - [ ] Accessibility observations confirmed against the build
 - [ ] GDPR & security observations confirmed (or N/A recorded)
 - [ ] Coverage floors met for all modules in scope
-- [ ] Manual testing sign-off (see `../../18-TESTS/US###-MANUAL-TESTING.md`)
+- [ ] Manual testing sign-off (see `../../18-TESTS/MANUAL/US###-MANUAL-TESTING.md`)
 - [ ] Reviewer approval — **blocks merge until complete**
 
 ---
@@ -142,7 +144,8 @@ Where the story touches personal data, evidence that the shipped code protects i
 
 - `../PLANNING/QA-PLAN-US###-<DESCRIPTOR>.md` — the pre-development plan verified here
 - `../../02-STORIES/US###.md` — the story under review
-- `../../18-TESTS/US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md` — downstream test records
+- `../../18-TESTS/AUTOMATED/US###-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US###-MANUAL-TESTING.md`
+  — downstream test records
 - `../../19-REVIEWS/` — code-review notes from the same PR
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `project-management/workflows/22-implementation-documentation/` — where this review is written

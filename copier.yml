@@ -180,8 +180,10 @@ _exclude:
   - "!/project-management/src/09-GDPR/RETENTION-DELETION.md"
   - "!/project-management/src/09-GDPR/THIRD-PARTY-PROCESSORS.md"
   # The two test records are templates named for the story they are copied to, not for their role.
-  - "!/project-management/src/18-TESTS/US000-MANUAL-TESTING.md"
-  - "!/project-management/src/18-TESTS/US000-TEST-STATUS.md"
+  # Each sits in its own half of the 18-TESTS split (30/09/2026): a negation left on the old
+  # root path matches nothing, and the template silently stops shipping.
+  - "!/project-management/src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md"
+  - "!/project-management/src/18-TESTS/AUTOMATED/US000-TEST-STATUS.md"
   # The incident register's index — the one file in 23-INCIDENTS that is not an incident.
   - "!/project-management/src/23-INCIDENTS/INCIDENT-INDEX.md"
   # Optional mobile frontend, gated by INCLUDE_MOBILE. A templated _exclude entry is the
@@ -932,6 +934,25 @@ _migrations:
   # between; the script header says the same, for the next reader.
   - version: v6.0.0
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v6.0.0-rename-feature-surfaces.sh"
+    when: "<% _stage == 'after' %>"
+
+  # The 18-TESTS split (30/09/2026) moves the two per-story test records off the folder root
+  # into MANUAL/ and AUTOMATED/, filenames unchanged. Copier moves its own two US000 templates;
+  # every US### record the DEVELOPER wrote stays at the root — the v2.0.0 silent orphan again,
+  # and harder to see, because that root keeps its CONTEXT.md and `audits/template-orphans.sh`
+  # keys on a missing one. This moves each record by its filename, never overwrites, reports a
+  # collision or a leftover template copy, and always exits 0.
+  #
+  # Declared AFTER v7.0.0 and v2.0.0 on purpose: migrations run in declaration order, and those
+  # two are what deposit an older project's records at this root in the first place.
+  #
+  # UNGATED, AND ITS VERSION KEY IS PENDING. The release this ships in is chosen once the open
+  # feature maps resolve (noted in CHANGELOG.md [Unreleased]), so there is no release to key it
+  # to yet — and a key written before its release is the mis-keying the v6.0.0 entry above names.
+  # Running on every update is safe meanwhile, as `shared-ai-symlinks.sh` is: the trigger is
+  # project state, not a version crossing, so a tree with nothing at the root is a no-op and a
+  # second run finds nothing to do. Revisit when the version is chosen.
+  - command: bash "<% _copier_conf.src_path %>/.copier/migrations/split-18-tests.sh"
     when: "<% _stage == 'after' %>"
 
   # .copier/ is a staging directory, not project content. The _task that empties it and

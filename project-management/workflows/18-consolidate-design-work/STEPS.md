@@ -21,12 +21,13 @@ model: opus
 | Step 2 (05) | `code/docs/DESIGN-TOKENS.md` — token-first; DB-canonical values               |
 | Step 4      | `project-management/src/15-DECISIONS/` — where a hard-to-reverse choice lands |
 | Step 7      | `project-management/src/17-STORY-PLANS/` — plans this pass may invalidate     |
+| Step 7      | `project-management/src/18-TESTS/MANUAL/CLAUDE.md` — the guides' Flow column  |
 
 ---
 
 ## Prerequisites
 
-- [ ] Every story is through `17-story-plans/`
+- [ ] Every story is through `17-story-plans/` — its plan and its manual testing guide written
 - [ ] Every in-scope story has `USER-STORY-IDEAS/` artefacts, or an explicit `N/A`
 - [ ] `code/docs/DATABASE.md` and `code/docs/DESIGN-TOKENS.md` read
 
@@ -143,7 +144,7 @@ Consolidated tokens and components are only real once the generators agree:
 
 Commit `.py`, `.tex`, and `.pdf` together. Never hand-edit the generated files.
 
-### Step 7 — Reconcile the Story Plans
+### Step 7 — Reconcile the Story Plans and Manual Testing Guides
 
 > **Model:** opus
 
@@ -159,6 +160,22 @@ changed, correct the plan and note the consolidation that drove it.
 
 This step is what makes the two-stage model safe: the developer codes from the story
 plan, so a plan left asserting a superseded design silently undoes the consolidation.
+
+**Then every story's manual testing guide** (`src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`), in
+the same pass:
+
+- **Set the `Flow` column.** Each row cites the consolidated step it exercises, or `—` where it
+  maps to none. The step numbers exist only from this pass, which is why the guide was authored
+  with `—` throughout.
+- **Correct every row this pass invalidated** — an action or expected outcome asserting a shape
+  the consolidation changed. Retire a row that no longer applies, and add one for a step the
+  consolidated journey now needs.
+
+The rules for all three — the citation format, the correction note, and how a row is retired or
+added without reusing a number — are `src/18-TESTS/MANUAL/CLAUDE.md` → _The Flow and QA
+columns_, _Changing a row after authoring_ and _Row IDs_. `Result` stays blank: nothing has been
+built to walk. The guide is corrected here for the plan's reason — the Red phase reads it, and a
+row asserting a superseded design becomes a test of the wrong thing.
 
 ### Step 8 — Close Out
 

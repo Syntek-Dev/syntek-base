@@ -45,10 +45,11 @@ designed, and `../../18-TESTS/` asks whether **executing the tests** passed. Eac
 rules; read them there.
 
 **The `HP-nn` / `ES-nn` / `EC-nn` / `PA-nn` IDs are defined here and cited downstream.** Besides
-`../IMPLEMENTATION/`, the manual walk-through `../../18-TESTS/US###-MANUAL-TESTING.md` cites them
-in its `QA` column — one scenario per walked row — and never redefines them. Renumbering a
-scenario after the plan is written therefore invalidates citations in two files, not one, and
-neither of them raises an error.
+`../IMPLEMENTATION/`, the manual testing guide `../../18-TESTS/MANUAL/US###-MANUAL-TESTING.md`
+cites them in its `QA` column — one scenario per row, written from this plan at `17-story-plans`
+before any code exists — and never redefines them. Renumbering a scenario after the plan is
+written therefore invalidates citations in two files, not one, and neither of them raises an
+error.
 
 ## Cross-references
 

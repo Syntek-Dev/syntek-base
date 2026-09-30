@@ -315,7 +315,7 @@ Two things to do on a freshly generated project:
 │   │   ├── 15-DECISIONS/
 │   │   ├── 16-SPRINT-PLANS/
 │   │   ├── 17-STORY-PLANS/
-│   │   ├── 18-TESTS/
+│   │   ├── 18-TESTS/                    ← MANUAL/ guides (authored before code) · AUTOMATED/ records
 │   │   ├── 19-REVIEWS/
 │   │   ├── 20-FINDINGS/
 │   │   ├── 21-BUGS/
@@ -673,14 +673,17 @@ begins.
 | QA plan (pre-development)       | `QA-US###-<DESCRIPTION>.md`      | `project-management/src/11-QA/PLANNING/`       |
 | QA review (post-implementation) | `QA-IMPL-US###-<DESCRIPTION>.md` | `project-management/src/11-QA/IMPLEMENTATION/` |
 | Sprint plan                     | `SPRINT-PLAN-##.md`              | `project-management/src/16-SPRINT-PLANS/`      |
-| Test status tracker             | `US###-TEST-STATUS.md`           | `project-management/src/18-TESTS/`             |
-| Manual testing guide            | `US###-MANUAL-TESTING.md`        | `project-management/src/18-TESTS/`             |
+| Test status tracker             | `US###-TEST-STATUS.md`           | `project-management/src/18-TESTS/AUTOMATED/`   |
+| Manual testing guide            | `US###-MANUAL-TESTING.md`        | `project-management/src/18-TESTS/MANUAL/`      |
 | Bug report                      | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/21-BUGS/`              |
 
-Automated tests are written first (TDD) and their status is tracked in `TEST-STATUS.md`. Manual
-tests are walked and marked in `US###-MANUAL-TESTING.md` at the documentation closeout
-(`project-management/workflows/22-implementation-documentation/`), before the PR is raised —
-`23-pr-and-review` verifies the record rather than writing it.
+The manual testing guide is authored from the story's specifications before any code exists,
+beside its story plan (`project-management/workflows/17-story-plans/`), so it states what the
+build should do before there is a build for it to agree with. Automated tests are then written
+first (TDD) and their status is tracked in `US###-TEST-STATUS.md`. At the documentation closeout
+(`project-management/workflows/22-implementation-documentation/`), before the PR is raised, the
+automated record is written and every manual row walked and marked — `23-pr-and-review` verifies
+both records rather than writing them.
 
 ### PM workflows — when to use each
 

@@ -182,6 +182,12 @@ prefix is the story's place in the settled build order across the backlog, so a 
 nothing built ahead of it is `01-`. **This is what you code from.** It references the sprint plan,
 the decisions, and every specification above it.
 
+**Manual testing guide** (same workflow) —
+`project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, written beside the plan from the
+specifications alone, every result left blank. It says what the build should do before there is a
+build to agree with. The Red phase turns every row a test can reach into one, and every row —
+automated or not — is still walked by hand at the documentation gate (Section 8).
+
 ## 5. Branch
 
 ```bash
@@ -254,10 +260,14 @@ owns it:
 - update the directory tree in every affected `CONTEXT.md`
 - create `CONTEXT.md` + `CLAUDE.md` in every new directory
 - write the implementation records — GDPR, security, QA, SEO, API, review
-- write both test records into `project-management/src/18-TESTS/` — `US###-TEST-STATUS.md`, whose
-  suite, coverage and per-test tables `test-record.sh` generates between its `BEGIN GENERATED`
-  markers, and `US###-MANUAL-TESTING.md`, the journey walk-through a tester or Claude Chrome
-  executes row by row. **Workflow `22` writes both**; `23-pr-and-review` only verifies them
+- write the automated test record,
+  `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md`, whose suite, coverage and
+  per-test tables `test-record.sh` generates between its `BEGIN GENERATED` markers, and **walk**
+  the manual testing guide written at `17`,
+  `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, a tester or Claude Chrome
+  marking every row as it is executed. A row the build deliberately departed from is amended with
+  its reason and recorded as a finding — never quietly rewritten to match. **Workflow `22` writes
+  the one and walks the other**; `23-pr-and-review` only verifies them
 - route findings: `20-FINDINGS/`, bugs to `21-BUGS/`, refactors to `22-REFACTORING/`
 - update `GAPS.md` and `DEFERRED.md`
 - refresh the code-review-graph

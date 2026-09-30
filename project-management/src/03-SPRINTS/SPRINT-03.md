@@ -132,7 +132,13 @@ stretch. It is not counted until it does.
   that record's own terms — with the caveat `03-SPRINT-PLAN-03.md` recorded on 05/09/2026, which
   survives the re-plan: the ADR retires when the repair lands **and the gate goes green**, a
   conjunction, and it calls for a superseding record nobody has yet written. A plain pass is not
-  promised here; see Verification Checks.
+  promised here; see Verification Checks. The record was superseded on 30/09/2026 by
+  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  but not by that retiring record: the successor restates the regime unchanged, retirement terms
+  included, but for the manual testing guide's path, so the retiring record is still unwritten.
+  <!-- UPDATED 30/09/2026: the last two sentences above are new (settled 30/09/2026,
+  16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7
+  Q18). The citation of the superseded record is kept, not repointed. -->
 - **This sprint's contingency is a dependency in the other direction.** SPRINT-02's Definition of
   Done reserves its `Should` — US003, 5 SP — to this record. It is not a blocker; it is an
   arithmetic risk on the capacity line, and it is the same shape SPRINT-04 carried from this record
@@ -475,7 +481,7 @@ to read it against.
 <!-- US005's and US003's manual criteria moved with the stories on 07/09/2026. -->
 
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
-- [ ] `project-management/src/18-TESTS/US004-MANUAL-TESTING.md` carries a tester sign-off block
+- [ ] `project-management/src/18-TESTS/MANUAL/US004-MANUAL-TESTING.md` carries a tester sign-off block
 - [ ] **No `[OPEN]` acceptance-criteria gap remains** in
       `project-management/src/11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` — nine
       found, nine resolved 02/09/2026
@@ -492,7 +498,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
 ### QA Tasks — Automated
 
 - [ ] US004 — the self-test runs and its output is recorded in
-      `project-management/src/18-TESTS/US004-TEST-STATUS.md`
+      `project-management/src/18-TESTS/AUTOMATED/US004-TEST-STATUS.md`
 - [ ] US004 — each new fixture case is run against both the pre- and post-change script, and
       both results recorded
 - [ ] US004 — the temporary-untracked-file probe for the population fix re-runs both set builders
@@ -532,7 +538,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] `bash code/src/scripts/audits/doc-references.sh` — **no finding remains of the three classes
       US004 owns** — the git-index class, the instance-citer class and the dangling
       `project-management/src/` class — and every survivor is named with the story that owns it, in
-      `project-management/src/18-TESTS/US004-TEST-STATUS.md`. **Which survivors stand is a fact
+      `project-management/src/18-TESTS/AUTOMATED/US004-TEST-STATUS.md`. **Which survivors stand is a fact
       about the build order, and the order has changed under this check since it was written for
       SPRINT-02.** The six known at US004's cutting — three citations of `code/docs/ABSENCE.md`
       owned by US003, three of `code/src/scripts/audits/SLOP-FAMILY.md` owned by US002 — belong to
@@ -568,7 +574,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       markdownlint-cli2, ESLint and clippy (`code/src/scripts/syntax/CONTEXT.md`), and as of
       08/09/2026 no project script, CI job or lefthook entry runs ShellCheck. The expectation
       stands as US004's own and is recorded in
-      `project-management/src/18-TESTS/US004-MANUAL-TESTING.md` as run or as not run — never as a
+      `project-management/src/18-TESTS/MANUAL/US004-MANUAL-TESTING.md` as run or as not run — never as a
       `lint.sh` pass, per `code/docs/GATE-REPORTING.md`
 - [ ] `bash code/src/scripts/syntax/check.sh` — **N/A**, it type-checks Python, TypeScript and Rust
       and has no shell or Markdown leg; the member ships one bash script, its fixtures, one

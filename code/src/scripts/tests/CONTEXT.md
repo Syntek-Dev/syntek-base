@@ -38,7 +38,7 @@ code/src/scripts/tests/
 ├── mutmut.sh                 ← Python mutation testing (local-only; dev stack required)
 ├── open-coverage.sh          ← opens the backend coverage HTML in a browser
 ├── server.sh                 ← start or manage the test stack containers
-├── test-record.sh            ← generator: US### → the 18-TESTS record (writes OUTSIDE code/)
+├── test-record.sh            ← generator: US### → 18-TESTS/AUTOMATED/ (writes OUTSIDE code/)
 └── reports/                  ← generated reports (all gitignored; sub-dirs below)
     ├── a11y/                 ← axe results from e2e-py.sh (created on demand)
     ├── api/                  ← output from api.sh (created on demand)
@@ -50,17 +50,17 @@ code/src/scripts/tests/
 
 ## Scripts
 
-| Script                | Tool                | Pattern | Stack required     | Default output dir                                                           |
-| --------------------- | ------------------- | ------- | ------------------ | ---------------------------------------------------------------------------- |
-| `all.sh`              | orchestrator        | both    | Depends on flags   | (delegates to sub-scripts)                                                   |
-| `api.sh`              | Bruno CLI           | host    | Test stack up      | `reports/api/`                                                               |
-| `backend.sh`          | pytest              | exec    | Full test stack up | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml)  |
-| `backend-coverage.sh` | pytest + cov        | exec    | Full test stack up | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)          |
-| `e2e-py.sh`           | pytest + playwright | host    | Dev stack up (:81) | `reports/a11y/` + `reports/e2e/results.xml`                                  |
-| `mutmut.sh`           | mutmut              | exec    | Dev stack up       | N/A (console output)                                                         |
-| `open-coverage.sh`    | xdg-open / open     | host    | None               | N/A                                                                          |
-| `server.sh`           | docker compose      | host    | N/A                | N/A                                                                          |
-| `test-record.sh`      | report parser       | host    | None (reads files) | `project-management/src/18-TESTS/US###-TEST-STATUS.md` — **outside `code/`** |
+| Script                | Tool                | Pattern | Stack required     | Default output dir                                                          |
+| --------------------- | ------------------- | ------- | ------------------ | --------------------------------------------------------------------------- |
+| `all.sh`              | orchestrator        | both    | Depends on flags   | (delegates to sub-scripts)                                                  |
+| `api.sh`              | Bruno CLI           | host    | Test stack up      | `reports/api/`                                                              |
+| `backend.sh`          | pytest              | exec    | Full test stack up | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml) |
+| `backend-coverage.sh` | pytest + cov        | exec    | Full test stack up | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)         |
+| `e2e-py.sh`           | pytest + playwright | host    | Dev stack up (:81) | `reports/a11y/` + `reports/e2e/results.xml`                                 |
+| `mutmut.sh`           | mutmut              | exec    | Dev stack up       | N/A (console output)                                                        |
+| `open-coverage.sh`    | xdg-open / open     | host    | None               | N/A                                                                         |
+| `server.sh`           | docker compose      | host    | N/A                | N/A                                                                         |
+| `test-record.sh`      | report parser       | host    | None (reads files) | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**          |
 
 `backend.sh`, `backend-coverage.sh`, and `api.sh` fall back to `.env.test.example` when
 `.env.test` is absent — every value in it has a working default in
@@ -90,10 +90,12 @@ The story is the only required argument; `--reports DIR`, `--record PATH`, `--dr
 `--quiet` override the defaults, and `--help` lists them. It reads the suites' own artefacts
 under `reports/` — the backend JUnit XML, `api/results.json`, the e2e JUnit XML, the per-page
 axe JSON and `backend-coverage/coverage.xml` — keeps the tests attributed to that story, and
-rewrites the generated block of `project-management/src/18-TESTS/US###-TEST-STATUS.md`. The
-attribution itself comes from `reports/story-map.json`, which the pytest hook in
+rewrites the generated block of `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md`.
+The attribution itself comes from `reports/story-map.json`, which the pytest hook in
 `code/src/django/conftest.py` writes at collection: a JUnit `<testcase>` carries only a classname
-and a name, so the story marker has to travel beside the XML rather than in it.
+and a name, so the story marker has to travel beside the XML rather than in it. A record still at
+the `18-TESTS/` root, where records sat before the folder split by record type, is refused with
+an error naming the move, and nothing is written.
 
 **Every other script in this folder writes only into the gitignored `reports/` tree.** This one
 writes a tracked file in another layer, which is exactly the thing a reader assumes is not true,
@@ -107,7 +109,7 @@ so three limits hold it:
 - **It records only what it is told about.** A test carrying no story marker is silently absent
   from the table rather than an error; `bash code/src/scripts/audits/story-markers.sh` lists what
   carries none. The attribution rule and the record's own conventions:
-  `project-management/src/18-TESTS/CLAUDE.md`.
+  `project-management/src/18-TESTS/AUTOMATED/CLAUDE.md`.
 
 ## --output flag
 

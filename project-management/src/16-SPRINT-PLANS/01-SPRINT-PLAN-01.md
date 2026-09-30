@@ -64,22 +64,28 @@
 
 ## Sprint Reference Documents
 
-| Area               | Source                                                                                                                                                                                                                                                                               |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Sprint definition  | `../03-SPRINTS/SPRINT-01.md` <!-- doc-references: template-only -->                                                                                                                                                                                                                  |
-| User stories       | `../02-STORIES/US007.md` <!-- doc-references: template-only --> · `../02-STORIES/US001.md`                                                                                                                                                                                           |
-| Database           | **N/A** — both stories read `DB: N/A`; no model, migration or RLS policy in scope                                                                                                                                                                                                    |
-| User flows         | **N/A** — both stories read `User Flow: N/A`; no user journey in scope                                                                                                                                                                                                               |
-| Brand & components | **N/A** — both read `Brand: N/A` and `Components: N/A`; no rendered surface                                                                                                                                                                                                          |
-| Wireframes         | **N/A** — both read `Wireframes: N/A`; no screen                                                                                                                                                                                                                                     |
-| GDPR               | **N/A** — both read `GDPR: N/A`; no personal-data path                                                                                                                                                                                                                               |
-| Security           | **N/A** — both read `Security: N/A`; no protected action and no new endpoint                                                                                                                                                                                                         |
-| QA                 | `../11-QA/PLANNING/QA-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — **Signed off**, six gaps found and six resolved · `../11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — **Signed off** 08/09/2026, seven gaps found and seven resolved                                 |
-| SEO                | **N/A** — both read `SEO: N/A`; no public page                                                                                                                                                                                                                                       |
-| API design         | **N/A** — both read `API: N/A`; no Django Ninja surface                                                                                                                                                                                                                              |
-| Logging            | **N/A** — both read `Logging: N/A`; no log line                                                                                                                                                                                                                                      |
-| Decisions          | `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` <!-- doc-references: template-only --> · `ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` · `ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` · `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` |
-| **Story plans**    | `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — written 08/09/2026, taking up the reserved `01-` · `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — written 02/09/2026                                                                |
+| Area               | Source                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sprint definition  | `../03-SPRINTS/SPRINT-01.md` <!-- doc-references: template-only -->                                                                                                                                                                                                                                                                                                                    |
+| User stories       | `../02-STORIES/US007.md` <!-- doc-references: template-only --> · `../02-STORIES/US001.md`                                                                                                                                                                                                                                                                                             |
+| Database           | **N/A** — both stories read `DB: N/A`; no model, migration or RLS policy in scope                                                                                                                                                                                                                                                                                                      |
+| User flows         | **N/A** — both stories read `User Flow: N/A`; no user journey in scope                                                                                                                                                                                                                                                                                                                 |
+| Brand & components | **N/A** — both read `Brand: N/A` and `Components: N/A`; no rendered surface                                                                                                                                                                                                                                                                                                            |
+| Wireframes         | **N/A** — both read `Wireframes: N/A`; no screen                                                                                                                                                                                                                                                                                                                                       |
+| GDPR               | **N/A** — both read `GDPR: N/A`; no personal-data path                                                                                                                                                                                                                                                                                                                                 |
+| Security           | **N/A** — both read `Security: N/A`; no protected action and no new endpoint                                                                                                                                                                                                                                                                                                           |
+| QA                 | `../11-QA/PLANNING/QA-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — **Signed off**, six gaps found and six resolved · `../11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — **Signed off** 08/09/2026, seven gaps found and seven resolved                                                                                                                                   |
+| SEO                | **N/A** — both read `SEO: N/A`; no public page                                                                                                                                                                                                                                                                                                                                         |
+| API design         | **N/A** — both read `API: N/A`; no Django Ninja surface                                                                                                                                                                                                                                                                                                                                |
+| Logging            | **N/A** — both read `Logging: N/A`; no log line                                                                                                                                                                                                                                                                                                                                        |
+| Decisions          | `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` <!-- doc-references: template-only --> · `ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` · `ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` · `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, superseded 30/09/2026 by `ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` |
+| **Story plans**    | `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — written 08/09/2026, taking up the reserved `01-` · `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — written 02/09/2026                                                                                                                                                                  |
+
+<!-- UPDATED 30/09/2026: the Decisions row gains the successor of the baseline-diff record, beside the
+     record it superseded that day for the 18-TESTS split. The successor restates the regime
+     unchanged, retirement terms included, but for the manual testing guide's path (settled
+     30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans
+     grilling round 7 Q18). The superseded record's citation is kept, not repointed. -->
 
 <!-- 07/09/2026: the User stories, QA and Story plans rows named US002, its QA plan
      (../11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md, signed off) and its story plan
@@ -108,7 +114,12 @@ the files under test but decides none of the question stays in the manifest, nar
 SPRINT-02's stretch, and its Decision states it binds **every story in this backlog until the gate
 is green**; US007's own Decisions section says it binds US007 "not only US003", and extends the
 same treatment to `skill-conformance.sh`. US001 predates both and is deliberately left as it
-stands, per the citation record's own Consequences.
+stands, per the citation record's own Consequences. The citation record was superseded on
+30/09/2026 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+which restates it unchanged — its Consequences included — but for the manual testing guide's
+path, so it binds US007 on the same terms. <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 
 <!-- Read, until 07/09/2026: "**One ADR in the set is not this sprint's.**
      ../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md was written for US003 in
@@ -372,9 +383,14 @@ The only phase with content. Both stories are documentation changes verified by 
 and by a recorded human read-across; there is no test suite to go green and no coverage figure to
 report. **Five gates are in this sprint's QA union, and none of them reports a plain pass for both
 members** — see _Sprint-wide Constraints_ below. `22-implementation-documentation` runs before this
-phase and is a merge gate: it writes each story's `../18-TESTS/US###-MANUAL-TESTING.md`, closes
-`GAPS.md`'s entry of 01/09/2026 and writes `DEFERRED.md`'s **one** US007 row, as US007's own
-Definition of Done provides.
+phase and is a merge gate: it walks each story's `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md`,
+authored from the specs before code, closes `GAPS.md`'s entry of 01/09/2026 and writes
+`DEFERRED.md`'s **one** US007 row, as US007's own Definition of Done provides.
+
+<!-- Read "it writes each story's ../18-TESTS/US###-MANUAL-TESTING.md" until 30/09/2026, when the
+     18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual guide's authorship moved to
+     17-story-plans Step 7.2. Both members' guides were backfilled from their plans that day;
+     22 walks them rather than writing them (../18-TESTS/CLAUDE.md -> The record lifecycle). -->
 
 <!-- Read "DEFERRED.md's two US007 rows" until 08/09/2026, as did the matching box under _Sprint
      Definition of Done_. US007's own Definition of Done now provides ONE row — the sprint value
@@ -440,7 +456,11 @@ question** — the rule `code/docs/GATE-REPORTING.md` states. Per gate:
 - **`doc-references.sh` is red before either story starts.** It is read as an **identity diff**
   against a baseline captured before the first edit, never as exit 0 —
   `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which binds every story
-  in this backlog until US004, now in SPRINT-03, retires it. US007's Scenario 13 states the regime
+  in this backlog until US004, now in SPRINT-03, retires it — superseded 30/09/2026 by
+  `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+  which the 18-TESTS split superseded for the manual testing guide's path alone (settled
+  30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->. US007's Scenario 13 states the regime
   and captures the set by identity, an empty set recorded as empty. **US001's flat must-pass is
   inconsistent with this and is left standing deliberately**, per that record.
 - **`skill-conformance.sh` is US007's alone.** `.claude/skills/CLAUDE.md` makes it the definition

@@ -42,7 +42,9 @@ touching every call site; `Cheap` means it can be inserted as a layer when it hu
 | _[EXAMPLE] F-005_ | _Docs_        | _`{guide}`_          | _Guide asserts a rule the codebase does not follow_                              | _Correct the guide, or record why the exception stands_ | _Cheap_     | _Accepted — {reason}_ |
 
 **Area** — Schema · Constraints · Indexes · Migration · Query · Search · Scoping/RLS ·
-Encryption · Docs · Tooling.
+Encryption · Docs · Tooling · Manual guide (a row amended at the walk — **Where** names the guide
+and row ID, which the row's trail cites back as this `F-0NN`; rule:
+`../18-TESTS/MANUAL/CLAUDE.md` → _Changing a row after authoring_).
 **Disposition** — `Next story` (feeds the next plan) · `Deferred — US###` (named target,
 also recorded in `DEFERRED.md`) · `Bug — US###` (a defect; file in `../21-BUGS/`) ·
 `Refactor` (structural debt; action in `../22-REFACTORING/`) · `ADR` (reopens a
@@ -103,6 +105,7 @@ factual.
 - `../02-STORIES/US###.md` — the story these findings came from
 - `../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` — the plan this closes the loop on
 - `../19-REVIEWS/REVIEW-US###-<DESCRIPTOR>.md` — the merge-gating review from the same PR
+- `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` — the walked guide; each row amended there is a finding here
 - `../21-BUGS/` — file a report for any finding that is a defect
 - `../22-REFACTORING/` — action any finding that is structural debt
 - `../15-DECISIONS/` — graduate any finding that reopens a hard-to-reverse trade-off

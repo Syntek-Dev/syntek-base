@@ -99,8 +99,9 @@ are gitignored, and neither is written for a human to read:
 | `code/src/scripts/tests/reports/a11y/<page>--<project>.json` | `test_e2e_a11y.py` | the accessibility row's violation count    |
 
 `bash code/src/scripts/tests/test-record.sh US###` turns both into the generated block of
-`project-management/src/18-TESTS/US###-TEST-STATUS.md`. A browser test carrying no story marker is
-absent from that block rather than failing the run — the marker itself is `CLAUDE.md`'s rule.
+`project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md`. A browser test carrying no story
+marker is absent from that block rather than failing the run — the marker itself is `CLAUDE.md`'s
+rule.
 
 ## The configuration is typed, not a nest of dictionaries
 
@@ -130,4 +131,5 @@ pages land.
 - `code/docs/accessibility/TESTING-AND-COMPONENTS.md` — what this gate does not cover
 - `code/src/scripts/tests/CONTEXT.md` — the full runner inventory, and `test-record.sh`'s
   blast radius
-- `project-management/src/18-TESTS/CONTEXT.md` — where a run's artefacts end up as a story record
+- `project-management/src/18-TESTS/AUTOMATED/CONTEXT.md` — where a run's artefacts end up as a
+  story record

@@ -79,30 +79,37 @@ Once merged to `testing`, set the story `**Status:**` to `Completed` (move to `A
 
 **Hard gate — complete before marking this story done.**
 
-The design/compliance IMPLEMENTATION records and both test records are **written in `22-implementation-documentation`**, which runs before this workflow. Here you **verify** each applicable one exists and is complete, then **write** the single PR-stage record that is the output of Steps 1–2.
+The design/compliance IMPLEMENTATION records and the automated test record are **written**, and the manual testing guide **walked**, in `22-implementation-documentation`, which runs before this workflow. Here you **verify** each applicable one exists and is complete, then **write** the single PR-stage record that is the output of Steps 1–2.
 
 **Verify (authored in `22-implementation-documentation`)** — if any applicable record is missing or incomplete, return to `22-implementation-documentation` before proceeding; do not write it here:
 
-| Discipline                                          | Required                                           | Expected in                                  |
-| --------------------------------------------------- | -------------------------------------------------- | -------------------------------------------- |
-| GDPR review                                         | Always                                             | `src/09-GDPR/IMPLEMENTATION/`                |
-| Security (assessment / audit / threat model / vuln) | Always                                             | `src/10-SECURITY/<CATEGORY>/IMPLEMENTATION/` |
-| QA plan                                             | Always                                             | `src/11-QA/IMPLEMENTATION/`                  |
-| SEO review                                          | Only if story adds public-facing pages             | `src/12-SEO/IMPLEMENTATION/`                 |
-| API design                                          | Only if story adds or changes the Django Ninja API | `src/13-API-DESIGN/IMPLEMENTATION/`          |
-| Test records (automated + manual)                   | Always                                             | `src/18-TESTS/`                              |
-| Findings                                            | Always                                             | `src/20-FINDINGS/`                           |
+| Discipline                                          | Required                                           | Expected in                                        |
+| --------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| GDPR review                                         | Always                                             | `src/09-GDPR/IMPLEMENTATION/`                      |
+| Security (assessment / audit / threat model / vuln) | Always                                             | `src/10-SECURITY/<CATEGORY>/IMPLEMENTATION/`       |
+| QA plan                                             | Always                                             | `src/11-QA/IMPLEMENTATION/`                        |
+| SEO review                                          | Only if story adds public-facing pages             | `src/12-SEO/IMPLEMENTATION/`                       |
+| API design                                          | Only if story adds or changes the Django Ninja API | `src/13-API-DESIGN/IMPLEMENTATION/`                |
+| Test records (automated + manual)                   | Always                                             | `src/18-TESTS/AUTOMATED/` · `src/18-TESTS/MANUAL/` |
+| Findings                                            | Always                                             | `src/20-FINDINGS/`                                 |
 
 **Complete is not the same as present** — the two test records in `src/18-TESTS/` are read, not
-counted. Rules and templates: `project-management/src/18-TESTS/CLAUDE.md`.
+counted. Rules and templates: `project-management/src/18-TESTS/CLAUDE.md` and its `AUTOMATED/`
+and `MANUAL/` sub-folders.
 
-- **`US###-TEST-STATUS.md`** — the block between `<!-- BEGIN GENERATED: test-record -->` and
+- **`AUTOMATED/US###-TEST-STATUS.md`** — the block between `<!-- BEGIN GENERATED: test-record -->` and
   `<!-- END GENERATED -->` regenerated against the **last** suite run, not an earlier green one.
   Check a short per-test table against `bash code/src/scripts/audits/story-markers.sh` before
   reading it as coverage: an unmarked test is silently absent from the record, never reported
   as missing.
-- **`US###-MANUAL-TESTING.md`** — every row's `Result` marked `Pass` or `Fail`, none left empty.
-  An empty `Result` means the step was not run; it is never a pass.
+- **`MANUAL/US###-MANUAL-TESTING.md`** — every row's `Result` marked `Pass` or `Fail`, none left
+  empty. An empty `Result` means the step was not run; it is never a pass. A retired stub, `—`
+  throughout, is the one row not walked (`MANUAL/CLAUDE.md` → _Row IDs_). Every _Recorded during
+  the build_ slot is filled, or recorded as missed.
+- **Every amended row carries its trail and its finding** — its `Notes` holding the before-text,
+  the reason and the evidence, and the `F-0NN` it names present in the story's `src/20-FINDINGS/`
+  record. An amendment missing either is a silent rewrite: return to
+  `22-implementation-documentation`.
 - **Every `Fail` carries a reason and a destination** — the reason in its own `Notes` cell, and
   a row in the guide's _Failures_ table routed before merge, exactly as `src/20-FINDINGS/`
   routes a finding.
