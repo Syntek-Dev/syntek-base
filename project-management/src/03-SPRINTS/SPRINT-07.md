@@ -48,7 +48,17 @@ two members, the `Must` tier **supplied** by US012 on 21/09/2026, and **CLOSED t
 admission** by call the same day: the **1 SP of headroom** is not spoken for, and nothing coming
 fits it (<%DEVELOPER_NAME%>'s call at `03-sprint-planning`, 21/09/2026). A new admission opens
 SPRINT-08. The close owes this sprint's plan and two story plans: the sprint plan is written
-(03/10/2026), US012's story plan is written (03/10/2026), and US011's is not yet. See Notes.
+(03/10/2026), US012's story plan is written (03/10/2026), and US011's is written (03/10/2026). See
+Notes.
+
+<!-- AMENDED 03/10/2026, later the same day, in US011's `17-story-plans` change. The capacity line
+     closed "US012's story plan is written (03/10/2026), and US011's is not yet." until then.
+     US011's plan and its manual testing guide were written that day, once US010's plan was
+     committed (settled 03/10/2026, 16-sprint-plans grilling round 9 Q22) —
+     project-management/src/17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md and
+     project-management/src/18-TESTS/MANUAL/US011-MANUAL-TESTING.md. The plan reads Blocked, its
+     four files existing only once US010 is built; the story stays Open. The figure, the members
+     and the admission posture did not move. -->
 
 <!-- AMENDED 03/10/2026, later the same day, in US012's `17-story-plans` change. The capacity line
      closed "the sprint plan is written (03/10/2026), and the two story plans are not yet." until
@@ -312,11 +322,11 @@ Notes.
   settled build order is the prefix on each plan in `project-management/src/17-STORY-PLANS/` — nine
   plans on disk on 21/09/2026, `01-` to `09-` — with US010 tenth at a reserved `10-`, **US012
   eleventh at a reserved `11-`**, and **US011 twelfth at a reserved `12-`**. All three were
-  **reserved numbers, not plans**, until `17-story-plans` writes each — "10-" and "11-" were written
-  on 03/10/2026 — and nothing here may cite one
+  **reserved numbers, not plans**, until `17-story-plans` writes each — all three were written on
+  03/10/2026 — and nothing here may cite one
   as a plan before it is written (SPRINT-04's rule for US006's `07-`). Updated 03/10/2026: US010's
-  plan took "10-" and US012's took "11-" that day, US012's in the change committed after US010's;
-  US011's "12-" is still a reservation. **US011's reservation moved from `11-` to `12-` on
+  plan took "10-", US012's "11-" and US011's "12-" that day, each in a change of its own and in that
+  order; no reservation is left. **US011's reservation moved from `11-` to `12-` on
   21/09/2026, and it is the only position in the backlog that moved.** US012 builds ahead of it
   because the `Must` ships before the stretch — SPRINT-05's reading of 17/09/2026 for US008 and
   US009 — and because US011 waits on US010 while US012 waits on nothing.
@@ -394,6 +404,12 @@ Notes.
      The same bullet read "neither number was ever a file, so nothing on disk is renumbered."
      until then, true of "11-" and "12-" until US012's plan took "11-"; it now reads in the tense
      of the move of 21/09/2026. -->
+
+<!-- AMENDED 03/10/2026, later the same day, in US011's `17-story-plans` change. The build-order
+     bullet read "— "10-" and "11-" were written on 03/10/2026 —" and closed "US011's "12-" is still
+     a reservation." until then. US011's plan took "12-" in its own change, committed after US012's,
+     under exactly the reserved name. No order and no edge moved: US011 still waits on US010, and
+     its plan reads Blocked on that edge. -->
 
 ## Notes
 
@@ -777,8 +793,8 @@ of `17-story-plans` grilling, and US011's once US010's plan is committed (settle
   its decisions prerequisite is met by the read-rule ADR, as the next sentences record; Security is
   skipped by its flag with its reason, the control it leans on being US010's, whose gate-`10` plans
   are signed off (28/09/2026); GDPR, SEO and API are skipped by flag; and its acceptance criteria
-  and estimate are complete. Its story plan at `12-` is unwritten, and no `CADENCE.md`
-  prerequisite asks for one — US012 is counted without one — while `17-story-plans` gathers the
+  and estimate are complete. Its story plan at `12-` was unwritten when it was counted, and is written
+  since 03/10/2026; no `CADENCE.md` prerequisite asks for one — US012 is counted without one — while `17-story-plans` gathers the
   sprint plan first. So US011 is counted. Updated 21/09/2026 at `15-decisions`, written back
   27/09/2026: US011's ADR candidate is subsumed by
   `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`, recorded
@@ -881,6 +897,11 @@ story names US012 in its dependencies.
      16-sprint-plans grilling round 1 Q4 (settled 28/09/2026). The ledger bullet's last clause read
      "what owes the plan is the call, not a fill" until then. The counts, the ledger and the
      backlog register do not move. -->
+
+<!-- AMENDED 03/10/2026, later the same day, in US011's `17-story-plans` change. The plan-count
+     bullet read "Its story plan at `12-` is unwritten, and no `CADENCE.md` prerequisite asks for
+     one" until then; the plan is written, and the count it supports does not move — no
+     CADENCE.md prerequisite asks for a story plan. -->
 
 `project-management/src/16-SPRINT-PLANS/CLAUDE.md` forbids a plan without a matching record — "do
 not create an orphan plan" — and nothing forbids a record without a plan; that is a record's
@@ -1074,7 +1095,8 @@ blank, with no syntek-base literal in any of them and no leak reported by
       template offers (today: `INCLUDE_MOBILE` true and false — settled 27/09/2026, grilling round
       3 Q23) and a grep over each generated tree finds no `US###`, `SPRINT-##`, `ADR-US###` or
       `STORY-PLAN-US###` literal inside any index file, the 000 template identifiers a seed may
-      name excepted
+      name excepted — the grep is US010's one step over all seven index files, read for this
+      criterion on US011's landing run; US011 adds no step
 - [ ] US011 — `bash .github/scripts/shipped-artefacts.sh --self-test` passes **unchanged by US011's
       diff** — US011 adds no registration and must not need one; a change from its diff means an
       index moved or a seed was polluted. US012 changes the script in the same sprint, and this
@@ -1094,9 +1116,8 @@ blank, with no syntek-base literal in any of them and no leak reported by
       **exemption is proved rather than assumed**
 - [ ] `bash code/src/scripts/audits/docs-pairing.sh` passes
 - [ ] Coverage floors — **N/A**, and marked rather than deleted. Neither member ships Python —
-      US011 ships Markdown plus its generated-tree grep in the `[3/4]` job of
-      `.github/workflows/audit-template.yml`, and US012 one bash script — the Backend flag reads
-      `N/A`, and the floor has nothing to bind
+      US011 ships Markdown alone, and US012 one bash script — the Backend flag reads `N/A`, and the
+      floor has nothing to bind
 
 <!-- 21/09/2026, on US012's admission. The self-test row above read "`bash
      .github/scripts/shipped-artefacts.sh --self-test` passes **unchanged** — this sprint adds no
@@ -1120,6 +1141,13 @@ blank, with no syntek-base literal in any of them and no leak reported by
      instead. Every US011 row is keyed for the drop branch as before. Lifted out of the list for
      the Prettier reason recorded above. -->
 
+<!-- AMENDED 03/10/2026, in US011's `17-story-plans` change (settled 03/10/2026, 17-story-plans
+     grilling round 1 Q2: US010 builds one generated-tree grep over all seven index files, and US011
+     adds none). The US011 generation row ended at "name excepted" until then, and gains the step's
+     owner; the coverage row read "US011 ships Markdown plus its generated-tree grep in the `[3/4]`
+     job of `.github/workflows/audit-template.yml`" until then. The member's own criterion and task
+     carry the same amendment. Lifted out of the list for the Prettier reason recorded above. -->
+
 ### QA Acceptance Criteria — Manual
 
 <!-- Manual is the load-bearing half here, not the residue. No script can judge whether one line of
@@ -1128,7 +1156,7 @@ blank, with no syntek-base literal in any of them and no leak reported by
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
 - [ ] Each member's manual testing guide carries a tester sign-off block —
       `project-management/src/18-TESTS/MANUAL/US012-MANUAL-TESTING.md` and
-      "project-management/src/18-TESTS/MANUAL/US011-MANUAL-TESTING.md", each authored at
+      `project-management/src/18-TESTS/MANUAL/US011-MANUAL-TESTING.md`, each authored at
       `17-story-plans` Step 7.2 from the specs before any code, and walked at
       `22-implementation-documentation`. US012 owes one although its QA flag names the unit type
       alone (settled 03/10/2026, 16-sprint-plans grilling round 9 Q21)
@@ -1176,6 +1204,11 @@ blank, with no syntek-base literal in any of them and no leak reported by
      double quotes. The row's obligation did not move. Lifted out of the list for the Prettier
      reason recorded under QA Acceptance Criteria — Automated. -->
 
+<!-- AMENDED 03/10/2026, later the same day, in US011's `17-story-plans` change. US011's guide path
+     in the sign-off row was written in double quotes until then; that change wrote the guide, so
+     the path is backticked now. The row's obligation did not move. Lifted out of the list for the
+     Prettier reason recorded under QA Acceptance Criteria — Automated. -->
+
 ---
 
 ## Tasks
@@ -1221,8 +1254,8 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
 | US011 | Fill `STORY-PLAN-INDEX.md` — ascending by build-order prefix, status read from the table cell under the read rule                                                                                                                                                                                                   | [ ]  |
 | US011 | Write every `Summary` for a reader who has not opened the artefact — never the filename restated                                                                                                                                                                                                                    | [ ]  |
 | US011 | Remove the `Backfill owed — US011` line from all four files, and from nothing else                                                                                                                                                                                                                                  | [ ]  |
-| US011 | Record which rows the read rule normalised, citing the read-rule ADR; that it reads the one trailing-comment ADR as `Proposed`, and why that ADR was not edited; and that no instance file was edited                                                                                                               | [ ]  |
-| US011 | Update each touched `CONTEXT.md`'s `**Last Updated**` date where its index section's wording changes                                                                                                                                                                                                                | [ ]  |
+| US011 | Record which rows the read rule normalised, citing the read-rule ADR; that it reads the one trailing-comment ADR as `Proposed`, and why that ADR was not edited; and that no instance file was edited — AMENDED 03/10/2026: but US011's own three, in status carriers and ticks alone (Q8, below)                   | [ ]  |
+| US011 | Update each touched `CONTEXT.md`'s `**Last Updated**` date where its index section's wording changes — AMENDED 03/10/2026: the date goes in a dated comment, and `**Last Updated**` keeps the copier date token (Q7, below)                                                                                         | [ ]  |
 | US011 | At its gate-`22` pass, write the `GAPS.md` entry for TM-10's window — once US011 ships, the four backfilled indexes read complete with no gate until `S-03` is cut, and `S-03` is unscheduled (CUT-PLAN.md P8); the entry is US011's because the window opens when it ships (call recorded 27/09/2026 with round 6) | [ ]  |
 | US011 | **Verify, do not re-cut** the `S-05` row on `MAP-REGISTER-INDEXES.md`; if a cell has drifted, repair it and say so                                                                                                                                                                                                  | [ ]  |
 
@@ -1243,6 +1276,21 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      mirrored: this record's Definition of Done carries none of US011's story-specific lines — the
      S-05 row and the no-Backfill-owed line among them — and its sprint-level tasks row already
      binds the new task, keyed US011 and so deliver branch. No other row moved. -->
+
+<!-- AMENDED 03/10/2026, later the same day, in US011's `17-story-plans` change (settled
+     03/10/2026, 17-story-plans grilling round 4 Q8). The recording row closed "and that no
+     instance file was edited" alone until then, following the member's Documentation Task, which
+     is corrected in place the same day. US011.md, its story plan and this record change on US011's
+     branch only in their status carriers and the task, checklist and Definition-of-Done ticks its
+     Tasks and gate 23 require — each status flip a commit of its own, a US011.md flip carrying its
+     regenerated ClickUp export, no tick in a backfill commit — and every other instance file of
+     the four registers stays untouched. No other row moved. -->
+
+<!-- AMENDED 03/10/2026, the same change (settled 03/10/2026, 17-story-plans grilling round 2
+     Q7, which US011.md's Documentation Task now carries). The `CONTEXT.md` row read "Update each
+     touched `CONTEXT.md`'s `**Last Updated**` date where its index section's wording changes" alone
+     until then: every shipped `CONTEXT.md` keeps the copier date token, and the date goes in a dated
+     comment. -->
 
 ### Security Tasks — N/A
 
@@ -1272,8 +1320,9 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
       neither advises a `!` negation or an allowlist edit
 - [ ] US012 — run ShellCheck by hand over the edited script and record the result, or record that
       it was not run and why
-- [ ] US011 — add the generated-tree grep for the four registers' literals to the generation job, on
-      every render path the template offers (today: `INCLUDE_MOBILE` true and false)
+- [ ] US011 — **N/A — superseded**: the generated-tree grep for the four registers' literals is
+      US010's one step over all seven index files, on every render path the template offers
+      (today: `INCLUDE_MOBILE` true and false), and US011 adds none
 - [ ] US011 — run `shipped-artefacts.sh --self-test`, `shipped-registers.sh` (with `--self-test`)
       and `shipped-ai.sh --self-test`, and confirm US011's diff needs **no** edit to any of them,
       with the result recorded in "project-management/src/18-TESTS/AUTOMATED/US011-TEST-STATUS.md"
@@ -1286,6 +1335,14 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      Manual in double quotes for that reason, so this path takes the same form. The citation gate
      did not flag it either way, measured 03/10/2026. No obligation moved. Lifted out of the list
      for the Prettier reason recorded under QA Acceptance Criteria — Automated. -->
+
+<!-- AMENDED 03/10/2026, later the same day, in US011's `17-story-plans` change (settled
+     03/10/2026, 17-story-plans grilling round 1 Q2). The US011 grep row above read "US011 — add the
+     generated-tree grep for the four registers' literals to the generation job, on every render
+     path the template offers (today: `INCLUDE_MOBILE` true and false)" until then; the member's own
+     task is recorded N/A — superseded in the same change, and its criterion is read against
+     US010's step. Lifted out of the list for the Prettier reason recorded under QA Acceptance
+     Criteria — Automated. -->
 
 ### QA Tasks — Manual
 
@@ -1343,7 +1400,11 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      both the self-test and the full check over both answer sets — but US011's generated-tree grep
      (QA Tasks — Automated) edits the `[3/4]` job in `.github/workflows/audit-template.yml`, so a
      YAML edit has been in scope since the record opened. That edit is proved by the generation row
-     below going green, not by `lint.sh`, which carries no YAML leg (measured 21/09/2026). -->
+     below going green, not by `lint.sh`, which carries no YAML leg (measured 21/09/2026).
+     AMENDED 03/10/2026, in US011's `17-story-plans` change: under 17-story-plans grilling round 1
+     Q2 (settled 03/10/2026) the generated-tree grep is US010's one step over all seven index files,
+     and US011 adds none, so this record carries no YAML edit after all; the generation row below
+     reads US010's step for US011's criterion. -->
 
 - [ ] `bash .github/scripts/shipped-artefacts.sh --self-test <generated-tree>` exits 0 with **6
       probes** — US012's criterion, run by the `[3/4]` job on the pushed branch. The script changes
@@ -1383,7 +1444,8 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       artefacts; the exemption is the gate's to confirm. No `CONTEXT.md` grows by more than a date
       in this sprint
 - [ ] `bash code/src/scripts/audits/docs-pairing.sh` — regression only; neither member creates a
-      directory, and US011 edits existing pairs' `**Last Updated**` dates at most
+      directory, and US011 edits an existing pair's `CONTEXT.md` at most, by a dated comment rather
+      than a `**Last Updated**` date (Q7), and none is expected
 - [ ] `bash code/src/scripts/audits/doctrine-drift.sh` — regression only. A green run says the
       registered claims are undisturbed and says **nothing** about a row's `Status` matching the
       artefact it names; that is the manual row-by-row walk-through's job and is never reported as

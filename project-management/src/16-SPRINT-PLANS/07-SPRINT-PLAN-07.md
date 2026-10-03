@@ -84,16 +84,17 @@
 | API design                | **N/A** — both read `API: N/A`; no Django Ninja surface and no MCP tool                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Logging                   | **N/A** — both read `Logging: N/A`; no log line. Check 4's finding prints to the `[3/4]` job's output, which is a report and not a log                                                                                                                                                                                                                                                                                                                                                                              |
 | Decisions                 | **Two records bind, one inherited and one US010's; neither member authors one.** Listed under _Sprint-wide Constraints_                                                                                                                                                                                                                                                                                                                                                                                             |
-| **Story plans**           | **US012's exists, US011's does not.** `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`, written 03/10/2026 by `17-story-plans` under its reserved prefix; US011's name is reserved and written after US010's plan is committed — see _Story Plans — the code master_                                                                                                                                                                                                                                   |
-| **Manual testing guides** | **US012's exists, US011's is owed.** `../18-TESTS/MANUAL/US012-MANUAL-TESTING.md`, authored 03/10/2026 by `17-story-plans` Step 7.2 from the specs and before any code, straight after its story plan and committed with it; US011's follows its plan the same way (settled 03/10/2026, 16-sprint-plans grilling round 9 Q21 and Q22). The automated record under `../18-TESTS/AUTOMATED/` is written at `22-implementation-documentation`                                                                          |
+| **Story plans**           | **Both exist.** `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md` and `../17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md`, each written 03/10/2026 by `17-story-plans` under its reserved prefix, US011's once US010's plan was committed — see _Story Plans — the code master_                                                                                                                                                                                                          |
+| **Manual testing guides** | **Both exist.** `../18-TESTS/MANUAL/US012-MANUAL-TESTING.md` and `../18-TESTS/MANUAL/US011-MANUAL-TESTING.md`, each authored 03/10/2026 by `17-story-plans` Step 7.2 from the specs and before any code, straight after its story plan and committed with it (settled 03/10/2026, 16-sprint-plans grilling round 9 Q21 and Q22). The automated record under `../18-TESTS/AUTOMATED/` is written at `22-implementation-documentation`                                                                                |
 
 **Every `N/A` above is a flag reading `N/A` in both stories, not a gate anyone forgot** — the
 distinction `code/docs/GATE-REPORTING.md` requires. Each skipped gate is recorded with its reason
 rather than omitted.
 
 **Twelve of the thirteen flags read `N/A` in both members, and `QA` is the only gate that runs.**
-`Backend` reads `N/A` in both, and both still write executable change — US012 one bash script, US011
-one grep step in a CI workflow. The flag names the Django surface, not whether code is written, so
+`Backend` reads `N/A` in both, and US012 still writes executable change, one bash script; US011
+writes Markdown alone since its generated-tree grep became US010's step (settled 03/10/2026,
+17-story-plans grilling round 1 Q2). The flag names the Django surface, not whether code is written, so
 the lane each story runs in is stated under _Phase Breakdown_ rather than inferred from it.
 
 **This plan is written after every prerequisite closed, not before them.** Gate `11` closed for both
@@ -117,9 +118,9 @@ preceding it.
 
 ### Should
 
-| ID    | Title                                                                                                    | Phases touched                                 | SP  | Story plan                                                                                          | Git branch                                             |
-| ----- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | --- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| US011 | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Markdown backfill + one CI grep — no code lane | 8   | _none yet — "12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md" reserved, written by `17-story-plans`_ | _not yet set — fixed by its story plan's `Branch` row_ |
+| ID    | Title                                                                                                    | Phases touched                   | SP  | Story plan                                                         | Git branch                      |
+| ----- | -------------------------------------------------------------------------------------------------------- | -------------------------------- | --- | ------------------------------------------------------------------ | ------------------------------- |
+| US011 | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Markdown backfill — no code lane | 8   | `../17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` | `us011/register-index-backfill` |
 
 <!-- 03/10/2026: both Story plan and both Git branch cells are deliberately unfilled.
      `17-story-plans` has not run for either member, and ../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md
@@ -145,6 +146,19 @@ preceding it.
      owed.** Each is authored under `../18-TESTS/MANUAL/` by `17-story-plans` Step 7.2, from the
      specs and before any code, straight after its story plan and committed with it". US011's two
      cells and its reservation are unchanged: its plan follows once US010's is committed. -->
+
+<!-- 03/10/2026, later the same day, `17-story-plans` Step 10 for US011 — THE US011 CELLS FILLED.
+     The Should table's Story plan cell read "_none yet — "12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md"
+     reserved, written by `17-story-plans`_" and its Git branch cell "_not yet set — fixed by its
+     story plan's `Branch` row_" until then; both are filled from the plan, the branch from its own
+     `Branch` row, never invented here. Its Phases cell read "Markdown backfill + one CI grep — no
+     code lane": the generated-tree grep is US010's one step over all seven index files, and US011
+     adds none (settled 03/10/2026, 17-story-plans grilling round 1 Q2). In the same pass two Sprint
+     Reference Documents rows were rewritten — the Story plans row opened "**US012's exists, US011's
+     does not.**" and ended "US011's name is reserved and written after US010's plan is committed",
+     and the Manual testing guides row opened "**US012's exists, US011's is owed.**" and read
+     "US011's follows its plan the same way" — and the flags paragraph beneath them read "and both
+     still write executable change — US012 one bash script, US011 one grep step in a CI workflow." -->
 
 **Total: 10 SP against a capacity of 11 — 2 committed, 8 stretch, inside capacity, and CLOSED to
 further admission.** Rows are in build order, US012 then US011. The 1 SP of headroom is not padded:
@@ -241,26 +255,25 @@ reporting regime and sequences nothing; see _Gate honesty_.
 
 ## Story Plans — the code master
 
-Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **US012's plan exists;
-US011's does not.** `17-story-plans` wrote US012's on 03/10/2026, after this plan, because its
-Step 1 gathers the sprint plan first, and repointed its row here at Step 10. US011's prefix is still
-reserved rather than assigned by this file.
+Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **Both plans exist.**
+`17-story-plans` wrote US012's on 03/10/2026, after this plan, because its Step 1 gathers the sprint
+plan first, and US011's later the same day, once US010's plan was committed; each row here was
+repointed at its file by that workflow's Step 10. Neither prefix was assigned by this file.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                                                                                                                                       | Status              |
-| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| US012 | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`                                                                                                                           | Not started         |
-| US011 | _no file — "12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md" is the reserved name, its descriptor matching the story's QA plan as every existing pair does; written by `17-story-plans`_ | _no plan to mirror_ |
+| Story | Story plan (`../17-STORY-PLANS/`)                                  | Status      |
+| ----- | ------------------------------------------------------------------ | ----------- |
+| US012 | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`      | Not started |
+| US011 | `../17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` | Not started |
 
-The run on disk is contiguous `00-` to `11-` once US010's plan, written in the `17-story-plans`
-change committed immediately before US012's, takes its "10-" (settled 03/10/2026, 16-sprint-plans
-grilling round 9 Q22). **The prefix is the story's position in the settled build order across the
+The run on disk is contiguous `00-` to `12-`: US010's plan took "10-" in the `17-story-plans`
+change committed before US012's, and US011's took "12-" in the change after it (settled 03/10/2026,
+16-sprint-plans grilling round 9 Q22). **The prefix is the story's position in the settled build order across the
 whole backlog, not its sprint and not a per-sprint counter** — US010 tenth at "10-" (ninth if
 US009's carry lands in SPRINT-06, a swap `../16-SPRINT-PLANS/06-SPRINT-PLAN-06.md` states), then
 US012 eleventh at "11-" and US011 twelfth at "12-" either way — and it is renumbered whenever that
 order changes; `../17-STORY-PLANS/CLAUDE.md` owns that rule. US012's and US011's reservations are
-recorded in their own stories, under each one's _Dependencies_, and US012's now records it taken up;
-US010's is recorded in its own story by its own story-plan change. "12-" is the one number of the
-three that is not yet a file.
+recorded in their own stories, under each one's _Dependencies_, and each now records it taken up;
+US010's is recorded in its own story by its own story-plan change. All three numbers are files now.
 
 <!-- 03/10/2026, later the same day, `17-story-plans` Step 10 for US012. The section above opened
      "**Neither member's plan exists.** `17-story-plans` writes both after this plan, because its
@@ -310,6 +323,35 @@ three that is not yet a file.
      no-file row and adds nothing until its plan is written; that pass re-counts before its own edit
      rather than inheriting this figure. ../02-STORIES/US007.md is NOT edited by this pass. -->
 
+<!-- 03/10/2026, later the same day, `17-story-plans` Step 10 for US011 — THE RESERVATION TAKEN UP,
+     AND THE US011 ROW JOINS THE POPULATION. The section's opening read "**US012's plan exists;
+     US011's does not.** `17-story-plans` wrote US012's on 03/10/2026, after this plan, because its
+     Step 1 gathers the sprint plan first, and repointed its row here at Step 10. US011's prefix is
+     still reserved rather than assigned by this file." until then; the US011 row read "_no file —
+     "12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md" is the reserved name, its descriptor matching
+     the story's QA plan as every existing pair does; written by `17-story-plans`_" with Status
+     "_no plan to mirror_"; and the paragraph beneath the table opened "The run on disk is
+     contiguous `00-` to `11-` once US010's plan, written in the `17-story-plans` change committed
+     immediately before US012's, takes its "10-"", read "and US012's now records it taken up", and
+     closed ""12-" is the one number of the three that is not yet a file." The plan now exists under
+     exactly the reserved name, re-derived before it was named: 00- to 11- tracked at 19e89aa (C6),
+     US011 twelfth in build order.
+
+     THE STATUS CELL reads "Not started" as the comment above defines the column, a value in no
+     status set, held pending ../02-STORIES/US007.md Scenario 8. The plan's own `| Status |` header
+     reads `Blocked`, because the four files it fills exist only once US010 is built, and that value
+     is NOT mirrored here — the house shape ../16-SPRINT-PLANS/04-SPRINT-PLAN-04.md set on 08/09/2026
+     for US005, whose plan also reads `Blocked` beside a "Not started" cell.
+
+     RE-COUNTED 03/10/2026 across the seven live sprint plans, 01- to 07-, immediately before this
+     edit: ELEVEN "Not started" cells as committed at 19e89aa (C6) — US007 and US001 in
+     ../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md, US002 and US003 in ../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md,
+     US005 and US006 in ../16-SPRINT-PLANS/04-SPRINT-PLAN-04.md, US008 and US009 in
+     ../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md, US010 and the US009 reserved-carry row in
+     ../16-SPRINT-PLANS/06-SPRINT-PLAN-06.md, and US012 here — exactly the eleven the comment above
+     reaches. This cell is the TWELFTH. Flagged so the addition is not silent.
+     ../02-STORIES/US007.md is NOT edited by this pass, and its owner re-counts before the edit. -->
+
 **Each story plan is followed by its manual testing guide, in the same `17-story-plans` run and the
 same commit** (settled 03/10/2026, 16-sprint-plans grilling round 9 Q22). Step 7.2 authors the
 guide under `../18-TESTS/MANUAL/` from the specs before any code, Step 9 reviews plan and guide
@@ -335,9 +377,10 @@ touches are recorded as `N/A` with a reason rather than deleted, per `code/docs/
 
 ### Phase 1 — Backend (`../../workflows/19-backend-code`)
 
-**N/A** — both read `Backend: N/A`. No Python, model, service or migration. Both members still ship
-executable change, carried in the lane table below; which PM workflow each story plan enters to
-build it is that plan's to state.
+**N/A** — both read `Backend: N/A`. No Python, model, service or migration. US012 still ships
+executable change, carried in the lane table below, and US011 ships Markdown alone since its
+generated-tree grep became US010's step (settled 03/10/2026, 17-story-plans grilling round 1 Q2);
+which PM workflow each story plan enters to build it is that plan's to state.
 
 ### Phase 2 — API (`../../workflows/20-api-code`)
 
@@ -349,10 +392,10 @@ build it is that plan's to state.
 
 ### The lane these stories actually run in
 
-| Story | Deliverable                                                                                                                                                                                                                                                                                                      | Proven by                                                                                                                                                                                                                                                                                                             |
-| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| US012 | One file, `.github/scripts/shipped-artefacts.sh`: a check-4 loop over every `SEEDED` entry, its finding carrying the seed's own repair, the closing guidance stopped sending a seed finding to the allowlist, a sixth `--self-test` probe on the last `SEEDED` entry, and the header contract rewritten to match | `--self-test` in CI's `[3/4]` job on the pushed story branch — a deliberately red commit evidenced by the probe's own line, then green at **6 probes** — a string test of the probe's substring, the no-negation read recorded at review, ShellCheck recorded as run or not run, and its manual testing guide, walked |
-| US011 | One row per instance in the four indexes, each `Status` mirrored under the read rule, `DECISION-INDEX.md`'s supersession tail filled, each index's ordering rule honoured, the four `Backfill owed — US011` lines removed, and a generated-tree grep for the four registers' literals added to the `[3/4]` job   | The grep on every render path, the three `shipped-*` scripts unchanged by its diff, a link-resolution check over the four indexes, the three manual walks the record lists — row by row, summary legibility, the supersession chain — and its manual testing guide, walked                                            |
+| Story | Deliverable                                                                                                                                                                                                                                                                                                      | Proven by                                                                                                                                                                                                                                                                                                                  |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| US012 | One file, `.github/scripts/shipped-artefacts.sh`: a check-4 loop over every `SEEDED` entry, its finding carrying the seed's own repair, the closing guidance stopped sending a seed finding to the allowlist, a sixth `--self-test` probe on the last `SEEDED` entry, and the header contract rewritten to match | `--self-test` in CI's `[3/4]` job on the pushed story branch — a deliberately red commit evidenced by the probe's own line, then green at **6 probes** — a string test of the probe's substring, the no-negation read recorded at review, ShellCheck recorded as run or not run, and its manual testing guide, walked      |
+| US011 | One row per instance in the four indexes, each `Status` mirrored under the read rule, `DECISION-INDEX.md`'s supersession tail filled, each index's ordering rule honoured, and the four `Backfill owed — US011` lines removed — no CI edit, the generated-tree grep being US010's step                           | US010's generated-tree grep, read on US011's landing run on every render path, the three `shipped-*` scripts unchanged by its diff, a link-resolution check over the four indexes, the three manual walks the record lists — row by row, summary legibility, the supersession chain — and its manual testing guide, walked |
 
 **Neither member's headline risk is reachable by any suite this repository runs locally, and the
 manual checks are load-bearing.** US012's is a check that stays silent; it is observed only by CI's
@@ -361,6 +404,14 @@ raw `uvx copier copy` is what `.claude/CLAUDE.md` Section 6 bans — a hand-buil
 for iterating and indicative only. US011's is a summary nobody can read or a row whose status has
 drifted, and no script judges either. The record's _Tasks_ section carries both lists and is not
 restated here.
+
+<!-- 03/10/2026, later the same day, `17-story-plans` Step 10 for US011 (settled 03/10/2026,
+     17-story-plans grilling round 1 Q2: US010 builds one generated-tree grep over all seven index
+     files, and US011 adds none). Phase 1 read "Both members still ship executable change, carried in
+     the lane table below" until then. US011's lane row read, as its deliverable, "the four `Backfill
+     owed — US011` lines removed, and a generated-tree grep for the four registers' literals added
+     to the `[3/4]` job", and, as its proof, "The grep on every render path". The grep is still read
+     for US011's criterion, on US011's own landing run; only its owner moved. -->
 
 ### Phase 4 — PR & Review (`../../workflows/23-pr-and-review`)
 
@@ -480,12 +531,13 @@ must not be softened in any record it produces.
   each register's positive filename pattern: 12 + 7 + 25 + 9 = 53 tracked instances, against the 43
   US011 was cut on and the "47 tracked on 27/09/2026" the record still carries; and six ADRs read
   `Superseded`, against the three of twenty US011's provenance counted on 20/09/2026. The story
-  plans written at "10-" and "11-" on 03/10/2026, and the one still reserved at "12-", add to the
-  fourth register. None of these is a target.
-- **ShellCheck has no project script, and `lint.sh` has no YAML leg.** US012 edits a bash script and
-  US011 edits `.github/workflows/audit-template.yml`. ShellCheck is run by hand and recorded as run
-  or as not run, **never as a `lint.sh` pass**; the workflow edit is proved by the `[3/4]` job going
-  green.
+  plans written at "10-", "11-" and "12-" on 03/10/2026 add to the fourth register. None of these is
+  a target.
+- **ShellCheck has no project script, and `lint.sh` has no YAML leg.** US012 edits a bash script,
+  and no member edits `.github/workflows/audit-template.yml`: the generated-tree grep US011 is read
+  against is US010's step (settled 03/10/2026, 17-story-plans grilling round 1 Q2). ShellCheck is run
+  by hand and recorded as run or as not run, **never as a `lint.sh` pass**; the YAML gap binds
+  US010's sprint, not this one.
 - **A green `doctrine-drift.sh` run says nothing about a row's `Status`.** That is the manual
   row-by-row walk's job, and is never reported as though the gate had done it.
 
@@ -494,6 +546,16 @@ must not be softened in any record it produces.
      register once written." until then. US010's plan took "10-" in its own change, committed
      immediately before this one, and US012's took "11-" in this one; "12-" stays reserved for
      US011. The bullet's figures are its own measurement of 03/10/2026 and are not re-counted here. -->
+
+<!-- 03/10/2026, later the same day, `17-story-plans` Step 10 for US011. The population bullet read
+     "The story plans written at "10-" and "11-" on 03/10/2026, and the one still reserved at "12-",
+     add to the fourth register." until then; US011's plan took "12-" in its own change. Its figures
+     are still its own measurement of 03/10/2026 at 282ec0b and are not re-counted here — US011's
+     plan records 55 tracked at 19e89aa, and both are readings, never targets. The ShellCheck bullet
+     read "US012 edits a bash script and US011 edits `.github/workflows/audit-template.yml`" and closed
+     "the workflow edit is proved by the `[3/4]` job going green" until then: under 17-story-plans
+     grilling round 1 Q2 (settled 03/10/2026) the grep is US010's step, and this sprint carries no
+     YAML edit. -->
 
 ---
 
@@ -509,9 +571,9 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 - [ ] The `[3/4] Template Generation` job is green on every render path the template offers
       (today: `INCLUDE_MOBILE` true and false) — the self-test at `audit-template.yml:225` and the
       full run at `:228`, with every seed asserted present (US012); the self-test reads one
-      generated tree, today the `INCLUDE_MOBILE` false one, and the full run reads every one. US011's
-      grep finds no instance literal in any generated tree's four indexes, the 000 template
-      identifiers excepted
+      generated tree, today the `INCLUDE_MOBILE` false one, and the full run reads every one. US010's
+      generated-tree grep, read for US011's criterion on US011's landing run, finds no instance
+      literal in any generated tree's four indexes, the 000 template identifiers excepted
 - [ ] US012's red run recorded before its green one, each by run ID, the red evidenced by the
       probe's own zero-finding line
 - [ ] `shipped-registers.sh` (with `--self-test`) and `shipped-ai.sh --self-test` pass, **unchanged
@@ -608,21 +670,30 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
      "once `17-story-plans` has written that plan under its reserved "11-"" until then; the plan
      now exists and the row names it. -->
 
+<!-- 03/10/2026, later the same day, `17-story-plans` Step 10 for US011. The Sprint Verification
+     Checklist's generation row read "US011's grep finds no instance literal in any generated tree's
+     four indexes" until then; the grep is US010's step, read for US011's criterion on US011's
+     landing run (settled 03/10/2026, 17-story-plans grilling round 1 Q2). The Branch Naming
+     Reference's US011 row read "_not yet set — the `Branch` row of US011's story plan, once
+     written_" until then. No Definition of Done row moved: the US010-before-US011 row still binds,
+     and US011's plan reads `Blocked` on exactly that edge. -->
+
 ---
 
 ## Branch Naming Reference
 
 Per `../../docs/GIT-GUIDE.md`: `us###/<kebab-descriptor>`, five words or fewer.
 
-| Story | Branch                                                               |
-| ----- | -------------------------------------------------------------------- |
-| US012 | `us012/seed-presence-gate`                                           |
-| US011 | _not yet set — the `Branch` row of US011's story plan, once written_ |
+| Story | Branch                          |
+| ----- | ------------------------------- |
+| US012 | `us012/seed-presence-gate`      |
+| US011 | `us011/register-index-backfill` |
 
 Neither is invented here. `17-story-plans` sets each, and this table is filled from the plan when it
 exists — the precedent `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` set for US007 on 07/09/2026. US012's
 row, which read "_not yet set — the `Branch` row of US012's story plan, once written_" until then,
-was filled on 03/10/2026 from its plan's `Branch` row. US012's red run
+was filled on 03/10/2026 from its plan's `Branch` row, and US011's, which read the same of its own
+plan, was filled from its plan's `Branch` row later that day. US012's red run
 is a deliberately red commit pushed to its `us012/` branch, so that CI's `[3/4]` job runs it
 (`../02-STORIES/US012.md` -> _QA Tasks — Automated_).
 
