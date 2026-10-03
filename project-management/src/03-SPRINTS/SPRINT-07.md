@@ -48,7 +48,15 @@ two members, the `Must` tier **supplied** by US012 on 21/09/2026, and **CLOSED t
 admission** by call the same day: the **1 SP of headroom** is not spoken for, and nothing coming
 fits it (<%DEVELOPER_NAME%>'s call at `03-sprint-planning`, 21/09/2026). A new admission opens
 SPRINT-08. The close owes this sprint's plan and two story plans: the sprint plan is written
-(03/10/2026), and the two story plans are not yet. See Notes.
+(03/10/2026), US012's story plan is written (03/10/2026), and US011's is not yet. See Notes.
+
+<!-- AMENDED 03/10/2026, later the same day, in US012's `17-story-plans` change. The capacity line
+     closed "the sprint plan is written (03/10/2026), and the two story plans are not yet." until
+     then. US012's plan and its manual testing guide were written that day,
+     project-management/src/17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md and
+     project-management/src/18-TESTS/MANUAL/US012-MANUAL-TESTING.md; US011's follows once US010's
+     plan is committed (settled 03/10/2026, 16-sprint-plans grilling round 9 Q22). The figure, the
+     members and the admission posture did not move. -->
 
 <!-- AMENDED 03/10/2026, in the change that wrote this record's plan,
      project-management/src/16-SPRINT-PLANS/07-SPRINT-PLAN-07.md. The capacity line closed "The
@@ -303,15 +311,18 @@ Notes.
 - **Sprint numbering and build order agree, and the order inside this record is `Must` first.** The
   settled build order is the prefix on each plan in `project-management/src/17-STORY-PLANS/` — nine
   plans on disk on 21/09/2026, `01-` to `09-` — with US010 tenth at a reserved `10-`, **US012
-  eleventh at a reserved `11-`**, and **US011 twelfth at a reserved `12-`**. All three are
-  **reserved numbers, not plans**: `17-story-plans` writes them, and nothing here may cite any as
-  one (SPRINT-04's rule for US006's `07-`). **US011's reservation moved from `11-` to `12-` on
+  eleventh at a reserved `11-`**, and **US011 twelfth at a reserved `12-`**. All three were
+  **reserved numbers, not plans**, until `17-story-plans` writes each — "10-" and "11-" were written
+  on 03/10/2026 — and nothing here may cite one
+  as a plan before it is written (SPRINT-04's rule for US006's `07-`). Updated 03/10/2026: US010's
+  plan took "10-" and US012's took "11-" that day, US012's in the change committed after US010's;
+  US011's "12-" is still a reservation. **US011's reservation moved from `11-` to `12-` on
   21/09/2026, and it is the only position in the backlog that moved.** US012 builds ahead of it
   because the `Must` ships before the stretch — SPRINT-05's reading of 17/09/2026 for US008 and
   US009 — and because US011 waits on US010 while US012 waits on nothing.
   `project-management/docs/planning/STORIES.md` renumbers a plan's prefix whenever build order
   changes, which is why the reservation moves with the order rather than being kept; neither
-  number was ever a file, so nothing on disk is renumbered. `16-sprint-plans` wrote this sprint's
+  number was a file when the reservation moved on 21/09/2026, so nothing on disk was renumbered. `16-sprint-plans` wrote this sprint's
   plan on 03/10/2026, `project-management/src/16-SPRINT-PLANS/07-SPRINT-PLAN-07.md`, and both
   segments of its name read `07`, derived there under _Build order_ rather than copied from here.
 - **Nothing carries into this record, and what may carry OUT of it has no named destination yet.**
@@ -372,6 +383,17 @@ Notes.
      up, not a call, so it is corrected here rather than asked. No edge moved: neither story blocks
      the other. US012.md -> Dependencies still carries the older wording, and US012's story-plan
      change owns that correction. -->
+
+<!-- AMENDED 03/10/2026, later the same day, in US012's `17-story-plans` change. The build-order
+     bullet read "All three are **reserved numbers, not plans**: `17-story-plans` writes them, and
+     nothing here may cite any as one (SPRINT-04's rule for US006's `07-`)." until then. US010's
+     plan took "10-" and US012's took "11-" in two changes that day, US010's committed first
+     (settled 03/10/2026, 16-sprint-plans grilling round 9 Q22); "12-" stays reserved for US011.
+     The same change corrects US012.md -> Dependencies to the shared-region reading the bullet
+     above already carries, as the comment above records it owed. No order and no edge moved.
+     The same bullet read "neither number was ever a file, so nothing on disk is renumbered."
+     until then, true of "11-" and "12-" until US012's plan took "11-"; it now reads in the tense
+     of the move of 21/09/2026. -->
 
 ## Notes
 
@@ -1105,7 +1127,7 @@ blank, with no syntek-base literal in any of them and no leak reported by
 
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
 - [ ] Each member's manual testing guide carries a tester sign-off block —
-      "project-management/src/18-TESTS/MANUAL/US012-MANUAL-TESTING.md" and
+      `project-management/src/18-TESTS/MANUAL/US012-MANUAL-TESTING.md` and
       "project-management/src/18-TESTS/MANUAL/US011-MANUAL-TESTING.md", each authored at
       `17-story-plans` Step 7.2 from the specs before any code, and walked at
       `22-implementation-documentation`. US012 owes one although its QA flag names the unit type
@@ -1147,6 +1169,12 @@ blank, with no syntek-base literal in any of them and no leak reported by
      does not read. US012's QA flag does not move: it names the test types the story's criteria
      run, and the guide is owed whatever they are. Lifted out of the list for the Prettier reason
      recorded under QA Acceptance Criteria — Automated. -->
+
+<!-- AMENDED 03/10/2026, later the same day, in US012's `17-story-plans` change. US012's guide path
+     in the sign-off row was written in double quotes until then, the file not existing; that
+     change wrote it, so the path is backticked now. US011's guide does not exist yet and keeps its
+     double quotes. The row's obligation did not move. Lifted out of the list for the Prettier
+     reason recorded under QA Acceptance Criteria — Automated. -->
 
 ---
 

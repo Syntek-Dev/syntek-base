@@ -84,8 +84,8 @@
 | API design                | **N/A** — both read `API: N/A`; no Django Ninja surface and no MCP tool                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | Logging                   | **N/A** — both read `Logging: N/A`; no log line. Check 4's finding prints to the `[3/4]` job's output, which is a report and not a log                                                                                                                                                                                                                                                                                                                                                                              |
 | Decisions                 | **Two records bind, one inherited and one US010's; neither member authors one.** Listed under _Sprint-wide Constraints_                                                                                                                                                                                                                                                                                                                                                                                             |
-| **Story plans**           | **Neither exists.** Two names are reserved under `../17-STORY-PLANS/` and are written by `17-story-plans` after this plan — see _Story Plans — the code master_                                                                                                                                                                                                                                                                                                                                                     |
-| **Manual testing guides** | **Neither exists, and both are owed.** Each is authored under `../18-TESTS/MANUAL/` by `17-story-plans` Step 7.2, from the specs and before any code, straight after its story plan and committed with it (settled 03/10/2026, 16-sprint-plans grilling round 9 Q21 and Q22). The automated record under `../18-TESTS/AUTOMATED/` is written at `22-implementation-documentation`                                                                                                                                   |
+| **Story plans**           | **US012's exists, US011's does not.** `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`, written 03/10/2026 by `17-story-plans` under its reserved prefix; US011's name is reserved and written after US010's plan is committed — see _Story Plans — the code master_                                                                                                                                                                                                                                   |
+| **Manual testing guides** | **US012's exists, US011's is owed.** `../18-TESTS/MANUAL/US012-MANUAL-TESTING.md`, authored 03/10/2026 by `17-story-plans` Step 7.2 from the specs and before any code, straight after its story plan and committed with it; US011's follows its plan the same way (settled 03/10/2026, 16-sprint-plans grilling round 9 Q21 and Q22). The automated record under `../18-TESTS/AUTOMATED/` is written at `22-implementation-documentation`                                                                          |
 
 **Every `N/A` above is a flag reading `N/A` in both stories, not a gate anyone forgot** — the
 distinction `code/docs/GATE-REPORTING.md` requires. Each skipped gate is recorded with its reason
@@ -111,9 +111,9 @@ preceding it.
 
 ### Must
 
-| ID    | Title                                                                                | Phases touched                          | SP  | Story plan                                                                                     | Git branch                                             |
-| ----- | ------------------------------------------------------------------------------------ | --------------------------------------- | --- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| US012 | A seeded file that never lands is reported, and the gate's header claim becomes true | Script + header contract — no code lane | 2   | _none yet — "11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md" reserved, written by `17-story-plans`_ | _not yet set — fixed by its story plan's `Branch` row_ |
+| ID    | Title                                                                                | Phases touched                          | SP  | Story plan                                                    | Git branch                 |
+| ----- | ------------------------------------------------------------------------------------ | --------------------------------------- | --- | ------------------------------------------------------------- | -------------------------- |
+| US012 | A seeded file that never lands is reported, and the gate's header claim becomes true | Script + header contract — no code lane | 2   | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md` | `us012/seed-presence-gate` |
 
 ### Should
 
@@ -133,6 +133,18 @@ preceding it.
      plan name with no file behind it is a citation of something that does not exist. Each
      descriptor matches its story's QA plan, as every existing pair does. Titles are the record's
      Story Summary cells, verbatim. -->
+
+<!-- 03/10/2026, later the same day, `17-story-plans` Step 10 for US012 — THE US012 CELLS FILLED.
+     The Must table's Story plan cell read "_none yet — "11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md"
+     reserved, written by `17-story-plans`_" and its Git branch cell "_not yet set — fixed by its
+     story plan's `Branch` row_" until then; both are filled from the plan, the branch from its own
+     `Branch` row, never invented here. In the same pass two Sprint Reference Documents rows were
+     rewritten. The Story plans row read "**Neither exists.** Two names are reserved under
+     `../17-STORY-PLANS/` and are written by `17-story-plans` after this plan — see _Story Plans —
+     the code master_", and the Manual testing guides row opened "**Neither exists, and both are
+     owed.** Each is authored under `../18-TESTS/MANUAL/` by `17-story-plans` Step 7.2, from the
+     specs and before any code, straight after its story plan and committed with it". US011's two
+     cells and its reservation are unchanged: its plan follows once US010's is committed. -->
 
 **Total: 10 SP against a capacity of 11 — 2 committed, 8 stretch, inside capacity, and CLOSED to
 further admission.** Rows are in build order, US012 then US011. The 1 SP of headroom is not padded:
@@ -229,23 +241,39 @@ reporting regime and sequences nothing; see _Gate honesty_.
 
 ## Story Plans — the code master
 
-Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **Neither member's
-plan exists.** `17-story-plans` writes both after this plan, because its Step 1 gathers the sprint
-plan first; the prefixes are reserved rather than assigned by this file.
+Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **US012's plan exists;
+US011's does not.** `17-story-plans` wrote US012's on 03/10/2026, after this plan, because its
+Step 1 gathers the sprint plan first, and repointed its row here at Step 10. US011's prefix is still
+reserved rather than assigned by this file.
 
 | Story | Story plan (`../17-STORY-PLANS/`)                                                                                                                                                       | Status              |
 | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| US012 | _no file — "11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md" is the reserved name, its descriptor matching the story's QA plan as every existing pair does; written by `17-story-plans`_      | _no plan to mirror_ |
+| US012 | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`                                                                                                                           | Not started         |
 | US011 | _no file — "12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md" is the reserved name, its descriptor matching the story's QA plan as every existing pair does; written by `17-story-plans`_ | _no plan to mirror_ |
 
-The run on disk is contiguous `00-` to `09-`, measured 03/10/2026. **The prefix is the story's
-position in the settled build order across the whole backlog, not its sprint and not a per-sprint
-counter** — US010 tenth at a reserved "10-" (ninth if US009's carry lands in SPRINT-06, a swap
-`../16-SPRINT-PLANS/06-SPRINT-PLAN-06.md` states), then US012 eleventh at "11-" and US011 twelfth
-at "12-" either way — and it is renumbered whenever that order changes;
-`../17-STORY-PLANS/CLAUDE.md` owns that rule. US012's and US011's reservations are recorded in their
-own stories, under each one's _Dependencies_; US010's is SPRINT-06's to state. None of the three
-numbers is a file yet.
+The run on disk is contiguous `00-` to `11-` once US010's plan, written in the `17-story-plans`
+change committed immediately before US012's, takes its "10-" (settled 03/10/2026, 16-sprint-plans
+grilling round 9 Q22). **The prefix is the story's position in the settled build order across the
+whole backlog, not its sprint and not a per-sprint counter** — US010 tenth at "10-" (ninth if
+US009's carry lands in SPRINT-06, a swap `../16-SPRINT-PLANS/06-SPRINT-PLAN-06.md` states), then
+US012 eleventh at "11-" and US011 twelfth at "12-" either way — and it is renumbered whenever that
+order changes; `../17-STORY-PLANS/CLAUDE.md` owns that rule. US012's and US011's reservations are
+recorded in their own stories, under each one's _Dependencies_, and US012's now records it taken up;
+US010's is recorded in its own story by its own story-plan change. "12-" is the one number of the
+three that is not yet a file.
+
+<!-- 03/10/2026, later the same day, `17-story-plans` Step 10 for US012. The section above opened
+     "**Neither member's plan exists.** `17-story-plans` writes both after this plan, because its
+     Step 1 gathers the sprint plan first; the prefixes are reserved rather than assigned by this
+     file." until then; the US012 row read "_no file — "11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md"
+     is the reserved name, its descriptor matching the story's QA plan as every existing pair does;
+     written by `17-story-plans`_" with Status "_no plan to mirror_"; and the paragraph beneath the
+     table opened "The run on disk is contiguous `00-` to `09-`, measured 03/10/2026", read "US010
+     tenth at a reserved "10-"" and "US010's is SPRINT-06's to state", and closed "None of the
+     three numbers is a file yet." The run was re-derived before the plan was named: `00-` to `09-`
+     tracked at 282ec0b (C4), and US010's "10-" written by its own change, committed immediately
+     before this one and on disk, untracked, in the working tree this pass edited — so "11-" is
+     current and "12-" stays reserved. -->
 
 <!-- 03/10/2026 — THE STATUS COLUMN, AND THE POPULATION IT WILL JOIN. The column takes the house
      shape ../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md uses. Until a plan exists its cell reads "_no plan
@@ -266,6 +294,21 @@ numbers is a file yet.
      and the second to point at US009's plan. Each row here joins the population when its plan is
      written before US007 ships; the pass that writes it re-counts immediately before its edit rather than inheriting this
      figure, as Scenario 8 already says. ../02-STORIES/US007.md is NOT edited by this pass. -->
+
+<!-- 03/10/2026, later the same day, `17-story-plans` Step 10 for US012 — THE US012 ROW JOINS THE
+     POPULATION, the condition the comment above named having been met: its plan was written before
+     US007 shipped. The plan carries `Open` in its own `| Status |` header row, and that value is
+     NOT mirrored here; the cell takes "Not started" as the comment above defines the column, a
+     value in no status set, held pending ../02-STORIES/US007.md Scenario 8.
+
+     RE-COUNTED 03/10/2026 across the seven live sprint plans, 01- to 07-: NINE "Not started"
+     cells as committed at 282ec0b (C4) — exactly the nine the comment above names — and TEN in the
+     working tree immediately before this edit, the tenth being US010's row in
+     ../16-SPRINT-PLANS/06-SPRINT-PLAN-06.md, written by US010's own `17-story-plans` change, which
+     commits immediately before this one (settled 03/10/2026, 16-sprint-plans grilling round 9 Q22).
+     This cell is the ELEVENTH. Flagged so neither addition is silent. The US011 row is still a
+     no-file row and adds nothing until its plan is written; that pass re-counts before its own edit
+     rather than inheriting this figure. ../02-STORIES/US007.md is NOT edited by this pass. -->
 
 **Each story plan is followed by its manual testing guide, in the same `17-story-plans` run and the
 same commit** (settled 03/10/2026, 16-sprint-plans grilling round 9 Q22). Step 7.2 authors the
@@ -436,15 +479,21 @@ must not be softened in any record it produces.
 - **US011's population is counted at implementation, never inherited.** Measured 03/10/2026 under
   each register's positive filename pattern: 12 + 7 + 25 + 9 = 53 tracked instances, against the 43
   US011 was cut on and the "47 tracked on 27/09/2026" the record still carries; and six ADRs read
-  `Superseded`, against the three of twenty US011's provenance counted on 20/09/2026. The three
-  story plans reserved at "10-", "11-" and "12-" add to the fourth register once written. None of
-  these is a target.
+  `Superseded`, against the three of twenty US011's provenance counted on 20/09/2026. The story
+  plans written at "10-" and "11-" on 03/10/2026, and the one still reserved at "12-", add to the
+  fourth register. None of these is a target.
 - **ShellCheck has no project script, and `lint.sh` has no YAML leg.** US012 edits a bash script and
   US011 edits `.github/workflows/audit-template.yml`. ShellCheck is run by hand and recorded as run
   or as not run, **never as a `lint.sh` pass**; the workflow edit is proved by the `[3/4]` job going
   green.
 - **A green `doctrine-drift.sh` run says nothing about a row's `Status`.** That is the manual
   row-by-row walk's job, and is never reported as though the gate had done it.
+
+<!-- 03/10/2026, later the same day, `17-story-plans` Step 10 for US012. The population bullet
+     above read "The three story plans reserved at "10-", "11-" and "12-" add to the fourth
+     register once written." until then. US010's plan took "10-" in its own change, committed
+     immediately before this one, and US012's took "11-" in this one; "12-" stays reserved for
+     US011. The bullet's figures are its own measurement of 03/10/2026 and are not re-counted here. -->
 
 ---
 
@@ -496,7 +545,7 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 ## Sprint Definition of Done
 
 - [ ] **The `Must` story is Completed — US012.** Its plan's own DoD complete and verified by a
-      reviewer, once `17-story-plans` has written that plan under its reserved "11-"
+      reviewer — `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`
 - [ ] **US011 is disposed of in writing, on exactly one branch.** **Delivered:** it is Completed,
       and every row below headed _deliver branch_ binds as written. **Dropped:** the drop and its
       reason are recorded in the record, in US011's story and in the backlog register in every
@@ -555,6 +604,10 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
      the folder template reads "the integration branch". The record's wording is carried, and the
      difference is left to the record's owner, `03-sprint-planning`, rather than resolved here. -->
 
+<!-- 03/10/2026, later the same day, `17-story-plans` Step 10 for US012: the Must row above closed
+     "once `17-story-plans` has written that plan under its reserved "11-"" until then; the plan
+     now exists and the row names it. -->
+
 ---
 
 ## Branch Naming Reference
@@ -563,11 +616,13 @@ Per `../../docs/GIT-GUIDE.md`: `us###/<kebab-descriptor>`, five words or fewer.
 
 | Story | Branch                                                               |
 | ----- | -------------------------------------------------------------------- |
-| US012 | _not yet set — the `Branch` row of US012's story plan, once written_ |
+| US012 | `us012/seed-presence-gate`                                           |
 | US011 | _not yet set — the `Branch` row of US011's story plan, once written_ |
 
 Neither is invented here. `17-story-plans` sets each, and this table is filled from the plan when it
-exists — the precedent `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` set for US007 on 07/09/2026. US012's red run
+exists — the precedent `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` set for US007 on 07/09/2026. US012's
+row, which read "_not yet set — the `Branch` row of US012's story plan, once written_" until then,
+was filled on 03/10/2026 from its plan's `Branch` row. US012's red run
 is a deliberately red commit pushed to its `us012/` branch, so that CI's `[3/4]` job runs it
 (`../02-STORIES/US012.md` -> _QA Tasks — Automated_).
 
