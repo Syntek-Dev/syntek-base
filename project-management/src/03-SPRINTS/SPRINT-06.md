@@ -255,9 +255,12 @@ total is 13 SP, 8 committed and 5 stretch. It is not counted until it does.
   this sprint's plan, `project-management/src/16-SPRINT-PLANS/06-SPRINT-PLAN-06.md`, and both
   segments of its name read `06`, derived in its _Build order_ section, which also states the carry
   case: US010 would build ninth and US009 tenth, so the two story-plan prefixes swap. The plan
-  carries the reservation as a no-file row in its index. `project-management/src/02-STORIES/US010.md`
-  does not record it yet, and US010's story-plan commit records it there (settled 03/10/2026,
-  16-sprint-plans grilling round 9 Q20).
+  carried the reservation as a no-file row in its index until US010's story-plan commit, which
+  records it in `project-management/src/02-STORIES/US010.md` (settled 03/10/2026, 16-sprint-plans
+  grilling round 9 Q20). **The number is now a plan**: `17-story-plans` wrote
+  `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` at it on
+  03/10/2026, with `project-management/src/18-TESTS/MANUAL/US010-MANUAL-TESTING.md` beside it, and
+  the plan's index row names the file.
 - **One thing may carry into this record, and it is named rather than assumed.**
   `project-management/src/03-SPRINTS/SPRINT-05.md` -> Definition of Done reserves US009's 5 SP
   `Should` carry here if it is dropped rather than delivered. Nothing else can: SPRINT-01, SPRINT-02
@@ -302,6 +305,15 @@ total is 13 SP, 8 committed and 5 stretch. It is not counted until it does.
      reservation of "10-" is recorded in this record and the plan's index but not yet in US010.md,
      whose own commit records it (settled 03/10/2026, 16-sprint-plans grilling round 9 Q20); this
      change edits neither US010.md nor SPRINT-07.md. -->
+
+<!-- AMENDED 03/10/2026, LATER THE SAME DAY, at 17-story-plans Step 10 for US010, and lifted out of
+     the list for the same Prettier reason. The build-order bullet's last sentence read "The plan
+     carries the reservation as a no-file row in its index. project-management/src/02-STORIES/US010.md
+     does not record it yet, and US010's story-plan commit records it there (settled 03/10/2026,
+     16-sprint-plans grilling round 9 Q20)." until then. That commit is this one: the story now
+     records the reservation, the plan and its manual testing guide exist, and the sprint plan's
+     index row names the plan. The bullet's 20/09/2026 sentence that "10-" is "reserved, not a
+     plan" is kept as that day's record; the closing sentence says what it became. -->
 
 ## Notes
 
@@ -496,9 +508,10 @@ numbers, and since 30/09/2026 they agree at 8.
 Measured 20/09/2026. US010 has no ADR and records two ADR candidates in its own `## Decisions` for
 `15-decisions` to accept or decline; on that date it was named by no artefact under
 `project-management/src/10-SECURITY/` or `project-management/src/11-QA/`, both of which its flags
-say it enters, and three name it now — see below; and it has no story plan, `10-` being a
-reserved number rather than a file. GDPR, SEO, API, Logging, DB, Backend and Frontend are skipped
-by flag.
+say it enters, and three name it now — see below; and on that date it had no story plan, `10-`
+being a reserved number rather than a file — `17-story-plans` wrote the plan at that number on
+03/10/2026 (_Dependencies_, the build-order bullet). GDPR, SEO, API, Logging, DB, Backend and
+Frontend are skipped by flag.
 `project-management/src/16-SPRINT-PLANS/CLAUDE.md` forbids a plan without a matching record — "do
 not create an orphan plan" — and nothing forbids a record without a plan; that is a record's
 ordinary state between opening and filling.
@@ -586,7 +599,12 @@ The plan was owed by call rather than by a fill, as the plan paragraph above rec
      AMENDED 03/10/2026, when 16-sprint-plans wrote the plan. The paragraph's last sentence read
      "The plan is owed by call rather than by a fill, as the no-plan paragraph above records, and
      `16-sprint-plans` writes it next." until then. Nothing else in the paragraph moves: every
-     prerequisite it lists was re-read against its artefact that day and still holds. -->
+     prerequisite it lists was re-read against its artefact that day and still holds.
+     AMENDED 03/10/2026, LATER THE SAME DAY, at 17-story-plans Step 9 for US010. The dated
+     paragraph's last clause read "and it has no story plan, "10-" being a reserved number rather
+     than a file" until then — present tense, where "three name it now" beside it already pointed
+     forward. It is scoped to its date the way the correction of 27/09/2026 above scoped the gate
+     clause, and points at the Dependencies bullet that records the plan's writing. -->
 
 **This record was opened at gate `03`, not after `10`, `11` and `15`, on SPRINT-05's precedent of
 09/09/2026.** SPRINT-03 and SPRINT-04 opened after their members had cleared the specify tier,
@@ -988,8 +1006,14 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
 - [ ] US010 — run `shipped-artefacts.sh --self-test` with the enlarged `SEEDED` array, output
       recorded in `project-management/src/18-TESTS/AUTOMATED/US010-TEST-STATUS.md`
 - [ ] US010 — add the generated-tree grep asserting no syntek-base literal appears in any index, on
-      **every render path the template offers** (today: `INCLUDE_MOBILE` true and false)
+      **every render path the template offers** (today: `INCLUDE_MOBILE` true and false) — **the
+      one such grep**: one step over all seven index files, kept for as long as the seeds ship, and
+      US011 adds none (settled 03/10/2026, 17-story-plans grilling round 1 Q2)
 - [ ] US010 — add the link check over the seven in-tree and the seven generated indexes
+- [ ] US010 — add the joined-line instruction search to the `[3/4]` job as a step of its own, over
+      the generated tree's Markdown, landing after the commit that repairs the last instruction
+      site; it prints its pattern and its output and fails on any hit (settled 03/10/2026,
+      17-story-plans grilling round 2 Q4)
 - [ ] US010 — run `docs-pairing.sh` and `docs-length.sh` over the changed tree, and read
       `doc-references.sh` as a diff against the pre-edit baseline
 
@@ -998,7 +1022,18 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      Security Tasks row that extends `shipped-ai.py`, seeds changed between tags, byte-identity
      asserted and red with the gate removed (ST07; grilling round 3 Q16), with the seed family and
      the completeness step likewise listed once rather than here. The grep names every render path
-     rather than two poles (Q23). -->
+     rather than two poles (Q23).
+     AMENDED 03/10/2026 at 17-story-plans, following US010's QA task as it now stands. The grep row
+     ended "(today: INCLUDE_MOBILE true and false)" until then; it now says the step is the one
+     generated-tree grep over the index files, US011 adding none (settled 03/10/2026, 17-story-plans
+     grilling round 1 Q2). Its scope does not move, the row already reading "any index"; its
+     ownership and lifetime are stated. The matching rows of project-management/src/03-SPRINTS/SPRINT-07.md
+     move with US011's own story-plan commit, not this one.
+     AMENDED 03/10/2026, LATER THE SAME DAY, from 17-story-plans grilling round 2, following US010's
+     QA tasks as they now stand. The joined-line search row is new: the search US010's site
+     scenario requires had no task and no host until Q4 placed it in the [3/4] job, so this list,
+     which carries the grep and the link check US010 adds to that job, omitted it. Nothing else here
+     moves. -->
 
 ### QA Tasks — Manual
 

@@ -61,24 +61,31 @@
 
 ## Sprint Reference Documents
 
-| Area               | Source                                                                                                                                                                                                                                                                                                                                                                     |
-| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sprint definition  | `../03-SPRINTS/SPRINT-06.md`                                                                                                                                                                                                                                                                                                                                               |
-| User stories       | `../02-STORIES/US010.md` — the sole member. `../02-STORIES/US009.md` in the carry case only; it is SPRINT-05's stretch, reserved here and not a member                                                                                                                                                                                                                     |
-| Feature maps       | `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` slices `S-01` and the narrowed `S-02` (US010)                                                                                                                                                                                                                                                                                 |
-| Database           | **N/A** — US010 reads `DB: N/A`; no model, migration or RLS policy in scope                                                                                                                                                                                                                                                                                                |
-| User flows         | **N/A** — US010 reads `User Flow: N/A`; no user journey in scope                                                                                                                                                                                                                                                                                                           |
-| Brand & components | **N/A** — US010 reads `Brand: N/A` and `Components: N/A`; no rendered surface                                                                                                                                                                                                                                                                                              |
-| Wireframes         | **N/A** — US010 reads `Wireframes: N/A`; no screen                                                                                                                                                                                                                                                                                                                         |
-| GDPR               | **N/A** — US010 reads `GDPR: N/A`; no personal-data path. The indexes list artefacts, never people                                                                                                                                                                                                                                                                         |
-| Security           | **Live, two artefacts, both Signed off, corrected in place 28/09/2026:** `../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US010-SEEDED-REGISTER-INDEXES.md` and `../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US010-SEEDED-REGISTER-INDEXES.md`. See _Sprint-wide Constraints_                                                                               |
-| QA                 | `../11-QA/PLANNING/QA-PLAN-US010-SEEDED-REGISTER-INDEXES.md` — **Signed off** 30/09/2026, `Reviewed` from 27/09/2026, twenty-three gaps found, twenty-three resolved                                                                                                                                                                                                       |
-| SEO                | **N/A** — US010 reads `SEO: N/A`; no public page                                                                                                                                                                                                                                                                                                                           |
-| API design         | **N/A** — US010 reads `API: N/A`; no Django Ninja surface and no MCP tool                                                                                                                                                                                                                                                                                                  |
-| Logging            | **N/A** — US010 reads `Logging: N/A`; no log line                                                                                                                                                                                                                                                                                                                          |
-| Decisions          | **Three records bind this sprint** — two authored by US010 at `15-decisions` on 21/09/2026 and one inherited. Listed under _Sprint-wide Constraints_                                                                                                                                                                                                                       |
-| **Story plans**    | **None exists for the member.** US010's prefix "10-" is reserved and not written; `17-story-plans` writes it. In the carry case: `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`, written 18/09/2026                                                                                                                                                                |
-| Test records       | **None exists for the member.** Its manual testing guide lands under `../18-TESTS/MANUAL/`, authored by `17-story-plans` Step 7.2 from the specs straight after the story plan and committed with it; its test-status record lands under `../18-TESTS/AUTOMATED/`, written by `22-implementation-documentation`. Neither is cited here by filename, because neither exists |
+| Area               | Source                                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sprint definition  | `../03-SPRINTS/SPRINT-06.md`                                                                                                                                                                                                                                                                                                                                                       |
+| User stories       | `../02-STORIES/US010.md` — the sole member. `../02-STORIES/US009.md` in the carry case only; it is SPRINT-05's stretch, reserved here and not a member                                                                                                                                                                                                                             |
+| Feature maps       | `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` slices `S-01` and the narrowed `S-02` (US010)                                                                                                                                                                                                                                                                                         |
+| Database           | **N/A** — US010 reads `DB: N/A`; no model, migration or RLS policy in scope                                                                                                                                                                                                                                                                                                        |
+| User flows         | **N/A** — US010 reads `User Flow: N/A`; no user journey in scope                                                                                                                                                                                                                                                                                                                   |
+| Brand & components | **N/A** — US010 reads `Brand: N/A` and `Components: N/A`; no rendered surface                                                                                                                                                                                                                                                                                                      |
+| Wireframes         | **N/A** — US010 reads `Wireframes: N/A`; no screen                                                                                                                                                                                                                                                                                                                                 |
+| GDPR               | **N/A** — US010 reads `GDPR: N/A`; no personal-data path. The indexes list artefacts, never people                                                                                                                                                                                                                                                                                 |
+| Security           | **Live, two artefacts, both Signed off, corrected in place 28/09/2026:** `../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US010-SEEDED-REGISTER-INDEXES.md` and `../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US010-SEEDED-REGISTER-INDEXES.md`. See _Sprint-wide Constraints_                                                                                       |
+| QA                 | `../11-QA/PLANNING/QA-PLAN-US010-SEEDED-REGISTER-INDEXES.md` — **Signed off** 30/09/2026, `Reviewed` from 27/09/2026, twenty-three gaps found, twenty-three resolved                                                                                                                                                                                                               |
+| SEO                | **N/A** — US010 reads `SEO: N/A`; no public page                                                                                                                                                                                                                                                                                                                                   |
+| API design         | **N/A** — US010 reads `API: N/A`; no Django Ninja surface and no MCP tool                                                                                                                                                                                                                                                                                                          |
+| Logging            | **N/A** — US010 reads `Logging: N/A`; no log line                                                                                                                                                                                                                                                                                                                                  |
+| Decisions          | **Three records bind this sprint** — two authored by US010 at `15-decisions` on 21/09/2026 and one inherited. Listed under _Sprint-wide Constraints_                                                                                                                                                                                                                               |
+| **Story plans**    | `../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` — written 03/10/2026 by `17-story-plans` under the reserved "10-", and indexed here by that workflow's Step 10. In the carry case: `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`, written 18/09/2026                                                                                                   |
+| Test records       | **The manual testing guide exists:** `../18-TESTS/MANUAL/US010-MANUAL-TESTING.md`, authored by `17-story-plans` Step 7.2 from the specs on 03/10/2026, straight after the story plan and committed with it. The test-status record lands under `../18-TESTS/AUTOMATED/`, written by `22-implementation-documentation`, and is not cited here by filename because it does not exist |
+
+<!-- UPDATED 03/10/2026, 17-story-plans Step 10 for US010. The two rows above read otherwise until
+     then: Story plans opened "None exists for the member. US010's prefix "10-" is reserved and not
+     written; 17-story-plans writes it.", and Test records opened "None exists for the member." and
+     closed "Neither is cited here by filename, because neither exists". The plan and the guide
+     were written and committed together that day (settled 03/10/2026, 16-sprint-plans grilling
+     round 9 Q22); the carry-case clause is unchanged. -->
 
 **Every `N/A` above is a flag reading `N/A` in US010, not a gate anyone forgot** — the distinction
 `code/docs/GATE-REPORTING.md` requires. Each skipped gate is recorded with its reason rather than
@@ -126,9 +133,9 @@ the record states both under _Notes_.
 
 ### Must
 
-| ID    | Title                                                                                    | Phases touched                                      | SP  | Story plan                                                          | Git branch                                             |
-| ----- | ---------------------------------------------------------------------------------------- | --------------------------------------------------- | --- | ------------------------------------------------------------------- | ------------------------------------------------------ |
-| US010 | The seven register indexes are born seeded, and the map index leaves the file that ships | Docs + copier seed seam + CI scripts — no code lane | 8   | _none yet — `17-story-plans` has not run for US010; "10-" reserved_ | _not yet set — fixed by its story plan's `Branch` row_ |
+| ID    | Title                                                                                    | Phases touched                                      | SP  | Story plan                                                         | Git branch                      |
+| ----- | ---------------------------------------------------------------------------------------- | --------------------------------------------------- | --- | ------------------------------------------------------------------ | ------------------------------- |
+| US010 | The seven register indexes are born seeded, and the map index leaves the file that ships | Docs + copier seed seam + CI scripts — no code lane | 8   | `../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` | `us010/seeded-register-indexes` |
 
 **8 SP committed against a capacity of 11.**
 
@@ -143,7 +150,15 @@ SPRINT-07 has nothing to edit until the seven files exist. A slip here stalls al
      the plan's own `Branch` row once that plan exists — taken from the plan, never invented here.
      The reserved prefix is written in double quotes, not backticks, because
      code/src/scripts/audits/doc-references.sh reads backticked tokens and a name that does not
-     exist yet would be recorded as a citation that does not resolve. -->
+     exist yet would be recorded as a citation that does not resolve.
+
+     UPDATED 03/10/2026, 17-story-plans Step 10 for US010: both cells are now filled from the plan,
+     as this comment said they would be. Superseded text, preserved rather than deleted — the Story
+     plan cell read "none yet — 17-story-plans has not run for US010; "10-" reserved" and the Git
+     branch cell "not yet set — fixed by its story plan's Branch row", both in italics. The branch
+     is the plan's own Branch row, us010/seeded-register-indexes — the descriptor of the story's QA
+     plan, three words, inside project-management/docs/GIT-GUIDE.md's five. The comment above is
+     kept as the record of the position held until then. -->
 
 ### Should
 
@@ -270,16 +285,18 @@ tenth" is the no-carry reading.
 
 ## Story Plans — the code master
 
-Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **The member's plan does
-not exist yet.** The reserved-carry row points at a plan that does, so whoever takes the carry finds
-it from this index; it is not a membership claim.
+Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **The member's plan
+exists.** It was written 03/10/2026 by `17-story-plans` under the "10-" reserved for it, and this
+table was repointed at it by that workflow's Step 10. The reserved-carry row points at a plan that
+also exists, so whoever takes the carry finds it from this index; it is not a membership claim.
 
-| Story                  | Story plan (`../17-STORY-PLANS/`)                                                                                               | Status              |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| US010                  | _no file — the prefix "10-" is reserved, tenth in the settled build order; written by `17-story-plans`, which has its own gate_ | _no plan to mirror_ |
-| US009 — reserved carry | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`                                                                          | Not started         |
+| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status      |
+| ---------------------- | ------------------------------------------------------------------ | ----------- |
+| US010                  | `../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` | Not started |
+| US009 — reserved carry | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`             | Not started |
 
-The run on disk is contiguous `00-` to `09-`, measured 03/10/2026. **The prefix is the story's
+The run on disk is contiguous `00-` to `10-`, measured 03/10/2026 once US010's plan was written.
+**The prefix is the story's
 position in the settled build order across the whole backlog, not its sprint and not a per-sprint
 counter**, and it is renumbered whenever that order changes; `../17-STORY-PLANS/CLAUDE.md` owns that
 rule. **That is the opposite of the rule governing this file's own name**: a sprint plan carries two
@@ -315,15 +332,37 @@ must track build order or it says nothing. Do not read either guardrail across t
      story owner re-counts before their own edit rather than inheriting this figure.
      ../02-STORIES/US007.md is NOT edited by this pass. -->
 
+<!-- 03/10/2026, LATER THE SAME DAY — 17-story-plans Step 10 for US010. THE US010 ROW HAS JOINED
+     THE POPULATION, as the comment above said it would once its plan existed. Superseded text,
+     preserved rather than deleted — the section's lead read "The member's plan does not exist
+     yet. The reserved-carry row points at a plan that does", the US010 row read "no file — the
+     prefix "10-" is reserved, tenth in the settled build order; written by 17-story-plans, which
+     has its own gate" with "no plan to mirror" in its Status cell, both in italics, and the
+     paragraph below the table opened "The run on disk is contiguous 00- to 09-".
+
+     THE US010 CELL READS "Not started" BY DESIGN, on the definition and for the reasons the
+     comment above gives for the US009 row: knowingly false, a value in no status set anywhere in
+     this repository, and NOT a mirror of the `Open` in the plan's own Status row.
+
+     RE-COUNTED 03/10/2026 across the seven sprint plans, 01- to 07-, as committed at 282ec0b,
+     immediately before this edit: NINE `Not started` cells — the eight the comment above lists,
+     and this plan's US009 row; 07-SPRINT-PLAN-07.md held none, both its rows being no-file rows.
+     This cell is the TENTH, because this change commits first. US012's story plan, written
+     alongside it, fills its own row in 07-SPRINT-PLAN-07.md the same way and commits second, so
+     that cell is the ELEVENTH; US011's plan, written later, adds the next, if US007 has not shipped
+     by then. Flagged so no addition is silent. The story owner re-counts before their own edit
+     rather than inheriting this figure, and ../02-STORIES/US007.md is NOT edited by this pass. -->
+
 ### What this change leaves undone, and who does it
 
-- **US010's reservation is not yet recorded in the story.**
+- **US010's reservation is now recorded in the story, and taken up.**
   `../../workflows/17-story-plans/STEPS.md` Step 2 records a reserved number in the story that owns
-  it as well as in the sprint plan's index. `../02-STORIES/US011.md` and `../02-STORIES/US012.md`
-  record theirs; `../02-STORIES/US010.md` does not, measured 03/10/2026. The row above and
-  `../03-SPRINTS/SPRINT-06.md` -> _Dependencies_ carry the reservation meanwhile, and **US010's
-  story-plan commit records it**, when Step 10 item 3 references the plan in the story. This change
-  does not edit the story (settled 03/10/2026, 16-sprint-plans grilling round 9 Q20).
+  it as well as in the sprint plan's index. `../02-STORIES/US010.md` did not, measured when this
+  plan was written; **US010's story-plan commit records it**, in a dated comment on the story's
+  _Dependencies_ sprint-membership line, beside the reference Step 10 item 3 adds there — not under
+  _Decisions_, so that no line of the story moves under the citations other records hold (settled
+  03/10/2026, 16-sprint-plans grilling round 9 Q20). The change that wrote this plan did not edit
+  the story.
 - **`17-story-plans` runs after both sprint plans, for US010, US012 and US011** — once SPRINT-07's
   plan is committed in a change of its own after this one, because that workflow's Step 1 gathers
   the sprint plan first (settled 28/09/2026, 16-sprint-plans grilling round 1 Q4;
@@ -332,6 +371,15 @@ must track build order or it says nothing. Do not read either guardrail across t
   change and US012's in the next, both after one round of that workflow's grilling, then US011's
   plan and guide once US010's plan is committed (settled 03/10/2026, 16-sprint-plans grilling
   round 9 Q22).
+
+<!-- UPDATED 03/10/2026, 17-story-plans Step 10 for US010, and lifted out of the list for the
+     Prettier reason SPRINT-05 recorded on 20/09/2026. The first bullet read "US010's reservation is
+     not yet recorded in the story." and went on: "../02-STORIES/US011.md and ../02-STORIES/US012.md
+     record theirs; ../02-STORIES/US010.md does not, measured 03/10/2026. The row above and
+     ../03-SPRINTS/SPRINT-06.md -> Dependencies carry the reservation meanwhile, and US010's
+     story-plan commit records it, when Step 10 item 3 references the plan in the story. This
+     change does not edit the story" until then. That commit has now done what the bullet said it
+     would, so the bullet describes the outcome; the second bullet is unchanged. -->
 
 ---
 
@@ -571,13 +619,15 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 
 Per `project-management/docs/GIT-GUIDE.md`: `us###/<kebab-descriptor>`, five words or fewer.
 
-| Story                   | Branch                                                                           |
-| ----------------------- | -------------------------------------------------------------------------------- |
-| US010                   | _not yet set — fixed by its story plan's `Branch` row_                           |
-| US009 — carry case only | `us009/hook-arming` — the `Branch` row of US009's story plan, written 18/09/2026 |
+| Story                   | Branch                                                                                       |
+| ----------------------- | -------------------------------------------------------------------------------------------- |
+| US010                   | `us010/seeded-register-indexes` — the `Branch` row of US010's story plan, written 03/10/2026 |
+| US009 — carry case only | `us009/hook-arming` — the `Branch` row of US009's story plan, written 18/09/2026             |
 
 Neither is invented here. `17-story-plans` sets each, and this table is filled from the plan when it
-exists — the precedent `./01-SPRINT-PLAN-01.md` set for US007 on 07/09/2026.
+exists — the precedent `./01-SPRINT-PLAN-01.md` set for US007 on 07/09/2026. US010's row was filled
+from its plan by that workflow's Step 10 on 03/10/2026; it read "not yet set — fixed by its story
+plan's Branch row" until then.
 
 **The branch is cut from `main`, and not yet**, on the reasoning `./01-SPRINT-PLAN-01.md` recorded
 on 02/09/2026. Every planning artefact US010 depends on — the story, its threat model, assessment
