@@ -1,6 +1,6 @@
 # SPRINT-07
 
-**Last Updated**: 30/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 03/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -47,8 +47,13 @@ and a summary written for someone who has not opened it — while the `.copier/`
 two members, the `Must` tier **supplied** by US012 on 21/09/2026, and **CLOSED to further
 admission** by call the same day: the **1 SP of headroom** is not spoken for, and nothing coming
 fits it (<%DEVELOPER_NAME%>'s call at `03-sprint-planning`, 21/09/2026). A new admission opens
-SPRINT-08. The close owes this sprint's plan and two story plans, and none is written yet. See
-Notes.
+SPRINT-08. The close owes this sprint's plan and two story plans: the sprint plan is written
+(03/10/2026), and the two story plans are not yet. See Notes.
+
+<!-- AMENDED 03/10/2026, in the change that wrote this record's plan,
+     project-management/src/16-SPRINT-PLANS/07-SPRINT-PLAN-07.md. The capacity line closed "The
+     close owes this sprint's plan and two story plans, and none is written yet." until then. The
+     figure, the members and the admission posture did not move. -->
 
 <!-- Read "... **1 SP of headroom**, and still **OPEN to admission** on a narrower reading than the
      one it opened on. 10 / 11 is not the fill trigger, so no plan is owed. See Notes." from US012's
@@ -279,9 +284,12 @@ Notes.
   grows `SEEDED` in `.github/scripts/shipped-artefacts.sh` from one entry to eight; US012 adds the
   check-4 loop that reads it and the `--self-test` probe that proves the loop. Growing `SEEDED`
   without the loop is harmless, and once the loop lands it covers every seeded file, US010's seven
-  indexes included; the two edits sit in different regions of the file, so whichever lands second
-  rebases rather than waits. Build order puts US010 first, so the expected landing is SPRINT-06's
-  array, then this record's loop. **The seeded-deletion probe moved from US010 to US012 on
+  indexes included. One region is shared by design: the comment above `SEEDED`, which both stories
+  rewrite, and whichever lands second extends the other's wording rather than contradicting it, so
+  it rebases rather than waits (`project-management/src/02-STORIES/US010.md` -> Dependencies).
+  Build order expects US010 first, SPRINT-06's array and then this record's loop, but the landing
+  order is not fixed: CUT-PLAN.md P9 (27/09/2026) lifted the two sessions' holds and fixed no
+  order. **The seeded-deletion probe moved from US010 to US012 on
   21/09/2026** (Q1 of that day's MAP-SCRIPT-GUARDS round) because the probe tests the loop, and one
   story owns both; both stories record the move from their own side, and
   `project-management/src/03-SPRINTS/SPRINT-06.md`'s QA flag lost `seed-deleted` in the same
@@ -303,8 +311,9 @@ Notes.
   US009 — and because US011 waits on US010 while US012 waits on nothing.
   `project-management/docs/planning/STORIES.md` renumbers a plan's prefix whenever build order
   changes, which is why the reservation moves with the order rather than being kept; neither
-  number was ever a file, so nothing on disk is renumbered. When `16-sprint-plans` writes this
-  sprint's plan, both segments of `{exec-order}-SPRINT-PLAN-{sprint-number}.md` read `07`.
+  number was ever a file, so nothing on disk is renumbered. `16-sprint-plans` wrote this sprint's
+  plan on 03/10/2026, `project-management/src/16-SPRINT-PLANS/07-SPRINT-PLAN-07.md`, and both
+  segments of its name read `07`, derived there under _Build order_ rather than copied from here.
 - **Nothing carries into this record, and what may carry OUT of it has no named destination yet.**
   US003's carry is reserved into SPRINT-03 and US009's into SPRINT-06; neither reaches here, and no
   record reserves anything to this one. In the other direction the record can only say what is true
@@ -345,6 +354,24 @@ Notes.
      unscheduled (CUT-PLAN.md P8), which supersedes the 21/09/2026 settlement that cut it into a
      new SPRINT-08 (round 1 Q1's second half, round 2 Q13). The carry bullet gained its sentence on
      SPRINT-08 for the same reason. No edge this record holds moved. -->
+
+<!-- AMENDED 03/10/2026, in the change that wrote this record's plan. The build-order bullet closed
+     "When `16-sprint-plans` writes this sprint's plan, both segments of
+     `{exec-order}-SPRINT-PLAN-{sprint-number}.md` read `07`." until then. The prediction held: the
+     plan derives `07` on both segments from US010's place at `06`. The reservations "10-", "11-"
+     and "12-" are still numbers, not plans, and nothing in the bullet's order moved. -->
+
+<!-- CORRECTED 03/10/2026, in the change that wrote this record's plan. The same-script bullet read
+     "the two edits sit in different regions of the file, so whichever lands second rebases rather
+     than waits. Build order puts US010 first, so the expected landing is SPRINT-06's array, then
+     this record's loop." until then, written on 21/09/2026 from US012.md -> Dependencies.
+     US010.md -> Dependencies was amended on 27/09/2026, committed in 0c5e635, to name the comment
+     above SEEDED as a region both stories rewrite and to state that the landing order is not
+     fixed, CUT-PLAN.md P9 fixing none; US012's own acceptance criteria and tasks rewrite that
+     comment, and SPRINT-06.md -> Dependencies already reads the same. A citation is a fact looked
+     up, not a call, so it is corrected here rather than asked. No edge moved: neither story blocks
+     the other. US012.md -> Dependencies still carries the older wording, and US012's story-plan
+     change owns that correction. -->
 
 ## Notes
 
@@ -665,8 +692,9 @@ by a concurrent session and committed on 20/09/2026 in `50e22ad` — its header 
      same day, so the word went stale six minutes after it was written.
      project-management/src/03-SPRINTS/SPRINT-06.md -> Dependencies carries the same correction. -->
 
-**The close owes this record its plan, and `07-SPRINT-PLAN-07.md` is not written yet — owed, not
-omitted, and its prerequisites now hold.** Closed with nothing reserved into it, the record's story
+**The close owed this record its plan, and it is written:
+`project-management/src/16-SPRINT-PLANS/07-SPRINT-PLAN-07.md`, on 03/10/2026, once its
+prerequisites held.** Closed with nothing reserved into it, the record's story
 set is settled, and `project-management/docs/planning/SPRINTS.md` -> _Two artefacts, two moments_
 writes the plan "once, against a settled story set". <%DEVELOPER_NAME%>'s call names what the
 close owes: `16-sprint-plans` for this record, and `17-story-plans` for US012 at its reserved `11-`
@@ -684,14 +712,17 @@ into the story on 27/09/2026. **Both members' gate documents are now complete an
 US012's QA plan committed with its story in `488e197`, US011's in `b1ca05a`, both on 27/09/2026,
 and both signed off by <%DEVELOPER_NAME%> on 30/09/2026, when gate `11` closed for each, a
 `Reviewed` plan not closing it (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9) — so
-Step 1's prerequisite is met. The sprint plan is written next, by `16-sprint-plans` in a change of
-its own (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1), and the two story plans follow
-it (settled 28/09/2026, 16-sprint-plans grilling round 1 Q4), because
-`project-management/workflows/17-story-plans/STEPS.md` Step 1 gathers the sprint plan first. The
-ledger and the plan still count differently:
+Step 1's prerequisite is met. The sprint plan was written on 03/10/2026, by `16-sprint-plans` in a
+change of its own (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1), committed after
+SPRINT-06's, and the two story plans follow it (settled 28/09/2026, 16-sprint-plans grilling round 1 Q4), because
+`project-management/workflows/17-story-plans/STEPS.md` Step 1 gathers the sprint plan first. **Each
+story plan is followed by its manual testing guide**, written straight after it in the same
+`17-story-plans` run and committed with it: US010's plan and guide, then US012's, after one round
+of `17-story-plans` grilling, and US011's once US010's plan is committed (settled 03/10/2026,
+16-sprint-plans grilling round 9 Q22). The ledger and the plan still count differently:
 
 - **The ledger counts every admitted story: 10.** A story is admitted at gate `03` and the ledger
-  moves then. 10 of 11 is not the fill trigger; what owes the plan is the call, not a fill.
+  moves then. 10 of 11 is not the fill trigger; what owed the plan was the call, not a fill.
 - **The plan counts only stories that have cleared the specify tier: 10, US012's and US011's, from
   30/09/2026.** `CADENCE.md` -> _When a sprint plan is written_ names prerequisites that must hold
   for **every story in the filling sprint**. **US012 meets them, in full since 30/09/2026**:
@@ -733,18 +764,22 @@ ledger and the plan still count differently:
   reading `Accepted`: accepted after an independent review, it was committed `Accepted` with US010
   in `0c5e635` on 27/09/2026 (settled 27/09/2026, grilling round 4 Q27).
 
-**So the plan the close owes waits on nothing in the specify tier.** `CADENCE.md` binds every story
-in the filling sprint, and "a story that cannot satisfy these is not ready to be counted towards the
-sprint"; both members satisfy it from 30/09/2026, and `16-sprint-plans` writes the plan next
-(settled 28/09/2026, 16-sprint-plans grilling round 1 Q1).
+**So the plan the close owed waited on nothing in the specify tier, and it was written on
+03/10/2026.** `CADENCE.md` binds every story in the filling sprint, and "a story that cannot satisfy
+these is not ready to be counted towards the sprint"; both members satisfy it from 30/09/2026, and
+`16-sprint-plans` wrote the plan three days later (settled 28/09/2026, 16-sprint-plans grilling
+round 1 Q1).
 
 **Story cutting does not wait for it.** <%DEVELOPER_NAME%> settled on 21/09/2026 that
 `02-story-creation` continues into `SPRINT-08` while this record's plan, and `SPRINT-06`'s, wait on
 their members' gate documents, and that both are written once those are committed. Updated
-28/09/2026: they are committed, and with US010's security plans signed off that day both plans are
-written next (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1). Updated 30/09/2026: the QA
-plans of all three members, US010, US012 and US011, are signed off, so gate `11` has closed for
-each (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9).
+28/09/2026: they were committed, and with US010's security plans signed off that day both plans
+were to be written next (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1). Updated
+30/09/2026: the QA plans of all three members, US010, US012 and US011, were signed off, so gate
+`11` closed for each (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9). Updated
+03/10/2026: both plans are written, SPRINT-06's first and this record's after it, each in a change
+of its own — `project-management/src/16-SPRINT-PLANS/06-SPRINT-PLAN-06.md` and
+`project-management/src/16-SPRINT-PLANS/07-SPRINT-PLAN-07.md`.
 `project-management/workflows/CONTEXT.md` -> _The planning cadence_ runs `16` and `17` "before
 planning resumes"; this is a recorded departure from that order, not an oversight. It has
 precedent, because US011 was cut and admitted after `SPRINT-06` closed on 20/09/2026 with no plan
@@ -808,10 +843,27 @@ story names US012 in its dependencies.
      paragraph above the bullets date its sign-off too. Q9 moves the day both members cleared the
      specify tier, not the count of 10. The ledger and the backlog register do not move. -->
 
+<!-- AMENDED 03/10/2026, in the change that wrote this record's plan,
+     project-management/src/16-SPRINT-PLANS/07-SPRINT-PLAN-07.md. SPRINT-06's change touched its
+     own plan and record only, and left this record's stale passages to this change (settled
+     03/10/2026, 16-sprint-plans grilling round 9 Q20). Until then the paragraph above the bullets
+     opened "**The close owes this record its plan, and 07-SPRINT-PLAN-07.md is not written yet —
+     owed, not omitted, and its prerequisites now hold.**" and read "The sprint
+     plan is written next, by `16-sprint-plans` in a change of its own"; the sentence after the
+     bullets read "**So the plan the close owes waits on nothing in the specify tier.**" and "and
+     `16-sprint-plans` writes the plan next"; the story-cutting paragraph read "they are committed,
+     and with US010's security plans signed off that day both plans are written next" and "are
+     signed off, so gate `11` has closed for each", and ended there; and the paragraph below closed
+     "and this record's between its close and the plan the close owes." The manual-testing-guide
+     sentence is new: it records 16-sprint-plans grilling round 9 Q22 (settled 03/10/2026) beside
+     16-sprint-plans grilling round 1 Q4 (settled 28/09/2026). The ledger bullet's last clause read
+     "what owes the plan is the call, not a fill" until then. The counts, the ledger and the
+     backlog register do not move. -->
+
 `project-management/src/16-SPRINT-PLANS/CLAUDE.md` forbids a plan without a matching record — "do
 not create an orphan plan" — and nothing forbids a record without a plan; that is a record's
-ordinary state between opening and filling, and this record's between its close and the plan the
-close owes.
+ordinary state between opening and filling, and it was this record's between its close on
+21/09/2026 and its plan of 03/10/2026.
 
 **The citation gate is inherited red, and this record adds its own findings to it — expected, not a
 regression.** `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026`, superseded 30/09/2026 by
@@ -872,6 +924,13 @@ wording. The recompute writes records and stories in plain prose, as the close d
 folder-wide figure was not re-run**, because the sibling records are being amended in the same pass
 and a folder figure taken now would describe no settled state; per `code/docs/GATE-REPORTING.md`
 that is reported, not inferred from this file's count.
+
+**Re-measured 03/10/2026 in the change that wrote this record's plan — this file alone, at HEAD
+`7e465f5`, unstaged: down one, and still 0 dangling.** The same scoped run exits `1` with 40
+instance findings before this change's first edit and 39 after. The one that went is the bare plan
+name the close paragraph cited before the plan existed, now cited by its full path. The folder-wide
+figure was not re-run, because SPRINT-06's record is amended in the same pass, for the reason given
+above.
 
 ---
 
@@ -1045,8 +1104,12 @@ blank, with no syntek-base literal in any of them and no leak reported by
      plain English describes an ADR to someone who has not read it, and that bar is `N-002`'s. -->
 
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
-- [ ] `project-management/src/18-TESTS/MANUAL/US011-MANUAL-TESTING.md` carries a tester sign-off block.
-      US012's QA flag names no manual type, so it owes no manual-testing record
+- [ ] Each member's manual testing guide carries a tester sign-off block —
+      "project-management/src/18-TESTS/MANUAL/US012-MANUAL-TESTING.md" and
+      "project-management/src/18-TESTS/MANUAL/US011-MANUAL-TESTING.md", each authored at
+      `17-story-plans` Step 7.2 from the specs before any code, and walked at
+      `22-implementation-documentation`. US012 owes one although its QA flag names the unit type
+      alone (settled 03/10/2026, 16-sprint-plans grilling round 9 Q21)
 - [ ] **No `[OPEN]` acceptance-criteria gap remains** in either member's QA plan. US012's resolved
       all nine on 21/09/2026 and read `Reviewed` from then. US011's had not been written at 16:40
       that day; a concurrent session opened it as a `Draft` with thirteen `[OPEN]` gaps, and on
@@ -1071,6 +1134,19 @@ blank, with no syntek-base literal in any of them and no leak reported by
      Q9). The QA-plan row opened "US012's closed on 21/09/2026 with all nine resolved." until
      then, and gains both plans' sign-off: gate 11 closes only at Signed off, and closed for both
      members on 30/09/2026. -->
+
+<!-- AMENDED 03/10/2026, in the change that wrote this record's plan (settled 03/10/2026,
+     16-sprint-plans grilling round 9 Q21). The sign-off row read "[the US011 manual testing guide
+     path, then in backticks] carries a tester sign-off block. US012's QA flag names no manual
+     type, so it owes no manual-testing record" until then. That was written on 21/09/2026 at
+     US012's admission, as the comment dated 21/09/2026 above records, and committed on 27/09/2026 in
+     `488e197`, both before project-management/workflows/17-story-plans/STEPS.md Step 7.2 made the
+     guide unconditional on 30/09/2026; project-management/src/18-TESTS/CLAUDE.md requires both records by the PR, and
+     project-management/workflows/23-pr-and-review/STEPS.md Step 6 verifies them for every story.
+     Neither guide exists yet, so both paths are written in double quotes, which the citation gate
+     does not read. US012's QA flag does not move: it names the test types the story's criteria
+     run, and the guide is owed whatever they are. Lifted out of the list for the Prettier reason
+     recorded under QA Acceptance Criteria — Automated. -->
 
 ---
 
@@ -1172,9 +1248,16 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
       every render path the template offers (today: `INCLUDE_MOBILE` true and false)
 - [ ] US011 — run `shipped-artefacts.sh --self-test`, `shipped-registers.sh` (with `--self-test`)
       and `shipped-ai.sh --self-test`, and confirm US011's diff needs **no** edit to any of them,
-      with the result recorded in `project-management/src/18-TESTS/AUTOMATED/US011-TEST-STATUS.md`
+      with the result recorded in "project-management/src/18-TESTS/AUTOMATED/US011-TEST-STATUS.md"
 - [ ] US011 — run `doc-references.sh`, `docs-length.sh` and `docs-pairing.sh` over the changed tree,
       and the link-resolution check over the four indexes
+
+<!-- AMENDED 03/10/2026, in the change that wrote this record's plan. The test-status path in the
+     US011 self-test row above was written in backticks until then. The file does not exist yet,
+     and the same change writes the two manual testing guide paths under QA Acceptance Criteria —
+     Manual in double quotes for that reason, so this path takes the same form. The citation gate
+     did not flag it either way, measured 03/10/2026. No obligation moved. Lifted out of the list
+     for the Prettier reason recorded under QA Acceptance Criteria — Automated. -->
 
 ### QA Tasks — Manual
 
@@ -1187,8 +1270,11 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
 - [ ] US011 — the re-measured population recorded beside the cut-time figure of 43, with its date,
       so the drift between cutting and building is visible
 - [ ] US011 — a tester other than the author has signed the walk-through off
-- [ ] US012 — **N/A**, its QA flag names the unit type only; the finding-wording read above is
-      recorded at review and is listed with the automated tasks it closes
+- [ ] US012 — its manual testing guide walked at `22-implementation-documentation`, every row
+      marked, and signed off. The guide is authored at
+      `17-story-plans` Step 7.2 from the specs although the QA flag names the unit type alone
+      (settled 03/10/2026, 16-sprint-plans grilling round 9 Q21); the finding-wording read above is
+      still recorded at review and listed with the automated tasks it closes
 - [ ] Cross-browser, responsive and accessibility walk-throughs — **N/A**, this sprint's Frontend,
       Components and Wireframes rows read `N/A`; no page, component or interactive surface is added
 
@@ -1201,6 +1287,14 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      AMENDED 27/09/2026 after two verified passes: the grep task's parenthesis read "(today: both
      `INCLUDE_MOBILE` poles)", and now reads "(today: `INCLUDE_MOBILE` true and false)", the
      member's own wording and this record's elsewhere. -->
+
+<!-- AMENDED 03/10/2026, in the change that wrote this record's plan (settled 03/10/2026,
+     16-sprint-plans grilling round 9 Q21). The US012 manual row read "US012 — **N/A**, its QA flag
+     names the unit type only; the finding-wording read above is recorded at review and is listed
+     with the automated tasks it closes" until then. Every story owes a manual testing guide since
+     30/09/2026, US012 included, so the row now binds its walk and sign-off; what the guide holds is
+     its story plan's to decide, and is not designed here. Lifted out of the list for the Prettier
+     reason recorded under QA Acceptance Criteria — Automated. -->
 
 ---
 
@@ -1228,9 +1322,10 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       in this sprint **by US012's diff alone**: a change to it from US011's diff still means an index
       moved or a seed was polluted, and is a signal rather than a pass
 - [ ] **The `[3/4] Template Generation` job is green on every render path the template offers**
-      (today: `INCLUDE_MOBILE` true and false) — the self-test and the full check over every
-      generated tree pass with every seed asserted present (US012), and the four backfilled indexes
-      carry no instance rows in any generated tree (US011)
+      (today: `INCLUDE_MOBILE` true and false) — the self-test at `audit-template.yml:225` and the
+      full run at `:228`, with every seed asserted present (US012); the self-test reads one
+      generated tree, today the `INCLUDE_MOBILE` false one, and the full run reads every one. The
+      four backfilled indexes carry no instance rows in any generated tree (US011)
 - [ ] `bash code/src/scripts/audits/doc-references.sh --path project-management/src/03-SPRINTS`
       — **the scoped run, and the one this record was measured on.** At the gate that opened this
       record (20/09/2026, HEAD `53d9196`, whole change staged) it exits `1` with **170** citations
@@ -1304,6 +1399,16 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      positive instance test (round 3 Q22). The links are handed to the link-resolution check,
      which doc-references cannot stand in for (QA-PLAN-US011 AC-GAP-6, AC-GAP-7 and AC-GAP-12).
      US012's half of the generation row moves in that wording only. -->
+
+<!-- CORRECTED 03/10/2026, in the change that wrote this record's plan. The generation row's US012
+     half read "the self-test and the full check over every generated tree pass with every seed
+     asserted present (US012), and" until then, which read as though the self-test ran over every
+     generated tree. Measured 03/10/2026: .github/workflows/audit-template.yml:225 runs
+     `--self-test` over the INCLUDE_MOBILE false tree alone, and :228 runs the full check over both.
+     The row now carries US012's own wording (project-management/src/02-STORIES/US012.md ->
+     Verification Checks) with the reach stated, and
+     project-management/src/16-SPRINT-PLANS/07-SPRINT-PLAN-07.md reads the same. A citation is a
+     fact looked up, not a call, so it is corrected here rather than asked. No obligation moved. -->
 
 ---
 
