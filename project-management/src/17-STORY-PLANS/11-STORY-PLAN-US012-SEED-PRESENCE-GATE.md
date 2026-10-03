@@ -681,8 +681,21 @@ _Story Plans_ Status cell reads "Not started" and **does not mirror this plan's 
 plan's own definition of the column, pending `../02-STORIES/US007.md` Scenario 8.
 `../03-SPRINTS/SPRINT-07.md`'s Story Summary carries no status column.
 
-**The ClickUp export is opt-in and is not wired in this repository**, so nothing is pushed by this
-story; the row is recorded so the absence is a reading rather than a gap.
+**The ClickUp export is generated, and pushing it is CI's.** The lefthook `clickup-export`
+pre-commit hook (`project-management/src/00-ASSETS/scripts/precommit-clickup.sh`) regenerates
+`project-management/export/clickup/US012-CLIENT.md` from the story in any commit that stages the story on a checkout whose hooks are armed, so
+each status flip carries its export; a commit on an unarmed checkout leaves the export stale
+(`./09-STORY-PLAN-US009-HOOK-ARMING.md`, TM-12). `.github/workflows/clickup-sync.yml` upserts the export into
+ClickUp on a push or pull request into `main`, `staging`, `dev` or `testing` that touches it, and
+runs as a dry run until the repository's ClickUp secrets are set. This plan cannot read those
+secrets, so whether a board receives the flip is unmeasured here; nothing in this story pushes by
+hand.
+
+<!-- CORRECTED 03/10/2026: this paragraph read "**The ClickUp export is opt-in and is not wired in this repository**, so nothing is pushed by
+     this story; the row is recorded so the absence is a reading rather than a gap." until then. The export is not
+     opt-in here: the lefthook `clickup-export` hook regenerates it on every staged story, and
+     the CI sync is what waits on secrets. Found by the independent review of US011's story plan
+     on 03/10/2026, which corrected the same claim in its own plan. -->
 
 ---
 
@@ -812,5 +825,10 @@ bash code/src/scripts/audits/doc-references.sh --path .github/scripts/shipped-ar
 - [ ] Code workflows `02-tdd-cycle` (shell form) and `07-review` complete; PR raised and promoted via
       `23-pr-and-review`; review record in `../19-REVIEWS/`
 - [ ] Status set to the final value across the story, this plan and the sprint plan's row as that
-      plan defines it; nothing pushed to ClickUp, the sync being unwired
+      plan defines it; each story flip committed with the export the `clickup-export` hook
+      regenerates, and nothing pushed to ClickUp by hand (`.github/workflows/clickup-sync.yml` pushes)
 - [ ] Every gate above run and recorded per `code/docs/GATE-REPORTING.md`; nothing skipped silently
+
+<!-- CORRECTED 03/10/2026: the list's Status row ended "nothing pushed to ClickUp, the sync being
+     unwired" until then, the same claim the _Status Propagation & ClickUp Sync_ correction of that
+     day records. -->

@@ -897,7 +897,22 @@ US011's.
 This plan's `| Status |` row moves with it. **The sprint plan's Story Plans cell does not mirror
 it**: it reads `Not started`, the value that column's own comment defines, knowingly false and
 counted in `../02-STORIES/US007.md` Scenario 8's population, whose correction is US007's own
-criterion. The ClickUp export is opt-in and not wired in this repository; nothing is pushed.
+criterion.
+
+**The ClickUp export is generated, and pushing it is CI's.** The lefthook `clickup-export`
+pre-commit hook (`project-management/src/00-ASSETS/scripts/precommit-clickup.sh`) regenerates
+`project-management/export/clickup/US010-CLIENT.md` from the story in any commit that stages the story on a checkout whose hooks are armed, so
+each status flip carries its export; a commit on an unarmed checkout leaves the export stale
+(`./09-STORY-PLAN-US009-HOOK-ARMING.md`, TM-12). `.github/workflows/clickup-sync.yml` upserts the export into
+ClickUp on a push or pull request into `main`, `staging`, `dev` or `testing` that touches it, and
+runs as a dry run until the repository's ClickUp secrets are set. This plan cannot read those
+secrets, so whether a board receives the flip is unmeasured here; nothing in this story pushes by
+hand.
+
+<!-- CORRECTED 03/10/2026: the closing sentence of the paragraph above read "The ClickUp export is opt-in and not wired in this repository; nothing is pushed." until then, and this paragraph replaces it. The export is not
+     opt-in here: the lefthook `clickup-export` hook regenerates it on every staged story, and
+     the CI sync is what waits on secrets. Found by the independent review of US011's story plan
+     on 03/10/2026, which corrected the same claim in its own plan. -->
 
 ---
 

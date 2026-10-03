@@ -32,7 +32,13 @@ _The manual testing guide for US010 — the gates, the self-tests, the CI runs a
   that CI has run on the landing commit
 - **The CI runs:** a generated tree exists only in CI's `[3/4] Template Generation` job (QA plan
   Sections 2 and 6). A row that reads one opens the run recorded under _Recorded during the build_
-  — never a local generation, and never a raw `copier` call (`.claude/CLAUDE.md` Section 6)
+  — never a local render of this template's tree, and never a raw `copier` call
+  (`.claude/CLAUDE.md` Section 6). **One local run renders, and no row reads what it renders:**
+  `bash .github/scripts/shipped-ai.sh --self-test` (FAMILY-11, _The update probe_, UPDATE-06,
+  UPDATE-07 and UPDATE-08) builds a throwaway fixture template from this template's `copier.yml` and `.copier/`
+  seeds with `fixture()` and renders it into a temporary directory (`copy_project()`, under
+  `tempfile.TemporaryDirectory` in `.github/scripts/shipped-ai.py`). Those rows read its `PASS` and
+  failure lines, never a project tree
 - **A scratch copy of this tree:** a separate checkout of the story branch, never this working
   tree, for the rows that plant a mutation. Each such row takes a fresh copy, or restores it before
   the next row. How the copy was made is recorded beside the result
@@ -45,12 +51,8 @@ _The manual testing guide for US010 — the gates, the self-tests, the CI runs a
   grilling round 2 Q6)
 - **The tester:** someone other than the author of the story's edits
 - **Out of scope:**
-  - **ES-01** — an `mv` placed after `rmdir .copier` failing generation loudly. It needs a
-    generation with the line misplaced, and no project script generates a tree locally. The
-    ordering the scenario protects is read in the diff as CHAIN-02
-  - **ES-03's masking half and ES-07's generation half** — `shipped-artefacts.sh` staying silent
-    on a leaked index, and generation failing at a seed's missing file. Both need a generated
-    tree. The family's halves of both are FAMILY-04 and FAMILY-08
+  - **ES-03's masking half** — `shipped-artefacts.sh` staying silent on a leaked index. It needs a
+    generated tree; the family's half is FAMILY-04
   - **ES-18** — a seed link planted relative to `.copier/`, failing the link check. The plant needs
     a generated tree; the link check's green over the real seeds is CI-05
   - **EC-11's row-order half** — a predecessor reading before its successor in DECISION-INDEX. That
@@ -93,6 +95,24 @@ _The manual testing guide for US010 — the gates, the self-tests, the CI runs a
   3. **Who reads the map index's Summaries — MAPINDEX-09** — answered (Q6): the same fresh Claude
      session as the legibility reader of round 1 Q3, given only the map index, its walk reviewed by
      the developer.
+
+<!-- CORRECTED 03/10/2026, after 805efbd. The CI-runs precondition read "— never a local
+     generation, and never a raw `copier` call" until then, and the out-of-scope list held "**ES-01**
+     — an `mv` placed after `rmdir .copier` failing generation loudly. It needs a generation with the
+     line misplaced, and no project script generates a tree locally. The ordering the scenario
+     protects is read in the diff as CHAIN-02". Both were false: `shipped-ai.sh --self-test` runs
+     this template's own seed chain against a fixture rendered into a temporary directory, which is
+     what FAMILY-11 and UPDATE-06 already walk, and it produces ES-01's red (reproduced 03/10/2026
+     in a scratch copy: `rmdir: failed to remove '.copier'`, then `TaskError`, exit 1). The
+     precondition now names that run, and ES-01 is walked as UPDATE-07; CHAIN-02 still reads the
+     ordering in the diff. Found by the independent review of US011's story plan. -->
+
+<!-- CORRECTED 03/10/2026, the same change. The out-of-scope list also held "**ES-03's masking
+     half and ES-07's generation half** — `shipped-artefacts.sh` staying silent on a leaked index,
+     and generation failing at a seed's missing file. Both need a generated tree. The family's halves
+     of both are FAMILY-04 and FAMILY-08" until then. ES-07's generation half rested on the same false
+     premise: the same self-test runs the seed chain, so a deleted seed with its `mv` line kept fails
+     there loudly. It is walked as UPDATE-08; ES-03's masking half still needs a generated tree. -->
 
 ---
 
@@ -200,14 +220,16 @@ Run `bash .github/scripts/shipped-registers.sh`, then `bash .github/scripts/ship
 
 Run `bash .github/scripts/shipped-ai.sh --self-test` and read each `PASS` line.
 
-| ID        | Action                                                                                                                   | Expected outcome                                                                                                                                                                             | Flow | QA    | Result | Notes |
-| --------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----- | ------ | ----- |
-| UPDATE-01 | Read the copy exercises' lines                                                                                           | Every copy lands all seven indexes, and project memory is seeded empty, as before                                                                                                            | —    | HP-06 |        |       |
-| UPDATE-02 | Read the update exercise's lines                                                                                         | After `run_update` to a tag that changed every index seed, every index the project edited and committed is byte-identical to its committed edit; project memory survives; `.copier/` is gone | —    | HP-07 |        |       |
-| UPDATE-03 | Read the ungated-seed-task mutation's line                                                                               | The detector rejects it, and the rejection is the byte-identity assertion's own message                                                                                                      | —    | HP-08 |        |       |
-| UPDATE-04 | Read the mutation's expected message in `.github/scripts/shipped-ai.py`'s self-test                                      | It names the byte-identity assertion, so a `TaskError` or the memory assertion cannot pass as its red                                                                                        | —    | ES-20 |        |       |
-| UPDATE-05 | Read `fixture()` in `.github/scripts/shipped-ai.py`                                                                      | It creates the six register folders through their `CONTEXT.md` markers, so every caller builds through it                                                                                    | —    | ES-09 |        |       |
-| UPDATE-06 | In a scratch copy, revert only the six folders from `fixture()` and run `bash .github/scripts/shipped-ai.sh --self-test` | A `TaskError` at the first `mv` into `02-STORIES/`: the red the fixture repair exists to prevent                                                                                             | —    | ES-09 |        |       |
+| ID        | Action                                                                                                                                         | Expected outcome                                                                                                                                                                             | Flow | QA    | Result | Notes |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----- | ------ | ----- |
+| UPDATE-01 | Read the copy exercises' lines                                                                                                                 | Every copy lands all seven indexes, and project memory is seeded empty, as before                                                                                                            | —    | HP-06 |        |       |
+| UPDATE-02 | Read the update exercise's lines                                                                                                               | After `run_update` to a tag that changed every index seed, every index the project edited and committed is byte-identical to its committed edit; project memory survives; `.copier/` is gone | —    | HP-07 |        |       |
+| UPDATE-03 | Read the ungated-seed-task mutation's line                                                                                                     | The detector rejects it, and the rejection is the byte-identity assertion's own message                                                                                                      | —    | HP-08 |        |       |
+| UPDATE-04 | Read the mutation's expected message in `.github/scripts/shipped-ai.py`'s self-test                                                            | It names the byte-identity assertion, so a `TaskError` or the memory assertion cannot pass as its red                                                                                        | —    | ES-20 |        |       |
+| UPDATE-05 | Read `fixture()` in `.github/scripts/shipped-ai.py`                                                                                            | It creates the six register folders through their `CONTEXT.md` markers, so every caller builds through it                                                                                    | —    | ES-09 |        |       |
+| UPDATE-06 | In a scratch copy, revert only the six folders from `fixture()` and run `bash .github/scripts/shipped-ai.sh --self-test`                       | A `TaskError` at the first `mv` into `02-STORIES/`: the red the fixture repair exists to prevent                                                                                             | —    | ES-09 |        |       |
+| UPDATE-07 | In a scratch copy, move one index `mv` line to after `rmdir .copier` in the seed task and run `bash .github/scripts/shipped-ai.sh --self-test` | Red at the first copy, and loud: `rmdir .copier` exits 1 on the unmoved seed and Copier raises `TaskError`; never a silent skip (QA plan ES-01)                                              | —    | ES-01 |        |       |
+| UPDATE-08 | In a scratch copy, delete one index seed from `.copier/`, keep its `mv` line, and run `bash .github/scripts/shipped-ai.sh --self-test`         | Red at the first copy, and loud: the `mv` exits 1 on the missing seed and Copier raises `TaskError` (QA plan ES-07's generation half; TM-06)                                                 | —    | ES-07 |        |       |
 
 ### The allowlist
 

@@ -976,8 +976,21 @@ word. It is named here so it is not found by a reviewer instead.
 `us009/hook-arming`, and → `Completed` only at `completion`, after review and QA have passed. This
 plan's own `| Status |` header row moves with it.
 
-**The ClickUp export is opt-in and is not wired in this repository.** Nothing is pushed by this
-story; the row is recorded so the absence is a reading rather than a gap.
+**The ClickUp export is generated, and pushing it is CI's.** The lefthook `clickup-export`
+pre-commit hook (`project-management/src/00-ASSETS/scripts/precommit-clickup.sh`) regenerates
+`project-management/export/clickup/US009-CLIENT.md` from the story in any commit that stages the story on a checkout whose hooks are armed, so
+each status flip carries its export; a commit on an unarmed checkout leaves the export stale
+(TM-12). `.github/workflows/clickup-sync.yml` upserts the export into
+ClickUp on a push or pull request into `main`, `staging`, `dev` or `testing` that touches it, and
+runs as a dry run until the repository's ClickUp secrets are set. This plan cannot read those
+secrets, so whether a board receives the flip is unmeasured here; nothing in this story pushes by
+hand.
+
+<!-- CORRECTED 03/10/2026: this paragraph read "**The ClickUp export is opt-in and is not wired in this repository.** Nothing is pushed by this
+     story; the row is recorded so the absence is a reading rather than a gap." until then. The export is not
+     opt-in here: the lefthook `clickup-export` hook regenerates it on every staged story, and
+     the CI sync is what waits on secrets. Found by the independent review of US011's story plan
+     on 03/10/2026, which corrected the same claim in its own plan. -->
 
 ---
 
