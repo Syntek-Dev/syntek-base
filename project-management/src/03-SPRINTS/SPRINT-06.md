@@ -1,6 +1,6 @@
 # SPRINT-06
 
-**Last Updated**: 30/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 03/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -251,8 +251,13 @@ total is 13 SP, 8 committed and 5 stretch. It is not counted until it does.
   since been written). Nothing is renumbered:
   `project-management/docs/planning/STORIES.md` makes the prefix the position in the settled build
   order across the whole backlog and renumbers it whenever that order changes, and appending US010
-  at the end changes no other story's position. When `16-sprint-plans` writes this sprint's plan,
-  both segments of `{exec-order}-SPRINT-PLAN-{sprint-number}.md` read `06`.
+  at the end changes no other story's position. Updated 03/10/2026: `16-sprint-plans` has written
+  this sprint's plan, `project-management/src/16-SPRINT-PLANS/06-SPRINT-PLAN-06.md`, and both
+  segments of its name read `06`, derived in its _Build order_ section, which also states the carry
+  case: US010 would build ninth and US009 tenth, so the two story-plan prefixes swap. The plan
+  carries the reservation as a no-file row in its index. `project-management/src/02-STORIES/US010.md`
+  does not record it yet, and US010's story-plan commit records it there (settled 03/10/2026,
+  16-sprint-plans grilling round 9 Q20).
 - **One thing may carry into this record, and it is named rather than assumed.**
   `project-management/src/03-SPRINTS/SPRINT-05.md` -> Definition of Done reserves US009's 5 SP
   `Should` carry here if it is dropped rather than delivered. Nothing else can: SPRINT-01, SPRINT-02
@@ -286,6 +291,17 @@ total is 13 SP, 8 committed and 5 stretch. It is not counted until it does.
      two sessions' holds and fixed no landing order; it now carries the in-either-order rule. The
      S-03 bullet gains the writer of the TM-10 window's GAPS.md entry, US011's gate-22 pass (call
      recorded 27/09/2026 with round 6). Neither adds a blocker. -->
+
+<!-- AMENDED 03/10/2026, when 16-sprint-plans wrote this record's plan, and lifted out of the list
+     for the Prettier reason SPRINT-05 recorded on 20/09/2026. The build-order bullet closed "When
+     16-sprint-plans writes this sprint's plan, both segments of
+     {exec-order}-SPRINT-PLAN-{sprint-number}.md read 06." until then, its backticks dropped here
+     because the citation gate reads backticked tokens inside a comment. The prediction held, and
+     the plan derives it rather than copying it. Two clauses are new. The carry case is the plan's:
+     "US009 builds ninth and US010 tenth" in the Definition of Done is the no-carry reading. And the
+     reservation of "10-" is recorded in this record and the plan's index but not yet in US010.md,
+     whose own commit records it (settled 03/10/2026, 16-sprint-plans grilling round 9 Q20); this
+     change edits neither US010.md nor SPRINT-07.md. -->
 
 ## Notes
 
@@ -422,20 +438,28 @@ whose absence is the defect — at 13 / 11, the shape SPRINT-03 has held since 0
 the weakness is real and is recorded the way SPRINT-03 recorded it on 07/09/2026 and SPRINT-05 on
 09/09/2026: "the weakness stands, and this record has no other give it can honestly hold".
 
-**No `06-SPRINT-PLAN-06.md` is written yet, and it is owed, not omitted.** Two calls owe it.
-<%DEVELOPER_NAME%> settled on 21/09/2026 that this record's plan and SPRINT-07's are written once
-their members' gate documents are committed (`project-management/src/03-SPRINTS/SPRINT-07.md` ->
-_Notes_), and US010's were committed on 27/09/2026. On 28/09/2026 <%DEVELOPER_NAME%> signed off
-US010's threat model and assessment, and ruled that this record's plan and SPRINT-07's are then
-written (settled 28/09/2026, 16-sprint-plans grilling round 1 Q1). `16-sprint-plans` writes it
-next, in a change of its own; this record does not. The record's ledger and the plan's count are
-two different numbers, and since 30/09/2026 they agree at 8.
+**This record's plan was written on 03/10/2026, owed by a call and not by a fill.** It is
+`project-management/src/16-SPRINT-PLANS/06-SPRINT-PLAN-06.md`, written by a `16-sprint-plans` run
+and committed with this amendment; it mirrors this record, and where the two would disagree the
+record wins. Two calls owed it. <%DEVELOPER_NAME%> settled on 21/09/2026 that this record's plan
+and SPRINT-07's are written once their members' gate documents are committed
+(`project-management/src/03-SPRINTS/SPRINT-07.md` -> _Notes_), and US010's were committed on
+27/09/2026. On 28/09/2026 <%DEVELOPER_NAME%> signed off US010's threat model and assessment, and
+ruled that this record's plan and SPRINT-07's are then written (settled 28/09/2026, 16-sprint-plans
+grilling round 1 Q1). The plan's commit touches the plan and this record only (settled 03/10/2026,
+16-sprint-plans grilling round 9 Q20). `17-story-plans` runs after both sprint plans, once
+SPRINT-07's is committed in a change of its own, for US010, US012 and US011 (settled 28/09/2026,
+16-sprint-plans grilling round 1 Q4), and each story's manual testing guide is written straight
+after its plan, at that workflow's Step 7.2, and committed with it: US010's and then US012's after
+one round of that workflow's grilling, US011's once US010's plan is committed (settled 03/10/2026,
+16-sprint-plans grilling round 9 Q22). The record's ledger and the plan's count are two different
+numbers, and since 30/09/2026 they agree at 8.
 
 - **The ledger counts every admitted story: 8.**
   `project-management/docs/planning/SPRINTS.md` -> _Two artefacts, two moments_ makes the record
   "the running ledger", opened early, and `CADENCE.md`'s per-story loop runs gate `03` second, so a
   story is admitted at cutting and the ledger moves then. 8 of 11 is not the fill trigger; what
-  owes the plan is the call, not a fill, as it is for SPRINT-07.
+  owed the plan was the call, not a fill, as it is for SPRINT-07.
 - **The plan counts only stories that have cleared the specify tier: 8, from 30/09/2026.**
   `CADENCE.md` -> _When a sprint plan is written_ names the prerequisites that must hold for
   **every story in the filling sprint** — `15-decisions` cleared, GDPR review, security threat
@@ -457,7 +481,17 @@ two different numbers, and since 30/09/2026 they agree at 8.
      AMENDED 30/09/2026 at gate 11's close: the count is dated 30/09/2026, when QA-PLAN-US010 was
      signed off, and not from gate 10's sign-off of 28/09/2026, gate 11 closing only at Signed off
      (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9). Q9 moves the day US010 cleared the
-     specify tier, not whether it has. -->
+     specify tier, not whether it has.
+     AMENDED 03/10/2026, when 16-sprint-plans wrote the plan. The bold sentence above read "No
+     06-SPRINT-PLAN-06.md is written yet, and it is owed, not omitted.", the second sentence "Two
+     calls owe it.", and the sentence before the closing one "`16-sprint-plans` writes it next, in
+     a change of its own; this record does not." until then. The plan was written in a change of
+     its own, as that sentence said, and this amendment rides in that change rather than making
+     one. The Q20 and Q22 sentences are new (settled 03/10/2026, 16-sprint-plans grilling round 9
+     Q20 and Q22), and so is the Q4 clause inside the second, placing the story plans after both
+     sprint plans, the order SPRINT-07's Notes record for its own two members. The ledger bullet's last clause read "what owes
+     the plan is the call, not a fill" until then. The ledger and the plan's count do not move, and
+     neither does the backlog register. -->
 
 Measured 20/09/2026. US010 has no ADR and records two ADR candidates in its own `## Decisions` for
 `15-decisions` to accept or decline; on that date it was named by no artefact under
@@ -514,8 +548,8 @@ own QA prerequisite is met by a `Reviewed` plan — and US010's gate-`22` pass r
 `GAPS.md` (Index and Seed Tasks below). **So the plan's count is 8, from 30/09/2026.** The record is
 still short of the fill trigger at 8 / 11, and its one member has cleared every prerequisite — the
 security plans and the QA plan signed off, both ADRs `Accepted`, and every gate document committed.
-The plan is owed by call rather than by a fill, as the no-plan paragraph above records, and
-`16-sprint-plans` writes it next.
+The plan was owed by call rather than by a fill, as the plan paragraph above records, and
+`16-sprint-plans` wrote it on 03/10/2026.
 
 <!-- CORRECTED 27/09/2026. Two clauses above were true when written on 20/09/2026 and are scoped to
      that date rather than struck: the dated paragraph read "it is named by no artefact under" the
@@ -548,7 +582,11 @@ The plan is owed by call rather than by a fill, as the no-plan paragraph above r
      AMENDED 30/09/2026 AT GATE 11'S CLOSE (settled 30/09/2026, 16-sprint-plans grilling round 3
      Q9). The QA clause quoted above closes the gate at the plan's sign-off rather than reading a
      plan met in content as met, and the count of 8 is dated from that sign-off, 30/09/2026, not
-     from gate 10's of 28/09/2026. -->
+     from gate 10's of 28/09/2026.
+     AMENDED 03/10/2026, when 16-sprint-plans wrote the plan. The paragraph's last sentence read
+     "The plan is owed by call rather than by a fill, as the no-plan paragraph above records, and
+     `16-sprint-plans` writes it next." until then. Nothing else in the paragraph moves: every
+     prerequisite it lists was re-read against its artefact that day and still holds. -->
 
 **This record was opened at gate `03`, not after `10`, `11` and `15`, on SPRINT-05's precedent of
 09/09/2026.** SPRINT-03 and SPRINT-04 opened after their members had cleared the specify tier,
@@ -1103,11 +1141,13 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       carried into whichever record is open at that moment, or recorded as owed and unplaced if
       none is. Build order makes that ordering unlikely — US009 builds ninth and US010 tenth — but
       unlikely is not impossible, and it is stated rather than left to be decided at the keyboard
-- [ ] **A landed carry re-opens the sprint plan, if one has been written.**
+- [ ] **A landed carry re-opens the sprint plan, written 03/10/2026.**
       `project-management/docs/planning/SPRINTS.md` -> _Two artefacts, two moments_ makes the plan
-      "written once, against a settled story set", so a carry arriving after
-      `06-SPRINT-PLAN-06.md` exists un-settles that set: the plan is revised in the same change that
-      admits the story, never left describing a one-member sprint that now has two
+      "written once, against a settled story set", so a carry arriving now that
+      `project-management/src/16-SPRINT-PLANS/06-SPRINT-PLAN-06.md` exists un-settles that set: the
+      plan is revised in the same change that admits the story, never left describing a one-member
+      sprint that now has two. The same change swaps US010's and US009's story-plan prefixes, as
+      that plan's _Build order_ states
 - [ ] **Nothing else carries into this record.** SPRINT-01, SPRINT-02 and SPRINT-04 are closed with
       nothing reserved out of them, and SPRINT-03's reservation runs into SPRINT-03. If a story
       arrives anyway it is recorded in both records with its reason and the capacity line
@@ -1160,4 +1200,9 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      AMENDED 28/09/2026 at the 16-sprint-plans security sign-off. The QA-plan row read "The plan is
      untracked until the US010 commit" until then; 0c5e635 committed the plan beside that sentence,
      so it was false as committed. On 30/09/2026 the row gained the plan's sign-off, the day gate
-     11 closed (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9). -->
+     11 closed (settled 30/09/2026, 16-sprint-plans grilling round 3 Q9).
+     AMENDED 03/10/2026, when 16-sprint-plans wrote the plan. The carry row's bold lead read "A
+     landed carry re-opens the sprint plan, if one has been written." and its condition "a carry
+     arriving after 06-SPRINT-PLAN-06.md exists" until then; the plan now exists, and the row
+     gains the prefix swap the plan derives under the renumber rule of
+     project-management/workflows/17-story-plans/STEPS.md Step 2. -->
