@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 20/09/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 09/10/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -811,3 +811,44 @@ enough to be a per-host file is also thin enough to fit a per-host budget. Note 
 limit does not make the chain measurable — nothing in this repository counts it, so the gate the
 map's S-05 specifies is what stops this recurring. This entry retires when no directory's chain
 exceeds the configured limit **and** a gate fails when one does.
+
+---
+
+## 09/10/2026 — the Playwright pin needs a Chromium the current NixOS generation no longer roots
+
+**Type:** Infrastructure gap
+**Summary:** `pyproject.toml:106` and `code/src/scripts/audits/render-slop.sh:114` pin Playwright
+**1.61.0**, which needs Chromium revision **1228**. On this machine the browsers arrive as a Nix
+store bundle (`.claude/MEMORY.md`, 18/09/2026), and the current system generation roots only a
+bundle at revision **1243** (Playwright 1.63); revision 1228 survives only through older
+generations, so the next garbage collection of those removes it (Nix store root query, 09/10/2026,
+`research/NATIVE-DESIGN-TIER-TOOLING.md` N-001.10). Once it goes, `render-slop.sh` takes its
+no-browser path (`:409-431`) and **exits 0 with a note** — a run that rendered nothing reports
+clean, the `code/docs/GATE-REPORTING.md` failure class — and every future Playwright-backed design
+check inherits the same hole. The `mcp-mermaid` server already fails here for the same reason
+(the note, N-003.1).
+**Blocked by / Action:** Nothing blocks it. Bump `PLAYWRIGHT_PIN` to the release `just
+check-playwright` reports in `~/Repos/personal/nix-config`, and move every site
+`audits/playwright-pin.sh` holds in step in the same change. Claimed as a blocker by
+`MAP-NATIVE-DESIGN-TIER.md` N-013. This entry retires when the pin matches the bundle the current
+generation roots.
+
+---
+
+## 09/10/2026 — the human and every agent act as one GitHub identity, and `main` needs no approval
+
+**Type:** Active gap
+**Summary:** `Syntek-Studio` is the organisation admin, the only member and collaborator, the
+sole code owner (`.github/CODEOWNERS:4`), the git user, and the active `gh` login every agent <!-- doc-references: template-only -->
+session on this host uses; `gh` also holds two further accounts. The `main` ruleset requires
+**0** approving reviews and lets the admin role bypass the whole ruleset at all times, and all
+twelve pull requests were authored and merged by that one account with no review (`gh api`,
+09/10/2026; `research/NATIVE-DESIGN-TIER-TOOLING.md` N-005.1–4 and N-005.9). So no human review is
+enforceable on any pull request: an agent holding the token can approve, and a required review
+would deadlock, because an author cannot approve their own pull request. Raised by
+`MAP-NATIVE-DESIGN-TIER.md`, whose destination needs approval only a human can grant, but the gap
+is repository-wide.
+**Blocked by / Action:** The mechanism is that map's N-017, which holds the options. Whatever it chooses,
+the provisioning (a key, an account, a ruleset change, keeping the human's token out of agent
+sessions) is manual work recorded here, not on the map. This entry retires when an approval an
+agent can produce is no longer counted as a human's.
