@@ -255,15 +255,24 @@ reporting regime and sequences nothing; see _Gate honesty_.
 
 ## Story Plans — the code master
 
+**Approved remediation 09/10/2026 — US011 and US012 rows only.** These cells mirror the named
+plan's own Status field; after US007 lands every plan transition updates its cell in the same
+change. Step 1 of `code/workflows/01-implement-story/STEPS.md`, its checklist and common build-start
+instruction own `In Progress` after due pre-edit captures and before the first source edit;
+documentation-only stories reuse Step 1 with code phases N/A. A configured board adapter
+publishes that same event. Earlier comments describing these rows as `Not started` record the old state,
+not an instruction to retain it. Exhaustive generation evidence for these stories follows the
+72-case matrix in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_; mobile-only evidence cannot close their generation criteria.
+
 Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **Both plans exist.**
 `17-story-plans` wrote US012's on 03/10/2026, after this plan, because its Step 1 gathers the sprint
 plan first, and US011's later the same day, once US010's plan was committed; each row here was
 repointed at its file by that workflow's Step 10. Neither prefix was assigned by this file.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                  | Status      |
-| ----- | ------------------------------------------------------------------ | ----------- |
-| US012 | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`      | Not started |
-| US011 | `../17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` | Not started |
+| Story | Story plan (`../17-STORY-PLANS/`)                                  | Status  |
+| ----- | ------------------------------------------------------------------ | ------- |
+| US012 | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`      | Open    |
+| US011 | `../17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` | Blocked |
 
 The run on disk is contiguous `00-` to `12-`: US010's plan took "10-" in the `17-story-plans`
 change committed before US012's, and US011's took "12-" in the change after it (settled 03/10/2026,
@@ -508,8 +517,7 @@ must not be softened in any record it produces.
 
 - **The self-test reads one generated tree, and the full check reads every one.** This plan's
   checklist and the record's generation row carry US012's own words: "The
-  `[3/4] Template Generation` job is green on every render path the template offers (today:
-  `INCLUDE_MOBILE` true and false) — the self-test at `audit-template.yml:225` and the full run at
+  `[3/4] Template Generation` job is green on every render path the template offers (the 72 valid cases approved 09/10/2026) — the self-test at `audit-template.yml:225` and the full run at
   `:228`". Measured 03/10/2026, `.github/workflows/audit-template.yml:225` runs `--self-test` over
   the `INCLUDE_MOBILE` false tree alone, and `:228` runs the full check over both. The record's row
   read until 03/10/2026 as though the self-test covered every tree, and is corrected in the same
@@ -569,9 +577,9 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       probes** — US012's, in CI's `[3/4]` job on the pushed story branch, and changed in this sprint
       by US012's diff alone
 - [ ] The `[3/4] Template Generation` job is green on every render path the template offers
-      (today: `INCLUDE_MOBILE` true and false) — the self-test at `audit-template.yml:225` and the
+      (the 72 valid cases approved 09/10/2026) — the self-test at `audit-template.yml:225` and the
       full run at `:228`, with every seed asserted present (US012); the self-test reads one
-      generated tree, today the `INCLUDE_MOBILE` false one, and the full run reads every one. US010's
+      generated tree, today the `INCLUDE_MOBILE` false one, and the full run must read all 72 valid cases under the approval of 09/10/2026. US010's
       generated-tree grep, read for US011's criterion on US011's landing run, finds no instance
       literal in any generated tree's four indexes, the 000 template identifiers excepted
 - [ ] US012's red run recorded before its green one, each by run ID, the red evidenced by the

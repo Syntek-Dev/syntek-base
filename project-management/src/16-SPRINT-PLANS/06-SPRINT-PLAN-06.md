@@ -285,6 +285,15 @@ tenth" is the no-carry reading.
 
 ## Story Plans — the code master
 
+**Approved remediation 09/10/2026 — US010 rows only.** These cells mirror the named
+plan's own Status field; after US007 lands every plan transition updates its cell in the same
+change. Step 1 of `code/workflows/01-implement-story/STEPS.md`, its checklist and common build-start
+instruction own `In Progress` after due pre-edit captures and before the first source edit;
+documentation-only stories reuse Step 1 with code phases N/A. A configured board adapter
+publishes that same event. Earlier comments describing these rows as `Not started` record the old state,
+not an instruction to retain it. Exhaustive generation evidence for these stories follows the
+72-case matrix in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_; mobile-only evidence cannot close their generation criteria.
+
 Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **The member's plan
 exists.** It was written 03/10/2026 by `17-story-plans` under the "10-" reserved for it, and this
 table was repointed at it by that workflow's Step 10. The reserved-carry row points at a plan that
@@ -292,7 +301,7 @@ also exists, so whoever takes the carry finds it from this index; it is not a me
 
 | Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status      |
 | ---------------------- | ------------------------------------------------------------------ | ----------- |
-| US010                  | `../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` | Not started |
+| US010                  | `../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` | Open        |
 | US009 — reserved carry | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`             | Not started |
 
 The run on disk is contiguous `00-` to `10-`, measured 03/10/2026 once US010's plan was written.

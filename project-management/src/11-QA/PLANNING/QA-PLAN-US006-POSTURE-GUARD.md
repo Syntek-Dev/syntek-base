@@ -361,10 +361,18 @@ Derived from the story's Gherkin scenarios and the shell tree rather than a wire
 story has none. Every scenario below is executable against the repository after the change lands,
 and every one maps to an entry in the story's enumerated proof-case list.
 
+**09/10/2026 amendment — TM-01 target proof.** Q3 option 1 replaces the historical
+environment-only allowlist recorded in AC-GAP-21 above. Its migration mode resolution remains
+valid: five callers refuse, migration warns. The story's 7.12 and the story plan's effective-target
+decision now own the resolver and binding contract; the old environment-only text is history,
+not an executable acceptance rule. Case 14 expands into independent fixtures without changing
+the 21 top-level case identifiers. Results remain unexecuted.
+
 ### Happy path (HP-nn)
 
 | ID    | Given                                                                                    | When                                               | Then                                                                                                             |
 | ----- | ---------------------------------------------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| HP-07 | Named local context selected explicitly or persisted, carrier at `development`           | Any bound caller runs                              | Target passes and every guarded-path Docker/Compose call is bound to its validated Unix socket; both modes       |
 | HP-01 | A rendered carrier naming `development`                                                  | Any of the six bound scripts runs                  | It proceeds unimpeded, and `migrate.sh` additionally prints the posture and the expand-then-contract obligation  |
 | HP-02 | This repository, whose carrier holds no rendered posture and whose root has `copier.yml` | Any of the six runs                                | It proceeds at every posture, and the answers file is unmodified afterwards                                      |
 | HP-03 | A carrier naming `staging`, and an operator who knows it                                 | `reset.sh --force-posture staging`                 | The guard permits, the confirmation prompt still runs, and `--yes` does not suppress it                          |
@@ -378,14 +386,17 @@ and every one maps to an entry in the story's enumerated proof-case list.
 The visible failures here are refusals and gate failures. Each is a check that the control bites,
 not a defect to expect.
 
-| ID    | Given                                                              | When                                   | Then                                                                                                                                                                    |
-| ----- | ------------------------------------------------------------------ | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| ES-01 | A carrier naming `staging` or `production`, no override            | Any of the five refusing paths runs    | Exit 4, message beginning `posture-guard: refused —`, naming the live posture and the re-run command                                                                    |
-| ES-02 | The same, in a script that prompts, with no tty                    | `reset.sh` runs                        | Exit 4 with the guard prefix — **never** the exit-0 abort at `reset.sh:98-103` (TM-06)                                                                                  |
-| ES-03 | A carrier naming `staging`, an override naming `development`       | `reset.sh --force-posture development` | Exit 4 — a stale override is refused, so an invocation pasted from history dies once the posture rises                                                                  |
-| ES-04 | `DOCKER_HOST` pointed at a remote daemon, carrier at `development` | Any of the five refusing scripts runs  | Exit 4 with the guard prefix, at `development` too — Docker pointed elsewhere is not a posture question. `migrate.sh` **warns and proceeds**, following its caller mode |
-| ES-05 | The guard call deleted from a bound script                         | The presence assertion runs            | It fails on the line-order comparison — a tested function is not an enforced control (TM-03)                                                                            |
-| ES-06 | A citation added that does not resolve and is not budgeted         | `doc-references.sh` runs               | The count rises above the recorded baseline for the file that introduced it                                                                                             |
+| ID    | Given                                                                                                                               | When                                   | Then                                                                                                                                                                    |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ES-01 | A carrier naming `staging` or `production`, no override                                                                             | Any of the five refusing paths runs    | Exit 4, message beginning `posture-guard: refused —`, naming the live posture and the re-run command                                                                    |
+| ES-02 | The same, in a script that prompts, with no tty                                                                                     | `reset.sh` runs                        | Exit 4 with the guard prefix — **never** the exit-0 abort at `reset.sh:98-103` (TM-06)                                                                                  |
+| ES-03 | A carrier naming `staging`, an override naming `development`                                                                        | `reset.sh --force-posture development` | Exit 4 — a stale override is refused, so an invocation pasted from history dies once the posture rises                                                                  |
+| ES-07 | Saved remote context; `DOCKER_HOST` and `DOCKER_CONTEXT` unset                                                                      | Each bound caller reaches its guard    | Five refuse at 4 before daemon operation; migrate warns and continues with original selection, no invented binding                                                      |
+| ES-08 | Unknown context, malformed configuration, missing endpoint or failed inspection (separate fixtures)                                 | Resolver runs with stack down          | No daemon contact or local fallback; refuse at 4 versus warn/0; binding outputs cleared                                                                                 |
+| ES-09 | Named local context validated; selection changed before downstream call                                                             | Recording fixture runs bound callers   | Preflight, Compose and seed shell-out retain validated `--host`, conflicting context absent; no ambient re-selection                                                    |
+| ES-04 | Effective Docker endpoint remote or unknown, including saved remote context with selector variables unset; carrier at `development` | Any of the five refusing scripts runs  | Exit 4 with the guard prefix, at `development` too — Docker pointed elsewhere is not a posture question. `migrate.sh` **warns and proceeds**, following its caller mode |
+| ES-05 | The guard call deleted from a bound script                                                                                          | The presence assertion runs            | It fails on the line-order comparison — a tested function is not an enforced control (TM-03)                                                                            |
+| ES-06 | A citation added that does not resolve and is not budgeted                                                                          | `doc-references.sh` runs               | The count rises above the recorded baseline for the file that introduced it                                                                                             |
 
 ### Edge cases (EC-nn)
 
@@ -473,11 +484,13 @@ zero is never reported as the gate passing.
   `--self-test` dies at `migrate.sh:101`. Assert on the guard's own verdict per case; do not try
   to resurrect the before/after idiom that works for `audits/doc-references.sh`, where the subject
   already existed (AC-GAP-6).
-- **`doc-references.sh` may or may not need a baseline, and US004 decides.** Check whether US004
-  has landed before running it. If it has, the gate exits 0 on a clean tree and a plain pass is
-  available; if it has not, capture the baseline over every file this story edits _before the
-  first edit_, because a post-hoc baseline cannot distinguish an introduced finding from a
-  pre-existing one — which is the whole property the ADR buys (AC-GAP-15).
+- **`doc-references.sh` follows recorded gate state, not US004 landing alone.** Plain-pass
+  mode requires US004 landed, a proven green whole-tree gate and the accepted retirement
+  recorded before source editing; the closing run still needs exit 0. Otherwise retain the
+  pre-edit stable-identity multiset, detector hash and git-index state. A non-empty baseline
+  is a diff, never a pass; a changed detector is confounded, never reconstructed after edits.
+  This 09/10/2026 correction supersedes AC-GAP-15's dated landing-only account.
+
 - **Record the git index state beside any citation-gate figure.** Section 7 shows a 50-finding
   swing on this tree between two honest runs an hour apart, caused entirely by a parallel session
   committing its own artefacts. A number without its index state is not a baseline.

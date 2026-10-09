@@ -349,10 +349,14 @@ the new step's clean 9 as evidence the two lists are in exact correspondence.
   `prepare` being removed used `[ -d .git ]`, so a `postinstall` copying that form would be silent
   in exactly the worktree checkouts where the notice matters most — the trap ST07 exists to close,
   reintroduced one line away from where it was closed.
-- **"Already armed" is defined, not assumed**: `.git/hooks/pre-commit` exists **and** carries
-  lefthook's marker. Presence alone is satisfied by `code-review-graph install`'s raw hook, which
-  would silence the notice on a checkout with no lefthook hook at all. This is the test HP-02
-  already asserts, and stating it once keeps the script and the probe in agreement.
+- **"Already armed" uses Git's effective hook path, not literal `.git/hooks/`.** From the
+  checkout root, resolve `git rev-parse --path-format=absolute --git-path hooks/pre-commit`.
+  It must be a readable, executable regular file carrying lefthook's generated marker. The
+  installer, notice and probes use the same resolution and predicate, including linked worktrees
+  and relative or absolute `core.hooksPath`. A marker without an executable bit is unarmed.
+  The installer verifies the effective path after lefthook runs; a write to an unused default
+  path is a failure, not success. No repository remains a skip; a resolution/installation failure
+  in a repository is reported and exits 2. Settled 09/10/2026.
 - **One shipped line is made false by this edit and moves with it.** `.copier/README.md:1091` reads
   `pnpm prepare          # Install Lefthook git hooks (runs automatically after install.sh)`.
   Removing `prepare` turns that into a setup instruction naming a command that does not exist —
@@ -891,13 +895,12 @@ rather than left blank.** There is no Python in this diff.
 
 ### Manual — four, and each because its proof is a real clone
 
-| ID                  | Walk-through                                                                                       |
-| ------------------- | -------------------------------------------------------------------------------------------------- |
-| HP-01, HP-03        | Clean clone → `bash install.sh` → a throwaway `git commit`; the pre-commit legs observed running   |
-| HP-04, EC-06        | The same clone re-run through `bash install.sh`; no duplication, no error, the hook byte-identical |
-| ES-01, ES-02, ES-03 | A broken `lefthook install`: reported in the `err` idiom naming it, exit 2, never swallowed        |
-
-| HP-06 | `.copier/README.md:442` and `how-to/src/CONTRIBUTING.md:155` re-read against the changed script and confirmed true, with the re-reads recorded and both files confirmed unmodified at those lines |
+| ID                  | Walk-through                                                                                                                                                                                      |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HP-01, HP-03        | Clean clone → `bash install.sh` → a throwaway `git commit`; the pre-commit legs observed running                                                                                                  |
+| HP-04, EC-06        | The same clone re-run through `bash install.sh`; no duplication, no error, the hook byte-identical                                                                                                |
+| ES-01, ES-02, ES-03 | A broken `lefthook install`: reported in the `err` idiom naming it, exit 2, never swallowed                                                                                                       |
+| HP-06               | `.copier/README.md:442` and `how-to/src/CONTRIBUTING.md:155` re-read against the changed script and confirmed true, with the re-reads recorded and both files confirmed unmodified at those lines |
 
 The rows a person walks are in `../18-TESTS/MANUAL/US009-MANUAL-TESTING.md`, authored from this
 plan before code (backfilled 30/09/2026) and walked, not written, at `22`.
@@ -1155,3 +1158,56 @@ them to move again. Re-measured 30/09/2026 against the tree committed together w
 - [ ] `../01-FEATURE-MAPS/MAP-GATE-PARITY.md`'s `S-11` Slices row **confirmed still reading US009** — it was written at the 17/09/2026 split, so this is a check rather than an edit; its `Acceptance` cell is the part a close can still change
 - [ ] **The `GAPS.md` row for the eleven unsuppressed `pnpm install` invocations is open** (Section 7.2's second limb), or its absence is restated as still owed — **never ticked as covered**
 - [ ] Every gate above run and recorded per `code/docs/GATE-REPORTING.md`; nothing skipped silently
+
+---
+
+### Approved fixture answers and verification boundary — 09/10/2026
+
+The three open fixture questions are resolved by disposable clones and project runners.
+The planned runner "code/src/scripts/tests/hook-arming.sh" is a build deliverable, not an
+existing command or a recorded pass. Extend its documented fixture interface with
+`--fixture install-failure`, `--fixture graph-reclaim`, `--fixture binary-provenance`,
+`--fixture write-boundary`, `--fixture notice-streams` and `--fixture hook-paths`.
+Invoke each as `bash code/src/scripts/tests/hook-arming.sh --fixture <name>` after P4 exists.
+Missing runner/dependency is unmeasured; do not substitute a guessed tool hook or global shim.
+
+- **Install failure (ES-01 to ES-03):** the runner clones the story ref, pre-provisions dependencies
+  through `bash code/src/scripts/development/install-frontend.sh --check`, and replaces the default
+  hooks directory in that disposable clone with a regular-file obstruction. Clear redirected
+  hooks configuration in the fixture. `bash install.sh` must complete steps 5 to 8, then fail in
+  the actual lefthook invocation, print `err` and exit 2. Verify the diagnosed cause was the
+  obstruction, not an earlier dependency/host failure. Capture and report the child installer's
+  exit code separately from the runner's own exit code; ES-02 asserts the child code is 2.
+  Only the runner may remove its scratch tree.
+- **Graph reclaim (EC-05):** the runner invokes the actual pinned `code-review-graph install` tool
+  inside its clone, recording distribution/version, executable origin and the emitted hook hash.
+  It then calls `bash code/src/scripts/development/install-hooks.sh`. Capture the real tool's
+  before state, replacement report and effective hook after state. Do not hand-copy a hook body.
+- **Binary provenance (EC-02):** provision a separate fixture package with exact
+  `lefthook` **1.13.0**, beside the story checkout's lockfile-resolved **2.x** package. The runner
+  invokes the house frontend installer with its fixture root (by copying the existing installer
+  into the synthetic fixture's `code/src/scripts/development/` layout), with lifecycle scripts
+  suppressed. Record both lockfile integrities, reported versions and executable hashes. Put
+  only the fixture's 1.x `node_modules/.bin` first on the child invocation's PATH; do not alter
+  host globals or the story lockfile. Prove the arming invocation selected the project's 2.x
+  executable using invocation tracing, not merely a hook's content. No dependency access means
+  this fixture remains unmeasured, not a shimmed pass.
+- **Write boundary:** snapshot the full clone and its external Git/hook directories immediately
+  before/after the extracted hook step, not the full installer. The manifest includes ignored,
+  untracked and tracked entries: path, type, mode, symlink target and SHA-256 of regular files;
+  never follow symlinks or print contents. Store evidence outside measured roots. Permit changes
+  only under the resolved effective hook directory. Plant an existing ignored synthetic file
+  and a file inside an ignored directory; altering either must fail the oracle even if Git
+  status is identical. Dependencies are provisioned before the snapshot; unreadable paths fail
+  the measurement rather than vanish from it. No secret contents are copied into PM evidence.
+- **Notice streams:** capture stdout and stderr separately from the notice body, not the entire
+  package-manager transcript. The notice goes to stdout only; stderr is empty, and no file,
+  credential or network side effect occurs. A stderr-only notice is a failing negative control.
+- **Hook paths:** exercise ordinary clones, unborn HEAD, linked worktrees, relative and absolute
+  `core.hooksPath`, a raw graph hook, a lefthook-marked non-executable file and a stale marked
+  default hook while the effective redirected hook is absent. Only the effective executable
+  lefthook hook silences the notice. A throwaway commit must actually run its pre-commit legs.
+
+README verification checks both required P3 edits separately: replace the removed `pnpm prepare`
+setup command with `bash install.sh`, and add the `install-hooks.sh` Development-scripts row.
+The existing claim sentence stays unchanged. This implements HP-06, not new scope.

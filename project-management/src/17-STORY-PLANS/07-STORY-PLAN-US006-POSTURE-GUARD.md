@@ -219,6 +219,8 @@ literal is.
 `code/src/scripts/_lib/CLAUDE.md` gains the contract in the same change so the folder's rules
 describe the helper that now lives there.
 
+**Last Updated:** 09/10/2026 — Q3 option 1, target resolution/binding and damaged-carrier fixture.
+
 ## Approach
 
 ### Not applicable — Database, Service Layer, API, Frontend
@@ -226,6 +228,50 @@ describe the helper that now lives there.
 This story adds no model, no Python, no template and no component. The four layer sections the
 template carries are dropped because the story touches none of them, not to dodge a gate; the
 sprint plan records the same three `N/A` phases with their reasons.
+
+**Settled 09/10/2026 — effective Docker target (Q3, option 1).** Resolve the target from
+local client configuration and environment, including the persisted selected context. Selection
+follows Docker precedence: non-empty `DOCKER_CONTEXT`, otherwise non-empty `DOCKER_HOST`, otherwise
+the persisted context in the effective Docker configuration (`DOCKER_CONFIG`, or the CLI default).
+An absent selection means Docker's default context; an unreadable or malformed configuration,
+unknown context, failed inspection or missing endpoint is **unknown**, never a local fallback.
+Context resolution/inspection reads local metadata only; it must not contact a daemon.
+
+A target passes only with one unambiguous `unix:///absolute/path` endpoint and with
+`COMPOSE_PROJECT_NAME` absent/empty or equal to the caller's last compose file's declared name.
+Named local contexts are permitted. SSH, TCP (including loopback), unsupported transports,
+relative/empty socket paths and unknown endpoints fail the check. Posture overrides and the
+template exemption cannot waive this check. A Unix socket proves a local transport, not the
+identity of a daemon behind a deliberately configured proxy; that remains outside this guard's
+operator-error threat model.
+
+On success the helper supplies a `posture_`-prefixed validated endpoint and an explicit validity
+indicator, cleared at entry to prevent stale reuse. Each caller binds **every subsequent Docker
+and Compose invocation on the guarded path**, including container preflight and the `up --seed`
+shell-out, to that endpoint using a quoted argument array with explicit `--host`; conflicting
+context selection is removed from that invocation's environment. No ambient re-resolution or
+later `--context`/`--host` replacement is allowed. Child `seed-dev.sh` receives the same pinned
+host, clears context selection and validates it through its own guard before acting.
+
+**Caller modes remain settled.** The five refusing paths return 4 with the guard prefix before
+any daemon operation when the target check fails. `migrate.sh` remains unconditionally warn-only:
+on a valid target it uses the same binding; on a rejected/unknown target it warns explicitly that
+locality is unverified, returns 0 from the guard and continues with its existing target selection.
+It must not invent a local fallback or reuse an earlier validated endpoint. Subsequent migration
+command failure keeps its ordinary exit code. Thus this change closes the destructive refusing
+paths' bypass; it does not claim locality enforcement for migration mode. N-003, carrier/template
+ordering, the override ADR and TM-12/TM-16 residuals remain in force.
+
+The stack-down self-test exercises the resolver through a local-metadata reader seam with
+synthetic selections, inspection results/failures and endpoint outputs. It invokes no Docker
+binary and asserts both modes, cleared outputs and binding construction. The manual fixture
+uses isolated synthetic `DOCKER_CONFIG` and a recording Docker executable on fixture `PATH`;
+it accepts local metadata operations, records later argument/environment selection and performs
+no daemon operation. Real permitting journeys retain their disposable local stack.
+
+Primary behaviour sources, read 09/10/2026: [Docker contexts](https://docs.docker.com/engine/manage-resources/contexts/)
+and [Docker CLI environment precedence](https://docs.docker.com/reference/cli/docker/#environment-variables).
+The allowlist, binding and mode policy above are project decisions, not vendor guarantees.
 
 ### Phase plan — five phases, each red before green
 
@@ -344,7 +390,7 @@ updated to the amended twelve, so the security record and the story stop disagre
 **What `22` owns, stated so this story does not write it twice.** `REFERENCES.md`'s ownership
 table gives every implementation record and every `GAPS.md` / `DEFERRED.md` write to
 `22-implementation-documentation`. So the two test records are `22`'s — it writes
-"project-management/src/18-TESTS/AUTOMATED/US006-TEST-STATUS.md" with the twenty-one observed exit
+"project-management/src/18-TESTS/AUTOMATED/US006-TEST-STATUS.md" with all top-level and case-14-subcase observed exit
 codes and messages and the ShellCheck result, and walks `../18-TESTS/MANUAL/US006-MANUAL-TESTING.md`,
 authored before code from this plan (backfilled 30/09/2026), recording the walk-throughs, the
 baselines and the second tester's sign-off. **`GAPS.md` holds nothing for this story to close**:
@@ -364,7 +410,7 @@ One `posture_`-prefixed entry point, sourced never executed, with no `main`-styl
 2. **The mode** — `refuse` or `warn`, declared by the caller. The refuse-versus-warn policy lives
    here; a caller states which it is and restates nothing.
 3. **The override** — the value the caller parsed from `--force-posture`, or empty.
-4. **The compose name the caller's compose set declares** — for the compose-target allowlist. In
+4. **The compose name the caller's compose set declares** — for the effective-target allowlist. In
    a worktree the override file's `name:` outranks the base file's, so the caller hands the helper
    the name of the **last** file in its `DC` array, or every worktree stack refuses (see _Risks_).
 5. **The caller's own invocation**, so the readable-posture refusal can print a copy-pasteable
@@ -372,17 +418,17 @@ One `posture_`-prefixed entry point, sourced never executed, with no `main`-styl
 
 Its verdict is reached in a **fixed order, and the order is the control**:
 
-| Step | What is evaluated                                                                                                                                                                                                                                                    | Outcome                                                                                                                                      |
-| ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1    | The override literal, against the set {`development`, `staging`, `production`} — **before anything is read** (7.5)                                                                                                                                                   | Not in the set: refuse, naming the three legal values. In the set: carried forward, honoured only at step 4                                  |
-| 2    | The carrier, read **once**: absent file · present-but-unreadable file · conflict-marked (through `_lib/conflict-markers.sh`) · no `^DEPLOYMENT_POSTURE:` line · commented-only key · duplicated key · unrecognised value · legal value (7.2)                         | Exactly one of eight states, held for steps 3 to 5. The match is anchored, quote-tolerant and inline-comment-rejecting                       |
-| 3    | The compose target — `DOCKER_HOST` unset or a local `unix://` socket; `DOCKER_CONTEXT` unset or `default`; `COMPOSE_PROJECT_NAME` unset or equal to the declared name — read from the environment, no daemon contacted (7.12)                                        | Anything else: refuse. Evaluated **at every posture**, and a permit from step 4 or 5 never short-circuits it                                 |
-| 4    | A legal posture was read: `development` permits; `staging` or `production` permits **iff** the override equals it (7.4 — the carrier decides before the template proof is consulted)                                                                                 | Refuse otherwise, with the readable-posture message: the live posture and the exact re-run command, and nothing else from the carrier (7.11) |
-| 5    | No legal posture was read: `<root>/copier.yml` present proves the template and permits; absent refuses with the damaged-carrier message — the reason the carrier cannot be read and the repair, naming no posture, and the override **not honoured** (7.5, AC-GAP-4) | The repair is concrete: `set DEPLOYMENT_POSTURE in .copier-answers.yml to one of development, staging or production`                         |
-| 6    | The mode: in `warn` every refusal above becomes a warning line and a 0 return, and the posture — or "unknown" — is printed with the expand-then-contract obligation at every posture                                                                                 | A warning never moves the exit code                                                                                                          |
+| Step | What is evaluated                                                                                                                                                                                                                                                    | Outcome                                                                                                                                                 |
+| ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1    | The override literal, against the set {`development`, `staging`, `production`} — **before anything is read** (7.5)                                                                                                                                                   | Not in the set: refuse, naming the three legal values. In the set: carried forward, honoured only at step 4                                             |
+| 2    | The carrier, read **once**: absent file · present-but-unreadable file · conflict-marked (through `_lib/conflict-markers.sh`) · no `^DEPLOYMENT_POSTURE:` line · commented-only key · duplicated key · unrecognised value · legal value (7.2)                         | Exactly one of eight states, held for steps 3 to 5. The match is anchored, quote-tolerant and inline-comment-rejecting                                  |
+| 3    | The effective Docker/compose target, resolved from local configuration and environment per the 09/10/2026 decision above; known absolute Unix socket and matching declared compose name; no daemon contact                                                           | Remote/unknown/inspection failure fails; fresh validated binding on success. Evaluated at every posture before any permit; step 6 preserves caller mode |
+| 4    | A legal posture was read: `development` permits; `staging` or `production` permits **iff** the override equals it (7.4 — the carrier decides before the template proof is consulted)                                                                                 | Refuse otherwise, with the readable-posture message: the live posture and the exact re-run command, and nothing else from the carrier (7.11)            |
+| 5    | No legal posture was read: `<root>/copier.yml` present proves the template and permits; absent refuses with the damaged-carrier message — the reason the carrier cannot be read and the repair, naming no posture, and the override **not honoured** (7.5, AC-GAP-4) | The repair is concrete: `set DEPLOYMENT_POSTURE in .copier-answers.yml to one of development, staging or production`                                    |
+| 6    | The mode: in `warn` every refusal above becomes a warning line and a 0 return, and the posture — or "unknown" — is printed with the expand-then-contract obligation at every posture                                                                                 | A warning never moves the exit code                                                                                                                     |
 
 It **returns** 0 to permit and 4 to refuse, writes the refusal to stderr with the greppable prefix
-`posture-guard: refused —`, and never calls `exit` — the new `_lib/` return contract. It reads the
+`posture-guard: refused —`, and never calls `exit` — the new `_lib/` return contract. It reads posture from the
 carrier only: no `${DEPLOYMENT_POSTURE:-…}` construction exists in it, and an exported variable of
 that name is ignored (7.1, TM-04). It hands the caller the resolved posture — or its absence —
 through a `posture_`-prefixed output that is never named `DEPLOYMENT_POSTURE`, so the two prompting
@@ -391,9 +437,14 @@ Everything it prints from the carrier is the one posture value (TM-15). The exac
 signature and the warn prefix's wording are the implementer's; the order above and the messages'
 content are not.
 
+**Binding is an output contract as well as a verdict.** The helper clears its validated endpoint
+and validity indicator on every invocation. Only a successful target check sets them; mode
+conversion to a warning must never manufacture a binding. P2 consumes these outputs before
+container preflight and every guarded-path Docker/Compose call, including seed forwarding.
+
 ### The proof-case list, and how each case is proved
 
-The story enumerates twenty-one cases once — one entry, one fixture, one verdict — and every count
+The story enumerates twenty-one top-level cases, with independent fixtures for each case-14 subcase — and every count
 here cites that list rather than restating a total. Three proof methods cover them, and naming
 which applies to each is the plan's job because the fixture seam reaches the helper and nothing
 else: the six scripts resolve their own `PROJECT_ROOT` from `BASH_SOURCE`, an environment-variable
@@ -405,29 +456,29 @@ seam is banned, and the self-test may invoke no `docker`.
 | **S**  | Structural — the self-test asserts a fact about a caller's text by the line-order technique 7.8 uses: a literal token appears, and appears before another                                                                                     |
 | **M**  | Manual — walked by hand and recorded in the manual-testing record, signed off by a tester other than the author                                                                                                                               |
 
-| #   | Case                                                                                     | Verdict                                        | Proved by                                                                                                           |
-| --- | ---------------------------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| 1   | `development`                                                                            | permits                                        | H · M (all six scripts at `development`, no friction)                                                               |
-| 2   | `staging`, no override                                                                   | refuses, exit 4                                | H · M                                                                                                               |
-| 3   | `production`, no override                                                                | refuses, exit 4                                | H · M                                                                                                               |
-| 4   | an unrecognised value                                                                    | refuses, exit 4                                | H · M                                                                                                               |
-| 5   | no `DEPLOYMENT_POSTURE` key                                                              | refuses, exit 4                                | H · M                                                                                                               |
-| 6   | a commented key                                                                          | refuses, exit 4                                | H · M                                                                                                               |
-| 7   | a duplicated key                                                                         | refuses, exit 4                                | H · M                                                                                                               |
-| 8   | a conflict-marked key                                                                    | refuses, exit 4                                | H · M                                                                                                               |
-| 9   | a present-but-unreadable file                                                            | refuses, exit 4                                | H · M                                                                                                               |
-| 10  | an absent file                                                                           | refuses, exit 4                                | H · M                                                                                                               |
-| 11  | `copier.yml` at the root, carrier holding no legal posture — the template proof          | permits                                        | H · M (this repository, all six scripts, answers file confirmed unmodified)                                         |
-| 12  | `copier.yml` at the root **and** a legal carrier posture — the carrier wins              | carrier decides                                | H                                                                                                                   |
-| 13  | `DEPLOYMENT_POSTURE` exported against a `production` carrier                             | refuses, exit 4                                | H                                                                                                                   |
-| 14  | `DOCKER_HOST` / `DOCKER_CONTEXT` / `COMPOSE_PROJECT_NAME` pointed away                   | refuses in the five; **warns** in `migrate.sh` | H, in **both** modes, with no daemon running                                                                        |
-| 15  | `--force-posture` naming the live posture                                                | permits                                        | H · M (the suggested re-run command pasted verbatim)                                                                |
-| 16  | `--force-posture` naming a stale posture                                                 | refuses, exit 4                                | H — shares no fixture with 15                                                                                       |
-| 17  | `--force-posture`, well formed, against a damaged carrier                                | refuses, exit 4                                | H · M (the refusal names a repair and no posture)                                                                   |
-| 18  | no tty, above `development`, a prompting script, no override                             | refuses, exit 4                                | H (the guard's verdict) · S (the two prompting scripts' empty-read path terminates at `4`, never `0`)               |
-| 19  | no tty, above `development`, a valid override                                            | permits                                        | H — the self-test itself runs with no terminal on stdin, so the state that matters is the state it runs in          |
-| 20  | `server.sh up --seed --force-posture <live>`, crossing the shell-out                     | permits                                        | S (the forward is present in `server.sh`; `seed-dev.sh` parses the flag ahead of its `die`) · M (walked end to end) |
-| 21  | `server.sh up --build` above `development`, no override — `up` is bound on `--seed` only | proceeds                                       | S (the guard call sits inside the `--seed` branch, below the `up` case's head) · M                                  |
+| #   | Case                                                                                     | Verdict                                                                         | Proved by                                                                                                           |
+| --- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 1   | `development`                                                                            | permits                                                                         | H · M (all six scripts at `development`, no friction)                                                               |
+| 2   | `staging`, no override                                                                   | refuses, exit 4                                                                 | H · M                                                                                                               |
+| 3   | `production`, no override                                                                | refuses, exit 4                                                                 | H · M                                                                                                               |
+| 4   | an unrecognised value                                                                    | refuses, exit 4                                                                 | H · M                                                                                                               |
+| 5   | no `DEPLOYMENT_POSTURE` key                                                              | refuses, exit 4                                                                 | H · M                                                                                                               |
+| 6   | a commented key                                                                          | refuses, exit 4                                                                 | H · M                                                                                                               |
+| 7   | a duplicated key                                                                         | refuses, exit 4                                                                 | H · M                                                                                                               |
+| 8   | a conflict-marked key                                                                    | refuses, exit 4                                                                 | H · M                                                                                                               |
+| 9   | a present-but-unreadable file                                                            | refuses, exit 4                                                                 | H · M                                                                                                               |
+| 10  | an absent file                                                                           | refuses, exit 4                                                                 | H · M                                                                                                               |
+| 11  | `copier.yml` at the root, carrier holding no legal posture — the template proof          | permits                                                                         | H · M (this repository, all six scripts, answers file confirmed unmodified)                                         |
+| 12  | `copier.yml` at the root **and** a legal carrier posture — the carrier wins              | carrier decides                                                                 | H                                                                                                                   |
+| 13  | `DEPLOYMENT_POSTURE` exported against a `production` carrier                             | refuses, exit 4                                                                 | H                                                                                                                   |
+| 14  | Effective target resolution and binding — subcases 14a to 14e below                      | Remote/unknown refuses in five, warns in migrate; known local permits and binds | H in both modes; S caller binding; M TARGET-01 to TARGET-05                                                         |
+| 15  | `--force-posture` naming the live posture                                                | permits                                                                         | H · M (the suggested re-run command pasted verbatim)                                                                |
+| 16  | `--force-posture` naming a stale posture                                                 | refuses, exit 4                                                                 | H — shares no fixture with 15                                                                                       |
+| 17  | `--force-posture`, well formed, against a damaged carrier                                | refuses, exit 4                                                                 | H · M (the refusal names a repair and no posture)                                                                   |
+| 18  | no tty, above `development`, a prompting script, no override                             | refuses, exit 4                                                                 | H (the guard's verdict) · S (the two prompting scripts' empty-read path terminates at `4`, never `0`)               |
+| 19  | no tty, above `development`, a valid override                                            | permits                                                                         | H — the self-test itself runs with no terminal on stdin, so the state that matters is the state it runs in          |
+| 20  | `server.sh up --seed --force-posture <live>`, crossing the shell-out                     | permits                                                                         | S (the forward is present in `server.sh`; `seed-dev.sh` parses the flag ahead of its `die`) · M (walked end to end) |
+| 21  | `server.sh up --build` above `development`, no override — `up` is bound on `--seed` only | proceeds                                                                        | S (the guard call sits inside the `--seed` branch, below the `up` case's head) · M                                  |
 
 Beyond the twenty-one: the six **presence assertions** (7.8) are S — the literal call token
 appears in each bound script at a lower line number than that script's first destructive command,
@@ -437,19 +488,26 @@ compare against: the helper does not exist, `--self-test` dies at the unknown-co
 identically for every case, and the permitting cases — 1, 11, 15, 19, 20 and 21 — proceed
 identically before and after the change (AC-GAP-6).
 
+**Case 14 now has separate fixtures, not one combined environment mutation (09/10/2026).**
+14a explicit remote host/context and compose-name mismatch; 14b saved remote context with both
+selector variables unset; 14c named local context; 14d unknown/malformed metadata, missing endpoint
+and inspection failure (each distinct); 14e successful binding followed by a synthetic selector
+change. H checks the resolver with synthetic metadata and both modes without Docker; S checks
+all bound call sites consume the validated output; M uses TARGET-01 to TARGET-05's recorder to
+prove preflight, Compose calls and seed forwarding. These expand case 14 without renumbering the
+existing 21 top-level entries. A fixture denied in `refuse` must warn in `warn`, with no stale
+binding output; the named local fixture permits and binds in both modes.
+
 ### The citation gate, as it stands for this story
 
-**Which reading applies is contingent on US004, and both branches are named here rather than
-discovered at implementation** (AC-GAP-15). US004 is SPRINT-03's sole `Must` since the cascade of
-07/09/2026, it retires the baseline-diff regime of
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — superseded 30/09/2026 by
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
-which restates it unchanged, retirement terms included <!-- UPDATED 30/09/2026: successor added beside the superseded record,
-which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
-16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). --> — by its own terms, and
-SPRINT-03 is built before this sprint — so the plain-pass branch is the expected one. **If US004
-has landed**, `doc-references.sh` exits 0 on a clean tree and is read as a plain pass. **If it has
-not**, it is read as a diff against the baseline P0 captures, and never as a bare pass.
+**Which reading applies depends on recorded gate state, not US004 landing alone**
+(corrected 09/10/2026 after independent review). US004 must have landed, the whole-tree gate
+must be proven green, and the accepted baseline ADR's retirement must be recorded before
+source editing begins for the plain-pass branch to apply. At close, a plain pass still requires
+an actual exit 0. If any retirement condition is absent, capture the pre-edit baseline and
+compare stable identities with multiplicity, preserving detector hash and git-index state;
+report surviving findings as a diff, never a pass. A detector change confounds attribution and
+is recorded as such, not hidden by a fresh baseline reconstructed after editing.
 
 **The story's own baseline, inherited rather than re-measured here:** 103 tree-wide and 9 on
 `../02-STORIES/US006.md`, at HEAD `c6df520` on a clean tree, 05/09/2026; 127 tree-wide with the story's five
@@ -561,26 +619,26 @@ command may reach_, and the posture **is** the authorisation input (A01:2025 is 
 category in the assessment).
 
 **The twelve developer constraints are carried in from `../02-STORIES/US006.md` Security 7.1 to
-7.12 and are not re-derived or restated here.** Eleven are Section 7 of
+7.12 and are not re-derived or restated here.** The twelve are Section 7 of
 `../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US006-POSTURE-GUARD.md`; 7.5, 7.6 and 7.7 were
 amended and 7.12 added at `11-qa-checks` on 05/09/2026, and where the two disagree the story is the
 corrected record — P4 updates the assessment so they stop disagreeing. One row per constraint, in
 its order, naming the phase that discharges it and the proof case that shows it:
 
-| #    | Constraint source | Discharged in                                                                                                                                                                                           | Shown by                                                             |
-| ---- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| 7.1  | TM-04             | P1 — the helper reads the carrier only; no `${DEPLOYMENT_POSTURE:-…}` construction exists in it                                                                                                         | Case 13                                                              |
-| 7.2  | TM-02 · TM-08     | P1 — the anchored, quote-tolerant, comment-rejecting match; duplicate and conflict-marked keys refuse                                                                                                   | Cases 6, 7, 8                                                        |
-| 7.3  | TM-11             | P1 — both files tested at the `BASH_SOURCE`-derived root, never cwd-relative                                                                                                                            | Every case, through the root seam; EC-10 by hand                     |
-| 7.4  | TM-05             | P1 — the carrier is evaluated before the template proof                                                                                                                                                 | Cases 11, 12                                                         |
-| 7.5  | TM-07             | P1 — the override validated before the carrier is read, and not honoured where no posture is readable                                                                                                   | Cases 4, 17                                                          |
-| 7.6  | TM-06             | P2 — the two prompting scripts' empty-read path exits `4`, never `0`; the override satisfies the guard regardless of tty                                                                                | Cases 18, 19; the S assertion on the prompt path                     |
-| 7.7  | TM-13             | P2 — every caller branches on the status explicitly and terminates on a refusal                                                                                                                         | The S assertions; review                                             |
-| 7.8  | TM-03             | P2 — the guard call asserted **present** in each bound script by line-order comparison                                                                                                                  | Six S assertions                                                     |
-| 7.9  | TM-09             | P2 — `up --seed` and `seed-dev.sh` bound; the flag forwarded verbatim and parsed ahead of the `die`                                                                                                     | Case 20                                                              |
-| 7.10 | TM-10             | P3 — no `\|\| true` on the guarded CI call; <%DEVELOPER_NAME%> owns the `--force-posture` literal, updated in the same commit that raises the carrier, and that owner and trigger are written beside it | A read of the workflow; the template's own teardown at `development` |
-| 7.11 | TM-15             | P1 — the refusal prints the live posture where readable and the re-run command, else the reason and the repair, and nothing else from the carrier                                                       | Cases 2, 3, 5 to 10, 17                                              |
-| 7.12 | TM-01             | P1 — the compose-target allowlist, decidable from the environment, following the caller's mode                                                                                                          | Case 14, in both modes                                               |
+| #    | Constraint source | Discharged in                                                                                                                                                                                           | Shown by                                                                  |
+| ---- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| 7.1  | TM-04             | P1 — the helper reads the carrier only; no `${DEPLOYMENT_POSTURE:-…}` construction exists in it                                                                                                         | Case 13                                                                   |
+| 7.2  | TM-02 · TM-08     | P1 — the anchored, quote-tolerant, comment-rejecting match; duplicate and conflict-marked keys refuse                                                                                                   | Cases 6, 7, 8                                                             |
+| 7.3  | TM-11             | P1 — both files tested at the `BASH_SOURCE`-derived root, never cwd-relative                                                                                                                            | Every case, through the root seam; EC-10 by hand                          |
+| 7.4  | TM-05             | P1 — the carrier is evaluated before the template proof                                                                                                                                                 | Cases 11, 12                                                              |
+| 7.5  | TM-07             | P1 — the override validated before the carrier is read, and not honoured where no posture is readable                                                                                                   | Cases 4, 17                                                               |
+| 7.6  | TM-06             | P2 — the two prompting scripts' empty-read path exits `4`, never `0`; the override satisfies the guard regardless of tty                                                                                | Cases 18, 19; the S assertion on the prompt path                          |
+| 7.7  | TM-13             | P2 — every caller branches on the status explicitly and terminates on a refusal                                                                                                                         | The S assertions; review                                                  |
+| 7.8  | TM-03             | P2 — the guard call asserted **present** in each bound script by line-order comparison                                                                                                                  | Six S assertions                                                          |
+| 7.9  | TM-09             | P2 — `up --seed` and `seed-dev.sh` bound; the flag forwarded verbatim and parsed ahead of the `die`                                                                                                     | Case 20                                                                   |
+| 7.10 | TM-10             | P3 — no `\|\| true` on the guarded CI call; <%DEVELOPER_NAME%> owns the `--force-posture` literal, updated in the same commit that raises the carrier, and that owner and trigger are written beside it | A read of the workflow; the template's own teardown at `development`      |
+| 7.11 | TM-15             | P1 — the refusal prints the live posture where readable and the re-run command, else the reason and the repair, and nothing else from the carrier                                                       | Cases 2, 3, 5 to 10, 17                                                   |
+| 7.12 | TM-01             | P1 — effective target resolution from local configuration, validated binding, and caller-mode policy per the 09/10/2026 decision                                                                        | Case 14 subcases in both modes, plus TARGET-01 to TARGET-05 caller proofs |
 
 <!-- 08/09/2026, Step 9 review (L1): the 7.10 cell read "P3 — no `\|\| true` on the guarded CI
      call; the owner and trigger written beside the literal". The owner and trigger are restored
@@ -782,7 +840,7 @@ reaches the helper and nothing else.
 
 | Layer                        | Method                                                                                                                                                     |
 | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The helper (P1)              | **H** — twenty-one verdicts over a fixture tree, one entry one fixture one verdict; refusals on exit code **and** prefix together, permits at 0            |
+| The helper (P1)              | **H** — twenty-one top-level cases plus all case-14 subcases over a fixture tree; refusals on exit code **and** prefix together, permits at 0              |
 | The callers (P2)             | **S** — six presence assertions, the forward, the `--seed`-branch placement, the two prompt paths; each a line-order comparison in the 7.8 style           |
 | The CI caller (P3)           | A read of the workflow — the literal, no `\|\| true`, the comment — and the template's own teardown at `development`, which the `copier.yml` proof permits |
 | The documentation (P4)       | `lint.sh --file-type markdown`, `docs-length.sh`, `docs-pairing.sh`, `doc-references.sh` per _The citation gate_; a cold read of the rewritten sentence    |
@@ -982,14 +1040,16 @@ bash code/src/scripts/audits/cloc.sh
 bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US006
 ```
 
-- [ ] `migrate.sh --self-test` exits 0 with the stack down — cases 1 to 21, none omitted, none
+- [ ] `migrate.sh --self-test` exits 0 with the stack down — cases 1 to 21 including all case-14 subcases, none omitted, none
       doubled up; every refusal asserted on code **and** prefix; every permit at 0
 - [ ] The six presence assertions, the forward, the `--seed`-branch placement and the two prompt
       paths asserted structurally
 - [ ] ShellCheck over the helper and six callers recorded as run or as not run — never as a
       `lint.sh` pass
-- [ ] `doc-references.sh` read per _The citation gate_ — a plain pass if US004 has landed, a diff
-      against P0's baseline in the same index state if not; every survivor named with its owner
+- [ ] `doc-references.sh` read per _The citation gate_ — plain-pass mode only after US004 has
+      landed, whole-tree green is proven and baseline retirement is recorded before source
+      editing; the closing run must exit 0. Otherwise compare against P0's stable finding
+      multiset in the same index state; every survivor is named with its owner
 - [ ] `docs-length.sh` — `code/src/scripts/audits/CONTEXT.md` unchanged at 298 code lines; nothing
       this story creates or edits enters the warn tier without a dated allowance
 - [ ] `docs-pairing.sh` passes — both halves of the `_lib/` pair edited; no new directory, so no
@@ -1027,7 +1087,7 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US006
       named beside it
 - [ ] "code/src/scripts/_lib/posture-guard.sh" exists, sourced never executed, one `posture_`-prefixed
       entry point carrying both modes, returning 0 or 4, refusal on stderr, never calling `exit`,
-      reading the carrier only, at the root its first positional argument names
+      reading posture from the carrier only, at the root its first positional argument names
 - [ ] The verdict order of _The helper's contract_ holds: override validated first, carrier read
       once, compose target at every posture, carrier before template proof, the override not
       honoured where no posture is readable, the mode applied last
@@ -1044,7 +1104,7 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US006
       `|| true`, and the owner and trigger sit in a comment beside the literal; `up --build` in the
       same workflow is untouched and unbound
 - [ ] `migrate.sh --self-test` dispatched at entry, no `docker`, a `trap`, nothing written outside
-      a temporary directory, twenty-one cases plus the structural assertions, all green with the
+      a temporary directory, twenty-one top-level cases, every case-14 subcase, plus the structural assertions, all green with the
       stack down
 - [ ] `how-to/src/DEPLOYMENT-POSTURE.md` names the guard and the override and cites no dead
       `GAPS.md` entry; its `seed-dev.sh` site amended
@@ -1068,3 +1128,6 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US006
       own header, the sprint plan's _Story Plans — the code master_ row once it names this file,
       and `../03-SPRINTS/SPRINT-04.md`'s Story Summary; the ClickUp export regenerated
 - [ ] Reviewed and approved; merged
+
+<!-- CORRECTED 09/10/2026: US004 landing alone does not establish a green gate or retire
+     baseline verification. The recorded gate state and accepted retirement terms decide. -->

@@ -428,6 +428,29 @@ committed at 0c5e635. AMENDED 27/09/2026 at the final pass: this read "both `Pro
 
 ## 4b. Developer constraints carried forward
 
+**Approved remediation 09/10/2026 — reach and closeout.** After each rebase, record the actual
+post-rebase base SHA (the merge base against the intended target branch), target SHA and branch
+HEAD. Reach, unchanged-probe and unchanged-script checks compare that base to HEAD; refresh it
+on a later rebase. The original pre-edit SHA and probe/citation captures remain historical
+measurements, never the ownership boundary for incoming upstream commits. Record upstream
+probe changes separately and compare this story's probe edits against the post-rebase base.
+
+ST05 and assessment 7.5 additionally admit exactly
+`project-management/export/clickup/US010-CLIENT.md` as a necessary generated closeout artefact
+when the staged story invokes the armed ClickUp export hook. Record the story input SHA, exporter
+SHA, hook invocation and generated output hash; independently reproduce the output from that
+story. No hand edit, task-map write, credential access, network request or other export is
+admitted by this exception. The adapter publishes the same local transition when configured;
+export regeneration does not grant authority to change story status.
+
+**Approved remediation 09/10/2026 (grill-with-docs, Q4).** Every valid offered configuration
+means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_. All applicable generated-tree gates run for each case,
+with its answers, source SHA, run ID and gate outcomes recorded separately. A mobile-only run or
+reduced `shipped-ai` fixture cannot establish this criterion. US010 owns the workflow expansion;
+US011 and US012 consume its exhaustive runs and add no CI implementation. If US012 lands before
+that expansion, its red/green detector proof can be recorded but exhaustive generation remains
+unmeasured and its full-coverage completion criterion cannot be ticked.
+
 Checkable by reading the shipped diff and running the named self-tests. These become US010's
 Security acceptance criteria; the assessment numbers them 7.1 to 7.8. **The `ST` numbers are never
 reused or renumbered**, and a corrected clause is shown corrected.
@@ -438,7 +461,7 @@ reused or renumbered**, and a corrected clause is shown corrected.
 | ST02 | Kept, rationale corrected                          | All seven lines ahead of `rmdir .copier` (`copier.yml:1004`), and that line stays `rmdir` — it is the chain's completeness check                                                                                                                                                                                                                                                                                                                                                                                              | TM-07               |
 | ST03 | Kept, host named; seed-row clause added 27/09/2026 | Seeds authored blank; emptiness proved by a third family in `shipped-registers.sh`, each check with a self-test probe. The family also asserts that the map-index seed's one row, its `Status` read under the read rule, string-equals `.copier/MAP-SCALE-PLANNING.md:4`, its probe a mutated seed pair yielding exactly one finding — a clause in this family, not a second family, so round 2 Q12's trigger is not reached (settled 27/09/2026, grilling round 7 Q34; `project-management/src/02-STORIES/US010.md:795-803`) | TM-03, TM-04, TM-08 |
 | ST04 | Kept, row shape settled                            | No syntek-base literal and no debt line in any seed; the map-index seed's one row per grilling round 1 Q4. Hosted by the QA generated-tree grep and review; that row's `Status` agreement with the seeded map is hosted by ST03's seed-row clause (settled 27/09/2026, grilling round 7 Q34)                                                                                                                                                                                                                                  | TM-08               |
-| ST05 | Kept, allowlist widened                            | No network fetch, no credential read, no write outside the widened list — widened a second time by `project-management/workflows/`, `how-to/src/TEMPLATE-GUIDE/` and `how-to/src/TEMPLATE-TOKENS.md` (settled 27/09/2026, grilling round 3 Q14); every existing probe passes unchanged                                                                                                                                                                                                                                        | TM-15               |
+| ST05 | Kept, allowlist widened                            | No network fetch, no credential read, no write outside the widened list plus exactly the generated `project-management/export/clickup/US010-CLIENT.md` with the provenance approved 09/10/2026 — widened a second time by `project-management/workflows/`, `how-to/src/TEMPLATE-GUIDE/` and `how-to/src/TEMPLATE-TOKENS.md` (settled 27/09/2026, grilling round 3 Q14); every existing probe passes unchanged                                                                                                                 | TM-15               |
 | ST06 | **New**                                            | No `_exclude` negation re-includes any index path, matched with `_exclude`'s glob semantics; probes plant a literal and a glob-form negation                                                                                                                                                                                                                                                                                                                                                                                  | TM-02, TM-09        |
 | ST07 | **New**                                            | The fixture creates the six register folders (settled); the probe changes every seed between tags, asserts byte-identity, and is proved red with the gate removed (added at this gate, TM-04; all three go into US010, settled 27/09/2026, grilling round 3 Q16)                                                                                                                                                                                                                                                              | TM-01, TM-04, TM-05 |
 | ST08 | **New**                                            | Every line in the chain's one-line form: no flag, no quoting, no `\|\| true`, no fold split                                                                                                                                                                                                                                                                                                                                                                                                                                   | TM-05, TM-06        |

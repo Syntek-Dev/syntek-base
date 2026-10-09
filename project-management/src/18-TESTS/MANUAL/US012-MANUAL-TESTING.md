@@ -2,7 +2,7 @@
 
 _The manual testing guide for US012 — the reads a tester follows step by step over the story's CI runs and its one changed script, and, once walked, whether each step passed. Authored from the specs at `17-story-plans` Step 7.2 on 03/10/2026, before any code; walked at `22-implementation-documentation` Step 4._
 
-**Last Updated**: 03/10/2026 · **Story**: US012 · **Status**: Authored — not yet walked
+**Last Updated**: 09/10/2026 · **Story**: US012 · **Status**: Authored — not yet walked
 
 - **Story:** `../../02-STORIES/US012.md` — a seeded file that never lands is reported, and the gate's header claim becomes true
 - **Story plan:** `../../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md` — the code master this guide was authored beside
@@ -22,6 +22,47 @@ _The manual testing guide for US012 — the reads a tester follows step by step 
 ---
 
 ## Preconditions and environment
+
+**Approved integration correction 09/10/2026 — clean landing HEAD.** Before any
+base-to-HEAD reach or unchanged-content comparison, capture the landing HEAD, post-rebase base
+and `git status --porcelain=v1 --untracked-files=all`. The status output must be empty: no staged,
+working-tree or untracked change. Record that capture outside the checkout until the comparison
+is complete; writing this guide's results afterwards does not retrospectively establish a clean
+checkout. Any pending change prevents the HEAD-only row being marked Pass. The captured HEAD
+must be the commit rendered by the run whose evidence is read.
+
+Before commit, assess the prospective change separately with
+`git diff --name-only <recorded post-rebase base SHA>` (tracked on-disk content),
+`git diff --cached --name-only <recorded post-rebase base SHA>` (index content),
+plus `git ls-files --others --exclude-standard` (untracked paths), and compare every path to the
+allowlist. Include the exact generated story export and inspect its staged and on-disk bytes;
+it must not disappear merely because HEAD lacks the new version. A pre-commit read never
+substitutes for the clean landing-HEAD comparison. Ignored build outputs are not source changes;
+if the exact generated export is ignored or untracked, verify its path and provenance explicitly
+and require it tracked at the landing HEAD when the enabled hook owes it.
+
+**Approved remediation 09/10/2026 (grill-with-docs, Q1).** The local build-start owner is
+`code/workflows/01-implement-story/STEPS.md` Step 1, its checklist and common build-start
+instruction: after all due pre-edit captures and before the first source edit, it records
+`Open` -> `In Progress` without requiring ClickUp credentials or a board. Documentation-only
+stories reuse that Step 1 with code phases N/A; this is the procedure US007 must repair before
+these builds, not a claim that the shared procedure has already changed.
+An enabled board adapter publishes that same committed transition and never becomes a second
+status authority. After US007 lands, the sprint plan's _Story Plans_ Status cell mirrors this
+plan's own Status field on every transition, including `Blocked`, `Open`, `In Progress`,
+`In Review` and `Completed`; a genuine no-file row alone reads _no plan to mirror_. Story and
+plan carriers retain their own lifecycle and are not reconciled by the index read rule. A plan
+transition carries its sprint-plan mirror in the same change; generated exports accompany story
+transitions only where that integration is enabled. These are future workflow requirements,
+not a build-start transition performed by this documentation correction.
+
+**Approved remediation 09/10/2026 (grill-with-docs, Q4).** Every valid offered configuration
+means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_. All applicable generated-tree gates run for each case,
+with its answers, source SHA, run ID and gate outcomes recorded separately. A mobile-only run or
+reduced `shipped-ai` fixture cannot establish this criterion. US010 owns the workflow expansion;
+US011 and US012 consume its exhaustive runs and add no CI implementation. If US012 lands before
+that expansion, its red/green detector proof can be recorded but exhaustive generation remains
+unmeasured and its full-coverage completion criterion cannot be ticked.
 
 - **Stack:** none — the story runs no container, and every generated tree is made by CI (story plan
   -> _Quality Gates, Scripts & Local↔Docker Alignment_)
@@ -82,7 +123,11 @@ _The manual testing guide for US012 — the reads a tester follows step by step 
 
 ## Recorded during the build
 
-None required. No spec asks this file to hold a capture:
+| Capture                                                                                | Taken                                                                                   | Value |
+| -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----- |
+| Clean landing HEAD, post-rebase base and empty staged/worktree/untracked status output | Before HEAD-only reach or no-change comparisons; record outside checkout until complete |       |
+
+The landing-HEAD capture above is required here. Other evidence is recorded in the automated record:
 
 - **The run IDs and the red run's probe line** are homed in the automated record by the story
   (_QA Acceptance Criteria — Automated_, its second criterion, the green run's beside them) and by
@@ -100,6 +145,15 @@ None required. No spec asks this file to hold a capture:
 
 ## Journeys
 
+### Approved remediation evidence
+
+| ID        | Action                                                                              | Expected outcome                                                                                                                                                                                                                                                                                                                                 | Flow | QA  | Result | Notes |
+| --------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | --- | ------ | ----- |
+| REMEDY-01 | Read the build-start transition and board-adapter event evidence                    | Step 1 of code/workflows/01-implement-story/STEPS.md, its checklist and common build-start instruction record the story transition after due pre-edit captures and before the first source edit without a board; documentation-only code phases are N/A; the enabled adapter publishes the same committed event and writes no independent status | —    | —   |        |       |
+| REMEDY-02 | Read each plan transition and its sprint-plan Story Plans row                       | After US007 lands, the cell mirrors that plan's own status in the same change; no live Not started placeholder survives                                                                                                                                                                                                                          | —    | —   |        |       |
+| REMEDY-03 | Reconcile the run's configuration IDs and gate results with US010's approved matrix | Exactly 72 unique valid cases, each with all applicable generated-tree gates and recorded answers; no absent, failed or unrun case is presented as passing                                                                                                                                                                                       | —    | —   |        |       |
+| REMEDY-04 | Read the self-test results separately from complete generated-tree results          | A reduced fixture or a detector self-test remains its own proof; it never stands in for the 72 complete trees                                                                                                                                                                                                                                    | —    | —   |        |       |
+
 One `###` section per journey **area**, rows in the order a person moves through the product.
 
 Each row: `ID` · `Action` · `Expected outcome` · `Flow` · `QA` · `Result` · `Notes`. What each
@@ -116,15 +170,15 @@ column holds is this folder's `CONTEXT.md`; how each is filled is its `CLAUDE.md
 
 ### The green run
 
-| ID       | Action                                                                                                                     | Expected outcome                                                                                                                                                                                                                    | Flow | QA    | Result | Notes |
-| -------- | -------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----- | ------ | ----- |
-| GREEN-01 | Open the green run and read the log of its self-test step                                                                  | The step passes; the new probe's line passes; the success line counts **6 probes** where it counted 5 before the story — a 5 means the probe was never added, a 7 that something else was                                           | —    | HP-02 |        |       |
-| GREEN-02 | In the same log, read the line of the check-5 probe, the probe that runs straight after the new one                        | It passes, seeing exactly its own one finding — the moved seed was restored, so no later probe inherits the deletion                                                                                                                | —    | HP-04 |        |       |
-| GREEN-03 | In the same log, read check 3's feature-map leak probe line                                                                | It passes — still exactly one finding with the seeded map beside the planted one                                                                                                                                                    | —    | HP-05 |        |       |
-| GREEN-04 | In the same run, read the log of the full-run step                                                                         | For every render path the template offers (today: `INCLUDE_MOBILE` false and true): no check-4 finding for any seeded file, and check 3 admits every seed rather than reporting it as leaked. The step exits 0                      | —    | HP-01 |        |       |
-| GREEN-05 | Read the commands of the self-test step and the full-run step in `.github/workflows/audit-template.yml`                    | The self-test names the `INCLUDE_MOBILE` false tree alone; the full run names every generated tree (today: the false and true trees). The six probes are proof over one tree, and only the full run is proof over every render path | —    | EC-09 |        |       |
-| GREEN-06 | Diff the new probe between the red commit and the green commit                                                             | No change — the loop turned the same probe green                                                                                                                                                                                    | —    | —     |        |       |
-| GREEN-07 | Open the branch-head run, the last commit before the pull request, and read its self-test step and its full-run step apart | Two claims, read separately: the self-test passes at **6 probes** over the one tree it reads, and the full run exits 0 over every render path the template offers (today: `INCLUDE_MOBILE` true and false)                          | —    | —     |        |       |
+| ID       | Action                                                                                                                     | Expected outcome                                                                                                                                                                                                                                                   | Flow | QA    | Result | Notes |
+| -------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ----- | ------ | ----- |
+| GREEN-01 | Open the green run and read the log of its self-test step                                                                  | The step passes; the new probe's line passes; the success line counts **6 probes** where it counted 5 before the story — a 5 means the probe was never added, a 7 that something else was                                                                          | —    | HP-02 |        |       |
+| GREEN-02 | In the same log, read the line of the check-5 probe, the probe that runs straight after the new one                        | It passes, seeing exactly its own one finding — the moved seed was restored, so no later probe inherits the deletion                                                                                                                                               | —    | HP-04 |        |       |
+| GREEN-03 | In the same log, read check 3's feature-map leak probe line                                                                | It passes — still exactly one finding with the seeded map beside the planted one                                                                                                                                                                                   | —    | HP-05 |        |       |
+| GREEN-04 | In the same run, read the log of the full-run step                                                                         | For every render path the template offers (the 72 valid cases approved 09/10/2026): no check-4 finding for any seeded file, and check 3 admits every seed rather than reporting it as leaked. The step exits 0                                                     | —    | HP-01 |        |       |
+| GREEN-05 | Read the commands of the self-test step and the full-run step in `.github/workflows/audit-template.yml`                    | The self-test names one designated clean case, its full configuration ID recorded; the full run names every generated tree (the 72 valid cases approved 09/10/2026). The six probes are proof over one tree, and only the full run is proof over every render path | —    | EC-09 |        |       |
+| GREEN-06 | Diff the new probe between the red commit and the green commit                                                             | No change — the loop turned the same probe green                                                                                                                                                                                                                   | —    | —     |        |       |
+| GREEN-07 | Open the branch-head run, the last commit before the pull request, and read its self-test step and its full-run step apart | Two claims, read separately: the self-test passes at **6 probes** over the one tree it reads, and the full run exits 0 over every render path the template offers (the 72 valid cases approved 09/10/2026)                                                         | —    | —     |        |       |
 
 ### The seed finding and the closing guidance
 

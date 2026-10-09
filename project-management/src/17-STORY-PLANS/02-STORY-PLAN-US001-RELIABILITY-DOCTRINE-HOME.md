@@ -279,18 +279,20 @@ rather than left to be inferred as a pass.
 The rows a person walks for these checks are in `../18-TESTS/MANUAL/US001-MANUAL-TESTING.md`,
 authored from this plan before code (backfilled 30/09/2026) and walked at `22`.
 
-**On `doc-references.sh`:** US001's story carries a **flat must-pass**, which
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` <!-- doc-references: template-only --> records as
-inconsistent with its baseline-diff decision and **deliberately leaves standing** — that story
-predates the measurement, and editing a signed-off story to match a later record would hide that
-the reasoning moved. **The implementer should nonetheless capture the baseline in Step A**: the
-gate is red on the tree for reasons US001 does not own, and the diff is the only way to tell
-whether this story broke a citation. That record was superseded on 30/09/2026 by
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` <!-- doc-references: template-only -->,
-which restates it unchanged — the inconsistency it leaves standing included — but for the manual
-testing guide's path. <!-- UPDATED 30/09/2026: successor added beside the superseded record,
-which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
-16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
+**Requirement corrected 09/10/2026:** capture the citation baseline before the first source
+edit, preserve raw diagnostics and detector hash, and compare stable `(file, kind, token)`
+identities with multiplicity in the same git-index state. No new finding attributable to this
+story may survive. Existing findings are named with their owners; a surviving non-empty baseline
+is reported as a diff, never a pass. The original flat must-pass criterion and the accepted
+US003 records' decision to leave it standing describe the earlier state; this dated acceptance
+amendment resolves that contradiction without rewriting either accepted ADR.
+
+**Negative proofs:** in a disposable checkout, re-aim the repointed
+`code/docs/PROCESS-MODEL.md` route at the old `code/docs/TASK-AUTHORING.md` section and require
+the human reader to follow that exact route and identify the missing rule. Separately replace a route
+with the nonexistent path "code/docs/reliability/US001-MISSING-PROBE.md", require the new
+citation finding by token, undo the mutation and verify the original finding multiset returns.
+The path gate makes no section-level claim.
 
 ## Documentation Write-Ups (Implementation Records)
 
@@ -363,7 +365,9 @@ it, which cleared it.
 - [ ] The three pointers reach the family; `NEGATIVE-SPACE.md`'s other citations are untouched
 - [ ] Index rows exist in all four surfaces
 - [ ] Every new file under 270 counted lines at birth
-- [ ] `docs-length.sh`, `docs-pairing.sh`, `doc-references.sh`, `doctrine-drift.sh`, lint and format pass
+- [ ] `docs-length.sh`, `docs-pairing.sh`, `doctrine-drift.sh`, lint and format pass
+- [ ] `doc-references.sh` satisfies the stable-identity baseline rule above; existing findings
+      are attributed and never misreported as a pass
 - [ ] `../18-TESTS/MANUAL/US001-MANUAL-TESTING.md` is walked and its rule inventory balances
 - [ ] The human read-across is done and signed off by someone other than the author
 - [ ] Story `**Status:**` moved to `Completed`; this plan's row in
@@ -382,3 +386,5 @@ it, which cleared it.
      plan's row is in `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md`. The decline itself stands and is kept; the
      backticks came off the index filename because the file exists nowhere yet and the citation
      gate reads backticked tokens. -->
+
+<!-- CORRECTED 09/10/2026 after adversarial review: Active completion and negative-proof rules reconciled with the accepted baseline and prose boundaries. -->

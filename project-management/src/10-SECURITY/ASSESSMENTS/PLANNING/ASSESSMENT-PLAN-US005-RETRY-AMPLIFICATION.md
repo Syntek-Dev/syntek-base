@@ -118,20 +118,20 @@ Design-stage posture. Status ∈ Addressed / Partial / Open / N/A.
 All twelve are adopted unchanged from the threat model. Present-state severity; design-state and
 trigger in that document's Section 3a.
 
-| ID    | STRIDE | OWASP      | NIST CSF   | Trust Boundary | Threat Description                                                                        | Severity | Planned Mitigation                                                                                                                                     |
-| ----- | ------ | ---------- | ---------- | -------------- | ----------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| TM-02 | T      | `A02:2025` | `PR.PS-01` | TB3            | Unconfigured client silently inherits the vendor retry default; no gate detects it        | **LOW**  | `DEFERRED.md` entry at ship naming `S-05` as owner; sequence `S-05` before the first client-wiring story; manual review at the register row until then |
-| TM-01 | D      | `A10:2025` | `PR.IR-04` | TB1            | Stacked retries multiply geometrically against a provider already failing                 | INFO     | One owner per operation; layers beneath make a single attempt; explicit SDK clamp; derived worst-case formula                                          |
-| TM-03 | D      | `A10:2025` | `PR.IR-04` | TB2            | Untrusted `Retry-After` controls sleep duration and can park a worker indefinitely        | INFO     | `max(backoff, Retry-After)` clamped by the total-age ceiling; beyond-budget means exhausted, park, never sleep past                                    |
-| TM-04 | T      | `A08:2025` | `PR.DS-01` | TB1            | Duplicate execution of a repeat that is not provably idempotent                           | INFO     | Idempotency precondition stated on the owner rule; proof ladder named until slice `S-03` ships                                                         |
-| TM-05 | I      | `A09:2025` | `PR.DS-01` | TB4            | Attempt logs repeat exception text embedding request URLs and presigned credentials       | INFO     | Attempt log records attempt number, elapsed budget and error class only                                                                                |
-| TM-06 | S      | `A08:2025` | `PR.AA-05` | TB1            | A re-signed retry widens the window in which a captured delivery replays as authentic     | INFO     | Webhook override reuses the delivery identifier; signature timestamp not refreshed per attempt                                                         |
-| TM-07 | R      | `A09:2025` | `DE.AE-03` | TB4            | A repeat cannot be reconstructed after an outage without a per-attempt record             | INFO     | Attempt numbering and elapsed-budget recording stated as part of the budget rule                                                                       |
-| TM-08 | T      | `A06:2025` | `GV.PO-01` | TB3 · TB5      | `code/docs/mcp-server/TOOL-DESIGN.md:139-141` states the inverse of the doctrine          | INFO     | Repaired in this story or explicitly assigned to a slice — raised to the story via the QA gate                                                         |
-| TM-09 | D      | `A06:2025` | `PR.IR-04` | TB5            | "Served surfaces never retry" moves the storm inbound, onto rate limits that do not exist | INFO     | Caller-side obligation stated alongside; absent inbound rate limiting carried as a named dependency                                                    |
-| TM-10 | D      | `A06:2025` | `ID.AM-08` | TB1            | A delegated transport budget is unobservable, so the worst case stops resolving           | INFO     | Register row records the delegated attempt count and interval as numbers                                                                               |
-| TM-11 | D      | `A06:2025` | `RS.MA-01` | TB1            | Per-operation budgets do not bound fleet-level amplification; the breaker is deferred     | INFO     | Deferral recorded with both triggers, naming the existing disable-after-N-failures rule as partial mechanism                                           |
-| TM-12 | T      | `A08:2025` | `PR.DS-01` | TB1            | Stale intent replayed at the end of a long budget                                         | INFO     | Staleness escape hatch stated with the condition that makes it mandatory rather than merely available                                                  |
+| ID    | STRIDE | OWASP      | NIST CSF   | Trust Boundary | Threat Description                                                                        | Severity | Planned Mitigation                                                                                                                                                                       |
+| ----- | ------ | ---------- | ---------- | -------------- | ----------------------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TM-02 | T      | `A02:2025` | `PR.PS-01` | TB3            | Unconfigured client silently inherits the vendor retry default; no gate detects it        | **LOW**  | `DEFERRED.md` entry at ship naming `S-05` as owner; sequence `S-05` before the first client-wiring story; manual review at the register row until then                                   |
+| TM-01 | D      | `A10:2025` | `PR.IR-04` | TB1            | Stacked retries multiply geometrically against a provider already failing                 | INFO     | One owner per operation; layers beneath make a single attempt; explicit SDK clamp; derived worst-case formula                                                                            |
+| TM-03 | D      | `A10:2025` | `PR.IR-04` | TB2            | Untrusted `Retry-After` controls sleep duration and can park a worker indefinitely        | INFO     | Manual owner checks the required wait and final countdown against interval and remaining-age bounds; over either parks, never shortens Retry-After; no automatic manual cap (09/10/2026) |
+| TM-04 | T      | `A08:2025` | `PR.DS-01` | TB1            | Duplicate execution of a repeat that is not provably idempotent                           | INFO     | Idempotency precondition stated on the owner rule; proof ladder named until slice `S-03` ships                                                                                           |
+| TM-05 | I      | `A09:2025` | `PR.DS-01` | TB4            | Attempt logs repeat exception text embedding request URLs and presigned credentials       | INFO     | Attempt log records attempt number, elapsed budget and error class only                                                                                                                  |
+| TM-06 | S      | `A08:2025` | `PR.AA-05` | TB1            | A re-signed retry widens the window in which a captured delivery replays as authentic     | INFO     | Webhook override reuses the delivery identifier; signature timestamp not refreshed per attempt                                                                                           |
+| TM-07 | R      | `A09:2025` | `DE.AE-03` | TB4            | A repeat cannot be reconstructed after an outage without a per-attempt record             | INFO     | Attempt numbering and elapsed-budget recording stated as part of the budget rule                                                                                                         |
+| TM-08 | T      | `A06:2025` | `GV.PO-01` | TB3 · TB5      | `code/docs/mcp-server/TOOL-DESIGN.md:139-141` states the inverse of the doctrine          | INFO     | Repaired in this story or explicitly assigned to a slice — raised to the story via the QA gate                                                                                           |
+| TM-09 | D      | `A06:2025` | `PR.IR-04` | TB5            | "Served surfaces never retry" moves the storm inbound, onto rate limits that do not exist | INFO     | Caller-side obligation stated alongside; absent inbound rate limiting carried as a named dependency                                                                                      |
+| TM-10 | D      | `A06:2025` | `ID.AM-08` | TB1            | A delegated transport budget is unobservable, so the worst case stops resolving           | INFO     | Register row records the delegated attempt count and interval as numbers                                                                                                                 |
+| TM-11 | D      | `A06:2025` | `RS.MA-01` | TB1            | Per-operation budgets do not bound fleet-level amplification; the breaker is deferred     | INFO     | Deferral recorded with both triggers, naming the existing disable-after-N-failures rule as partial mechanism                                                                             |
+| TM-12 | T      | `A08:2025` | `PR.DS-01` | TB1            | Stale intent replayed at the end of a long budget                                         | INFO     | Staleness escape hatch stated with the condition that makes it mandatory rather than merely available                                                                                    |
 
 **Nothing is escalated to
 `project-management/src/10-SECURITY/VULNERABILITIES/PLANNING/`, and that is a decision.** The
@@ -146,6 +146,17 @@ first story that wires a client — the same trigger as TM-01.
 
 ## 7. Security tasks & open gaps
 
+**Corrected 09/10/2026 — manual countdown ownership.** The manual retry owner explicitly
+computes the required wait `W = max(backoff, Retry-After)` and checks it against both the row's
+interval cap `C` and remaining total age `A = total-age ceiling - elapsed age`. It parks the work
+as exhausted if `W > C`, `W > A`, or the attempt budget is exhausted; it never shortens an
+oversized wait to fit a cap or retries before `Retry-After`. Jitter must not lower `W`; any
+additional jitter is included in the final countdown and checked against both bounds again
+immediately before scheduling. A valid manual `Task.retry(countdown=...)` receives only that
+checked countdown. These are requirements on the doctrine US005 will write, not a new task
+implementation or a claim that a worker was tested. Existing budget values, overrides and
+owned deferrals remain unchanged.
+
 Each becomes a checklist item the implementation assessment closes with evidence. These are
 constraints on **the doctrine's wording**, because that is all this story ships.
 
@@ -154,8 +165,11 @@ constraints on **the doctrine's wording**, because that is all this story ships.
       timeout register names the delegation and its reason_ (TM-01, TM-02, `A02` / `A10`).
 - [ ] The worst-case formula states its own assumption — that inner-layer attempts equal one
       (TM-01, TM-10, `A10`).
-- [ ] The `Retry-After` rule states the total-age clamp and the beyond-budget-means-exhausted case
-      in the same breath as the honouring, never as a later caveat (TM-03, `A10`).
+- [ ] The `Retry-After` rule names the manual owner of `max(backoff, Retry-After)` and the
+      explicit interval-cap and remaining-total-age checks before scheduling. An oversized wait
+      parks the work, never retries before `Retry-After`; jitter cannot lower the minimum and
+      its final countdown is checked again. `retry_backoff_max` is not automatic enforcement
+      for `Task.retry(countdown=...)` (TM-03, `A10`; corrected 09/10/2026).
 - [ ] The owner rule states an idempotency precondition on every repeat, and names where the proof
       lives until slice `S-03` ships (TM-04, `A08`).
 - [ ] The attempt-log rule names what is recorded — attempt number, elapsed budget, error class —

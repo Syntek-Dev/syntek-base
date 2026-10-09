@@ -2,7 +2,7 @@
 
 _The manual testing guide for US002 — the journey a tester follows step by step, and — once walked — whether each step passed. Authored on 30/09/2026 at `17-story-plans` Step 7.2, as a backfill for a story planned before authorship moved to that step: written from the specs below, before any of the story's work exists._
 
-**Last Updated**: 30/09/2026 · **Story**: US002 · **Status**: Authored — not yet walked
+**Last Updated**: 09/10/2026 · **Story**: US002 · **Status**: Authored — not yet walked
 
 - **Story:** `../../02-STORIES/US002.md` — The audits register regains the headroom nine new gates need
 - **Story plan:** `../../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` — the code master this guide was authored beside
@@ -70,8 +70,8 @@ them at the walk. Not a journey: nothing here carries a `Result`.
 | `code/src/scripts/audits/CLAUDE.md`, counted lines, same run — 165 in the story                                                     |       |
 | Scripts · Directory Tree rows · inventory rows · Dependencies rows — 24 · 26 · 24 · 20 in the story                                 |       |
 
-**The `doc-references.sh` baseline.** Not yet captured. Every finding by identity — file, line and
-class, as the gate printed it — or `None.`
+**The `doc-references.sh` baseline.** Not yet captured. Every finding by stable identity — `(file, kind, token)` with multiplicity,
+excluding line numbers from the comparison — or `None.`
 
 ### After the build
 
@@ -97,6 +97,11 @@ this file is the sole owner of.
 
 | Passage, as it stood | Class — restatement / operating rule / sole-owner fact | Disposition — routed / relocated / kept / deleted | Owner routed to, or new home | Reason (deleted only) |
 | -------------------- | ------------------------------------------------------ | ------------------------------------------------- | ---------------------------- | --------------------- |
+
+Keep the raw gate output, including line numbers, beside each capture for diagnosis. Compare
+the stable identities as a multiset: a repeated identity retains its occurrence count; moving
+an unchanged citation to another line creates no new finding. Detector and git-index state
+must match across the comparison.
 
 ---
 
@@ -244,3 +249,7 @@ Filled at the walk.
 - `../../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` — why `doctrine-drift.sh` is out of scope here
 - `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — why `doc-references.sh` is read as a diff against the baseline; superseded 30/09/2026 by `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged and names this file as where the baseline is recorded
 - No `05-USER-FLOW` citation: the story's `User Flow` flag is N/A, so no consolidated flow or flow implementation record exists for it
+
+<!-- CORRECTED 09/10/2026 after adversarial review: citation baseline identities now omit
+     line numbers and preserve multiplicity, following the US007 QA-plan comparison rule.
+     Raw diagnostics remain recorded; no build capture or manual Result has been filled. -->

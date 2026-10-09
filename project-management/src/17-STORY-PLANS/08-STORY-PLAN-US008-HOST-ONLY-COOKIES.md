@@ -27,7 +27,10 @@
      {US008, US009}, the order `../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md` -> _Build order_ settled
      on 17/09/2026 on the `Must`-before-`Should` rule in `../../docs/planning/CADENCE.md`. -->
 
-Implements `../15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` (the advisory ships
+Implements `../15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`,
+which supersedes the following two records on 09/10/2026 while retaining their dual-gate and
+channel-ownership principles. Earlier decisions, preserved as history:
+`../15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` (the advisory ships
 as **two** `_migrations:` entries gated on different things — an unversioned, state-gated entry for
 the always-wrong `_DOMAIN`-beside-`__Host-` combination, and a version-keyed entry for the one-time
 cutover notice — with the key derived at release against `git tag` and never carried from a
@@ -518,8 +521,9 @@ advisory exiting 0 therefore never reaches the preview's report, and at `:275` t
 
 The repair is an **additive report block** on the success path, a sibling of the
 `── What this update does ──` block at `:162` which already prints counts of modified, deleted,
-added and conflicted files. It greps the migration banner lines out of `$UPDATE_LOG` and prints
-them — roughly eight lines, in a script whose whole structure is additive report blocks. It
+added and conflicted files. It prints the complete captured update output from `$UPDATE_LOG` once in a labelled block,
+including every advisory body and its operator guidance. It does not filter by banner or truncate
+the report; the fuller output is the accepted trade-off (09/10/2026 successor ADR). It
 touches **neither** the failure tail at `:151`, which is inside `if [[ $UPDATE_RC -ne 0 ]]`, **nor**
 the `cleanup` trap at `:122`, which fires at exit while the repair prints before it. It reorders no
 section and changes no exit code.
@@ -592,8 +596,8 @@ before the release.
 > is writing an untagged number, by this plan's own measurement. The resolution below is the
 > sources', and adopting it needs no ADR; the one it replaces would have needed one. <!-- RE-POINTED 30/09/2026: the story and sprint-plan sentences were cited as `../02-STORIES/US008.md:677` and `../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md:197`, and the story's two tasks, here and in the first numbered point below, as `:997` and `:996`, until then: numbers read on 18/09/2026 from both records before their final edits in 1a9da7c. In the tree committed together with the 18-TESTS split the sentences sit at project-management/src/02-STORIES/US008.md:773-774 and project-management/src/16-SPRINT-PLANS/05-SPRINT-PLAN-05.md:249-250, the tasks at project-management/src/02-STORIES/US008.md:1150 and :1149 -->
 
-1. **P5 writes both entries and the keyed one's comment, not its key.** The unversioned entry is
-   complete at P5. The version-keyed entry lands with the **derived-at-release comment** the
+1. **P5 writes the state entry and an explicitly disabled pending cutover entry, not its key.** The unversioned entry is
+   complete at P5. The pending cutover entry lands with `when: false` and the **derived-at-release comment** the
    story's task at `:1149` requires — stating that the key names the release the doctrine ships in,
    that it is the first minor-keyed migration this template has carried, and that the value is
    written at release and not at design.
@@ -709,23 +713,23 @@ reserves for a citation that is right and merely unprovable downstream.
 
 ## Key Decisions
 
-| Decision                                      | Chosen                                                                                                             | Rejected                                                                          | Why                                                                                                                                                                                                                        | Reference                                              |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Phase order                                   | The gate (P1) **before** the settings (P2)                                                                         | Settings first, gate second                                                       | The discriminating comparison is the new script over the **un-edited** modules; clauses that do not yet exist cannot be run over anything, and there is no reverse comparison because the old script has no clause to fail | `../02-STORIES/US008.md` -> _QA AC — Automated_        |
-| Where the preview repair sits                 | Its own phase (P4), before the advisory exists                                                                     | Folded into P5 with the migrations                                                | It proves the repair's **generality** against `v3.0.0`, `v5.0.0` and `v6.0.0`'s third, which is what the ADR says the repair is for; folding it in couples two proofs and hides which one failed                           | `ADR-US008-MITIGATION-OWNS-ITS-CHANNEL` · grilling Q1  |
-| Who writes the migration key                  | The story, in P5, derived against `git tag` at that moment; the release re-asserts it against the tag actually cut | A placeholder the release substitutes; the release writing the keyed entry itself | A placeholder is the unverified claim the ADR bans; splitting the two entries across a workflow boundary leaves `copier.yml` half-built with nothing owning the other half                                                 | `ADR-US008-MIGRATION-KEY-DUAL-GATED` · grilling Q2     |
-| How the untagged `v7.6.0` slip is handled     | Named once here with its measurement; the story and the ADR left unedited                                          | Correcting both in this change; saying nothing                                    | A story plan has no licence over an `Accepted` ADR or a story, and silence leaves a false premise in two binding records                                                                                                   | Grilling Q3, 18/09/2026                                |
-| Where `CSRF_COOKIE_HTTPONLY` lives            | `base.py`, once, with no environment module re-assigning it                                                        | Per-environment assignment in `staging.py` and `production.py`                    | `code/src/django/config/settings/CLAUDE.md:39-41`: a shared value goes in `base.py`, and "an override that happens to match the base value is a future divergence nobody will notice"                                      | Q2 of the story's grilling, 08/09/2026                 |
-| Where the `__Host-` names live                | `staging.py` and `production.py`, pasted twice on purpose                                                          | A shared constant; collapsing the duplicated block                                | They are per-environment values; the collapse is held by the `GAPS.md` row of 09/09/2026 (Q9), and the fourteen-to-sixteen-line growth is named by this story and claimed by no row                                        | Q9 · `../02-STORIES/US008.md` -> _Acceptance Criteria_ |
-| Whether a pytest test asserts the five values | **No test.** The gate clause is the invariant's one named enforcement point                                        | A pytest assertion over the five settings                                         | `code/docs/NEGATIVE-SPACE.md` forbids a second enforcer of the same rule; `tests/all.sh` runs as a **regression check** that the test settings module still imports, and is reported as what it measured                   | `code/docs/NEGATIVE-SPACE.md` · assessment 7.1         |
-| Where the gate clauses live                   | `code/src/scripts/audits/negative-space.sh`, three clauses                                                         | A new `audits/` script; a clause in an existing narrower gate                     | A new audit costs counted lines in `code/src/scripts/audits/CONTEXT.md`, which sits at **299 of 300** and which Q3 forbids this story to touch; the three clauses join a gate whose CI path filters already cover them     | Q3, Q7 · P0's length reading                           |
-| The clause names                              | Three names, not one                                                                                               | One `cookie-doctrine-broken` clause                                               | The three ways to break the doctrine are three different repairs, on the `key-unraised` / `key-unregistered` / `key-duplicated` precedent                                                                                  | `../02-STORIES/US008.md` -> Scenario 3                 |
-| The absence clause's scope                    | `*.py` under the directory, stated                                                                                 | "Every module under the directory"                                                | The directory holds `CONTEXT.md` and `CLAUDE.md` too; they are protected by the anchoring, and an implementation detail is not a boundary                                                                                  | AC-GAP-4 · EC-03, EC-05                                |
-| Whether a gate clause covers the edge header  | **No clause.** The requirement goes to the deployment contract                                                     | A `negative-space.sh` clause asserting `SECURE_PROXY_SSL_HEADER` is assigned      | The setting is already present in both modules; the risk is entirely the other side of the seam, so a green clause would measure nothing in doubt — the false green `code/docs/GATE-REPORTING.md` names                    | `ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION` Option D |
-| The advisory's gating                         | Two entries — one state-gated and unversioned, one version-keyed                                                   | One version-keyed entry; one unversioned entry; holding for the next MAJOR        | The two halves are true for different reasons and a single gate can only be correct about one; both precedents are already in `copier.yml` at `:827-829` and `:889`/`:903`                                                 | `ADR-US008-MIGRATION-KEY-DUAL-GATED` Option C          |
-| The unversioned entry's silence               | Silent when it finds nothing                                                                                       | Bannering unconditionally, as the two shipped advisories do                       | It runs on every update for the life of the template; an entry that always runs must cost nothing on the updates where it has nothing to say                                                                               | Same ADR                                               |
-| How this plan names what does not exist yet   | Double quotes                                                                                                      | Backticks; a `template-only` marker                                               | The citation gate reads backticked tokens; the marker is for a citation that is right and unprovable downstream, not for a dangling one                                                                                    | `code/docs/FORWARD-VOICE.md` · US006's precedent       |
-| Who writes the records and register entries   | `22-implementation-documentation`                                                                                  | This story                                                                        | `REFERENCES.md`'s ownership table gives them to `22`; a story that writes its own register entry produces two owners for one file                                                                                          | `REFERENCES.md` -> _Ownership boundaries_              |
+| Decision                                      | Chosen                                                                                                                                         | Rejected                                                                     | Why                                                                                                                                                                                                                        | Reference                                                           |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Phase order                                   | The gate (P1) **before** the settings (P2)                                                                                                     | Settings first, gate second                                                  | The discriminating comparison is the new script over the **un-edited** modules; clauses that do not yet exist cannot be run over anything, and there is no reverse comparison because the old script has no clause to fail | `../02-STORIES/US008.md` -> _QA AC — Automated_                     |
+| Where the preview repair sits                 | Its own phase (P4), before the advisory exists                                                                                                 | Folded into P5 with the migrations                                           | It proves the repair's **generality** against `v3.0.0`, `v5.0.0` and `v6.0.0`'s third, which is what the ADR says the repair is for; folding it in couples two proofs and hides which one failed                           | `ADR-US008-MITIGATION-OWNS-ITS-CHANNEL` · grilling Q1               |
+| Who writes the migration key                  | Release writes the actual version and activates the disabled entry in one commit; P5 writes its false condition and derived-at-release comment | An active unkeyed entry awaiting release; a predicted placeholder version    | Prevents a pending entry becoming an always-running migration; approved 09/10/2026                                                                                                                                         | ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026 |
+| How the untagged `v7.6.0` slip is handled     | Named once here with its measurement; the story and the ADR left unedited                                                                      | Correcting both in this change; saying nothing                               | A story plan has no licence over an `Accepted` ADR or a story, and silence leaves a false premise in two binding records                                                                                                   | Grilling Q3, 18/09/2026                                             |
+| Where `CSRF_COOKIE_HTTPONLY` lives            | `base.py`, once, with no environment module re-assigning it                                                                                    | Per-environment assignment in `staging.py` and `production.py`               | `code/src/django/config/settings/CLAUDE.md:39-41`: a shared value goes in `base.py`, and "an override that happens to match the base value is a future divergence nobody will notice"                                      | Q2 of the story's grilling, 08/09/2026                              |
+| Where the `__Host-` names live                | `staging.py` and `production.py`, pasted twice on purpose                                                                                      | A shared constant; collapsing the duplicated block                           | They are per-environment values; the collapse is held by the `GAPS.md` row of 09/09/2026 (Q9), and the fourteen-to-sixteen-line growth is named by this story and claimed by no row                                        | Q9 · `../02-STORIES/US008.md` -> _Acceptance Criteria_              |
+| Whether a pytest test asserts the five values | **No test.** The gate clause is the invariant's one named enforcement point                                                                    | A pytest assertion over the five settings                                    | `code/docs/NEGATIVE-SPACE.md` forbids a second enforcer of the same rule; `tests/all.sh` runs as a **regression check** that the test settings module still imports, and is reported as what it measured                   | `code/docs/NEGATIVE-SPACE.md` · assessment 7.1                      |
+| Where the gate clauses live                   | `code/src/scripts/audits/negative-space.sh`, three clauses                                                                                     | A new `audits/` script; a clause in an existing narrower gate                | A new audit costs counted lines in `code/src/scripts/audits/CONTEXT.md`, which sits at **299 of 300** and which Q3 forbids this story to touch; the three clauses join a gate whose CI path filters already cover them     | Q3, Q7 · P0's length reading                                        |
+| The clause names                              | Three names, not one                                                                                                                           | One `cookie-doctrine-broken` clause                                          | The three ways to break the doctrine are three different repairs, on the `key-unraised` / `key-unregistered` / `key-duplicated` precedent                                                                                  | `../02-STORIES/US008.md` -> Scenario 3                              |
+| The absence clause's scope                    | `*.py` under the directory, stated                                                                                                             | "Every module under the directory"                                           | The directory holds `CONTEXT.md` and `CLAUDE.md` too; they are protected by the anchoring, and an implementation detail is not a boundary                                                                                  | AC-GAP-4 · EC-03, EC-05                                             |
+| Whether a gate clause covers the edge header  | **No clause.** The requirement goes to the deployment contract                                                                                 | A `negative-space.sh` clause asserting `SECURE_PROXY_SSL_HEADER` is assigned | The setting is already present in both modules; the risk is entirely the other side of the seam, so a green clause would measure nothing in doubt — the false green `code/docs/GATE-REPORTING.md` names                    | `ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION` Option D              |
+| The advisory's gating                         | Two entries — one state-gated and unversioned, one version-keyed                                                                               | One version-keyed entry; one unversioned entry; holding for the next MAJOR   | The two halves are true for different reasons and a single gate can only be correct about one; both precedents are already in `copier.yml` at `:827-829` and `:889`/`:903`                                                 | `ADR-US008-MIGRATION-KEY-DUAL-GATED` Option C                       |
+| The unversioned entry's silence               | Silent when it finds nothing                                                                                                                   | Bannering unconditionally, as the two shipped advisories do                  | It runs on every update for the life of the template; an entry that always runs must cost nothing on the updates where it has nothing to say                                                                               | Same ADR                                                            |
+| How this plan names what does not exist yet   | Double quotes                                                                                                                                  | Backticks; a `template-only` marker                                          | The citation gate reads backticked tokens; the marker is for a citation that is right and unprovable downstream, not for a dangling one                                                                                    | `code/docs/FORWARD-VOICE.md` · US006's precedent                    |
+| Who writes the records and register entries   | `22-implementation-documentation`                                                                                                              | This story                                                                   | `REFERENCES.md`'s ownership table gives them to `22`; a story that writes its own register entry produces two owners for one file                                                                                          | `REFERENCES.md` -> _Ownership boundaries_                           |
 
 ---
 
@@ -1466,3 +1470,160 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US008
       cheapest available evidence
 - [ ] Status propagated to every artefact that carries it, and the ClickUp export regenerated
 - [ ] PR raised and promoted via `23-pr-and-review`; merged to `main` or the active release branch
+
+---
+
+### Approved fixture answers — 09/10/2026
+
+**Settled Q5:** use a temporary browser fixture; do not defer the accepted HTMX proof or ship a
+new page. Frontend N/A continues to describe the product diff only. HP-04 and COOKIE-01 to
+COOKIE-05 run in a disposable clone, using a dedicated disposable dev stack, never this checkout.
+Record the clone SHA, script commands, fixture diff and HTMX asset version/hash, not credentials.
+
+1. Run `bash install.sh`, `bash code/src/scripts/development/server.sh up --build`, and
+   `bash code/src/scripts/database/seed-dev.sh` in that clone. Use the URL printed by the server.
+   Check the clone's stack/project identity and host ports first; stop rather than share the
+   working checkout's database. Use the repository's worktree setup workflow if isolation is needed.
+2. In the scratch clone only, edit the existing `code/src/django/config/urls.py`: add an uncached
+   `/__us008_cookie_probe__/` GET and a `/__us008_cookie_probe__/write/` POST. Both require
+   an authenticated staff user (`staff_member_required`); POST retains `CsrfViewMiddleware`,
+   has no `csrf_exempt`, requires POST, and returns the literal fragment "US008 write accepted".
+   It changes no model or persistent data. GET renders a RequestContext template from
+   "code/src/django/templates/us008_cookie_probe.html"; neither route is registered in shipped source.
+3. Provision a scratch-only asset package as described below, then copy its HTMX distribution
+   into the clone's static assets, recording version, lockfile integrity and SHA-256. The temporary template loads that same-origin
+   static script and contains a visible **Send test write** button with
+   `hx-post="/__us008_cookie_probe__/write/"`, `hx-target="#us008-result"`, and a visible result
+   element. Its body carries `hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'`, rendered by
+   Django. No form or hidden CSRF input accompanies this button, so the header is the proof.
+   No JavaScript reads the CSRF cookie and no CSP relaxation is introduced.
+4. Restart through `bash code/src/scripts/development/server.sh restart` after the scratch edits.
+   Sign in at `/control/`; open `/control/password_change/`, enter the current seeded password
+   and a valid disposable replacement twice, and submit. Expect `/control/password_change/done/`.
+   Do not record either password. Then open the probe and click **Send test write**: expect POST
+   200 and "US008 write accepted", with `HX-Request: true` and a present `X-CSRFToken` header.
+   Record only header presence, never token values. Temporarily remove `hx-headers`, reload and
+   repeat: expect CSRF 403; restore it and confirm 200. This excludes an accidentally exempt POST.
+5. Observe the cookie flags and console; stop via `bash code/src/scripts/development/server.sh down`.
+   Discard the clone and its fixture; no fixture file, asset or route enters the product commit.
+   If the pinned HTMX asset or isolated stack cannot be provisioned, record that dependency as
+   unmeasured rather than calling the browser row a pass.
+
+**Failed preview fixture (ES-08):** use the clean, valid generated scratch project required by P4,
+commit the copied repaired wrapper and any plants, and verify that the local template source lacks
+ref `us008-does-not-exist-09-10-2026`. Run
+`bash code/src/scripts/development/template-update.sh --ref us008-does-not-exist-09-10-2026`.
+It must reach the copied Copier update, fail there, print the existing failure tail once, exit 2
+and clean up. A missing prerequisite, dirty-tree rejection or source-network failure does not
+satisfy ES-08. Record the valid source ref and the missing-ref diagnosis.
+
+### Release and report correction — 09/10/2026
+
+The controlling successor is `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`. P4 replays complete captured output once; P5
+keeps the pending cutover entry explicitly inactive. The release commit assigns the version and
+activates it together; no cutover notice may run before that commit. Pending, crossing and later
+update fixture proofs are required in addition to recording the real tag at release.
+
+### Exact scratch browser fixture — 09/10/2026
+
+Fixture preparation is file editing in the disposable clone. Runtime setup remains through
+project scripts. There is no marketing app prerequisite and no new shipped app.
+Create an asset-only scratch root outside the clone; copy the existing frontend installer to
+its "code/src/scripts/development/install-frontend.sh". Its package manifest is exactly:
+
+```json
+{
+  "name": "us008-cookie-fixture-assets",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "devDependencies": { "htmx.org": "2.0.4" }
+}
+```
+
+From that scratch root run `bash code/src/scripts/development/install-frontend.sh` to create
+its lockfile, then `bash code/src/scripts/development/install-frontend.sh --check` to install
+with lifecycle scripts disabled. Record the lockfile's resolved integrity and the installed
+"node_modules/htmx.org/dist/htmx.min.js" hash. Copy that file into the disposable clone at
+"code/src/django/static/us008-htmx.min.js". Neither manifest nor lockfile touches the story tree.
+An unavailable dependency blocks the browser walk; no arbitrary CDN or substituted version.
+
+In the clone's existing `code/src/django/config/urls.py`, add the following imports, functions
+and two entries to `urlpatterns`. The configured admin prefix remains intact.
+
+```python
+from django.contrib.admin.views.decorators import staff_member_required
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.decorators.http import require_GET, require_POST
+
+
+@staff_member_required
+@require_GET
+def us008_cookie_probe(request):
+    return render(request, "us008_cookie_probe.html")
+
+
+@staff_member_required
+@require_POST
+def us008_cookie_write(request):
+    return HttpResponse("US008 write accepted")
+
+
+urlpatterns += [
+    path("__us008_cookie_probe__/", us008_cookie_probe),
+    path("__us008_cookie_probe__/write/", us008_cookie_write),
+]
+```
+
+The temporary "code/src/django/templates/us008_cookie_probe.html" is:
+
+```html
+{% load static %}
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <title>US008 cookie probe</title>
+    <script src="{% static 'us008-htmx.min.js' %}" defer></script>
+  </head>
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    <button
+      type="button"
+      hx-post="/__us008_cookie_probe__/write/"
+      hx-target="#us008-result"
+      hx-swap="innerHTML"
+    >
+      Send test write
+    </button>
+    <p id="us008-result" role="status"></p>
+  </body>
+</html>
+```
+
+Do not cache either route, bypass CSRF middleware or copy token/password values into evidence.
+[Django's CSRF guidance](https://docs.djangoproject.com/en/6.0/howto/csrf/) and
+[HTMX's header attribute](https://htmx.org/attributes/hx-headers/) support the existing
+`code/docs/rendering/PITFALLS-AND-EXAMPLES.md` pattern. The missing-header control removes only
+the body's `hx-headers`, reloads the page, and clicks the same button; no hidden form input can
+mask the missing header. Restore the attribute and reload before the positive cookie walk.
+
+### Planned preview fixture helper — 09/10/2026
+
+There is no existing project runner for generating P4's old-template scratch project. P4 must
+therefore author a test-only helper "code/src/scripts/tests/cookie-preview-fixture.sh" before
+walking the preview rows. This is a planned test deliverable; its absence blocks execution,
+not a design answer. The helper owns Copier invocations rather than asking a tester to run them.
+
+Its CLI is `--case shipped-advisories`, `--case domain-report`, `--case missing-ref`,
+`--case pending-key`, `--case release-crossing`, or `--case subsequent-update`, plus
+`--template-source <absolute-local-template-repository>` and `--story-ref <commit>`.
+Run it through Bash from the story root after it exists. It records the exact source SHA,
+Copier version, answers and prior/target fixture refs; generates the project below v3.0.0 with
+fixed non-secret answers; copies the repaired wrapper; commits wrapper/plants; and confirms the
+clean-tree and answers-file prerequisites. For pending/crossing/later cases it makes disposable
+local template refs containing the relevant disabled or atomically activated migration states;
+it never tags or mutates the shared source repository. For `missing-ref` it calls the actual
+`template-update.sh --ref us008-does-not-exist-09-10-2026` from the generated root and verifies
+that the Copier subprocess ran. Capture diagnostics and exit status, and check trap cleanup.
+The helper removes only its own scratch resources. A missing prior ref/dependency or failed
+fixture generation remains unmeasured, not a preview pass. Its fixture cases implement the
+existing P4/P5 proof obligations and ship no browser page or feature.

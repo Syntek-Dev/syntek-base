@@ -2,7 +2,7 @@
 
 _The manual testing guide for US010 — the gates, the self-tests, the CI runs and the read-acrosses a tester follows step by step, and, once walked, whether each passed. Authored from the specs at `17-story-plans` Step 7.2 on 03/10/2026, before any code; walked at `22-implementation-documentation` Step 4._
 
-**Last Updated**: 03/10/2026 · **Story**: US010 · **Status**: Authored — not yet walked
+**Last Updated**: 09/10/2026 · **Story**: US010 · **Status**: Authored — not yet walked
 
 - **Story:** `../../02-STORIES/US010.md` — the seven register indexes are born seeded, and the map index leaves the file that ships
 - **Story plan:** `../../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` — the code master this guide was authored beside
@@ -22,6 +22,47 @@ _The manual testing guide for US010 — the gates, the self-tests, the CI runs a
 ---
 
 ## Preconditions and environment
+
+**Approved integration correction 09/10/2026 — clean landing HEAD.** Before any
+base-to-HEAD reach or unchanged-content comparison, capture the landing HEAD, post-rebase base
+and `git status --porcelain=v1 --untracked-files=all`. The status output must be empty: no staged,
+working-tree or untracked change. Record that capture outside the checkout until the comparison
+is complete; writing this guide's results afterwards does not retrospectively establish a clean
+checkout. Any pending change prevents the HEAD-only row being marked Pass. The captured HEAD
+must be the commit rendered by the run whose evidence is read.
+
+Before commit, assess the prospective change separately with
+`git diff --name-only <recorded post-rebase base SHA>` (tracked on-disk content),
+`git diff --cached --name-only <recorded post-rebase base SHA>` (index content),
+plus `git ls-files --others --exclude-standard` (untracked paths), and compare every path to the
+allowlist. Include the exact generated story export and inspect its staged and on-disk bytes;
+it must not disappear merely because HEAD lacks the new version. A pre-commit read never
+substitutes for the clean landing-HEAD comparison. Ignored build outputs are not source changes;
+if the exact generated export is ignored or untracked, verify its path and provenance explicitly
+and require it tracked at the landing HEAD when the enabled hook owes it.
+
+**Approved remediation 09/10/2026 (grill-with-docs, Q1).** The local build-start owner is
+`code/workflows/01-implement-story/STEPS.md` Step 1, its checklist and common build-start
+instruction: after all due pre-edit captures and before the first source edit, it records
+`Open` -> `In Progress` without requiring ClickUp credentials or a board. Documentation-only
+stories reuse that Step 1 with code phases N/A; this is the procedure US007 must repair before
+these builds, not a claim that the shared procedure has already changed.
+An enabled board adapter publishes that same committed transition and never becomes a second
+status authority. After US007 lands, the sprint plan's _Story Plans_ Status cell mirrors this
+plan's own Status field on every transition, including `Blocked`, `Open`, `In Progress`,
+`In Review` and `Completed`; a genuine no-file row alone reads _no plan to mirror_. Story and
+plan carriers retain their own lifecycle and are not reconciled by the index read rule. A plan
+transition carries its sprint-plan mirror in the same change; generated exports accompany story
+transitions only where that integration is enabled. These are future workflow requirements,
+not a build-start transition performed by this documentation correction.
+
+**Approved remediation 09/10/2026 (grill-with-docs, Q4).** Every valid offered configuration
+means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_. All applicable generated-tree gates run for each case,
+with its answers, source SHA, run ID and gate outcomes recorded separately. A mobile-only run or
+reduced `shipped-ai` fixture cannot establish this criterion. US010 owns the workflow expansion;
+US011 and US012 consume its exhaustive runs and add no CI implementation. If US012 lands before
+that expansion, its red/green detector proof can be recorded but exhaustive generation remains
+unmeasured and its full-coverage completion criterion cannot be ticked.
 
 - **Stack:** none — this story runs no container and renders nothing (plan → _Quality Gates,
   Scripts & Local↔Docker Alignment_)
@@ -118,6 +159,31 @@ _The manual testing guide for US010 — the gates, the self-tests, the CI runs a
 
 ## Recorded during the build
 
+| Capture                                                                                | Taken                                                                                   | Value |
+| -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ----- |
+| Clean landing HEAD, post-rebase base and empty staged/worktree/untracked status output | Before HEAD-only reach or no-change comparisons; record outside checkout until complete |       |
+
+**Approved remediation 09/10/2026 — reach and closeout.** After each rebase, record the actual
+post-rebase base SHA (the merge base against the intended target branch), target SHA and branch
+HEAD. Reach, unchanged-probe and unchanged-script checks compare that base to HEAD; refresh it
+on a later rebase. The original pre-edit SHA and probe/citation captures remain historical
+measurements, never the ownership boundary for incoming upstream commits. Record upstream
+probe changes separately and compare this story's probe edits against the post-rebase base.
+
+ST05 and assessment 7.5 additionally admit exactly
+`project-management/export/clickup/US010-CLIENT.md` as a necessary generated closeout artefact
+when the staged story invokes the armed ClickUp export hook. Record the story input SHA, exporter
+SHA, hook invocation and generated output hash; independently reproduce the output from that
+story. No hand edit, task-map write, credential access, network request or other export is
+admitted by this exception. The adapter publishes the same local transition when configured;
+export regeneration does not grant authority to change story status.
+
+| Capture                                                                                                | Taken                                 | Value |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------- | ----- |
+| Post-rebase base SHA, target SHA and branch HEAD; refresh after every later rebase                     | After each rebase and at reach checks |       |
+| Export provenance: story input SHA, exporter SHA, hook invocation, output hash and reproduction result | At generated closeout                 |       |
+| The 72 case IDs, all selector answers, source SHA, run ID and applicable generated-tree gate results   | At the landing run                    |       |
+
 The captures the rows below read, and the readings the plan's P0 and P4 keep beside them. The
 implementer fills the baseline slots at the plan's P0, before the first edit — never reconstructed
 afterwards (`../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`
@@ -148,6 +214,15 @@ here carries a `Result`.
 
 ## Journeys
 
+### Approved remediation evidence
+
+| ID        | Action                                                                              | Expected outcome                                                                                                                                                                                                                                                                                                                                 | Flow | QA  | Result | Notes |
+| --------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | --- | ------ | ----- |
+| REMEDY-01 | Read the build-start transition and board-adapter event evidence                    | Step 1 of code/workflows/01-implement-story/STEPS.md, its checklist and common build-start instruction record the story transition after due pre-edit captures and before the first source edit without a board; documentation-only code phases are N/A; the enabled adapter publishes the same committed event and writes no independent status | —    | —   |        |       |
+| REMEDY-02 | Read each plan transition and its sprint-plan Story Plans row                       | After US007 lands, the cell mirrors that plan's own status in the same change; no live Not started placeholder survives                                                                                                                                                                                                                          | —    | —   |        |       |
+| REMEDY-03 | Reconcile the run's configuration IDs and gate results with US010's approved matrix | Exactly 72 unique valid cases, each with all applicable generated-tree gates and recorded answers; no absent, failed or unrun case is presented as passing                                                                                                                                                                                       | —    | —   |        |       |
+| REMEDY-04 | Read the self-test results separately from complete generated-tree results          | A reduced fixture or a detector self-test remains its own proof; it never stands in for the 72 complete trees                                                                                                                                                                                                                                    | —    | —   |        |       |
+
 One `###` section per journey **area**, rows in the order a person moves through the product.
 
 Each row: `ID` · `Action` · `Expected outcome` · `Flow` · `QA` · `Result` · `Notes`. What each
@@ -170,11 +245,18 @@ column holds is this folder's `CONTEXT.md`; how each is filled is its `CLAUDE.md
 
 ### The change's reach
 
-| ID       | Action                                                                                                                                                                  | Expected outcome                                                                                                                                                                                                                                                                                                                                                                                           | Flow | QA    | Result | Notes |
-| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----- | ------ | ----- |
-| REACH-01 | Run `git diff --name-only <recorded pre-edit SHA>`                                                                                                                      | Every path is inside ST05's eleven: under `project-management/src/`, `.copier/`, `project-management/workflows/` or `how-to/src/TEMPLATE-GUIDE/`, or exactly `copier.yml`, `.github/scripts/shipped-artefacts.sh`, `.github/scripts/shipped-registers.sh`, `.github/scripts/shipped-ai.py`, `.github/workflows/audit-template.yml`, `.claude/skills/wayfinder/SKILL.md` or `how-to/src/TEMPLATE-TOKENS.md` | —    | PA-02 |        |       |
-| REACH-02 | Diff each existing self-test probe in `shipped-registers.sh`, `shipped-artefacts.sh` and `shipped-ai.py` against the pre-edit SHA, and compare with the recorded labels | Every existing probe's label and expected substring is byte-identical                                                                                                                                                                                                                                                                                                                                      | —    | PA-03 |        |       |
-| REACH-03 | Read the diff for a new network fetch or credential read                                                                                                                | None                                                                                                                                                                                                                                                                                                                                                                                                       | —    | —     |        |       |
+The original pre-edit capture measures history only. REACH-01/02 read the recorded post-rebase
+base and HEAD; an intervening upstream change is recorded separately, never attributed to US010.
+
+| ID       | Action                                                                                                       | Expected outcome                                                                             | Flow | QA    | Result | Notes |
+| -------- | ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ---- | ----- | ------ | ----- |
+| REACH-04 | Read the exact generated US010 export against its recorded provenance and reproduce it from the staged story | Byte-identical generated output; the exception admits no other export, task map or hand edit | —    | PA-02 |        |       |
+
+| ID       | Action                                                                                                                                                                                                                                         | Expected outcome                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Flow | QA    | Result | Notes |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----- | ------ | ----- |
+| REACH-01 | Require the recorded clean landing-HEAD precondition, then run `git diff --name-only <recorded post-rebase base SHA> HEAD`                                                                                                                     | Every path is inside ST05's twelve permitted entries: under `project-management/src/`, `.copier/`, `project-management/workflows/` or `how-to/src/TEMPLATE-GUIDE/`, or exactly `copier.yml`, `.github/scripts/shipped-artefacts.sh`, `.github/scripts/shipped-registers.sh`, `.github/scripts/shipped-ai.py`, `.github/workflows/audit-template.yml`, `.claude/skills/wayfinder/SKILL.md` or `how-to/src/TEMPLATE-TOKENS.md`, plus exactly `project-management/export/clickup/US010-CLIENT.md` with the provenance required above | —    | PA-02 |        |       |
+| REACH-02 | Require the same recorded clean landing HEAD, then diff each existing self-test probe in `shipped-registers.sh`, `shipped-artefacts.sh` and `shipped-ai.py` against the post-rebase base SHA, and compare with the labels re-read at that base | Every existing probe's label and expected substring is byte-identical                                                                                                                                                                                                                                                                                                                                                                                                                                                             | —    | PA-03 |        |       |
+| REACH-03 | Read the diff for a new network fetch or credential read                                                                                                                                                                                       | None                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | —    | —     |        |       |
 
 ### The seed chain
 
@@ -245,7 +327,7 @@ Open the landing commit's workflow run, by the ID under _Recorded during the bui
 
 | ID    | Action                                                                                                | Expected outcome                                                                                                                                                                                                                                                              | Flow | QA    | Result | Notes |
 | ----- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----- | ------ | ----- |
-| CI-01 | Read the run's commit and the `[3/4] Template Generation` job                                         | The run is the landing commit's, every seed committed in it; green on every render path the template offers (today: `INCLUDE_MOBILE` false and true)                                                                                                                          | —    | EC-15 |        |       |
+| CI-01 | Read the run's commit and the `[3/4] Template Generation` job                                         | The run is the landing commit's, every seed committed in it; green on every render path the template offers (the 72 valid cases approved 09/10/2026)                                                                                                                          | —    | EC-15 |        |       |
 | CI-02 | Read the completeness step and the `.copier/` check                                                   | The seven landed index paths are listed and present in each generated tree, and `.copier/` is gone                                                                                                                                                                            | —    | HP-01 |        |       |
 | CI-03 | Read the `shipped-artefacts.sh` self-test step and the full-check step                                | Both green: the eight `SEEDED` entries are not reported as leaks, and the self-test's existing probes pass                                                                                                                                                                    | —    | HP-09 |        |       |
 | CI-04 | Read the generated-tree grep step, and its definition in `.github/workflows/audit-template.yml`       | One step over all seven index files on every render path, printing nothing; it excludes each file's own name, the scale-planning map in the map index's one row and the `000` template identifiers, and nothing else (settled 03/10/2026, 17-story-plans grilling round 1 Q2) | —    | EC-14 |        |       |

@@ -58,25 +58,25 @@ Every scenario below is executable against the repository after the change lands
 
 ### Happy path (HP-nn)
 
-| ID    | Given                                                                                 | When            | Then                                                                                                                              |
-| ----- | ------------------------------------------------------------------------------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| HP-01 | No code/docs/reliability/ directory exists                                            | The story ships | The family exists with its `CONTEXT.md` + `CLAUDE.md` pair, each guide carries routing frontmatter, and `docs-pairing.sh` exits 0 |
-| HP-02 | `TASK-AUTHORING.md` states the idempotency proof ladder                               | The story ships | The ladder is stated in the family and absent from `TASK-AUTHORING.md`, which cites the family instead                            |
-| HP-03 | `TASK-AUTHORING.md` carries a _Retries and backoff_ section                           | The story ships | Those bullets are in the family; the task-surface class table remains where it was                                                |
-| HP-04 | `performance/API-AND-MONITORING.md` carries a Celery section                          | The story ships | It states only failed-job visibility plus a pointer to the family                                                                 |
-| HP-05 | `PROCESS-MODEL.md`, `NEGATIVE-SPACE.md`, `code/docs/CONTEXT.md` point at the old home | The story ships | Each points at the family, and `doc-references.sh` exits 0 with no dangling citation                                              |
-| HP-06 | The three source sections held a countable set of rules                               | The story ships | The rule inventory balances — every rule is moved, kept, or deliberately deleted, with none unaccounted for                       |
+| ID    | Given                                                                                 | When            | Then                                                                                                                                                                          |
+| ----- | ------------------------------------------------------------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HP-01 | No code/docs/reliability/ directory exists                                            | The story ships | The family exists with its `CONTEXT.md` + `CLAUDE.md` pair, each guide carries routing frontmatter, and `docs-pairing.sh` exits 0                                             |
+| HP-02 | `TASK-AUTHORING.md` states the idempotency proof ladder                               | The story ships | The ladder is stated in the family and absent from `TASK-AUTHORING.md`, which cites the family instead                                                                        |
+| HP-03 | `TASK-AUTHORING.md` carries a _Retries and backoff_ section                           | The story ships | Those bullets are in the family; the task-surface class table remains where it was                                                                                            |
+| HP-04 | `performance/API-AND-MONITORING.md` carries a Celery section                          | The story ships | It states only failed-job visibility plus a pointer to the family                                                                                                             |
+| HP-05 | `PROCESS-MODEL.md`, `NEGATIVE-SPACE.md`, `code/docs/CONTEXT.md` point at the old home | The story ships | Each points at the family; no new story-attributable citation finding against the pre-edit stable-identity multiset. A surviving baseline is reported as a diff, never a pass |
+| HP-06 | The three source sections held a countable set of rules                               | The story ships | The rule inventory balances — every rule is moved, kept, or deliberately deleted, with none unaccounted for                                                                   |
 
 ### Error states (ES-nn)
 
-For a documentation story the visible failures are gate failures. Each is a check that the gate
-still bites, not a defect to expect.
+For this documentation story the visible failures are gate findings or failed human read-across.
+Each deliberate mutation checks its specified oracle, not a defect to expect in the finished story.
 
-| ID    | Given                                                         | When                     | Then                                                                |
-| ----- | ------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------- |
-| ES-01 | The family ships a `CONTEXT.md` with no `CLAUDE.md` beside it | `docs-pairing.sh` runs   | It exits non-zero naming the unpaired directory                     |
-| ES-02 | A pointer still cites a rule's old location after the move    | `doc-references.sh` runs | It exits non-zero naming the dangling citation                      |
-| ES-03 | A new guide is born at or above 270 counted lines             | `docs-length.sh` runs    | It reports the file in the warn tier, and no dated allowance exists |
+| ID    | Given                                                                                                                                                     | When                                                                                          | Then                                                                                                                                        |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| ES-01 | The family ships a `CONTEXT.md` with no `CLAUDE.md` beside it                                                                                             | `docs-pairing.sh` runs                                                                        | It exits non-zero naming the unpaired directory                                                                                             |
+| ES-02 | The repointed PROCESS-MODEL route in a disposable checkout is aimed at the old TASK-AUTHORING section, then separately at a deliberately nonexistent path | The human read-across follows that exact mutated route; `doc-references.sh` checks the second | The read-across rejects the stale section; the path gate reports the nonexistent token beyond baseline. Undo restores the original multiset |
+| ES-03 | A new guide is born at or above 270 counted lines                                                                                                         | `docs-length.sh` runs                                                                         | It reports the file in the warn tier, and no dated allowance exists                                                                         |
 
 ### Edge cases (EC-nn)
 
@@ -132,3 +132,5 @@ introduces no field, no store, and no code path that could carry personal data.
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide
 - `project-management/workflows/11-qa-checks/` — the workflow that produced this plan
 - `code/docs/GATE-REPORTING.md` — the rule AC-GAP-1 rests on
+
+<!-- CORRECTED 09/10/2026 after adversarial review: HP-05 uses the accepted baseline; ES-02 separates section read-across from missing-path detection. -->

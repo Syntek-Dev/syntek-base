@@ -1,6 +1,6 @@
 # ADR-US002: The split target is a sub-folder, because a bare sibling file is bound by no length gate
 
-**Status:** Proposed
+**Status:** Accepted
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** `project-management/src/15-DECISIONS/ADR-US002-REGISTER-SPLITS-RATHER-THAN-RELOCATES-02-09-2026.md` <!-- doc-references: template-only -->
@@ -91,3 +91,8 @@ is the reason both records exist. Only the target moves, from a bare sibling to 
   as written cannot be satisfied by any split at all.
 - **Follow-on:** The superseded record's Consequences claiming the file is bound by
   `DOCUMENTATION-LENGTH.md` are false and are retired with it; nothing should cite them.
+
+**Acceptance recorded:** 09/10/2026 — the developer selected the paired-directory decision
+in the adversarial-remediation grilling round (Q2, option 1). The original decision date stays.
+
+<!-- CORRECTED 09/10/2026 after adversarial review: The developer accepted the existing Option B; decision text unchanged. -->

@@ -561,7 +561,7 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   that host and `.github/scripts/shipped-ai.py`'s post-copy assertion (AC-GAP-10); the QA flag
   reads "`shipped-artefacts.sh --self-test` (the eight seeds not reported as leaks);
   `shipped-registers.sh --self-test` (seed-blank, wired, never re-included); generation smoke on
-  every render path the template offers (today: `INCLUDE_MOBILE` true and false) with the seven
+  every render path the template offers (the 72 valid cases approved 09/10/2026) with the seven
   present; `shipped-ai.sh --self-test` (update-does-not-overwrite); row-per-map and
   counts-match-source; every repaired instruction site re-read". The render-path wording is
   path-neutral, settled 27/09/2026, grilling round 3 Q23, so only test code changes when
@@ -835,12 +835,35 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
 
 ## 2. Test scenarios
 
+**Approved remediation 09/10/2026 (grill-with-docs, Q1).** The local build-start owner is
+`code/workflows/01-implement-story/STEPS.md` Step 1, its checklist and common build-start
+instruction: after all due pre-edit captures and before the first source edit, it records
+`Open` -> `In Progress` without requiring ClickUp credentials or a board. Documentation-only
+stories reuse that Step 1 with code phases N/A; this is the procedure US007 must repair before
+these builds, not a claim that the shared procedure has already changed.
+An enabled board adapter publishes that same committed transition and never becomes a second
+status authority. After US007 lands, the sprint plan's _Story Plans_ Status cell mirrors this
+plan's own Status field on every transition, including `Blocked`, `Open`, `In Progress`,
+`In Review` and `Completed`; a genuine no-file row alone reads _no plan to mirror_. Story and
+plan carriers retain their own lifecycle and are not reconciled by the index read rule. A plan
+transition carries its sprint-plan mirror in the same change; generated exports accompany story
+transitions only where that integration is enabled. These are future workflow requirements,
+not a build-start transition performed by this documentation correction.
+
+**Approved remediation 09/10/2026 (grill-with-docs, Q4).** Every valid offered configuration
+means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_. All applicable generated-tree gates run for each case,
+with its answers, source SHA, run ID and gate outcomes recorded separately. A mobile-only run or
+reduced `shipped-ai` fixture cannot establish this criterion. US010 owns the workflow expansion;
+US011 and US012 consume its exhaustive runs and add no CI implementation. If US012 lands before
+that expansion, its red/green detector proof can be recorded but exhaustive generation remains
+unmeasured and its full-coverage completion criterion cannot be ticked.
+
 Derived from the story's Gherkin, the settled decisions, the gate-10 artefacts and the shell and CI
 surface, not from a wireframe — this story has none. "The read rule" is the one settled 21/09/2026,
 grilling round 1 Q5. "The family" is the third `shipped-registers.sh` family, grilling round 1 Q2.
 **Generated-tree scenarios run in CI's `[3/4]` job**; no project script makes a generated tree
 locally, and none may be improvised (Section 6). **"Every generated tree" means one tree per render
-path the template offers (today: `INCLUDE_MOBILE` true and false).** That path-neutral wording was
+path the template offers (the 72 valid cases approved 09/10/2026).** That path-neutral wording was
 settled 27/09/2026, grilling round 3 Q23, so only test code changes when MAP-NATIVE-MOBILE-SURFACE
 S-01 deletes the key.
 
@@ -848,7 +871,7 @@ S-01 deletes the key.
 
 | ID    | Given                                                                     | When                                                                                                                                          | Then                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ----- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| HP-01 | The change committed and pushed                                           | `[3/4]` generates on every render path the template offers (today: `INCLUDE_MOBILE` true and false), settled 27/09/2026, grilling round 3 Q23 | All seven index files sit at `project-management/src/<REGISTER>/<NOUN>-INDEX.md` in every generated tree, and `.copier/` is gone (`audit-template.yml:311-314`). The completeness step names the seven (AC-GAP-11)                                                                                                                                                                                                                                                                                                                                                                       |
+| HP-01 | The change committed and pushed                                           | `[3/4]` generates on every render path the template offers (the 72 valid cases approved 09/10/2026), settled 27/09/2026, grilling round 3 Q23 | All seven index files sit at `project-management/src/<REGISTER>/<NOUN>-INDEX.md` in every generated tree, and `.copier/` is gone (`audit-template.yml:311-314`). The completeness step names the seven (AC-GAP-11)                                                                                                                                                                                                                                                                                                                                                                       |
 | HP-02 | Any generated tree                                                        | The six non-map seeds are read                                                                                                                | Each carries the spine, its tail, its ordering sentence, the read rule, the `## The register` marker and the placeholder row alone — no instance row and no debt line (ST03, ST04)                                                                                                                                                                                                                                                                                                                                                                                                       |
 | HP-03 | Any generated tree                                                        | The map index's one row is read                                                                                                               | Status `Not started`, string-equal under the read rule to the seeded map's :4; Instance a working link to MAP-SCALE-PLANNING.md; Summary generic or `TBD`; Updated `TBD` (AC-GAP-2). **Host:** the Status agreement is automated at template time by the family's seed-row clause and its probe (settled 27/09/2026, grilling round 7 Q34; project-management/src/02-STORIES/US010.md:638, :666-667), never a manual read; the rest by the link check and the literal grep. AMENDED 27/09/2026 at the final pass: the clause was a proposal here, with a manual read if it were declined |
 | HP-04 | The diff to `copier.yml`                                                  | The one seed task is read                                                                                                                     | Seven new lines of the form `mv .copier/<NOUN>-INDEX.md project-management/src/<REGISTER>/<NOUN>-INDEX.md &&`, inside the task at `:994-1005`, ahead of `rmdir .copier`; the task's `when:` key unchanged; no second task (ST01, ST02, ST08)                                                                                                                                                                                                                                                                                                                                             |
@@ -1044,6 +1067,39 @@ repository or a generated project to test the seam** — `.claude/CLAUDE.md` Sec
 call, and PA-04 against a real project destroys its uncommitted register edits.
 
 ## 6. Developer notes — testability
+
+**Approved integration correction 09/10/2026 — clean landing HEAD.** Before any
+base-to-HEAD reach or unchanged-content comparison, capture the landing HEAD, post-rebase base
+and `git status --porcelain=v1 --untracked-files=all`. The status output must be empty: no staged,
+working-tree or untracked change. Record that capture outside the checkout until the comparison
+is complete; writing this guide's results afterwards does not retrospectively establish a clean
+checkout. Any pending change prevents the HEAD-only row being marked Pass. The captured HEAD
+must be the commit rendered by the run whose evidence is read.
+
+Before commit, assess the prospective change separately with
+`git diff --name-only <recorded post-rebase base SHA>` (tracked on-disk content),
+`git diff --cached --name-only <recorded post-rebase base SHA>` (index content),
+plus `git ls-files --others --exclude-standard` (untracked paths), and compare every path to the
+allowlist. Include the exact generated story export and inspect its staged and on-disk bytes;
+it must not disappear merely because HEAD lacks the new version. A pre-commit read never
+substitutes for the clean landing-HEAD comparison. Ignored build outputs are not source changes;
+if the exact generated export is ignored or untracked, verify its path and provenance explicitly
+and require it tracked at the landing HEAD when the enabled hook owes it.
+
+**Approved remediation 09/10/2026 — reach and closeout.** After each rebase, record the actual
+post-rebase base SHA (the merge base against the intended target branch), target SHA and branch
+HEAD. Reach, unchanged-probe and unchanged-script checks compare that base to HEAD; refresh it
+on a later rebase. The original pre-edit SHA and probe/citation captures remain historical
+measurements, never the ownership boundary for incoming upstream commits. Record upstream
+probe changes separately and compare this story's probe edits against the post-rebase base.
+
+ST05 and assessment 7.5 additionally admit exactly
+`project-management/export/clickup/US010-CLIENT.md` as a necessary generated closeout artefact
+when the staged story invokes the armed ClickUp export hook. Record the story input SHA, exporter
+SHA, hook invocation and generated output hash; independently reproduce the output from that
+story. No hand edit, task-map write, credential access, network request or other export is
+admitted by this exception. The adapter publishes the same local transition when configured;
+export regeneration does not grant authority to change story status.
 
 - **Measure by executing, in the lawful places.** `bash .github/scripts/shipped-registers.sh` and
   `bash .github/scripts/shipped-ai.sh` run locally and in CI; they are the project's own wrappers.

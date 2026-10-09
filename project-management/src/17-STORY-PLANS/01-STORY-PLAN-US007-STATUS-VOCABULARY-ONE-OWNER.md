@@ -83,6 +83,13 @@ no sibling plan in this folder carries one (measured 08/09/2026).
 
 ## Problem Statement
 
+**Requirement confirmed 09/10/2026 (Q1):** build-start owns the story transition to
+`In Progress`. The local implementer performs it before the first source edit; board sync,
+when enabled, applies that same transition. Neither ClickUp nor a board event is a prerequisite.
+Completion remains authorised for its existing five values; this changes the writer table
+row for the sixth value, not the canonical vocabulary. Sprint-plan mirror cells follow the
+referenced artefact on every transition under this plan's existing propagation rule.
+
 **Why this story exists.** This repository records where every piece of work stands in a
 `**Status:**` field, and its own instructions disagree about which values that field admits.
 `project-management/docs/planning/STORIES.md` defines eleven and calls them "the canonical set";
@@ -200,7 +207,7 @@ is a declaration of authority, not a second definition. Both are fixed in _Appro
 ### Not applicable — Database, Service Layer, API, Frontend
 
 No Python, no template, no component, no endpoint. The four layer sections are dropped because the
-story touches none of them, not to dodge a gate. Its one lane is documentation: twenty-one files
+story touches none of them, not to dodge a gate. Its one lane is documentation: the amended edit set
 across nine trees, of which two take newly authored sections, one is rewritten, and the rest take
 a repointed route, a corrected value or a marker.
 
@@ -306,7 +313,8 @@ of 08/09/2026. Its `## The status vocabulary` section is **rewritten, not trimme
   or `Open` to `Completed`" rule at `:39-40` stays: that rule is the skill's, not the set's.
 - A **writer table** names the writer of each value outside its five: `Accepted` and
   `Accepted Customer` by `23-pr-and-review` Step 5; `Closed` by `24-release` Step 5; `Rejected` by
-  the review record's transition surface; `In Progress` as written only by the board-side sync;
+  the review record's transition surface; `In Progress` by the build-start workflow (`code/workflows/01-implement-story/STEPS.md` Step 1), performed
+  locally before the first source edit and applied by an optional board adapter as the same transition;
   and `Rejected Customer` as having **no writer in this repository today** — declared so, not
   assigned one. On the sprint side, `Planned` by the template copy and `Done` by this skill;
   `In Progress` is declared writer-less and handed to a `DEFERRED.md` row.
@@ -344,6 +352,11 @@ Statuses`, a section that does not exist:
        comments" figure above is stale too, and the real population is EIGHT. It is de-numbered
        here rather than re-numbered, because this story has not been built and the count will move
        again with the next record. Count at implementation time. -->
+- **Concrete build-start owner:** `code/workflows/01-implement-story/STEPS.md` Step 1 gains
+  the local `In Progress` transition after due pre-edit captures and before the first source edit;
+  its `CHECKLIST.md` gains the corresponding box. Both route to the writer declaration instead
+  of defining another vocabulary. Documentation-only builds reuse this common start instruction
+  with the code phases marked N/A. Optional board sync applies the same transition.
 - `23-pr-and-review/CHECKLIST.md` gains a box for the `In Review` write its Step 3 orders and the
   `Completed` / `Accepted` write its Step 5 orders; `24-release/CHECKLIST.md` gains one for the
   `Closed` write. A write a `STEPS.md` orders is a write its `CHECKLIST.md` checks.
@@ -473,7 +486,7 @@ this story waits on another story.
 | The sibling-register list                             | Illustrative and explicitly non-exhaustive                                | A closed, counted set                           | A closed set goes stale the day a register is added, and the rule has to hold for the register nobody has written yet                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Story Scenario 2                                                                         |
 | Board attribution                                     | Removed from the defining sentence; export and push marked clickup-only   | A Jinja-conditional sentence                    | Ruled out, not merely rejected: no file in this template ever has templated contents, and CI diffs two generations for byte-identity                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Story Scenario 6                                                                         |
 | **The `Status` cell this plan's own row takes**       | **`Not started`, matching its sibling**                                   | `Open`, the value this plan carries             | US006's Step 10 pass took exactly this call on 08/09/2026 — fill with the column's current value, because correcting the column is US007's own Scenario 8. `../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md` -> _Story Plans — the code master_ says so in its own dated comment, "this is the settled reading for every sprint plan", `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` having moved its cells to `Open` on 07/09/2026 and reverted them on 08/09/2026; and Scenario 8 provides for it — "a plan written between now and then joining the population and taking the same rule". **That section's live sentence "The Status column mirrors the story plan's own `Status` field, so a story with no plan has no value to mirror" is rewritten by the same Step 10 change**, not left contradicted — see _CONTEXT.md & Index Updates_ | `../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md` -> _CONTEXT.md & Index Updates_ |
-| How `doc-references.sh` is read                       | Identity diff — `(file, kind, token)`, line dropped, multiplicity kept    | Exit code; a count; a read-by-eye               | The story edits 21 files, several carrying pre-existing findings, so an edit above one shifts its line and a `file:line` diff reports a false pair for each                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `ADR-US003` · QA plan AC-GAP-2                                                           |
+| How `doc-references.sh` is read                       | Identity diff — `(file, kind, token)`, line dropped, multiplicity kept    | Exit code; a count; a read-by-eye               | The story edits multiple files carrying pre-existing findings, so an edit above one shifts its line and a `file:line` diff reports a false pair for each                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `ADR-US003` · QA plan AC-GAP-2                                                           |
 | When the baseline is captured                         | **After staging the untracked artefacts**                                 | On the tree as it stands                        | Untracked citing files are read as shipping, inflating template-only from 12 to 226; unstaged, their clearance appears as 214 unexplained `<` lines at close                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | QA plan Section 1, _Correction to Section 7_                                             |
 | Whether the story's four-cell count is corrected here | **No — measured, named, and left to the implementer's re-count**          | Editing `../02-STORIES/US007.md` from this plan | A plan does not edit the story it plans; the story already requires the population to be re-counted immediately before the edit, which is the mechanism that catches it                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | _Measured divergences_ below                                                             |
 
@@ -564,7 +577,9 @@ The lane this story runs in is Phases 0–6 above, entered directly from `17-sto
 
 ### Code workflows invoked
 
-**None.** No Python, no endpoint, no template, no migration. `code/workflows/02-tdd-cycle` and
+**Build-start only:** the common status/capture entry instruction in
+`code/workflows/01-implement-story/STEPS.md` Step 1 is reused before Phase 1; its code phases
+are N/A. No Python, endpoint, template or migration is introduced. `code/workflows/02-tdd-cycle` and
 `07-review` have nothing to run against; the review this story gets is the human read-across and
 the PM `23-pr-and-review` pass.
 
@@ -577,22 +592,19 @@ the PM `23-pr-and-review` pass.
 **Each is read under a stated regime, and none may report a plain pass it has not earned** — the
 rule `code/docs/GATE-REPORTING.md` states. Per gate:
 
-| Gate                   | Reading, 08/09/2026                                                                                                                                                                                  | Regime at close                                                                         |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `doc-references.sh`    | exit 1 · **467** unresolved unstaged (135 instance · 106 dangling · 226 template-only · 0 plan prefix), **253 staged** — the 214 untracked-file findings clear · blob `b9e4e129…` (HEAD `a3412dcd…`) | Identity diff. **Never a pass while a non-empty baseline stands**                       |
-| `skill-conformance.sh` | exit 0 · 65 skills, 62 first-party and 3 vendored, all conform                                                                                                                                       | **Empty baseline.** Exit 0 at close **is** the pass, and is reported as one             |
-| `doctrine-drift.sh`    | exit 0 · 5 trees, fenced code only · 3 claims, one home each                                                                                                                                         | Regression guard. It opens **six of the twenty-one files** and neither owning document  |
-| `docs-pairing.sh`      | exit 0 · 0 findings across 222 `CONTEXT.md` and 212 `CLAUDE.md`                                                                                                                                      | Identity diff of two empty sets. **It decides nothing here** — no pair created or moved |
-| `docs-length.sh`       | exit 0 · 777 files within 300 · 5 in the warn band, none this story edits                                                                                                                            | A **measurement**, not a diff. `--limit 1` exits non-zero by construction               |
+| Gate                   | Reading, 08/09/2026                                                                                                                                                                                  | Regime at close                                                                                       |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `doc-references.sh`    | exit 1 · **467** unresolved unstaged (135 instance · 106 dangling · 226 template-only · 0 plan prefix), **253 staged** — the 214 untracked-file findings clear · blob `b9e4e129…` (HEAD `a3412dcd…`) | Identity diff. **Never a pass while a non-empty baseline stands**                                     |
+| `skill-conformance.sh` | exit 0 · 65 skills, 62 first-party and 3 vendored, all conform                                                                                                                                       | **Empty baseline.** Exit 0 at close **is** the pass, and is reported as one                           |
+| `doctrine-drift.sh`    | exit 0 · 5 trees, fenced code only · 3 claims, one home each                                                                                                                                         | Regression guard. It opens **the measured files in the amended edit set** and neither owning document |
+| `docs-pairing.sh`      | exit 0 · 0 findings across 222 `CONTEXT.md` and 212 `CLAUDE.md`                                                                                                                                      | Identity diff of two empty sets. **It decides nothing here** — no pair created or moved               |
+| `docs-length.sh`       | exit 0 · 777 files within 300 · 5 in the warn band, none this story edits                                                                                                                            | A **measurement**, not a diff. `--limit 1` exits non-zero by construction                             |
 
-**`doctrine-drift.sh`'s population is stated with its result.** Its `SCAN_DIRS` are exactly five
-trees — `code/docs`, `.claude/skills`, `code/workflows`, `project-management/workflows`,
-`how-to/workflows` — so of the twenty-one files in the story's Tasks table it can open **six**
-(the skill, three `STEPS.md`, two `CHECKLIST.md`), fenced code only. `STORIES.md`, `SPRINTS.md`,
-everything under `project-management/src/` and `.copier/README.md` are outside them and are never
-opened. A green run says three API-envelope claims still have one home in six files; **it has read
-neither definition and cannot.** It stays in the manifest, narrowed, on
-`ADR-US002-BLIND-GATE-LEAVES-THE-FLAG`'s rule.
+**`doctrine-drift.sh`'s population is stated with its result.** Re-count the amended edit set
+and its intersection with the detector's five scan roots before capture and at close. The two
+build-start workflow files join that intersection: the old six-of-twenty-one reading above is
+dated evidence, not the new denominator. The gate reads fenced code only; both vocabulary
+owners remain outside its scan roots. Record the actual paths and count beside each result.
 
 **`docs-length.sh --limit 1` is a ruler, not a leg.** It exits non-zero by construction —
 everything is over a one-line limit. Read the figure, record it, and let the tree-wide run at 300
@@ -611,7 +623,7 @@ workflow supplies the fan-out and the adversarial verification, never a substitu
 `handoffs/HANDOFF-US007-PLANNING-AND-PLAN-PREFIX-08-09-2026.md` records that a passage asserting a
 sibling artefact is stale or absent **when it is in fact correct** recurred four times in one day,
 on top of nine the day before, and that every instance had the same cause: **two writers on files
-that cite each other**. This story edits twenty-one files across nine trees and many of them cite
+that cite each other**. This story edits the amended file set across the measured trees and many of them cite
 one another. Therefore:
 
 - **One writer whenever files cross-cite.** Partition by file only where the sets are genuinely
@@ -722,7 +734,7 @@ code (backfilled 30/09/2026) and walked at `22`.
 | Every route lands on a section that states the set  | Human read-across, route by route. `doc-references.sh` tests the path **before** the arrow and never the section after it                                                                                                     |
 | The skill reads as authority, not definition        | A cold reader can name the five it writes, the one sprint value, and who writes the other six, without leaving the file                                                                                                       |
 | A project without ClickUp reads the same eleven     | A cold trace of `STORIES.md` and the generated `README.md` against the `INCLUDE_CLICKUP: false` exclusion list, line numbers re-resolved first                                                                                |
-| Zero live source values change                      | The before/after list of the whole population, this story's own column read against `Open` → `In Review` → `Completed`                                                                                                        |
+| Zero live source values change                      | The before/after list of the whole population, this story's own column read against `Open` → `In Progress` → `In Review` → `Completed`                                                                                        |
 | The mirror cells hold their plans' values           | Re-counted immediately before the edit; six cells after this plan lands                                                                                                                                                       |
 | No new citation finding                             | Identity diff, every `>` line classified by `git diff --name-only <recorded pre-edit SHA>`                                                                                                                                    |
 | A `[plan prefix]` finding in a file the story edits | It is the story's — the baseline is **0 plan prefix** tree-wide. Repoint the citation to the on-disk prefixed name; where a superseded name is deliberately quoted, move it from backticks to "double quotes" (QA plan ES-11) |
@@ -817,7 +829,7 @@ generated with `INCLUDE_CLICKUP: false` has neither the script nor the folder an
 `Open` is also a value in the `completion` skill's five. Which set owns the column is precisely
 what this story settles; this plan does not pre-empt its own outcome.
 
-**The expected trajectory is `Open` → `In Review` → `Completed`, two writes on one moving field.**
+**The expected trajectory is `Open` → `In Progress` → `In Review` → `Completed`, three writes on one moving field.**
 `In Review` is written at `23-pr-and-review` Step 3 when the PR is raised — a legal intermediate
 the skill records and the story leaves ordered — and `Completed` at the Definition of Done. A
 before/after list taken between PR-raise and merge reads `In Review`, and that is predicted, not a
@@ -888,7 +900,7 @@ its owner so it is read as known rather than found.
 | An unscoped `lint.sh` / `format.sh` run reports on legs this story does not ship, so a green tick says more than the story earned         | Low        | Low      | Both are invoked `--file-type markdown` in the checklist and the command table, matching the sprint plan. Unscoped, both measured exit 0 on this tree on 08/09/2026 — the scoping narrows what is claimed, it does not avoid a failure |
 | `STORIES.md` or `SPRINTS.md` crosses 270 after its gain                                                                                   | Low        | Medium   | 166 and 177 counted lines of headroom; measured by the gate before and after, and a dated allowance taken rather than assumed if crossed                                                                                               |
 | A name work has yet to create is backticked and becomes a citation finding                                                                | Medium     | Low      | Every such name in this plan is in "double quotes"; the rule and its boundary are stated in Stage 2                                                                                                                                    |
-| `doctrine-drift.sh` green is reported as "the doctrine has one home"                                                                      | Medium     | Medium   | It opens six of twenty-one files, fenced code only, and neither definition; the regime table says so beside the result                                                                                                                 |
+| `doctrine-drift.sh` green is reported as "the doctrine has one home"                                                                      | Medium     | Medium   | It opens the measured files in the amended edit set, fenced code only, and neither definition; the regime table says so beside the result                                                                                              |
 | `skill-conformance.sh` fires `[house 14]` on the skill's path for a guide the story did not edit, and the finding is charged to the story | Low        | Medium   | Attribution is **path and cause**; the named guide is checked against the edit set before it is charged                                                                                                                                |
 | The map edit is read as a licence to edit maps outside a `wayfinder` session                                                              | Low        | Medium   | It is written as a **stated exception** with its reason, and the three non-edits are recorded beside it                                                                                                                                |
 | The `Not started` cells are backticked inconsistently across the six                                                                      | Medium     | Low      | One choice, applied to all six, recorded — the third plan's backticked form is the recommendation                                                                                                                                      |
@@ -973,7 +985,8 @@ git grep -nw "In progress" -- '*.md' '*.sh' '*.yml' \
   ':!handoffs/' \
   ':!project-management/src/02-STORIES/US007.md' \
   ':!project-management/src/11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md' \
-  ':!project-management/src/18-TESTS/MANUAL/US007-MANUAL-TESTING.md'
+  ':!project-management/src/18-TESTS/MANUAL/US007-MANUAL-TESTING.md' \
+  ':!project-management/src/17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md'
 ```
 
 - [ ] Every detector hash matches the value recorded at capture — otherwise the diff is
@@ -984,7 +997,7 @@ git grep -nw "In progress" -- '*.md' '*.sh' '*.yml' \
       as one; no violation attributable to `.claude/skills/completion/SKILL.md` by path **and**
       cause
 - [ ] `doctrine-drift.sh` — the same three claims, one home each; reported as a regression guard
-      over six of twenty-one files, fenced code only, and never as having read a definition
+      over the measured files in the amended edit set, fenced code only, and never as having read a definition
 - [ ] `docs-pairing.sh` — an identity diff of two empty sets, with the record stating that the
       gate decided nothing here
 - [ ] `docs-length.sh` tree-wide exits 0; `STORIES.md`, `SPRINTS.md` and `completion/SKILL.md` all
@@ -1006,6 +1019,8 @@ git grep -nw "In progress" -- '*.md' '*.sh' '*.yml' \
 - [ ] `project-management/docs/planning/SPRINTS.md` carries a _Sprint statuses_ section holding
       `Planned` · `In Progress` · `Done`, one meaning each
 - [ ] `PLANNING-GUIDE.md` gains **no** `Story Statuses` section
+- [ ] The named build-start steps and checklist carry the transition instruction and check;
+      their routes resolve, and the scan/edit population is re-counted
 - [ ] `.claude/skills/completion/SKILL.md` restates neither set: two routes, the five it may write
       and the sprint `Done`, a writer table naming the owner of each remaining value, and an
       explicit statement that the table is a declaration of authority and not a definition
@@ -1032,7 +1047,7 @@ git grep -nw "In progress" -- '*.md' '*.sh' '*.yml' \
 - [ ] The closing `git grep -nw "In progress"` returns zero over its stated population and
       pathspecs, recorded verbatim
 - [ ] Zero live source `**Status:**` values change but this story's own, whose trajectory is
-      `Open` → `In Review` → `Completed` — two writes on one moving field
+      `Open` → `In Progress` → `In Review` → `Completed` — three writes on one moving field
 - [ ] The named-site inventory exists with a **role** column, and shows exactly one definition row
       per set
 - [ ] `../18-TESTS/MANUAL/US007-MANUAL-TESTING.md` is walked, every row marked, and carries the
@@ -1048,3 +1063,9 @@ git grep -nw "In progress" -- '*.md' '*.sh' '*.yml' \
 - [ ] `GAPS.md`'s entry of 01/09/2026 closed and `DEFERRED.md`'s **one** row written, both by
       `22-implementation-documentation`
 - [ ] PR raised and promoted via `23-pr-and-review/`; review record in `../19-REVIEWS/`
+
+<!-- CORRECTED 09/10/2026 after adversarial review: the casing-check population excludes
+     the story plan as well as the story, QA plan and manual guide. All four deliberately
+     quote the rejected spelling; the plan otherwise makes the zero-result oracle impossible. -->
+
+<!-- CORRECTED 09/10/2026 after adversarial review: Q1 records build-start authority; the old board-only statement was contradicted by downstream plans. -->

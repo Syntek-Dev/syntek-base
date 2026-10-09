@@ -2,7 +2,7 @@
 
 _The manual testing guide for US003 — the journey a tester follows step by step, and — once walked — whether each step passed. Authored on 30/09/2026 at `17-story-plans` Step 7.2, as a backfill for a story planned before authorship moved to that step: written from the specs below, before any of the story's work exists._
 
-**Last Updated**: 30/09/2026 · **Story**: US003 · **Status**: Authored — not yet walked
+**Last Updated**: 09/10/2026 · **Story**: US003 · **Status**: Authored — not yet walked
 
 - **Story:** `../../02-STORIES/US003.md` — Absence gets an owning guide, born under 270 with every clause's tier stated
 - **Story plan:** `../../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md` — the code master this guide was authored beside
@@ -30,7 +30,8 @@ _The manual testing guide for US003 — the journey a tester follows step by ste
   in the tree — the gates read the whole tree, so a stray edit reaches their output.
 - **Build order:** US003 is worked in SPRINT-02, **ahead of** US004, so the `doc-references.sh`
   baseline applies and DOCREF-01 is walked as written. Only in the carry case — the story slips to
-  SPRINT-03 and is worked there after US004 has landed — does the story plan's _The citation gate,
+  SPRINT-03 and is worked there after US004 has landed, with the whole-tree gate proven green
+  and the accepted retirement recorded before editing — does the story plan's _The citation gate,
   corrected_ replace the baseline with a plain pass.
 - **Seed data:** none. No fixture, no seeded user, no credential, no personal data.
 - **Accounts / roles:** none — the story introduces no permission boundary. The tester is someone
@@ -48,13 +49,8 @@ _The manual testing guide for US003 — the journey a tester follows step by ste
   - **Markdown lint and format** (`code/src/scripts/syntax/lint.sh`) — a line in the story's
     _Verification Checks_, run before the PR, not a manual acceptance criterion.
   - **The test suites and `migrate.sh check`** — N/A in the story: no code path, no model.
-- **Open questions** — each awaits the developer's answer, and every row it holds carries
-  `Awaiting answer` in `Notes` until it is answered and the row rewritten from it:
-  1. **BITE-04 (`ES-04`).** `doctrine-drift.sh` reads fenced code only — DRIFT-02 says so, after
-     `ADR-US001-PROSE-DOCTRINE-VERIFICATION` — so a `TYPES-*` H2 restated in prose is invisible to
-     it, and the gate cannot exit non-zero on it. Is `ES-04`'s set-up a fenced claim the drift
-     table pins, restated in a second fence, or is the restated heading caught by the read-across
-     BOUNDARY-05 already walks, and `ES-04` re-worded to match?
+- **Open questions:** None. Resolved 09/10/2026 against the existing verification
+  boundaries. BITE-04 exercises the human prose oracle; DRIFT-02 remains the fenced-code regression check.
 
 ---
 
@@ -76,11 +72,16 @@ check them at the walk. Not a journey: nothing here carries a `Result`.
 | `code/docs/ABSENCE.md`, counted lines at birth                                                                                  |       |
 | The Codd primary-source check — the source read, the date, and whether it found derivation or convergence                       |       |
 
-**The `doc-references.sh` baseline.** Not yet captured. Every finding by identity — file, line and
-class, as the gate printed it — or `None.` The forward references to `code/docs/ABSENCE.md` among
+**The `doc-references.sh` baseline.** Not yet captured. Every finding by stable identity — `(file, kind, token)` with multiplicity,
+excluding line numbers from the comparison — or `None.` The forward references to `code/docs/ABSENCE.md` among
 them are marked as this story's own.
 
 **The `doc-references.sh` run after the build.** Not yet captured. Same form, same index state.
+
+Keep the raw gate output, including line numbers, beside each capture for diagnosis. Compare
+the stable identities as a multiset: a repeated identity retains its occurrence count; moving
+an unchanged citation to another line creates no new finding. Detector and git-index state
+must match across the comparison.
 
 ---
 
@@ -197,14 +198,14 @@ column holds is this folder's `CONTEXT.md`; how each is filled is its `CLAUDE.md
 Each row sets up its failure on the finished change, runs the gate, then undoes the set-up; a
 clean re-run of the same gate confirms the undo before the next row.
 
-| ID      | Action                                                                                                                                                                       | Expected outcome                                                                                                     | Flow | QA    | Result | Notes                             |
-| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---- | ----- | ------ | --------------------------------- |
-| BITE-01 | Pad `code/docs/ABSENCE.md` to 270 counted lines or more, run `bash code/src/scripts/audits/docs-length.sh`, then undo                                                        | The guide is reported in the warn tier, with no allowance                                                            | —    | ES-01 |        |                                   |
-| BITE-02 | Remove the `code/docs/ABSENCE.md` citation from one of the four named skills, run `bash code/src/scripts/audits/skill-conformance.sh`, then restore it                       | Exits non-zero, naming the undischarged clause 14                                                                    | —    | ES-02 |        |                                   |
-| BITE-03 | Misspell one skill name in the guide's routing frontmatter, run `bash code/src/scripts/audits/routing-skills.sh`, then restore it                                            | Exits non-zero, naming the unresolved skill                                                                          | —    | ES-03 |        |                                   |
-| BITE-04 | In `code/docs/ABSENCE.md`, restate a `TYPES-*` H2 that the drift table pins, run `bash code/src/scripts/audits/doctrine-drift.sh`, then undo                                 | Exits non-zero, naming the forked claim                                                                              | —    | ES-04 |        | Awaiting answer — open question 1 |
-| BITE-05 | In one crib cell, cite a per-surface clause no slice has written yet, run `bash code/src/scripts/audits/doc-references.sh`, then undo                                        | Exits non-zero, with a dangling-path finding for that citation beyond the baseline                                   | —    | ES-05 |        |                                   |
-| BITE-06 | With the story committed, pad `code/docs/ABSENCE.md` until it measures at least 270 counted lines, run `bash code/src/scripts/audits/docs-length.sh --since HEAD`, then undo | The ratchet fires on the uncommitted growth — the change that grew the file — and not on the story's committed guide | —    | EC-03 |        |                                   |
+| ID      | Action                                                                                                                                                                       | Expected outcome                                                                                                                                                     | Flow | QA    | Result | Notes                                                                                                                  |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----- | ------ | ---------------------------------------------------------------------------------------------------------------------- |
+| BITE-01 | Pad `code/docs/ABSENCE.md` to 270 counted lines or more, run `bash code/src/scripts/audits/docs-length.sh`, then undo                                                        | The guide is reported in the warn tier, with no allowance                                                                                                            | —    | ES-01 |        |                                                                                                                        |
+| BITE-02 | Remove the `code/docs/ABSENCE.md` citation from one of the four named skills, run `bash code/src/scripts/audits/skill-conformance.sh`, then restore it                       | Exits non-zero, naming the undischarged clause 14                                                                                                                    | —    | ES-02 |        |                                                                                                                        |
+| BITE-03 | Misspell one skill name in the guide's routing frontmatter, run `bash code/src/scripts/audits/routing-skills.sh`, then restore it                                            | Exits non-zero, naming the unresolved skill                                                                                                                          | —    | ES-03 |        |                                                                                                                        |
+| BITE-04 | In a disposable checkout, restate one TYPES rule in the prose of `code/docs/ABSENCE.md`; perform the BOUNDARY-06 rule-by-rule human read-across, then undo and repeat it     | The read-across identifies the duplicated rule and its two locations; after undo the duplication is absent. No prose-detection claim is made for `doctrine-drift.sh` | —    | ES-04 |        | Corrected 09/10/2026 — was a gate assertion for prose; evidence: QA ES-04 and the accepted prose-verification boundary |
+| BITE-05 | In one crib cell, cite a per-surface clause no slice has written yet, run `bash code/src/scripts/audits/doc-references.sh`, then undo                                        | Exits non-zero, with a dangling-path finding for that citation beyond the baseline                                                                                   | —    | ES-05 |        |                                                                                                                        |
+| BITE-06 | With the story committed, pad `code/docs/ABSENCE.md` until it measures at least 270 counted lines, run `bash code/src/scripts/audits/docs-length.sh --since HEAD`, then undo | The ratchet fires on the uncommitted growth — the change that grew the file — and not on the story's committed guide                                                 | —    | EC-03 |        |                                                                                                                        |
 
 ---
 
@@ -254,3 +255,9 @@ Filled at the walk.
 - `../../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` — why the read-across, not `doctrine-drift.sh`, checks the prose
 - `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — why `doc-references.sh` is read as a diff against the baseline; superseded 30/09/2026 by `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged and names this file as where the baseline is recorded
 - No `05-USER-FLOW` citation: the story's `User Flow` flag is N/A, so no consolidated flow or flow implementation record exists for it
+
+<!-- CORRECTED 09/10/2026 after adversarial review: citation baseline identities now omit
+     line numbers and preserve multiplicity, following the US007 QA-plan comparison rule.
+     Raw diagnostics remain recorded; no build capture or manual Result has been filled. -->
+
+<!-- CORRECTED 09/10/2026 after adversarial review: Open question 1 resolved against the accepted prose-verification decision. -->

@@ -208,6 +208,29 @@ stat ...`, **exit 1, no cross line for the probe, and a leaked temporary directo
 
 ## 2. Test scenarios
 
+**Approved remediation 09/10/2026 (grill-with-docs, Q1).** The local build-start owner is
+`code/workflows/01-implement-story/STEPS.md` Step 1, its checklist and common build-start
+instruction: after all due pre-edit captures and before the first source edit, it records
+`Open` -> `In Progress` without requiring ClickUp credentials or a board. Documentation-only
+stories reuse that Step 1 with code phases N/A; this is the procedure US007 must repair before
+these builds, not a claim that the shared procedure has already changed.
+An enabled board adapter publishes that same committed transition and never becomes a second
+status authority. After US007 lands, the sprint plan's _Story Plans_ Status cell mirrors this
+plan's own Status field on every transition, including `Blocked`, `Open`, `In Progress`,
+`In Review` and `Completed`; a genuine no-file row alone reads _no plan to mirror_. Story and
+plan carriers retain their own lifecycle and are not reconciled by the index read rule. A plan
+transition carries its sprint-plan mirror in the same change; generated exports accompany story
+transitions only where that integration is enabled. These are future workflow requirements,
+not a build-start transition performed by this documentation correction.
+
+**Approved remediation 09/10/2026 (grill-with-docs, Q4).** Every valid offered configuration
+means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_. All applicable generated-tree gates run for each case,
+with its answers, source SHA, run ID and gate outcomes recorded separately. A mobile-only run or
+reduced `shipped-ai` fixture cannot establish this criterion. US010 owns the workflow expansion;
+US011 and US012 consume its exhaustive runs and add no CI implementation. If US012 lands before
+that expansion, its red/green detector proof can be recorded but exhaustive generation remains
+unmeasured and its full-coverage completion criterion cannot be ticked.
+
 Derived from the story's Gherkin and the script. **Every row runs against the script; none
 against a rendered surface.** "Measured" means observed on the Section 7 fixture; the rest are
 executed at implementation against CI's generated tree.
@@ -291,6 +314,24 @@ developer who sees `/tmp/tmp.*` accumulate knows where it came from.
 ---
 
 ## 6. Developer notes — testability
+
+**Approved integration correction 09/10/2026 — clean landing HEAD.** Before any
+base-to-HEAD reach or unchanged-content comparison, capture the landing HEAD, post-rebase base
+and `git status --porcelain=v1 --untracked-files=all`. The status output must be empty: no staged,
+working-tree or untracked change. Record that capture outside the checkout until the comparison
+is complete; writing this guide's results afterwards does not retrospectively establish a clean
+checkout. Any pending change prevents the HEAD-only row being marked Pass. The captured HEAD
+must be the commit rendered by the run whose evidence is read.
+
+Before commit, assess the prospective change separately with
+`git diff --name-only <recorded post-rebase base SHA>` (tracked on-disk content),
+`git diff --cached --name-only <recorded post-rebase base SHA>` (index content),
+plus `git ls-files --others --exclude-standard` (untracked paths), and compare every path to the
+allowlist. Include the exact generated story export and inspect its staged and on-disk bytes;
+it must not disappear merely because HEAD lacks the new version. A pre-commit read never
+substitutes for the clean landing-HEAD comparison. Ignored build outputs are not source changes;
+if the exact generated export is ignored or untracked, verify its path and provenance explicitly
+and require it tracked at the landing HEAD when the enabled hook owes it.
 
 - **Commit the probe alone and push it; the red run is CI's.** It is a deliberately red commit on
   the `us012/` story branch, settled by <%DEVELOPER_NAME%> on 21/09/2026. `[3/4]` runs on push to

@@ -371,7 +371,7 @@ of `11-qa-checks`; the guide's FAMILY-09 and FAMILY-11 assert them.
 
 **US010 builds the only generated-tree literal grep over the index files, and US011 adds none**
 (settled 03/10/2026, 17-story-plans grilling round 1 Q2). The step runs in the `[3/4]` job on every
-render path the template offers (today: `INCLUDE_MOBILE` true and false) over all seven landed
+render path the template offers (the 72 valid cases approved 09/10/2026) over all seven landed
 index files, and prints nothing when clean: no `US###`, `SPRINT-##` or `MAP-<FEATURE>` literal, the
 ADR, plan, finding and bug identifiers each being caught through the story identifier they carry —
 bar each file's own name, the scale-planning map in the map index's one row, and the `000` template
@@ -569,8 +569,8 @@ template line is re-pointed in the same change.
 
 **Concurrent charting is expected.** `01-FEATURE-MAPS/` is shared with other sessions
 (`.ai/INSTRUCTIONS.md` -> _Keep project execution consistent_), and the folder moved from 14 to 15
-on the day this story was cut. Rebase onto `main` immediately before this commit, and re-count
-then; a map that lands after the commit is the next session's row to add, under the instruction
+on the day this story was cut. Rebase onto `main` immediately before this commit, record the post-rebase base SHA and
+re-read the existing probe definitions at that base, then re-count; a map that lands after the commit is the next session's row to add, under the instruction
 this commit repoints (EC-22).
 
 ### P4 — Close
@@ -590,6 +590,21 @@ guide and writes the records.
 ---
 
 ## Key Decisions
+
+**Approved remediation 09/10/2026 — reach and closeout.** After each rebase, record the actual
+post-rebase base SHA (the merge base against the intended target branch), target SHA and branch
+HEAD. Reach, unchanged-probe and unchanged-script checks compare that base to HEAD; refresh it
+on a later rebase. The original pre-edit SHA and probe/citation captures remain historical
+measurements, never the ownership boundary for incoming upstream commits. Record upstream
+probe changes separately and compare this story's probe edits against the post-rebase base.
+
+ST05 and assessment 7.5 additionally admit exactly
+`project-management/export/clickup/US010-CLIENT.md` as a necessary generated closeout artefact
+when the staged story invokes the armed ClickUp export hook. Record the story input SHA, exporter
+SHA, hook invocation and generated output hash; independently reproduce the output from that
+story. No hand edit, task-map write, credential access, network request or other export is
+admitted by this exception. The adapter publishes the same local transition when configured;
+export regeneration does not grant authority to change story status.
 
 | #   | Decision                                                                                                                                 | Why, and what was rejected                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | --- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -820,8 +835,108 @@ CI's.
 
 ## Testing
 
+**Approved integration correction 09/10/2026 — clean landing HEAD.** Before any
+base-to-HEAD reach or unchanged-content comparison, capture the landing HEAD, post-rebase base
+and `git status --porcelain=v1 --untracked-files=all`. The status output must be empty: no staged,
+working-tree or untracked change. Record that capture outside the checkout until the comparison
+is complete; writing this guide's results afterwards does not retrospectively establish a clean
+checkout. Any pending change prevents the HEAD-only row being marked Pass. The captured HEAD
+must be the commit rendered by the run whose evidence is read.
+
+Before commit, assess the prospective change separately with
+`git diff --name-only <recorded post-rebase base SHA>` (tracked on-disk content),
+`git diff --cached --name-only <recorded post-rebase base SHA>` (index content),
+plus `git ls-files --others --exclude-standard` (untracked paths), and compare every path to the
+allowlist. Include the exact generated story export and inspect its staged and on-disk bytes;
+it must not disappear merely because HEAD lacks the new version. A pre-commit read never
+substitutes for the clean landing-HEAD comparison. Ignored build outputs are not source changes;
+if the exact generated export is ignored or untracked, verify its path and provenance explicitly
+and require it tracked at the landing HEAD when the enabled hook owes it.
+
+**Approved remediation 09/10/2026 (grill-with-docs, Q4).** Every valid offered configuration
+means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_. All applicable generated-tree gates run for each case,
+with its answers, source SHA, run ID and gate outcomes recorded separately. A mobile-only run or
+reduced `shipped-ai` fixture cannot establish this criterion. US010 owns the workflow expansion;
+US011 and US012 consume its exhaustive runs and add no CI implementation. If US012 lands before
+that expansion, its red/green detector proof can be recorded but exhaustive generation remains
+unmeasured and its full-coverage completion criterion cannot be ticked.
+
 **No pytest, no coverage figure, no migration check** — each recorded `N/A` with its reason. There
 is no application Python in this diff.
+
+### Every valid offered configuration — approved 09/10/2026
+
+**Q4 requires exhaustive coverage of finite configuration selectors.** Inspection of `copier.yml`
+on 09/10/2026 found five offered boolean flags: `INCLUDE_CLICKUP`, `INCLUDE_MOBILE`,
+`INCLUDE_RUST`, `INCLUDE_DESKTOP` and `INCLUDE_WAGTAIL`; `DEPLOYMENT_POSTURE` offers
+`development`, `staging` and `production`. `INCLUDE_DESKTOP` is asked only when
+`INCLUDE_RUST` is true; a skipped desktop answer stays false. Therefore the Rust/desktop
+pairs are `(false, false)`, `(true, false)` and `(true, true)` only. Wagtail, mobile and ClickUp
+have no additional selector constraints. The deployment postures are synthetic render inputs,
+not permission to run destructive commands against any deployed environment.
+
+The twelve surface rows below each expand into six cases: ClickUp `C0=false` / `C1=true`, crossed
+with posture `P0=development` / `P1=staging` / `P2=production`. Every case is named
+`CFG-<row>-C<0|1>-P<0|1|2>`: for example `CFG-01-C0-P0` through `CFG-01-C1-P2`. Thus
+**12 x 2 x 3 = 72** valid cases are individually enumerated by those IDs. The other 24 tuples
+in the five-flag/posture product assert desktop without Rust and are excluded as invalid;
+never label a silently defaulted desktop answer as a separate valid case.
+
+| Row | INCLUDE_MOBILE | INCLUDE_RUST | INCLUDE_DESKTOP | INCLUDE_WAGTAIL | Case suffixes                            |
+| --- | -------------- | ------------ | --------------- | --------------- | ---------------------------------------- |
+| 01  | false          | false        | false           | false           | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+| 02  | false          | false        | false           | true            | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+| 03  | false          | true         | false           | false           | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+| 04  | false          | true         | false           | true            | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+| 05  | false          | true         | true            | false           | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+| 06  | false          | true         | true            | true            | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+| 07  | true           | false        | false           | false           | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+| 08  | true           | false        | false           | true            | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+| 09  | true           | true         | false           | false           | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+| 10  | true           | true         | false           | true            | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+| 11  | true           | true         | true            | false           | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+| 12  | true           | true         | true            | true            | C0-P0, C0-P1, C0-P2, C1-P0, C1-P1, C1-P2 |
+
+Use the same valid synthetic branding, app names, domain, date and other free-text answers for
+all cases. Free-text branding values and numeric capacity answers are not additional offered
+configuration branches; their validators and substitution boundaries remain separate tests.
+Capture every case's effective answers from its rendered `.copier-answers.yml`, so a skipped
+question or command-line typo cannot masquerade as the requested option set. Re-inspect the
+selectors at implementation: a new offered flag, choice or constraint expands or revises this
+matrix and its expected count in the same change, never silently remains outside “every”.
+
+**US010 owns the planned `[3/4]` expansion.** This correction writes no workflow or implementation.
+The existing two mobile renders and `shipped-ai.py`'s reduced fixture are measured subsets,
+not exhaustive evidence. Every case receives a complete generated tree from the same recorded
+source SHA, with the normal copy tasks enabled. Rust-enabled cases require the pinned Rust
+provisioning necessary for their normal lock task; lack of a prerequisite is an unrun case,
+never a skipped gate reported green. Record generation exit and gate exits by case ID, with
+failures accumulated so one early failure cannot hide unvisited cases.
+
+| Gate on every case                    | Required evidence                                                                                                                                                                                                                                                                                                        |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Successful complete render            | Source SHA, case ID, effective answers, run ID, exit code and a retained tree or immutable gate log; 72 distinct IDs, no duplicate replacing a missing case                                                                                                                                                              |
+| Token substitution                    | No unintended unrendered token anywhere in the complete tree; retain the existing explicit TEMPLATE-GUIDE/TEMPLATE-TOKENS prose exceptions only                                                                                                                                                                          |
+| Template and instance leakage         | Existing template-only exclusions, `.copier/` removal and the full `shipped-artefacts.sh` run on this tree; no leaked template records or task-map IDs                                                                                                                                                                   |
+| Seed presence and completeness        | Existing baseline completeness list plus all seven landed index paths; US012's full check-4 run over every SEEDED entry where landed; before US012, the explicit completeness assertion supplies presence evidence                                                                                                       |
+| Seed content and map-row agreement    | All seven blank index canvases and their reading rules; the sole permitted map row agrees with the seeded map; full generated-index literal grep with the existing permitted identifiers, never just seed-source inspection                                                                                              |
+| Generated links                       | The planned link-resolution check over all seven generated indexes in this tree, respecting existing named exemptions; report unresolved links by case                                                                                                                                                                   |
+| Instruction closure                   | The planned joined-line instruction search over this tree's shipped instructions, checking every surviving site and the defined banned routing wording                                                                                                                                                                   |
+| Branding and dependency lock          | Project manifest carries the synthetic slug; a present valid lock agrees and contains no template package identity; a failed/non-generated lock is incomplete generation evidence                                                                                                                                        |
+| Version and accumulator seeds         | Root version 0.1.0 and one fresh entry in each release log; all present sub-package seed logs checked, including mobile when enabled; memory/GAPS/DEFERRED headings with no inherited entries                                                                                                                            |
+| Optional paths and routing            | Every conditional path group in copier.yml present when enabled and absent when disabled, including skill aliases, guides, scripts and workflows for mobile, Rust, desktop, Wagtail and ClickUp; enabled expected files and symlink targets resolve                                                                      |
+| Rendered posture and preserved syntax | Both posture carriers equal this case's effective answer; GitHub expression and shell-test syntax survive in the files that actually ship for this case; record applicable counts rather than importing a different case's counts                                                                                        |
+| Shared-file consistency               | For cases with identical branding and posture, common rendered source files obey the existing no-conditional-file-content rule; compare all selector edges. Exclude Git internals and the answers file; validate dependency-generated locks per case, since optional workspace membership changes their dependency graph |
+
+A gate is N/A only where its specific optional file group is absent by that case's answers;
+absence must itself pass the corresponding exclusion assertion. Whole-tree token, leakage,
+completeness, index, link and instruction checks are never N/A because an optional surface is
+off. Template-source `shipped-registers`/`shipped-memory` self-tests and the reduced shared-AI
+copy/update fixture run separately; they prove their detector or update seam, not these 72 trees.
+US011's landing run consumes this full matrix plus its seven-index grep. US012's red/green
+self-test still proves its detector over one designated clean tree; its green full-run and
+branch-head evidence must additionally cover all 72 trees. If the provider has not landed,
+record the coverage as unmeasured and leave its completion criterion unticked.
 
 ### Automated
 
@@ -892,12 +1007,25 @@ US011's.
 
 ## Status Propagation & ClickUp Sync
 
+**Approved remediation 09/10/2026 (grill-with-docs, Q1).** The local build-start owner is
+`code/workflows/01-implement-story/STEPS.md` Step 1, its checklist and common build-start
+instruction: after all due pre-edit captures and before the first source edit, it records
+`Open` -> `In Progress` without requiring ClickUp credentials or a board. Documentation-only
+stories reuse that Step 1 with code phases N/A; this is the procedure US007 must repair before
+these builds, not a claim that the shared procedure has already changed.
+An enabled board adapter publishes that same committed transition and never becomes a second
+status authority. After US007 lands, the sprint plan's _Story Plans_ Status cell mirrors this
+plan's own Status field on every transition, including `Blocked`, `Open`, `In Progress`,
+`In Review` and `Completed`; a genuine no-file row alone reads _no plan to mirror_. Story and
+plan carriers retain their own lifecycle and are not reconciled by the index read rule. A plan
+transition carries its sprint-plan mirror in the same change; generated exports accompany story
+transitions only where that integration is enabled. These are future workflow requirements,
+not a build-start transition performed by this documentation correction.
+
 `../02-STORIES/US010.md`'s `**Status:**` moves `Open` → `In Progress` at the first commit on
 `us010/seeded-register-indexes`, and → `Completed` only at `completion`, after review and QA.
-This plan's `| Status |` row moves with it. **The sprint plan's Story Plans cell does not mirror
-it**: it reads `Not started`, the value that column's own comment defines, knowingly false and
-counted in `../02-STORIES/US007.md` Scenario 8's population, whose correction is US007's own
-criterion.
+This plan's `| Status |` row follows its workflow transition. After US007 lands, the sprint
+plan's Story Plans Status cell mirrors this plan in that same change, under the approved rule above.
 
 **The ClickUp export is generated, and pushing it is CI's.** The lefthook `clickup-export`
 pre-commit hook (`project-management/src/00-ASSETS/scripts/precommit-clickup.sh`) regenerates

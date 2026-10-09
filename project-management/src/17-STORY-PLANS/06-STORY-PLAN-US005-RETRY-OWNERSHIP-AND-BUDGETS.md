@@ -227,6 +227,24 @@ read is the first task of implementation, not a planning assumption.
 
 ## Approach
 
+**Corrected 09/10/2026 — manual countdown ownership.** The manual retry owner explicitly
+computes the required wait `W = max(backoff, Retry-After)` and checks it against both the row's
+interval cap `C` and remaining total age `A = total-age ceiling - elapsed age`. It parks the work
+as exhausted if `W > C`, `W > A`, or the attempt budget is exhausted; it never shortens an
+oversized wait to fit a cap or retries before `Retry-After`. Jitter must not lower `W`; any
+additional jitter is included in the final countdown and checked against both bounds again
+immediately before scheduling. A valid manual `Task.retry(countdown=...)` receives only that
+checked countdown. These are requirements on the doctrine US005 will write, not a new task
+implementation or a claim that a worker was tested. Existing budget values, overrides and
+owned deferrals remain unchanged.
+
+Verified 09/10/2026 against Celery 5.6.3's primary source:
+[`add_autoretry_behaviour`](https://docs.celeryq.dev/en/stable/_modules/celery/app/autoretry.html)
+applies `retry_backoff_max` when calculating an autoretry countdown;
+[`Task.retry`](https://docs.celeryq.dev/en/stable/_modules/celery/app/task.html#Task.retry)
+passes an explicit countdown to the retry signature without applying that cap. Declaring
+`retry_backoff_max` therefore does not bound the manual header-aware path.
+
 ### Not applicable — Database, Service Layer, API, Frontend
 
 This story adds no Python, no template and no component. The four layer sections the template
@@ -273,7 +291,7 @@ it.
   only repeat an operation it can show is idempotent**, by the family's own rule once `S-03` ships
   and by `TASK-AUTHORING.md`'s proof ladder until then. The guide cites the ADR by full path.
 - **The `Retry-After` rule.** Wait `max(backoff, Retry-After)`, never past the row's total-age
-  ceiling; **a header beyond the remaining budget means exhausted — park the work, never sleep
+  ceiling; **a wait beyond either the interval cap or remaining budget means exhausted — park the work, never sleep
   past the bound.** The clamp and the exhausted case are stated **in the same breath as the
   honouring**, never as a later caveat. `Retry-After` is untrusted input controlling how long a
   worker sleeps, so the clamp is a control. The classification carves **429 and 503 out of the
@@ -281,7 +299,8 @@ it.
   `Retry-After` arrives on a 429 — without the carve-out a reader can satisfy both rules and still
   be wrong. And the one sanctioned manual form is named: the declarative `autoretry_for` path
   cannot read a response header to extend its own wait, so honouring `Retry-After` on Celery needs
-  the manual call, with `retry_backoff_max` still capping the interval.
+  the manual call. Its owner explicitly checks the final countdown against the row's interval
+  cap and remaining total age; `retry_backoff_max` does not automatically cap the manual call.
 - **The budget table.** Defaults are **Celery's own, taken declaratively** — the `autoretry_for`
   path, 3 attempts, exponential from 1 s, a 600 s interval cap, jitter on. _Attempt_ is defined
   **once**, stating which parameter carries which count: Celery's `max_retries` counts retries, so
@@ -308,7 +327,8 @@ it.
 or by citing it instead of restating it. The two `max_retries=3` sites must stop landing on
 different worst cases. No guide is left stating a budget the table does not sanction, and the
 total-age requirement is stated in a form Celery can actually satisfy — `retry_backoff_max` caps
-the **interval between attempts**, not the length of the chain.
+autoretry's **computed backoff interval**, not the length of the chain. The manual header-aware
+path checks its own final countdown explicitly against both interval and remaining-age bounds.
 
 **The GDPR fence is repaired whole, not half.** `gdpr/COMPLIANCE.md:22-49` is one fence claimed by
 two slices — this story's budget at `:27` and `S-04`'s bare-`except` shape at `:46-48`. This story
@@ -626,6 +646,13 @@ never reported as though it had.
 hand on a **default row and on the webhook override row**, and write **both arithmetic strings
 out** — a recomputation whose working is not recorded is indistinguishable from one nobody did.
 
+**Manual countdown diagnostics, added 09/10/2026.** Walk HP-08 and EC-08 to EC-12 in the QA
+plan by hand against the doctrine, recording the required wait, final proposed countdown,
+interval cap, remaining age and park/schedule verdict. Challenge a manual countdown above the
+cap even when `retry_backoff_max` is declared: the doctrine must reject it, rather than claim
+Celery corrects it. These checks require no broker, task implementation or provider call;
+future client-wiring work owns runtime scheduling evidence and the existing enforcement deferrals.
+
 **The read-across covers six guides**, two of which the QA gate added on 05/09/2026:
 `TASK-AUTHORING.md`, `performance/API-AND-MONITORING.md`, `api-design/WEBHOOKS.md`,
 `gdpr/COMPLIANCE.md`, and — added as `AC-GAP-14` and `AC-GAP-8` — `mcp-server/TOOL-DESIGN.md` and
@@ -717,7 +744,7 @@ pre-empt a claimed slice and create a fresh citation of a surface about to be na
 - [ ] The inventory is captured **before any edit**, with US001's landing state beside it, and it
       balances — every statement resolved-here, resolved-by-US001 or `S-04`'s
 - [ ] The four rules are stated in the family: the owner rule with the SDK clamp and the escape
-      hatch, the clamped `Retry-After` rule, the budget table, the breaker deferral
+      hatch, the explicitly bounded manual `Retry-After` rule, the budget table, the breaker deferral
 - [ ] The clamp is written `total_max_attempts: 1`, and the configuration-source divergence is stated
 - [ ] _Attempt_ is defined once; the worst-case column is a formula stating its own assumption
 - [ ] The webhook override states every parameter it changes, and recomputes by hand

@@ -279,6 +279,29 @@ gate is structurally unable to report.
 
 ## 7. Security tasks & open gaps
 
+**Approved remediation 09/10/2026 — reach and closeout.** After each rebase, record the actual
+post-rebase base SHA (the merge base against the intended target branch), target SHA and branch
+HEAD. Reach, unchanged-probe and unchanged-script checks compare that base to HEAD; refresh it
+on a later rebase. The original pre-edit SHA and probe/citation captures remain historical
+measurements, never the ownership boundary for incoming upstream commits. Record upstream
+probe changes separately and compare this story's probe edits against the post-rebase base.
+
+ST05 and assessment 7.5 additionally admit exactly
+`project-management/export/clickup/US010-CLIENT.md` as a necessary generated closeout artefact
+when the staged story invokes the armed ClickUp export hook. Record the story input SHA, exporter
+SHA, hook invocation and generated output hash; independently reproduce the output from that
+story. No hand edit, task-map write, credential access, network request or other export is
+admitted by this exception. The adapter publishes the same local transition when configured;
+export regeneration does not grant authority to change story status.
+
+**Approved remediation 09/10/2026 (grill-with-docs, Q4).** Every valid offered configuration
+means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_. All applicable generated-tree gates run for each case,
+with its answers, source SHA, run ID and gate outcomes recorded separately. A mobile-only run or
+reduced `shipped-ai` fixture cannot establish this criterion. US010 owns the workflow expansion;
+US011 and US012 consume its exhaustive runs and add no CI implementation. If US012 lands before
+that expansion, its red/green detector proof can be recorded but exhaustive generation remains
+unmeasured and its full-coverage completion criterion cannot be ticked.
+
 Eight constraints become US010's Security acceptance criteria, checkable by reading the shipped diff
 and running the named self-tests; the implementation assessment closes each with evidence. **The
 story's `ST01`–`ST05` are carried, not replaced** — `ST01` becomes 7.1 with its consequence
@@ -340,7 +363,8 @@ its one permitted row settled, `ST05` 7.5 with its allowlist widened. `ST06`–`
       `.github/scripts/shipped-artefacts.sh`, `.github/scripts/shipped-registers.sh`,
       `.github/scripts/shipped-ai.py`, `.github/workflows/audit-template.yml`,
       `.claude/skills/wayfinder/SKILL.md`, `project-management/workflows/`,
-      `how-to/src/TEMPLATE-GUIDE/` and `how-to/src/TEMPLATE-TOKENS.md`. **Widened a second time**
+      `how-to/src/TEMPLATE-GUIDE/`, `how-to/src/TEMPLATE-TOKENS.md` and exactly
+      `project-management/export/clickup/US010-CLIENT.md` with the provenance above. **Widened a second time**
       by those last three (settled 27/09/2026, grilling round 3 Q14), so that US010 corrects the
       24 index sites the QA plan inventories (`QA-PLAN-US010-SEEDED-REGISTER-INDEXES.md` Section 7
       and AC-GAP-1) and the seven TM-13 count sites, including the `--trust` disclosure at

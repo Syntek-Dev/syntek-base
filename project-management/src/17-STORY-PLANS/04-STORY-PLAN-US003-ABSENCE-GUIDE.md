@@ -102,6 +102,11 @@ by a human read-across, never by `doctrine-drift.sh`).
 
 ## Problem Statement
 
+**Verification requirement corrected 09/10/2026:** QA ES-04 and manual BITE-04 deliberately
+duplicate a TYPES rule in prose in a disposable checkout. The human read-across must name
+both homes; undo removes the duplicate. `doctrine-drift.sh` remains a fenced-code regression
+guard and does not prove prose uniqueness.
+
 When code returns "nothing", it can mean six different things — the record was never there, it has
 not arrived yet, the collection is genuinely empty, something failed, nobody supplied a value, or
 the concept does not apply. **Today a developer guesses which, and different parts of the codebase
@@ -252,14 +257,13 @@ references are still this story's own targets and still resolve the moment P1 la
 stood as the main path from 05/09/2026 to 07/09/2026 and applies again **only if this story
 carries into SPRINT-03 and is worked there after US004**:
 
-US003's Gherkin plans a baseline capture. **US004 ships first and removes the need.** The three
-`code/docs/ABSENCE.md` forward references currently outstanding are this story's own targets and
-resolve the moment P1 lands. So:
-
-- **No baseline is captured**, provided US004 has landed. Confirm it has before starting.
-- `doc-references.sh` is read as a plain pass on this story's files.
-- **If US003 is worked ahead of US004** — the scheduled order since 07/09/2026, not an accident —
-  the story's original baseline procedure applies unchanged, as the opening paragraph says.
+US003's Gherkin plans a baseline capture. **US004 landing alone does not remove the need**
+(corrected 09/10/2026). In the carry case omit the capture only if the whole-tree citation gate
+is proven green and the accepted baseline ADR's retirement is recorded before source editing.
+The closing plain-pass check still requires actual exit 0. Otherwise retain the same pre-edit
+stable-identity multiset procedure, detector hash and index-state comparison used in SPRINT-02.
+A detector change is reported as confounded; no baseline is reconstructed after source edits.
+The three absence-guide forward references still clear when P1 lands.
 
 <!-- The last bullet read "**If US003 is somehow worked ahead of US004**, the story's original
      baseline procedure applies unchanged — but the sprint has ruled that order out." from
@@ -448,3 +452,5 @@ which was authored before code from this plan (backfilled 30/09/2026).
      The `17-story-plans` workflow files and `../17-STORY-PLANS/CLAUDE.md` were re-pointed the same
      way earlier on 08/09/2026; the folder-level index is deferred to the register-index work
      charted in `../01-FEATURE-MAPS/`, which names its own file when it lands. -->
+
+<!-- CORRECTED 09/10/2026 after adversarial review: The prose mutation uses the human oracle already required by the accepted ADR. -->

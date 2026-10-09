@@ -2,7 +2,7 @@
 
 _The manual testing guide for US001 — the journey a tester follows step by step, and — once walked — whether each step passed. Authored on 30/09/2026 at `17-story-plans` Step 7.2, as a backfill for a story planned before authorship moved to that step: written from the specs below, before any of the story's work exists._
 
-**Last Updated**: 30/09/2026 · **Story**: US001 · **Status**: Authored — not yet walked
+**Last Updated**: 09/10/2026 · **Story**: US001 · **Status**: Authored — not yet walked
 
 - **Story:** `../../02-STORIES/US001.md` — Reliability doctrine gets an owning guide, and every pointer reaches it
 - **Story plan:** `../../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — the code master this guide was authored beside
@@ -42,14 +42,8 @@ _The manual testing guide for US001 — the journey a tester follows step by ste
   - **Markdown lint and format** (`code/src/scripts/syntax/lint.sh`) — a line in the story's
     _Verification Checks_, run before the PR, not a manual acceptance criterion.
   - **The test suites and `migrate.sh check`** — N/A in the story: no code path, no model.
-- **Open questions** — each awaits the developer's answer, and every row it holds carries
-  `Awaiting answer` in `Notes` until it is answered and the row rewritten from it:
-  1. **BITE-02 (`ES-02`).** The rule's old location is a section of `code/docs/TASK-AUTHORING.md`,
-     and that file still exists after the move, so a pointer re-aimed at it cites a path that
-     resolves — `doc-references.sh` tests paths, not sections — and the gate is non-zero on the
-     baseline before any set-up. Is `ES-02`'s "exits non-zero naming the dangling citation"
-     walked as a finding beyond the baseline for a citation of a path that no longer exists, as a
-     section-level check no gate makes, or dropped from the QA plan?
+- **Open questions:** None. Resolved 09/10/2026 against the existing verification
+  boundaries. The path gate checks a missing path; human read-across checks a stale section.
 
 ---
 
@@ -73,8 +67,13 @@ on this surface_ (the fourth section, story plan Step E2), and
 
 ### The `doc-references.sh` baseline — captured before the first edit
 
-Not yet captured. The date and commit of the run, then every finding by identity — file, line and
-class, as the gate printed it — or `None.`
+Not yet captured. The date and commit of the run, then every finding by stable identity — `(file, kind, token)` with multiplicity,
+excluding line numbers from the comparison — or `None.`
+
+Keep the raw gate output, including line numbers, beside each capture for diagnosis. Compare
+the stable identities as a multiset: a repeated identity retains its occurrence count; moving
+an unchanged citation to another line creates no new finding. Detector and git-index state
+must match across the comparison.
 
 ---
 
@@ -162,12 +161,12 @@ column holds is this folder's `CONTEXT.md`; how each is filled is its `CLAUDE.md
 Each row sets up its failure on the finished change, runs the gate, then undoes the set-up; a
 clean re-run of the same gate confirms the undo before the next row.
 
-| ID      | Action                                                                                                                                                                            | Expected outcome                                                                                   | Flow | QA    | Result | Notes                             |
-| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ---- | ----- | ------ | --------------------------------- |
-| BITE-01 | Move the family's `CLAUDE.md` aside, run `bash code/src/scripts/audits/docs-pairing.sh`, then put it back                                                                         | Exits non-zero, naming `code/docs/reliability/` as unpaired                                        | —    | ES-01 |        |                                   |
-| BITE-02 | Re-aim one repointed pointer at the rule's old location, run `bash code/src/scripts/audits/doc-references.sh`, then undo the edit                                                 | Exits non-zero, with a finding naming that dangling citation                                       | —    | ES-02 |        | Awaiting answer — open question 1 |
-| BITE-03 | Grow a scratch guide file in the family to 269 counted lines and run `bash code/src/scripts/audits/docs-length.sh`; grow it to 270 and run it again; then delete the scratch file | At 269 the file is not reported; at 270 it enters the warn tier — the boundary is inclusive at 270 | —    | EC-02 |        |                                   |
-| BITE-04 | Grow one of the family's guide files to 270 counted lines or more, run `bash code/src/scripts/audits/docs-length.sh`, then undo                                                   | The file is reported in the warn tier, and no dated allowance covers it                            | —    | ES-03 |        |                                   |
+| ID      | Action                                                                                                                                                                                                                                                                                                                                                       | Expected outcome                                                                                                                                                          | Flow | QA    | Result | Notes                                                                                                                      |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----- | ------ | -------------------------------------------------------------------------------------------------------------------------- |
+| BITE-01 | Move the family's `CLAUDE.md` aside, run `bash code/src/scripts/audits/docs-pairing.sh`, then put it back                                                                                                                                                                                                                                                    | Exits non-zero, naming `code/docs/reliability/` as unpaired                                                                                                               | —    | ES-01 |        |                                                                                                                            |
+| BITE-02 | In a disposable checkout, re-aim the repointed route in `code/docs/PROCESS-MODEL.md` at the old section of `code/docs/TASK-AUTHORING.md`; follow that exact mutated route and identify the missing rule; undo. Then cite the nonexistent path "code/docs/reliability/US001-MISSING-PROBE.md", run `bash code/src/scripts/audits/doc-references.sh`, and undo | The human read-across rejects the stale section; the second mutation adds a finding naming the missing token beyond baseline. Undo restores the original finding multiset | —    | ES-02 |        | Corrected 09/10/2026 — was a path-gate assertion about an existing file; evidence: US001 acceptance amendment and QA ES-02 |
+| BITE-03 | Grow a scratch guide file in the family to 269 counted lines and run `bash code/src/scripts/audits/docs-length.sh`; grow it to 270 and run it again; then delete the scratch file                                                                                                                                                                            | At 269 the file is not reported; at 270 it enters the warn tier — the boundary is inclusive at 270                                                                        | —    | EC-02 |        |                                                                                                                            |
+| BITE-04 | Grow one of the family's guide files to 270 counted lines or more, run `bash code/src/scripts/audits/docs-length.sh`, then undo                                                                                                                                                                                                                              | The file is reported in the warn tier, and no dated allowance covers it                                                                                                   | —    | ES-03 |        |                                                                                                                            |
 
 ---
 
@@ -216,3 +215,9 @@ Filled at the walk.
 - `../../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` — why the read-across, not `doctrine-drift.sh`, checks the prose
 - `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — why `doc-references.sh` is read as a diff against the baseline; superseded 30/09/2026 by `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged and names this file as where the baseline is recorded
 - No `05-USER-FLOW` citation: the story's `User Flow` flag is N/A, so no consolidated flow or flow implementation record exists for it
+
+<!-- CORRECTED 09/10/2026 after adversarial review: citation baseline identities now omit
+     line numbers and preserve multiplicity, following the US007 QA-plan comparison rule.
+     Raw diagnostics remain recorded; no build capture or manual Result has been filled. -->
+
+<!-- CORRECTED 09/10/2026 after adversarial review: Open question 1 resolved using the existing path-versus-section verification boundary. -->

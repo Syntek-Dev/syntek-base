@@ -564,3 +564,26 @@ Both were raised during the pass, both were plausible, and both fail on a fact.
      round 3): the `code/docs/GATE-REPORTING.md` entry read "the rule the `N/A` sections, the PA
      rows written as failing tests, Section 7 and Section 8 rest on" until then. The ADR and
      story-plan entries are new. -->
+
+---
+
+## QA corrections — approved 09/10/2026
+
+HP-02/04 and EC-01/12/14 use Git's effective executable hook predicate in the US009 plan,
+including `core.hooksPath`; a marked but non-executable hook is unarmed. PA-03 captures the notice
+body's stdout and stderr separately and requires stderr empty. HP-06 includes both README edits,
+verified by CLAIM-04 and CLAIM-05 as well as the unchanged claim sentence.
+ES-01 to ES-03, EC-02 and EC-05 use the plan's named disposable fixtures through the planned
+"code/src/scripts/tests/hook-arming.sh" runner, preserving tool/binary provenance.
+
+| ID    | Given                                                                                       | When                                | Then                                                                                 |
+| ----- | ------------------------------------------------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------ |
+| EC-15 | Relative or absolute `core.hooksPath` in a clone/worktree, with a stale marked default hook | Install and notice probes run       | Only the effective path can arm/silence; an effective throwaway commit runs its legs |
+| EC-16 | Effective hook carries lefthook's marker but lacks executable permission                    | Notice and install probes run       | Notice prints until an effective executable hook is installed                        |
+| EC-17 | Synthetic ignored files outside the hook directory are changed without changing Git status  | The filesystem-manifest oracle runs | It fails on the content/mode/path change                                             |
+| EC-18 | A negative-control notice writes only to stderr                                             | The separate-stream oracle runs     | It fails; stdout-only remains the requirement                                        |
+
+ST05/assessment 7.13 mean the resolved effective hook directory, including an external configured
+path. Compare complete filesystem manifests around the extracted step, with dependencies ready;
+Git status alone proves no content boundary. The fixture recipe is recorded in the plan, and
+missing dependencies or runner remain unmeasured.

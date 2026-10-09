@@ -1,5 +1,10 @@
 # QA Plan — US008 Host-only cookies under `__Host-` names
 
+> **Approved correction 09/10/2026:** the current report and migration lifecycle decision is
+> `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`.
+> The earlier channel and dual-gate ADRs are Superseded; citations below retain their history.
+> The dated acceptance/specification correction at the end governs the repaired behaviour.
+
 | Field         | Value                                                                                                          |
 | ------------- | -------------------------------------------------------------------------------------------------------------- |
 | **Story**     | US008 — Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule |
@@ -580,3 +585,24 @@ because the next reader will otherwise raise them again.
      round 3): the FIRST-MINOR entry read "the record AC-GAP-1 invalidates; `15-decisions` owns
      the repair" until then, written before `15-decisions` superseded it the same day. The
      MITIGATION, FORWARDED-PROTO, story-plan and `template-update.sh` entries are new. -->
+
+---
+
+## QA corrections — approved 09/10/2026
+
+HP-04 now uses the exact temporary browser fixture and admin password-change POST in
+`project-management/src/17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`.
+HP-08/09/10 require complete emitted advisory bodies, not matching banners. ES-08 uses the valid
+clean scratch project's deliberately nonexistent target ref and rejects a preflight failure.
+EC-12's pending entry is explicitly inactive; the real-tag proof remains at release.
+The controlling successor is `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`.
+
+| ID    | Given                                                                                | When                             | Then                                                                     |
+| ----- | ------------------------------------------------------------------------------------ | -------------------------------- | ------------------------------------------------------------------------ |
+| EC-14 | The pending cutover entry has no release version and literal false `when`            | A prerelease scratch update runs | No cutover notice; a planted Domain still produces its full state report |
+| EC-15 | Disposable refs straddle the atomically versioned and activated release fixture      | Update crosses that version      | One complete cutover notice, and a complete Domain report if planted     |
+| EC-16 | A disposable project's source is at or above the activated version                   | A subsequent update runs         | No repeated cutover notice; state reporting remains independent          |
+| EC-17 | The staff-only scratch HTMX button has no form input and its `hx-headers` is removed | Click Send test write            | CSRF 403; restoring the rendered header restores 200                     |
+
+Fixture refs prove mechanics before release and never replace recording the actual release tag.
+No QA result or sign-off is inferred from these corrected specifications.

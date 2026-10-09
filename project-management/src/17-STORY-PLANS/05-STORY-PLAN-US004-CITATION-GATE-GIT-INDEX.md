@@ -72,6 +72,12 @@ superseded records (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; se
 16-sprint-plans grilling round 7 Q18). The superseded records' citations are kept, not
 repointed. -->
 
+**Remediation accepted 09/10/2026:** registration now follows
+`../15-DECISIONS/ADR-US004-PATTERNED-REGISTRATION-PRESERVES-SHIPPED-TEMPLATES-09-10-2026.md`,
+which supersedes the 30/09/2026 registration record without rewriting its decision. The citer
+record remains in force. Literal shipped-template presence is checked separately from citer
+exemption; exactly-three-digit class registration cannot admit `US000` or `*TEMPLATE*` targets.
+
 > **Source authority.** Where this plan and `../02-STORIES/US004.md` differ on a **measurement**,
 > **this plan wins** — its figures were produced by executing a patched copy of the script, and
 > the story's two reading-derived claims were both wrong. Where they differ on **what must be
@@ -120,7 +126,8 @@ script's output, and `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-0
 superseded 30/09/2026 by
 `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged, retirement terms included — binds
-the whole backlog to reading a red gate as a diff against a baseline **until this story lands**. <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+the whole backlog to reading a red gate as a diff against a baseline **until the gate is green**,
+not merely until US004's owned repairs land (clarified 09/10/2026). <!-- UPDATED 30/09/2026: successor added beside the superseded record,
 which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 Whole-tree run at planning: **44 findings**, 989 files read, 87 exempt, 30,095 tokens, 5,665 path
@@ -161,8 +168,9 @@ personal-data path, log line or public page.
 
 ## Architecture Decision
 
-**Two records, both `Accepted`, both authored at `15-decisions` because neither trade-off was
-visible until `11-qa-checks` measured it.**
+**Two original decisions, authored at `15-decisions` because neither trade-off was visible
+until `11-qa-checks` measured it.** The citer decision is carried by its accepted 30/09/2026
+successor; registration is now carried by the accepted 09/10/2026 template-presence successor.
 
 `ADR-US004-INSTANCE-ARTEFACT-CITER-TEST` settles that Check 2 asks whether the **citing file is
 an instance artefact**, read from its filename. The obvious alternative — `is_template_only()` —
@@ -184,11 +192,30 @@ and running it scoped to `project-management/src`:
 | Stock script                                 | 16                     | The tree is invisible to Check 1                      |
 | `project-management/src/*` arm, nothing else | **38**                 | +22, **every one** a forward reference to `18-TESTS/` |
 
-**Not one of the 22 is a naming pattern.** Check 1 already carries the line-level `is_naming_row`
+**Historical measurement, 02/09/2026; not an acceptance threshold (settled 09/10/2026).** The
+30/09/2026 backfill changed the target population. Re-measure current counts and composition
+with the controlled US999-to-US997 fixture below; neither 16 to 38 nor five to zero must recur.
+
+**Not one of the historical 22 is a naming pattern.** Check 1 already carries the line-level `is_naming_row`
 guard at `:791`. The story's original plan to add a second, token-level guard was dropped at
 AC-GAP-1 as a restatement — the defect this story's own map exists to remove.
 
 ## Approach
+
+**Approved fixtures, 09/10/2026.** Every destructive or index-mutating walk setup uses a
+disposable clone of a recorded commit. Copy US003.md byte for byte from the baseline commit to
+"project-management/src/02-STORIES/US998.md"; keep those bytes for both detector versions and
+both index states. Check scratch names are free first. Measure with `--path`, first untracked,
+then `git add --intent-to-add`, then `git restore --staged -- <scratch path>`; record unchanged
+bytes and US998's return to untracked state after each A/B. Retain the current pre-change
+differential and post-change equality, not the historical numeric differential.
+
+Create a separate scratch citer "project-management/src/02-STORIES/US999.md". Its ordinary
+one-citation-per-line probes name (a) "project-management/src/02-STORIES/US997.md", verified
+absent and unregistered, for Check 1 versus Check 2 hand-over; (b)
+"project-management/src/18-TESTS/AUTOMATED/US997-TEST-STATUS.md", verified absent but covered
+by the patterned row, for registration. The A/B copy US998 is never a missing target. Record
+setup and cleanup; discard clones rather than alter real stories or another agent's checkout.
 
 ### Not applicable — Database, Service Layer, API, Frontend
 
@@ -210,6 +237,15 @@ script" a named criterion.
 | P3    | Check 2 citer test + alternation spellings | Fixture pair           | —          |
 | P4    | The PM tree becomes checkable              | Fixture pair           | —          |
 | P5    | The sweep, and the records it owes         | Whole-tree measurement | P1–P4      |
+
+**P4's template-presence obligation, accepted 09/10/2026.** Add distinct broken/clean target
+fixtures for the manual and automated shipped US000 templates. With each class row present,
+move the literal target outside the clone root, cite it from US999 on a plain line, and require
+Check 1's `[dangling path]`; restoring it clears that finding. Check literal shipped-template
+presence before seeded, registered or naming-row suppression, and reject `US000`/`*TEMPLATE*`
+targets from patterned registration. The existing Check 2 fixture that makes a shipped template
+the citer remains separate. Keep real-instance registration and four-digit/letter rejection
+assertions; no existing assertion is weakened to let the class cover a missing template.
 
 **P1 — the exemption arm.** One fall-through arm for `*/CONTEXT.md`, `*/CLAUDE.md` and
 `*TEMPLATE*`, placed **ahead** of the tree arms so all nine shipped files enter. It mirrors
@@ -239,8 +275,10 @@ instance-shaped, shipped, and therefore **not** exempt.
 `project-management/src/*` arm; `is_registered()` gains the `###` translation;
 `how-to/src/PROJECT-PATHS.md` gains its two rows; `code/docs/FORWARD-VOICE.md` Section 3 and the
 register's header state that a row may be patterned and carry the duty to add one.
+Both owner texts also state the literal shipped-template exception from the 09/10/2026 successor.
 
-**These cannot be split.** The arm alone reddens the tree by 22 findings, and the register rows
+**These cannot be split.** Historically the arm alone reddened the tree by 22 findings; current
+controlled composition is re-measured, and the register rows
 are what makes them pass — landing the arm without the rows leaves the gate red on correct
 citations, which is the false-positive mirror of the defect this story fixes. Two rows only:
 `18-TESTS/MANUAL/US###-MANUAL-TESTING.md` and `18-TESTS/AUTOMATED/US###-TEST-STATUS.md`. **No `17-STORY-PLANS`
@@ -267,14 +305,15 @@ claim on the map. Close `GAPS.md`'s 02/09/2026 entry and correct its stale block
 
 ## Key Decisions
 
-| Decision                                    | Chosen                             | Rejected                                          | Why                                                                     |
-| ------------------------------------------- | ---------------------------------- | ------------------------------------------------- | ----------------------------------------------------------------------- |
-| How Check 2 knows a citer ships             | Instance-artefact filename test    | `is_template_only()` · `project-management/src/*` | Inert downstream · exempts ~20 shipped files (ADR, AC-GAP-4/5)          |
-| How a register row covers a class           | `###` → three digit classes        | One row per story · shell globs · 22 markers      | Unbounded · only glob in a repo of `###` · writes a false justification |
-| Whether Check 1 gains a second naming guard | No                                 | Token-level guard                                 | `:791` already carries one; a restatement (AC-GAP-1)                    |
-| Whether Check 3's citer test changes too    | No — the population fix carries it | Instance test on Check 3 as well                  | Empty `TEMPLATE_ONLY` downstream is correct, not blind                  |
-| What "done" means for the gate              | A class delta, survivors named     | `exits 0`                                         | Six findings belong to US002 and US003 (AC-GAP-3)                       |
-| Phase shape                                 | Red → green per repair             | Repairs then proofs                               | The pre-change script stops existing to test against                    |
+| Decision                                    | Chosen                                                                                  | Rejected                                          | Why                                                                             |
+| ------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------- |
+| How Check 2 knows a citer ships             | Instance-artefact filename test                                                         | `is_template_only()` · `project-management/src/*` | Inert downstream · exempts ~20 shipped files (ADR, AC-GAP-4/5)                  |
+| How a register row covers a class           | `###` → three digit classes                                                             | One row per story · shell globs · 22 markers      | Unbounded · only glob in a repo of `###` · writes a false justification         |
+| Shipped-template targets, 09/10/2026        | Literal presence before suppression; no patterned registration for `US000`/`*TEMPLATE*` | Class registration masking absence                | Required shipped files must exist; missing-target and citer proofs are separate |
+| Whether Check 1 gains a second naming guard | No                                                                                      | Token-level guard                                 | `:791` already carries one; a restatement (AC-GAP-1)                            |
+| Whether Check 3's citer test changes too    | No — the population fix carries it                                                      | Instance test on Check 3 as well                  | Empty `TEMPLATE_ONLY` downstream is correct, not blind                          |
+| What "done" means for the gate              | A class delta, survivors named                                                          | `exits 0`                                         | Six findings belong to US002 and US003 (AC-GAP-3)                               |
+| Phase shape                                 | Red → green per repair                                                                  | Repairs then proofs                               | The pre-change script stops existing to test against                            |
 
 ## Dependencies
 
@@ -366,13 +405,14 @@ by hand and recorded in `../18-TESTS/MANUAL/US004-MANUAL-TESTING.md` as run or a
 `tests/all.sh --coverage` is `N/A` with a reason rather than a skipped box. The proof is the
 script's own `--self-test`, which carries both modes this story needs.
 
-| Layer               | Method                                                                               |
-| ------------------- | ------------------------------------------------------------------------------------ |
-| Predicates (P1, P2) | Direct assertions in the `st_set_probe` style — a fixture cannot reach a predicate   |
-| Clauses (P3, P4)    | `broken/` and `clean/` fixture pairs with expected finding counts                    |
-| Regression          | The existing "fixture tree is exempt from an ordinary run" assertion must still pass |
-| Whole tree (P5)     | Before/after counts, exit codes, and the runtime, all recorded                       |
-| Manual              | The tracked/untracked A/B reproduced before and after, index restored each time      |
+| Layer               | Method                                                                                                                           |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Predicates (P1, P2) | Direct assertions in the `st_set_probe` style — a fixture cannot reach a predicate                                               |
+| Clauses (P3, P4)    | `broken/` and `clean/` fixture pairs with expected finding counts                                                                |
+| Regression          | The existing "fixture tree is exempt from an ordinary run" assertion must still pass                                             |
+| Whole tree (P5)     | Before/after counts, exit codes, and the runtime, all recorded                                                                   |
+| Manual              | The tracked/untracked A/B reproduced before and after, index restored each time                                                  |
+| Missing targets     | Manual and automated US000 targets removed separately with class rows present, then restored; separate from template citer tests |
 
 The rows a person walks are in `../18-TESTS/MANUAL/US004-MANUAL-TESTING.md`, authored from this
 plan before code (backfilled 30/09/2026) and walked at `22`.
@@ -382,7 +422,11 @@ and no existing probe is weakened to accommodate a change — a moved expected c
 justification in its own comment.
 
 **Measure by executing, never by reading.** Two claims in the story made by reading the script
-were wrong and both became AC-gaps. Every figure in this plan is reproduced at implementation.
+were wrong and both became AC-gaps. Historical figures stay dated evidence; implementation
+records current counts and identities on a controlled tree. For the stock-versus-arm-only
+comparison, plant US999's absent unregistered US997 story citation on that same tree: the
+arm-only detector must add its `[dangling path]`, and no addition may be a naming pattern.
+Record every addition rather than require the historical 16-to-38 totals (QA HP-06).
 
 ## Documentation Write-Ups (Implementation Records)
 
@@ -435,12 +479,17 @@ citable in advance**, the story demonstrating its own deliverable — and walks
 - [ ] All five phases complete, each having failed against the pre-change script first
 - [ ] `doc-references.sh --self-test` exits 0, probe count risen by one case per repair
 - [ ] No finding remains of the three classes this story owns; every survivor named with its owner
-- [ ] The 16 → 38 and 5 → 0 measurements reproduced and recorded, not inherited from this plan
+- [ ] Current controlled counts and finding identities recorded for the US998 index A/B and
+      stock-versus-arm-only US999/US997 proof; historical 16 to 38 and five to zero are not thresholds
+- [ ] Both missing shipped-US000 target fixtures report with class rows present and clear on
+      restoration; citer exemption remains a distinct proof and three-digit bounds are retained
 - [ ] `GAPS.md`'s 02/09/2026 entry closed against all three retirement conditions
 - [ ] N-009's overturned claim recorded on `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md`
 - [ ] `syntax/lint.sh` passes over what it reads — the Markdown leg, over the documents touched
 - [ ] ShellCheck clean over the edited script, run by hand and recorded as run or as not run —
       no project script carries it (_Standards gates_)
+- [ ] Every applicable check has evidence; N/A retains its reason, unavailable required checks
+      block sign-off, and whole-tree survivors retain owners without being reported as a pass
 - [ ] This plan's row in `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` → _Story Plans — the code
       master_ mirrors the final status; story cross-references this plan
 - [ ] Reviewed and approved; merged; `../02-STORIES/US004.md` status set to **Completed**

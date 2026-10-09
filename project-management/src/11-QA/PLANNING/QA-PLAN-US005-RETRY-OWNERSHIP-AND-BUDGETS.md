@@ -62,6 +62,10 @@
   exactly the manual call Scenario 3 bans. Resolved: the ban is narrowed to _"manual `self.retry`
   as the routine environment-error path"_, and the `Retry-After` rule states the one sanctioned
   manual form, with `retry_backoff_max` still capping it. Added on 05/09/2026.
+  **Corrected 09/10/2026:** that last assertion was false for an explicit manual countdown.
+  The manual owner enforces interval and remaining-age bounds; HP-08 and EC-08 to EC-12
+  now test that doctrine. The 05/09/2026 statement above is retained as the historical resolution,
+  not the current oracle.
 - **AC-GAP-5** `[RESOLVED]` — **429 is a 4xx, and the doctrine will call it permanent and
   retryable at once.** `code/docs/TASK-AUTHORING.md` classifies a 4xx as permanent — "retrying a
   permanent failure repeats the work" — and US001 migrates that bullet into the family this story
@@ -166,20 +170,39 @@ attempt-log leakage`, the security constraints are carried into the story's Veri
 
 ## 2. Test scenarios
 
+**Corrected 09/10/2026 — manual countdown ownership.** The manual retry owner explicitly
+computes the required wait `W = max(backoff, Retry-After)` and checks it against both the row's
+interval cap `C` and remaining total age `A = total-age ceiling - elapsed age`. It parks the work
+as exhausted if `W > C`, `W > A`, or the attempt budget is exhausted; it never shortens an
+oversized wait to fit a cap or retries before `Retry-After`. Jitter must not lower `W`; any
+additional jitter is included in the final countdown and checked against both bounds again
+immediately before scheduling. A valid manual `Task.retry(countdown=...)` receives only that
+checked countdown. These are requirements on the doctrine US005 will write, not a new task
+implementation or a claim that a worker was tested. Existing budget values, overrides and
+owned deferrals remain unchanged.
+
+Verified 09/10/2026 against Celery 5.6.3's primary source:
+[`add_autoretry_behaviour`](https://docs.celeryq.dev/en/stable/_modules/celery/app/autoretry.html)
+applies `retry_backoff_max` when calculating an autoretry countdown;
+[`Task.retry`](https://docs.celeryq.dev/en/stable/_modules/celery/app/task.html#Task.retry)
+passes an explicit countdown to the retry signature without applying that cap. Declaring
+`retry_backoff_max` therefore does not bound the manual header-aware path.
+
 Derived from the story's Gherkin scenarios rather than a wireframe — this story has none. Every
 scenario below is executable against the repository after the change lands.
 
 ### Happy path (HP-nn)
 
-| ID    | Given                                                                                    | When            | Then                                                                                                                                                   |
-| ----- | ---------------------------------------------------------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| HP-01 | No guide states the cross-surface rule for which layer repeats an operation              | The story ships | The retry guide states it once, with the SDK clamp in its correct vendor form and the delegation escape hatch named                                    |
-| HP-02 | `code/docs/TASK-AUTHORING.md` requires a bound by attempt count and by total age         | The story ships | One budget table carries both, defaults taken declaratively from Celery's own, with a derived worst-case column stated as a formula                    |
-| HP-03 | Four budget statements disagree across three guides                                      | The story ships | All four resolve against the table — by agreeing or by citing it — and the two `max_retries=3` sites no longer land ~3 min and ~9 min apart            |
-| HP-04 | `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md:265` mandates circuit breakers         | The story ships | `:265` is a pointer, and the family records the deferral with both triggers and the existing partial mechanism named                                   |
-| HP-05 | `code/docs/NEGATIVE-SPACE.md:226` points at two owners, one of which is silent           | The story ships | It points at the reliability family, the `:211` row gains its pointer in prose, and no sixth column appears                                            |
-| HP-06 | The tree holds a countable set of retry statements across the files this story touches   | The story ships | The inventory balances — every statement resolved here, by US001, or by `S-04`, with none unaccounted for                                              |
-| HP-07 | `project-management/docs/gdpr/COMPLIANCE.md:22-49` holds one fence claimed by two slices | The story ships | The fence demonstrates a declarative shape with a specific exception tuple and a sanctioned budget, and the map's `S-04` row records the drop to three |
+| ID    | Given                                                                                    | When                                  | Then                                                                                                                                                   |
+| ----- | ---------------------------------------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| HP-01 | No guide states the cross-surface rule for which layer repeats an operation              | The story ships                       | The retry guide states it once, with the SDK clamp in its correct vendor form and the delegation escape hatch named                                    |
+| HP-02 | `code/docs/TASK-AUTHORING.md` requires a bound by attempt count and by total age         | The story ships                       | One budget table carries both, defaults taken declaratively from Celery's own, with a derived worst-case column stated as a formula                    |
+| HP-03 | Four budget statements disagree across three guides                                      | The story ships                       | All four resolve against the table — by agreeing or by citing it — and the two `max_retries=3` sites no longer land ~3 min and ~9 min apart            |
+| HP-04 | `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md:265` mandates circuit breakers         | The story ships                       | `:265` is a pointer, and the family records the deferral with both triggers and the existing partial mechanism named                                   |
+| HP-05 | `code/docs/NEGATIVE-SPACE.md:226` points at two owners, one of which is silent           | The story ships                       | It points at the reliability family, the `:211` row gains its pointer in prose, and no sixth column appears                                            |
+| HP-06 | The tree holds a countable set of retry statements across the files this story touches   | The story ships                       | The inventory balances — every statement resolved here, by US001, or by `S-04`, with none unaccounted for                                              |
+| HP-07 | `project-management/docs/gdpr/COMPLIANCE.md:22-49` holds one fence claimed by two slices | The story ships                       | The fence demonstrates a declarative shape with a specific exception tuple and a sanctioned budget, and the map's `S-04` row records the drop to three |
+| HP-08 | A manual owner has remaining attempts and a final countdown at or below both bounds      | The doctrine's decision is recomputed | It schedules only the explicitly checked countdown, at least max(backoff, Retry-After); setting retry_backoff_max alone is not the check               |
 
 ### Error states (ES-nn)
 
@@ -195,15 +218,20 @@ still bites, not a defect to expect.
 
 ### Edge cases (EC-nn)
 
-| ID    | Given                                                                                    | When                         | Then                                                                                                      |
-| ----- | ---------------------------------------------------------------------------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------- |
-| EC-01 | US001 has already repointed `code/docs/NEGATIVE-SPACE.md:226`                            | This story reaches that line | The story verifies the line's content and makes no second repoint; the criterion holds either way         |
-| EC-02 | A 429 carries a `Retry-After` and the classification calls a 4xx permanent               | Both rules are read together | The guide carves 429 and 503 out of the permanent class; no reader can satisfy both rules and be wrong    |
-| EC-03 | An inbound `Retry-After` exceeds the row's remaining total-age budget                    | The rule is applied          | The work is parked as exhausted; the wait is never extended past the bound                                |
-| EC-04 | A budget row is an override rather than a default                                        | The worst case is recomputed | The row states every parameter it changes, so the recomputation resolves without reading another document |
-| EC-05 | A client legitimately keeps its transport retries                                        | The register row is written  | The row records the delegated attempt count and interval **as numbers**, so the worst case still resolves |
-| EC-06 | `code/docs/performance/API-AND-MONITORING.md:142` sits outside the section US001 reduces | The inventory runs           | It is caught as a surviving retry statement in a home other than the family, and dispositioned            |
-| EC-07 | The reliability family does not exist when this story is picked up                       | The story opens              | It is blocked, not started — the blocker is US001 and it is stated in the story and in SPRINT-03          |
+| ID    | Given                                                                                                          | When                                     | Then                                                                                                                                      |
+| ----- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| EC-01 | US001 has already repointed `code/docs/NEGATIVE-SPACE.md:226`                                                  | This story reaches that line             | The story verifies the line's content and makes no second repoint; the criterion holds either way                                         |
+| EC-02 | A 429 carries a `Retry-After` and the classification calls a 4xx permanent                                     | Both rules are read together             | The guide carves 429 and 503 out of the permanent class; no reader can satisfy both rules and be wrong                                    |
+| EC-03 | An inbound `Retry-After` exceeds the row's remaining total-age budget                                          | The rule is applied                      | The work is parked as exhausted; the wait is never extended past the bound                                                                |
+| EC-04 | A budget row is an override rather than a default                                                              | The worst case is recomputed             | The row states every parameter it changes, so the recomputation resolves without reading another document                                 |
+| EC-05 | A client legitimately keeps its transport retries                                                              | The register row is written              | The row records the delegated attempt count and interval **as numbers**, so the worst case still resolves                                 |
+| EC-06 | `code/docs/performance/API-AND-MONITORING.md:142` sits outside the section US001 reduces                       | The inventory runs                       | It is caught as a surviving retry statement in a home other than the family, and dispositioned                                            |
+| EC-07 | The reliability family does not exist when this story is picked up                                             | The story opens                          | It is blocked, not started — the blocker is US001 and it is stated in the story and in SPRINT-03                                          |
+| EC-08 | Retry-After exceeds the interval cap but fits remaining age                                                    | The manual decision is recomputed        | Park as exhausted; never schedule the cap as a shortened Retry-After                                                                      |
+| EC-09 | max(backoff, Retry-After) exceeds remaining age but fits the interval cap                                      | The manual decision is recomputed        | Park as exhausted; no countdown is scheduled                                                                                              |
+| EC-10 | Remaining age is zero or negative, with a positive required wait                                               | The manual decision is recomputed        | Park as exhausted without extending the age ceiling                                                                                       |
+| EC-11 | A proposed jitter draw lowers the required minimum, or added jitter exceeds a bound                            | The manual decision is recomputed        | Never schedule below max(backoff, Retry-After); check the final countdown against both bounds and park any oversized result               |
+| EC-12 | A manual Task.retry(countdown=...) proposes an interval above the cap despite retry_backoff_max being declared | The prose example is read diagnostically | Reject the example as unbounded; Celery does not automatically cap it. Capture the proposed countdown and both bounds, not a runtime pass |
 
 ### Permission and access (PA-nn)
 

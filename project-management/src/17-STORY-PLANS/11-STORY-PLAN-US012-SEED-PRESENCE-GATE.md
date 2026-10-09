@@ -335,9 +335,9 @@ there, and the probe line it printed is unchanged.
 
 ### What the gate can and cannot see
 
-- **The self-test reads one generated tree and the full run reads every one.** `:225` passes the
+- **The self-test reads one generated tree and the full run must read all 72 valid cases under the approval of 09/10/2026.** `:225` passes the
   `INCLUDE_MOBILE` false tree alone, and the script's self-test reads only its first target (`:250`);
-  the full run at `:228` reads both. No record may read a green self-test as proof over every tree
+  the current full run at `:228` reads both mobile trees; the approved expansion must read all 72 cases. No record may read a green self-test as proof over every tree
   (EC-09; `../16-SPRINT-PLANS/07-SPRINT-PLAN-07.md` -> _Gate honesty_). Seeds are not mobile-gated,
   so the full run covers the true tree.
 - **No CI run of this story prints the seed finding's text.** `probe()` prints only its pass line on
@@ -584,6 +584,32 @@ hand-built fixture is lawful for iterating and indicative only (QA plan Section 
 
 ## Testing
 
+**Approved integration correction 09/10/2026 — clean landing HEAD.** Before any
+base-to-HEAD reach or unchanged-content comparison, capture the landing HEAD, post-rebase base
+and `git status --porcelain=v1 --untracked-files=all`. The status output must be empty: no staged,
+working-tree or untracked change. Record that capture outside the checkout until the comparison
+is complete; writing this guide's results afterwards does not retrospectively establish a clean
+checkout. Any pending change prevents the HEAD-only row being marked Pass. The captured HEAD
+must be the commit rendered by the run whose evidence is read.
+
+Before commit, assess the prospective change separately with
+`git diff --name-only <recorded post-rebase base SHA>` (tracked on-disk content),
+`git diff --cached --name-only <recorded post-rebase base SHA>` (index content),
+plus `git ls-files --others --exclude-standard` (untracked paths), and compare every path to the
+allowlist. Include the exact generated story export and inspect its staged and on-disk bytes;
+it must not disappear merely because HEAD lacks the new version. A pre-commit read never
+substitutes for the clean landing-HEAD comparison. Ignored build outputs are not source changes;
+if the exact generated export is ignored or untracked, verify its path and provenance explicitly
+and require it tracked at the landing HEAD when the enabled hook owes it.
+
+**Approved remediation 09/10/2026 (grill-with-docs, Q4).** Every valid offered configuration
+means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_. All applicable generated-tree gates run for each case,
+with its answers, source SHA, run ID and gate outcomes recorded separately. A mobile-only run or
+reduced `shipped-ai` fixture cannot establish this criterion. US010 owns the workflow expansion;
+US011 and US012 consume its exhaustive runs and add no CI implementation. If US012 lands before
+that expansion, its red/green detector proof can be recorded but exhaustive generation remains
+unmeasured and its full-coverage completion criterion cannot be ticked.
+
 **No pytest, no coverage figure, no migration check — each recorded `N/A` with its reason.**
 `code/docs/TESTING.md`'s one floor (75% line and branch, 90% auth) has nothing to bind: there is no
 Python in the diff. The proof is the `--self-test`.
@@ -656,13 +682,13 @@ change, and confirms the `S-02` Slices row still names US012 (**verify, do not r
 
 ## CONTEXT.md & Index Updates
 
-| File                                      | Change                                                                                                                                                                                                                                                                                                                                                |
-| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `../16-SPRINT-PLANS/07-SPRINT-PLAN-07.md` | **Paid 03/10/2026 by `17-story-plans` Step 10.** The US012 row of _Story Plans — the code master_ points at this file, its Status cell "Not started" as that plan's own section defines the column; the `Must` table's Story-plan cell names this file, and its Git-branch cell and the _Branch Naming Reference_ row take `us012/seed-presence-gate` |
-| `../02-STORIES/US012.md`                  | **Paid 03/10/2026 by Step 10.** The story cites this plan and its guide under _Decisions_, and its Dependencies record the reservation taken up                                                                                                                                                                                                       |
-| `../17-STORY-PLANS/CONTEXT.md`            | **Nothing.** It ships and holds no index by recorded decision (its _The plans index_ section)                                                                                                                                                                                                                                                         |
-| "STORY-PLAN-INDEX.md"                     | Created by US010; this plan's row is part of the population US011 back-fills, its `Updated` this plan's last commit date. Not written by this story                                                                                                                                                                                                   |
-| `GAPS.md` · `DEFERRED.md`                 | Nothing — see _Documentation Write-Ups_                                                                                                                                                                                                                                                                                                               |
+| File                                      | Change                                                                                                                                                                                                                                                                                                                          |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `../16-SPRINT-PLANS/07-SPRINT-PLAN-07.md` | **Paid 03/10/2026 by `17-story-plans` Step 10.** The US012 row of _Story Plans — the code master_ points at this file, its Status cell mirroring this plan after US007 lands; the `Must` table's Story-plan cell names this file, and its Git-branch cell and the _Branch Naming Reference_ row take `us012/seed-presence-gate` |
+| `../02-STORIES/US012.md`                  | **Paid 03/10/2026 by Step 10.** The story cites this plan and its guide under _Decisions_, and its Dependencies record the reservation taken up                                                                                                                                                                                 |
+| `../17-STORY-PLANS/CONTEXT.md`            | **Nothing.** It ships and holds no index by recorded decision (its _The plans index_ section)                                                                                                                                                                                                                                   |
+| "STORY-PLAN-INDEX.md"                     | Created by US010; this plan's row is part of the population US011 back-fills, its `Updated` this plan's last commit date. Not written by this story                                                                                                                                                                             |
+| `GAPS.md` · `DEFERRED.md`                 | Nothing — see _Documentation Write-Ups_                                                                                                                                                                                                                                                                                         |
 
 **The build edits no `CONTEXT.md`.** `.github/` and `.github/scripts/` carry no documentation pair,
 measured 03/10/2026, and no shipped guide describes check 4's coverage or the self-test's probe count
@@ -673,12 +699,26 @@ contract is the only documentation surface, and it is in the script.
 
 ## Status Propagation & ClickUp Sync
 
+**Approved remediation 09/10/2026 (grill-with-docs, Q1).** The local build-start owner is
+`code/workflows/01-implement-story/STEPS.md` Step 1, its checklist and common build-start
+instruction: after all due pre-edit captures and before the first source edit, it records
+`Open` -> `In Progress` without requiring ClickUp credentials or a board. Documentation-only
+stories reuse that Step 1 with code phases N/A; this is the procedure US007 must repair before
+these builds, not a claim that the shared procedure has already changed.
+An enabled board adapter publishes that same committed transition and never becomes a second
+status authority. After US007 lands, the sprint plan's _Story Plans_ Status cell mirrors this
+plan's own Status field on every transition, including `Blocked`, `Open`, `In Progress`,
+`In Review` and `Completed`; a genuine no-file row alone reads _no plan to mirror_. Story and
+plan carriers retain their own lifecycle and are not reconciled by the index read rule. A plan
+transition carries its sprint-plan mirror in the same change; generated exports accompany story
+transitions only where that integration is enabled. These are future workflow requirements,
+not a build-start transition performed by this documentation correction.
+
 `../02-STORIES/US012.md`'s `**Status:**` moves first — `Open` -> `In Progress` in a commit of its
 own, the first on `us012/seed-presence-gate` and before P1's red commit, so that the red commit
 carries the probe alone (_Key Decisions_ 1) — and -> `Completed` only at `completion`, after review
-and QA. This plan's `| Status |` header row moves with it, in the same commits. The sprint plan's
-_Story Plans_ Status cell reads "Not started" and **does not mirror this plan's `Open`**, by that
-plan's own definition of the column, pending `../02-STORIES/US007.md` Scenario 8.
+and QA. This plan's `| Status |` header row moves with it, in the same commits. After US007 lands, the sprint plan's
+_Story Plans_ Status cell mirrors this plan's own status in each plan-transition change.
 `../03-SPRINTS/SPRINT-07.md`'s Story Summary carries no status column.
 
 **The ClickUp export is generated, and pushing it is CI's.** The lefthook `clickup-export`
@@ -793,8 +833,7 @@ bash code/src/scripts/audits/doc-references.sh --path .github/scripts/shipped-ar
 - [ ] The red run recorded before the green, each by run ID — the red evidenced by the probe's own
       zero-finding line, never by the exit code alone
 - [ ] `--self-test` exits 0 with **6 probes**, in CI's `[3/4]` on the pushed branch
-- [ ] The `[3/4] Template Generation` job green on every render path the template offers (today:
-      `INCLUDE_MOBILE` true and false) — the self-test at `audit-template.yml:225`, reading the false
+- [ ] The `[3/4] Template Generation` job green on every render path the template offers (the 72 valid cases approved 09/10/2026) — the self-test at `audit-template.yml:225`, reading the false
       tree alone, and the full run at `:228`, reading both
 - [ ] The string test recorded: the probe's substring does not match the named-file message
 - [ ] The no-negation read recorded as read, over the finding and the closing guidance

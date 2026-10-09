@@ -1,10 +1,10 @@
 # ADR-US004: A registered path may name a class, not only an instance — restated after the 18-TESTS split
 
-**Status:** Accepted
+**Status:** Superseded
 **Date:** 30/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** `project-management/src/15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md`
-**Superseded by:** —
+**Superseded by:** `project-management/src/15-DECISIONS/ADR-US004-PATTERNED-REGISTRATION-PRESERVES-SHIPPED-TEMPLATES-09-10-2026.md`
 **Related:** US004
 
 ---

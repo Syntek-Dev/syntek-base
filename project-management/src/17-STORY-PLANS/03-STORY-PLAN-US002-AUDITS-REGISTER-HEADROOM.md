@@ -78,6 +78,10 @@ Implements `../15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md
 
 ## Problem Statement
 
+**Requirement confirmed 09/10/2026 (Q2):** the split target is the paired `slop-family/`
+directory. Its governing ADR is now Accepted; every active destination and measurement below
+uses that shape. The superseded bare sibling remains historical evidence only.
+
 `code/src/scripts/audits/CONTEXT.md` is at **298 counted lines against a 300-line limit — two
 lines of headroom**. It is the register for the audit suite, and every new audit script must add
 **three rows** to it: a Directory Tree row, a script-inventory row and a Dependencies row.
@@ -333,15 +337,15 @@ pass.
 The verification is the audit suite plus a recorded human read-across. The read-across is not a
 convenience: three of this story's acceptance criteria are decidable by nothing else.
 
-| Check                           | How                                                                          |
-| ------------------------------- | ---------------------------------------------------------------------------- |
-| The target is met               | `docs-length.sh --path code/src/scripts/audits --limit 1`                    |
-| The pair is intact              | `docs-pairing.sh` exits 0                                                    |
-| No new citation broken          | `doc-references.sh` diffed by identity against Step A's baseline             |
-| The rationale survived whole    | Human read-across of `SLOP-FAMILY.md` against the three enumerated arguments |
-| Each route lands on a real rule | Human read-across — open each route's target and confirm it states the rule  |
-| The register inventory balances | Before/after counts recorded in `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` |
-| The forward demand fits         | 27 rows dry-run into the shrunk file; it stays under 270                     |
+| Check                           | How                                                                                                          |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| The target is met               | `docs-length.sh --path code/src/scripts/audits --limit 1`                                                    |
+| The pair is intact              | `docs-pairing.sh` exits 0                                                                                    |
+| No new citation broken          | `doc-references.sh` diffed by identity against Step A's baseline                                             |
+| The rationale survived whole    | Human read-across of "code/src/scripts/audits/slop-family/CONTEXT.md" against the three enumerated arguments |
+| Each route lands on a real rule | Human read-across — open each route's target and confirm it states the rule                                  |
+| The register inventory balances | Before/after counts recorded in `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md`                                 |
+| The forward demand fits         | 27 rows dry-run into the shrunk file; it stays under 270                                                     |
 
 The rows a person walks for these checks are in `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md`,
 authored from this plan before code (backfilled 30/09/2026) and walked at `22`.
@@ -361,7 +365,8 @@ Section 6, the 27-row dry run, and the read-across sign-off.
 
 ## CONTEXT.md & Index Updates
 
-- `code/src/scripts/audits/CONTEXT.md` — the Directory Tree gains a row for `SLOP-FAMILY.md`.
+- `code/src/scripts/audits/CONTEXT.md` — the Directory Tree gains `slop-family/` and its
+  `CONTEXT.md` / `CLAUDE.md` pair; the short route reaches the rationale in the orientation half.
 - `code/src/scripts/audits/CLAUDE.md` — re-resolve its three citations into `CONTEXT.md`; do not
   let it absorb content, and confirm it ends at or under 200 counted lines.
 - **The Plans Index row is declined, on the record — and since 08/09/2026 nothing asks for it.**
@@ -375,8 +380,8 @@ Section 6, the 27-row dry run, and the read-across sign-off.
   folder-level index file — "STORY-PLAN-INDEX.md" — specifically. **The decline stands until that
   slice lands.** Step 10.2 was re-pointed on 08/09/2026 at where this plan is indexed today: its
   row in `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` → _Story Plans — the code master_.
-- **No new directory**, so no new `CONTEXT.md`/`CLAUDE.md` pair is owed. `SLOP-FAMILY.md` is a
-  third file in an existing paired directory, and `docs-pairing.sh` is directory-level.
+- **A new `slop-family/` directory is created**, so both `CONTEXT.md` and `CLAUDE.md` are
+  owed and `docs-pairing.sh` must verify the pair. Both files are measured by `docs-length.sh`.
 
 ## Deferred Items
 
@@ -426,3 +431,5 @@ Section 6, the 27-row dry run, and the read-across sign-off.
      plan's row is in `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md`. The decline itself stands and is kept; the
      backticks came off the index filename because the file exists nowhere yet and the citation
      gate reads backticked tokens. -->
+
+<!-- CORRECTED 09/10/2026 after adversarial review: Paired-directory target and its pairing obligations reconciled with the accepted ADR. -->

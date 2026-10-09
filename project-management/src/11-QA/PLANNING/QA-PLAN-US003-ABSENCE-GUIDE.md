@@ -94,13 +94,13 @@ Every scenario below is executable against the repository after the change lands
 For a documentation story the visible failures are gate failures. Each is a check that the gate
 still bites, not a defect to expect.
 
-| ID    | Given                                                            | When                        | Then                                                       |
-| ----- | ---------------------------------------------------------------- | --------------------------- | ---------------------------------------------------------- |
-| ES-01 | The guide is born at or above 270 counted lines                  | `docs-length.sh` runs       | It reports the file in the warn tier with no allowance     |
-| ES-02 | A named skill does not cite the guide back                       | `skill-conformance.sh` runs | It exits non-zero naming the undischarged clause 14        |
-| ES-03 | A frontmatter name does not resolve to a skill directory         | `routing-skills.sh` runs    | It exits non-zero naming the unresolved skill              |
-| ES-04 | The guide restates a `TYPES-*` H2 that the drift table pins      | `doctrine-drift.sh` runs    | It exits non-zero naming the forked claim                  |
-| ES-05 | A crib cell cites a per-surface clause that no slice has written | `doc-references.sh` runs    | It exits non-zero with a dangling path — the AC-GAP-5 case |
+| ID    | Given                                                                                           | When                                                                | Then                                                                                                                                   |
+| ----- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| ES-01 | The guide is born at or above 270 counted lines                                                 | `docs-length.sh` runs                                               | It reports the file in the warn tier with no allowance                                                                                 |
+| ES-02 | A named skill does not cite the guide back                                                      | `skill-conformance.sh` runs                                         | It exits non-zero naming the undischarged clause 14                                                                                    |
+| ES-03 | A frontmatter name does not resolve to a skill directory                                        | `routing-skills.sh` runs                                            | It exits non-zero naming the unresolved skill                                                                                          |
+| ES-04 | The absence guide deliberately duplicates a pinned TYPES rule in prose in a disposable checkout | The human read-across checks the guide against the six TYPES guides | The duplicate is identified and removed; `doctrine-drift.sh` makes no claim about prose. The fenced regression is exercised separately |
+| ES-05 | A crib cell cites a per-surface clause that no slice has written                                | `doc-references.sh` runs                                            | It exits non-zero with a dangling path — the AC-GAP-5 case                                                                             |
 
 ### Edge cases (EC-nn)
 
@@ -170,3 +170,5 @@ introduces no field, no store, and no code path that could carry personal data.
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide
 - `project-management/workflows/11-qa-checks/` — the workflow that produced this plan
 - `code/docs/GATE-REPORTING.md` — the rule AC-GAP-4 rests on
+
+<!-- CORRECTED 09/10/2026 after adversarial review: ES-04 now exercises the accepted human prose oracle, not a gate that cannot read prose. -->

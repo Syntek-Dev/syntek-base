@@ -1,5 +1,10 @@
 # Threat Model Plan — US008 Host-only cookies under `__Host-` names
 
+> **Approved correction 09/10/2026:** the current report and migration lifecycle decision is
+> `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`.
+> The earlier channel and dual-gate ADRs are Superseded; citations below retain their history.
+> The dated acceptance/specification correction at the end governs the repaired behaviour.
+
 | Field               | Value                                                                                                                                    |
 | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | **Story**           | US008 — Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                           |
@@ -476,3 +481,18 @@ acceptance criteria; the assessment numbers them.
 - `project-management/workflows/10-security-checks/` — the workflow that produces this model
 - `code/docs/SECURITY.md` · `code/docs/NEGATIVE-SPACE.md` — the code-side enforcement these controls specify
 - `code/docs/GATE-REPORTING.md` — why Section 4's absence, and the header's missing grilling pass, are stated rather than left implied
+
+---
+
+## Security clarification — approved 09/10/2026
+
+The controlling successor is `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`. TM-04's preview mitigation
+must deliver the full report, including no-value file/line/setting findings and all operator
+notes. TM-15's cutover entry is explicitly inactive with a literal false `when` until release;
+the actual version and activation land atomically. The state advisory remains active independently.
+Proof covers pending, crossing and subsequent updates (QA EC-14 to EC-16); a banner match is
+insufficient. The exact staff-only temporary browser fixture in the US008 plan preserves CSRF
+middleware and uses a template-rendered header, with a missing-header 403 control (QA EC-17).
+It has no persistent business write and ships no new page, asset or CSRF exemption. Passwords,
+cookie/token values and setting values are excluded from evidence. Runtime mitigation status
+remains Proposed/unmeasured until executed; this correction does not close a threat.

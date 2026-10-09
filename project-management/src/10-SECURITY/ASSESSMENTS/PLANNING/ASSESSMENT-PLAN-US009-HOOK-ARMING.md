@@ -416,3 +416,25 @@ asked is worse than one that says it did not ask.
 <!-- AMENDED 28/09/2026 at sign-off: the US009 entry above read "whose `ST01`–`ST06` Section 7
      absorbs" until then. `15-decisions` added ST02b and ST07 and retired ST06 on 17/09/2026, and
      ST08 was added on 30/09/2026 (16-sprint-plans grilling round 3 Q11). -->
+
+---
+
+## Security clarification — approved 09/10/2026
+
+Installation, the notice and probes resolve the effective pre-commit path from the checkout root
+using Git, respecting linked worktrees and relative/absolute `core.hooksPath`. Armed requires a
+readable executable regular file with lefthook's generated marker; the installer verifies that
+same path after running lefthook. A stale default-path hook or a non-executable marker cannot
+silence the notice. A throwaway commit proves Git actually invokes the resulting hook.
+
+ST05/7.13 permit writes only under that resolved effective hook directory, rather than a literal
+`.git/hooks/` directory; the directory can be external to the clone and is included in measurement.
+Snapshot the clone and Git directories before/after the extracted step using path, type, mode,
+symlink target and regular-file hash, including ignored files. Provision dependencies first,
+store captures outside measured roots, never follow symlinks, and fail measurement on unreadable
+entries. Synthetic ignored-file mutations prove the oracle detects content changes Git status
+misses. PA-03 requires the notice body's stderr empty and stdout carrying the notice; a stderr-only
+negative control fails. The plan records fixture provenance and project-runner commands.
+No runtime pass, mitigation closure or full-installer write-boundary claim follows from this edit.
+[Git hook documentation](https://git-scm.com/docs/githooks) describes the configured directory
+and executable requirement; this clarification implements the existing sole-arming-owner decision.
