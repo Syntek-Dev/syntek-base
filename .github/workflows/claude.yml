@@ -588,9 +588,12 @@ jobs:
         run: uv run ruff check --select S . --extend-exclude 'code/src/scripts/audits/fixtures'
       - name: JS — pnpm audit
         run: pnpm audit --audit-level low
-      # Same sync flag as the install, and --all-groups — audit-deps.yml carries the reason
-      # for both; the two legs must stay identical so a sweep hit is what this gate sees.
+      # Same sync flag as the install, --all-groups, and the export to a file rather than a
+      # process substitution — audit-deps.yml carries the reason for all three; the two legs
+      # must stay identical so a sweep hit is what this gate sees.
       - name: Python — pip-audit (CVE scan)
-        run: >-
-          uv run pip-audit --requirement
-          <(uv export ${{ steps.sync.outputs.flag }} --all-groups --format requirements-txt --no-hashes)
+        run: |
+          uv export ${{ steps.sync.outputs.flag }} --all-groups --format requirements-txt \
+            --no-hashes --output-file "$RUNNER_TEMP/requirements-audit.txt"
+          uv run ${{ steps.sync.outputs.flag }} pip-audit \
+            --requirement "$RUNNER_TEMP/requirements-audit.txt"

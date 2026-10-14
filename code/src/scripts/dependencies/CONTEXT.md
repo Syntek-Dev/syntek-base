@@ -62,13 +62,19 @@ resolve can, which is why `--apply` re-resolves rather than editing a number.
 **direct** dependency — one a workspace manifest declares — moves to the registry's latest,
 because its range is the project's to change. A **transitive** one moves only within the ranges
 its consumers declare, because no manifest here owns it. The distinction is not cosmetic:
-`pnpm update --latest` rewrites manifest ranges and nothing else, so on 14/10/2026 it left three
-transitive advisories unfixed while this script reported them "already current".
+`pnpm update --latest` rewrites manifest ranges and nothing else, so on 14/10/2026 it left six
+advisories across three transitive packages unfixed while this script reported them "already
+current".
 
 The result is reported as the resolved versions before and after, read from `pnpm-lock.yaml`.
-An unchanged transitive package is already at the newest its consumers admit, or an override
-holds it; moving it further takes a bounded override in `pnpm-workspace.yaml`, never a looser
-range.
+An unchanged package is at the newest its ranges admit, or an override holds it, or the newer
+release is younger than pnpm 11's default 24-hour `minimumReleaseAge` — a security fix that
+cannot wait takes a `minimumReleaseAgeExclude` entry. Moving past a consumer's range takes a
+bounded override in `pnpm-workspace.yaml`, never a looser range.
+
+A name belongs to one ecosystem, and `--package` without `--ecosystem` runs all three: each leg
+looks for the name in its own lockfile and skips, saying so, when it is not there. The run fails
+only when no lockfile it could read holds the name.
 
 ## Either side of the template boundary
 

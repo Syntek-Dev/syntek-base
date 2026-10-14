@@ -26,6 +26,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
 ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
+# A fresh clone has only the example; compose needs a file to interpolate from, and the
+# pre-PR gate promises to run before anything is copied (tests/backend.sh does the same).
+[[ -f "$ENV_FILE" ]] || ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev.example"
 BACKEND_DIR="$PROJECT_ROOT/code/src/django"
 
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh

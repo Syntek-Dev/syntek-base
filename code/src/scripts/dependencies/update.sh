@@ -49,6 +49,11 @@ OUTPUT_FORMAT=""
 OUTPUT_FILE=""
 QUIET=false
 FOUND_UPDATES=false
+# With --package, whether ANY ecosystem's lockfile held the name. Each leg looks in its own
+# lock and skips — saying so — when the name is not there, because a name is a Python OR a
+# JavaScript OR a Rust package, and the default runs all three: one leg dying on a name it
+# never had used to abort the rest after an earlier leg had already written its lock.
+PACKAGE_FOUND=false
 
 die() {
   printf 'update.sh error: %s\n' "$*" >&2
@@ -133,6 +138,10 @@ wants() {
 # the same defect as reporting a check that did not run (code/docs/GATE-REPORTING.md).
 _report_pnpm_writes() {
   local label="$1" moved=()
+  if ! git -C "$PROJECT_ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    log "  $label — could not check which files changed (not a git work tree)."
+    return 0
+  fi
   mapfile -t moved < <(git -C "$PROJECT_ROOT" diff --name-only -- \
     package.json 'code/src/*/package.json' pnpm-lock.yaml 2>/dev/null)
   if [[ ${#moved[@]} -eq 0 ]]; then
@@ -188,7 +197,11 @@ _is_direct() {
 _apply_pnpm_package() {
   local name="$1" before after kind
   before="$(_locked_versions "$name")"
-  [[ -n "$before" ]] || die "$name is not in pnpm-lock.yaml — nothing resolves it, so nothing can move."
+  if [[ -z "$before" ]]; then
+    log "  $name is not in pnpm-lock.yaml — not a JavaScript dependency here; skipped."
+    return 0
+  fi
+  PACKAGE_FOUND=true
   if _is_direct "$name"; then
     kind="direct"
     pnpm update -r --latest "$name"
@@ -199,11 +212,11 @@ _apply_pnpm_package() {
   after="$(_locked_versions "$name")"
   if [[ "$before" == "$after" ]]; then
     log "  $name ($kind) — unchanged at $(tr '\n' ' ' <<<"$after")"
-    if [[ "$kind" == "transitive" ]]; then
-      log "    That is the newest its consumers' declared ranges admit, or an override in"
-      log "    pnpm-workspace.yaml holds it. Moving past a consumer's range takes a bounded"
-      log "    override there — never a looser range here."
-    fi
+    log "    The cause is one of: it is already the newest its declared ranges admit; an"
+    log "    override in pnpm-workspace.yaml holds it; or the newer release is younger than"
+    log "    pnpm 11's default 24-hour minimumReleaseAge — a security fix that cannot wait"
+    log "    takes a minimumReleaseAgeExclude entry. Moving past a consumer's range takes a"
+    log "    bounded override there — never a looser range."
   else
     log "  $name ($kind): $(tr '\n' ' ' <<<"$before")-> $(tr '\n' ' ' <<<"$after")"
     _report_pnpm_writes "  written"
@@ -222,8 +235,15 @@ if wants python; then
   elif [[ -f uv.lock ]]; then
     if [[ "$MODE" == "apply" ]]; then
       if [[ -n "$PACKAGE" ]]; then
-        uv lock --upgrade-package "$PACKAGE"
-        log "  uv.lock re-resolved for $PACKAGE only."
+        # uv.lock stores PEP 503-normalised names: lower case, runs of -_. as one hyphen.
+        norm="$(printf '%s' "$PACKAGE" | tr '[:upper:]' '[:lower:]' | sed -E 's/[-_.]+/-/g')"
+        if ! grep -qx "name = \"$norm\"" uv.lock; then
+          log "  $PACKAGE is not in uv.lock — not a Python dependency here; skipped."
+        else
+          PACKAGE_FOUND=true
+          uv lock --upgrade-package "$PACKAGE"
+          log "  uv.lock re-resolved for $PACKAGE only."
+        fi
       else
         uv lock --upgrade
         log "  uv.lock re-resolved."
@@ -318,8 +338,13 @@ if wants rust; then
     log "  cargo not found on PATH — skipped. Install rustup: install.sh"
   elif [[ "$MODE" == "apply" ]]; then
     if [[ -n "$PACKAGE" ]]; then
-      (cd "$RUST_DIR" && cargo update --package "$PACKAGE")
-      log "  Cargo.lock re-resolved for $PACKAGE only."
+      if [[ ! -f "$RUST_DIR/Cargo.lock" ]] || ! grep -qx "name = \"$PACKAGE\"" "$RUST_DIR/Cargo.lock"; then
+        log "  $PACKAGE is not in Cargo.lock — not a Rust dependency here; skipped."
+      else
+        PACKAGE_FOUND=true
+        (cd "$RUST_DIR" && cargo update --package "$PACKAGE")
+        log "  Cargo.lock re-resolved for $PACKAGE only."
+      fi
     else
       (cd "$RUST_DIR" && cargo update)
       log "  Cargo.lock re-resolved."
@@ -335,6 +360,9 @@ fi
 
 # ── Close ─────────────────────────────────────────────────────────────────────
 if [[ "$MODE" == "apply" ]]; then
+  if [[ -n "$PACKAGE" ]] && ! $PACKAGE_FOUND; then
+    die "$PACKAGE is in none of the lockfiles this run could read — nothing moved."
+  fi
   bold "✓ Applied. Re-run the suites before committing:"
   log "    bash code/src/scripts/tests/all.sh"
   exit 0

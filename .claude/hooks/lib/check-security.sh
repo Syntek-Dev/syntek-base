@@ -57,15 +57,32 @@ _check_security() {
   # Added 14/10/2026. Until then this check ran ruff's bandit rules and pnpm audit but
   # never pip-audit, so a uv.lock carrying four advisories passed the pre-PR gate while
   # the CI [8/8] gate it exists to predict ran pip-audit and would have failed. Called
-  # through audits/security.sh rather than raw so the export flags (--frozen, which keeps
-  # the audit on the COMMITTED lock, and --all-groups) are decided in one place. This is
+  # through audits/security.sh rather than raw so the export flags (--frozen, which audits
+  # the lock as it stands rather than re-locking first, and --all-groups) are decided in one
+  # place. The host leg reads the working-tree uv.lock, the Docker leg the one baked into
+  # the image at its last build — so a lock edited since `server.sh up --build` shows as a
+  # MISMATCH, which is the drift this dual check exists to surface. This is
   # not the script-for-raw-tool swap hooks/CLAUDE.md forbids: that rule exists because the
   # syntax/*.sh scripts run only in the container, while security.sh runs on the HOST by
   # default and in the container with --docker — so each leg still measures its own side.
+  #
+  # security.sh exits 1 for "vulnerabilities found" and 2 when it could not run at all. Both
+  # fail the gate — closed, never open — but a leg that could not run is SAID so, so it is
+  # never read as findings, or as a host/container disagreement (code/docs/GATE-REPORTING.md).
+  local dep_rc=0
   local_dep=$(bash "$PROJECT_ROOT/code/src/scripts/audits/security.sh" --py-only 2>&1) \
-    || local_exit=1
+    || dep_rc=$?
+  if [[ $dep_rc -ne 0 ]]; then
+    local_exit=1
+    [[ $dep_rc -eq 1 ]] || local_dep="COULD NOT RUN (exit $dep_rc) — not a finding:\n$local_dep"
+  fi
+  dep_rc=0
   docker_dep=$(bash "$PROJECT_ROOT/code/src/scripts/audits/security.sh" --py-only --docker 2>&1) \
-    || docker_exit=1
+    || dep_rc=$?
+  if [[ $dep_rc -ne 0 ]]; then
+    docker_exit=1
+    [[ $dep_rc -eq 1 ]] || docker_dep="COULD NOT RUN (exit $dep_rc) — not a finding:\n$docker_dep"
+  fi
 
   # pnpm audit is host-only — the django image carries no Node toolchain, so the
   # local result is folded into the Docker leg rather than re-run in the container.

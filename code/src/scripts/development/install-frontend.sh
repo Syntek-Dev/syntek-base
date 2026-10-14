@@ -11,8 +11,9 @@
 #
 # Workflow:
 #   After changing a package.json            →  install-frontend.sh  (updates lockfile)
-#   After 'server.sh up --build'             →  install-frontend.sh --local  (re-owns node_modules)
 #   After any EACCES pnpm install error      →  install-frontend.sh --local
+#   (a root-owned tree from an earlier `sudo pnpm`; the django image carries no Node, so
+#   `server.sh up --build` does not create one)
 #
 # --local asks for sudo ONLY when something in those node_modules is not owned by you —
 # a root-owned tree left by a container or an earlier `sudo pnpm`. A tree you own is
@@ -43,7 +44,7 @@ Usage:
 
 Typical workflows:
   After changing a package.json:          install-frontend.sh
-  After 'server.sh up --build' (EACCES):  install-frontend.sh --local
+  After an EACCES pnpm install error:     install-frontend.sh --local
 EOF
 }
 
@@ -78,9 +79,9 @@ if $LOCAL; then
   log ""
   # The root tree and every workspace member's (code/src/* — the mobile app, when present).
   #
-  # This was once a two-path `sudo rm -rf a \ b`; when the second path was deleted its
-  # trailing backslash stayed, and every --local run since 01/08/2026 passed `log` and
-  # `Removed.` to `sudo rm -rf` as extra arguments. An array cannot dangle that way.
+  # Added in ee5c2bb (01/08/2026) as `sudo rm -rf \` + one path + a dangling `\`, so every
+  # --local run since passed `log` and `Removed.` to `sudo rm -rf` as extra arguments. An
+  # array cannot dangle that way.
   targets=()
   for dir in "$PROJECT_ROOT/node_modules" "$PROJECT_ROOT"/code/src/*/node_modules; do
     [[ -e "$dir" ]] && targets+=("$dir")
@@ -89,7 +90,9 @@ if $LOCAL; then
     log "No node_modules to remove."
   elif [[ -z "$(find "${targets[@]}" ! -user "$(id -u)" -print -quit 2>/dev/null)" ]]; then
     log "Removing ${#targets[@]} node_modules tree(s)..."
-    rm -rf "${targets[@]}"
+    # Ownership is checked, not guaranteed — a file can appear between the find and the rm —
+    # so escalate rather than abort if the unprivileged removal is refused.
+    rm -rf "${targets[@]}" 2>/dev/null || sudo rm -rf "${targets[@]}"
     log "Removed."
   else
     log "Removing ${#targets[@]} node_modules tree(s) — some files are not yours (requires sudo)..."

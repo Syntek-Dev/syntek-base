@@ -315,7 +315,7 @@ if inc_tc and prj_tc:
 USES = re.compile(
     r"uses:\s*([A-Za-z0-9._/-]+)@([A-Za-z0-9._-]+)(?:[ \t]+#[ \t]*(v?\d[A-Za-z0-9._-]*))?"
 )
-SHA = re.compile(r"^[0-9a-f]{40}$")
+SHA = re.compile(r"^[0-9a-fA-F]{40}$")
 ENVP = re.compile(r"^\s*(UV_VERSION|NODE_VERSION|PYTHON_VERSION):\s*\"?([0-9][0-9A-Za-z.\-]*)\"?", re.M)
 
 
@@ -369,10 +369,21 @@ for repo, refs in sorted(inc_a.items()):
     old_v = {v for _, v in was}
     # Classified on the VERSIONS the refs stand for, never on the refs: tag -> commit pin at the
     # same major (`v7` -> `<sha> # v7.0.1`) is a pin, not a move, and reads as info.
+    # Two moves are blocking whatever the versions say, because each undoes what a pin is
+    # for: a pin traded back for a movable tag, and a different commit under an unchanged
+    # version comment — a re-pointed tag upstream, or a comment that no longer tells the truth.
+    old_pinned = any(SHA.match(r) for r, _ in was)
+    new_pinned = all(SHA.match(r) for r, _ in refs)
     if None in new_v:
         reason = "pinned to a commit with no version comment"
+    elif old_pinned and not new_pinned:
+        reason = "commit pin replaced by a tag"
+    elif old_pinned and new_pinned and new_v == old_v:
+        reason = "same version, different commit — a moved tag or a wrong comment"
     elif None in old_v or any(vt(v) == (-1, 0, 0) for v in old_v):
         reason = "was a branch ref or an unversioned commit pin"
+    elif any(vt(v) == (-1, 0, 0) for v in new_v):
+        reason = "moved to a branch ref"
     elif {vt(v)[0] for v in new_v} != {vt(v)[0] for v in old_v}:
         reason = "major move"
     else:

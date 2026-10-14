@@ -141,7 +141,7 @@ audit:
     # against 0.5.0 returns `{__esModule, default}`, and calling it throws
     # `TypeError: d is not a function`. 0.2.2 is the newest CommonJS release and every
     # CommonJS release is vulnerable, so there is no version to float to. Same INTEROP
-    # SHAPE constraint the @jest/reporters>glob override below documents — but with no
+    # SHAPE constraint the `glob@<9` selector below documents — but with no
     # compatible version in existence, which is what makes this the one case a patch
     # earns.
     #
@@ -164,10 +164,11 @@ minimumReleaseAgeExclude:
   - form-data@4.0.6
   - "@babel/core@7.29.1"
   - ws@8.21.0
-  - protobufjs@7.6.3
-  - protobufjs@8.5.1
 overrides:
-  # Advisory floors, each BOUNDED BY ITS MAJOR — `>=<patched> <<next major>`.
+  # Advisory floors, each BOUNDED BY ITS MAJOR — `>=<patched> <<next major>`. Two
+  # selectors below are deliberate exceptions, each annotated: `uuid@<11.1.1` and
+  # `glob@<9` have no lower bound, so they catch EVERY older major, not only the
+  # consumers their comments name.
   #
   # Re-floored 13/08/2026 against `audits/security.sh --js-only`: every one was
   # below its patched version, which is why 36 advisories (19 high, 17 moderate)
@@ -226,7 +227,8 @@ overrides:
   form-data@>=4.0.0 <4.0.6: ^4.0.6
   "@babel/core@<=7.29.0": ^7.29.1
   # ── Bounded 14/10/2026: the six bare floors below arrived unannotated in fc905eb
-  # (01/08/2026), and five were forcing consumers across majors they never declared. ──
+  # (01/08/2026); four of them — uuid, glob, ws and the protobufjs parent lines — were
+  # forcing consumers across majors they never declared. ──
   #
   # lodash — GHSA-r5fr-rjxr-66jc and GHSA-f23m-r3pf-42rh, fixed 4.18.0. Floored at
   # 4.18.1 because npm deprecates 4.18.0 as a bad release.
@@ -251,7 +253,12 @@ overrides:
   # globFn })) carries `.default.sync` — what @jest/reporters@29.7.0 and jest-runtime
   # call, with jest-expo pinning the Jest 29 line — and it drops inflight. This one
   # selector replaces the old `"@jest/reporters>glob": "^9.3.5"` and the test-exclude
-  # floor: test-exclude 6 promisifies glob's default export, which glob 9's is.
+  # floor. test-exclude 6 loads on glob 9 — it promisifies glob's default export, which is
+  # a function there — but its async `glob()` would never settle, because glob 9 returns a
+  # promise and ignores the callback. That is safe only because babel-plugin-istanbul 6
+  # calls nothing but `shouldInstrument`, which uses minimatch, never glob; re-check if a
+  # test-exclude consumer ever calls `glob()`. glob 9 is npm-deprecated ("old versions"),
+  # unlike lodash 4.18.0's "bad release": kept for the interop shape, which no newer line has.
   glob@<9: ^9.3.5
   glob@>=10.0.0 <10.5.0: ^10.5.0
   glob@>=11.0.0 <11.1.0: ^11.1.0
