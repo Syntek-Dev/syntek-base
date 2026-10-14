@@ -124,8 +124,13 @@ run_probes() {
   probe "Python — uv" pyproject.toml uv \
     uv lock --dry-run
 
+  # From INSIDE the workspace, not via --manifest-path from the root: rustup chooses the
+  # toolchain from the working directory, so only there does it read
+  # code/src/rust/rust-toolchain.toml — the pin rust/*.sh and CI build with. From the root it
+  # fell back to the host's default toolchain and failed outright on a host that has none
+  # (14/10/2026), reporting a template that parses as one that does not.
   probe "Rust — cargo" code/src/rust/Cargo.toml cargo \
-    cargo metadata --no-deps --format-version 1 --manifest-path code/src/rust/Cargo.toml
+    sh -c 'cd code/src/rust && cargo metadata --no-deps --format-version 1'
 
   probe "JS — pnpm workspace" package.json pnpm \
     pnpm ls -r --depth -1

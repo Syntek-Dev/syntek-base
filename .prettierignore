@@ -42,6 +42,12 @@ code/src/scripts/reports/
 # checked them anyway, and the format gate failed on files nobody wrote and nobody may fix.
 code/src/improvement-architecture/*.html
 
+# Expo output — `.expo-bundle/` is what mobile/bundle.sh exports, `.expo/` is Expo's own
+# device and settings state. Both are ignored by code/src/mobile/.gitignore, and Prettier
+# reads only the ROOT .gitignore, so the nested entries never reached it: a local
+# bundle.sh run failed the format gate on its own build output (14/10/2026).
+code/src/mobile/.expo-bundle/
+code/src/mobile/.expo/
 # Cargo build output — thousands of generated .json/.rs files, gitignored and machine-
 # specific. Rust source itself is formatted by `cargo fmt` via scripts/rust/lint.sh;
 # Prettier has no business in either.

@@ -5,17 +5,20 @@
 #
 # Usage:
 #   install-frontend.sh             Update lockfile only (does not touch node_modules)
-#   install-frontend.sh --local     Remove Docker-owned node_modules, then install locally
+#   install-frontend.sh --local     Remove every workspace node_modules, then install locally
 #   install-frontend.sh --check     Verify lockfile is up-to-date without installing
 #   install-frontend.sh --help
 #
 # Workflow:
 #   After changing a package.json            →  install-frontend.sh  (updates lockfile)
-#   After 'server.sh up --build'             →  install-frontend.sh --local  (re-owns node_modules)
 #   After any EACCES pnpm install error      →  install-frontend.sh --local
+#   (a root-owned tree from an earlier `sudo pnpm`; the django image carries no Node, so
+#   `server.sh up --build` does not create one)
 #
-# --local requires sudo to remove Docker-owned (root-owned) node_modules.
-# Docker rebuilds them on the next 'server.sh up --build'.
+# --local asks for sudo ONLY when something in those node_modules is not owned by you —
+# a root-owned tree left by a container or an earlier `sudo pnpm`. A tree you own is
+# removed without escalating: first-time setup runs --local on every machine, and a sudo
+# prompt for a directory the user can already delete is friction that buys nothing.
 #
 # Exit codes:  0 = success   1 = command failed   2 = script error
 #
@@ -34,13 +37,14 @@ install-frontend.sh — Regenerate pnpm-lock.yaml and sync the repo JS tooling
 
 Usage:
   install-frontend.sh           Update lockfile only (node_modules untouched)
-  install-frontend.sh --local   Remove Docker-owned node_modules, then install locally
+  install-frontend.sh --local   Remove every workspace node_modules, then install locally
+                                (sudo only if some of it is not yours)
   install-frontend.sh --check   Verify lockfile is up-to-date (frozen-lockfile check)
   install-frontend.sh --help    Show this help
 
 Typical workflows:
   After changing a package.json:          install-frontend.sh
-  After 'server.sh up --build' (EACCES):  install-frontend.sh --local
+  After an EACCES pnpm install error:     install-frontend.sh --local
 EOF
 }
 
@@ -73,12 +77,28 @@ fi
 if $LOCAL; then
   bold "▸ install-frontend.sh --local"
   log ""
-  log "Removing Docker-owned node_modules (requires sudo)..."
-  # node_modules created by Docker are owned by root; safe to delete because
-  # Docker rebuilds them on the next 'server.sh up --build'.
-  sudo rm -rf \
-    "$PROJECT_ROOT/node_modules" \
-  log "Removed."
+  # The root tree and every workspace member's (code/src/* — the mobile app, when present).
+  #
+  # Added in ee5c2bb (01/08/2026) as `sudo rm -rf \` + one path + a dangling `\`, so every
+  # --local run since passed `log` and `Removed.` to `sudo rm -rf` as extra arguments. An
+  # array cannot dangle that way.
+  targets=()
+  for dir in "$PROJECT_ROOT/node_modules" "$PROJECT_ROOT"/code/src/*/node_modules; do
+    [[ -e "$dir" ]] && targets+=("$dir")
+  done
+  if [[ ${#targets[@]} -eq 0 ]]; then
+    log "No node_modules to remove."
+  elif [[ -z "$(find "${targets[@]}" ! -user "$(id -u)" -print -quit 2>/dev/null)" ]]; then
+    log "Removing ${#targets[@]} node_modules tree(s)..."
+    # Ownership is checked, not guaranteed — a file can appear between the find and the rm —
+    # so escalate rather than abort if the unprivileged removal is refused.
+    rm -rf "${targets[@]}" 2>/dev/null || sudo rm -rf "${targets[@]}"
+    log "Removed."
+  else
+    log "Removing ${#targets[@]} node_modules tree(s) — some files are not yours (requires sudo)..."
+    sudo rm -rf "${targets[@]}"
+    log "Removed."
+  fi
   log ""
   log "Installing packages locally..."
   pnpm install --ignore-scripts
