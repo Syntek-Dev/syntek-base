@@ -49,6 +49,11 @@ OUTPUT_FORMAT=""
 OUTPUT_FILE=""
 QUIET=false
 FOUND_UPDATES=false
+# With --package, whether ANY ecosystem's lockfile held the name. Each leg looks in its own
+# lock and skips — saying so — when the name is not there, because a name is a Python OR a
+# JavaScript OR a Rust package, and the default runs all three: one leg dying on a name it
+# never had used to abort the rest after an earlier leg had already written its lock.
+PACKAGE_FOUND=false
 
 die() {
   printf 'update.sh error: %s\n' "$*" >&2
@@ -70,7 +75,9 @@ Options:
   --check             Report only, change nothing (default)
   --apply             Apply updates — rewrites lockfiles, and package.json for pnpm
   --package NAME      Restrict --apply to one package — the narrowest upgrade that
-                      solves the problem, which is the one to prefer
+                      solves the problem, which is the one to prefer. JavaScript: a
+                      direct dependency moves to latest; a transitive one re-resolves
+                      within its consumers' ranges. Reports versions before and after
   --ecosystem NAME    python | javascript | rust (repeat for several; default: all)
   --output FORMAT     Write a report: md | txt
   --output-file PATH  Override the report path
@@ -131,12 +138,88 @@ wants() {
 # the same defect as reporting a check that did not run (code/docs/GATE-REPORTING.md).
 _report_pnpm_writes() {
   local label="$1" moved=()
-  git -C "$PROJECT_ROOT" diff --quiet -- package.json 2>/dev/null || moved+=("package.json")
-  git -C "$PROJECT_ROOT" diff --quiet -- pnpm-lock.yaml 2>/dev/null || moved+=("pnpm-lock.yaml")
+  if ! git -C "$PROJECT_ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    log "  $label — could not check which files changed (not a git work tree)."
+    return 0
+  fi
+  mapfile -t moved < <(git -C "$PROJECT_ROOT" diff --name-only -- \
+    package.json 'code/src/*/package.json' pnpm-lock.yaml 2>/dev/null)
   if [[ ${#moved[@]} -eq 0 ]]; then
     log "  $label — already current; no file changed."
   else
-    log "  $label in $(IFS=', '; echo "${moved[*]}")."
+    log "  $label in $(printf '%s, ' "${moved[@]}" | sed 's/, $//')."
+  fi
+}
+
+# Every version pnpm-lock.yaml resolves NAME to, one per line. Read from the `packages:`
+# section, where each resolved version has exactly one key (`name@version`, quoted when
+# scoped); `snapshots:` repeats them with peer suffixes and is not read.
+_locked_versions() {
+  awk -v name="$1" '
+    /^packages:/ { in_p = 1; next }
+    /^snapshots:/ { exit }
+    in_p && /^  [^ ]/ {
+      key = $0; sub(/^  /, "", key); sub(/:$/, "", key); gsub(/\047/, "", key)
+      at = index(substr(key, 2), "@") + 1
+      if (substr(key, 1, at - 1) == name) print substr(key, at + 1)
+    }' "$PROJECT_ROOT/pnpm-lock.yaml" | sort -u
+}
+
+# True when NAME is declared by any workspace importer (root or code/src/*) — i.e. a
+# direct dependency whose manifest range is ours to move. Dependency names sit at six
+# spaces under `importers:`; their `specifier:`/`version:` fields sit at eight.
+_is_direct() {
+  awk -v name="$1" '
+    /^importers:/ { in_i = 1; next }
+    in_i && /^[^ ]/ { exit }
+    in_i && /^      [^ ]/ {
+      key = $0; sub(/^      /, "", key); sub(/:$/, "", key); gsub(/\047/, "", key)
+      if (key == name) { found = 1; exit }
+    }
+    END { exit found ? 0 : 1 }' "$PROJECT_ROOT/pnpm-lock.yaml"
+}
+
+# Move ONE JavaScript package, choosing the form that can actually move it.
+#
+# A direct dependency takes `--latest`: its range is ours, so moving to the registry's latest
+# (across a major, if there is one) is the deliberate act --apply exists for. A TRANSITIVE one
+# must not: `pnpm update --latest <name>` rewrites manifest ranges only, so for a package no
+# manifest declares it re-resolves nothing — measured 14/10/2026 on pnpm 11.25.0, where it left
+# handlebars, moment and @grpc/grpc-js on versions their consumers' ranges had already
+# outgrown, and this script then reported "already current". The transitive form re-resolves
+# within the ranges the consumers declare, which is the narrowest fix and the one the 15/08
+# @grpc/grpc-js precedent in pnpm-workspace.yaml used. `-r` because a direct dependency can
+# live in the mobile workspace member rather than the root.
+#
+# Reported by what the lockfile RESOLVES before and after, never by whether a file changed:
+# a diff can move for unrelated reasons, and an unchanged one is not proof that anything was
+# re-resolved (code/docs/GATE-REPORTING.md).
+_apply_pnpm_package() {
+  local name="$1" before after kind
+  before="$(_locked_versions "$name")"
+  if [[ -z "$before" ]]; then
+    log "  $name is not in pnpm-lock.yaml — not a JavaScript dependency here; skipped."
+    return 0
+  fi
+  PACKAGE_FOUND=true
+  if _is_direct "$name"; then
+    kind="direct"
+    pnpm update -r --latest "$name"
+  else
+    kind="transitive"
+    pnpm update -r "$name"
+  fi
+  after="$(_locked_versions "$name")"
+  if [[ "$before" == "$after" ]]; then
+    log "  $name ($kind) — unchanged at $(tr '\n' ' ' <<<"$after")"
+    log "    The cause is one of: it is already the newest its declared ranges admit; an"
+    log "    override in pnpm-workspace.yaml holds it; or the newer release is younger than"
+    log "    pnpm 11's default 24-hour minimumReleaseAge — a security fix that cannot wait"
+    log "    takes a minimumReleaseAgeExclude entry. Moving past a consumer's range takes a"
+    log "    bounded override there — never a looser range."
+  else
+    log "  $name ($kind): $(tr '\n' ' ' <<<"$before")-> $(tr '\n' ' ' <<<"$after")"
+    _report_pnpm_writes "  written"
   fi
 }
 
@@ -152,8 +235,15 @@ if wants python; then
   elif [[ -f uv.lock ]]; then
     if [[ "$MODE" == "apply" ]]; then
       if [[ -n "$PACKAGE" ]]; then
-        uv lock --upgrade-package "$PACKAGE"
-        log "  uv.lock re-resolved for $PACKAGE only."
+        # uv.lock stores PEP 503-normalised names: lower case, runs of -_. as one hyphen.
+        norm="$(printf '%s' "$PACKAGE" | tr '[:upper:]' '[:lower:]' | sed -E 's/[-_.]+/-/g')"
+        if ! grep -qx "name = \"$norm\"" uv.lock; then
+          log "  $PACKAGE is not in uv.lock — not a Python dependency here; skipped."
+        else
+          PACKAGE_FOUND=true
+          uv lock --upgrade-package "$PACKAGE"
+          log "  uv.lock re-resolved for $PACKAGE only."
+        fi
       else
         uv lock --upgrade
         log "  uv.lock re-resolved."
@@ -224,8 +314,7 @@ if wants javascript; then
     log "  no package.json — skipped."
   elif [[ "$MODE" == "apply" ]]; then
     if [[ -n "$PACKAGE" ]]; then
-      pnpm update --latest "$PACKAGE"
-      _report_pnpm_writes "$PACKAGE updated"
+      _apply_pnpm_package "$PACKAGE"
     else
       pnpm update --latest
       _report_pnpm_writes "packages updated"
@@ -249,8 +338,13 @@ if wants rust; then
     log "  cargo not found on PATH — skipped. Install rustup: install.sh"
   elif [[ "$MODE" == "apply" ]]; then
     if [[ -n "$PACKAGE" ]]; then
-      (cd "$RUST_DIR" && cargo update --package "$PACKAGE")
-      log "  Cargo.lock re-resolved for $PACKAGE only."
+      if [[ ! -f "$RUST_DIR/Cargo.lock" ]] || ! grep -qx "name = \"$PACKAGE\"" "$RUST_DIR/Cargo.lock"; then
+        log "  $PACKAGE is not in Cargo.lock — not a Rust dependency here; skipped."
+      else
+        PACKAGE_FOUND=true
+        (cd "$RUST_DIR" && cargo update --package "$PACKAGE")
+        log "  Cargo.lock re-resolved for $PACKAGE only."
+      fi
     else
       (cd "$RUST_DIR" && cargo update)
       log "  Cargo.lock re-resolved."
@@ -266,6 +360,9 @@ fi
 
 # ── Close ─────────────────────────────────────────────────────────────────────
 if [[ "$MODE" == "apply" ]]; then
+  if [[ -n "$PACKAGE" ]] && ! $PACKAGE_FOUND; then
+    die "$PACKAGE is in none of the lockfiles this run could read — nothing moved."
+  fi
   bold "✓ Applied. Re-run the suites before committing:"
   log "    bash code/src/scripts/tests/all.sh"
   exit 0

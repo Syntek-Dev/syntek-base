@@ -1,5 +1,6 @@
 # check-security.sh — security audit: local + Docker.
-# Python: ruff --select S (flake8-bandit rules)   JS/TS: pnpm audit --audit-level low
+# Python: ruff --select S (flake8-bandit rules) + pip-audit (via audits/security.sh --py-only)
+# JS/TS: pnpm audit --audit-level low
 # Passes NO ignore flags: pnpm reads `audit.ignore` from pnpm-workspace.yaml itself, and
 # there is no CLI flag to pass (see the block below for the false green that cost).
 # Sourced by the pre-PR gate runner, never executed directly.
@@ -8,6 +9,7 @@
 _check_security() {
   local local_exit=0 docker_exit=0
   local local_py="" local_js="" docker_py="" docker_js=""
+  local local_dep="" docker_dep=""
 
   # ── Ignored advisories are CONFIG, never flags ─────────────────────────────
   # This block used to build `--ignore <GHSA>` arguments. `pnpm audit` has no
@@ -51,15 +53,46 @@ _check_security() {
   docker_py=$(_dc exec -T django \
     uv run ruff check --select S code/src/django/ 2>&1) || docker_exit=1
 
+  # ── Python dependency CVEs (pip-audit), both legs ─────────────────────────
+  # Added 14/10/2026. Until then this check ran ruff's bandit rules and pnpm audit but
+  # never pip-audit, so a uv.lock carrying four advisories passed the pre-PR gate while
+  # the CI [8/8] gate it exists to predict ran pip-audit and would have failed. Called
+  # through audits/security.sh rather than raw so the export flags (--frozen, which audits
+  # the lock as it stands rather than re-locking first, and --all-groups) are decided in one
+  # place. The host leg reads the working-tree uv.lock, the Docker leg the one baked into
+  # the image at its last build — so a lock edited since `server.sh up --build` shows as a
+  # MISMATCH, which is the drift this dual check exists to surface. This is
+  # not the script-for-raw-tool swap hooks/CLAUDE.md forbids: that rule exists because the
+  # syntax/*.sh scripts run only in the container, while security.sh runs on the HOST by
+  # default and in the container with --docker — so each leg still measures its own side.
+  #
+  # security.sh exits 1 for "vulnerabilities found" and 2 when it could not run at all. Both
+  # fail the gate — closed, never open — but a leg that could not run is SAID so, so it is
+  # never read as findings, or as a host/container disagreement (code/docs/GATE-REPORTING.md).
+  local dep_rc=0
+  local_dep=$(bash "$PROJECT_ROOT/code/src/scripts/audits/security.sh" --py-only 2>&1) \
+    || dep_rc=$?
+  if [[ $dep_rc -ne 0 ]]; then
+    local_exit=1
+    [[ $dep_rc -eq 1 ]] || local_dep="COULD NOT RUN (exit $dep_rc) — not a finding:\n$local_dep"
+  fi
+  dep_rc=0
+  docker_dep=$(bash "$PROJECT_ROOT/code/src/scripts/audits/security.sh" --py-only --docker 2>&1) \
+    || dep_rc=$?
+  if [[ $dep_rc -ne 0 ]]; then
+    docker_exit=1
+    [[ $dep_rc -eq 1 ]] || docker_dep="COULD NOT RUN (exit $dep_rc) — not a finding:\n$docker_dep"
+  fi
+
   # pnpm audit is host-only — the django image carries no Node toolchain, so the
   # local result is folded into the Docker leg rather than re-run in the container.
   docker_js="$local_js"
 
   local combined_local combined_docker
-  combined_local=$(printf 'Python (ruff S):\n%s\n\nJS/TS (pnpm audit):\n%s' \
-    "$local_py" "$local_js")
-  combined_docker=$(printf 'Python (ruff S):\n%s\n\nJS/TS (pnpm audit):\n%s' \
-    "$docker_py" "$docker_js")
+  combined_local=$(printf 'Python (ruff S):\n%s\n\nPython (pip-audit):\n%s\n\nJS/TS (pnpm audit):\n%s' \
+    "$local_py" "$local_dep" "$local_js")
+  combined_docker=$(printf 'Python (ruff S):\n%s\n\nPython (pip-audit):\n%s\n\nJS/TS (pnpm audit):\n%s' \
+    "$docker_py" "$docker_dep" "$docker_js")
 
   _dual_result "security" "$local_exit" "$docker_exit" "$combined_local" "$combined_docker"
 
@@ -67,8 +100,10 @@ _check_security() {
     CHECK_SUMMARY["security"]="No security issues (local ✓ Docker ✓)"
   elif [[ -z "${CHECK_SUMMARY[security]:-}" ]]; then
     local top
-    top=$(printf '%s\n%s\n%s\n%s' "$local_py" "$local_js" "$docker_py" "$docker_js" \
-      | grep -E '(Found [0-9]+ error|severity vulnerability)' | head -3 | tr '\n' '; ')
+    top=$(printf '%s\n%s\n%s\n%s\n%s\n%s' "$local_py" "$local_dep" "$local_js" \
+      "$docker_py" "$docker_dep" "$docker_js" \
+      | grep -E '(Found [0-9]+ (error|known vulnerabilit)|severity vulnerability|[0-9]+ vulnerabilities found)' \
+      | head -3 | tr '\n' '; ')
     CHECK_SUMMARY["security"]="${top:-Security issues found}"
   fi
 }

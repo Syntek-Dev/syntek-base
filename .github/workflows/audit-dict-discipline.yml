@@ -39,7 +39,7 @@ jobs:
     name: Dictionary discipline audit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Prove the detector separates its fixtures
         run: bash code/src/scripts/audits/dict-discipline.sh --self-test
@@ -49,7 +49,7 @@ jobs:
 
       - name: Upload dictionary discipline report
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: dict-discipline-report
           path: code/src/scripts/audits/reports/dict-discipline-report.md

@@ -49,39 +49,84 @@ allowBuilds:
 # 15/08/2026 by the same method after the deletion described next:
 #   audit.ignore             →  2 high (2 ignored)   clean
 #   neither key              →  2 high              VULNERABLE
+# Re-proven 14/10/2026 after the sweep below added five and deleted three:
+#   audit.ignore  →  1 low (1 ignored) | 2 moderate (2 ignored) | 3 high (3 ignored)   clean
+#   neither key   →  1 low | 2 moderate | 3 high                                     VULNERABLE
+# Every entry now resolves, so the `(N ignored)` total equals the list length.
 #
 # Two @grpc/grpc-js entries — GHSA-5375-pq7m-f5r2 and GHSA-99f4-grh7-6pcq —
 # were DELETED on 15/08/2026 rather than documented, because a patched release
 # existed the whole time they sat here. They arrived unannotated in fc905eb and
-# were carried unexplained for two weeks. @usebruno/requests declares ^1.14.3,
-# so the fixed 1.14.4 already satisfied the range: the lockfile was merely
-# stale, and `pnpm update @grpc/grpc-js` cleared both with no override needed.
-# The rule the deletion sets: an ignore whose advisory HAS a published fix is a
-# suppression, not a decision. Ignore on availability, never on inertia.
+# were carried unexplained for two weeks. @usebruno/requests (0.19.0, locked then
+# and now) declares ^1.13.3, so the fixed 1.14.4 already satisfied the range: the
+# lockfile was merely stale, and `pnpm update @grpc/grpc-js` cleared both with no
+# override needed. The rule the deletion sets: an ignore whose advisory HAS a
+# published fix is a suppression, not a decision. Ignore on availability, never
+# on inertia.
 #
-# One of the four entries resolves to nothing — GHSA-jxxr-4gwj-5jf2 matches no
-# package here, so 3 is the expected count and not a shortfall. Left in place
-# rather than deleted: an ignore that matches nothing costs nothing, and the
-# advisory can return through a different consumer.
+# Three more were DELETED on 14/10/2026 under that rule:
+# - GHSA-jxxr-4gwj-5jf2 (brace-expansion >=5.0.0 <5.0.6). It had matched nothing
+#   since the brace-expansion floor passed 5.0.6, and was kept on "an ignore that
+#   matches nothing costs nothing". It costs the rule: its fix was published, so
+#   it was a suppression waiting for a consumer to re-arm it.
+# - The image-size pair, GHSA-w3rx-r6r6-pgpr and GHSA-5p2g-fcmc-qvqq. Their re-check
+#   trigger fired (2.0.3 shipped 14/09/2026) but 2.x would cross metro 0.84.4's
+#   ^1.0.2, so the fix taken is removal instead: metro 0.84.5 dropped image-size,
+#   and @expo/metro 56.0.2 is the first release whose exact metro-* pins all land
+#   on 0.84.5. Both sit inside ranges already declared (expo: @expo/metro ~56.0.0;
+#   react-native and @react-native/*: ^0.84.3), so a lockfile refresh took them
+#   with no override. Six metro selectors did the moving on the day and were
+#   retired once dependencies/update.sh could refresh a transitive dependency
+#   itself; the lockfile holds the result.
 #
-# Read the entries as two kinds, because they are not the same decision. The
-# image-size pair is LEFT VULNERABLE and says so. The decode-uri-component entry
-# is not: the code is fixed, and the line exists only because `pnpm audit` cannot
-# see a patch. Never collapse the two under one heading.
+# Read the entries as two kinds, because they are not the same decision. Every
+# entry under the LEFT VULNERABLE heading is exactly that, and says so. The
+# decode-uri-component entry is not: the code is fixed, and the line exists only
+# because `pnpm audit` cannot see a patch. Never collapse the two under one heading.
 # Source: https://pnpm.io/cli/audit
 audit:
   ignore:
-    - GHSA-jxxr-4gwj-5jf2
-    # image-size — NO PATCHED RELEASE EXISTS. Both advisories name ">=2.0.3" as
-    # the fix; the newest published version is 2.0.2, so there is nothing to
-    # upgrade to and an override floor of >=2.0.3 fails the install outright
-    # (ERR_PNPM_NO_MATCHING_VERSION, hit 13/08/2026). Reached only through
-    # expo → @expo/metro → metro, i.e. the MOBILE surface's bundler: dev-time
-    # tooling, absent from every deployed artefact and from a web-only project
-    # entirely. Ignored on availability, not on judgement — re-check when 2.0.3
-    # ships and delete both lines.
-    - GHSA-w3rx-r6r6-pgpr
-    - GHSA-5p2g-fcmc-qvqq
+    # LEFT VULNERABLE, each on availability. Added 14/10/2026; re-check every one
+    # when its named trigger fires and delete the line, never on a calendar.
+    #
+    # node-forge — NO PATCHED RELEASE EXISTS. 1.4.0 is both latest and
+    # last_affected; the fix (digitalbazaar/forge PR #1152) is unreleased. Reached
+    # only through @expo/cli and @expo/code-signing-certificates: the Node-side
+    # Expo CLI, absent from every deployed artefact and from a web-only project.
+    # Delete when a release above 1.4.0 ships.
+    - GHSA-86w9-cpqp-85rv
+    # braces — NO PATCHED RELEASE EXISTS. 3.0.3 is both latest and last_affected,
+    # and its sole consumer, micromatch@4.0.8, is itself the newest micromatch.
+    # Build-time on mobile (the metro / @expo/metro-file-map crawl) and dev-only
+    # everywhere else (markdownlint-cli2, jest); the glob patterns come from repo
+    # config, never from a request. Delete when braces >3.0.3 or a micromatch that
+    # drops it ships.
+    - GHSA-vfj7-8cjw-p6xm
+    # katex — NO FIX THIS GRAPH CAN CONSUME. Fixed only in 0.18.2; the sole
+    # consumer, micromark-extension-math@3.1.0 (newest, pinned by markdownlint
+    # 0.41.1, newest), declares ^0.16.0 and 0.16.47 is the last 0.16. An override
+    # would cross the 0.x caret boundary. Exploitation needs pre-existing prototype
+    # pollution AND a render call; markdownlint loads katex through the package
+    # index but uses only the `math` syntax extension, so `renderToString` is never
+    # called. Dev-only (root markdown lint). Re-check when micromark-extension-math
+    # widens its katex range.
+    - GHSA-238p-pmpm-9mq7
+    # @faker-js/faker — NO FIX IN THE CONSUMER'S MAJOR, AND NO RESOLUTION REACHES
+    # THE CODE. Fixed only in >=10.5.0; 9.9.0 is the newest 9.x and
+    # @usebruno/requests declares ^9.7.0. The faker that runs is inlined into the
+    # @usebruno/requests and @usebruno/common dist bundles, so an override would
+    # move only an unloaded copy. Dev-only (Bruno API test runner). Re-check when
+    # Bruno moves to faker ^10.
+    - GHSA-qxc2-j82w-r537
+    # csv-parse — NO FIX IN THE CONSUMER'S MAJOR. Fixed only in >=7.0.2; 5.6.0 is
+    # the newest 5.x, every 6.x is affected, and @usebruno/cli declares ^5.5.6, so
+    # an override would cross two majors. Reached only by `bru run --csv-file-path`,
+    # which tests/api.sh never passes on its own. Dev-only. Re-check when @usebruno/cli moves
+    # to csv-parse ^7.
+    - GHSA-8cw4-87c7-c6xx
+    #
+    # PATCHED IN PLACE
+    #
     # decode-uri-component — PATCHED IN PLACE, NOT SUPPRESSED. The one entry here
     # that does not mean "left vulnerable": patches/decode-uri-component@0.2.2.patch
     # carries 0.5.0's fix and pnpm applies it on every install. `pnpm audit` keys on
@@ -96,7 +141,7 @@ audit:
     # against 0.5.0 returns `{__esModule, default}`, and calling it throws
     # `TypeError: d is not a function`. 0.2.2 is the newest CommonJS release and every
     # CommonJS release is vulnerable, so there is no version to float to. Same INTEROP
-    # SHAPE constraint the @jest/reporters>glob override below documents — but with no
+    # SHAPE constraint the `glob@<9` selector below documents — but with no
     # compatible version in existence, which is what makes this the one case a patch
     # earns.
     #
@@ -105,7 +150,7 @@ audit:
     # input, from the recursive bisection in the fallback decoder. Patched: 0.15 ms,
     # and 300 KB of the same input in 23 ms. expo-router parses deep-link URLs on
     # device, so this sat in the MOBILE DELIVERY PATH, not in dev-time tooling like
-    # the image-size pair above.
+    # the entries above.
     - GHSA-vcc3-ghjq-m6fr
 minimumReleaseAgeExclude:
   - js-yaml@4.1.2
@@ -119,10 +164,11 @@ minimumReleaseAgeExclude:
   - form-data@4.0.6
   - "@babel/core@7.29.1"
   - ws@8.21.0
-  - protobufjs@7.6.3
-  - protobufjs@8.5.1
 overrides:
-  # Advisory floors, each BOUNDED BY ITS MAJOR — `>=<patched> <<next major>`.
+  # Advisory floors, each BOUNDED BY ITS MAJOR — `>=<patched> <<next major>`. Two
+  # selectors below are deliberate exceptions, each annotated: `uuid@<11.1.1` and
+  # `glob@<9` have no lower bound, so they catch EVERY older major, not only the
+  # consumers their comments name.
   #
   # Re-floored 13/08/2026 against `audits/security.sh --js-only`: every one was
   # below its patched version, which is why 36 advisories (19 high, 17 moderate)
@@ -136,7 +182,12 @@ overrides:
   # nanoid 3 → 6 (ESM-only, breaks every CJS require), js-yaml 4 → 5,
   # undici 7 → 8, linkify-it 5 → 6 and fast-uri 3 → 4. Fixing a moderate
   # advisory by breaking the build is not a fix. Bound every one.
-  axios: ">=1.18.0 <2"
+  #
+  # Re-floored again 14/10/2026: 78 advisories open (3 critical, 43 high) against
+  # a pnpm-lock.yaml untouched since 02/09. Floors raised in place below; qs and shell-quote
+  # bounded for the first time — shell-quote's old floor, 1.8.4, was the very version
+  # that introduced its critical (GHSA-pqg4-j6r4-53mv).
+  axios: ">=1.20.0 <2"
   # GHSA-c83g-rgw3-j3cx and the normalizeStats prototype-write advisory, both high,
   # both naming ">=4.28.7". Reached dev-time only, through @usebruno/cli >
   # @usebruno/converters > jscodeshift > @babel/* — the Bruno API test runner, absent
@@ -144,49 +195,100 @@ overrides:
   # release exists and this graph can consume it: 4.28.8 is the newest 4.x and the
   # `<5` bound keeps it there, per the forced-resolution rule this block opens with.
   browserslist: ">=4.28.7 <5"
-  fast-uri: ">=3.1.5 <4"
-  js-yaml: ">=4.3.1 <5"
-  undici: ">=7.29.0 <8"
-  ip-address: ">=10.3.1 <11"
+  fast-uri: ">=3.1.8 <4"
+  # js-yaml is split per major, because the blanket ">=4.3.1 <5" it replaces forced
+  # two consumers across a major: markdownlint-cli2 (pins 5.2.2) DOWN to 4, and
+  # @istanbuljs/load-nyc-config (^3.13.1) UP to 4. The 5.x selector returns
+  # markdownlint-cli2 to its own line, patched (GHSA-r3ph-w7gj-g6xm).
+  #
+  # load-nyc-config KEEPS its 3 → 4 crossing, deliberately and scoped to that one
+  # parent. js-yaml 3 pulls argparse@1 → sprintf-js@1.0.3, whose advisory
+  # (GHSA-hp3w-g68c-fv3c) has no fix, so the doctrine-clean 3.x selector would add an
+  # unfixable advisory to fix nothing. The crossing is safe: load-nyc-config 1.1.0
+  # calls only `.load`, and only on a .nycrc.yml / .nycrc.yaml, of which the repo
+  # has none.
+  "@istanbuljs/load-nyc-config>js-yaml": ^4.3.2
+  js-yaml@>=4.0.0 <4.3.2: ^4.3.2
+  js-yaml@>=5.0.0 <5.4.1: ^5.4.1
+  undici: ">=7.29.1 <8"
+  ip-address: ">=10.7.1 <11"
   linkify-it: ">=5.0.2 <6"
   nanoid: ">=3.3.18 <4"
-  markdown-it@>=13.0.0 <14.1.2: ^14.1.2
+  # The old `>=13.0.0 <14.1.2` selector matched markdownlint-cli2 0.22.x's exact
+  # 14.1.1 pin, then stopped matching once 0.23 pinned 14.3.0 — pnpm applies a
+  # selector only where it intersects the declared spec. The lower bound now starts
+  # at 14 so a future ^13 consumer is never forced across a major.
+  markdown-it@>=14.0.0 <14.3.1: ^14.3.1
+  # markdownlint-cli2 pins smol-toml exactly, and its newest release (0.23.3) pins
+  # 1.8.0, still inside GHSA-r4xh-jqrq-34v2 — so no upstream bump clears it.
+  smol-toml: ">=1.9.0 <2"
   postcss@<8.5.10: ^8.5.10
   esbuild@<0.28.1: ^0.28.1
   form-data@>=4.0.0 <4.0.6: ^4.0.6
   "@babel/core@<=7.29.0": ^7.29.1
-  lodash: ">=4.18.0"
-  uuid: ">=11.0.0"
-  glob: ">=11.0.0"
-  # istanbul's coverage instrumentation reaches Jest through test-exclude. Version 6
-  # calls promisify() on glob's default export, which stopped being a function in glob
-  # 11 — so the `glob: ">=11.0.0"` line above silently breaks mobile coverage collection.
-  # v7 uses glob's named export and satisfies that floor, keeping the security posture.
-  test-exclude: ">=7.0.1"
-  # Same root cause, second consumer — but the real constraint is an INTEROP SHAPE, not a
-  # version floor. @jest/reporters@29.7.0 does `_interopRequireDefault(require('glob'))` and
-  # then calls glob.sync. glob 10 and 11 both set __esModule with no `default` export, so
-  # `.default.sync` is undefined and the coverage reporter dies — upgrading is not an option,
-  # and jest-expo pins the Jest 29 line so the reporter cannot be replaced either.
-  # glob 9 is the NEWEST version that still works: it ships a CJS wrapper
-  # (module.exports = Object.assign(globFn, { default: globFn, glob: globFn })) whose default
-  # carries .sync. Preferred over glob 7 because its dependencies are minipass / minimatch 8 /
-  # fs.realpath / path-scurry — it drops inflight@1.0.6, the unbounded-memory-leak package the
-  # repo-wide floor above removes everywhere else. Scoped to that ONE dev-only, test-time
-  # package; the floor is untouched and nothing in the delivery path is affected.
-  "@jest/reporters>glob": "^9.3.5"
-  ws: ">=8.21.0"
-  brace-expansion: ">=5.0.9 <6"
-  qs: ">=6.15.2"
-  shell-quote: ">=1.8.4"
+  # ── Bounded 14/10/2026: the six bare floors below arrived unannotated in fc905eb
+  # (01/08/2026); four of them — uuid, glob, ws and the protobufjs parent lines — were
+  # forcing consumers across majors they never declared. ──
+  #
+  # lodash — GHSA-r5fr-rjxr-66jc and GHSA-f23m-r3pf-42rh, fixed 4.18.0. Floored at
+  # 4.18.1 because npm deprecates 4.18.0 as a bad release.
+  lodash: ">=4.18.1 <5"
+  # uuid — GHSA-w5hq-g745-h8pq affects every version below 11.1.1, plus 12.0.0 and
+  # 13.0.0. xcode (^7.0.3, the expo iOS prebuild) and @usebruno/js (^10.0.0) have no
+  # fix in their own majors, so they cross to 11 DELIBERATELY: 11.1.1 is the newest
+  # line that still ships a CommonJS `require` build. The old ">=11.0.0" floor sent
+  # them to 14, ESM-only, which xcode's `require('uuid')` reached only through Node
+  # 24's require(esm) — and broke outright on any Node that cannot do that.
+  uuid@<11.1.1: ^11.1.1
+  uuid@>=12.0.0 <12.0.1: ^12.0.1
+  uuid@>=13.0.0 <13.0.1: ^13.0.1
+  # glob — GHSA-5j98-mcp5-4vw2 affects 10.2-10.4 and 11.0.x only; 7 and 9 never had
+  # it. The old ">=11.0.0" floor existed to evict inflight@1.0.6 (glob 7's unbounded
+  # memory leak), not to fix an advisory, and it dragged jest-config and jest-runtime
+  # (^7.1.3) to 13, where jest-runtime's `_glob().default.sync` is undefined — the
+  # error is swallowed, so it failed quietly rather than loudly.
+  #
+  # Pre-9 consumers cross to 9 DELIBERATELY instead. glob 9 is the newest line whose
+  # CommonJS wrapper (module.exports = Object.assign(globFn, { default: globFn, glob:
+  # globFn })) carries `.default.sync` — what @jest/reporters@29.7.0 and jest-runtime
+  # call, with jest-expo pinning the Jest 29 line — and it drops inflight. This one
+  # selector replaces the old `"@jest/reporters>glob": "^9.3.5"` and the test-exclude
+  # floor. test-exclude 6 loads on glob 9 — it promisifies glob's default export, which is
+  # a function there — but its async `glob()` would never settle, because glob 9 returns a
+  # promise and ignores the callback. That is safe only because babel-plugin-istanbul 6
+  # calls nothing but `shouldInstrument`, which uses minimatch, never glob; re-check if a
+  # test-exclude consumer ever calls `glob()`. glob 9 is npm-deprecated ("old versions"),
+  # unlike lodash 4.18.0's "bad release": kept for the interop shape, which no newer line has.
+  glob@<9: ^9.3.5
+  glob@>=10.0.0 <10.5.0: ^10.5.0
+  glob@>=11.0.0 <11.1.0: ^11.1.0
+  # ws — GHSA-96hv-2xvq-fx4p, fixed 7.5.11 and 8.21.0. The old ">=8.21.0" floor sent
+  # react-native, metro, @react-native/dev-middleware and react-devtools-core (^7) to
+  # 8, when their own line carries the fix.
+  ws@>=7.0.0 <7.5.11: ^7.5.11
+  ws@>=8.0.0 <8.21.0: ^8.21.0
+  # brace-expansion is split per major, one fix per line (1.1.21, 2.1.7, 5.0.12 all
+  # shipped 14/09/2026). The blanket ">=5.0.9 <6" it replaces forced minimatch 3
+  # (^1.1.7) and minimatch 8 (^2.0.1) onto v5 — and v5's CommonJS build exports
+  # `{ expand }`, not a function, so minimatch 3's `require('brace-expansion')(p)`
+  # threw on any brace glob. Measured 14/10/2026 against the installed 5.0.9.
+  brace-expansion@<2: ^1.1.21
+  brace-expansion@>=2.0.0 <3: ^2.1.7
+  brace-expansion@>=5.0.0 <6: ^5.0.12
+  qs: ">=6.16.0 <7"
+  shell-quote: ">=1.11.0 <2"
   # protobufjs keeps its two-major split rather than taking a single floor: the
   # 7.x and 8.x lines have separate advisories and separate consumers, and a
   # blanket ">=8.6.6" would drag a 7.x consumer across a major boundary to fix a
   # vulnerability that its own line already patches.
-  "@grpc/proto-loader>protobufjs": ">=8.6.6"
-  "grpc-js-reflection-client>protobufjs": ">=8.6.6"
-  protobufjs@>=8.0.0 <8.6.6: ">=8.6.6"
-  protobufjs@>=7.0.0 <7.6.3: ^7.6.3
+  #
+  # Until 14/10/2026 two parent-scoped lines did exactly that: they sent
+  # @grpc/proto-loader (^7.2.5 / ^7.5.5) to 8.x, and parent scope beats a version
+  # selector, so the crossing also hid that the 7.x floor was too low — GHSA-j3f2-
+  # 48v5-ccww affects 7.5.0-7.6.4, fixed 7.6.5. Both deleted; each line now carries
+  # its own fix, bounded by its major.
+  protobufjs@>=7.0.0 <7.6.5: ^7.6.5
+  protobufjs@>=8.0.0 <8.6.6: ^8.6.6
 allowedDeprecatedVersions:
   whatwg-encoding: "*"
   node-domexception: "*"

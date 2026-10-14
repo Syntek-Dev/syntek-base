@@ -308,11 +308,29 @@ if inc_tc and prj_tc:
         (blocking if vt(a)[:2] != vt(b)[:2] else info).append(("toolchain", line))
 
 # ── CI: action refs and tool pins ─────────────────────────────────────────────
-USES = re.compile(r"uses:\s*([A-Za-z0-9._/-]+)@([A-Za-z0-9._-]+)")
+# An action is pinned to a tag (`@v7`) or to a commit with its version in a trailing comment
+# (`@<40 hex> # v7.0.1`) — the form code/docs/security/SUPPLY-CHAIN.md requires since
+# 14/10/2026. The comment is LOAD-BEARING: for a commit pin it is the only readable version,
+# because vt() would otherwise pull digits out of the hex and call `3d3c42e…` version 3.3.42.
+USES = re.compile(
+    r"uses:\s*([A-Za-z0-9._/-]+)@([A-Za-z0-9._-]+)(?:[ \t]+#[ \t]*(v?\d[A-Za-z0-9._-]*))?"
+)
+SHA = re.compile(r"^[0-9a-fA-F]{40}$")
 ENVP = re.compile(r"^\s*(UV_VERSION|NODE_VERSION|PYTHON_VERSION):\s*\"?([0-9][0-9A-Za-z.\-]*)\"?", re.M)
 
 
+def ref_version(ref, comment):
+    """The version an action ref stands for: a tag is its own version; a commit pin's is the
+    `# vX.Y.Z` comment beside it, and a commit pin without one has no version at all (None)."""
+    if SHA.match(ref):
+        return comment or None
+    return ref
+
+
 def ci_facts(root, store):
+    # repo -> the SET of (ref, version) pairs across every workflow file. One ref per repo let
+    # the last file read win, so a tree half-way through being pinned reported whichever ref
+    # sorted last and hid the rest.
     acts, envs = {}, {}
     wf = root / ".github/workflows"
     if not wf.is_dir():
@@ -324,8 +342,8 @@ def ci_facts(root, store):
         except Exception:
             continue
         read += 1
-        for repo, ref in USES.findall(text):
-            acts[repo] = ref
+        for repo, ref, comment in USES.findall(text):
+            acts.setdefault(repo, set()).add((ref, ref_version(ref, comment)))
         for key, val in ENVP.findall(text):
             envs[key] = val
     if read:
@@ -336,14 +354,42 @@ def ci_facts(root, store):
 inc_a, inc_e = ci_facts(INC, inc_read)
 prj_a, prj_e = ci_facts(PRJ, prj_read)
 
-for repo, ref in sorted(inc_a.items()):
+def show_refs(refs):
+    return ", ".join(
+        sorted(f"{v or '?'} @{r[:12]}" if SHA.match(r) else r for r, v in refs)
+    )
+
+
+for repo, refs in sorted(inc_a.items()):
     was = prj_a.get(repo)
-    if was is None or was == ref:
+    if was is None or was == refs:
         continue
-    line = f"{repo}  {was} -> {ref}"
-    moved_off_branch = vt(was) == (-1, 0, 0)
-    if moved_off_branch or vt(ref)[0] != vt(was)[0]:
-        blocking.append(("ci", f"{line}   {'was a branch ref' if moved_off_branch else 'major move'}"))
+    line = f"{repo}  {show_refs(was)} -> {show_refs(refs)}"
+    new_v = {v for _, v in refs}
+    old_v = {v for _, v in was}
+    # Classified on the VERSIONS the refs stand for, never on the refs: tag -> commit pin at the
+    # same major (`v7` -> `<sha> # v7.0.1`) is a pin, not a move, and reads as info.
+    # Two moves are blocking whatever the versions say, because each undoes what a pin is
+    # for: a pin traded back for a movable tag, and a different commit under an unchanged
+    # version comment — a re-pointed tag upstream, or a comment that no longer tells the truth.
+    old_pinned = any(SHA.match(r) for r, _ in was)
+    new_pinned = all(SHA.match(r) for r, _ in refs)
+    if None in new_v:
+        reason = "pinned to a commit with no version comment"
+    elif old_pinned and not new_pinned:
+        reason = "commit pin replaced by a tag"
+    elif old_pinned and new_pinned and new_v == old_v:
+        reason = "same version, different commit — a moved tag or a wrong comment"
+    elif None in old_v or any(vt(v) == (-1, 0, 0) for v in old_v):
+        reason = "was a branch ref or an unversioned commit pin"
+    elif any(vt(v) == (-1, 0, 0) for v in new_v):
+        reason = "moved to a branch ref"
+    elif {vt(v)[0] for v in new_v} != {vt(v)[0] for v in old_v}:
+        reason = "major move"
+    else:
+        reason = None
+    if reason:
+        blocking.append(("ci", f"{line}   {reason}"))
     else:
         info.append(("ci", line))
 

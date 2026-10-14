@@ -24,7 +24,9 @@ the shipped template documentation read-only in a generated project.
   (raw `ruff`, `pnpm exec`, `basedpyright`, `uv sync`, `pnpm audit`) and inside Docker
   via `_dc exec`, to catch host/container drift. **Do not replace the local-side raw
   tool calls with project scripts** — the `syntax/*.sh` scripts only run inside
-  containers and cannot check the host.
+  containers and cannot check the host. The one exception is `audits/security.sh`, which
+  runs on the host by default and in the container with `--docker`, so each leg still
+  measures its own side (`lib/check-security.sh` says so at the call).
 - **Concrete steps:** edit the relevant script → run it against a branch to confirm the
   gate passes and fails correctly → keep the failure output actionable → keep each file
   within the 300-line instructional limit where it counts as instructional.
