@@ -74,8 +74,10 @@ allowBuilds:
 #   ^1.0.2, so the fix taken is removal instead: metro 0.84.5 dropped image-size,
 #   and @expo/metro 56.0.2 is the first release whose exact metro-* pins all land
 #   on 0.84.5. Both sit inside ranges already declared (expo: @expo/metro ~56.0.0;
-#   react-native and @react-native/*: ^0.84.3), and the selectors under
-#   `overrides:` take them.
+#   react-native and @react-native/*: ^0.84.3), so a lockfile refresh took them
+#   with no override. Six metro selectors did the moving on the day and were
+#   retired once dependencies/update.sh could refresh a transitive dependency
+#   itself; the lockfile holds the result.
 #
 # Read the entries as two kinds, because they are not the same decision. Every
 # entry under the LEFT VULNERABLE heading is exactly that, and says so. The
@@ -254,43 +256,6 @@ overrides:
   brace-expansion@>=5.0.0 <6: ^5.0.12
   qs: ">=6.16.0 <7"
   shell-quote: ">=1.11.0 <2"
-  # In-range refreshes, written as selectors because each consumer's declared range
-  # ALREADY admits the fix — the lockfile was merely stale, as with @grpc/grpc-js on
-  # 15/08. A selector rather than a refresh because update.sh's `--package` runs
-  # `pnpm update --latest`, which (measured 14/10/2026 on pnpm 11.25.0) never
-  # re-resolves a transitive dependency and reports "already current". Each is
-  # scoped to the vulnerable versions of its own line, so none can cross a major.
-  #
-  # Dev-only (Bruno API test runner): handlebars carries two criticals; the grpc-js
-  # and moment copies that actually run are inlined by Bruno itself — grpc-js into
-  # @usebruno/requests' dist, moment into @usebruno/js's QuickJS sandbox bundle — so
-  # these two clear the audit and the node-vm sandbox path, nothing more.
-  handlebars@>=4.0.0 <4.7.10: ^4.7.10
-  "@grpc/grpc-js@>=1.13.0 <1.14.5": ^1.14.5
-  moment@>=2.29.2 <2.31.0: ^2.31.0
-  # Build-time (expo CLI, prebuild plist handling, dev server, @expo/metro-config's
-  # postcss).
-  "@xmldom/xmldom@>=0.8.0 <0.8.15": ^0.8.15
-  "@xmldom/xmldom@>=0.9.0 <0.9.12": ^0.9.12
-  compression@<1.8.2: ^1.8.2
-  source-map-js@>=1.0.0 <1.2.2: ^1.2.2
-  # The metro family to 0.84.5+, inside ranges already declared (expo's @expo/metro
-  # ~56.0.0; react-native and @react-native/*'s metro-* ^0.84.3). This is
-  # what removes image-size (and its two ignores above): metro 0.84.4 depended on it,
-  # 0.84.5 does not. @expo/metro 56.0.2 is the first that pins every metro-* at 0.84.5
-  # — 56.0.1 still pins metro-transform-worker 0.84.4, which pins metro 0.84.4.
-  # metro-runtime ships in the app bundle, so this one is verified by the mobile suite.
-  #
-  # One selector per metro-* package that something outside the family declares
-  # directly (react-native, @react-native/*): without one, pnpm keeps the locked 0.84.4
-  # for that edge and the family splits three ways. With them the graph lands where a
-  # fresh resolve would — 0.84.5 under @expo/metro's exact pins, 0.84.6 elsewhere.
-  "@expo/metro@>=56.0.0 <56.0.2": ~56.0.2
-  metro@>=0.84.0 <0.84.5: ~0.84.5
-  metro-config@>=0.84.0 <0.84.5: ~0.84.5
-  metro-core@>=0.84.0 <0.84.5: ~0.84.5
-  metro-runtime@>=0.84.0 <0.84.5: ~0.84.5
-  metro-source-map@>=0.84.0 <0.84.5: ~0.84.5
   # protobufjs keeps its two-major split rather than taking a single floor: the
   # 7.x and 8.x lines have separate advisories and separate consumers, and a
   # blanket ">=8.6.6" would drag a 7.x consumer across a major boundary to fix a

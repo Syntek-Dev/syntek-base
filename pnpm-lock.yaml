@@ -32,19 +32,6 @@ overrides:
   brace-expansion@>=5.0.0 <6: ^5.0.12
   qs: '>=6.16.0 <7'
   shell-quote: '>=1.11.0 <2'
-  handlebars@>=4.0.0 <4.7.10: ^4.7.10
-  '@grpc/grpc-js@>=1.13.0 <1.14.5': ^1.14.5
-  moment@>=2.29.2 <2.31.0: ^2.31.0
-  '@xmldom/xmldom@>=0.8.0 <0.8.15': ^0.8.15
-  '@xmldom/xmldom@>=0.9.0 <0.9.12': ^0.9.12
-  compression@<1.8.2: ^1.8.2
-  source-map-js@>=1.0.0 <1.2.2: ^1.2.2
-  '@expo/metro@>=56.0.0 <56.0.2': ~56.0.2
-  metro@>=0.84.0 <0.84.5: ~0.84.5
-  metro-config@>=0.84.0 <0.84.5: ~0.84.5
-  metro-core@>=0.84.0 <0.84.5: ~0.84.5
-  metro-runtime@>=0.84.0 <0.84.5: ~0.84.5
-  metro-source-map@>=0.84.0 <0.84.5: ~0.84.5
   '@grpc/proto-loader>protobufjs': '>=8.6.6'
   grpc-js-reflection-client>protobufjs: '>=8.6.6'
   protobufjs@>=8.0.0 <8.6.6: '>=8.6.6'
@@ -3502,7 +3489,7 @@ packages:
   grpc-js-reflection-client@1.4.1:
     resolution: {integrity: sha512-dbrAwsSQN6QJF1MfEx1deh9mw/SFbp8JsfjLocwsmHSvO0Zys4yB4z8bZtyBDL8Oi3XYNlmTUSbsLFymCrs4sg==}
     peerDependencies:
-      '@grpc/grpc-js': ^1.14.5
+      '@grpc/grpc-js': ^1.14.4
 
   handlebars@4.7.10:
     resolution: {integrity: sha512-P5VJMVM7qgBn6vjXMw8WG9uVI+ncf2pi72j4de4yz5ZULLj2RGqLYaKOYGsgyrViQ0tePOVlN1tDCCXXtFqXKg==}

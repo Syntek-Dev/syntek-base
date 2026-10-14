@@ -26,6 +26,7 @@ code/src/scripts/dependencies/
 | -------------------- | ---------------------------------------------------------- |
 | `--check`            | Report only, change nothing — the default                  |
 | `--apply`            | Re-resolve and write the lockfiles                         |
+| `--package NAME`     | Restrict `--apply` to one package — see below              |
 | `--ecosystem NAME`   | `python` · `javascript` · `rust` (repeatable; default all) |
 | `--output FORMAT`    | Write a report: `md` · `txt`                               |
 | `--output-file PATH` | Override the report path                                   |
@@ -54,6 +55,20 @@ backwards to satisfy the constraint.
 
 `--check` reports the registry's latest; it cannot know what your graph will tolerate. Only a
 resolve can, which is why `--apply` re-resolves rather than editing a number.
+
+## One package, and which kind it is
+
+`--package` is the narrowest move, and in JavaScript it means two different things. A
+**direct** dependency — one a workspace manifest declares — moves to the registry's latest,
+because its range is the project's to change. A **transitive** one moves only within the ranges
+its consumers declare, because no manifest here owns it. The distinction is not cosmetic:
+`pnpm update --latest` rewrites manifest ranges and nothing else, so on 14/10/2026 it left three
+transitive advisories unfixed while this script reported them "already current".
+
+The result is reported as the resolved versions before and after, read from `pnpm-lock.yaml`.
+An unchanged transitive package is already at the newest its consumers admit, or an override
+holds it; moving it further takes a bounded override in `pnpm-workspace.yaml`, never a looser
+range.
 
 ## Either side of the template boundary
 
