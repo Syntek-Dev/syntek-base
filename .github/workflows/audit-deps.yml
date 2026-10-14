@@ -1,6 +1,7 @@
 name: Dependency Audit Sweep
 
-# Scheduled CVE / advisory sweep of JS (pnpm audit) and Python (pip-audit) deps.
+# Scheduled CVE / advisory sweep of JS (pnpm audit), Python (pip-audit) and — where the
+# project has the surface — Rust (cargo-deny) deps.
 #
 # The per-PR "[8/8] Security" gate in claude.yml only runs when a PR happens.
 # Advisories are published continuously, so the SAME committed lockfiles drift
@@ -13,7 +14,10 @@ name: Dependency Audit Sweep
 #   JS     → bump the patched version in pnpm-workspace.yaml `overrides`
 #            (+ minimumReleaseAgeExclude), then `pnpm install --lockfile-only`.
 #   Python → `uv lock --upgrade-package <pkg>` (verify no breaking major bump).
-# Both fixes live in root lock/config and propagate on merge to testing.
+#   Rust   → `bash code/src/scripts/dependencies/update.sh --apply --ecosystem rust
+#            --package <crate>`, then `bash code/src/scripts/rust/audit.sh`.
+# The JS and Python fixes live in root lock/config, the Rust one in code/src/rust/Cargo.lock;
+# all propagate on merge to testing.
 #
 # NOT ELIGIBLE FOR THE REQUIRED SET, and the `on:` block below is the whole reason — this is a
 # property of the file, not of anyone's branch protection. A required check is satisfied only by
@@ -21,7 +25,8 @@ name: Dependency Audit Sweep
 # rule naming it would pend "Expected — waiting for status" until someone force-merged. There is
 # no path filter to delete; the only fix would be adding `pull_request:`, which contradicts the
 # reason this file exists (see above). Its reporting twin, "[8/8] Security" in claude.yml, runs
-# the identical two legs on every pull request and is the one that belongs in the set.
+# the identical JS and Python legs on every pull request and is the one that belongs in the set;
+# the Rust leg's per-PR twin is the cargo-deny step in syntax-rust.yml.
 # project-management/docs/git/PR-AND-REQUIRED-CHECKS.md → Changing the set.
 
 on:
@@ -39,7 +44,7 @@ env:
 
 jobs:
   audit:
-    name: Audit JS + Python dependencies
+    name: Audit JS, Python and Rust dependencies
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -98,16 +103,69 @@ jobs:
           set -o pipefail
           pnpm audit --audit-level low 2>&1 | tee "$RUNNER_TEMP/pnpm-audit.txt"
 
+      # The export takes the SAME sync flag as the install above, and --all-groups.
+      #
+      # Without --frozen, `uv export` re-locks before exporting whenever the manifest and lock
+      # disagree, so the sweep audited a graph resolved in the runner rather than the one
+      # committed — a false green waiting for the first drift. audits/security.sh already
+      # passed --frozen and called it load-bearing; this leg now matches it.
+      #
+      # Without --all-groups it exported uv's default groups only (`dev`), so the `test`
+      # group — pytest, playwright, mutmut and the rest — was never scanned. They never ship
+      # (the images sync --no-dev), but they run on every developer's host and in CI.
       - name: Python — pip-audit (CVE scan)
         id: pip_audit
         continue-on-error: true
         run: |
           set -o pipefail
-          uv run pip-audit --requirement <(uv export --format requirements-txt --no-hashes) \
+          uv run pip-audit --requirement \
+            <(uv export ${{ steps.sync.outputs.flag }} --all-groups --format requirements-txt --no-hashes) \
             2>&1 | tee "$RUNNER_TEMP/pip-audit.txt"
 
+      # RUST LEG, added 14/10/2026. cargo-deny ran only in syntax-rust.yml, on a change under
+      # code/src/rust/**, so a RustSec advisory published against an unchanged Cargo.lock
+      # waited for the next Rust change to be seen — exactly the drift this sweep exists for,
+      # left uncovered on the one surface whose code shares Django's address space. This file
+      # ships to every project, so the leg is surface-gated: no Cargo.lock is an absent
+      # SURFACE, printed as such, never a skipped check (code/docs/GATE-REPORTING.md).
+      - name: Rust — is there a surface to audit?
+        id: rust_surface
+        run: |
+          if [ -f code/src/rust/Cargo.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No code/src/rust/Cargo.lock — this project has no Rust surface, so there is nothing to audit."
+          fi
+
+      - name: Rust — cache the pinned cargo-deny
+        if: steps.rust_surface.outputs.present == 'true'
+        uses: actions/cache@v6
+        with:
+          path: ~/.cargo/bin/cargo-deny
+          key: cargo-deny-${{ runner.os }}-${{ hashFiles('code/src/rust/.cargo-deny-version') }}
+
+      # Same pin and install as syntax-rust.yml, so the nightly answer is the per-PR gate's.
+      - name: Rust — install cargo-deny (pinned)
+        if: steps.rust_surface.outputs.present == 'true'
+        run: |
+          version="$(tr -d '[:space:]' < code/src/rust/.cargo-deny-version)"
+          if ! cargo-deny --version 2>/dev/null | grep -qF "$version"; then
+            cargo install --locked --version "$version" cargo-deny
+          fi
+
+      # --update refreshes the advisory database first: a stale local copy is the one way
+      # this leg could report clean against an advisory published overnight.
+      - name: Rust — cargo-deny (advisories, licences, bans, sources)
+        id: cargo_deny
+        if: steps.rust_surface.outputs.present == 'true'
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          bash code/src/scripts/rust/audit.sh --update 2>&1 | tee "$RUNNER_TEMP/cargo-deny.txt"
+
       - name: Open / update tracking issue
-        if: steps.pnpm_audit.outcome == 'failure' || steps.pip_audit.outcome == 'failure'
+        if: steps.pnpm_audit.outcome == 'failure' || steps.pip_audit.outcome == 'failure' || steps.cargo_deny.outcome == 'failure'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -118,7 +176,7 @@ jobs:
             echo "The scheduled dependency audit found advisories on \`${{ github.ref_name }}\`."
             echo "Run: [#${{ github.run_id }}]($RUN_URL) · $(date -u '+%Y-%m-%d %H:%M UTC')"
             echo
-            echo "**Fix:** JS → bump the patched version in \`pnpm-workspace.yaml\` \`overrides\` then \`pnpm install --lockfile-only\`; Python → \`uv lock --upgrade-package <pkg>\`. Both propagate to \`testing\` on merge."
+            echo "**Fix:** JS → bump the patched version in \`pnpm-workspace.yaml\` \`overrides\` then \`pnpm install --lockfile-only\`; Python → \`uv lock --upgrade-package <pkg>\`; Rust → \`update.sh --apply --ecosystem rust --package <crate>\`. All propagate to \`testing\` on merge."
             echo
             echo "## JS — \`pnpm audit\` (${{ steps.pnpm_audit.outcome }})"
             echo '```text'
@@ -127,6 +185,11 @@ jobs:
             echo "## Python — \`pip-audit\` (${{ steps.pip_audit.outcome }})"
             echo '```text'
             tail -c 6000 "$RUNNER_TEMP/pip-audit.txt" 2>/dev/null || echo "(no output)"
+            echo '```'
+            echo "## Rust — \`cargo-deny\` (${{ steps.rust_surface.outputs.present == 'true' && steps.cargo_deny.outcome || 'no Rust surface' }})"
+            echo '```text'
+            tail -c 6000 "$RUNNER_TEMP/cargo-deny.txt" 2>/dev/null || echo "(no output)"
+            echo '```'
           } > "$RUNNER_TEMP/issue-body.md"
           EXISTING=$(gh issue list --search "$SEARCH in:title" --state open --json number --jq '.[0].number // empty')
           if [ -n "$EXISTING" ]; then
@@ -138,7 +201,7 @@ jobs:
           fi
 
       - name: Fail the run if advisories were found
-        if: steps.pnpm_audit.outcome == 'failure' || steps.pip_audit.outcome == 'failure'
+        if: steps.pnpm_audit.outcome == 'failure' || steps.pip_audit.outcome == 'failure' || steps.cargo_deny.outcome == 'failure'
         run: |
           echo "::error::Dependency advisories detected — see the tracking issue."
           exit 1

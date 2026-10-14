@@ -144,7 +144,11 @@ audit_py() {
     # that has none — and every `[ -f uv.lock ]` guard in the repository reads that file to
     # decide whether a gate runs. A read-only-looking script must never be able to arm five
     # CI gates by accident; with --frozen it fails loudly instead.
-    local cmd='uv export --frozen --format requirements-txt --no-hashes > "$req" && uv run pip-audit --requirement "$req"; rc=$?; rm -f "$req"; exit $rc'
+    #
+    # --all-groups because uv exports its default groups only (`dev`), so until 14/10/2026 the
+    # `test` group — pytest, playwright, mutmut and the rest — was never scanned at all. None
+    # of it ships (the images sync --no-dev), but all of it runs on a developer's host.
+    local cmd='uv export --frozen --all-groups --format requirements-txt --no-hashes > "$req" && uv run pip-audit --requirement "$req"; rc=$?; rm -f "$req"; exit $rc'
     if [[ "$MODE" == "docker" ]]; then
       run "${DC[@]}" exec -T django sh -c \
         "cd /workspace/code/src/django && req=\$(mktemp) && $cmd" || return 1
