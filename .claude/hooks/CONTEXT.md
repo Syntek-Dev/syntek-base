@@ -54,7 +54,7 @@ code-review-graph and reports what the refresh could not reach.
 | `check-format.sh`    | Code formatting checks                                                                                                      |
 | `check-lint.sh`      | Linting and style checks                                                                                                    |
 | `check-lockfiles.sh` | Dependency lock file validation                                                                                             |
-| `check-security.sh`  | Security scanning                                                                                                           |
+| `check-security.sh`  | Security scanning — ruff `S`, pip-audit (through `audits/security.sh`, host and `--docker`) and `pnpm audit`                |
 | `check-stubs.sh`     | Test stub validation                                                                                                        |
 | `check-tests.sh`     | Test coverage and execution                                                                                                 |
 | `check-typecheck.sh` | basedpyright type checking                                                                                                  |
