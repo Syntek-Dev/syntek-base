@@ -66,14 +66,25 @@ mechanism itself — compromised packages, hijacked maintainer accounts, and tam
   (`.github/workflows/`, `.gitlab-ci.yml`) must go through the same review process as application
   code.
 - **Pin CI action versions** by commit SHA, not tag. Tags can be moved; commit SHAs cannot.
+  Every `uses:` in `.github/workflows/` is pinned this way since 14/10/2026.
 
 ```yaml
 # WRONG — tag can be moved to a compromised version
-- uses: actions/checkout@v4
+- uses: actions/checkout@v7
 
 # CORRECT — pinned to a specific, verified commit
-- uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+- uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 ```
+
+- **The version comment is load-bearing, not decoration.** It is the only readable version a
+  commit pin has: `audits/dependency-drift.sh` classifies a template update's action moves by it,
+  and a commit pin without one is reported as blocking. Write it as `# vX.Y.Z` — the exact
+  release the commit is, not the floating major it was reached through — and move it with the
+  SHA, never apart from it. Resolve a tag with `gh api repos/<owner>/<repo>/git/ref/tags/<tag>`,
+  dereferencing an annotated tag through `git/tags/<sha>`.
+- **Pinning an action does not pin what it downloads.** An action that fetches a tool at run
+  time takes its own version input — `trufflesecurity/trufflehog` runs its scanner image at
+  `latest` unless `version:` is set, so `audit-secrets.yml` sets it beside the pin.
 
 - **Limit CI permissions.** CI runners should have the minimum permissions needed. Do not grant
   write access to production secrets, deployment credentials, or package registries unless the

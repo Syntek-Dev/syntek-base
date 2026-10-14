@@ -50,11 +50,11 @@ jobs:
     steps:
       # Check out the actual branch (head_ref on a PR, ref_name on a push) — not the detached
       # PR merge ref — so the updated task map can be committed back in both cases.
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.head_ref || github.ref_name }}
 
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.x"
 

@@ -190,7 +190,13 @@ run against. When something breaks it breaks later, somewhere else, looking like
   [python] django  6.0.4 -> >=6.1   you have 6.0.8 locked
   [ci] actions/checkout  v4 -> v7   major move
   [ci] MishaKav/pytest-coverage-comment  main -> v1.11.0   was a branch ref
+  [ci] actions/cache  v6 -> v6.1.0 @55cc8345863c
 ```
+
+Actions are compared on the version each ref **stands for**. A commit pin's version is its
+`# vX.Y.Z` comment, so moving from a tag to a pin at the same major — the third line, which every
+project generated before 14/10/2026 sees once — is informational. A commit pin with no comment has
+no readable version and is reported as blocking.
 
 - **BLOCKING** — your lockfile cannot satisfy the new floor, or a pin moves by enough to break a
   build on its own. `--apply` refuses until you pass `--force-deps`.
