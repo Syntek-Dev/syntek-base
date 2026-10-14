@@ -225,27 +225,41 @@ overrides:
   esbuild@<0.28.1: ^0.28.1
   form-data@>=4.0.0 <4.0.6: ^4.0.6
   "@babel/core@<=7.29.0": ^7.29.1
-  lodash: ">=4.18.0"
-  uuid: ">=11.0.0"
-  glob: ">=11.0.0"
-  # istanbul's coverage instrumentation reaches Jest through test-exclude. Version 6
-  # calls promisify() on glob's default export, which stopped being a function in glob
-  # 11 — so the `glob: ">=11.0.0"` line above silently breaks mobile coverage collection.
-  # v7 uses glob's named export and satisfies that floor, keeping the security posture.
-  test-exclude: ">=7.0.1"
-  # Same root cause, second consumer — but the real constraint is an INTEROP SHAPE, not a
-  # version floor. @jest/reporters@29.7.0 does `_interopRequireDefault(require('glob'))` and
-  # then calls glob.sync. glob 10 and 11 both set __esModule with no `default` export, so
-  # `.default.sync` is undefined and the coverage reporter dies — upgrading is not an option,
-  # and jest-expo pins the Jest 29 line so the reporter cannot be replaced either.
-  # glob 9 is the NEWEST version that still works: it ships a CJS wrapper
-  # (module.exports = Object.assign(globFn, { default: globFn, glob: globFn })) whose default
-  # carries .sync. Preferred over glob 7 because its dependencies are minipass / minimatch 8 /
-  # fs.realpath / path-scurry — it drops inflight@1.0.6, the unbounded-memory-leak package the
-  # repo-wide floor above removes everywhere else. Scoped to that ONE dev-only, test-time
-  # package; the floor is untouched and nothing in the delivery path is affected.
-  "@jest/reporters>glob": "^9.3.5"
-  ws: ">=8.21.0"
+  # ── Bounded 14/10/2026: the six bare floors below arrived unannotated in fc905eb
+  # (01/08/2026), and five were forcing consumers across majors they never declared. ──
+  #
+  # lodash — GHSA-r5fr-rjxr-66jc and GHSA-f23m-r3pf-42rh, fixed 4.18.0. Floored at
+  # 4.18.1 because npm deprecates 4.18.0 as a bad release.
+  lodash: ">=4.18.1 <5"
+  # uuid — GHSA-w5hq-g745-h8pq affects every version below 11.1.1, plus 12.0.0 and
+  # 13.0.0. xcode (^7.0.3, the expo iOS prebuild) and @usebruno/js (^10.0.0) have no
+  # fix in their own majors, so they cross to 11 DELIBERATELY: 11.1.1 is the newest
+  # line that still ships a CommonJS `require` build. The old ">=11.0.0" floor sent
+  # them to 14, ESM-only, which xcode's `require('uuid')` reached only through Node
+  # 24's require(esm) — and broke outright on any Node that cannot do that.
+  uuid@<11.1.1: ^11.1.1
+  uuid@>=12.0.0 <12.0.1: ^12.0.1
+  uuid@>=13.0.0 <13.0.1: ^13.0.1
+  # glob — GHSA-5j98-mcp5-4vw2 affects 10.2-10.4 and 11.0.x only; 7 and 9 never had
+  # it. The old ">=11.0.0" floor existed to evict inflight@1.0.6 (glob 7's unbounded
+  # memory leak), not to fix an advisory, and it dragged jest-config and jest-runtime
+  # (^7.1.3) to 13, where jest-runtime's `_glob().default.sync` is undefined — the
+  # error is swallowed, so it failed quietly rather than loudly.
+  #
+  # Pre-9 consumers cross to 9 DELIBERATELY instead. glob 9 is the newest line whose
+  # CommonJS wrapper (module.exports = Object.assign(globFn, { default: globFn, glob:
+  # globFn })) carries `.default.sync` — what @jest/reporters@29.7.0 and jest-runtime
+  # call, with jest-expo pinning the Jest 29 line — and it drops inflight. This one
+  # selector replaces the old `"@jest/reporters>glob": "^9.3.5"` and the test-exclude
+  # floor: test-exclude 6 promisifies glob's default export, which glob 9's is.
+  glob@<9: ^9.3.5
+  glob@>=10.0.0 <10.5.0: ^10.5.0
+  glob@>=11.0.0 <11.1.0: ^11.1.0
+  # ws — GHSA-96hv-2xvq-fx4p, fixed 7.5.11 and 8.21.0. The old ">=8.21.0" floor sent
+  # react-native, metro, @react-native/dev-middleware and react-devtools-core (^7) to
+  # 8, when their own line carries the fix.
+  ws@>=7.0.0 <7.5.11: ^7.5.11
+  ws@>=8.0.0 <8.21.0: ^8.21.0
   # brace-expansion is split per major, one fix per line (1.1.21, 2.1.7, 5.0.12 all
   # shipped 14/09/2026). The blanket ">=5.0.9 <6" it replaces forced minimatch 3
   # (^1.1.7) and minimatch 8 (^2.0.1) onto v5 — and v5's CommonJS build exports
@@ -260,10 +274,14 @@ overrides:
   # 7.x and 8.x lines have separate advisories and separate consumers, and a
   # blanket ">=8.6.6" would drag a 7.x consumer across a major boundary to fix a
   # vulnerability that its own line already patches.
-  "@grpc/proto-loader>protobufjs": ">=8.6.6"
-  "grpc-js-reflection-client>protobufjs": ">=8.6.6"
-  protobufjs@>=8.0.0 <8.6.6: ">=8.6.6"
-  protobufjs@>=7.0.0 <7.6.3: ^7.6.3
+  #
+  # Until 14/10/2026 two parent-scoped lines did exactly that: they sent
+  # @grpc/proto-loader (^7.2.5 / ^7.5.5) to 8.x, and parent scope beats a version
+  # selector, so the crossing also hid that the 7.x floor was too low — GHSA-j3f2-
+  # 48v5-ccww affects 7.5.0-7.6.4, fixed 7.6.5. Both deleted; each line now carries
+  # its own fix, bounded by its major.
+  protobufjs@>=7.0.0 <7.6.5: ^7.6.5
+  protobufjs@>=8.0.0 <8.6.6: ^8.6.6
 allowedDeprecatedVersions:
   whatwg-encoding: "*"
   node-domexception: "*"
