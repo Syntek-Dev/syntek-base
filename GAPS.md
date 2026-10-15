@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 09/10/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 15/10/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -222,6 +222,11 @@ in a **generated project** — so the template was shipping them:
 - **The dev stack and every generated project both claim `10.0.1.0/24`**, so they cannot run
   concurrently on one host. Only the base pair collides; worktrees offset by story number.
 - **`pnpm-update.sh`'s header** claims files it no longer updates.
+- **Added 15/10/2026, found by the mutation-testing research.** `code/docs/testing/TAXONOMY.md:189`
+  also advertises `backend.sh -n auto`. The Testcontainers lines (`BACKEND-TESTING.md:114-115`,
+  `TAXONOMY.md:22`) contradict `BACKEND-TESTING.md:84-85`, which puts integration tests on the
+  Compose-managed `postgres:18-alpine` test database. `code/src/scripts/rust/test.sh:10-12`
+  describes Python-side PyO3 boundary tests that do not exist: no `.py` file imports `nativecore`.
 
 ---
 
@@ -827,6 +832,15 @@ no-browser path (`:409-431`) and **exits 0 with a note** — a run that rendered
 clean, the `code/docs/GATE-REPORTING.md` failure class — and every future Playwright-backed design
 check inherits the same hole. The `mcp-mermaid` server already fails here for the same reason
 (the note, N-003.1).
+**Re-measured 15/10/2026 — the predicted loss has happened.** No path in `/nix/store` carries a
+Chromium **1228** any more; the store holds bundles at revisions **1234** and **1243** only (store
+listing, 15/10/2026). The pin is unchanged at `playwright==1.61.0` (`render-slop.sh:114`), so on
+this host the no-browser path above is now the path every run takes. The sibling template has
+already moved: `syntek-media` pinned Playwright **1.63.0** with Chromium **1243** in `9bcec39`
+(its 0.4.2). The pin is a constraint, so moving it also moves the `playwright` that
+`pytest-playwright` resolves for the e2e suite (`pyproject.toml:95-106`, `:213`): the design
+tier's render checks and the e2e suite move in one change. `render-slop.sh:102` says "Seven sites" where
+`audits/playwright-pin.sh` holds eight; correct it in the change that moves the pin.
 **Blocked by / Action:** Nothing blocks it. Bump `PLAYWRIGHT_PIN` to the release `just
 check-playwright` reports in `~/Repos/personal/nix-config`, and move every site
 `audits/playwright-pin.sh` holds in step in the same change. Claimed as a blocker by
@@ -852,3 +866,80 @@ is repository-wide.
 the provisioning (a key, an account, a ruleset change, keeping the human's token out of agent
 sessions) is manual work recorded here, not on the map. This entry retires when an approval an
 agent can produce is no longer counted as a human's.
+
+---
+
+## 15/10/2026 — `mutmut.sh` cannot complete a run, and its docs promise what mutmut 3 does not do
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/tests/mutmut.sh` has never finished a run, and it ships to every
+generated project, because `copier.yml` excludes neither `scripts/tests/` nor the `mutmut>=3.0` <!-- doc-references: template-only -->
+floor in the `test` group (`pyproject.toml:201`, `:208`; locked at 3.7.0, `uv.lock:1116-1117`).
+Any one of four failures stops it:
+
+- **Not installed.** It runs `uv run mutmut` inside the dev container (`mutmut.sh:70`), whose image
+  syncs the default `dev` group only (`Dockerfile.dev:22`), so mutmut is absent.
+- **A removed flag.** `run --paths-to-mutate` (`mutmut.sh:100`) is a usage error in mutmut 3.
+- **No configuration where mutmut looks.** It reads its config from the working directory,
+  `code/src/django`, which has none, and the root `pyproject.toml` has no `[tool.mutmut]`.
+- **The wrong settings.** The container's `config.settings.dev` (`docker-compose.dev.yml:53`)
+  outranks the ini's `config.settings.test` (`pyproject.toml:223`), so a run would use the dev
+  services.
+
+The script's promises are false too: its header says exit 0 means every mutant was killed
+(`:18`) and it prints "complete" (`:102`), but mutmut 3 exits 0 with survivors and on an
+interrupt; `apply` writes a mutant into the source the dev server is serving and advises reverting
+with `git checkout` (`:119-126`), which also discards uncommitted edits in that file. `mutants/` is
+not ignored. The doctrine around it is wrong in the same direction: `how-to/src/INVARIANTS.md:110-118`
+says a run "removes the enforcement", which mutmut 3 cannot do to a database constraint, a
+decorated function or a deleted statement, and `code/docs/testing/ADVANCED-TESTING.md:175` sets an
+80% bar nothing computes. It fails loudly today, so nothing currently reports a false clean.
+Evidence: `research/MUTATION-TESTING.md`.
+**Blocked by / Action:** Nothing blocks it. To be claimed by the first slice of
+`MAP-MUTATION-TESTING.md` (charted 15/10/2026), which decides the container, the config home and
+the exit contract together. This entry retires when a run completes **in a generated tree** and
+every shipped claim about mutation testing is true.
+
+---
+
+## 15/10/2026 — the design hand-off map's six tracers have no account or instance to run on
+
+**Type:** Infrastructure gap
+**Summary:** `project-management/src/01-FEATURE-MAPS/MAP-DESIGN-HANDOFF.md` <!-- doc-references: template-only -->
+settles what an external design tool does with a hand-off by **running** it (tracers N-031 to
+N-036), and none of the accounts or instances they need exists for this repository (15/10/2026).
+Between them they need: a Canva account (N-031, whether an imported PDF stays editable); a Figma
+Full seat, which `use_figma` requires (N-032); a Penpot instance, SaaS or self-hosted (N-033, a
+DTCG 2025.10 file with object colours), plus a Figma account for the Penpot-to-Figma round trip
+(N-034), which also tests Figma's native DTCG import on the Starter plan only if that account is a
+Starter team; a signed-in `claude-design` session (N-035) — listed only as that tracer's precondition,
+since running `/design-login` is a per-user step and fixing the login itself is out of scope on the
+map; and a Figma account signed in over OAuth to the remote MCP server from this NixOS/Wayland host
+(N-036). Evidence: `research/DESIGN-HANDOFF-TARGETS.md`, sections "Figma", "Claude Design" and
+"What this note does not settle". These accounts are syntek-base's own, for charting; provisioning
+a tool for a generated project stays out of scope on the map. Provisioning is manual work, so it is
+recorded here rather than as a map node (`project-management/workflows/01-feature-map/STEPS.md`
+Step 6).
+**Blocked by / Action:** Nothing blocks it. Sam decides which accounts are opened, on which
+plans, and whether Penpot is self-hosted or SaaS; the tracers then run in the order the map's
+frontier sets. Claimed as a blocker by `MAP-DESIGN-HANDOFF.md` N-031 to N-036. This entry retires
+when each of the six tracers has run or has left the map.
+
+---
+
+## 15/10/2026 — the design tier's external store waits on two sibling templates' 0.5.0
+
+**Type:** Infrastructure gap
+**Summary:** Sam settled on 15/10/2026 that the `external` store for design outputs follows the
+data-root design syntek-author and syntek-media share (author D50: `SYNTEK_DATA_ROOT` read from the
+environment, a `.syntek-data-root` marker, a `<root>/<DATA_AREA>/<kind>/<DATA_SLUG>/<repo-relative path>`
+layout and an `external.toml` sha256 manifest), **re-authored here only once both templates ship
+it in their 0.5.0** (`MAP-NATIVE-DESIGN-TIER.md` N-023). That design is approved but unbuilt: it is
+recorded only in untracked handoffs in the two sibling repositories and is marked for revision
+(`research/NATIVE-DESIGN-TIER-TOOLING.md`, Addendum, "Family storage, decided but unbuilt"). <!-- doc-references: template-only -->
+Until it ships, the `external` store cannot be built here; the `lfs` and `repo` stores do not wait
+on it (N-022).
+**Blocked by / Action:** Blocked by syntek-author 0.5.0 and syntek-media 0.5.0 releasing the
+data-root contract. When both have shipped, read the released contract — not the handoffs — and
+re-author it under N-023. Claimed as a blocker by `MAP-NATIVE-DESIGN-TIER.md` N-023. This entry
+retires when the released contract has been read and N-023's build work can be cut into a slice.
