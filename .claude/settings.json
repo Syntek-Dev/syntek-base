@@ -118,7 +118,6 @@
       "ReportFindings",
       "DesignSync",
       "NotebookEdit",
-      "SendMessage",
       "PushNotification",
       "RemoteTrigger",
       "ScheduleWakeup",
