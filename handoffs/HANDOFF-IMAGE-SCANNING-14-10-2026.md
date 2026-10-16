@@ -91,6 +91,18 @@ before writing any code.
    before adopting a new scanner release.
 8. **Live findings:** once a surface is live, does a nightly finding go to the `incident` skill
    instead of the tracking issue (`.claude/CLAUDE.md` Section 0)?
+9. **The pin-detect-move rule (added to Thread A, 16/10/2026).** Thread A also writes one
+   umbrella rule into `code/docs/security/SUPPLY-CHAIN.md`: every surface pinned exactly, scanners
+   detect when a pin turns vulnerable, routine moves wait out a cooldown, security moves skip it
+   with a named reason. Still to settle: which of these gaps Thread A closes and which go to
+   `GAPS.md`:
+   - The boilerplate at `SUPPLY-CHAIN.md:17-37`.
+   - No Python cooldown. uv's `exclude-newer` takes a rolling duration such as `"7 days"`, and
+     `exclude-newer-package` exempts a single package.
+   - Image tags instead of digests (`MAP-UPSTREAM-TRACKING` S-03).
+   - No Renovate (S-02).
+   - `uv` itself is unpinned (uv's `required-version`), as are CI's `uvx copier` (`GAPS.md:634`)
+     and the MCP servers.
 
 ## Artefacts
 

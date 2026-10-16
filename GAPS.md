@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 15/10/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 16/10/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -701,10 +701,10 @@ already names Batch E _'the intended first slice'_, so the identification is the
 the most dangerous shape here, because a later reader takes it as the map's settled judgement.
 (2) `:1041` on the same map reads "This map's six batches are its slices" against **nine** slice
 rows — Batch G split and Batch H was charted after that sentence was written.
-(3) `MAP-UPSTREAM-TRACKING.md:507` reads "**This is a template-development map, so there are no
+(3) `MAP-UPSTREAM-TRACKING.md:532` reads "**This is a template-development map, so there are no
 stories to cut.**" It carries four slice rows, `US002.md:112` names its `S-01` among the slices it
 unblocks, and four other template-development maps have already produced `US001`, `US004`, `US006`
-and `US008`. Its `:510` also says "the remaining open nodes refine them without gating them" while
+and `US008`. Its `:535` also says "the remaining open nodes refine them without gating them" while
 `:5` records zero open nodes. Surfaced 17/09/2026 during `02-story-creation`'s Step 0 sweep across
 all thirteen maps.
 **Blocked by / Action:** Nothing blocks it, and none of it is a node — this is prose maintenance,
@@ -943,3 +943,30 @@ on it (N-022).
 data-root contract. When both have shipped, read the released contract — not the handoffs — and
 re-author it under N-023. Claimed as a blocker by `MAP-NATIVE-DESIGN-TIER.md` N-023. This entry
 retires when the released contract has been read and N-023's build work can be cut into a slice.
+
+---
+
+## 16/10/2026 — the nightly sweep publishes advisory detail in a public issue that never closes
+
+**Type:** Active gap
+**Summary:** The tracking-issue step at `.github/workflows/audit-deps.yml:190-224` writes each
+failing night's audit output into one issue, creating it once and commenting on it after that. In
+syntek-base that is issue #14, open since 03/09/2026 with 41 comments, in a public repository
+(16/10/2026). No step closes it after a run passes (the file, `:190-230`, has none), so the green
+runs on 15/10/2026 and 16/10/2026 left it open. Its comments list vulnerable package names and version
+ranges. The template ships the same workflow, so a generated project whose repository is public
+publishes the same detail; once a surface is live, part of that detail (the runtime Python
+packages, and the prod image once an images leg reports here) describes what is deployed.
+`code/docs/security/MONITORING-AND-INCIDENT.md:88-89` says not to discuss a vulnerability in public
+channels, GitHub issues included, until it is resolved. The advisories themselves are public; what
+the issue adds is which of them this repository has not yet fixed. Found while charting
+`project-management/src/01-FEATURE-MAPS/MAP-PIN-DETECT-MOVE.md` (N-008, Sam's Q8), whose S-02 adds <!-- doc-references: template-only -->
+an images leg that reports into the same issue.
+**Blocked by / Action:** Nothing blocks it. Sam decides what the issue may carry (the full output,
+counts and a link to the run, or nothing, with a private advisory channel instead) and whether it
+closes when a run passes. A posture-dependent answer is a documented rule tied to
+`.claude/CLAUDE.md` Section 0, as N-008 chose for the scan, unless the decision is explicitly to
+make the workflow the first CI reader of the posture. The answer binds every leg of the nightly,
+not only images. Graduated from N-008 on `MAP-PIN-DETECT-MOVE.md`, which triages it as unrelated
+(it constrains S-02's issue section without blocking it) and names it in Out of scope; no map
+claims it yet. This entry retires when the workflow does what that decision says.

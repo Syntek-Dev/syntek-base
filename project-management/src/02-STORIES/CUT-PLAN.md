@@ -231,7 +231,7 @@ N-003 decides.
 
 ## MAP-GATE-PARITY
 
-Frontier and fog closed (MAP-GATE-PARITY.md:15-16); gate ticked bar the index row (:668-676).
+Frontier and fog closed (MAP-GATE-PARITY.md:15-16); gate ticked bar the index row (:669-677).
 Most Acceptance cells read `TBD` and are back-filled at cut (:478-481). Retired IDs, never reused:
 S-01 (into S-05), S-02 and S-04 (into S-08), S-06 (into S-07).
 
@@ -410,7 +410,7 @@ the map states none (:111-112).
 ## MAP-NATIVE-MOBILE-SURFACE — blocked (P5, first)
 
 Charting (MAP-NATIVE-MOBILE-SURFACE.md:4-5). **The blocking count disagrees with itself:** 9 in
-the header and gate (:5, :243), 11 `yes` in the frontier, 13 nodes marked `⛔` in the slice table.
+the header and gate (:5, :245), 11 `yes` in the frontier, 13 nodes marked `⛔` in the slice table.
 Settle it at the map's next sitting. S-03 before S-04, deliberately (:132-134).
 
 | Order | Slice(s) | Working title                           | SP  | MoSCoW | Depends on                                                                                  | Status    | Story |
