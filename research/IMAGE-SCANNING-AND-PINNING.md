@@ -16,12 +16,14 @@ advisories, caches, and source files at the tags and commits named below) were r
 Expo CLI page's validation section could not be isolated by selector, so it was read from its own
 source file in `expo/expo`, and uv's resolution guide likewise from `docs/` at the uv tag. Grype
 0.120.0 (the host's `/run/current-system/sw/bin/grype`) was run read-only against `registry:`
-images; cosign 3.1.3 verified one release bundle; anonymous `ghcr.io` manifest requests, the
-`api.expo.dev` endpoints and npm registry records were fetched with `curl`. The Docker CLI was not
-used, nothing was built, and no `pnpm`, `uv` or `expo` command ran. The `context7` and Perplexity
-tiers were unauthenticated this session and were **not consulted** (`code/docs/GATE-REPORTING.md`:
-could not look, not looked-and-clean); `WebFetch` and `WebSearch` were not used. _(reasoned)_ marks
-an inference. **Nothing is quoted**: identifiers, flags, figures and file names appear as facts, and
+images, GM 12 excepted; cosign 3.1.3 verified one release bundle; anonymous `ghcr.io` manifest
+requests, the `api.expo.dev` endpoints and npm registry records were fetched with `curl`. The
+Docker CLI was not used, nothing was built, and no `pnpm`, `uv` or `expo` command ran, with one
+exception added later the same day: GM 12, from the map's Step 8a, records a probe that built the
+production image at `3d10110` and states its own source. The `context7` and Perplexity tiers were
+unauthenticated this session and were **not consulted** (`code/docs/GATE-REPORTING.md`: could not
+look, not looked-and-clean); `WebFetch` and `WebSearch` were not used. _(reasoned)_ marks an inference.
+**Nothing is quoted**: identifiers, flags, figures and file names appear as facts, and
 every sentence is re-authored; the five-gram measurement is in the closing paragraph of _Sources_.
 The note is committed, so it is published wherever this repository is; it never reaches a generated
 project, because `copier.yml:146` excludes `/research/**` and `:147-148` re-include only
@@ -86,9 +88,10 @@ met until 19/10/2026 to 22/10/2026 _(reasoned)_.
 
 ## Measured - Grype against the base and service images
 
-Claims **GM** 1 to 11. Every figure is from `G`. Images were pulled by tag on 16/10/2026; the
-digests are what each tag resolved to then (index digest, then the amd64 manifest). **The project's
-own images were not scanned**: none is published, and nothing was built. Modes: **(a)**
+Claims **GM** 1 to 12. Every figure in GM 1 to 11 is from `G`; GM 12 states its own source. Images
+were pulled by tag on 16/10/2026; the digests are what each tag resolved to then (index digest, then
+the amd64 manifest). **The project's own images were not scanned**, except by GM 12's probe: none
+is published, and nothing was built for GM 1 to 11. Modes: **(a)**
 `--fail-on high --only-fixed`; **(b)** `--fail-on high`; **(c)** `--fail-on low --only-fixed`;
 **(d)** `--fail-on low`. Each cell counts what the threshold catches once filters apply; every
 non-zero cell exited 2.
@@ -148,12 +151,25 @@ non-zero cell exited 2.
     heading). (`G`)
 11. **Scan cost with a warm database.** One registry pull and scan of the base took 3.81 s wall and
     262 MB peak memory on this workstation; it is not a runner figure. (`G`, `/usr/bin/env time`)
+12. **The built prod image adds nothing fixable.** Built from `Dockerfile.prod` (the base
+    `python:3.14-slim` by tag, Debian 13.7, and uv by `latest`), the image carries 280 matches: 278
+    are Debian packages, 189 wont-fix and 89 not-fixed, and the other 2 are GM 2's CPython CPE
+    matches, CVE-2025-15367 and CVE-2026-12345 (Medium, on `/usr/local/bin/python3.14`), the only
+    matches in a fixed state. Mode (c), with the Python packages under `/workspace/.venv` excluded,
+    counts exactly those two. No match lay under `/workspace/.venv`, which holds 67 installed
+    distributions and, in `psycopg_binary.libs/`, the shared libraries `psycopg-binary` bundles
+    (`libcrypto` and `libgssapi_krb5` among them); whether Grype catalogues those bundled copies at
+    all is not shown. (A measurement on this host on 16/10/2026, at the map's Step 8a:
+    `docker build` of `Dockerfile.prod` at `3d10110`, then grype 0.120.0 against database v6.1.10,
+    built 16/10/2026 06:29Z; the probe image was removed afterwards, and no independent check has
+    re-run this claim yet.)
 
 ### Not measured here
 
-The four built Django images (the production venv, `libpq5`, `libmagic1` and `curl`), any arm64
-variant, whether the matches above are true positives, how pip-audit's findings overlap Grype's, and
-how far the counts move as the tags re-point and the database is rebuilt each day.
+The dev, test and staging images, the production image built on a digest-pinned base, whether Grype
+catalogues the libraries bundled inside wheels (GM 12), any arm64 variant, whether the matches above
+are true positives, how pip-audit's findings overlap Grype's, and how far the counts move as the
+tags re-point and the database is rebuilt each day.
 
 ## Grype - install, verification, database and ignore rules
 
@@ -475,7 +491,7 @@ Claims **RE** 1 to 18.
    `audits/*.sh` with no arguments and fails on any non-zero exit
    (`.claude/hooks/lib/check-audits.sh:179-191`). `_AUDIT_SKIP` excludes `cloc.sh`, `security.sh`
    and `dependency-drift.sh`, with owners `check-cloc.sh`, `check-security.sh` and `-`, the last
-   meaning the reason stands alone (`:111-118`).
+   meaning the reason stands alone (`:111-122`).
 10. **Toolchain pins and pin files.** The table lists `.nvmrc`, `.python-version`,
     `code/src/rust/rust-toolchain.toml` and `.opengrep-version`, under prose that says four files
     (`PR-AND-REQUIRED-CHECKS.md:149-159`), with `code/src/rust/.cargo-deny-version` as a scoped
@@ -594,7 +610,7 @@ Read on 16/10/2026 at the pins in the citation keys; the licence position follow
   registry records, `ghcr.io` manifests, `latest.json`, and GitHub API records for rulesets, runs,
   issues, caches and releases (service terms).
 - **Measured, not read as text** — the five registry images in `G`, the Grype v0.120.1 release
-  files, and the CI log of job 116010956614.
+  files, the CI log of job 116010956614, and the production image GM 12's probe built.
 - **This repository at `73fd24d`** — the paths cited per claim; `git grep`, `git ls-files`,
   `git log`, `xxd` and `docs-length.sh --path` as measurements.
 
@@ -612,23 +628,40 @@ filtering guide and scan-action issue #778 added to the set. **Result:** 33 of 8
 five-grams are shared: 31 inside or touching a backticked identifier, flag, path, locator, timestamp
 or version, and 2 runs of numerals from the count cells of the GM table, which are all that remain
 once backticked spans are removed (6,194 distinct). No sentence of prose is shared with any source,
-permissive or no-grant.
+permissive or no-grant. GM 12 and the eight-slice _Feeds_, added later the same day at the map's
+Step 8a, postdate this measurement; GM 12 reports a measurement on this host, so it has no source
+text to share.
 
 ## Feeds
 
 `project-management/src/01-FEATURE-MAPS/MAP-PIN-DETECT-MOVE.md` — written alongside this note. No
 ADR or `STORY-PLAN-US###` exists yet; each links back here by path when it does.
 
-- **S-01 'Pin and move'** — mainly _pnpm 11 - cooldown and exact saves_, _uv - cooldown, exact
-  bounds and the version guard_ and _Expo - exact pins against the cooldown_ (the rule's cooldowns,
-  exact saves and exceptions); _The repository today_ RE 1-3 and RE 10-16 (exact manifests, image
-  tags and digests, `UV_VERSION`, `uvx`, action SHAs, MCP servers); UV 10 (uv digests); GI 1-6 (the
-  scanner's own pin and verification).
-- **S-02 'Detect'** — mainly _Measured - Grype against the base and service images_, _Grype -
-  install, verification, database and ignore rules_ (GI 7-17) and _CI - where a scan can run, and
-  what it costs_; _The repository today_ RE 4-9, RE 14 and RE 17 (image builds, the required set,
-  the nightly and its issue, the pre-PR sweep, audit registration, exit codes).
-- **Both** — _Corrections to the 14/10/2026 brief_.
+- **S-01 'Builds run what they pin'** — _The repository today_ RE 1-3 (the images and their tags),
+  RE 11 (`UV_VERSION`, uv and `.npmrc`) and RE 13 (action SHAs); UV 5-6 and UV 8-10 (the version
+  guard, the pinned value, uv digests); PN 6.
+- **S-03 'Routine moves wait 7 days, under one stated rule'** — mainly _pnpm 11 - cooldown and exact
+  saves_ PN 1-5, _uv - cooldown, exact bounds and the version guard_ UV 1-3 and UV 7, and _Expo -
+  exact pins against the cooldown_ EX 3-7 (the rule's cooldowns and exceptions); RE 11 (the age
+  excludes), RE 15 (`uvx`) and PN 8 (the pinned pnpm).
+- **S-04 'One command moves a direct dependency with its lock'** — PN 7, EX 7 and EX 8.
+- **S-05 'Direct dependencies are exact, and a template update reads them honestly'** — RE 12
+  (manifest specifiers), PN 7 and EX 1-2.
+- **S-08 'A loose direct specifier cannot merge'** — UV 4.
+- **S-02 'Detect: a change to the shipped image is scanned before merge'** — mainly _Measured -
+  Grype against the base and service images_ (GM 1-12), _Grype - install, verification, database
+  and ignore rules_ (GI 2-4 for CI's verification, GI 7-17) and _CI - where a scan can run, and what
+  it costs_; _The repository today_ RE 4-9, RE 10 (the pin file), RE 14 and RE 17 (image builds, the
+  required set and its rules, the nightly it sits beside, the pre-PR sweep, audit registration, exit
+  codes).
+- **S-06 'The pinned Grype installs verified, on a laptop and in CI'** — GI 1-6 (the scanner's own
+  pin and verification).
+- **S-07 'Detect: new advisories against the unchanged image surface nightly'** — CI 2-3 and CI 7,
+  RE 7-8 (the nightly's timing, its caches and its issue).
+- **Every slice** — _Corrections to the 14/10/2026 brief_.
+
+The map cut its two provisional slices into these eight at its Step 8a (16/10/2026). RE 16 and PN 9,
+the MCP servers, feed none of them: they belong to S-03 on `MAP-UPSTREAM-TRACKING`.
 
 `MAP-UPSTREAM-TRACKING` — a pointer only; this note does not amend it. RE 18 and CO 5 restate what
 its N-016, census and S-03 row recorded at `73fd24d`.
