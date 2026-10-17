@@ -73,7 +73,7 @@ key that needs a physical touch is the only measured signal of human presence.
 8. Claude Design is still named for brand ideation, artifacts are still disabled with the
    deprecated key, and the predecessor map's five slices were never cut.
    (`project-management/workflows/06-brand-guides/CONTEXT.md:34`, `CLAUDE.md:17`;
-   `.claude/settings.json:230`; `project-management/src/02-STORIES/CUT-PLAN.md:393-406`)
+   `.claude/settings.json:230`; `project-management/src/02-STORIES/CUT-PLAN.md:492-511`)
 9. Design sign-off is free text: a `**Status:**` line in the DB idea template, a
    `**Consolidated by**` field in all five consolidated templates, and workflow `04` telling the
    reader to record sign-off in the document or a PR review.
