@@ -1,6 +1,6 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: 14/09/2026 **Version**: 7.6.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 31/10/2026 **Version**: 7.7.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
@@ -8,6 +8,56 @@ User-facing release notes for each published version.
 ---
 
 ## Unreleased
+
+## v7.7.0 — 31/10/2026
+
+**Status:** Minor — every story, sprint and feature map now says where it stands in one agreed
+way, each planning folder has a board you can glance at, and finished work is filed away rather
+than left in the way.
+
+### One set of statuses
+
+A story's status used to be described two different ways in different places. There is now one
+list, from `Open` through `Completed` to `Closed`, and every guide points at the same definition.
+Nothing reaches the customer or counts as finished without first passing internal review, and a
+story turned down — by the team or by the customer — goes back in the queue to be picked up again.
+Each change of status is recorded with its date, so you can see how a story got where it is.
+
+Sprints move from `Planned` to `In Progress` to `Done` to `Closed`, and feature maps from
+`Charting` to `Closed`, with a short free-text note alongside.
+
+### A board for each planning folder
+
+Stories, sprints, feature maps and both kinds of plan each get a board: a page listing everything
+in the folder, grouped by status. A browser version is produced alongside for a quick visual view.
+The boards are rebuilt when you commit — the commit stops once so you can include the updated
+board — and the automated checks flag one that has fallen behind. A separate report tells you what is ready to move on — a blocked story whose blockers have
+cleared, or finished work ready to file away.
+
+### Finished work is archived, not deleted
+
+Once a story is complete it can be closed with one command, which moves it and its plan into an
+`archive` folder and updates the links to it from the other planning documents. Sprints and maps archive the same way once
+everything in them is done. Archived files are kept exactly as they were and are still found by
+every tool.
+
+### Two new set-up questions
+
+New projects are asked how many weeks a customer has to review a story (two by default) and how
+long the period after acceptance runs before further changes become chargeable (four by default).
+Press Enter to accept both, or update with `--defaults` to take them without being asked. Updating
+an existing project also writes its boards and renames the few statuses whose new spelling is
+obvious; anything else is listed for you to correct.
+
+### Also in this release
+
+- The manual testing guide for each story is now written from the plans before any code exists,
+  then checked against the finished work, and test records are split into manual and automated
+  folders. Existing projects have their records moved across automatically on update.
+- New projects start with an empty cut plan — the page recording which feature-map slice
+  becomes which story — ready for the first map to be cut into stories.
+- A web-search assistant is available to the AI tools for quick, cited answers, with a clear rule
+  that anything written down permanently must cite the original source.
 
 ## v7.6.0 — 14/09/2026
 
