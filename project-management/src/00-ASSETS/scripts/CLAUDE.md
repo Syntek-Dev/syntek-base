@@ -26,7 +26,9 @@ status registers.
   upsert needs `CLICKUP_API_TOKEN` + `CLICKUP_LIST_ID` + `CLICKUP_SYNC_APPLY=1`
   in the environment. All output lands in `project-management/export/`.
 - **Boards:** `pm-board.sh --write` after a status edit; `--check` must pass before a commit
-  (lefthook runs `--write --staged`, CI the `pm-boards` workflow). `pm-archive.sh <ID>` is the
+  (lefthook runs `--write --staged`, CI the `pm-boards` workflow). Stage with
+  `git add <paths> $(bash project-management/src/00-ASSETS/scripts/pm-board.sh --boards-for <paths>)` so the boards ride the same `git add`
+  and the hook never has to stop the commit. `pm-archive.sh <ID>` is the
   only way an item enters an `archive/` — dry-run first.
 - **Definition of done:** generated ClickUp Markdown regenerated and re-staged where a
   source story changed; export output written to `project-management/export/`.
@@ -42,7 +44,9 @@ status registers.
   through `pm-lib.sh`'s `find()` here, or the same two-folder glob elsewhere. A script that globs
   the live folder alone breaks the day an item is archived.
 - **Never let a pm script stage or commit.** `pm-archive.sh` uses `git mv` for the rename and
-  stops; the author reviews and commits.
+  stops; `pm-board.sh` writes and names boards and stages none; the author reviews and commits.
+  **One named exception:** the ClickUp guard `precommit-clickup.sh` re-stages the generated,
+  read-only `export/clickup/` files it regenerates, and nothing else.
 - Exports are derived from `src/` artefacts — regenerate rather than editing an
   exported PDF or zip.
 

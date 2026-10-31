@@ -20,7 +20,7 @@ project-management/src/00-ASSETS/
 │   ├── export-pm-files.sh     ← exports PM artefacts (stories, sprints, plans) → zip
 │   ├── export-wireframes.sh   ← exports wireframe HTML → PDF
 │   ├── pm-archive.sh          ← archive a Closed-eligible US###/SPRINT-##/MAP-NAME into archive/
-│   ├── pm-board.sh            ← the five *-BOARD.md kanban indexes: --write / --check / --warn
+│   ├── pm-board.sh            ← the five *-BOARD.md kanban indexes: --write / --boards-for / --check / --warn
 │   ├── precommit-clickup.sh   ← lefthook guard: regenerates ClickUp exports on commit
 │   └── sync-clickup.sh        ← upserts ClickUp exports into ClickUp (clickup-sync CI workflow)
 └── WALK-TESTS/              ← cold walk-test evidence: prompt, report, transcript, verified result

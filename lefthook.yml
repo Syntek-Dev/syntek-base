@@ -99,6 +99,13 @@ pre-commit:
     # exits 1, because a board left unstaged would sail through here and fail
     # `pm-board.sh --check` in CI instead. Re-commit once it is staged.
     #
+    # The stop is the fallback, not the procedure. The author's half is
+    # `pm-board.sh --boards-for <paths>`, run inside the `git add` itself: it renders the index
+    # those paths are about to produce, writes the boards that would change and prints their
+    # paths, so one `git add` carries them and this leg passes first time. It stages nothing
+    # either — the rule above holds on both sides (00-ASSETS/scripts/CLAUDE.md: never let a pm
+    # script stage or commit).
+    #
     # The existence guard keeps the leg a no-op in any tree without the script, the same shape
     # as the clickup-export leg below.
     pm-boards:

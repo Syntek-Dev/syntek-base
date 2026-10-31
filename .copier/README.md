@@ -1319,7 +1319,8 @@ generated file is staged, keeping them in sync with `02-STORIES/`.
 
 `pm-board.sh --write --staged` runs alongside it: when a PM artefact is staged it regenerates the
 `*-BOARD.md` boards from what is staged, and stops the commit once, naming any board to stage, so
-a commit never carries a stale one. CI runs `pm-board.sh --check`, which
+a commit never carries a stale one. `pm-board.sh --boards-for <paths>` names those boards before
+the commit, for the same `git add` — neither stages anything itself. CI runs `pm-board.sh --check`, which
 fails on a stale board or an edit inside an `archive/`, and `--warn`, which only reports.
 
 ---

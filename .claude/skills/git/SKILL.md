@@ -57,14 +57,19 @@ Confirm the current branch matches the work in hand. Feature and bugfix work bel
 
 ## Commits
 
-1. **Review the staged diff** — scope, no `.env`, no secrets, docs complete.
-2. **Delegate the version bump** where the change warrants one. `version` owns the whole version
+1. **Stage by explicit path, boards included.** Where any path is under one of the five PM board
+   folders, stage it with the boards it moves in **one** `git add` —
+   `git add "${paths[@]}" $(bash project-management/src/00-ASSETS/scripts/pm-board.sh --boards-for "${paths[@]}")`.
+   The script writes and names the boards and stages nothing; the `pm-boards` hook then passes
+   first time instead of stopping the commit to ask for them.
+2. **Review the staged diff** — scope, no `.env`, no secrets, docs complete.
+3. **Delegate the version bump** where the change warrants one. `version` owns the whole version
    set — which files that is belongs to `project-management/docs/VERSIONING-GUIDE.md` and is not
    listed here. **Never edit a version file here.**
-3. **Write the message in the guide's format** — Conventional Commits, imperative mood,
+4. **Write the message in the guide's format** — Conventional Commits, imperative mood,
    British English, with the co-author trailer the guide specifies. **Read the model name from
    `.claude/CLAUDE.md` Section 4 at the time of writing; never carry a pinned version string.**
-4. **A bugfix commit references its root-cause record**, which must already exist at
+5. **A bugfix commit references its root-cause record**, which must already exist at
    `project-management/src/21-BUGS/BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`. If there is none,
    hand back to `bugfix` before committing.
 

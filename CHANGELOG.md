@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **`pm-board.sh --boards-for <paths>` names the boards a PM edit moves, so one `git add` carries both.** The `pm-boards` pre-commit leg stopped every commit whose staged status edit moved a board, so each such commit ran twice. The new mode renders from the index with the named paths laid over it — the index that `git add` is about to produce — writes each `*-BOARD.md` that would change, and prints only their paths. It reads the paths as `git add` does — pathspecs from the current directory, so a directory or `.` works — and prints the boards relative to it: `git add "${paths[@]}" $(bash …/pm-board.sh --boards-for "${paths[@]}")`. It stages nothing, so the scripts rule that no pm script stages or commits still holds, and the hook still re-stages nothing. The hook's stop stays as the fallback and now names the command. The `git` skill's commit procedure stages this way.
+
 ## [7.7.0] - 31/10/2026
 
 ### Added

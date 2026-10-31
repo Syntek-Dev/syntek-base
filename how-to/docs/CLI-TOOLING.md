@@ -257,6 +257,7 @@ owned by `.claude/skills/completion/SKILL.md`.
 
 ```bash
 bash project-management/src/00-ASSETS/scripts/pm-board.sh --write  # regenerate (pre-commit: --staged)
+git add <paths> $(bash project-management/src/00-ASSETS/scripts/pm-board.sh --boards-for <paths>)  # stage with its boards
 bash project-management/src/00-ASSETS/scripts/pm-board.sh --warn   # work ready to move on; exits 0
 bash project-management/src/00-ASSETS/scripts/pm-archive.sh US###  # close + archive with its plan
 ```

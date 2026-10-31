@@ -17,7 +17,8 @@
 # the vocabulary lands in an "Unrecognised" column and raises a warning. The vocabulary,
 # the parsing and the lookup live in pm-lib.sh, shared with pm-archive.sh.
 #
-# Usage: pm-board.sh --write [--staged] | --check | --warn  [--root DIR] [--quiet] [--help]
+# Usage: pm-board.sh --write [--staged] | --boards-for PATH... | --check | --warn
+#                   [--root DIR] [--quiet] [--help]
 #
 #   --write    Regenerate all five boards (.md, .json, .html).
 #   --staged   With --write, for the lefthook pre-commit leg: do nothing unless a file in
@@ -30,6 +31,17 @@
 #              sync-trees.sh, whose lefthook leg sets stage_fixed and fails only when it adds
 #              a TODO row, this leg never stages: the author does.) The .json/.html views are
 #              not refreshed by this mode; a plain --write refreshes them.
+#   --boards-for PATH...
+#              The author's half of --staged, run BEFORE the commit so the hook passes first
+#              time. Renders from the index with the named paths (as they stand in the working
+#              tree) laid over it — i.e. the index those paths are about to produce — writes
+#              each *-BOARD.md that would change, prints ONLY their paths on stdout and exits 0.
+#              It stages nothing: the author stages the boards in the same `git add`:
+#                git add "${paths[@]}" $(bash …/pm-board.sh --boards-for "${paths[@]}")
+#              Paths are pathspecs read from the current directory, exactly as `git add` reads
+#              them (files, directories, `.`; `--` ends options); the boards are printed
+#              relative to it. An unstaged status edit outside the named paths never reaches
+#              a board, exactly as under --staged. Filenames holding a newline are unsupported.
 #   --check    Exit 1 if any committed *-BOARD.md is stale or missing, or if the archive
 #              frozen rule is breached: a file already under */archive/ may differ from
 #              the version that first landed there ONLY by the reference-path rewrites
@@ -49,8 +61,9 @@
 #   bash project-management/src/00-ASSETS/scripts/pm-board.sh --write
 #   bash project-management/src/00-ASSETS/scripts/pm-board.sh --check
 #   bash project-management/src/00-ASSETS/scripts/pm-board.sh --warn
+#   s=project-management/src/02-STORIES/US###.md; git add "$s" $(bash project-management/src/00-ASSETS/scripts/pm-board.sh --boards-for "$s")
 #
-# Requires: python3 (stdlib only), git (for --staged and the frozen check).
+# Requires: python3 (stdlib only), git (for --staged, --boards-for and the frozen check).
 # Exit codes: 0 = ok / nothing in scope  1 = stale board, frozen breach, or a board a
 #             staged commit must pick up  2 = preflight or argument error
 set -euo pipefail
@@ -63,22 +76,35 @@ die()  { printf '\033[31mERROR:\033[0m %s\n' "$*" >&2; exit 2; }
 
 MODE=""
 STAGED=false
+BOARDS_FOR=""
+BOARDS_ARGS=()
+CALLER_DIR="$PWD"
 QUIET=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --write|--check|--warn)
-      [[ -z "$MODE" ]] || die "choose one of --write, --check, --warn"
+      [[ -z "$MODE" ]] || die "choose one of --write, --check, --warn, --boards-for"
       MODE="${1#--}"; shift ;;
     --staged) STAGED=true; shift ;;
+    --boards-for)
+      [[ -z "$MODE" ]] || die "choose one of --write, --check, --warn, --boards-for"
+      MODE=boards-for; shift
+      # Paths run to the next option; `--` ends options, so every later argument is a path.
+      while [[ $# -gt 0 ]]; do
+        if [[ "$1" == -- ]]; then shift; BOARDS_ARGS+=("$@"); shift $#; break; fi
+        [[ "$1" == -* ]] && break
+        BOARDS_ARGS+=("$1"); shift
+      done
+      [[ ${#BOARDS_ARGS[@]} -gt 0 ]] || die "--boards-for needs at least one path about to be staged" ;;
     --root)
       [[ -n "${2:-}" && -d "${2:-}" ]] || die "--root needs an existing directory"
       PROJECT_ROOT="$(cd "$2" && pwd)"; shift 2 ;;
     --quiet|-q) QUIET=true; shift ;;
-    --help|-h) sed -n '2,52p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '2,68p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) die "unknown argument: '$1'. Use --help for usage." ;;
   esac
 done
-[[ -n "$MODE" ]] || die "no mode given — pass --write, --check or --warn (see --help)"
+[[ -n "$MODE" ]] || die "no mode given — pass --write, --boards-for, --check or --warn (see --help)"
 [[ "$STAGED" == false || "$MODE" == write ]] || die "--staged only applies to --write"
 command -v python3 >/dev/null 2>&1 || die "python3 not found on PATH"
 
@@ -90,7 +116,21 @@ cd "$PROJECT_ROOT"
 FOLDERS=(01-FEATURE-MAPS 02-STORIES 03-SPRINTS 16-SPRINT-PLANS 17-STORY-PLANS)
 BOARDS=(FEATURE-MAPS STORIES SPRINTS SPRINT-PLANS STORY-PLANS)
 
-if $STAGED; then
+if [[ "$MODE" == boards-for ]]; then
+  # Expand the named pathspecs the way `git add` will — from the caller's directory, so a
+  # directory, `.` or a glob covers what it covers there — into root-relative files: every
+  # tracked or untracked-unignored file they match, and every tracked file they match that is
+  # gone from the working tree (a deletion or move-away the author is about to stage).
+  BOARDS_FOR="$(cd "$CALLER_DIR" && {
+    git ls-files --full-name --cached --others --exclude-standard -- "${BOARDS_ARGS[@]}"
+    git ls-files --full-name --deleted -- "${BOARDS_ARGS[@]}"
+  } | sort -u)" || die "could not read the named paths through git"
+  if ! grep -qE '^project-management/src/(01-FEATURE-MAPS|02-STORIES|03-SPRINTS|16-SPRINT-PLANS|17-STORY-PLANS)/' \
+      <<< "$BOARDS_FOR$(git diff --cached --name-only 2>/dev/null || true)"; then
+    $QUIET || echo "pm-board: no named or staged file is in the five board folders — nothing to stage" >&2
+    exit 0
+  fi
+elif $STAGED; then
   staged="$(git diff --cached --name-only 2>/dev/null || true)"
   if ! grep -qE '^project-management/src/(01-FEATURE-MAPS|02-STORIES|03-SPRINTS|16-SPRINT-PLANS|17-STORY-PLANS)/' <<< "$staged"; then
     $QUIET || echo "pm-board: no file in the five board folders is staged — nothing to do"
@@ -297,22 +337,34 @@ say("pm-board: wrote the five boards (.md committed, .json/.html gitignored)")
 PYEOF
 )
 
-if ! $STAGED; then
+if ! $STAGED && [[ "$MODE" != boards-for ]]; then
   PM_ROOT="$PROJECT_ROOT" PM_MODE="$MODE" PM_QUIET="$QUIET" \
     python3 -I -c "$PM_LIB_PY"$'\n'"$BOARD_PY"
   exit $?
 fi
 
-# --staged: render from the index. Materialise the staged copy of the five folders (and the
-# answers file the clock reads) into a scratch tree, render there, and compare each board
-# with its staged copy. A differing board is copied into the working tree for the author
-# to stage; nothing is staged here.
+# --staged and --boards-for both render from the INDEX. Materialise the staged copy of the five
+# folders (and the answers file the clock reads) into a scratch tree; --boards-for then lays
+# the author's named paths over it from the working tree, so the render is exactly what the
+# index will hold once those paths are staged. Each board that differs from its staged copy is
+# copied into the working tree. Neither mode stages anything.
 SCRATCH="$(mktemp -d)"
 trap 'rm -rf "$SCRATCH"' EXIT
 paths=()
 for f in "${FOLDERS[@]}"; do paths+=("project-management/src/$f"); done
 git ls-files -z -- "${paths[@]}" .copier-answers.yml \
   | git checkout-index -z --stdin --prefix="$SCRATCH/"
+if [[ "$MODE" == boards-for ]]; then
+  while IFS= read -r p; do
+    [[ -n "$p" ]] || continue
+    if [[ -f "$p" ]]; then
+      mkdir -p "$SCRATCH/$(dirname "$p")"
+      cp "$p" "$SCRATCH/$p"
+    else
+      rm -f "$SCRATCH/$p"   # a deletion or move-away the author is about to stage
+    fi
+  done <<< "$BOARDS_FOR"
+fi
 PM_ROOT="$SCRATCH" PM_MODE=write PM_QUIET=true \
   python3 -I -c "$PM_LIB_PY"$'\n'"$BOARD_PY"
 
@@ -325,9 +377,25 @@ for i in "${!FOLDERS[@]}"; do
     changed+=("$md")
   fi
 done
+
+if [[ "$MODE" == boards-for ]]; then
+  # stdout carries the board paths and nothing else, relative to the caller's directory, so
+  # `git add` run there takes them directly. (Guarded: an empty array under `set -u` is an
+  # unbound-variable error before bash 4.4.)
+  if [[ ${#changed[@]} -gt 0 ]]; then
+    python3 -I -c 'import os, sys
+for c in sys.argv[3:]:
+    print(os.path.relpath(os.path.join(sys.argv[1], c), sys.argv[2]))' \
+      "$PROJECT_ROOT" "$CALLER_DIR" "${changed[@]}"
+  fi
+  $QUIET || echo "pm-board: ${#changed[@]} board(s) to stage with the named paths" >&2
+  exit 0
+fi
+
 if [[ ${#changed[@]} -gt 0 ]]; then
   echo "pm-board: regenerated from the staged status edits — stage and commit again:"
   for c in "${changed[@]}"; do echo "  git add $c"; done
+  echo "  (next time, stage with: git add <paths> \$(bash $0 --boards-for <paths>))"
   exit 1
 fi
 $QUIET || echo "pm-board: the staged boards match the staged status lines"
