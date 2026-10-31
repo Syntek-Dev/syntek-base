@@ -220,7 +220,7 @@
       }
     ]
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "medium",
   "ultracode": true,
   "enableWorkflows": true,
   "skipWorkflowUsageWarning": true,
