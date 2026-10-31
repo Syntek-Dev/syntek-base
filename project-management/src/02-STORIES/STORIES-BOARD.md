@@ -9,7 +9,7 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 
 | Column            | Items |
 | ----------------- | ----- |
-| Open              | 13    |
+| Open              | 14    |
 | Pending           | 0     |
 | In Progress       | 0     |
 | In Review         | 0     |
@@ -39,6 +39,7 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | US011 | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty                   | Open   | [US011.md](US011.md) |
 | US012 | A seeded file that never lands is reported, and the gate's header claim becomes true                                       | Open   | [US012.md](US012.md) |
 | US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Open   | [US013.md](US013.md) |
+| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label                               | Open   | [US014.md](US014.md) |
 
 ## Pending
 
