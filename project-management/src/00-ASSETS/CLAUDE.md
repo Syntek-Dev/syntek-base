@@ -32,9 +32,12 @@ artefacts for client delivery, and the `WALK-TESTS/` record of cold navigability
 
 - **Vector source is the single source of truth** for logos — never edit a raster
   directly; always re-export from the SVG.
-- **Do not run the `scripts/*.sh` helpers directly** — they are driven by lefthook
+- **Do not run the ClickUp `scripts/*.sh` helpers directly** — they are driven by lefthook
   (`precommit-clickup.sh`) and the `clickup-sync` CI workflow (`sync-clickup.sh`); local
-  previews use `--dry-run`. ClickUp sync needs `CLICKUP_API_TOKEN` etc. as **environment
+  previews use `--dry-run`. **The PM board pair is the exception, and is run by hand:**
+  `pm-board.sh --write` after any status edit, `pm-archive.sh <ID>` to archive. Lefthook's
+  pre-commit runs `pm-board.sh --write --staged`; CI runs `pm-board.sh --check` (failing) and
+  `pm-board.sh --warn` (non-failing). ClickUp sync needs `CLICKUP_API_TOKEN` etc. as **environment
   secrets**, never committed. The ClickUp trio is **clickup-only** (`INCLUDE_CLICKUP`); on any
   other board the sync is written from scratch through the `pm-tool-sync` skill.
 - **Do not commit large unoptimised binaries** — keep raster exports lean.

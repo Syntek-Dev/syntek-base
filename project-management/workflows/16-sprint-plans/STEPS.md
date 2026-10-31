@@ -94,7 +94,9 @@ sprint [list the stories, their priorities, and any constraints from GDPR/securi
 
 Create `project-management/src/16-SPRINT-PLANS/<exec-order>-SPRINT-PLAN-<sprint-number>.md`,
 both segments 2-digit zero-padded (rule: `project-management/src/16-SPRINT-PLANS/CLAUDE.md`),
-with the following sections:
+with the following sections. **The plan carries no status line and its story-plans table no
+status cell** — `SPRINT-PLANS-BOARD.md` shows it under its `SPRINT-##`'s status; run
+`pm-board.sh --write` after saving:
 
 ```text
 # Sprint Plan ## — <Goal Summary>

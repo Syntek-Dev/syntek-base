@@ -54,9 +54,11 @@ PR description must include:
 - User story reference (US###)
 - Test plan (how to verify)
 
-Set the story `**Status:**` to `In Review` in `src/02-STORIES/US###.md` and commit — the lefthook
-regenerates the ClickUp export and the `clickup-sync` workflow pushes it to the board. Status set
-per `project-management/docs/PLANNING-GUIDE.md` → Story Statuses.
+Set the story `**Status:**` to `In Review` in `src/02-STORIES/US###.md`, append its
+`## Status history` row, run `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`,
+and commit — the lefthook regenerates the ClickUp export and the `clickup-sync` workflow pushes
+it to the board. Lifecycle: `project-management/docs/planning/STORIES.md` → _Story statuses_;
+vocabulary owner: `.claude/skills/completion/SKILL.md`.
 
 ### Step 4 — Await CI and QA Sign-off
 
@@ -70,8 +72,18 @@ Follow the gate rules in `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md`
 testing → dev → staging → main
 ```
 
-Once merged to `testing`, set the story `**Status:**` to `Completed` (move to `Accepted` /
-`Accepted Customer` on sign-off). Commit the change so the ClickUp board updates.
+Record each transition through the `completion` skill — a `## Status history` row and a board
+regeneration every time:
+
+- **Review and QA pass** → `Accepted`. **Either fails** → `Rejected`, then back to `Pending`.
+- **Handed to the customer on a staging deployment** → `Customer Review`; their answer →
+  `Customer Accepted`, or `Customer Rejected` and back to `Pending`. A story whose
+  `Customer review` flag is `N/A` skips these three.
+- **`Completed` is never set at merge.** It comes from the window the `completion` skill owns
+  (`pm-board.sh --warn` names the stories that have reached it); `pm-archive.sh US###` then
+  closes and archives the story.
+
+Commit each change so the ClickUp board updates.
 
 ---
 

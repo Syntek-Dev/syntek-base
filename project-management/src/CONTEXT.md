@@ -54,11 +54,11 @@ project-management/src/
 ├── 00-ASSETS/          ← logos, brand assets, export scripts (pre-workflow reference)
 │
 │   ── Discover (01) ──
-├── 01-FEATURE-MAPS/    ← MAP-<FEATURE>.md — wayfinder decision maps
+├── 01-FEATURE-MAPS/    ← MAP-<FEATURE>.md — wayfinder decision maps (+ board, archive/)
 │
 │   ── Specify (02–14) ──
-├── 02-STORIES/         ← US###.md (+ US000-TEMPLATE.md)
-├── 03-SPRINTS/         ← SPRINT-##.md — backlog → sprint organisation (high-level)
+├── 02-STORIES/         ← US###.md (+ US000-TEMPLATE.md, board, archive/)
+├── 03-SPRINTS/         ← SPRINT-##.md — backlog → sprint organisation (+ board, archive/)
 │   (04–08 are three-stage: USER-STORY-IDEAS/ → CONSOLIDATED-IDEAS/ → IMPLEMENTATION/)
 ├── 04-DATABASE/        ← 3 stages + ERD-DIAGRAMS/ (cumulative)
 ├── 05-USER-FLOW/       ← 3 stages + DIAGRAMS/ (cumulative)
@@ -75,8 +75,8 @@ project-management/src/
 │
 │   ── Decide & plan (15–17) ──
 ├── 15-DECISIONS/       ← ADR-###-<TITLE>.md (architectural decision records)
-├── 16-SPRINT-PLANS/    ← detailed sprint execution plans
-├── 17-STORY-PLANS/     ← per-story implementation plan (the code master reference)
+├── 16-SPRINT-PLANS/    ← detailed sprint execution plans (+ board, archive/)
+├── 17-STORY-PLANS/     ← per-story implementation plan, the code master (+ board, archive/)
 │
 │   ── Implement & record, per story (18–22) ──
 ├── 18-TESTS/           ← MANUAL/US###-MANUAL-TESTING.md, AUTOMATED/US###-TEST-STATUS.md
@@ -91,6 +91,12 @@ project-management/src/
 
 Every folder carries a `CONTEXT.md` + `CLAUDE.md`; the 09–13 folders scaffold their
 `PLANNING/` and `IMPLEMENTATION/` sub-folders with per-story `US000-TEMPLATE.md` files.
+
+**Boards and archives — `01`, `02`, `03`, `16`, `17`.** Each carries a generated `*-BOARD.md`
+(committed; `.json` / `.html` siblings gitignored) — a kanban index built from the status lines
+by `00-ASSETS/scripts/pm-board.sh` — and an `archive/` sub-folder that `pm-archive.sh` moves
+`Closed` items into, where they are frozen. The status vocabulary is owned by
+`.claude/skills/completion/SKILL.md`.
 
 ---
 
@@ -128,27 +134,29 @@ in a directory the current template no longer defines.
 
 ## Where each artefact lives
 
-| Pattern                                                                 | Directory                                                                                            |
-| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `US###.md`                                                              | `02-STORIES/`                                                                                        |
-| `SPRINT-##.md`                                                          | `03-SPRINTS/`                                                                                        |
-| `<TYPE>-IDEA-US###-*` · `<TYPE>-CONSOLIDATED-*` · `<TYPE>-IMPL-US###-*` | `04-DATABASE/` … `08-WIREFRAMES/` (TYPE ∈ DB, USER-FLOW, BRAND, COMP, WF)                            |
-| `WF-###-<Screen-Name>.html`                                             | `08-WIREFRAMES/CONSOLIDATED-IDEAS/`                                                                  |
-| `GDPR-PLAN-US###-*.md` · `GDPR-IMPL-US###-*.md`                         | `09-GDPR/PLANNING` · `/IMPLEMENTATION`                                                               |
-| `<TYPE>-PLAN-US###-*.md` · `<TYPE>-IMPL-US###-*.md`                     | `10-SECURITY/<CATEGORY>/PLANNING` · `/IMPLEMENTATION` (TYPE ∈ THREAT-MODEL, ASSESSMENT, AUDIT, VULN) |
-| `QA-PLAN-US###-*.md` · `QA-IMPL-US###-*.md`                             | `11-QA/PLANNING` · `/IMPLEMENTATION`                                                                 |
-| `SEO-PLAN-US###-*.md` · `SEO-IMPL-US###-*.md`                           | `12-SEO/PLANNING` · `/IMPLEMENTATION`                                                                |
-| `API-PLAN-US###-*.md` · `API-IMPL-US###-*.md`                           | `13-API-DESIGN/PLANNING` · `/IMPLEMENTATION`                                                         |
-| `LOGGING-PLAN-US###-*.md` · `LOGGING-IMPL-US###-*.md`                   | `14-LOGGING/PLANNING` · `/IMPLEMENTATION`                                                            |
-| `ADR-###-<TITLE>.md`                                                    | `15-DECISIONS/`                                                                                      |
-| `##-SPRINT-PLAN-##.md`                                                  | `16-SPRINT-PLANS/`                                                                                   |
-| `<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md`                         | `17-STORY-PLANS/`                                                                                    |
-| `US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md`                      | `18-TESTS/AUTOMATED/` · `18-TESTS/MANUAL/`                                                           |
-| `REVIEW-US###-<DESCRIPTOR>.md`                                          | `19-REVIEWS/`                                                                                        |
-| `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                              | `20-FINDINGS/`                                                                                       |
-| `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                                  | `21-BUGS/`                                                                                           |
-| `REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                          | `22-REFACTORING/`                                                                                    |
-| `INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` · `INCIDENT-INDEX.md`             | `23-INCIDENTS/` (no `US###` form — an incident is not owned by a story)                              |
+| Pattern                                                                                                                          | Directory                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `MAP-<FEATURE>.md`                                                                                                               | `01-FEATURE-MAPS/` · `01-FEATURE-MAPS/archive/` once `Closed`                                        |
+| `US###.md`                                                                                                                       | `02-STORIES/` · `02-STORIES/archive/` once `Closed`                                                  |
+| `SPRINT-##.md`                                                                                                                   | `03-SPRINTS/` · `03-SPRINTS/archive/` once `Closed`                                                  |
+| `FEATURE-MAPS-BOARD.md` · `STORIES-BOARD.md` · `SPRINTS-BOARD.md` · `SPRINT-PLANS-BOARD.md` · `STORY-PLANS-BOARD.md` (generated) | `01-FEATURE-MAPS/` · `02-STORIES/` · `03-SPRINTS/` · `16-SPRINT-PLANS/` · `17-STORY-PLANS/`          |
+| `<TYPE>-IDEA-US###-*` · `<TYPE>-CONSOLIDATED-*` · `<TYPE>-IMPL-US###-*`                                                          | `04-DATABASE/` … `08-WIREFRAMES/` (TYPE ∈ DB, USER-FLOW, BRAND, COMP, WF)                            |
+| `WF-###-<Screen-Name>.html`                                                                                                      | `08-WIREFRAMES/CONSOLIDATED-IDEAS/`                                                                  |
+| `GDPR-PLAN-US###-*.md` · `GDPR-IMPL-US###-*.md`                                                                                  | `09-GDPR/PLANNING` · `/IMPLEMENTATION`                                                               |
+| `<TYPE>-PLAN-US###-*.md` · `<TYPE>-IMPL-US###-*.md`                                                                              | `10-SECURITY/<CATEGORY>/PLANNING` · `/IMPLEMENTATION` (TYPE ∈ THREAT-MODEL, ASSESSMENT, AUDIT, VULN) |
+| `QA-PLAN-US###-*.md` · `QA-IMPL-US###-*.md`                                                                                      | `11-QA/PLANNING` · `/IMPLEMENTATION`                                                                 |
+| `SEO-PLAN-US###-*.md` · `SEO-IMPL-US###-*.md`                                                                                    | `12-SEO/PLANNING` · `/IMPLEMENTATION`                                                                |
+| `API-PLAN-US###-*.md` · `API-IMPL-US###-*.md`                                                                                    | `13-API-DESIGN/PLANNING` · `/IMPLEMENTATION`                                                         |
+| `LOGGING-PLAN-US###-*.md` · `LOGGING-IMPL-US###-*.md`                                                                            | `14-LOGGING/PLANNING` · `/IMPLEMENTATION`                                                            |
+| `ADR-###-<TITLE>.md`                                                                                                             | `15-DECISIONS/`                                                                                      |
+| `##-SPRINT-PLAN-##.md`                                                                                                           | `16-SPRINT-PLANS/` · `archive/` with its sprint                                                      |
+| `<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md`                                                                                  | `17-STORY-PLANS/` · `archive/` with its story                                                        |
+| `US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md`                                                                               | `18-TESTS/AUTOMATED/` · `18-TESTS/MANUAL/`                                                           |
+| `REVIEW-US###-<DESCRIPTOR>.md`                                                                                                   | `19-REVIEWS/`                                                                                        |
+| `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                                                                                       | `20-FINDINGS/`                                                                                       |
+| `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                                                                                           | `21-BUGS/`                                                                                           |
+| `REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`                                                                                   | `22-REFACTORING/`                                                                                    |
+| `INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` · `INCIDENT-INDEX.md`                                                                      | `23-INCIDENTS/` (no `US###` form — an incident is not owned by a story)                              |
 
 Descriptors in `SCREAMING-KEBAB-CASE`; dates DD/MM/YYYY; story numbers zero-padded to three digits.
 

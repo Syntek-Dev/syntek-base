@@ -85,8 +85,8 @@ testing guide in `src/18-TESTS/MANUAL/`.
 - **The manual testing guide is authored here, from the specs — never from code, and never
   deferred to the closeout.** This workflow runs the rule; `src/18-TESTS/MANUAL/CLAUDE.md` owns
   it, with every other rule of the guide.
-- **Keep the dependency callout honest** — a plan marked anything other than `Blocked`
-  asserts its blockers are cleared; the parallel-worktree DAG depends on it.
+- **Keep the dependency callout honest** — a plan carries no status (the board mirrors its
+  story's), so its `Blocked by` / `Blocks` callout is what the parallel-worktree DAG reads.
 - **`<exec-order>` tracks build order, and is renumbered when build order changes.** It is
   the story's position across the whole backlog, not its sprint and not a per-sprint counter.
   **Do not read the sprint-plan guardrail across.** `src/16-SPRINT-PLANS/CLAUDE.md` holds
@@ -94,11 +94,11 @@ testing guide in `src/18-TESTS/MANUAL/`.
   must not be "corrected" — that protects a **pair** of numbers whose disagreement is the
   information. A story plan has one number and no pair, so a prefix out of step with build
   order is not information, it is a stale claim. Rule and derivation: `STEPS.md` Step 2.
-- **No index row goes into `src/17-STORY-PLANS/CONTEXT.md`.** That file ships, and its
-  _The plans index_ section records that it holds no index by decision. A plan is indexed
-  against its sprint in the sprint plan's _Story Plans — the code master_ table, a reserved
-  number is recorded in the owning story, and the folder-level index is deferred to the
-  register-index work charted in `src/01-FEATURE-MAPS/`, which names its own file when it lands.
+- **No index row goes into `src/17-STORY-PLANS/CONTEXT.md`.** The folder index is the generated
+  `STORY-PLANS-BOARD.md` (`pm-board.sh --write`; never hand-edited). A plan is also listed
+  against its sprint in the sprint plan's _Story Plans — the code master_ table (no status
+  cell), a reserved number is recorded in the owning story, and a plan moves to `archive/` only
+  with its story (`pm-archive.sh US###`).
 - Documentation workflow — no code here. Instructional `.md` files ≤ 300 code lines (the
   produced `<exec-order>-STORY-PLAN-US###-*.md` itself is exempt — see
   `src/17-STORY-PLANS/CLAUDE.md`).
@@ -124,3 +124,12 @@ testing guide in `src/18-TESTS/MANUAL/`.
      guide is written from the specs, and it is written HERE — because the failure it prevents is
      a plan shipped without its guide, which would leave 22 authoring it with the code already in
      front of it. -->
+
+<!-- 31/10/2026 (7.7.0, the PM boards): the dependency-callout guardrail and the no-index
+     guardrail rewritten in place, line for line — as were the matching lines of `STEPS.md`
+     (the Naming row, Step 2 item 4, Step 10 item 2), `CHECKLIST.md` (the sprint-plan row and the
+     no-index row) and `CONTEXT.md` — so dated line-number citations of these files keep their
+     positions. Superseded: "a plan marked anything other than `Blocked` asserts its blockers are
+     cleared", "its Status cell filled as that plan's own section defines the column", and the
+     deferral of the folder-level index to the register-index work. A plan now carries no status
+     (the board mirrors its story), and the index is the generated `STORY-PLANS-BOARD.md`. -->

@@ -28,7 +28,7 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
   prefix 2-digit zero-padded → complete every section (problem, technical approach, key
   decisions, dependencies, deferred, risks, Docker & Nginx) → point the story's row in its
   sprint plan's _Story Plans — the code master_ table (`../16-SPRINT-PLANS/`) at the file,
-  replacing any reserved-number placeholder, its Status cell filled as that plan's own section
+  replacing any reserved-number placeholder (the table has no status cell — plans carry none)
   defines the column → keep the `blocked-by`/`blocks` callout honest so the DAG stays accurate.
 - **Definition of done:** file named `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`,
   the prefix 2-digit zero-padded and matching the story's position in the current build order;
@@ -56,22 +56,22 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
   `docker-compose.us###.{dev,test}.yml` / `nginx/{dev,test}-us###.conf` naming with a
   unique `127.0.0.N` IP and the documented port block — collisions break parallel
   worktrees.
-- **Status must be truthful** — a plan marked anything other than `Blocked` asserts its
-  blockers are cleared; the cross-cutting parallel-worktree dependency DAG depends on it.
+- **A plan carries no status** — the story's `**Status:**` is the only one, and
+  `STORY-PLANS-BOARD.md` mirrors it; keep the `blocked-by` / `blocks` callout honest instead.
 - Root-level plans under `src/` are exempt from the 300-line instructional limit, but
   keep the story's row in its sprint plan's _Story Plans — the code master_ table current on
   every add and every renumber.
-- **No index row goes into `CONTEXT.md` here.** It ships, and its _The plans index_ section
-  records that it holds no index by decision. A reserved number is recorded in the owning story
-  under `../02-STORIES/` and, where a sprint plan already carries the story, as a no-file row in
-  that plan's table. The folder-level index is deferred to the register-index work charted in
-  `../01-FEATURE-MAPS/`, which names its own file when it lands.
+- **No index row goes into `CONTEXT.md` here.** The index is the generated `STORY-PLANS-BOARD.md`
+  (`bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`; committed, never
+  hand-edited; `.json` / `.html` gitignored). A reserved number is recorded in the owning story
+  under `../02-STORIES/`. Plans move to `archive/` only with their story, by
+  `pm-archive.sh US###`; `archive/` is frozen, and a plan is looked up by story ID across both folders.
 
 ## Output & naming
 
 - **Hand-written:** every `<exec-order>-STORY-PLAN-US###-*.md` and `PLAN-<DESCRIPTOR>.md`, plus
   the story's row in its sprint plan's _Story Plans — the code master_ table next door.
-  `CONTEXT.md` here carries no index.
+  `CONTEXT.md` here carries no index; `STORY-PLANS-BOARD.md` is generated (`pm-board.sh`).
 - **Not filed here:** the manual testing guide `17-story-plans` Step 7.2 authors beside each plan
   — it goes in `../18-TESTS/MANUAL/`, whose `CLAUDE.md` owns every rule of it.
 - **Template:** `00-STORY-PLAN-US000-TEMPLATE.md` — the copy source; do not delete or repurpose.
@@ -109,3 +109,11 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
      `../16-SPRINT-PLANS/`, and at the owning story under `../02-STORIES/` for a reserved
      number. The folder-level index is deferred to the register-index work charted in
      `../01-FEATURE-MAPS/`; no file is named for it because none exists yet. -->
+
+<!-- 31/10/2026 (7.7.0, the PM boards): four sites rewritten IN PLACE, line for line, so that
+     dated line-number citations of this file keep their positions — Concrete steps (the Status
+     cell), the "Status must be truthful" guardrail, the no-index guardrail and Output & naming.
+     Superseded: "its Status cell filled as that plan's own section defines the column"; "Status
+     must be truthful — a plan marked anything other than `Blocked` asserts its blockers are
+     cleared"; and the deferral of the folder index to the register-index work. A plan now has no
+     status (the board mirrors the parent story) and the index is the generated board. -->

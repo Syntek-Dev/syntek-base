@@ -27,14 +27,14 @@ project-management/
 │   └── VERSIONING-GUIDE.md      ← root-only semver, files to update on every bump
 ├── export/                  ← PDF/zip exports for client delivery + ClickUp artefacts (opt-in)
 ├── src/                     ← live PM artefacts, in three tiers (see below)
-│   ├── 00-ASSETS/               ← logos, brand assets, export scripts (pre-workflow ref)
+│   ├── 00-ASSETS/               ← logos, brand assets, export + pm-board/pm-archive scripts
 │   │
 │   │   ── Discover (01) ──
-│   ├── 01-FEATURE-MAPS/         ← MAP-<FEATURE>.md (wayfinder decision maps)
+│   ├── 01-FEATURE-MAPS/         ← MAP-<FEATURE>.md (wayfinder decision maps) + board, archive/
 │   │
 │   │   ── Specify (02–14) ──
-│   ├── 02-STORIES/              ← US###.md (user stories)
-│   ├── 03-SPRINTS/              ← SPRINT-##.md (backlog → sprint organisation)
+│   ├── 02-STORIES/              ← US###.md (user stories) + board, archive/
+│   ├── 03-SPRINTS/              ← SPRINT-##.md (backlog → sprint organisation) + board, archive/
 │   │   (04–08: USER-STORY-IDEAS/ → CONSOLIDATED-IDEAS/ → IMPLEMENTATION/ + a cumulative asset)
 │   ├── 04-DATABASE/             ← 3 stages + ERD-DIAGRAMS/
 │   ├── 05-USER-FLOW/            ← 3 stages + DIAGRAMS/
@@ -50,8 +50,8 @@ project-management/
 │   │
 │   │   ── Decide & plan (15–17) ──
 │   ├── 15-DECISIONS/            ← ADR-###-<TITLE>.md
-│   ├── 16-SPRINT-PLANS/         ← detailed sprint execution plans
-│   ├── 17-STORY-PLANS/          ← per-story implementation plan (code master reference)
+│   ├── 16-SPRINT-PLANS/         ← detailed sprint execution plans + board, archive/
+│   ├── 17-STORY-PLANS/          ← per-story implementation plan (code master) + board, archive/
 │   │
 │   │   ── Implement & record (18–22, per story) ──
 │   ├── 18-TESTS/                ← MANUAL/US###-MANUAL-TESTING.md, AUTOMATED/US###-TEST-STATUS.md

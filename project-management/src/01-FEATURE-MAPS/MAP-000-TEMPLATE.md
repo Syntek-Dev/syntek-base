@@ -1,11 +1,15 @@
 # MAP-[FEATURE] — [Title]
 
 **Charted**: DD/MM/YYYY · **Charted by**: [name] · **Workflow**: `01-feature-map`
-**Status**: Charting / Resolving / Blockers clear — stories may start / Complete
+**Status:** Charting
+**Status note:** [one line — e.g. "frontier drawn; research nodes dispatched"]
 **Frontier open**: [n] · **Blocking open**: [n]
 
 > Copy to `MAP-<FEATURE>.md`. This is a **low-resolution index**, not a storage vault — every
-> resolved node links to the artefact it became. Add a row to `CONTEXT.md` → Map index.
+> resolved node links to the artefact it became. **Status** is one of `Charting` · `Resolving` ·
+> `Blockers Clear` · `Complete` · `Closed` (owner: `.claude/skills/completion/SKILL.md`); the
+> note is free text. After any status edit run `pm-board.sh --write` — the map's row on
+> `FEATURE-MAPS-BOARD.md` is generated, never hand-written.
 
 ---
 
@@ -67,7 +71,7 @@ from. The gate owns the design, may add to a value, and the story is updated to 
 gate closes.
 
 **Flags are written inline and `N/A` is omitted**, so a typical slice stays one line and this
-section stays an index. The full 13-flag roster and each flag's gate:
+section stays an index. The full 13-flag gate roster (the story's optional `Customer review` row is a 14th, never a slice flag) and each flag's gate:
 `../02-STORIES/US000-TEMPLATE.md`.
 
 | Slice | Story   | Title         | Nodes                        | Acceptance                                                                       | Flags                                                                     |
@@ -90,6 +94,10 @@ permanent.
 
 **A slice is not a story.** Nothing here is written into `../02-STORIES/` from this map — the
 row is the input to `02-story-creation`, which cuts the story from it.
+
+**Every slice cut closes the map.** Once the map is `Complete` and every slice row names its
+`US###`, `pm-archive.sh MAP-<FEATURE>` sets `Closed` and moves the map into `archive/`. A closed
+map is **frozen** — new work on the same area charts a new map, never reopens this one.
 
 ---
 

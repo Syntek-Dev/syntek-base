@@ -1,6 +1,6 @@
 # Repository Tour
 
-**Last Updated**: 09/09/2026
+**Last Updated**: 31/10/2026
 
 You have generated a project and it has a lot of directories. This is what they are and how to
 find your way.
@@ -116,6 +116,10 @@ project-management/src/
 │   ── record, not per story (23) ──
 └── 23-INCIDENTS/
 ```
+
+`01`, `02`, `03`, `16` and `17` each carry a generated `*-BOARD.md` — a kanban of the folder by
+status — and an `archive/` sub-folder where closed artefacts are frozen (`09-PROJECT-MANAGEMENT.md`
+→ _Status and boards_).
 
 The numbered `src/` folders mirror the numbered `workflows/` up to `17`. **`17-STORY-PLANS/` is
 what a developer actually codes from** — it references the sprint plan, the decisions, and every

@@ -61,7 +61,7 @@ Every box must be ticked before `02-story-creation/` may begin.
 - [ ] At least one node is unblocked — a frontier with no takeable edge is mis-wired
 - [ ] Every node tagged research / tracer / grilling / build
 - [ ] No node is manual unblocking work — that is a `GAPS.md` blocker, not a node
-- [ ] `MAP-<FEATURE>.md` created from the template and added to the `src/01-FEATURE-MAPS/` index
+- [ ] `MAP-<FEATURE>.md` created from the template; `**Status:** Charting` + `**Status note:**` set; board regenerated (`pm-board.sh --write`)
 - [ ] Research nodes dispatched
 - [ ] **Nothing else settled in the charting session**
 
@@ -95,6 +95,7 @@ Flags`
 - [ ] **Every open node belongs to a slice**, and no slice names a node that does not exist
 - [ ] No slice reserves a `US###` — the `Story` column reads `—` until `02-story-creation` fills it
 - [ ] No story has been written — that is `02-story-creation`
-- [ ] `src/01-FEATURE-MAPS/CONTEXT.md` index current
+- [ ] Map status line current (`Resolving` / `Blockers Clear` / `Complete`); `FEATURE-MAPS-BOARD.md` regenerated
+- [ ] `Closed` never typed — only `pm-archive.sh MAP-<FEATURE>` sets it, once every slice is cut
 - [ ] Instructional `.md` files ≤ 300 code lines — `bash code/src/scripts/audits/docs-length.sh`
 - [ ] British English throughout; dates DD/MM/YYYY

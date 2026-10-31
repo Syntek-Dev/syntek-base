@@ -72,7 +72,7 @@ The manifest is a first pass, not the design: the gate owns the design, may add 
 the story is updated to match when the gate closes. Sharpen a value here only where the grilling
 in Step 1 settled it.
 
-_Done when all 13 rows carry a value or a deliberate `N/A`._
+_Done when all 13 gate rows carry a value or a deliberate `N/A` (the optional `Customer review` row is the 14th)._
 
 ### Step 2 — Review and Edit
 
@@ -83,13 +83,17 @@ Review the generated story for:
 - Clear "As a [role], I want [goal], so that [benefit]" format
 - Specific, testable acceptance criteria
 - No ambiguity in scope
-- `**Status:**` header set to a valid ClickUp status — a new story starts as `Open`
-  (see `project-management/docs/PLANNING-GUIDE.md` → Story Statuses for the full set)
+- `**Status:** Open` — every new story starts there (the lifecycle:
+  `project-management/docs/planning/STORIES.md` → _Story statuses_; vocabulary owner:
+  `.claude/skills/completion/SKILL.md`)
+- An empty `## Status history` table, as the template ships it
+- The FLAGS `Customer review` row left as the template documents it — absent or `Yes` means
+  customer review applies; `N/A` only for a story no customer will review
 
 ### Step 3 — Assign Story Number
 
-Check `project-management/src/02-STORIES/` for the next available number.
-Name the file `US###.md`.
+Check `project-management/src/02-STORIES/` **and** its `archive/` for the next available number —
+an archived story keeps its number. Name the file `US###.md`.
 
 ### Step 4 — Save, and back-fill the map
 

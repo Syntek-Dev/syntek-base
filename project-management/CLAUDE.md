@@ -46,14 +46,18 @@ plans that gate a feature into code, and the post-implementation records, plus t
   `CONTEXT.md`/`CLAUDE.md`); split oversized files, entry point becomes a thin index.
   Root-level artefacts under `src/` are exempt from the 300-line rule.
 - **Every new directory in any layer needs a `CONTEXT.md` + `CLAUDE.md`.**
+- **`src/*/archive/` is frozen, and every lookup is by ID across the folder and its
+  `archive/`.** Only `src/00-ASSETS/scripts/pm-archive.sh` writes an archive;
+  `pm-board.sh --check` fails on any other change there (`src/CLAUDE.md` carries the rule in full).
 - Single-track semver: bump only via `docs/VERSIONING-GUIDE.md` / the `version` skill.
 
 ## Output & naming
 
 - **Hand-written:** all artefacts under `src/`, the `docs/` guides, and workflow
   `STEPS.md`/`CHECKLIST.md`.
-- **Generated:** PDFs and zip archives under `export/` (client delivery) — never
-  hand-edit; regenerate from source.
+- **Generated:** PDFs and zip archives under `export/` (client delivery), and the five
+  `src/*/*-BOARD.md` boards (committed; their `.json` / `.html` siblings gitignored) written by
+  `src/00-ASSETS/scripts/pm-board.sh --write` — never hand-edit; regenerate from source.
 - Numbered `src/` folders `NN-SCREAMING-SNAKE-CASE/`; artefacts follow their fixed
   patterns — `US###.md`, `SPRINT-##.md`, `ADR-US###-<DECISION>-DD-MM-YYYY.md`, `##-SPRINT-PLAN-##.md`,
   `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, `<TYPE>-PLAN-US###-*.md` /

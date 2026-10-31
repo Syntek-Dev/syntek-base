@@ -64,8 +64,14 @@ Required repo secrets to apply (otherwise the workflow runs a harmless **dry run
 - `CLICKUP_FOLDER_ID` — fallback: if the list id is unreachable, the script resolves the
   `List` list (or the first list) under this folder
 
-Optional: `CLICKUP_STATUS_MAP` (JSON `{repo status -> ClickUp status}`; defaults to identity
-since the source stories already use ClickUp's status vocabulary). `CLICKUP_TEAM_ID` and
+Optional: `CLICKUP_STATUS_MAP` (JSON `{repo status -> ClickUp status}`, keyed by the Title Case
+status word such as `"Customer Review"` or by its slug `"customer-review"`; defaults to identity).
+**Every one of the twelve repo statuses must exist in the ClickUp List or be mapped here** —
+including `Customer Review`, `Customer Accepted` and `Customer Rejected`, which a stock ClickUp
+List does not carry. The vocabulary is owned by `.claude/skills/completion/SKILL.md`; the
+mapping baseline is the `pm-tool-sync` skill's. **Archived stories still sync:** a `Closed`
+story lives in `src/02-STORIES/archive/`, and the export and sync scripts resolve each story by
+ID across the folder and its `archive/`. `CLICKUP_TEAM_ID` and
 `CLICKUP_SPACE_ID` are passed through as context but unused by the upsert.
 
 Preview locally without writing to ClickUp:

@@ -25,6 +25,7 @@ model: opus
 
 ## Execution Checklist
 
+- [ ] Story moved `Pending` → `In Progress` (and its sprint `Planned` → `In Progress` with its first story) by the `completion` skill, with a _Status history_ row · _opus_
 - [ ] Architectural plan saved to `project-management/src/17-STORY-PLANS/` · _opus_
 - [ ] Failing tests written before implementation · _opus_
 - [ ] The story's manual guide (`project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`) in `test-writer`'s brief, every row triaged in its handoff · _opus_
@@ -79,4 +80,4 @@ confirms they exist before the PR. The record formats, templates, and destinatio
 - [ ] `git` run with accurate commit message
 - [ ] Open issues from implementation docs logged in `/GAPS.md` (security, architectural, infrastructure gaps)
 - [ ] Cross-story deferred items logged in `/DEFERRED.md`
-- [ ] User story updated with completion status
+- [ ] Story status advanced (`In Progress` → `In Review`) by the `completion` skill, with a _Status history_ row; boards regenerated (`pm-board.sh --write`)

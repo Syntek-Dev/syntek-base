@@ -95,9 +95,14 @@ mismatch between its `{exec-order}` prefix and its `{sprint-number}` suffix is d
 information that must never be "corrected"; a story plan carries one, so a prefix that has
 drifted from build order says nothing at all. `../17-STORY-PLANS/CLAUDE.md` owns the rule.
 
-| Story   | Story plan (`../17-STORY-PLANS/`)   | Status ({Draft / Ready / In Progress / Done}) |
-| ------- | ----------------------------------- | --------------------------------------------- |
-| US{###} | `{XX}-STORY-PLAN-US{###}-{DESC}.md` | {status}                                      |
+| Story   | Story plan (`../17-STORY-PLANS/`)   |
+| ------- | ----------------------------------- |
+| US{###} | `{XX}-STORY-PLAN-US{###}-{DESC}.md` |
+
+**No status column, and no status line on this plan.** A plan carries no status of its own:
+`SPRINT-PLANS-BOARD.md` shows this plan under its `SPRINT-##`'s status, and
+`STORY-PLANS-BOARD.md` shows each story plan under its `US###`'s. This plan moves into
+`archive/` with its sprint when `pm-archive.sh SPRINT-##` archives it.
 
 ---
 

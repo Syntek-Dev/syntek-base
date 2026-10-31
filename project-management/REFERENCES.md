@@ -32,32 +32,32 @@ Folders **09–13** are two-stage (`PLANNING/` + `IMPLEMENTATION/`): a lawful ba
 contract is genuinely per story and needs no consolidation. `10-SECURITY` nests that pair
 under each of its four category folders rather than at its root.
 
-| Path                   | Tier          | Contents                                                                                                                  |
-| ---------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `src/00-ASSETS/`       | reference     | Logo SVGs, raster exports, and asset pipeline scripts                                                                     |
-| `src/01-FEATURE-MAPS/` | discover      | Wayfinder decision maps (`MAP-<FEATURE>.md`) — charted once per feature                                                   |
-| `src/02-STORIES/`      | specify       | User stories (`US###.md`); template `US000-TEMPLATE.md`                                                                   |
-| `src/03-SPRINTS/`      | specify       | High-level sprint records (`SPRINT-##.md`) — backlog → sprint organisation                                                |
-| `src/04-DATABASE/`     | specify       | **3 stages** (IDEAS → CONSOLIDATED → IMPL) + `ERD-DIAGRAMS/`; schema, PII, RLS, migration notes                           |
-| `src/05-USER-FLOW/`    | specify       | **3 stages**; per-story fragments stitched into whole journeys + rendered `DIAGRAMS/`                                     |
-| `src/06-BRAND-GUIDE/`  | specify       | **3 stages** of token records + `guide-build/` (Python → LaTeX → PDF, regenerated at consolidation)                       |
-| `src/07-COMPONENTS/`   | specify       | **3 stages** of component records + `component-build/` (Python → LaTeX → PDF, regenerated at consolidation)               |
-| `src/08-WIREFRAMES/`   | specify       | **3 stages** of self-contained HTML wireframes + `SHARED/wireframe.css`                                                   |
-| `src/09-GDPR/`         | specify       | Six GDPR register skeletons; per-story `PLANNING/` + `IMPLEMENTATION/`                                                    |
-| `src/10-SECURITY/`     | specify       | Four categories (THREAT-MODEL, ASSESSMENTS, AUDITS, VULNERABILITIES), each per-story `PLANNING/` + `IMPLEMENTATION/`      |
-| `src/11-QA/`           | specify       | Per-story QA plans (`PLANNING/`) and reviews (`IMPLEMENTATION/`)                                                          |
-| `src/12-SEO/`          | specify       | Per-story SEO plans (`PLANNING/`) and records (`IMPLEMENTATION/`)                                                         |
-| `src/13-API-DESIGN/`   | specify       | Per-story Django Ninja API design (`PLANNING/`) and verification (`IMPLEMENTATION/`)                                      |
-| `src/14-LOGGING/`      | specify       | Per-story log surface (`PLANNING/`) and what shipped with its leak evidence (`IMPLEMENTATION/`)                           |
-| `src/15-DECISIONS/`    | decide & plan | Architectural Decision Records (`ADR-###-<TITLE>.md`)                                                                     |
-| `src/16-SPRINT-PLANS/` | decide & plan | Detailed sprint execution plans (`##-SPRINT-PLAN-##.md`)                                                                  |
-| `src/17-STORY-PLANS/`  | decide & plan | Per-story implementation plans (`<exec-order>-STORY-PLAN-US###-*.md`) — the master reference for code                     |
-| `src/18-TESTS/`        | record        | Manual testing guide (`MANUAL/`, authored before code, walked after) + automated record (`AUTOMATED/`, half generated)    |
-| `src/19-REVIEWS/`      | record        | Code review records (`REVIEW-US###-*.md`) per completed story                                                             |
-| `src/20-FINDINGS/`     | record        | Per-story findings (`FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`) — divergences, retrofit cost, what the next story carries |
-| `src/21-BUGS/`         | record        | Bug reports (`BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`) — story-anchored                                                     |
-| `src/22-REFACTORING/`  | record        | Refactoring records (`REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`)                                                      |
-| `src/23-INCIDENTS/`    | record        | The **PII-free** incident register (`INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` + `INCIDENT-INDEX.md`) — not story-anchored     |
+| Path                   | Tier          | Contents                                                                                                                                                       |
+| ---------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/00-ASSETS/`       | reference     | Logo SVGs, raster exports, and asset pipeline scripts                                                                                                          |
+| `src/01-FEATURE-MAPS/` | discover      | Wayfinder decision maps (`MAP-<FEATURE>.md`) — charted once per feature; index `FEATURE-MAPS-BOARD.md`; `archive/` once Closed                                 |
+| `src/02-STORIES/`      | specify       | User stories (`US###.md`); template `US000-TEMPLATE.md`; index `STORIES-BOARD.md`; `archive/` once Closed                                                      |
+| `src/03-SPRINTS/`      | specify       | High-level sprint records (`SPRINT-##.md`) — backlog → sprint organisation; index `SPRINTS-BOARD.md`; `archive/` once Closed                                   |
+| `src/04-DATABASE/`     | specify       | **3 stages** (IDEAS → CONSOLIDATED → IMPL) + `ERD-DIAGRAMS/`; schema, PII, RLS, migration notes                                                                |
+| `src/05-USER-FLOW/`    | specify       | **3 stages**; per-story fragments stitched into whole journeys + rendered `DIAGRAMS/`                                                                          |
+| `src/06-BRAND-GUIDE/`  | specify       | **3 stages** of token records + `guide-build/` (Python → LaTeX → PDF, regenerated at consolidation)                                                            |
+| `src/07-COMPONENTS/`   | specify       | **3 stages** of component records + `component-build/` (Python → LaTeX → PDF, regenerated at consolidation)                                                    |
+| `src/08-WIREFRAMES/`   | specify       | **3 stages** of self-contained HTML wireframes + `SHARED/wireframe.css`                                                                                        |
+| `src/09-GDPR/`         | specify       | Six GDPR register skeletons; per-story `PLANNING/` + `IMPLEMENTATION/`                                                                                         |
+| `src/10-SECURITY/`     | specify       | Four categories (THREAT-MODEL, ASSESSMENTS, AUDITS, VULNERABILITIES), each per-story `PLANNING/` + `IMPLEMENTATION/`                                           |
+| `src/11-QA/`           | specify       | Per-story QA plans (`PLANNING/`) and reviews (`IMPLEMENTATION/`)                                                                                               |
+| `src/12-SEO/`          | specify       | Per-story SEO plans (`PLANNING/`) and records (`IMPLEMENTATION/`)                                                                                              |
+| `src/13-API-DESIGN/`   | specify       | Per-story Django Ninja API design (`PLANNING/`) and verification (`IMPLEMENTATION/`)                                                                           |
+| `src/14-LOGGING/`      | specify       | Per-story log surface (`PLANNING/`) and what shipped with its leak evidence (`IMPLEMENTATION/`)                                                                |
+| `src/15-DECISIONS/`    | decide & plan | Architectural Decision Records (`ADR-###-<TITLE>.md`)                                                                                                          |
+| `src/16-SPRINT-PLANS/` | decide & plan | Detailed sprint execution plans (`##-SPRINT-PLAN-##.md`); index `SPRINT-PLANS-BOARD.md`; `archive/` with the sprint                                            |
+| `src/17-STORY-PLANS/`  | decide & plan | Per-story implementation plans (`<exec-order>-STORY-PLAN-US###-*.md`) — the master reference for code; index `STORY-PLANS-BOARD.md`; `archive/` with the story |
+| `src/18-TESTS/`        | record        | Manual testing guide (`MANUAL/`, authored before code, walked after) + automated record (`AUTOMATED/`, half generated)                                         |
+| `src/19-REVIEWS/`      | record        | Code review records (`REVIEW-US###-*.md`) per completed story                                                                                                  |
+| `src/20-FINDINGS/`     | record        | Per-story findings (`FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`) — divergences, retrofit cost, what the next story carries                                      |
+| `src/21-BUGS/`         | record        | Bug reports (`BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`) — story-anchored                                                                                          |
+| `src/22-REFACTORING/`  | record        | Refactoring records (`REFACTORING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`)                                                                                           |
+| `src/23-INCIDENTS/`    | record        | The **PII-free** incident register (`INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md` + `INCIDENT-INDEX.md`) — not story-anchored                                          |
 
 The three tiers: **specify** (02–14) → **decide & plan** (15–17) → **record** (18–22), with
 **23-INCIDENTS** a record that sits outside the per-story chain entirely.

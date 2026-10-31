@@ -1,6 +1,6 @@
 # Generation — What Copier Actually Does
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 31/10/2026
 
 A precise account of what happens between running `copier copy` and having a project. Read this
 when something went wrong, when you are reviewing a change to `copier.yml`, or when you simply <!-- doc-references: template-only -->
@@ -12,7 +12,7 @@ want to know what ran on your machine.
 
 ```text
 1. fetch template        git clone of the template at the requested ref
-2. ask questions         33 prompts (+4 conditional), defaults and validators from copier.yml
+2. ask questions         38 prompts (+4 conditional), defaults and validators from copier.yml
 3. render                every non-excluded file through Jinja2, custom delimiters
 4. write                 tree written to the destination
 5. record answers        .copier-answers.yml, including _src_path and _commit
@@ -41,7 +41,7 @@ copier copy --vcs-ref=HEAD   gh:Syntek-Dev/syntek-base my-project   # tip of the
 
 ## 2 — Questions
 
-Thirty-eight, defined in `copier.yml` — thirty-four always asked, four conditional on the <!-- doc-references: template-only -->
+Forty-two, defined in `copier.yml` — thirty-eight always asked, four conditional on the <!-- doc-references: template-only -->
 optional surfaces (`MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID` on `INCLUDE_MOBILE`,
 `INCLUDE_DESKTOP` on `INCLUDE_RUST`, `DESKTOP_APP_NAME` on `INCLUDE_DESKTOP`). Three behaviours
 worth knowing:
@@ -50,12 +50,12 @@ worth knowing:
   `ENV_PREFIX` from `ORG_SLUG`, `PRIMARY_DOMAIN` and `DEPLOY_REPO` from `PROJECT_SLUG`,
   `MOBILE_BUNDLE_ID` from `PRIMARY_DOMAIN` reversed, and both `MOBILE_APP_NAME` and
   `DESKTOP_APP_NAME` from `PROJECT_NAME`.
-- **Validators** — twelve of the thirty-eight carry one: slugs must be kebab-case,
+- **Validators** — fourteen of the forty-two carry one: slugs must be kebab-case,
   `PRIMARY_DOMAIN` a bare hostname, `ENV_PREFIX` upper-snake, `LOCALE` five characters around an
   underscore, `TIMEZONE` an IANA `Area/City`, `CURRENCY` three upper letters, `DATE` `DD/MM/YYYY`,
   email must contain `@`, `SPRINT_GRACE_SP` must exceed `SPRINT_CAPACITY_SP`, `MOBILE_BUNDLE_ID`
-  must be reverse-domain form, and `PROJECT_DESCRIPTION` must be at least forty characters with no
-  double quotes. A bad answer re-prompts.
+  must be reverse-domain form, `CUSTOMER_REVIEW_WEEKS` and `FEEDBACK_WEEKS` must not be negative,
+  and `PROJECT_DESCRIPTION` must be at least forty characters with no double quotes. A bad answer re-prompts.
 - **`--defaults`** takes every default without asking; combine with `--data KEY=value` for the
   six questions that have no default — `PROJECT_NAME`, `PROJECT_DESCRIPTION`, `ORG_NAME`,
   `DEVELOPER_NAME`, `DEVELOPER_EMAIL`, `DATE`.
@@ -109,7 +109,7 @@ reason differs in each:
 | **Opt-out surfaces**        | the mobile, Rust and desktop trees, their scripts, guides, workflows, CI jobs and stack skills — gated by a templated entry (see `11-CUSTOMISING.md`)                                                                                                                                                                                                                                                                               |
 | **Never a checkout**        | `.git` · `*.pdf` · `node_modules` · `.code-review-graph` · `.venv` · `__pycache__` · `*.py[co]` · `.DS_Store`                                                                                                                                                                                                                                                                                                                       |
 
-Five notes:
+Six notes:
 
 - **The guide tree you are reading ships in full, and that is why the checks below exclude it.**
   Nothing here is held back — every file is rendered like any ordinary file, so the guides that quote token or delimiter syntax wrap it in
@@ -128,6 +128,12 @@ Five notes:
   bare directory entry does **not** prune what is inside it: Copier walks a flat recursive
   `scantree` and skips one entry at a time, and it re-creates parent directories for any file it
   renders. `.github/scripts/shipped-artefacts.sh` asserts the result on a real generation. <!-- doc-references: template-only -->
+- **The PM boards start empty, and the `archive/` folders ship empty.** The `*-BOARD.md` files in
+  `01-FEATURE-MAPS`, `02-STORIES`, `03-SPRINTS`, `16-SPRINT-PLANS` and `17-STORY-PLANS` list this
+  template's own maps, stories and sprints, so your project never inherits them: it starts with
+  boards listing nothing — bar the feature-maps board, which lists the seeded
+  `MAP-SCALE-PLANNING.md` under `Charting` — and `pm-board.sh --write` fills them as your first artefacts land. Each
+  `archive/` arrives holding only its `CONTEXT.md`/`CLAUDE.md` pair.
 - **PDFs are excluded because they are binary.** With `_templates_suffix: ""` Copier attempts to
   render everything, and binary content is not decodable. The excluded PDFs are generated
   artefacts — the brand guide and component sheet — which your project rebuilds from the sources

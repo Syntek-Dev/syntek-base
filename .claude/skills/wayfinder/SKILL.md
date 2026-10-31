@@ -94,8 +94,9 @@ mode — no map, and no edit to the register.
    sections below; tag each Frontier node with its type (research / tracer / grilling / build),
    record the triaged register entries under **Register claimed**, and list the buildable slices
    under **Slices**, each naming its nodes, its acceptance and its flag manifest (`N/A` omitted).
-   Add the map to the index in
-   `src/01-FEATURE-MAPS/CONTEXT.md`. _Done when the map exists, is indexed, and reads as a
+   Set `**Status:** Charting` with a one-line `**Status note:**`, then run
+   `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` so the map appears on
+   `src/01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md`. _Done when the map exists, is on the board, and reads as a
    low-resolution route rather than a storage vault._
 6. **Fire the research nodes, then stop.** Dispatch any research nodes (facts, not decisions) in
    parallel now — they need no human. Charting is one session: do **not** settle grilling, tracer,
@@ -143,6 +144,10 @@ mode — no map, and no edit to the register.
 5. **Redraw the frontier once.** Move the whole batch from Frontier to Resolved decisions; graduate
    any Fog-of-war items the outcomes sharpened into new nodes; re-wire the blocking edges. _Done when
    the Frontier reflects the new takeable edge and no resolved node remains open on it._
+6. **Advance the map status.** `Charting` → `Resolving` once the first batch settles;
+   `Blockers Clear` once every node a slice depends on is settled (stories may start);
+   `Complete` once Frontier and Fog of war are empty. Update the `**Status note:**`, then run
+   `pm-board.sh --write`. _Done when the status line matches the map's state._
 
 ## Reference
 
@@ -214,7 +219,14 @@ A slice's `US###` is pushed to the ClickUp board by the `clickup-sync` workflow,
 - A **resolve** session is done when the chosen node is settled, recorded in the right artefact, and
   the frontier is redrawn.
 - The **map** is done when Frontier and Fog of war are both empty — the route to the destination is
-  fully charted.
+  fully charted — and its status is `Complete`.
+
+**Map status.** `**Status:** Charting | Resolving | Blockers Clear | Complete | Closed`, colon
+inside the bold, plus a free-text `**Status note:**` line; the vocabulary is owned by the
+`completion` skill. **`Closed` is never set by hand**: once every slice is cut into a story,
+`bash project-management/src/00-ASSETS/scripts/pm-archive.sh MAP-<FEATURE>` sets it and moves
+the map into `01-FEATURE-MAPS/archive/`. **A closed map is frozen** — new work on the same area
+charts a new map rather than reopening it.
 
 ### Anti-patterns
 
@@ -253,7 +265,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `.claude/skills/grill-with-docs/SKILL.md` — how a grilling node records its decision (the
   three-test ADR gate + glossary-into-`CONTEXT.md`).
 - `.claude/skills/grill-me/SKILL.md` — the stateless twin, for thinking a node through without recording.
-- `project-management/src/01-FEATURE-MAPS/CONTEXT.md` — the map index, where a new map is registered.
+- `project-management/src/01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md` — the generated map index
+  (`pm-board.sh --write`); never a hand-maintained table.
 - `project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md` — the plan a buildable
   slice graduates into.
 - `project-management/src/15-DECISIONS/` — ADR home; `ADR-US###-<DECISION>-DD-MM-YYYY.md`, flat, and always driven by a `US###`.

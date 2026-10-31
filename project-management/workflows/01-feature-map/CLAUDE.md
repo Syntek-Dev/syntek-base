@@ -68,7 +68,11 @@ re-asking the same questions.
 ## Output & naming
 
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`; the map `MAP-<FEATURE>.md` under
-  `src/01-FEATURE-MAPS/`.
+  `src/01-FEATURE-MAPS/`, its `**Status:**` (`Charting` → `Resolving` → `Blockers Clear` →
+  `Complete`; vocabulary owner: the `completion` skill) and `**Status note:**`.
+- **Generated:** the map's row on `src/01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md`
+  (`pm-board.sh --write`); the move to `archive/` with `Closed`, by `pm-archive.sh` once every
+  slice is cut — the archived map is frozen.
 - **Produced by following it:** ADRs in `src/15-DECISIONS/`, `GAPS.md`/`DEFERRED.md` entries, and
   the resolved-decision links the map carries.
 - Maps `MAP-<FEATURE>.md` — `<FEATURE>` in `SCREAMING-KEBAB-CASE`; workflow folders

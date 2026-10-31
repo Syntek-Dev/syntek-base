@@ -128,9 +128,9 @@ Use this checklist to verify the story plan is complete before implementation be
 - [ ] Plan saved to `src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<descriptor>.md`
 - [ ] The story's row in its sprint plan's _Story Plans — the code master_ table
       (`src/16-SPRINT-PLANS/##-SPRINT-PLAN-##.md`) names this file, any reserved-number
-      placeholder replaced, its Status cell filled as that plan's own section defines the column
-- [ ] Nothing added to `src/17-STORY-PLANS/CONTEXT.md` — it holds no index by recorded decision
-      (its _The plans index_ section), and the folder-level index is deferred
+      placeholder replaced (no status cell — a plan carries no status of its own)
+- [ ] Nothing added to `src/17-STORY-PLANS/CONTEXT.md`; `STORY-PLANS-BOARD.md` regenerated
+      (`pm-board.sh --write`) — the generated board is the folder index
 - [ ] Driving user story (`src/02-STORIES/US###.md`) updated with a reference to this plan
 - [ ] Manual testing guide saved to `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`; its header
       names this plan's saved filename, and the plan's _Manual testing_ section names the guide

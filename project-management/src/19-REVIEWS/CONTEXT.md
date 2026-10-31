@@ -36,7 +36,8 @@ the loop on the `17-STORY-PLANS` plan the story was coded from and reading again
   resolution/status)
 - Dimension checklists — Security (OWASP A01, IDOR, secrets/DEBUG), GDPR/PII, test coverage
   vs floors, quality/DRY/file-length, performance (N+1), accessibility (WCAG 2.2 AA)
-- Required actions before merge, and the status transition (e.g. In Review → Accepted)
+- Required actions before merge, and the status transition (e.g. In Review → Accepted, or
+  In Review → Rejected → Pending)
 
 ## When to write it
 

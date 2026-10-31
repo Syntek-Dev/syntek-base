@@ -14,11 +14,13 @@ project-management/src/00-ASSETS/
 ├── LOGOS/                   ← brand logo slot (empty placeholder — populate per project)
 │   ├── CONTEXT.md
 │   └── CLAUDE.md
-├── scripts/                 ← export helper scripts
+├── scripts/                 ← export helper scripts + the PM board and archive scripts
 │   ├── export-clickup-stories.sh ← per-story client Markdown → export/clickup/ (read-only)
 │   ├── export-design-docs.sh  ← exports brand/component design HTML → PDF
 │   ├── export-pm-files.sh     ← exports PM artefacts (stories, sprints, plans) → zip
 │   ├── export-wireframes.sh   ← exports wireframe HTML → PDF
+│   ├── pm-archive.sh          ← archive a Closed-eligible US###/SPRINT-##/MAP-NAME into archive/
+│   ├── pm-board.sh            ← the five *-BOARD.md kanban indexes: --write / --check / --warn
 │   ├── precommit-clickup.sh   ← lefthook guard: regenerates ClickUp exports on commit
 │   └── sync-clickup.sh        ← upserts ClickUp exports into ClickUp (clickup-sync CI workflow)
 └── WALK-TESTS/              ← cold walk-test evidence: prompt, report, transcript, verified result

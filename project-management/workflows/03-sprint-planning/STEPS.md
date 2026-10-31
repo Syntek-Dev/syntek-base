@@ -30,7 +30,8 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 > **Model:** opus
 
-Read the open stories in `project-management/src/02-STORIES/`, the open `SPRINT-##.md` record in
+Read the open stories in `project-management/src/02-STORIES/` (`Closed` stories sit in its
+`archive/` and are never candidates, though a dependency is still resolved by ID there), the open `SPRINT-##.md` record in
 `project-management/src/03-SPRINTS/`, and the capacity table in
 `project-management/docs/planning/CADENCE.md` → _Sprint capacity — the trigger_, then identify
 candidates. **Capacity is a fact read from that table, not a question.**
@@ -60,7 +61,10 @@ Check the generated sprint for:
 
 ### Step 4 — Save
 
-Save to `project-management/src/03-SPRINTS/SPRINT-##.md`.
+Save to `project-management/src/03-SPRINTS/SPRINT-##.md`, numbered after every `SPRINT-##` in
+that folder **and** its `archive/`, with `**Status:** Planned` — the sprint lifecycle
+(`Planned` → `In Progress` → `Done` → `Closed`) is `.claude/skills/completion/SKILL.md`'s. Then
+regenerate the board: `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`.
 
 ### Step 5 — Commit
 

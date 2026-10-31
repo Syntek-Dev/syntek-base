@@ -87,9 +87,13 @@ git
 not written yet, so this workflow has no command to give you. Hand the tagged, tested release to
 whoever owns the target environment, and record the deployment once it is done.
 
-Once live, set each released story's `**Status:**` to `Closed` in `src/02-STORIES/US###.md` and
-commit — the `clickup-sync` workflow moves the ClickUp tasks. Status values:
-`project-management/docs/PLANNING-GUIDE.md` → Story Statuses.
+**A release does not close stories.** Each released story was handed to the customer on staging
+(`Customer Review`) and moves through the customer statuses there; `Completed` comes only from
+the window the `completion` skill owns, and `Closed` only from
+`bash project-management/src/00-ASSETS/scripts/pm-archive.sh US###`, which moves the story and
+its plan into `archive/`. Run `pm-board.sh --warn` to see which stories are ready for either,
+and commit any transition — the `clickup-sync` workflow moves the ClickUp tasks. Lifecycle:
+`project-management/docs/planning/STORIES.md` → _Story statuses_.
 
 ---
 

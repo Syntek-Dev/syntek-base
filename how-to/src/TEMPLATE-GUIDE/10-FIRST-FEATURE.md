@@ -1,6 +1,6 @@
 # Your First Feature — Idea to Merged PR
 
-**Last Updated**: 09/09/2026
+**Last Updated**: 31/10/2026
 
 A walk through the whole process once, so the numbered workflows stop being abstract. Assumes a
 generated project with the stack running (`04-QUICKSTART.md`), and that you have read
@@ -290,8 +290,15 @@ us###/feature  →  testing  →  dev  →  staging  →  main
 
 ## 10. Close the story
 
-The `completion` skill flips the status once the work is verified, and updates the story index and
-sprint record.
+A story is not closed in one step. The `completion` skill records each transition on its
+`**Status:**` line with a row in its _Status history_: `In Review` while review and QA run, then
+`Accepted` once both pass — or `Rejected`, which sends it back to `Pending`. From `Accepted` it goes
+to the customer on staging (`Customer Review`, then `Customer Accepted` or `Customer Rejected`),
+unless its `Customer review` flag is `N/A`. It becomes `Completed` only once the feedback window
+has elapsed, and `pm-archive.sh US###` then closes it and moves it, with its plan, into
+`02-STORIES/archive/`. The boards regenerate when a commit
+touches a PM artefact; the hook stops that commit once so you can stage the regenerated board. The statuses and the clock are the
+`completion` skill's to define (`.claude/skills/completion/SKILL.md`).
 
 ---
 

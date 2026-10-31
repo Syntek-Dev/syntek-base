@@ -99,7 +99,9 @@ Repeat the Phase 10 cycle once implementation is complete; commit after each cha
 
 ### Phase 13: Completion & PR
 
-- `completion` — mark the story and sprint complete once verified.
+- `completion` — advance the story through its lifecycle (`In Review`, then `Accepted` once review
+  and QA pass) with a _Status history_ row, and move the sprint to `Done` when every story in it is
+  `Accepted` or later. `Completed` follows the feedback window, and `pm-archive.sh` then archives it.
 - `pr` — open the pull request to the testing branch.
 
 ---
@@ -115,7 +117,7 @@ IMPLEMENT    backend → frontend → database → data-analysis        (git aft
 QA           review → bugfix (root cause) → refactor → syntax     (git after each)
 FINAL        (repeat the QA cycle)
 DOCS         doc-writer → version → git
-DONE         completion → pr (to testing)
+DONE         completion (In Review → Accepted) → pr (to testing)
 ```
 
 ---

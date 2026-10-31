@@ -20,7 +20,8 @@ project-management/workflows/01-feature-map/
 
 Turn a feature idea into a **resolved decision map** before a single story is written. Wayfinder
 charts the feature's decision frontier — every open question, in dependency order — and then each
-node is settled one at a time. The output is `MAP-<FEATURE>.md` in `src/01-FEATURE-MAPS/`.
+node is settled one at a time. The output is `MAP-<FEATURE>.md` in `src/01-FEATURE-MAPS/`, plus
+its generated row on `FEATURE-MAPS-BOARD.md`.
 
 This is the foundation the whole planning loop stands on. Stories written against a resolved map
 describe _what to build_; stories written without one spend `02`–`15` rediscovering the same

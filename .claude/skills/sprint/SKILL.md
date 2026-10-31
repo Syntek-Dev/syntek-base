@@ -27,7 +27,8 @@ Name what must be settled and wait — the round shape and question format belon
 `grilling` skill (`.claude/CLAUDE.md` Section 10).
 
 **Read first, ask second.** Points, MoSCoW, dependencies and existing sprints are all in
-`project-management/src/02-STORIES/` and `03-SPRINTS/`; capacity and velocity are in
+`project-management/src/02-STORIES/` and `03-SPRINTS/` (each with an `archive/` holding the
+`Closed` ones, which are never scheduled); capacity and velocity are in
 `project-management/docs/PLANNING-GUIDE.md` and `.claude/MEMORY.md`. Three inputs are not in
 the backlog: the **sprint goal or theme**, any **release deadline**, and **carry-over** from an
 in-flight sprint. A goal, a deadline or a carry-over already written into the `SPRINT-##.md` is a
@@ -75,12 +76,16 @@ the old form last. The old form survives until the contract slice, so CI stays g
 
 ## Steps
 
-1. Gather every story from `02-STORIES/`; extract points, MoSCoW and dependencies; run the
-   validation gate.
+1. Gather every unscheduled story from `02-STORIES/` (archived stories are `Closed` and
+   excluded; a dependency is still resolved by ID across `archive/`); extract points, MoSCoW and
+   dependencies; run the validation gate.
 2. Build the dependency order and assign stories within the ceiling and the MoSCoW mix.
 3. Write the sprint record from `project-management/src/03-SPRINTS/SPRINT-00-TEMPLATE.md`, and
    the detailed plan — when one is asked for — from
-   `project-management/src/16-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md`.
+   `project-management/src/16-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md`. A new sprint starts
+   `**Status:** Planned`, numbered after every `SPRINT-##` in `03-SPRINTS/` and its `archive/`;
+   run `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` after saving. Moving
+   it on — `In Progress`, `Done`, and `Closed` by archive — is `completion`'s.
 4. Record any new velocity or planning insight in `.claude/MEMORY.md`; log blockers and sprint
    dependencies in `GAPS.md`, never in `MEMORY.md`.
 

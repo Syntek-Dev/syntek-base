@@ -28,7 +28,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 
 ## Prerequisites
 
-- [ ] User story confirmed and branch created
+- [ ] User story confirmed and branch created; story moved `Pending` → `In Progress` by `completion`
 - [ ] Containers running (`bash code/src/scripts/development/server.sh up`)
 - [ ] No uncommitted changes from a previous workflow
 

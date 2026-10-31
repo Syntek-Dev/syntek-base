@@ -87,7 +87,9 @@ before committing it to a phase.
 `00-STORY-PLAN-US000-TEMPLATE.md`. That template is the shape of record and is not restated here;
 the naming convention is `project-management/src/CONTEXT.md`'s. Each phase must be
 independently testable, sized for a focused session, with inter-phase dependencies explicit and
-no premature detail that locks in a decision the implementer should own.
+no premature detail that locks in a decision the implementer should own. **A plan carries no
+status of its own** — `STORY-PLANS-BOARD.md` shows the parent story's — and it moves into
+`17-STORY-PLANS/archive/` with its story when `pm-archive.sh` archives it.
 
 **A `STORY-PLAN-US###` has a second output: the story's manual testing guide**,
 `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, authored **from the specs and

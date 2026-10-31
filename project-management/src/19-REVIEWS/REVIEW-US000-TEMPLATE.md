@@ -127,9 +127,9 @@ verdict) before the PR merges. "None — approved as-is." is a valid entry.
 
 - **Verdict:** Approve / Approve-with-nits / Changes-requested.
 - **Reasoning:** {one or two lines — what carries the verdict}.
-- **Status transition:** {In Review → Accepted} (or `In Review → Rejected` /
-  `Changes-requested → In Review` on re-review). Use the canonical status vocabulary from
-  `project-management/docs/PLANNING-GUIDE.md`.
+- **Status transition:** {In Review → Accepted} (or `In Review → Rejected → Pending`; a
+  `Changes-requested` verdict is a review outcome, not a status). Use the canonical vocabulary
+  owned by `.claude/skills/completion/SKILL.md`, and append the story's `## Status history` row.
 
 A `Changes-requested` verdict **blocks the merge** until every Section 4 action is `Done` and the
 PR is re-reviewed.

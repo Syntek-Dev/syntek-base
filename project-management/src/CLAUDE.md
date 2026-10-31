@@ -61,6 +61,14 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   renumber if it ships a migration in the same commit that moves the developer's files
   (`.copier/migrations/`) — exercised at v2.0.0 and v7.0.0, and never because one merely could <!-- doc-references: template-only -->
   be written. Enforced by `code/src/scripts/audits/template-orphans.sh`.
+- **`*/archive/` is frozen.** In `01`, `02`, `03`, `16` and `17`, a `Closed` item is moved into
+  the folder's `archive/` by `00-ASSETS/scripts/pm-archive.sh` and never edited again —
+  `pm-board.sh --check` fails on any change there other than the archive rename and the
+  reference-path rewrites `pm-archive.sh` makes.
+- **Look a file up by ID across the folder and its `archive/`.** Any reader, script or
+  numbering step that globs only the live folder breaks the day an item is archived.
+- **`*-BOARD.md` is generated — never hand-edit it.** Run `pm-board.sh --write` after any status
+  edit; the status vocabulary is `.claude/skills/completion/SKILL.md`'s.
 - **Every new directory needs a `CONTEXT.md` and a `CLAUDE.md`.**
 - Instructional `.md` under `src/` (the `CONTEXT.md`/`CLAUDE.md` files) stay ≤ 300 code
   lines; the artefacts and templates themselves are exempt.
@@ -70,8 +78,9 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
 ## Output & naming
 
 - **Hand-written:** all artefacts under every numbered folder, from the per-story templates.
-- **Generated:** none here — client-facing PDFs and zips live one level up in
-  `project-management/export/` and are regenerated from these sources, never hand-edited.
+- **Generated:** the five `*-BOARD.md` (committed) and their `*-board.json` / `*-board.html`
+  siblings (gitignored), by `pm-board.sh --write`; client-facing PDFs and zips live one level up
+  in `project-management/export/`. All are regenerated from these sources, never hand-edited.
 - Numbered folders `NN-SCREAMING-SNAKE-CASE/`; artefacts follow their fixed patterns —
   `US###.md`, `SPRINT-##.md`, `ADR-###-<TITLE>.md`, `##-SPRINT-PLAN-##.md`,
   `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, `<TYPE>-PLAN-US###-*.md` /

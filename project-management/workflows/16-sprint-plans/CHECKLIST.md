@@ -33,6 +33,7 @@ model: opus
 - [ ] Sprint goal is clearly stated in one sentence
 - [ ] Phase breakdown defines which stories are addressed in each phase
 - [ ] Definition of Done recorded in the sprint plan
+- [ ] No status line or status cell in the plan (the board mirrors the sprint); board regenerated (`pm-board.sh --write`)
 
 ---
 

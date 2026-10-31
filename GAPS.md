@@ -339,9 +339,19 @@ notification feature to be scheduled.
 
 ---
 
-## 01/09/2026 — the story `**Status:**` header carries two competing vocabularies
+## 01/09/2026 — the story `**Status:**` header carries two competing vocabularies — ✅ CLOSED 31/10/2026
 
 **Type:** Active gap
+**Resolution (31/10/2026, v7.7.0):** One vocabulary won and every surface now routes to it. The
+twelve-status story lifecycle (`Open` through `Closed`, with the three customer statuses) is owned
+by `.claude/skills/completion/SKILL.md`; `project-management/docs/planning/STORIES.md`, the story
+and plan templates, `.copier/README.md` and `23-pr-and-review` were repaired in the same change. <!-- doc-references: template-only -->
+Plans carry no status of their own, so the cross-artefact agreement the plan template's _Definition
+of Done_ demanded falls away; the generated `*-BOARD.md` boards in `01`, `02`, `03`, `16` and `17`
+are the indexes the entry anticipated, mirroring each status line verbatim. Promotion: the
+vocabulary is a skill-owned rule rather than an architecture, security or token pattern, so
+nothing moves to the Section 9 target docs. **Overlap to settle:** US007 was written for the same
+intent and is not edited by this change. Remove this entry on the next tidy pass.
 **Summary:** One field, two canonical sets, and both self-declare. `.claude/skills/completion/SKILL.md:37-41`
 defines five states for a `US###.md` header (`Pending · Open · Blocked · In Review · Completed`);
 four other surfaces define the **same header** with the eleven-state ClickUp vocabulary —
@@ -387,9 +397,16 @@ gate reads backticked tokens. Nothing else in the 01/09/2026 finding is touched.
 
 ---
 
-## 01/09/2026 — the `CONTEXT.md` index-row instruction survives in three shipped files no slice repairs
+## 01/09/2026 — the `CONTEXT.md` index-row instruction survives in three shipped files no slice repairs — ✅ CLOSED 31/10/2026
 
 **Type:** Active gap
+**Resolution (31/10/2026, v7.7.0):** All three sites are rewritten. `wayfinder/SKILL.md` and
+`01-FEATURE-MAPS/CLAUDE.md` now point at the generated `FEATURE-MAPS-BOARD.md`, which
+`pm-board.sh --write` builds from each map's status line, and `01-FEATURE-MAPS/CONTEXT.md` no
+longer carries a hand-written index table. No shipped file instructs a row any more, so the three
+decline rationales recorded below are moot rather than disposed of one by one. No permanent
+decision to promote beyond what the `completion` skill and the folder pair already hold; remove
+this entry on the next tidy pass.
 **Summary:** `MAP-REGISTER-INDEXES.md` N-001 (31/08/2026) relocated the map index out of the shipped
 `CONTEXT.md` into a seeded map-index file of its own, and every map in `01-FEATURE-MAPS/` has declined the index
 row on the record. But the instruction to add it is still shipped in three places:

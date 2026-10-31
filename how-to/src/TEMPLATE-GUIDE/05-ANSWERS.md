@@ -1,10 +1,10 @@
 # Answering the Questions
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 31/10/2026
 
-Copier asks **thirty-four questions** on a web-only project. The optional surfaces add four more
+Copier asks **thirty-eight questions** on a web-only project. The optional surfaces add four more
 between them: two for mobile, one to offer the desktop surface once Rust is on, and one for the
-desktop app name — thirty-eight if you take all three. Most have a good default. A few are
+desktop app name — forty-two if you take all three. Most have a good default. A few are
 load-bearing and awkward to change later — this explains which is which.
 
 The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is <!-- doc-references: template-only -->
@@ -208,14 +208,17 @@ every project and are never asked about.
 
 ## Planning cadence
 
-Two questions setting the story-point ceiling that drives the planning loop. **Press Enter on
-both** — the defaults are the house values, and you cannot sensibly pick a number before your
-team has a measured velocity.
+Four questions: two set the story-point ceiling that drives the planning loop, and two set the
+windows a finished story waits through before it counts as complete. **Press Enter on all
+four** — the defaults are the house values, and you cannot sensibly pick a number before your
+team has a measured velocity or a client has shown how long it takes to review.
 
-| Question             | Default | Means                                                    |
-| -------------------- | ------- | -------------------------------------------------------- |
-| `SPRINT_CAPACITY_SP` | `11`    | Points that fill a sprint and trigger the `16`+`17` pass |
-| `SPRINT_GRACE_SP`    | `13`    | Hard ceiling, for when the next story would split badly  |
+| Question                | Default | Means                                                                 |
+| ----------------------- | ------- | --------------------------------------------------------------------- |
+| `SPRINT_CAPACITY_SP`    | `11`    | Points that fill a sprint and trigger the `16`+`17` pass              |
+| `SPRINT_GRACE_SP`       | `13`    | Hard ceiling, for when the next story would split badly               |
+| `CUSTOMER_REVIEW_WEEKS` | `2`     | Weeks a story may sit in `Customer Review` on staging                 |
+| `FEEDBACK_WEEKS`        | `4`     | Weeks after acceptance before a story is `Completed` and change costs |
 
 These drive the cadence in `project-management/docs/PLANNING-GUIDE.md`: you plan one story
 at a time through workflows `02`–`14`, and when the open sprint reaches the capacity figure you
@@ -223,6 +226,18 @@ run `16-sprint-plans` and `17-story-plans` for that sprint before starting the n
 
 Revisit them after two sprints, once you know what you actually deliver. Changing them later is a
 one-line edit in `project-management/docs/PLANNING-GUIDE.md` — no regeneration needed.
+
+The two week counts drive the story lifecycle's clock. A story is ready for `Completed` once
+`FEEDBACK_WEEKS` have passed since the customer accepted it, and never sooner than
+`CUSTOMER_REVIEW_WEEKS` plus `FEEDBACK_WEEKS` after it entered customer review; after `Completed`,
+further change is chargeable. A story whose `Customer review` flag is `N/A` skips the customer
+statuses and waits `FEEDBACK_WEEKS` from `Accepted`. Nothing blocks on them: they only decide when
+`pm-board.sh --warn` reports a story as ready to move on. The statuses themselves are owned by
+`.claude/skills/completion/SKILL.md`.
+
+**They are read from `.copier-answers.yml` at run time**, not rendered into any file, so the
+scripts default to `2` and `4` if the answers are absent. Change one by editing the answer there,
+deliberately and on a branch (`14-UPDATING.md`) — the next run of the scripts picks it up.
 
 ## Optional surfaces
 

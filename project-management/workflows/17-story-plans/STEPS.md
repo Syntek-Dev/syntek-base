@@ -35,15 +35,15 @@ model: opus
 
 Consult `project-management/REFERENCES.md` as you work through these steps:
 
-| Step             | Section                                                                                        |
-| ---------------- | ---------------------------------------------------------------------------------------------- |
-| All steps        | **Internal — Live Artefacts** → src/17-STORY-PLANS/                                            |
-| All steps        | src/17-STORY-PLANS/CLAUDE.md — copy-the-template rules, dependency DAG honesty                 |
-| Template         | src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md — the canonical superset scaffold           |
-| Naming           | src/17-STORY-PLANS/CONTEXT.md → _The plans index_ — no folder index; where a reservation lives |
-| Build order      | src/16-SPRINT-PLANS/ — the sprint plans in `<exec-order>` sequence; their _Story Plans_ tables |
-| Gathering inputs | **Internal — Live Artefacts** → src/16-SPRINT-PLANS/, src/15-DECISIONS/                        |
-| Step 7.2         | src/18-TESTS/MANUAL/CLAUDE.md — the guide's rules; its template US000-MANUAL-TESTING.md        |
+| Step             | Section                                                                                                         |
+| ---------------- | --------------------------------------------------------------------------------------------------------------- |
+| All steps        | **Internal — Live Artefacts** → src/17-STORY-PLANS/                                                             |
+| All steps        | src/17-STORY-PLANS/CLAUDE.md — copy-the-template rules, dependency DAG honesty                                  |
+| Template         | src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md — the canonical superset scaffold                            |
+| Naming           | src/17-STORY-PLANS/CONTEXT.md → _The plans index_ — the generated `STORY-PLANS-BOARD.md`; plans carry no status |
+| Build order      | src/16-SPRINT-PLANS/ — the sprint plans in `<exec-order>` sequence; their _Story Plans_ tables                  |
+| Gathering inputs | **Internal — Live Artefacts** → src/16-SPRINT-PLANS/, src/15-DECISIONS/                                         |
+| Step 7.2         | src/18-TESTS/MANUAL/CLAUDE.md — the guide's rules; its template US000-MANUAL-TESTING.md                         |
 
 ---
 
@@ -103,8 +103,8 @@ settled build order across the whole backlog**, not its sprint and not a per-spr
    yet written. The reservation is recorded in the story that owns it
    (`src/02-STORIES/US###.md`) and, where a sprint plan already carries that story, as a
    no-file row naming the reserved prefix in that plan's _Story Plans — the code master_
-   table; the file is added later at that number. There is no folder-level index to carry it
-   — `src/17-STORY-PLANS/CONTEXT.md` → _The plans index_ records why.
+   table; the file is added later at that number. The folder index is the generated
+   `STORY-PLANS-BOARD.md` (`src/17-STORY-PLANS/CONTEXT.md` → _The plans index_), never hand-edited.
 
 **Renumber when build order changes.** The prefix is a claim about sequence, so a reordered
 backlog is renumbered — the plans, their rows in the sprint plans' _Story Plans — the code
@@ -236,15 +236,16 @@ no row exercises, or an expected outcome that guesses. Resolve every finding.
    have moved while the plan was being written
 2. Index the plan where a plan is indexed today: the story's row in its sprint plan's
    _Story Plans — the code master_ table (`src/16-SPRINT-PLANS/##-SPRINT-PLAN-##.md`) — the
-   file path replacing any reserved-number placeholder, the Status cell filled as that plan's
-   own section defines the column. Add nothing to `src/17-STORY-PLANS/CONTEXT.md`: it ships,
-   and its _The plans index_ section records that it holds no index by decision; the
-   folder-level index is deferred to the register-index work charted in
-   `src/01-FEATURE-MAPS/`, which names its own file when it lands
+   file path replacing any reserved-number placeholder (the table has no status cell — a plan
+   carries no status; the board shows it under its story's). Add nothing to
+   `src/17-STORY-PLANS/CONTEXT.md`: the folder index is the generated `STORY-PLANS-BOARD.md` —
+   run `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`. The plan moves to
+   `archive/` only with its story, by `pm-archive.sh US###`
 3. Reference the plan in the driving user story (`src/02-STORIES/US###.md`)
 4. Cross-link the manual testing guide: its header names this plan at the filename saved in item
    1, and the plan's _Manual testing_ section names `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`
-5. Proceed to `workflows/19-backend-code/` to begin implementation
+5. `completion` moves the story `Open` → `Pending` (`Blocked` if a dependency is open), then
+   proceed to `workflows/19-backend-code/` to begin implementation
 
 ### Step 11 — Commit
 

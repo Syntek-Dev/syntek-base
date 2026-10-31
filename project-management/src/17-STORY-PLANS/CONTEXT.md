@@ -14,8 +14,12 @@ project-management/src/17-STORY-PLANS/
 ├── CONTEXT.md                       ← this file
 ├── CLAUDE.md                        ← operating rules for this folder
 ├── 00-STORY-PLAN-US000-TEMPLATE.md  ← canonical plan template — copy for each new plan
+├── STORY-PLANS-BOARD.md             ← plan index under each US###'s status — generated, committed
+├── story-plans-board.json           ← generated, gitignored
+├── story-plans-board.html           ← generated kanban view, gitignored
 ├── ##-STORY-PLAN-US###-<DESC>.md    ← one plan per user story (e.g. 02-STORY-PLAN-US001-<DESC>.md)
-└── PLAN-<DESCRIPTOR>.md             ← cross-cutting programme plans spanning several stories
+├── PLAN-<DESCRIPTOR>.md             ← cross-cutting programme plans spanning several stories
+└── archive/                         ← plans moved here with their story by pm-archive.sh — frozen
 ```
 
 This is a base-repo scaffold: the folder ships with the template only. Real plans are
@@ -85,17 +89,15 @@ dependency DAG stays accurate.
 
 ## The plans index
 
-**There is no Plans Index section in this file, and its absence is a recorded decision rather
-than drift.** This `CONTEXT.md` ships into every generated project, so a row naming a real story
-plan would put a per-project citation in a shipped file — the defect `code/docs/FORWARD-VOICE.md`
-governs. The index belongs in its own excluded-and-seeded index file beside these plans, which
-the register-index work charted in `../01-FEATURE-MAPS/` creates, names and gates. Until that
-lands, a plan is indexed against its sprint in that sprint plan's _Story Plans — the code master_
-table (`../16-SPRINT-PLANS/`), and a reserved number is recorded in the owning story under
-`../02-STORIES/`. The instructions that once required a row here point there instead — the
-`17-story-plans` workflow files and this folder's `CLAUDE.md` were re-pointed on 08/09/2026, then
-the plan template and the plans on disk the same day — so no row is added here (`CLAUDE.md`
-carries the rule), and a plan's own status lives in its metadata table and in its story.
+**The index is `STORY-PLANS-BOARD.md`, generated beside these plans by `pm-board.sh --write`** —
+committed, never hand-edited; its `.json` and `.html` siblings are gitignored. It is the
+excluded-and-seeded index file the register-index work called for, built for this folder (and
+`01`, `02`, `03` and `16`) by the 7.7.0 PM-boards change: a generated project starts with an
+empty board, so this shipped file still names no per-project plan. **A plan carries no status of
+its own** — the board files each plan under the `**Status:**` of the `US###` in its filename —
+and `pm-archive.sh US###` moves the plan into `archive/` with its story. A plan is still listed
+against its sprint in that sprint plan's _Story Plans — the code master_ table
+(`../16-SPRINT-PLANS/`), which has no status column.
 
 **Last Updated**: <%DATE%>
 
@@ -134,3 +136,9 @@ carries the rule), and a plan's own status lives in its metadata table and in it
      it, cited from a file that ships and read by the citation gate, which takes backticked tokens
      as paths. It is now described rather than named: the register-index work charted in
      `../01-FEATURE-MAPS/` names its own file when it lands. -->
+
+<!-- 31/10/2026 (7.7.0): _The plans index_ rewritten. It recorded the index's absence as a decision
+     deferred to the register-index work, and ended "a plan's own status lives in its metadata
+     table and in its story". Both are superseded: the PM-boards change generates
+     `STORY-PLANS-BOARD.md` here, and a plan's status row was retired — the board mirrors the
+     parent story. The two comments above stay as the record of the earlier position. -->

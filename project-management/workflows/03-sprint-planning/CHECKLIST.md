@@ -26,7 +26,8 @@ model: opus
 - [ ] Stories are MoSCoW prioritised
 - [ ] Scope is realistic for the sprint duration
 - [ ] Dependencies between stories identified
-- [ ] Sprint saved at correct path: `project-management/src/03-SPRINTS/SPRINT-##.md`
+- [ ] Sprint saved at correct path: `project-management/src/03-SPRINTS/SPRINT-##.md`, numbered across `03-SPRINTS/` and its `archive/`
+- [ ] `**Status:** Planned`; board regenerated (`pm-board.sh --write`)
 
 ---
 

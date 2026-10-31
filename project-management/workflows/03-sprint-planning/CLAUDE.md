@@ -42,6 +42,9 @@ scope via MoSCoW — early in a sprint cycle, before design work begins.
 ## Output & naming
 
 - **Hand-written:** the sprint record and `STEPS.md`/`CHECKLIST.md` updates.
+- **Generated:** the sprint's row on `src/03-SPRINTS/SPRINTS-BOARD.md` (`pm-board.sh --write`).
+  A sprint starts `Planned`; `Done` and `Closed` are recorded by `completion` and
+  `pm-archive.sh SPRINT-##` (which moves the record and its plan into `archive/`).
 - High-level records `SPRINT-##.md` in `src/03-SPRINTS/`; detailed plans
   `<exec-order>-SPRINT-PLAN-<sprint-number>.md` live under `src/16-SPRINT-PLANS/` (rule:
   `src/16-SPRINT-PLANS/CLAUDE.md`); dates DD/MM/YYYY.

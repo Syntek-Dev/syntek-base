@@ -47,6 +47,8 @@ model: opus
 - [ ] `css-slop.sh` · `template-slop.sh` · `copy-slop.sh` · `render-slop.sh` — the AI-slop family:
       one per input language, plus one that must render its input before the clause exists · _opus_
 - [ ] `desktop/style-check.sh` — desktop-only; a Slint style is chosen, not inherited · _opus_
+- [ ] `pm-board.sh --check` (`project-management/src/00-ASSETS/scripts/`) — every committed
+      `*-BOARD.md` current and nothing inside an `archive/` edited; `--warn` read, not just run · _opus_
 - [ ] Every `[gate: warn]` the slop family reported has been **answered**, not merely seen — those
       exit 0 by design and a green run is not the same as a clean one · _opus_
 

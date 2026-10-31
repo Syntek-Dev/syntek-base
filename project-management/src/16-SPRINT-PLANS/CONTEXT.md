@@ -13,8 +13,16 @@ project-management/src/16-SPRINT-PLANS/
 ├── CONTEXT.md                     ← this file
 ├── CLAUDE.md                      ← operating rules for this folder
 ├── 00-SPRINT-PLAN-00-TEMPLATE.md  ← the sprint-plan template — copy for each new plan
-└── ##-SPRINT-PLAN-##.md           ← one plan per sprint (e.g. 01-SPRINT-PLAN-01.md)
+├── SPRINT-PLANS-BOARD.md          ← plan index under each SPRINT-##'s status — generated, committed
+├── sprint-plans-board.json        ← generated, gitignored
+├── sprint-plans-board.html        ← generated kanban view, gitignored
+├── ##-SPRINT-PLAN-##.md           ← one plan per sprint (e.g. 01-SPRINT-PLAN-01.md)
+└── archive/                       ← plans moved here with their sprint by pm-archive.sh — frozen
 ```
+
+**A plan has no status line.** `SPRINT-PLANS-BOARD.md` (`pm-board.sh --write`) files each plan
+under the status of the `SPRINT-##` its filename names, and `pm-archive.sh SPRINT-##` moves the
+plan into `archive/` with its sprint.
 
 This is a base-repo scaffold: the folder ships with the template only. Real sprint plans
 are added by copying it.

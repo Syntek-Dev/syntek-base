@@ -19,7 +19,8 @@ has been run.
   (both Opus). The hard gate `docs/GIT-GUIDE.md` (branch promotion chain) must be read
   before raising any PR.
 - **Model:** Opus for the security/quality review and mechanical touches
-  (version-header bumps, status flips).
+  (version-header bumps, status flips — each with a `## Status history` row and
+  `pm-board.sh --write`).
 - **Concrete steps:** confirm tests green and linters clean → review against
   `code/docs/CODING-PRINCIPLES.md`, `code/docs/SECURITY.md`, and
   `security/OWASP-AND-CHECKLIST.md` → verify coverage floors

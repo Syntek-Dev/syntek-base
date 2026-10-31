@@ -16,13 +16,14 @@ folder along in `16-SPRINT-PLANS/`.
 - **Routing:** never write here free-hand — start from
   `project-management/workflows/03-sprint-planning/` (`STEPS.md` + `CHECKLIST.md`),
   governed by `docs/PLANNING-GUIDE.md`. Use `sprint` to organise stories into a
-  balanced sprint; `completion` to flip a sprint's stories to In Review / Done.
+  balanced sprint; `completion` to advance a sprint and its stories through their lifecycle.
 - **Model:** Opus throughout — composing or re-balancing a sprint (capacity, MoSCoW, the
   dependency chain) is substantive judgement; a status flip or a version-header bump is a
   mechanical touch.
 - **Concrete steps:** copy `SPRINT-00-TEMPLATE.md` → `SPRINT-##.md` (2-digit zero-padded)
   → fill the fixed format (goal · status · timeline · capacity · story table ·
-  dependencies · optional notes) → cross-link every `US###`.
+  dependencies · optional notes) with `**Status:** Planned` → cross-link every `US###` →
+  `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`.
 - **Definition of done:** file named to convention; capacity within the team ceiling;
   every story links to its `US###`; blocking/unblocking relationships stated; British
   English; DD/MM/YYYY dates.
@@ -40,6 +41,12 @@ folder along in `16-SPRINT-PLANS/`.
   Rule and table shape: `docs/planning/SPRINTS.md` → _The backlog register_.
 - **Honour the dependency chain** — sprint numbering is not execution order; never
   schedule a story ahead of its blocker. Flag any data-migration risk in the notes.
+- **Status is `Planned` · `In Progress` · `Done` · `Closed`** (owner: the `completion` skill).
+  `Closed` is never typed: `pm-archive.sh SPRINT-##` sets it once every story in the sprint is
+  `Closed`, and moves the record and its sprint plan into `archive/`.
+- **`archive/` is frozen** — `pm-board.sh --check` fails on any edit there other than the
+  archive rename and `pm-archive.sh`'s reference rewrites. An archived record leaves the backlog
+  register's live set; look a sprint up by ID across this folder and `archive/`.
 - **High-level records only** — detailed plans belong in `16-SPRINT-PLANS/`; do not
   duplicate them here.
 - **Documentation only** — no code, secrets, or `.env` content. These records are exempt
@@ -49,4 +56,7 @@ folder along in `16-SPRINT-PLANS/`.
 
 - **Hand-written:** every `SPRINT-##.md` and the `CONTEXT.md`.
 - **Template:** `SPRINT-00-TEMPLATE.md` — the copy source; do not delete or repurpose.
+- **Generated:** `SPRINTS-BOARD.md` (committed) and `sprints-board.json` / `.html`
+  (gitignored), by `pm-board.sh --write` — never hand-edit. `archive/` is written only by
+  `pm-archive.sh`.
 - Files `SPRINT-##.md` (2-digit zero-padded); stories referenced as `US###`; dates DD/MM/YYYY.

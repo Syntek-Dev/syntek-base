@@ -16,11 +16,11 @@ project-management/docs/planning/
 
 ## Which file owns what
 
-| File         | Owns                                                                                        | Serves                                     |
-| ------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| `CADENCE.md` | The per-story loop, the fill trigger, `SPRINT_CAPACITY_SP`/`SPRINT_GRACE_SP`                | Every workflow `01`–`17`                   |
-| `STORIES.md` | Connextra format, statuses, Fibonacci estimation, the story plan and its build-order prefix | `src/02-STORIES/` · `src/17-STORY-PLANS/`  |
-| `SPRINTS.md` | MoSCoW, the sprint plan's exec-order/sprint-number pair, the four phases                    | `src/03-SPRINTS/` · `src/16-SPRINT-PLANS/` |
+| File         | Owns                                                                                                                                                        | Serves                                     |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| `CADENCE.md` | The per-story loop, the fill trigger, `SPRINT_CAPACITY_SP`/`SPRINT_GRACE_SP`                                                                                | Every workflow `01`–`17`                   |
+| `STORIES.md` | Connextra format, the status lifecycle (vocabulary owner: `completion`), board and archive, Fibonacci estimation, the story plan and its build-order prefix | `src/02-STORIES/` · `src/17-STORY-PLANS/`  |
+| `SPRINTS.md` | MoSCoW, sprint status with its board and archive, the sprint plan's exec-order/sprint-number pair, the four phases                                          | `src/03-SPRINTS/` · `src/16-SPRINT-PLANS/` |
 
 **The capacity figure is stated once**, in `CADENCE.md`. `SPRINTS.md` points at it rather than
 repeating it — two copies of a tunable number is how they drift apart.

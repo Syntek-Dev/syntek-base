@@ -178,6 +178,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-template-slop.yml      ← the AI-slop family, markup half
 │       ├── claude.yml                   ← Claude Code GitHub Actions integration
 │       ├── clickup-sync.yml             ← CLICKUP-ONLY — pushes story exports to ClickUp (push/PR)
+│       ├── pm-boards.yml                ← PM boards current and archive/ frozen; stale-status warnings
 │       ├── syntax-js-ts.yml
 │       ├── syntax-markdown.yml
 │       ├── syntax-python.yml
@@ -298,9 +299,9 @@ Two things to do on a freshly generated project:
 │   ├── REFERENCES.md
 │   ├── src/                             ← live PM artefacts (numbered to mirror workflows)
 │   │   ├── 00-ASSETS/
-│   │   ├── 01-FEATURE-MAPS/             ← MAP-<FEATURE>.md decision maps (wayfinder)
-│   │   ├── 02-STORIES/
-│   │   ├── 03-SPRINTS/
+│   │   ├── 01-FEATURE-MAPS/             ← MAP-<FEATURE>.md decision maps (wayfinder) · board · archive/
+│   │   ├── 02-STORIES/                  ← US###.md · CUT-PLAN.md · STORIES-BOARD.md (generated) · archive/
+│   │   ├── 03-SPRINTS/                  ← SPRINT-##.md · SPRINTS-BOARD.md (generated) · archive/
 │   │   ├── 04-DATABASE/
 │   │   ├── 05-USER-FLOW/
 │   │   ├── 06-BRAND-GUIDE/
@@ -313,8 +314,8 @@ Two things to do on a freshly generated project:
 │   │   ├── 13-API-DESIGN/
 │   │   ├── 14-LOGGING/
 │   │   ├── 15-DECISIONS/
-│   │   ├── 16-SPRINT-PLANS/
-│   │   ├── 17-STORY-PLANS/
+│   │   ├── 16-SPRINT-PLANS/             ← sprint plans · board (shows the sprint's status) · archive/
+│   │   ├── 17-STORY-PLANS/              ← story plans · board (shows the story's status) · archive/
 │   │   ├── 18-TESTS/                    ← MANUAL/ guides (authored before code) · AUTOMATED/ records
 │   │   ├── 19-REVIEWS/
 │   │   ├── 20-FINDINGS/
@@ -568,11 +569,38 @@ Each story should define acceptance criteria, the affected layer (backend / fron
 any GDPR or accessibility considerations. Use the PM workflow
 `project-management/workflows/02-story-creation/` to write stories consistently.
 
+### Status, boards and the archive
+
+Stories, sprints and feature maps each carry a `**Status:**` line, and that line is the only
+source of truth for where the work stands. A story runs `Open → Pending → In Progress → In Review →
+Accepted`, then through `Customer Review` and `Customer Accepted` on staging (unless its `Customer
+review` flag is `N/A`), and is `Completed` once the feedback window has elapsed. Every transition
+appends a row to the story's _Status history_. The vocabulary, the rejection paths and the clock
+are owned by the `completion` skill (`.claude/skills/completion/SKILL.md`); the planning rules by
+`project-management/docs/planning/STORIES.md`.
+
+`01-FEATURE-MAPS/`, `02-STORIES/`, `03-SPRINTS/`, `16-SPRINT-PLANS/` and `17-STORY-PLANS/` each hold
+a generated board — `STORIES-BOARD.md` and its siblings, committed, plus a `.json` and a
+self-contained `.html` kanban that are gitignored. **Never hand-edit a board**:
+
+```bash
+bash project-management/src/00-ASSETS/scripts/pm-board.sh --write   # regenerate every board
+bash project-management/src/00-ASSETS/scripts/pm-board.sh --check   # fail on a stale board
+bash project-management/src/00-ASSETS/scripts/pm-board.sh --warn    # list work ready to move on
+bash project-management/src/00-ASSETS/scripts/pm-archive.sh US###   # close and archive one item
+```
+
+`pm-archive.sh` closes a `Completed` story, a sprint whose stories are all `Closed`, or a `Complete`
+map whose every slice is cut, and moves it — with its plan — into that folder's `archive/`.
+Archived files are frozen. Every script, the ClickUp export included, finds an artefact by its ID
+across the folder **and** its `archive/`.
+
 ### ClickUp story sync — client-facing exports
 
 Until the site is deployed, scrum boards are tracked in **ClickUp**. Each story's `**Status:**`
-header uses the ClickUp status vocabulary: `Open`, `Pending`, `In Progress`, `In Review`,
-`Accepted`, `Accepted Customer`, `Rejected`, `Rejected Customer`, `Blocked`, `Completed`, `Closed`.
+header uses the repository lifecycle above; a status your ClickUp list does not have — the three
+customer statuses most often — must be created there or mapped through `CLICKUP_STATUS_MAP`
+(`project-management/export/clickup/README.md`). Archived stories are still exported and synced.
 
 Only client-facing fields go to ClickUp. A generator produces **one read-only Markdown file per
 story** in `project-management/export/clickup/US###-CLIENT.md`, containing just the title, a
@@ -618,6 +646,10 @@ cycle using `project-management/workflows/03-sprint-planning/`.
 Written _after_ GDPR, security, and QA checks are complete. Records the definitive story
 assignments, per-phase breakdown (backend → API → frontend → PR), developer constraints from the
 checks, and the sprint definition of done. Use `project-management/workflows/16-sprint-plans/`.
+
+A sprint runs `Planned → In Progress → Done → Closed`: `Done` once every story in it is `Accepted`
+or later, `Closed` once every story is `Closed`, when `pm-archive.sh SPRINT-##` archives it with its
+plan.
 
 Both use **MoSCoW** prioritisation (Must / Should / Could / Won't). See
 `project-management/docs/PLANNING-GUIDE.md` for the full format and conventions.
@@ -1284,6 +1316,11 @@ A commit is rejected if any lint hook fails. Fix the reported issues and recommi
 A separate non-blocking pre-commit step — `clickup-export` (`precommit-clickup.sh`) — regenerates
 and re-stages the read-only `export/clickup/` ClickUp story exports whenever a source story or a
 generated file is staged, keeping them in sync with `02-STORIES/`.
+
+`pm-board.sh --write --staged` runs alongside it: when a PM artefact is staged it regenerates the
+`*-BOARD.md` boards from what is staged, and stops the commit once, naming any board to stage, so
+a commit never carries a stale one. CI runs `pm-board.sh --check`, which
+fails on a stale board or an edit inside an `archive/`, and `--warn`, which only reports.
 
 ---
 

@@ -77,8 +77,10 @@ Load in order, each layer narrowing the next:
 6. **The whole of `project-management/src/`** — stories, specs, decisions, plans, and records
 7. The codebase, via the `code-review-graph` explore playbook
 
-`src/` is the living state, not an archive: the `IMPLEMENTATION/` records say what shipped **and
-where it diverged from the plan**. Map against that, not against intentions.
+`src/` is the living state: the `IMPLEMENTATION/` records say what shipped **and where it
+diverged from the plan**. Map against that, not against intentions. **Read the `*/archive/`
+folders too** (`01`, `02`, `03`, `16`, `17`) — a `Closed` story or map is frozen there, not gone,
+and a feature that ignores it re-decides what was already settled.
 
 ### Step 2 — Triage the register against this feature
 
@@ -141,9 +143,11 @@ Copy `src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md` → `MAP-<FEATURE>.md`. Tag each 
 type: **research** (looked up, no human), **tracer** (spike to raise fidelity), **grilling**
 (one `/grill-with-docs` surface), **build** (the work a slice's story carries — named here, never
 done here). Manual unblocking work is not a node: it is a `GAPS.md` blocker. Fill **Register
-claimed** from the Step 2 triage. Add the map to the index in `src/01-FEATURE-MAPS/CONTEXT.md`.
+claimed** from the Step 2 triage. Set `**Status:** Charting` and a one-line `**Status note:**`,
+then run `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` — the map's row on
+`FEATURE-MAPS-BOARD.md` is generated, never hand-written.
 
-_Done when the map exists, is indexed, carries its claimed register entries, and reads as a route
+_Done when the map exists, is on the board, carries its claimed register entries, and reads as a route
 rather than a vault._
 
 ### Step 7 — Fire the research nodes, then stop
@@ -186,6 +190,10 @@ Per session:
 6. **Re-triage the register if the outcome moved it** — a settled node that retires a further
    entry adds a **Register claimed** row; one that raises a new blocker appends to `GAPS.md`.
 
+Advance the map's `**Status:**` as it moves — `Resolving` after the first settled batch,
+`Blockers Clear` once no blocking node remains — update the `**Status note:**`, and regenerate
+the board (`pm-board.sh --write`). The vocabulary is `.claude/skills/completion/SKILL.md`'s.
+
 _Repeat until no **blocking** node remains open._
 
 ### Step 8a — Cut the slices
@@ -223,6 +231,12 @@ slice, and no slice has a reserved `US###`._
 - Confirm every claimed register entry names the node or story that will retire it, and that
   neither `GAPS.md` nor `DEFERRED.md` was closed here
 - Confirm no story has been written yet — that is `02-story-creation`
+- Once Frontier and Fog of war are both empty, set `**Status:** Complete` and regenerate the board
+- **Closing the map comes later, and is never a hand edit.** When `02-story-creation` has cut
+  every slice into a story (`pm-board.sh --warn` names the map), run
+  `bash project-management/src/00-ASSETS/scripts/pm-archive.sh MAP-<FEATURE>` — it sets
+  `Closed` and moves the map into `src/01-FEATURE-MAPS/archive/`, where it is frozen. New work on
+  the same area charts a **new** map.
 - Satisfy `CHECKLIST.md`
 
 Next: `02-story-creation/`, cutting stories from the resolved map.

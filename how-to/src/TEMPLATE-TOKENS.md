@@ -53,20 +53,24 @@ emitted verbatim.
 
 **This file is one of them.** It ships to generated projects, so everything below the header is
 inside a `raw` block — which is the only reason the token table survives rendering instead of
-becoming 40 rows of blanks. `raw` blocks **cannot nest**, which is why the paragraph above
+becoming 42 rows of blanks. `raw` blocks **cannot nest**, which is why the paragraph above
 describes the markers rather than showing them.
 
 ---
 
 ## The tokens
 
-Thirty-eight tokens carry every project-specific value. **Thirty-four are always asked**; the
+Forty-two tokens carry every project-specific value. **Thirty-eight are always asked**; the
 remaining four are conditional — `MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID` only when the mobile
 surface is included, `INCLUDE_DESKTOP` only when the Rust surface is, and `DESKTOP_APP_NAME` only
 when the desktop surface is. Example values are illustrative — replace them.
 
 The count has read thirty-eight twice. It fell to thirty-seven on 15/08/2026 when `CORE_APP` was
 retired — see the note under _Django apps_ — and returned on 23/08/2026 with `INCLUDE_CLICKUP`.
+It reached forty with `DEPLOYMENT_POSTURE` (31/08/2026) and `INCLUDE_WAGTAIL` (07/09/2026),
+which this paragraph missed until a recount against `copier.yml` on 31/10/2026, and forty-two the <!-- doc-references: template-only -->
+same day with `CUSTOMER_REVIEW_WEEKS` and `FEEDBACK_WEEKS` (_Planning cadence_) — the first two
+answers read by a script at run time rather than rendered into a file.
 
 ### Identity
 
@@ -255,6 +259,22 @@ target. Full rules: `project-management/docs/PLANNING-GUIDE.md`.
 Both default to the house values (11 / 13). Tune them to your team's **measured** velocity after
 two sprints rather than guessing up front — the cadence works at any ceiling, and a number that
 does not match reality makes every sprint either starve or overrun.
+
+Two more answers time the story lifecycle after `Accepted` — how long a story may sit with the
+customer, and how long the post-acceptance window runs before it is `Completed` and further change
+is chargeable. The statuses and the clock they feed are owned by
+`.claude/skills/completion/SKILL.md`.
+
+| Token                       | Meaning                                                        | Example value | Format |
+| --------------------------- | -------------------------------------------------------------- | ------------- | ------ |
+| `<%CUSTOMER_REVIEW_WEEKS%>` | Weeks a story may sit in `Customer Review` on staging          | `2`           | `int`  |
+| `<%FEEDBACK_WEEKS%>`        | Weeks after acceptance before a story is ready for `Completed` | `4`           | `int`  |
+
+**These two are read, not rendered.** No file substitutes them: `pm-board.sh --warn` (in
+`project-management/src/00-ASSETS/scripts/`) reads both from `.copier-answers.yml` at run time and
+falls back to `2` and `4` when the answer is absent — so a project generated before 7.7.0 behaves
+as if it had pressed Enter. Changing one is an edit to the answer, which takes effect on the
+script's next run with no regeneration.
 
 ### ClickUp sync (optional)
 

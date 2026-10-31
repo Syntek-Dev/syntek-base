@@ -72,26 +72,31 @@ whichever question the survivor does not ask:
 
 ## Story statuses
 
-The **ClickUp** board vocabulary — the template's default PM board. Each story's `**Status:**`
-header must be one of these; they are mirrored into `project-management/export/clickup/` and
-pushed by the `clickup-sync` workflow.
+**The vocabulary is owned by `.claude/skills/completion/SKILL.md`** — the twelve statuses, their
+meanings, the transition rules and the completion clock are written there once. In planning
+terms the lifecycle reads:
 
-| Status              | Meaning                                                       |
-| ------------------- | ------------------------------------------------------------- |
-| `Open`              | Created, not yet refined or started (default for a new story) |
-| `Pending`           | Refined and queued, awaiting a start                          |
-| `In Progress`       | Actively being worked                                         |
-| `In Review`         | PR raised / under code review                                 |
-| `Accepted`          | Internally QA-accepted                                        |
-| `Accepted Customer` | Signed off by the client                                      |
-| `Rejected`          | Sent back internally                                          |
-| `Rejected Customer` | Sent back by the client                                       |
-| `Blocked`           | Blocked on a dependency                                       |
-| `Completed`         | Done and merged to `testing`; not yet deployed                |
-| `Closed`            | Fully closed / archived                                       |
+`Open` → `Pending` → `In Progress` → `In Review` → `Accepted` → `Customer Review` →
+`Customer Accepted` → (window) → `Completed` → `Closed` (archive)
 
-New stories start as `Open`. This is the canonical set — if a project's board uses different
-words, map them here once rather than mixing the two.
+- **Side exits.** `Rejected` (internal review or QA) and `Customer Rejected` both return the
+  story to `Pending`; `Blocked` is a wait on dependencies. Nothing skips `Accepted`.
+- **The customer gate** is the story's FLAGS row `Customer review`: absent or `Yes` means it
+  applies; `N/A` skips the three customer statuses (`Accepted` → window → `Completed`).
+- **The window.** `Completed` is reached by time, not judgement — `FEEDBACK_WEEKS` after
+  customer acceptance, and no earlier than `CUSTOMER_REVIEW_WEEKS` + `FEEDBACK_WEEKS` after the
+  story entered `Customer Review`. Both are Copier answers (defaults 2 and 4). After
+  `Completed`, changes are chargeable work, cut as a new story.
+- **Status history.** Every transition appends a row to the story's `## Status history` table;
+  the clock reads its dates.
+- **The board and the archive.** `src/02-STORIES/STORIES-BOARD.md` is generated from the status
+  lines by `pm-board.sh --write`. `pm-archive.sh US###` sets `Closed` on a `Completed` story and
+  moves it, with its story plan, into `02-STORIES/archive/` — frozen thereafter, and still found
+  by ID. `pm-board.sh --warn` names the stories ready for `Completed` or for archiving.
+
+The words are mirrored into `project-management/export/clickup/` and pushed by the
+`clickup-sync` workflow; a tool whose board uses different words maps them once, through
+`CLICKUP_STATUS_MAP` (`pm-tool-sync`), rather than mixing the two.
 
 ---
 
@@ -99,7 +104,8 @@ words, map them here once rather than mixing the two.
 
 `US###` — three-digit zero-padded. **Numeric gaps are deliberate**: only files that exist are
 listed, and a retired number is never reused. Renumbering to close a gap breaks every
-cross-reference pointing at the old number.
+cross-reference pointing at the old number. The next free number is taken across
+`02-STORIES/` **and** its `archive/` — an archived story still holds its number.
 
 ---
 
@@ -133,8 +139,9 @@ It records:
 - GDPR, security, and QA constraints **carried in** from the `02`–`13` specs, not re-derived
 - Deferred items and risks, each against a named future story
 
-**Keep the dependency callout honest.** A plan marked anything other than `Blocked` asserts its
-blockers are cleared, and the parallel-worktree DAG depends on that being true.
+**Keep the dependency callout honest.** A plan carries no status of its own (the board shows
+the story's), so its `blocked-by` / `blocks` callout is what the parallel-worktree DAG reads —
+and it depends on that being true.
 
 **Consolidation can invalidate a plan.** If `18-consolidate-design-work` changes a shape the plan
 assumed, the plan is corrected there — before code, not after.

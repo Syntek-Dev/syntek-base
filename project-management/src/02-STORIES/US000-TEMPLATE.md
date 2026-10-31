@@ -3,6 +3,12 @@
 **Epic:** [Epic Name — e.g. Authentication & Access Control / Core Features / Public Pages]
 **Status:** Open
 
+<!-- STATUS — `**Status:** <Title>`, optionally followed by ` — <note>`; the parser ignores the
+     note. A new story starts Open. The twelve statuses, their transitions and the completion
+     clock are owned by the `completion` skill (.claude/skills/completion/SKILL.md). Every
+     transition appends a row to `## Status history` at the foot of this file; `Closed` is set
+     only by `pm-archive.sh`, which moves the story into 02-STORIES/archive/. -->
+
 <!-- FLAGS — one row per gate, and the flag is that gate's entry condition.
      A flag reading N/A means the gate is skipped for this story; every other value means it runs.
      The value is a MANIFEST, not the design: the gate owns the design, may add to this list, and
@@ -21,25 +27,31 @@
      Logging    — events logged                        → 14-logging-checks
      Backend    — Yes or N/A                           → 19-backend-code
      Frontend   — Public / Admin / Both / N/A          → 21-frontend-code
+     Customer review — Yes or N/A                      → the customer statuses (completion skill)
+
+     Customer review is the one optional row: ABSENT means customer review applies (the default),
+     exactly as Yes does. N/A skips Customer Review / Customer Accepted / Customer Rejected, and the
+     story goes Accepted → (FEEDBACK_WEEKS) → Completed.
 
      Logging has no derived condition: it is its own gate. Every value is filled from the
      feature map's slice row (src/01-FEATURE-MAPS/) at 02-story-creation. -->
 
-| Flag       | Value                                                          |
-| ---------- | -------------------------------------------------------------- |
-| DB         | `ModelA`, `ModelB`                                             |
-| User Flow  | Yes                                                            |
-| Brand      | `--color-accent`, `--space-lg`                                 |
-| Components | `Button`, `Card`                                               |
-| Wireframes | /dashboard, /settings                                          |
-| GDPR       | Yes                                                            |
-| Security   | rate-limit, audit-log, XSS-escape                              |
-| QA         | unit, integration, E2E, manual — happy-path, permission-denied |
-| SEO        | /blog, /about                                                  |
-| API        | `POST /model-a`, `PATCH /model-a`, `DELETE /model-a`           |
-| Logging    | login-success, login-failure, permission-denied                |
-| Backend    | Yes                                                            |
-| Frontend   | Both                                                           |
+| Flag            | Value                                                          |
+| --------------- | -------------------------------------------------------------- |
+| DB              | `ModelA`, `ModelB`                                             |
+| User Flow       | Yes                                                            |
+| Brand           | `--color-accent`, `--space-lg`                                 |
+| Components      | `Button`, `Card`                                               |
+| Wireframes      | /dashboard, /settings                                          |
+| GDPR            | Yes                                                            |
+| Security        | rate-limit, audit-log, XSS-escape                              |
+| QA              | unit, integration, E2E, manual — happy-path, permission-denied |
+| SEO             | /blog, /about                                                  |
+| API             | `POST /model-a`, `PATCH /model-a`, `DELETE /model-a`           |
+| Logging         | login-success, login-failure, permission-denied                |
+| Backend         | Yes                                                            |
+| Frontend        | Both                                                           |
+| Customer review | Yes                                                            |
 
 ---
 
@@ -494,5 +506,17 @@ All must pass.
 - [ ] Code reviewed and approved (minimum 1 reviewer)
 - [ ] No outstanding TODO or FIXME comments introduced by this story
 - [ ] Merged to `main` (or the active release branch)
-- [ ] Story status updated to **Completed** in the project board
+- [ ] Story advanced to **Accepted** after review and QA, then through the customer statuses (unless `Customer review` is N/A) — each transition a `## Status history` row, boards regenerated with `pm-board.sh --write`
+- [ ] **Completed** set only once the window has elapsed (the `completion` skill owns the clock)
 - [ ] Any GDPR or security gaps identified during review are documented in the sprint note
+
+---
+
+## Status history
+
+<!-- One row per status transition, appended by the `completion` skill (and by `pm-archive.sh` for
+     Completed → Closed). Dates DD/MM/YYYY. The completion clock reads the Customer Review,
+     Customer Accepted and Accepted dates from here. Leave the table empty on a new story. -->
+
+| Date | From | To  | Note |
+| ---- | ---- | --- | ---- |

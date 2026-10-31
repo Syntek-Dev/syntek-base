@@ -9,8 +9,11 @@
 
 **Status:** Planned
 
-<!-- The sprint status vocabulary and its transitions are owned by
-     `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
+<!-- Planned · In Progress · Done · Closed. The vocabulary and its transitions are owned by
+     `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here.
+     `Closed` is set only by `pm-archive.sh SPRINT-##` once every story in the sprint is Closed;
+     it moves this file and its sprint plan into archive/, where they are frozen. Run
+     `pm-board.sh --write` after any status edit. -->
 
 **Timeline:** TBD · **Capacity:** [used] / [total] SP
 

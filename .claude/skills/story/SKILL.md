@@ -6,7 +6,7 @@ description: >-
   tasks and a Fibonacci estimate. Load when a requirement, a feature idea or a rough note has
   to become the story that implementation is planned from. Not slicing already-written stories
   into a sprint (`sprint`), not the phased implementation plan built from a story (`planner`),
-  not flipping a finished story to Completed (`completion`), and not pushing it to the
+  not advancing a story through its status lifecycle (`completion`), and not pushing it to the
   external PM tool (`pm-tool-sync`).
 model: opus
 metadata:
@@ -43,9 +43,14 @@ map its decision frontier, resolve it across sessions, and cut stories from the 
 
 1. **Read the layer, then the neighbours.** `project-management/CONTEXT.md` for story numbering
    and current state, then the existing `project-management/src/02-STORIES/US###.md` files —
-   match the house format and take the next free number.
+   match the house format and take the next free number, scanning `02-STORIES/` **and** its
+   `archive/` (a retired number is never reused).
 2. **Copy the template.** `project-management/src/02-STORIES/US000-TEMPLATE.md` is the shape of
    record; it is not restated here, because a second copy drifts the moment the template moves.
+   A new story starts `**Status:** Open` with an empty `## Status history` table; the FLAGS
+   table's optional `Customer review` row keeps the template's `Yes` (absent means the same:
+   customer review applies) unless the story is internal-only (`N/A`). The vocabulary is `completion`'s; run
+   `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` after saving.
 3. **Write the acceptance criteria from the resolved grilling answers**, in Gherkin, in business
    language, covering a happy path **and** at least one edge or error case.
 4. **Surface the non-negotiables the feature implies as acceptance criteria** — a state-changing

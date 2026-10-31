@@ -3,7 +3,7 @@
 **A Django-monolith project template that ships with its own documentation system and a Claude
 Code skill suite.**
 
-[![Version](https://img.shields.io/badge/version-7.6.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-7.7.0-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 [![Template: Copier](https://img.shields.io/badge/template-copier-blue.svg)](https://copier.readthedocs.io/)
 [![Status: active](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/Syntek-Dev/syntek-base)
@@ -36,6 +36,7 @@ Generate a project from it and you get, on day one:
 | **CI that already bites**    | GitHub Actions covering lint, format, type-check, tests, secrets, dependency advisories, line-count, stub and CSS-token audits.                                                                                       |
 | **Compliance scaffolding**   | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.                                                                                                         |
 | **A test record per story**  | Two records per story in `project-management/src/18-TESTS/` — a manual testing guide written from the specs before any code and walked once it ships, and an automated record generated from the suites' own reports. |
+| **A board per PM folder**    | Stories, sprints, feature maps and their plans each get a generated status board, plus an `archive/` that closed work moves into — `pm-board.sh` keeps them current and CI fails a stale one.                         |
 
 It is opinionated on purpose. The stack is fixed, the coverage floors are fixed, the file-length
 limits are fixed. What varies between projects is captured in the template tokens and nothing else.
@@ -271,4 +272,4 @@ see [SECURITY.md](SECURITY.md).
 
 ---
 
-_Maintained by Syntek Studio · v7.6.0 · British English (en_GB) throughout_
+_Maintained by Syntek Studio · v7.7.0 · British English (en_GB) throughout_

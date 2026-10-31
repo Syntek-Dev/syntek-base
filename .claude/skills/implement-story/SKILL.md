@@ -32,6 +32,9 @@ produces the master this sequence builds from; if there is no
   through `handoff`.
 - **Check the ground.** `git status` (the branch is `us###/short-description`) and
   `bash code/src/scripts/development/server.sh status` (the dev stack is up).
+- **Start the clock.** As the branch is created, `completion` moves the story `Pending` →
+  `In Progress` with a status-history row; the sprint moves `Planned` → `In Progress` with its
+  first story.
 
 ## The phase sequence
 
