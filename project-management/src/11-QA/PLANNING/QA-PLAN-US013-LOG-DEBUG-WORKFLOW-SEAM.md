@@ -6,7 +6,7 @@
 | **Date**      | 31/10/2026                                                                                                                                                                                                                           |
 | **Sprint**    | SPRINT-08 — admitted as its `Must`, 3 SP standing the record at 3 / 11; the record itself is written by `03-sprint-planning`                                                                                                         |
 | **Wireframe** | N/A — this story rewrites six Markdown files, one register paragraph, one `copier.yml` comment and one `copier.yml` help text, with its one-line mirror in `TEMPLATE-GUIDE/05-ANSWERS.md`: no model, no endpoint, no screen, no page |
-| **Status**    | Reviewed — all twelve gaps resolved 31/10/2026 (AC-GAP-6 to -10 in 11-qa round 3, AC-GAP-11 and -12 in 11-qa round 4); the `qa-tester` run and its scoped re-check are done; sign-off is <%DEVELOPER_NAME%>'s                        |
+| **Status**    | Signed off 31/10/2026 by <%DEVELOPER_NAME%> — all twelve gaps resolved 31/10/2026 (AC-GAP-6 to -10 in 11-qa round 3, AC-GAP-11 and -12 in 11-qa round 4); the `qa-tester` run and its scoped re-check are done; gate 11 closed       |
 
 <!-- Written 31/10/2026 on pm/story-creation at HEAD 9ee3ea7, over a clean working tree. Every line
      number below was re-measured against that tree the same day; none is inherited from the story.
@@ -53,8 +53,12 @@
      <%LOG_AGGREGATOR%> count is 12, re-measured at the working tree the same day; HP-06, ES-02,
      Section 6, AC-GAP-3's note and the story carry it.
 
-     SIGN-OFF is <%DEVELOPER_NAME%>'s, which is why Status reads Reviewed. One thing gates it:
-     the qa-tester dispatch, owed; it runs next.
+     SIGN-OFF is <%DEVELOPER_NAME%>'s, which is why Status read Reviewed until 31/10/2026. SIGNED OFF
+     31/10/2026 by <%DEVELOPER_NAME%>, after all twelve gaps resolved and the qa-tester run and its
+     scoped re-check were folded in; gate 11 closes for US013 (a plan reading `Signed off` closes
+     it, settled 30/09/2026, 16-sprint-plans grilling round 3 Q9). As first written, this line read:
+     "SIGN-OFF is <%DEVELOPER_NAME%>'s, which is why Status reads Reviewed. One thing gates it:
+     the qa-tester dispatch, owed; it runs next."
 
      STEP 3 — THE qa-tester DISPATCH, RUN 31/10/2026 (read-only, against the working tree after 11-qa
      round 2; nothing edited, staged or committed by it). It returned eleven findings, six major and

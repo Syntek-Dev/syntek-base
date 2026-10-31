@@ -260,7 +260,7 @@ restated here (`project-management/src/02-STORIES/US013.md` -> Acceptance Criter
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
 - [ ] `project-management/src/18-TESTS/MANUAL/US013-MANUAL-TESTING.md` carries a tester sign-off
       block — a path that does not exist on 31/10/2026; `17-story-plans` writes it
-- [ ] **No `[OPEN]` acceptance-criteria gap remains** in US013's QA plan,
+- [x] **No `[OPEN]` acceptance-criteria gap remains** in US013's QA plan,
       `project-management/src/11-QA/PLANNING/QA-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`, written at
       `11-qa-checks` on 31/10/2026 — AC-GAP-1 to -5 resolved into the story the same day (AC-GAP-5
       in 11-qa-checks grilling round 2), and AC-GAP-6 to -10, raised by the `qa-tester` run of
