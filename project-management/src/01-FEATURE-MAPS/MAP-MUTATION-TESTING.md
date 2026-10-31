@@ -2,7 +2,8 @@
 
 **Charted**: 15/10/2026 · **Charted by**: Sam and Claude · **Workflow**: `01-feature-map`
 **Charted at**: `d16de16`, plus the uncommitted 15/10/2026 `GAPS.md` entry and `research/MUTATION-TESTING.md`
-**Status**: Resolving · charted 15/10/2026; the destination and eleven decisions arrived settled from Sam's
+**Status:** Resolving
+**Status note:** charted 15/10/2026; the destination and eleven decisions arrived settled from Sam's
 15/10/2026 grilling; Step 7 closed the same day, resolving the three research nodes into the note's
 Addendum and opening N-041 and N-042 from what they found; twenty-eight nodes are open and seventeen
 block a story

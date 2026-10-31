@@ -17,12 +17,14 @@ set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel)"
 GEN="$ROOT/project-management/src/00-ASSETS/scripts/export-clickup-stories.sh"
 
-# Staged files added/copied/modified this commit.
-staged="$(git diff --cached --name-only --diff-filter=ACM || true)"
+# Staged files added/copied/modified/renamed this commit — R so an archive commit, which
+# stages the story as a rename into 02-STORIES/archive/, still regenerates the export.
+staged="$(git diff --cached --name-only --diff-filter=ACMR || true)"
 
-# Trigger only when a source story or a generated client file is part of the commit.
+# Trigger only when a source story (live or archived) or a generated client file is part of
+# the commit.
 relevant="$(printf '%s\n' "$staged" | grep -E \
-  '^project-management/(src/02-STORIES/US[0-9]+\.md|export/clickup/US[0-9]+-CLIENT\.md)$' || true)"
+  '^project-management/(src/02-STORIES/(archive/)?US[0-9]+\.md|export/clickup/US[0-9]+-CLIENT\.md)$' || true)"
 
 [[ -z "$relevant" ]] && exit 0
 

@@ -19,7 +19,10 @@
 #   CLICKUP_LIST_ID          target ClickUp List id           (preferred target)
 #   CLICKUP_FOLDER_ID        folder to resolve the list from  (fallback if the list id fails)
 #   CLICKUP_STATUS_MAP       JSON {repo status -> CU status}  (optional; default identity —
-#                            the source stories already use ClickUp's status vocabulary)
+#                            so each repo status must exist in the ClickUp list or be mapped:
+#                            Open, Pending, In Progress, In Review, Accepted, Customer Review,
+#                            Customer Accepted, Rejected, Customer Rejected, Blocked, Completed,
+#                            Closed — the vocabulary .claude/skills/completion/SKILL.md owns)
 #   CLICKUP_SYNC_APPLY       "1" to write to ClickUp; anything else = dry run
 #   CLICKUP_TEAM_ID / CLICKUP_SPACE_ID                       (optional context; unused by upsert)
 #
@@ -187,7 +190,10 @@ created = updated = 0
 for f in files:
     sid = re.search(r"(US\d+)", f.name).group(1)
     title, body, status = parse(f.read_text(encoding="utf-8"))
-    cu_status = status_map.get(status, status)
+    # CLICKUP_STATUS_MAP may be keyed by the Title Case status word ("Customer Review") or by
+    # its board slug ("customer-review"); the word wins when both are present.
+    slug_key = re.sub(r"[^a-z0-9]+", "-", (status or "").lower()).strip("-")
+    cu_status = status_map.get(status, status_map.get(slug_key, status))
     payload = {"name": title, "markdown_content": body}
     if cu_status:
         payload["status"] = cu_status

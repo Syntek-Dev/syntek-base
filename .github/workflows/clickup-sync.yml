@@ -1,6 +1,7 @@
 name: Sync stories to ClickUp
 
-# The repo is the source of truth. Statuses are edited in project-management/src/01-STORIES/,
+# The repo is the source of truth. Statuses are edited in project-management/src/02-STORIES/
+# (and its archive/),
 # rendered to project-management/export/clickup/US###-CLIENT.md by export-clickup-stories.sh,
 # and this workflow upserts that export into ClickUp via sync-clickup.sh.
 #
@@ -16,8 +17,13 @@ name: Sync stories to ClickUp
 # Fallback / optional:
 #   CLICKUP_FOLDER_ID   if the List id is unreachable, a list named 'List' is resolved under it
 #   CLICKUP_TEAM_ID, CLICKUP_SPACE_ID   context, passed through (unused by the upsert)
-#   CLICKUP_STATUS_MAP  JSON: repo status -> ClickUp status name. Default identity — the source
-#                       stories already use ClickUp's status vocabulary.
+#   CLICKUP_STATUS_MAP  JSON: repo status -> ClickUp status name, keyed by the Title Case word
+#                       ("Customer Review") or its slug. Default identity, so every repo
+#                       status must EXIST in the ClickUp list or be mapped here: Open, Pending,
+#                       In Progress, In Review, Accepted, Customer Review, Customer Accepted,
+#                       Rejected, Customer Rejected, Blocked, Completed, Closed (vocabulary:
+#                       .claude/skills/completion/SKILL.md). An unmapped status ClickUp lacks is
+#                       rejected by the API for that task.
 # Until the token + a target list (list id or folder) are set, the job runs as a harmless DRY RUN.
 
 on:

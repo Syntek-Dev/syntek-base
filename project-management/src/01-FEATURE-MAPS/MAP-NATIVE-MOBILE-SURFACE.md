@@ -1,7 +1,8 @@
 # MAP-NATIVE-MOBILE-SURFACE — Retire React Native; the mobile surface becomes Kotlin and Swift
 
 **Charted**: 20/09/2026 · **Charted by**: Claude (Opus) · **Workflow**: `01-feature-map`
-**Status**: Charting
+**Status:** Resolving
+**Status note:** chart drawn — every node typed and blocker-wired, none resolved yet (was `Charting`; normalised 31/10/2026)
 **Frontier open**: 21 · **Blocking open**: 9
 
 > A **low-resolution index**, not a storage vault — every resolved node links to the artefact it

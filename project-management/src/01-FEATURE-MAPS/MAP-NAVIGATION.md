@@ -1,7 +1,8 @@
 # MAP-NAVIGATION — Can this repository describe itself to a cold agent?
 
 **Charted**: 16/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **Fully charted — frontier and fog both empty.** N-014 settled 01/09/2026; all three slices are cuttable
+**Status:** Complete
+**Status note:** N-014 settled 01/09/2026; all three slices are cuttable
 **Frontier open**: 0 · **Blocking open**: 0 · **Fog of war open**: 0 · **Resolved**: 14
 
 > **Template-development artefact.** This map charts work on `syntek-base` itself, not on a

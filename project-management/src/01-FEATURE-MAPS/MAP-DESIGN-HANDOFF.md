@@ -2,7 +2,8 @@
 
 **Charted**: 15/10/2026 · **Charted by**: Sam, with Claude · **Workflow**: `01-feature-map`
 **Charted at**: `d16de16` (working tree, nothing committed)
-**Status**: Resolving · charted 15/10/2026; eight decisions Sam settled in conversation enter as
+**Status:** Resolving
+**Status note:** charted 15/10/2026; eight decisions Sam settled in conversation enter as
 resolved; Step 7 closed the same day, resolving the six research nodes into the targets note's
 Addendum; four provisional slices drawn
 **Frontier open**: 27 · **Blocking open**: 14 · **Resolved**: 14 · **Slices**: 4

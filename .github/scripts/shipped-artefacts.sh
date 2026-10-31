@@ -100,9 +100,17 @@ NAMED_SHIPPED=(
   "23-INCIDENTS/INCIDENT-INDEX.md"
 )
 
-# Seeded into 01-FEATURE-MAPS by a _task, so it is legitimately present in a generated project
-# despite not being template content under project-management/src/.
-SEEDED=("01-FEATURE-MAPS/MAP-SCALE-PLANNING.md")
+# Seeded by the copy-gated _task, so each is legitimately present in a generated project
+# despite not being template content under project-management/src/: the scale-planning map,
+# and the five PM boards (.github/scripts/shipped-boards.sh proves those seeds empty).
+SEEDED=(
+  "01-FEATURE-MAPS/MAP-SCALE-PLANNING.md"
+  "01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md"
+  "02-STORIES/STORIES-BOARD.md"
+  "03-SPRINTS/SPRINTS-BOARD.md"
+  "16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md"
+  "17-STORY-PLANS/STORY-PLANS-BOARD.md"
+)
 
 QUIET=false
 SELF_TEST=false

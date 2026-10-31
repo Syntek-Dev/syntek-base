@@ -1,7 +1,8 @@
 # MAP-BUN-TOPOLOGY — Bun replaces pnpm, and Node wherever Node is not needed
 
 **Charted**: 11/09/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **Charting complete** — frontier drawn and unresolved; research node N-001 resolved 11/09/2026
+**Status:** Resolving
+**Status note:** research node N-001 resolved 11/09/2026
 **Frontier open**: 29 · **Blocking open**: 21 · **Resolved**: 1 · **Provisional slices**: 5
 
 > **Committed here, never shipped.** This file is tracked, so it syncs across devices, and

@@ -90,6 +90,22 @@ pre-commit:
       run: bash code/src/scripts/development/sync-trees.sh --write --staged
       stage_fixed: true
 
+    # Regenerate the five PM boards (01-FEATURE-MAPS, 02-STORIES, 03-SPRINTS, 16-SPRINT-PLANS,
+    # 17-STORY-PLANS) when anything in those folders is staged. It renders from the INDEX, so an
+    # unstaged status edit never reaches a committed board, WRITES the board into the working
+    # tree and RE-STAGES NOTHING — deliberately no stage_fixed (unlike sync-trees above, which
+    # restages its fixes and fails only on a TODO row): the board is staged by the author, with
+    # the status edit that moved it. When a staged *-BOARD.md is stale the script names it and
+    # exits 1, because a board left unstaged would sail through here and fail
+    # `pm-board.sh --check` in CI instead. Re-commit once it is staged.
+    #
+    # The existence guard keeps the leg a no-op in any tree without the script, the same shape
+    # as the clickup-export leg below.
+    pm-boards:
+      run: |
+        [ -f project-management/src/00-ASSETS/scripts/pm-board.sh ] || exit 0
+        bash project-management/src/00-ASSETS/scripts/pm-board.sh --write --staged
+
     # The CONTEXT.md/CLAUDE.md split guard (code/docs/DOCUMENTATION-PAIRING.md): orientation
     # in one file, operating rules in the other. Unscoped by design — the pairing checks are
     # cross-file, so a per-file run cannot see a CLAUDE.md whose CONTEXT.md was just deleted.
@@ -235,11 +251,13 @@ pre-commit:
           bash .github/scripts/shipped-readme.sh --self-test
           bash .github/scripts/shipped-memory.sh --self-test
           bash .github/scripts/shipped-registers.sh --self-test
+          bash .github/scripts/shipped-boards.sh --self-test
         fi
         bash .github/scripts/check-template-tokens.sh
         bash .github/scripts/shipped-readme.sh
         bash .github/scripts/shipped-memory.sh
         bash .github/scripts/shipped-registers.sh
+        bash .github/scripts/shipped-boards.sh
 
     # Regenerate the read-only ClickUp client exports from source stories and re-stage
     # them. Self-gating: exits instantly unless a story or generated file is staged.

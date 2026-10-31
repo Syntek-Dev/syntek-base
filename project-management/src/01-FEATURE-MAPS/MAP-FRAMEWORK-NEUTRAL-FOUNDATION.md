@@ -1,7 +1,8 @@
 # MAP-FRAMEWORK-NEUTRAL-FOUNDATION — Shared engineering guidance and composable project generation
 
 **Charted**: 09/10/2026 · **Charted by**: Sam and Codex · **Workflow**: `01-feature-map`
-**Status**: Charting
+**Status:** Resolving
+**Status note:** chart drawn — CHART closed with every node typed and blocker-wired; no RESOLVE sitting yet (was `Charting`; normalised 31/10/2026)
 **Frontier open**: 32 · **Blocking open**: 20 · **Slices**: 9
 
 This is syntek-base's own decision map. It is excluded from generated projects; the resulting

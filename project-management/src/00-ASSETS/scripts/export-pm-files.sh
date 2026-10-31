@@ -522,7 +522,11 @@ def extract_flow_for_client(md):
 # ── Gather & sort files ───────────────────────────────────────────────────────
 
 src_path  = pathlib.Path(src_dir)
-all_files = [f for f in src_path.rglob('*.md') if f.name not in exclude_names and '-TEMPLATE' not in f.name]
+# rglob reaches each folder's archive/, so archived items stay in the delivery record. The
+# generated *-BOARD.md indexes and the CLAUDE.md operating rules are not deliverables.
+all_files = [f for f in src_path.rglob('*.md')
+             if f.name not in exclude_names and '-TEMPLATE' not in f.name
+             and f.name != 'CLAUDE.md' and not f.name.endswith('-BOARD.md')]
 
 if sort_type == 'numeric-us':
     md_files = sorted(

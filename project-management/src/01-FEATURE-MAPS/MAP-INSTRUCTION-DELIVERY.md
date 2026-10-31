@@ -2,7 +2,8 @@
 
 **Charted**: 18/09/2026 · **Charted by**: Claude (Opus 5) · **Workflow**: `01-feature-map`
 **Re-charted**: 09/10/2026 · **Re-charted by**: Claude (Opus 5.5), destination confirmed by Sam
-**Status**: Blockers clear — stories may start
+**Status:** Blockers Clear
+**Status note:** None.
 **Frontier open**: 15 · **Blocking open**: 0 · **Resolved**: 13
 
 > **Committed here, never shipped.** This file is tracked, so it syncs across devices, and

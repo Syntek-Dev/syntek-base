@@ -12,7 +12,8 @@
 **Manifest-integrity batch resolved at**: `7a82095` (28/08/2026)
 **Gate-visibility batch resolved at**: `7a82095` (28/08/2026)
 **Final batch resolved at**: `7a82095` (28/08/2026)
-**Status**: **Frontier and fog both closed** — fog dispositioned 01/09/2026 (1 answered, 2 cleared)
+**Status:** Complete
+**Status note:** fog dispositioned 01/09/2026 (1 answered, 2 cleared)
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 31 · **Moot**: 2
 
 > Charted from `handoffs/HANDOFF-GENERATED-PROJECT-CI-FAILURES-24-08-2026.md` and the

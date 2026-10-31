@@ -105,3 +105,13 @@ celerybeat-schedule*
 
 # Keep Claude Plugins
 !.claude/plugins/
+
+# PM board local views. `pm-board.sh --write` writes three files per register folder
+# (01-FEATURE-MAPS, 02-STORIES, 03-SPRINTS, 16-SPRINT-PLANS, 17-STORY-PLANS): the *-BOARD.md
+# index is committed and gated by `pm-board.sh --check`; the .json and the self-contained .html
+# kanban are regenerated on every write and never committed.
+project-management/src/*/*-board.json
+project-management/src/*/*-board.html
+
+# graphify knowledge-graph output (local, regenerated)
+graphify-out/

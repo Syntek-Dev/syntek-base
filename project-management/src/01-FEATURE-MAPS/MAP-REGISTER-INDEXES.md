@@ -3,7 +3,8 @@
 **Charted**: 28/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Charted at**: `7a82095` — **graduated out of `MAP-RULE-OWNERSHIP.md` N-010, which settled the
 map-folder case and claimed the rest (Q38, 28/08/2026)**
-**Status**: **Blockers clear — stories may start; cutting.** `S-01` + the narrowed `S-02` → `US010`,
+**Status:** Blockers Clear
+**Status note:** cutting. `S-01` + the narrowed `S-02` → `US010`,
 new `S-05` → `US011` (both 20/09/2026). Fog dispositioned 01/09/2026, one item added 05/09/2026
 undispositioned (2 answered · 1 decided · 1 cleared · 1 stays with a trigger · 1 open)
 **Frontier open**: 0 · **Blocking open**: 0

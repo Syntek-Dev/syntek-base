@@ -1,7 +1,8 @@
 # MAP-UPSTREAM-TRACKING — watching what this template pins
 
 **Seeded**: 16/08/2026 · **Charted**: 28/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **Frontier closed 01/09/2026** — every node resolved or dissolved across one seven-batch sitting; the route is fully charted and Slices S-01–S-03 are the build
+**Status:** Complete
+**Status note:** frontier closed 01/09/2026 — every node resolved or dissolved across one seven-batch sitting; the route is fully charted and Slices S-01–S-03 are the build
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 22
 
 > **Committed here, never shipped.** This file is tracked, so it syncs across devices, and

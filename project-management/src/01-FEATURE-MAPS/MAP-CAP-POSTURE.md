@@ -3,7 +3,8 @@
 **Charted**: 01/09/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Charted at**: `5fc9318` (`v7.4.1`) **plus the uncommitted working tree** — the sibling map
 `MAP-RETRY-AND-IDEMPOTENCY.md` resolved nine nodes the same morning, and this map leans on them
-**Status**: **Charted, resolved, and fog dispositioned** — the frontier is empty, fog closed 01/09/2026 (1 answered · 1 cleared · 3 stay with triggers); all seven slices are cuttable
+**Status:** Complete
+**Status note:** fog closed 01/09/2026 (1 answered · 1 cleared · 3 stay with triggers); all seven slices are cuttable
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 25
 
 > **Committed here, never shipped.** This file is tracked, so it syncs across devices, and

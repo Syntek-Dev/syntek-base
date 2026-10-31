@@ -1,7 +1,8 @@
 # MAP-SENTENCE-RULES — Text a reader acts on gets eight sentence rules, one owner, and a gate on changed lines
 
 **Charted**: 14/10/2026 at `24b932a` · **Charted by**: Sam Bailey · **Workflow**: `01-feature-map`
-**Status**: Charting — destination awaiting confirmation; S-01 cuttable, S-02 and S-03 wait on
+**Status:** Charting
+**Status note:** destination awaiting confirmation; S-01 cuttable, S-02 and S-03 wait on
 the frontier
 **Frontier open**: 4 · **Blocking open**: 4
 

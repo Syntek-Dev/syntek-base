@@ -2,7 +2,8 @@
 
 **Charted**: 27/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Charted at**: `7a82095` (`v7.4.1`) · **Research resolved at**: `7a82095` (27/08/2026)
-**Status**: Fully charted (01/09/2026) — cutting; `S-01` → `US001`, `S-02` → `US005` (04/09/2026)
+**Status:** Complete
+**Status note:** charted 01/09/2026; cutting; `S-01` → `US001`, `S-02` → `US005` (04/09/2026)
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 25 · **Slices**: 9 (S-09 split from
 S-02 at `02-story-creation`, 04/09/2026)
 

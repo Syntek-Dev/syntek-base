@@ -1,7 +1,8 @@
 # MAP-CLAUDE-DESIGN-HANDOFF — the design tier's client-facing half
 
 **Charted**: 22/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **Fully charted — frontier and fog cleared 01/09/2026; five slices cut**
+**Status:** Complete
+**Status note:** frontier and fog cleared 01/09/2026; five slices defined (S1–S5), none cut into a story yet
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 23
 
 > **Committed here, never shipped.** `copier.yml` `_exclude` empties `project-management/src/**`

@@ -94,14 +94,22 @@ def fixture(directory: Path, config: dict, *, legacy: bool = False) -> None:
     ):
         duplicate(ROOT / name, directory / name)
     # Include every seed consumed by the actual seed-once task, and the destination
-    # folder marker that normally makes its scale-planning destination exist.
+    # folder markers that normally make each seed's destination exist.
     for source in (ROOT / ".copier").iterdir():
         if source.is_file():
             duplicate(source, directory / ".copier" / source.name)
     migration = ".copier/migrations/shared-ai-symlinks.sh"
     duplicate(ROOT / migration, directory / migration)
-    marker = "project-management/src/01-FEATURE-MAPS/CONTEXT.md"
-    duplicate(ROOT / marker, directory / marker)
+    # One marker per seed destination folder: the scale-planning map and the five PM boards.
+    for folder in (
+        "01-FEATURE-MAPS",
+        "02-STORIES",
+        "03-SPRINTS",
+        "16-SPRINT-PLANS",
+        "17-STORY-PLANS",
+    ):
+        marker = f"project-management/src/{folder}/CONTEXT.md"
+        duplicate(ROOT / marker, directory / marker)
     (directory / ".claude/MEMORY.md").write_text(TEMPLATE_MEMORY + "\n")
     if legacy:
         for name in ("AGENTS.md", ".ai", ".codex"):

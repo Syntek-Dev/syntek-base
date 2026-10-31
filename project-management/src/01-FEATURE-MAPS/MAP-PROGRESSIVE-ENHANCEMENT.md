@@ -1,7 +1,8 @@
 # MAP-PROGRESSIVE-ENHANCEMENT — the technology ladder, the no-JS floor, and the browser contract
 
 **Charted**: 15/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: Charting
+**Status:** Complete
+**Status note:** frontier closed 31/08/2026 and fog dispositioned 01/09/2026 (one item stays with a trigger); the resolved-node artefact-link gate box is still unticked (was `Charting`; normalised 31/10/2026)
 **Frontier open**: **0** — **closed 31/08/2026** · **Blocking open**: **0** · **Resolved**: 27 · **Reopened**: 2 (~~N-025~~, ~~N-026~~)
 ~~**Two of the three research nodes delivered addenda only**, so N-024 carries the recovery of
 both missing bodies.~~ **N-024 CLOSED 31/08/2026 — both bodies recovered in full**, at the third

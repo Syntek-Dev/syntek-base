@@ -1,7 +1,8 @@
 # MAP-ABSENCE — Absence is not one thing
 
 **Charted**: 15/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **Fully charted** — all 18 nodes settled across four sittings (charting 15/08/2026,
+**Status:** Complete
+**Status note:** all 18 nodes settled across four sittings (charting 15/08/2026,
 three resolve batches + the tier pass 31/08/2026); all six slices cuttable
 **Frontier open**: 0 · **Blocking open**: 0 · **Fog of war open**: 0
 **Measured at**: 15/08/2026 11:26, against `pm/base-health-map` at `7cd385d` **plus 10 uncommitted

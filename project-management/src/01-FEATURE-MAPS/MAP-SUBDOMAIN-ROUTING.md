@@ -1,7 +1,8 @@
 # MAP-SUBDOMAIN-ROUTING — which surface answers on which host
 
 **Seeded**: 16/08/2026 · **Charted**: 28/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **Frontier resolved and fog dispositioned** — every decision node settled; fog closed 01/09/2026 (1 answered · 1 cleared · 2 stay with triggers); slices ready for `02-story-creation`
+**Status:** Complete
+**Status note:** every decision node settled; fog closed 01/09/2026 (1 answered · 1 cleared · 2 stay with triggers); slices ready for `02-story-creation`
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 26
 
 > **Committed here, never shipped.** This file is tracked, so it syncs across devices, and

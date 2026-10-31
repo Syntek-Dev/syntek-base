@@ -94,6 +94,12 @@ jobs:
       - name: A generated project must receive empty standing registers
         run: bash .github/scripts/shipped-registers.sh
 
+      - name: Prove the detector (self-test against polluted board seeds)
+        run: bash .github/scripts/shipped-boards.sh --self-test
+
+      - name: A generated project must receive current, empty PM boards
+        run: bash .github/scripts/shipped-boards.sh
+
   # POSITION, where [1/4] checks SHAPE. A token is inert in a comment and fatal in any
   # position a real parser validates, and the two cannot be told apart by reading text:
   # pnpm accepts <%PROJECT_SLUG%> in package.json's `name` — both manifests still carry
@@ -235,6 +241,11 @@ jobs:
             for f in README.md uv.lock .copier-answers.yml pyproject.toml \
                      VERSION VERSION-HISTORY.md CHANGELOG.md RELEASES.md \
                      GAPS.md DEFERRED.md \
+                     project-management/src/01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md \
+                     project-management/src/02-STORIES/STORIES-BOARD.md \
+                     project-management/src/03-SPRINTS/SPRINTS-BOARD.md \
+                     project-management/src/16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md \
+                     project-management/src/17-STORY-PLANS/STORY-PLANS-BOARD.md \
                      how-to/src/CONTRIBUTING.md .github/workflows/claude.yml \
                      how-to/src/TEMPLATE-TOKENS.md \
                      how-to/src/TEMPLATE-GUIDE/GUIDE-TO-SKILLS.md \

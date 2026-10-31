@@ -16,7 +16,8 @@ settled N-004 and N-008 after finding the guard it was sent to widen was itself 
 obvious form and the other untestable in this repository**. Between them they corrected
 **thirty-one** of this map's own literals and found three populations larger than charted, all
 recorded below**
-**Status**: **Blockers clear — stories may start**
+**Status:** Blockers Clear
+**Status note:** None.
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 24 — **every node on this map is
 settled. N-023 and N-024 were charted and settled on 28/08/2026, in the sitting that closed D**
 

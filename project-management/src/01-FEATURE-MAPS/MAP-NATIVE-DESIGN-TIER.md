@@ -3,7 +3,8 @@
 **Charted**: 09/10/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Charted at**: `1d1290d` · **RESOLVE sitting 1**: 15/10/2026, on `d16de16` (working tree,
 nothing committed)
-**Status**: Resolving · charted 09/10/2026; six research nodes resolved at CHART Step 7; RESOLVE
+**Status:** Resolving
+**Status note:** charted 09/10/2026; six research nodes resolved at CHART Step 7; RESOLVE
 sitting 1 (15/10/2026) recorded six decisions Sam settled in conversation, shrank N-007, N-011 and
 N-015 to what those leave open, and opened N-026 and N-027; fifteen grilling nodes open
 **Frontier open**: 15 · **Blocking open**: 12 · **Resolved**: 12 · **Slices**: 5

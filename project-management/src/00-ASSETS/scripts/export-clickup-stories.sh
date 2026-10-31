@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # export-clickup-stories.sh — Generate client-friendly, ClickUp-ready Markdown per story.
 #
-# For every US###.md in 02-STORIES, emits a stripped US###-CLIENT.md into
+# For every US###.md in 02-STORIES (and its archive/), emits a stripped US###-CLIENT.md into
 # project-management/export/clickup/ containing ONLY the client-facing fields:
 #
 #   - Title          (h1)
@@ -172,8 +172,9 @@ def us_num(p):
     m = re.search(r'US(\d+)', p.name)
     return int(m.group(1)) if m else -1
 
+# Resolved across 02-STORIES/ AND its archive/ — an archived story keeps its export.
 sources = sorted(
-    [p for p in stories_dir.glob('US[0-9]*.md')
+    [p for p in [*stories_dir.glob('US[0-9]*.md'), *stories_dir.glob('archive/US[0-9]*.md')]
      if '-TEMPLATE' not in p.name and us_num(p) > 0],
     key=us_num,
 )

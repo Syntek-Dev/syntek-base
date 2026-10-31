@@ -2,7 +2,8 @@
 
 **Charted**: 16/10/2026 · **Charted by**: Sam, with Claude · **Workflow**: `01-feature-map`
 **Charted at**: `73fd24d` (working tree, nothing committed)
-**Status**: Blockers clear — stories may start · charted 16/10/2026; thirteen decisions Sam
+**Status:** Blockers Clear
+**Status note:** charted 16/10/2026; thirteen decisions Sam
 settled in a grilling sitting before the chart enter as resolved, the map's home was asked at CHART,
 three answers the Step 7 research reopened were settled in a same-day RESOLVE batch, and the three
 grilling nodes an independent review's findings opened were settled with N-022 in a second; at

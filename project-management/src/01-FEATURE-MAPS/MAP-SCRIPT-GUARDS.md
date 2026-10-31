@@ -1,7 +1,8 @@
 # MAP-SCRIPT-GUARDS — Declared doctrine gains its script-layer enforcement
 
 **Charted**: 31/08/2026 · **Charted by**: Sam Bailey · **Workflow**: `01-feature-map`
-**Status**: Resolving · fully charted, then extended — three slices, two cut; `S-01` → `US006` (05/09/2026); `S-02` → `US012` (21/09/2026); `S-03` appended 17/10/2026, blocked on N-007 and N-008
+**Status:** Resolving
+**Status note:** fully charted, then extended — three slices, two cut; `S-01` → `US006` (05/09/2026); `S-02` → `US012` (21/09/2026); `S-03` appended 17/10/2026, blocked on N-007 and N-008
 **Extended at**: `24b932a` (14/10/2026) — N-006 arrived resolved from the `MAP-SENTENCE-RULES`
 grilling (Q3, Q8, Q12); its verification pass opened N-007 and N-008. N-001 to N-005 re-measured
 and unchanged
