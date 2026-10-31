@@ -1,6 +1,6 @@
 # CUT-PLAN — which map slice becomes which story, and in what order
 
-**Last Updated**: 17/10/2026 **Version**: 0.2.0 **Maintained By**: Sam
+**Last Updated**: 31/10/2026 **Version**: 0.2.1 **Maintained By**: Sam
 **Language**: British English (en_GB)
 
 ---
@@ -43,12 +43,15 @@ map's round (P4) moves its rows from `Proposed` to `Settled` in the same change 
 | `Gated`    | The map's own gate box is unticked                   |
 | `Blocked`  | Open blocking nodes on a charting or resolving map   |
 
-**The parked index-row box is open for Sam.** Eight maps leave it unticked, because the row waits
-on MAP-INDEX.md (US010 creates it), not on the map: MAP-GATE-PARITY.md:677, MAP-NAVIGATION.md:790,
-MAP-REGISTER-INDEXES.md:631 and MAP-RULE-OWNERSHIP.md:1501, and four maps open on blocking nodes
-anyway (MAP-SCRIPT-GUARDS.md:187, MAP-SENTENCE-RULES.md:168, MAP-NATIVE-MOBILE-SURFACE.md:248,
-MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md:245). Read literally, P10 opens the first four, able to hold
-under P11, and turns their uncut rows `Gated`. Statuses here stand until Sam rules (17/10/2026).
+**The parked index-row box gates nothing** (Sam, 31/10/2026, index-row grilling Q1). Eight maps
+leave it unticked, because the row waits on MAP-INDEX.md (US010 creates it), not on the map:
+MAP-GATE-PARITY.md:677, MAP-NAVIGATION.md:790, MAP-REGISTER-INDEXES.md:631 and
+MAP-RULE-OWNERSHIP.md:1501, and four maps open on blocking nodes anyway (MAP-SCRIPT-GUARDS.md:187,
+MAP-SENTENCE-RULES.md:168, MAP-NATIVE-MOBILE-SURFACE.md:248, MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md:245).
+P10 excludes the box, as MAP-REGISTER-INDEXES.md:631 already ruled ("a recorded refusal is not
+drift"; exercised when US010 was cut), so the first four stay released and their rows keep their
+statuses. The other thirteen maps tick the same box over the same absent row; all are left as they read, because
+US010 disposes of every box when it ships (US010.md:754-759; Q2).
 
 **`~` marks a hint.** SP and MoSCoW on `Proposed`, `Held` and `Gated` rows are the drafter's
 estimates from the scope notes in the readiness assessment of 21/09/2026, so a hint exists only on
@@ -61,7 +64,7 @@ settled, or stated by the map with its line cited.
 
 ---
 
-## Programme decisions (Sam, 21/09/2026, 27/09/2026 and 17/10/2026)
+## Programme decisions (Sam, 21/09/2026, 27/09/2026, 17/10/2026 and 31/10/2026)
 
 | #   | Decision                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -74,7 +77,7 @@ settled, or stated by the map with its line cited.
 | P7  | This file is where the plan lives — option 2 of three; the alternatives were each map's Slices section, or a handoff                                                                                                                                                                                                                                                                                                                                                            |
 | P8  | **27/09/2026.** SPRINT-08 is RULE-OWNERSHIP's: US013 then US014, 11 / 11. REGISTER-INDEXES S-03 is **not** cut into it and has no sprint; it stays `Proposed` at map-order row 10. This supersedes the 21/09/2026 settlement "S-03 is cut straight after US011's gates, into a new SPRINT-08" (US010 / US011 gate grilling, round 1 Q1 and round 2 Q13), which the six US010 / US011 gate documents record                                                                      |
 | P9  | **27/09/2026.** US012's work runs alongside US010's and US011's as one body of work. The two sessions' holds on each other lift: neither waits for the other's commit (SPRINT-07 Notes; the gate session's round 2 Q9)                                                                                                                                                                                                                                                          |
-| P10 | **17/10/2026.** A map is **open** while it has any blocking node open or any gate box unticked. MAP-INSTRUCTION-DELIVERY (0 blocking, gate ticked; MAP-INSTRUCTION-DELIVERY.md:5-6, :231-240) is therefore not open: it is released, its slices are cuttable, and P5 is amended to MAP-NATIVE-MOBILE-SURFACE -> MAP-BUN-TOPOLOGY                                                                                                                                                |
+| P10 | **17/10/2026.** A map is **open** while it has any blocking node open or any gate box unticked. MAP-INSTRUCTION-DELIVERY (0 blocking, gate ticked; MAP-INSTRUCTION-DELIVERY.md:5-6, :231-240) is therefore not open: it is released, its slices are cuttable, and P5 is amended to MAP-NATIVE-MOBILE-SURFACE -> MAP-BUN-TOPOLOGY. **Amended 31/10/2026:** "any gate box" excludes the index-row box, which waits on US010, not on the map (see the parked-box note above)       |
 | P11 | **17/10/2026.** An open map **holds** a slice only when it names that slice as affected (the MAP-BUN-TOPOLOGY N-004 basis, MAP-BUN-TOPOLOGY.md:202-205) or deletes the surface the slice builds on (the MAP-ABSENCE S-04 / S-05 basis, MAP-NATIVE-MOBILE-SURFACE.md:121). Anything else is a merge-order note or a "risk no row carries" note, never a hold                                                                                                                     |
 | P12 | **17/10/2026.** A map's own grilling is **not** its P4 round — MAP-PIN-DETECT-MOVE's Step 8a sitting (MAP-PIN-DETECT-MOVE.md:56) and MAP-INSTRUCTION-DELIVERY's two `/grill-with-docs` rounds (MAP-INSTRUCTION-DELIVERY.md:97-100) set no MoSCoW. Rows from a map with no P4 round read `Proposed`; the legend's `Proposed` reads "No P4 round yet" and `Blocked` widens to a charting or resolving map. One short round per map later sets MoSCoW and turns its rows `Settled` |
 | P13 | **17/10/2026.** Merge order where MAP-INSTRUCTION-DELIVERY overlaps settled work: the settled stories land first; INSTRUCTION-DELIVERY S-02 and S-10 rebase onto them (MAP-INSTRUCTION-DELIVERY.md:125, :133); the first story to cross the 270-line ratchet on `.claude/CLAUDE.md` carries the dated allowance, as the accepted call in MAP-RULE-OWNERSHIP's section already says; MAP-NAVIGATION's slices are re-read when INSTRUCTION-DELIVERY lands                         |
