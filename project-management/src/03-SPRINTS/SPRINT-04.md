@@ -1,6 +1,6 @@
 # SPRINT-04
 
-**Last Updated**: 21/09/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 31/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -202,12 +202,24 @@ SPRINT-05 — until that day it stood in three records only, four rows long, and
 | `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
 | `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
 | `SPRINT-07` | US012 (`Must`, 2) then US011 (`Should`, 8, stretch)             | 10 / 11 — closed                                            |
+| `SPRINT-08` | US013 (`Must`, 3)                                               | 3 / 11 — open                                               |
 
 Each record owns its own row, and **every record carries the whole table**: a membership or a
 capacity change is written into every copy in the same change. It is maintained by hand — no gate
 reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
 `project-management/docs/planning/SPRINTS.md`. Obligation:
 `project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- ONE ROW ADDED, 31/10/2026 at 03-sprint-planning. `SPRINT-08` opened that day with its first
+     admitted story, US013 (`Must`, 3), cut the same day from
+     project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md slice `S-01`; it stands at
+     3 / 11, inside capacity, open, and short of the fill trigger (settled 31/10/2026,
+     03-sprint-planning grilling round 1 Q2). The comment below says SPRINT-08 "does not exist
+     yet": true when written on 21/09/2026, and true until this day. CUT-PLAN.md P8's reservation
+     of the rest of that record for US014 (provisional, 8 SP) is stated in SPRINT-08's own Notes,
+     not in its cell, because US014 is not cut. No other row moved; checked against each record's
+     own capacity line as well as against the other copies, per
+     project-management/src/03-SPRINTS/CLAUDE.md, and every row agrees with its source. -->
 
 <!-- THE SAME ROW CHANGED AGAIN LATER ON 21/09/2026, at 03-sprint-planning. The SPRINT-07 row's
      SP cell read "10 / 11 — open" from US012's admission, recorded below, until

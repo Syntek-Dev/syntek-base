@@ -1,6 +1,6 @@
 # SPRINT-PLAN-07 — A seed that fails to land is reported, and the four indexes that shipped declaring their debt are backfilled
 
-**Last Updated**: 03/10/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
+**Last Updated**: 31/10/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
 **Source sprint:** `../03-SPRINTS/SPRINT-07.md` · **Capacity:** 2 SP Must + 8 SP Should = 10 / 11 — inside capacity, the 1 SP of headroom left unpadded, **CLOSED** to admission by call on 21/09/2026 · **Stories:** 2
 
 <!-- Written 03/10/2026 by a `16-sprint-plans` run, in a change of its own (settled 28/09/2026,
@@ -624,7 +624,9 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       stretch tier and the first work dropped if US012 overruns, and dropping it does not fail the
       sprint. **No record can receive it** — SPRINT-08 does not exist, and once opened is
       RULE-OWNERSHIP's at 11 / 11 — so its placement is owed to `03-sprint-planning`, and wherever
-      it lands, it lands ahead of `S-03`
+      it lands, it lands ahead of `S-03`. Updated 31/10/2026: SPRINT-08 opened that day with US013
+      at 3 / 11 (`../03-SPRINTS/SPRINT-08.md`), the rest reserved for US014 under P8, so it is
+      still not a receiving record and nothing moves
 - [ ] **US010 landed before US011 started — confirmed, not assumed.** The four indexes exist, carry
       their `Backfill owed — US011` line, and have the tails and ordering rules US010 designed. If
       any of that is absent US011 cannot start; US012 can

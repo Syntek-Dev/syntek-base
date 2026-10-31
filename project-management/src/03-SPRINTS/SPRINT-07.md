@@ -1,6 +1,6 @@
 # SPRINT-07
 
-**Last Updated**: 03/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 31/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -346,7 +346,9 @@ Notes.
   own "the next record" was written against a record that did not exist. Updated 27/09/2026: nor
   is SPRINT-08 that record once it opens, because CUT-PLAN.md P8 fills it at 11 / 11. Placing a
   dropped US011 is therefore owed to `03-sprint-planning`, and the Definition of Done carries the
-  arithmetic. **US012 carries nowhere**: it is the `Must`, and
+  arithmetic. Updated 31/10/2026: SPRINT-08 opened that day with US013 at 3 / 11
+  (`project-management/src/03-SPRINTS/SPRINT-08.md`); P8 still fills it with US014, so it is not
+  the receiving record and nothing moves. **US012 carries nowhere**: it is the `Must`, and
   `project-management/docs/planning/SPRINTS.md` -> _MoSCoW_ defines that tier as the one the sprint
   fails without.
 - **`Blocked` is a story status, not a sprint one.** US012's and US011's own `**Status:**` lines
@@ -536,12 +538,24 @@ SPRINT-05 — until that day it stood in three records only, four rows long, and
 | `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
 | `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
 | `SPRINT-07` | US012 (`Must`, 2) then US011 (`Should`, 8, stretch)             | 10 / 11 — closed                                            |
+| `SPRINT-08` | US013 (`Must`, 3)                                               | 3 / 11 — open                                               |
 
 Each record owns its own row, and **every record carries the whole table**: a membership or a
 capacity change is written into every copy in the same change. It is maintained by hand — no gate
 reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
 `project-management/docs/planning/SPRINTS.md`. Obligation:
 `project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- ONE ROW ADDED, 31/10/2026 at 03-sprint-planning. `SPRINT-08` opened that day with its first
+     admitted story, US013 (`Must`, 3), cut the same day from
+     project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md slice `S-01`; it stands at
+     3 / 11, inside capacity, open, and short of the fill trigger (settled 31/10/2026,
+     03-sprint-planning grilling round 1 Q2). The comment below says SPRINT-08 "does not exist
+     yet": true when written on 21/09/2026, and true until this day. CUT-PLAN.md P8's reservation
+     of the rest of that record for US014 (provisional, 8 SP) is stated in SPRINT-08's own Notes,
+     not in its cell, because US014 is not cut. No other row moved; checked against each record's
+     own capacity line as well as against the other copies, per
+     project-management/src/03-SPRINTS/CLAUDE.md, and every row agrees with its source. -->
 
 <!-- THE SAME ROW CHANGED AGAIN LATER ON 21/09/2026, at 03-sprint-planning. The SPRINT-07 row's
      SP cell read "10 / 11 — open" from US012's admission, recorded below, until
@@ -640,6 +654,11 @@ record, which is also why the Definition of Done's drop branch for US011 still n
 Updated 27/09/2026: `project-management/src/02-STORIES/CUT-PLAN.md` P8 gives that record to
 RULE-OWNERSHIP, US013 then US014 at 11 / 11. It still does not exist, and once it opens it is full,
 so it cannot receive US011's 8 SP either. The Definition of Done carries the arithmetic.
+Updated 31/10/2026: SPRINT-08 now exists — opened that day at `03-sprint-planning` by its first
+admitted story, US013 (`Must`, 3), at 3 / 11
+(`project-management/src/03-SPRINTS/SPRINT-08.md`; settled 31/10/2026, 03-sprint-planning grilling
+round 1 Q2). The rest of it stays reserved for US014 under P8, so it is still not a receiving
+record for US011, and nothing moves.
 
 **As admitted, 21/09/2026, and superseded by the close above the same day — OPEN to admission
 then, on a narrower reading: the tier it was held open for had arrived, and 1 SP of headroom was
@@ -1520,7 +1539,9 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       that did not exist. **Nor will SPRINT-08 take it once opened**:
       `project-management/src/02-STORIES/CUT-PLAN.md` P8 (27/09/2026) gives that record to
       RULE-OWNERSHIP, US013 then US014 at 11 / 11, and 8 SP more is 19 / 11, past the 13 SP grace
-      ceiling. Where a dropped US011 is reserved is therefore a placement **owed to
+      ceiling. Updated 31/10/2026: SPRINT-08 opened that day with US013 at 3 / 11, and P8's
+      reservation for US014 still stands, so the arithmetic holds and nothing moves. Where a
+      dropped US011 is reserved is therefore a placement **owed to
       `03-sprint-planning`**, and this record makes none. Wherever it lands, it lands ahead of
       `S-03`, whose presence clause is red on the four debt-carrying indexes until US011 lands
       (settled 21/09/2026, grilling round 1 Q1), and which is itself unscheduled (P8). On that
@@ -1606,6 +1627,14 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      `S-03` wherever it goes (US011.md -> MoSCoW Priority, round 3 Q19). The row's earlier
      sentence, that there is no SPRINT-08 to reserve the 8 SP into, still stands, because that
      record still does not exist. -->
+
+<!-- 31/10/2026, at 03-sprint-planning. SPRINT-08 opened that day with US013 (`Must`, 3) at
+     3 / 11, project-management/src/03-SPRINTS/SPRINT-08.md. The drop-branch row's "There is no
+     `SPRINT-08` to reserve the 8 SP into" and the comment above's "that record still does not
+     exist" were true until that day and are left as written; the row gains a dated sentence
+     instead. Its conclusion does not move: under CUT-PLAN.md P8 SPRINT-08 is RULE-OWNERSHIP's at
+     11 / 11 with US014, so a dropped US011 still has no receiving record and its placement stays
+     owed to `03-sprint-planning`. -->
 
 <!-- AMENDED 27/09/2026 after two verified passes of the US010 / US011 write-back, when
      project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md reached
