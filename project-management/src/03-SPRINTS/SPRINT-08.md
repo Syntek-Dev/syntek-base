@@ -45,23 +45,60 @@ no plan is owed by this admission. See Notes.
      11-qa-checks, runs before US014 is cut (CUT-PLAN.md P1: one story at a time). Per
      code/docs/GATE-REPORTING.md this is a gate not yet entered, reported as such — not a gate
      that found nothing. When gate 11 closes, the union is recomputed here from the member's table
-     as that gate leaves it. -->
+     as that gate leaves it.
 
-| Flag       | Value                                                                                                                                                                                                                                                                                            |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| DB         | N/A                                                                                                                                                                                                                                                                                              |
-| User Flow  | N/A                                                                                                                                                                                                                                                                                              |
-| Brand      | N/A                                                                                                                                                                                                                                                                                              |
-| Components | N/A                                                                                                                                                                                                                                                                                              |
-| Wireframes | N/A                                                                                                                                                                                                                                                                                              |
-| GDPR       | N/A — the personal-data path left this slice for S-07 and S-08 when Batch E split (Q14, 27/08/2026)                                                                                                                                                                                              |
-| Security   | N/A                                                                                                                                                                                                                                                                                              |
-| QA         | manual — `docs-length.sh`, `docs-pairing.sh`, `doc-references.sh`, `doctrine-drift.sh`; generated-project check — on every render path the template offers, every token in scope renders and no unmarked vendor literal survives in `code/workflows/09-debugging-with-logs/` or `code/src/logs/` |
-| SEO        | N/A                                                                                                                                                                                                                                                                                              |
-| API        | N/A                                                                                                                                                                                                                                                                                              |
-| Logging    | N/A                                                                                                                                                                                                                                                                                              |
-| Backend    | N/A                                                                                                                                                                                                                                                                                              |
-| Frontend   | N/A                                                                                                                                                                                                                                                                                              |
+     RECOMPUTED 31/10/2026 AT 11-qa-checks, from US013's table as that gate left it, copied
+     verbatim: the QA row now searches case-insensitively (11-qa-checks grilling round 1, Q6), and
+     the Security, SEO and Logging rows carry a one-line inline reason as the GDPR row does (Claude's
+     call, accepted in the same round). No row changed between N/A and a value. The "first-pass"
+     paragraph above is the record of the opening and is kept as written: gate 11 has run
+     (project-management/src/11-QA/PLANNING/QA-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md) but is not
+     closed, because the plan is not signed off and AC-GAP-5 is OPEN.
+
+     AMENDED 31/10/2026 after 11-qa-checks grilling round 2 (Q10, Q11): AC-GAP-5 is RESOLVED into
+     US013 — four LogQL-bound Loki sites held literal, STEPS.md:176 reworded vendor-free, the
+     LOG_AGGREGATOR count 12. US013's flag table did not change, so the union above stands. Gate 11
+     is still not closed: the plan is not signed off, and its qa-tester dispatch is owed.
+
+     AMENDED 31/10/2026 after the 11-qa-checks qa-tester run: eleven findings, seven folded into
+     the plan and US013 (wording and task repairs, no flag moved), and five gaps opened with
+     <%DEVELOPER_NAME%> as AC-GAP-6 to -10 (one finding split between the two). US013's flag table
+     did not change, so the union above stands. Gate 11 is still not closed: five [OPEN] gaps and
+     no sign-off.
+
+     RECOMPUTED 31/10/2026 after 11-qa-checks grilling round 3 (Q12 to Q16): AC-GAP-6 to -10
+     RESOLVED into US013. Its QA row changed in wording, not between N/A and a value — the
+     unmarked-literal grep now runs on the non-default Bugsink / Fluent Bit render only, and the CI
+     default paths check only that every token renders (Q13) — and is copied here verbatim. Gate 11
+     has no [OPEN] gap and its qa-tester run is done; it closes on <%DEVELOPER_NAME%>'s sign-off.
+
+     AMENDED 31/10/2026 after the scoped qa-tester re-check of round 3: AC-GAP-11 and -12 are
+     [OPEN] in the QA plan, waiting on <%DEVELOPER_NAME%>. US013's QA row is unchanged, so nothing
+     is recopied; the previous paragraph is kept as the record of round 3, and Gate 11 is not
+     closed until both are ruled.
+
+     AMENDED 31/10/2026 after 11-qa-checks grilling round 4 (Q17, Q18): AC-GAP-11 and -12
+     RESOLVED into US013 — Alloy also leaves the TEMPLATE-GUIDE/05-ANSWERS.md:124 copy of the help
+     list, the two "proven alternates" lists go to Out of Scope and the DEFERRED.md entry, and the
+     recorded reason is that Alloy is the reference deployment's own shipper. US013's flag table
+     did not change, so nothing is recopied. Gate 11 has no [OPEN] gap, its qa-tester run and
+     scoped re-check are done; it closes on <%DEVELOPER_NAME%>'s sign-off. -->
+
+| Flag       | Value                                                                                                                                                                                                                                                                                                                                                                            |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DB         | N/A                                                                                                                                                                                                                                                                                                                                                                              |
+| User Flow  | N/A                                                                                                                                                                                                                                                                                                                                                                              |
+| Brand      | N/A                                                                                                                                                                                                                                                                                                                                                                              |
+| Components | N/A                                                                                                                                                                                                                                                                                                                                                                              |
+| Wireframes | N/A                                                                                                                                                                                                                                                                                                                                                                              |
+| GDPR       | N/A — the personal-data path left this slice for S-07 and S-08 when Batch E split (Q14, 27/08/2026)                                                                                                                                                                                                                                                                              |
+| Security   | N/A — no authentication, permission, endpoint or personal-data path; the edit set is Markdown and `copier.yml` comment and help text                                                                                                                                                                                                                                             |
+| QA         | manual — `docs-length.sh`, `docs-pairing.sh`, `doc-references.sh`, `doctrine-drift.sh`; generated-project check — on every render path the template offers, every token in scope renders; on the non-default Bugsink / Fluent Bit render only, no unmarked vendor literal survives, searched case-insensitively, in `code/workflows/09-debugging-with-logs/` or `code/src/logs/` |
+| SEO        | N/A — no public page; every file edited is developer documentation                                                                                                                                                                                                                                                                                                               |
+| API        | N/A                                                                                                                                                                                                                                                                                                                                                                              |
+| Logging    | N/A — a document about logs: no logger, event, field, level or retention is added or changed                                                                                                                                                                                                                                                                                     |
+| Backend    | N/A                                                                                                                                                                                                                                                                                                                                                                              |
+| Frontend   | N/A                                                                                                                                                                                                                                                                                                                                                                              |
 
 ---
 
@@ -207,8 +244,11 @@ One outcome, the sole member's: workflow 09 and the `code/src/logs/` pair carry 
 call and no unmarked vendor literal; their vendor names render from the project's own answers; and
 09 ends at the root cause, with a verification step that runs nothing it does not own. The four
 documentation gates and the generated-project check in the QA flag run against it, each under the
-regime the Verification Checks give it. The six Gherkin scenarios are US013's own and are not
+regime the Verification Checks give it. The seven Gherkin scenarios are US013's own and are not
 restated here (`project-management/src/02-STORIES/US013.md` -> Acceptance Criteria).
+
+<!-- AMENDED 31/10/2026 after 11-qa-checks grilling round 3: "six" until then. Q14 added a seventh
+     scenario to US013 — a dev fault rooted at Step 2 is routed to 10-debug. -->
 
 ### QA Acceptance Criteria — Manual
 
@@ -220,24 +260,54 @@ restated here (`project-management/src/02-STORIES/US013.md` -> Acceptance Criter
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
 - [ ] `project-management/src/18-TESTS/MANUAL/US013-MANUAL-TESTING.md` carries a tester sign-off
       block — a path that does not exist on 31/10/2026; `17-story-plans` writes it
-- [ ] **No `[OPEN]` acceptance-criteria gap remains** in US013's QA plan, which `11-qa-checks` writes
-      under `project-management/src/11-QA/PLANNING/` and which does not exist on 31/10/2026
+- [ ] **No `[OPEN]` acceptance-criteria gap remains** in US013's QA plan,
+      `project-management/src/11-QA/PLANNING/QA-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`, written at
+      `11-qa-checks` on 31/10/2026 — AC-GAP-1 to -5 resolved into the story the same day (AC-GAP-5
+      in 11-qa-checks grilling round 2), and AC-GAP-6 to -10, raised by the `qa-tester` run of
+      31/10/2026, resolved into it in 11-qa-checks grilling round 3 the same day; and AC-GAP-11 and
+      -12, raised by the scoped `qa-tester` re-check of 31/10/2026, resolved into it in
+      11-qa-checks grilling round 4 the same day. **No gap is `[OPEN]`**; the plan's sign-off is
+      <%DEVELOPER_NAME%>'s
+
+<!-- AMENDED 31/10/2026 at 11-qa-checks: the criterion above read "in US013's QA plan, which
+     `11-qa-checks` writes under `project-management/src/11-QA/PLANNING/` and which does not exist
+     on 31/10/2026" until the plan was written the same day. -->
 
 ---
 
 ## Tasks
 
 All tasks below are sprint-level rollups. Detailed task lists live in the story file —
-`project-management/src/02-STORIES/US013.md` -> Tasks carries twelve documentation tasks and is not
+`project-management/src/02-STORIES/US013.md` -> Tasks carries seventeen documentation tasks and is not
 restated here.
+
+<!-- AMENDED 31/10/2026 at 11-qa-checks: "twelve" until then. The gate added two tasks to the story
+     — the browser-SDK rewording (11-qa-checks grilling round 1, Q7) and LOG_AGGREGATOR's help text
+     (Q9) — and amended the tokenisation task's counts and exemptions (Q7, Q8). "Fourteen" became
+     "fifteen" the same day, when an independent review of the 11-qa pass gave the Q8 S-07 record its
+     own task (a dated note on the S-07 row of MAP-RULE-OWNERSHIP.md). Still fifteen after
+     11-qa-checks grilling round 2 (31/10/2026, Q10, Q11): the STEPS.md:176 rewording was folded into
+     the tokenise task, whose LOG_AGGREGATOR count moved from 11 to 12, and the S-07 note task now
+     names its four literal sites. "Fifteen" became "sixteen" after the 11-qa-checks qa-tester run
+     (31/10/2026), which added the CHECKLIST.md:43 references task (item 11); its other folded
+     findings amended existing tasks. "Sixteen" became "seventeen" after 11-qa-checks grilling
+     round 3 (31/10/2026), which added the CHECKLIST.md:38 rewording task (Q15) and amended the
+     marker (Q12), 10-debug re-home (Q14) and LOG_AGGREGATOR help-text (Q16) tasks. Still
+     seventeen after 11-qa-checks grilling round 4 (31/10/2026, Q17, Q18): the 05-ANSWERS.md:124
+     mirror and the restated reason amended the LOG_AGGREGATOR help-text task; none was added. -->
+
+<!-- AMENDED 31/10/2026 after 11-qa-checks grilling round 3 (Q13): the generated-project QA task
+     below read "run on every render path the template offers and on one extra answer set …, the
+     vendor-literal search case-insensitive" until then. -->
 
 ### QA Tasks — Manual
 
 - [ ] US013 — the four documentation gates run, and their output recorded in its manual testing
       guide, `doc-references.sh` read as a diff against the baseline captured before the first edit
-- [ ] US013 — the generated-project check run on every render path the template offers and on one
-      extra answer set with non-default `ERROR_TRACKING` and `LOG_AGGREGATOR`, the paths it ran
-      recorded
+- [ ] US013 — the generated-project check: on the two CI default render paths, only that every
+      token renders and every token name is a defined question; on one extra `sed` render with
+      `ERROR_TRACKING=Bugsink` and `LOG_AGGREGATOR=Fluent Bit`, and there only, the case-insensitive
+      unmarked-vendor-literal search; the paths it ran and their run IDs recorded
 - [ ] US013 — each routed command typed as written against a running dev stack, its output recorded
 - [ ] US013 — the human read-across: the truncate stated once between 09 Step 2 and
       `code/src/logs/CONTEXT.md`, and no sentence in scope reading wrongly with a substituted name
