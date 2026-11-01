@@ -56,8 +56,9 @@ _The manual testing guide for US013 — the reads, renders, gate runs and the on
     reads** — `S-07` (US014); this guide checks only that the map note records them (MARKERS-04).
   - **`CHECKLIST.md`:39 and :56, and any dev-path handoff box** — `S-04`, named in the story's Out of
     Scope; CUT-03 excludes them explicitly.
-  - **The `DEFERRED.md` entry and the `GAPS.md` close** — written by `22` itself at this walk's
-    closeout and checked under the story's Definition of Done, not here.
+  - **The `DEFERRED.md` entry** — written by `22` itself at this walk's closeout and checked under
+    the story's Definition of Done, not here. There is no `GAPS.md` close: items 1-2 of the
+    17/09/2026 entry left the register on 01/11/2026 (`.claude/CLAUDE.md` Section 9).
   - **Other flag combinations as separate renders** — not walked: EC-04's reading (RENDER-02) is why
     two CI paths stand for every render path (QA plan Q2, Section 8).
 - **Open questions:** None. The one row the records could not decide — how EC-01's Sentry reading is

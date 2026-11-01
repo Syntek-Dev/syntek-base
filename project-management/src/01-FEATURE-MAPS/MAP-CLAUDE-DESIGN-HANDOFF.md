@@ -2,7 +2,7 @@
 
 **Charted**: 22/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Status:** Complete
-**Status note:** frontier and fog cleared 01/09/2026; five slices defined (S1–S5), none cut into a story yet
+**Status note:** frontier and fog cleared 01/09/2026 (fog `F-01`–`F-07` recorded as nodes 01/11/2026); five slices defined (S1–S5), none cut into a story yet
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 23
 
 > **Committed here, never shipped.** `copier.yml` `_exclude` empties `project-management/src/**`
@@ -112,13 +112,13 @@ node, and none of them decides anything.**
 **Cut 01/09/2026, every frontier node resolved.** Stories and their numbers come from
 `02-story-creation`; a slice row is the base, never the story.
 
-| Slice | Story | Title                              | Nodes                                           | Acceptance                                                                                                                                                                                                     | Flags      |
-| ----- | ----- | ---------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| S1    | TBD   | Artifact posture and documentation | N-002, N-003, N-023                             | Deprecated `disableArtifact` dropped here; copier question ships, defaulting off; availability floor + degraded tier documented in `DESIGN.md`; Optional rows in `03-PREREQUISITES.md` and `08-CLAUDE-CODE.md` | N/A        |
-| S2    | TBD   | Brand + components go HTML         | N-006, N-016                                    | Both generators emit self-contained HTML; the PDF is derived by headless render; `--check` asserts the `.html`; all three slop audits pass over them at `18`                                                   | Components |
-| S3    | TBD   | The handoff step in `18`           | N-004, N-007, N-008, N-012, N-013, N-015, N-017 | `18` gains the flagged step: per-family packaging with `wireframe.css` inlined, publish, sign-off transcribed into the consolidation record; the reference-bundle path gitignored                              | Wireframes |
-| S4    | TBD   | Diagram pipeline                   | N-018, N-019, N-020, N-021                      | `mcp-mermaid` PNG exports land in `ERD-DIAGRAMS/` and `DIAGRAMS/`, regenerated at `18` alongside Step 6; designed diagrams rendered per batch at `18`; folder rules updated                                    | N/A        |
-| S5    | TBD   | The brief and its surfaces         | N-005, N-009, N-010, N-011, N-022               | `DESIGN.md` routes, staying under `docs-length.sh`; the tokenised brief template ships and completes at first-time setup; a generated `## Design system` block is emitted from the DB-canonical layer          | N/A        |
+| Slice | Story | Title                              | Nodes                                           | Acceptance                                                                                                                                                                                                     | Flags      | Carries |
+| ----- | ----- | ---------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------- |
+| S1    | TBD   | Artifact posture and documentation | N-002, N-003, N-023                             | Deprecated `disableArtifact` dropped here; copier question ships, defaulting off; availability floor + degraded tier documented in `DESIGN.md`; Optional rows in `03-PREREQUISITES.md` and `08-CLAUDE-CODE.md` | N/A        | —       |
+| S2    | TBD   | Brand + components go HTML         | N-006, N-016                                    | Both generators emit self-contained HTML; the PDF is derived by headless render; `--check` asserts the `.html`; all three slop audits pass over them at `18`                                                   | Components | —       |
+| S3    | TBD   | The handoff step in `18`           | N-004, N-007, N-008, N-012, N-013, N-015, N-017 | `18` gains the flagged step: per-family packaging with `wireframe.css` inlined, publish, sign-off transcribed into the consolidation record; the reference-bundle path gitignored                              | Wireframes | —       |
+| S4    | TBD   | Diagram pipeline                   | N-018, N-019, N-020, N-021                      | `mcp-mermaid` PNG exports land in `ERD-DIAGRAMS/` and `DIAGRAMS/`, regenerated at `18` alongside Step 6; designed diagrams rendered per batch at `18`; folder rules updated                                    | N/A        | —       |
+| S5    | TBD   | The brief and its surfaces         | N-005, N-009, N-010, N-011, N-022               | `DESIGN.md` routes, staying under `docs-length.sh`; the tokenised brief template ships and completes at first-time setup; a generated `## Design system` block is emitted from the DB-canonical layer          | N/A        | —       |
 
 **The 31/08 manifest expectation held**: the code-shaped flags read `N/A` throughout, and
 `Components` (S2) and `Wireframes` (S3) are exactly the two that fire.
@@ -139,15 +139,23 @@ blocker. Renamed from `task` on 31/08/2026; the old name was never once used as 
 
 ## Fog of war
 
-**Empty — every item dispositioned 01/09/2026:**
+**Empty — every item dispositioned 01/09/2026.** On 01/11/2026 each took an `F-NN` ID and the
+record below names its route (wayfinder → _Fog of war_): all seven were answered by nodes, `F-06`
+as a reasonable call under N-013 noted for override. The record, not open items:
 
-- django-components recognition → mooted by N-011: the generated `## Design system` block has documented precedence over codebase inference
-- WYSIWYG artboard editing value → mooted by N-007: the bundle is reference-only; canonical edits are made by hand
-- Token cost of one batch → bounded by N-013 (per-family artifacts); observed in practice, tunes nothing structural
-- Mirroring client comment threads → mooted by N-017: transcription into `18`'s record is the mechanism
-- `/design` withdrawn after the preview → covered by N-003 + N-004: the documented degraded path is the standing fallback
-- Mobile screens (390 × 844) → **reasonable call, noted for override**: mobile wireframes join the wireframes family artifact when the mobile surface exists; repo-only otherwise
-- Whether a designed ERD is a real client artefact → settled by N-019: it is the client tier, by decision
+**F-01 (route 1).** django-components recognition → mooted by N-011: the generated `## Design system` block has documented precedence over codebase inference
+
+**F-02 (route 1).** WYSIWYG artboard editing value → mooted by N-007: the bundle is reference-only; canonical edits are made by hand
+
+**F-03 (route 1).** Token cost of one batch → bounded by N-013 (per-family artifacts); observed in practice, tunes nothing structural
+
+**F-04 (route 1).** Mirroring client comment threads → mooted by N-017: transcription into `18`'s record is the mechanism
+
+**F-05 (route 1).** `/design` withdrawn after the preview → covered by N-003 + N-004: the documented degraded path is the standing fallback
+
+**F-06 (route 1, N-013).** Mobile screens (390 × 844) → **reasonable call, noted for override**: mobile wireframes join the wireframes family artifact when the mobile surface exists; repo-only otherwise
+
+**F-07 (route 1).** Whether a designed ERD is a real client artefact → settled by N-019: it is the client tier, by decision
 
 ---
 

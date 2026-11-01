@@ -117,12 +117,12 @@ before charting**.
 
 ## Slices
 
-| Slice | Story | Title                                   | Nodes                                                                              | Acceptance                                                                                                                                                                                                           | Flags                                                                                                                      |
-| ----- | ----- | --------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| S-01  | —     | Retire the React Native surface         | N-001 ⛔ · N-002 ⛔ · N-003 ⛔ · N-005 ○                                           | No `code/src/mobile/`, no `code/src/scripts/mobile/`, no `stack-react-native` skill, no `INCLUDE_MOBILE`. Both render paths generate clean; `template-orphans.sh`, `routing-skills.sh` and `doc-references.sh` green | Docs: 9 files · Gates: `template-orphans`, `routing-skills`, `doc-references`, `docs-pairing` · Copier: answer key removal |
-| S-02  | —     | The cross-native doctrine layer         | N-004 ⛔ · N-011 ⛔ · N-012 ⛔ · N-013 ⛔ · N-016 ⛔ · N-017 ○ · N-019 ○ · N-020 ○ | Token emitters, error taxonomy, type discipline, accessibility, testing floors and skills specified for both native surfaces before either tree exists                                                               | Docs: token/a11y/types/coding-principles families · Gates: new audit rows within `audits/CONTEXT.md` headroom              |
-| S-03  | —     | The Android surface (`INCLUDE_ANDROID`) | N-007 ⛔ · N-008 ⛔ · N-009 ⛔ · N-014 ○ · N-015 ○ · N-018 ○ · N-021 ○             | A project answering `INCLUDE_ANDROID` true generates a building, linting, testing Kotlin tree; **Linux CI only** — no Apple hardware                                                                                 | Copier: new bool · CI: Gradle on Linux · Gates: token, types, negative-space, a11y                                         |
-| S-04  | —     | The iOS surface (`INCLUDE_IOS`)         | N-006 ⛔ · N-010 ⛔ · N-014 ○ · N-015 ○ · N-018 ○ · N-021 ○                        | A project answering `INCLUDE_IOS` true generates a building, linting, testing Swift tree on a macOS runner that **reports rather than skips**                                                                        | Copier: new bool · CI: macOS runner · Gates: as S-03                                                                       |
+| Slice | Story | Title                                   | Nodes                                                                              | Acceptance                                                                                                                                                                                                           | Flags                                                                                                                      | Carries |
+| ----- | ----- | --------------------------------------- | ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------- |
+| S-01  | —     | Retire the React Native surface         | N-001 ⛔ · N-002 ⛔ · N-003 ⛔ · N-005 ○                                           | No `code/src/mobile/`, no `code/src/scripts/mobile/`, no `stack-react-native` skill, no `INCLUDE_MOBILE`. Both render paths generate clean; `template-orphans.sh`, `routing-skills.sh` and `doc-references.sh` green | Docs: 9 files · Gates: `template-orphans`, `routing-skills`, `doc-references`, `docs-pairing` · Copier: answer key removal | —       |
+| S-02  | —     | The cross-native doctrine layer         | N-004 ⛔ · N-011 ⛔ · N-012 ⛔ · N-013 ⛔ · N-016 ⛔ · N-017 ○ · N-019 ○ · N-020 ○ | Token emitters, error taxonomy, type discipline, accessibility, testing floors and skills specified for both native surfaces before either tree exists                                                               | Docs: token/a11y/types/coding-principles families · Gates: new audit rows within `audits/CONTEXT.md` headroom              | —       |
+| S-03  | —     | The Android surface (`INCLUDE_ANDROID`) | N-007 ⛔ · N-008 ⛔ · N-009 ⛔ · N-014 ○ · N-015 ○ · N-018 ○ · N-021 ○             | A project answering `INCLUDE_ANDROID` true generates a building, linting, testing Kotlin tree; **Linux CI only** — no Apple hardware                                                                                 | Copier: new bool · CI: Gradle on Linux · Gates: token, types, negative-space, a11y                                         | —       |
+| S-04  | —     | The iOS surface (`INCLUDE_IOS`)         | N-006 ⛔ · N-010 ⛔ · N-014 ○ · N-015 ○ · N-018 ○ · N-021 ○                        | A project answering `INCLUDE_IOS` true generates a building, linting, testing Swift tree on a macOS runner that **reports rather than skips**                                                                        | Copier: new bool · CI: macOS runner · Gates: as S-03                                                                       | —       |
 
 **Node state:** `✅` resolved · `○` open · `⛔` open **and** blocking.
 
@@ -201,15 +201,15 @@ not a rewrite. This is why S-02 can run ahead of the forge.
 
 ## Fog of war
 
-- Whether a shared "mobile" doctrine layer survives at all, or Android and iOS are fully
+- **F-01 — A shared mobile doctrine layer** — Whether a shared "mobile" doctrine layer survives at all, or Android and iOS are fully
   independent surfaces down to the documentation. N-008 and N-016 will sharpen it.
-- Whether the API needs anything for two native clients that it does not need for one — token
+- **F-02 — What two native clients need from the API** — Whether the API needs anything for two native clients that it does not need for one — token
   handling, offline behaviour, versioned response contracts.
-- Whether the **desktop/Slint** surface should be reconsidered under the same reasoning. Raising
+- **F-03 — The desktop and Slint surface** — Whether the **desktop/Slint** surface should be reconsidered under the same reasoning. Raising
   it now would widen this map past what it can hold honestly.
-- What happens if the forge migration is deferred indefinitely. Standing preference 3 assumes it
+- **F-04 — A forge migration deferred indefinitely** — What happens if the forge migration is deferred indefinitely. Standing preference 3 assumes it
   lands; it has no date.
-- Whether Bruno API-contract tests are the divergence gate N-019 is looking for, or whether that
+- **F-05 — Bruno as the divergence gate** — Whether Bruno API-contract tests are the divergence gate N-019 is looking for, or whether that
   needs something that does not exist yet.
 
 ---

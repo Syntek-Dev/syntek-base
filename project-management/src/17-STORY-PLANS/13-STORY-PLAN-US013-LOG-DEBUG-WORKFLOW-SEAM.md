@@ -386,7 +386,8 @@ The live walk: `server.sh up`, the `logs.sh` follow, and every read and the trun
 
 ### Stage 5 — PR & release
 
-`22-implementation-documentation` (the records, the `DEFERRED.md` entry and the `GAPS.md` close) →
+`22-implementation-documentation` (the records and the `DEFERRED.md` entry; items 1-2 of the
+17/09/2026 `GAPS.md` entry left the register on 01/11/2026, so nothing to close) →
 `23-pr-and-review` → `24-release` if a version is cut.
 
 ---

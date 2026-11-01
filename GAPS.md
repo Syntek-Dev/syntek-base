@@ -495,3 +495,109 @@ make the workflow the first CI reader of the posture. The answer binds every leg
 not only images. Graduated from N-008 on `MAP-PIN-DETECT-MOVE.md`, which triages it as unrelated
 (it constrains S-07's issue section without blocking it) and names it in Out of scope; no map
 claims it yet. This entry retires when the workflow does what that decision says.
+
+---
+
+## 01/11/2026 — no django-component declares its rung, because none exists
+
+**Type:** Planned feature
+**Summary:** Fog item `F-06` on `MAP-PROGRESSIVE-ENHANCEMENT.md`, handed here on 01/11/2026
+because its trigger is an event, not a slice cut. The open question is whether a django-component
+carries a machine-checkable declaration of the progressive-enhancement rung it sits on, which
+the unbuilt "audits/progressive-enhancement.sh" can correlate, or whether placement is judged at review
+against `THE-LADDER.md` alone. Deciding now would be a decision made on nothing: at the map's
+re-measure (01/09/2026) the tree held one template (`500.html`), zero django-components, zero
+`hx-*` and zero `x-data`, and `code/src/django/templates/` still holds only `500.html`.
+**Blocked by / Action:** Waits on its trigger — **the first django-component ships**, in the first
+story running PM `21-frontend-code` that creates one. By then `THE-LADDER.md` (the map's `S-03`)
+names the rungs and the `S-04` gate exists to correlate against. That story's plan answers the
+question above. No map claims this entry, because a claim would remove it before the trigger
+fires; it retires when the answer is written.
+
+---
+
+## 01/11/2026 — which sections of a shipped guide a project owns is stated in prose, two ways
+
+**Type:** Active gap
+**Summary:** Fog item `F-05` on `MAP-RULE-OWNERSHIP.md`, handed here on 01/11/2026 because its
+trigger is an event, not a slice cut. `how-to/src/BRAND-VOICE.md:13` puts its portable core at
+"Sections 1, 2 and 4 to 7" and `:237` at "Section 1 … and Section 4"; both yield the
+same action and nothing measures which sections a project owns. A sweep on 01/09/2026 found
+exactly two guides stating such a split, both self-consistent (`code/docs/VISUAL-DESIGN.md` is
+the other), so there is no drift to fix yet.
+**Blocked by / Action:** Waits on its trigger — **a third guide states its own section split a
+third way**. The map proposed making the trigger checkable at the birth path: one line in
+`how-to/workflows/09-write-operator-guide/CHECKLIST.md` asking whether a guide shipping with
+fillable sections states which sections a project owns. That line does not exist yet (re-measured
+01/11/2026); adding it is the cheap first action. When the trigger fires, one owner states where a
+guide's section split lives. No map claims this entry.
+
+---
+
+## 01/11/2026 — the moderate six registers have no index, and only a measured trigger reopens that
+
+**Type:** Planned feature
+**Summary:** Fog item `F-03` on `MAP-REGISTER-INDEXES.md`, handed here on 01/11/2026 because its
+trigger is an event, not a slice cut. Q36 settled the index scope at the strong seven registers
+**now**, not permanently. The moderate six measured 01/09/2026: `04-DATABASE` 0, `05-USER-FLOW` 0,
+`09-GDPR` 6, `10-SECURITY` 0, `18-TESTS` 2, `22-REFACTORING` 0. `09-GDPR` is excluded outright,
+because Q35 rules its files register facts, not instances.
+**Blocked by / Action:** Waits on either arm of its trigger: (a) a moderate register other than
+`09-GDPR` reaches **ten** instances, counting a `.md` file that names a real `US###` and excluding
+`CONTEXT.md`, `CLAUDE.md`, any `US000-` name and any file opening with the `_Template —_` marker;
+or (b) **a drift incident** — a session states a moderate register's contents wrongly and the
+error traces to the absence of an index. Arm (b) is the observable one. Only the developer
+reopens Q36, so the trigger raises the question rather than building an index. No map claims
+this entry.
+
+---
+
+## 01/11/2026 — no client-delegated subdomain exists to classify
+
+**Type:** Planned feature
+**Summary:** Fog item `F-01` on `MAP-SUBDOMAIN-ROUTING.md`, handed here on 01/11/2026 because its
+trigger is an event, not a slice cut. `email.`, `chat.` and `video.` motivated the host register,
+but a vendor CNAME, a proxied third-party app and a Django-served surface have three different
+security answers, and the map's three-kind taxonomy rests on zero worked examples. N-005 settles
+the cookie half only. One kind has an in-tree anchor: `how-to/docs/FEATURE-DEPLOY.md:64-65`
+contemplates a private Cloudinary delivery CNAME as a CSP obligation.
+**Blocked by / Action:** Waits on its trigger — a candidate row for a **non-Django-served host**
+is proposed for "how-to/src/HOSTS.md" (unbuilt; the map's `S-01` creates it), **or** a Cloudinary private
+delivery CNAME is activated. Either brings a real host to classify; the classification then lands
+in the host register and its rule. "A generated project asks for one" is deliberately not a
+trigger: nothing reports a downstream request back here. No map claims this entry.
+
+---
+
+## 01/11/2026 — presence has a posture but no feature definition
+
+**Type:** Planned feature
+**Summary:** Fog item `F-05` on `MAP-CAP-POSTURE.md`, handed here on 01/11/2026 because its
+trigger is an event, not a slice cut. N-016 settled presence's **posture** — soft state on the
+pub/sub plane, lost on outage, rebuilt by the next heartbeat — but nothing defines the
+**feature**: no visibility rules, no staleness window, no owner, and zero presence code (measured
+01/09/2026). `code/docs/DESIGN-TOKENS.md` already ships a three-state vocabulary as colour tokens
+— `--presence-online`, `--presence-unavailable`, `--presence-offline` — which constrains the
+feature without defining it.
+**Blocked by / Action:** Waits on its trigger — **the first story that needs presence as a
+user-facing capability**. Its `05-user-flow-design` pass defines the state semantics, visibility
+rules and staleness window, and must reconcile its state names with the shipped token vocabulary.
+No map claims this entry.
+
+---
+
+## 01/11/2026 — multi-node Valkey has no posture until its ADR or envelope exists
+
+**Type:** Planned feature
+**Summary:** Fog item `F-02` on `MAP-CAP-POSTURE.md`, handed here on 01/11/2026 because its
+trigger is an event, not a slice cut. Quorum, replication and split-brain behaviour for Valkey are
+unwritten. `how-to/src/SCALE-ARCHITECTURE/TOPOLOGY.md:57` and `:88` defer them to a cache-posture
+ADR that does not exist, which is legal under the Template-skeleton banner N-020's sanction
+covers, provided `cache-posture` enters the closed eight-name set the map's `S-07` writes.
+Provisioning is ruled out by the map's anti-forecast bound, and quorum doctrine for an instance
+count of one would be a decision made on nothing.
+**Blocked by / Action:** Waits on its trigger — the ADR stops being phantom: **a story authors
+`ADR-US###-*CACHE-POSTURE*`**, or **a `/scale-planning` run regenerates `TOPOLOGY.md` with Valkey
+HA inside the sized envelope**. The posture then lands as a row in the dependency-posture
+register MAP-CAP-POSTURE `S-01` creates. No map claims this entry, because a claim would remove
+it before the trigger fires.
