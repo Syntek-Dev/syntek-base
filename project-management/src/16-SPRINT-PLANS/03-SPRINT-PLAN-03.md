@@ -540,8 +540,9 @@ US004 alone, behind no blocker. `22-implementation-documentation` runs between t
 this phase and is a merge gate — it writes the story's `../18-TESTS/AUTOMATED/US004-TEST-STATUS.md`,
 which **US004's own register rows make citable in advance**, and walks its
 `../18-TESTS/MANUAL/US004-MANUAL-TESTING.md`, authored from the specs before code; and it owns
-the `GAPS.md` write this sprint produces: closing the 02/09/2026 entry against all three of its
-retirement conditions, and correcting its stale blocked-by sentence rather than deleting it.
+the record that the 02/09/2026 entry's three retirement conditions hold. That entry left `GAPS.md`
+on 01/11/2026, carried by US004 (`.claude/CLAUDE.md` Section 9), so nothing is closed or corrected
+there.
 
 <!-- Read "it writes the story's ../18-TESTS/US004-TEST-STATUS.md and
      ../18-TESTS/US004-MANUAL-TESTING.md, which US004's own register rows make citable in advance"
@@ -820,8 +821,8 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 - [ ] GDPR requirements implemented and verified — **N/A**, the GDPR flag reads `N/A`
 - [ ] QA scenarios passing — US004's self-test, and its manual walk-through signed off by a second
       tester; US003's five documentation gates as well, in the carry case
-- [ ] US004's implementation records written by `22-implementation-documentation`, and `GAPS.md`'s
-      02/09/2026 entry closed against all three of its retirement conditions
+- [ ] US004's implementation records written by `22-implementation-documentation`, recording the
+      02/09/2026 entry's three retirement conditions as met (the entry left `GAPS.md` 01/11/2026)
 - [ ] PRs merged and the version bumped
 - [ ] `../03-SPRINTS/SPRINT-03.md` `**Status:**` set to `Done`
 

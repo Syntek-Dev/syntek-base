@@ -316,9 +316,9 @@ project starts from a blank one — `copier.yml` `_exclude` plus the `_tasks` mo
 Write to them freely; nothing you record here travels. Gates: `.github/scripts/shipped-memory.sh` <!-- doc-references: template-only -->
 and `.github/scripts/shipped-registers.sh`. <!-- doc-references: template-only -->
 
-**Promotion — this file owns it.** When a `GAPS.md` entry is resolved, mark it `✅ CLOSED <date>`,
-promote any permanent decision to the doc below, then remove the closed entry on the next tidy
-pass:
+**Claimed means gone; promotion is this file's.** Any entry a `MAP-*.md` claims or a `US###.md`
+carries leaves `GAPS.md`/`DEFERRED.md` in that change, its substance already there. A resolved
+unclaimed gap is marked `✅ CLOSED <date>`, promoted below, and removed on the next tidy pass:
 
 | Entry type                      | Target doc                           |
 | ------------------------------- | ------------------------------------ |

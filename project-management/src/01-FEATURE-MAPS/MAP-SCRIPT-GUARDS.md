@@ -45,10 +45,9 @@ volume wipe asks before it runs, and the e2e suite owns its own CI stack.
 
 ## Register claimed
 
-**This is a claim, not a close.** Closing belongs to `workflows/22-implementation-documentation/`,
-against shipped code. The two claimed entries were removed from `GAPS.md` on charting (13/08/2026
-precedent — one working copy); their full prose is in git history and their substance in the
-nodes below.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9). The two claimed entries were removed from
+`GAPS.md` on charting (13/08/2026 precedent — one working copy); their full prose is in git history
+and their substance in the nodes below.
 
 | Register | Entry                                                                                      | Verdict   | Retired by                                                                                                                                                            |
 | -------- | ------------------------------------------------------------------------------------------ | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

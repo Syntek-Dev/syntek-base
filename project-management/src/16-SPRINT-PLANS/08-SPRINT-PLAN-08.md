@@ -202,9 +202,10 @@ it is that plan's to state.
 Both stories, US013 then US014, each behind its own gate. `22-implementation-documentation` runs
 between the build and this phase and is a merge gate: it writes each story's test-status record
 under `../18-TESTS/AUTOMATED/`, walks each manual testing guide under `../18-TESTS/MANUAL/`, and
-owns this sprint's register writes — the `DEFERRED.md` entry for US013's out-of-scope vendor
-literals and the close of items 1-2 of `GAPS.md`'s 17/09/2026 entry, as US013's own Definition of
-Done provides. US014 does not open its PR until US008 has merged.
+owns this sprint's register write — the `DEFERRED.md` entry for US013's out-of-scope vendor
+literals, as US013's own Definition of Done provides. Items 1-2 of `GAPS.md`'s 17/09/2026 entry left
+the register on 01/11/2026 (`.claude/CLAUDE.md` Section 9), so there is nothing to close. US014 does
+not open its PR until US008 has merged.
 
 ---
 
@@ -298,8 +299,9 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       the sprint documented in the record
 - [ ] All QA scenarios passing, automated and manual, per `../11-QA/`; no `[OPEN]` gap in either
       QA plan
-- [ ] The `DEFERRED.md` entry for the out-of-scope vendor literals written, and items 1-2 of
-      `GAPS.md`'s 17/09/2026 entry closed, both by `22-implementation-documentation` (US013)
+- [ ] The `DEFERRED.md` entry for the out-of-scope vendor literals written by
+      `22-implementation-documentation` (US013); items 1-2 of `GAPS.md`'s 17/09/2026 entry already
+      left the register on 01/11/2026
 - [ ] All changes merged to `main` (or the active release branch); CI passing
 - [ ] Sprint `**Status:**` set to `Done` by `completion`; version bumped if this sprint produces a
       release

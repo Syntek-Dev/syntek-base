@@ -103,6 +103,12 @@ Then write the allocated `US###` into the map's **Slices** row `Story` column, s
 as a progress view of what has been cut. This is the one edit `02-story-creation` makes to a
 wayfinder artefact; it does not touch the frontier or the resolved decisions.
 
+**A register entry the story carries leaves the register now** (`.claude/CLAUDE.md` Section 9).
+One its map claimed is gone already (`01-feature-map` Step 2). Any other `GAPS.md` entry or
+`DEFERRED.md` row this story takes on is written into its scope, acceptance criteria or a
+provenance comment citing it (register, date, title), then removed in the same change. An entry
+the story only mentions, without carrying, is not taken on and stays.
+
 ### Step 5 — Commit
 
 ```text

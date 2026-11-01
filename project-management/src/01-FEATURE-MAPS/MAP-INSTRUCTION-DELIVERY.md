@@ -79,8 +79,9 @@ reads plausibly, which is why a re-read never catches one.
 
 ## Register claimed
 
-**This is a claim, not a close.** Nothing here edits `GAPS.md`. The entries are marked
-`✅ CLOSED` by `workflows/22-implementation-documentation/`, against shipped code.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9). Both entries below left `GAPS.md` on
+01/11/2026; the slices in _Retired by_ carry them, with the substance recorded beneath the table.
+This table is the provenance record.
 
 | Register | Entry                                                                                               | Verdict | Retired by    |
 | -------- | --------------------------------------------------------------------------------------------------- | ------- | ------------- |
@@ -90,6 +91,27 @@ reads plausibly, which is why a re-read never catches one.
 The 18/09 entry retires only when **both** halves land: S-02 brings the root rules under budget, and
 S-05 is the gate that fails when a chain exceeds it again. S-06 raises `project_doc_max_bytes` as a
 stopgap, which decides nothing and retires nothing.
+
+**Carried from `GAPS.md` on 01/11/2026.**
+
+- **S-04 — 16/09/2026, "MCP servers are declared twice, and the shared `.ai/` entry point cannot
+  yet hold them".** `.ai/` resolves every other duplication by symlink, but `.mcp.json` (Claude
+  Code, JSON) and `.codex/config.toml` (Codex, TOML) cannot be linked: neither host reads the
+  other's file, so every server costs two hand edits in two formats. `audits/mcp-parity.sh` is a
+  drift detector, not a fix. Retired when `.ai/` holds the single declaration (N-007), which
+  deletes the parity rule in `.ai/INSTRUCTIONS.md` rather than refining it.
+- **S-02, S-05, S-06 — 18/09/2026, "Codex's instruction budget is already exceeded in 65 of 355
+  directories".** Codex merges root → working directory, one file per directory, and stops at
+  `project_doc_max_bytes` (default 32 KiB), so the file dropped is the one **closest to the work**
+  (`https://developers.openai.com/codex/agent-configuration/agents-md`, read 18/09/2026).
+  `project_doc_fallback_filenames = ["CLAUDE.md"]` pulls `.claude/CLAUDE.md` into any chain under
+  `.claude/`, and that file was **26.2 KiB — 82% of the budget alone**. Measured 18/09/2026 over all
+  355 directories: **65 exceed 32 KiB**, all under `.claude/`, the worst `.claude/hooks/lib` and
+  `.claude/hooks` at 34.9 KiB (dropping `.claude/hooks/CLAUDE.md`); a root-launched session is
+  3.9 KiB (12%), the median chain 18.1 KiB. Codex drops the file silently — the
+  `code/docs/GATE-REPORTING.md` failure class. S-06's limit raise buys time only; S-02 shrinks the
+  adapter; S-05 is the gate. Retired when no chain exceeds the configured limit **and** a gate
+  fails when one does.
 
 ---
 

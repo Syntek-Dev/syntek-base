@@ -141,7 +141,8 @@ this map's own subject — is `MAP-REGISTER-INDEXES` `S-01`. **A register entry 
 is retired by neither**, so the decision to leave it alone stands and is now settled rather than
 merely observed.
 
-**This is a claim surface, not a close surface.** Nothing here edits either register.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9); nothing is claimed here, so neither register
+was edited.
 
 ---
 

@@ -384,8 +384,9 @@ and by a recorded human read-across; there is no test suite to go green and no c
 report. **Five gates are in this sprint's QA union, and none of them reports a plain pass for both
 members** — see _Sprint-wide Constraints_ below. `22-implementation-documentation` runs before this
 phase and is a merge gate: it walks each story's `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md`,
-authored from the specs before code, closes `GAPS.md`'s entry of 01/09/2026 and writes
-`DEFERRED.md`'s **one** US007 row, as US007's own Definition of Done provides.
+authored from the specs before code, and writes `DEFERRED.md`'s **one** US007 row, as US007's own
+Definition of Done provides. `GAPS.md`'s entry of 01/09/2026 left the register on 01/11/2026,
+carried by US007 (`.claude/CLAUDE.md` Section 9), so there is nothing for it to close.
 
 <!-- Read "it writes each story's ../18-TESTS/US###-MANUAL-TESTING.md" until 30/09/2026, when the
      18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual guide's authorship moved to
@@ -549,9 +550,9 @@ bash code/src/scripts/syntax/format.sh --file-type markdown
 - [ ] GDPR constraints implemented and verified — **N/A**, the sprint's GDPR flag reads `N/A`
 - [ ] All QA scenarios passing per `../11-QA/`, including the human read-acrosses that no gate
       can perform for either story — **both plans are signed off**, US007's on 08/09/2026
-- [ ] `GAPS.md`'s entry of 01/09/2026 closed and `DEFERRED.md`'s **one** US007 row written, both
-      by `22-implementation-documentation`, as US007's own Definition of Done provides — the
-      row-3 hand-off is recorded **N/A** with its reason, not written
+- [ ] `DEFERRED.md`'s **one** US007 row written by `22-implementation-documentation`, as US007's
+      own Definition of Done provides — the row-3 hand-off is recorded **N/A** with its reason, not
+      written (`GAPS.md`'s entry of 01/09/2026 left the register on 01/11/2026; nothing to close)
 - [ ] All code merged to the integration branch; CI passing
 - [ ] Sprint closed on the board; version bumped if this sprint produces a release
 - [ ] Gaps found during the sprint recorded per `../09-GDPR/` / `../10-SECURITY/` where applicable

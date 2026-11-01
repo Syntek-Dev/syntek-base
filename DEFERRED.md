@@ -6,12 +6,13 @@ order.
 **Maintained by:** Written during implementation reviews · **Language:** British English (en_GB)
 
 **Add a row when:** an implementation doc (assessment, audit, or sprint plan) marks something
-`DEFERRED (US###)` or `DEFERRED (apps.xxx)`. Remove the row when the target story ships it.
+`DEFERRED (US###)` or `DEFERRED (apps.xxx)`. Remove the row when a map or story claims it, or
+else when the target story ships it.
 
 **Read at the discovery gate.** `project-management/workflows/01-feature-map/` reads this file and
 `GAPS.md` before charting a feature — to **suggest** candidate features from what has
 accumulated, and to triage every open row against the feature being charted (closes / blocks /
-unrelated). A row a feature will close is **claimed** on its `MAP-<FEATURE>.md`; the row is only
-removed by `workflows/22-implementation-documentation/`, against shipped code.
+unrelated). **A row a map claims, or a story is cut carrying, leaves this file in that change**
+(rule: `.claude/CLAUDE.md` Section 9).
 
 ---

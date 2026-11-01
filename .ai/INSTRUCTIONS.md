@@ -116,4 +116,4 @@ that decide _what runs_ — never the keys that tune how a particular host super
 > **Down the line.** A single declaration under `.ai/` that every provider reads is the
 > intended destination, and it removes this rule rather than refining it. It is not
 > scheduled, nothing is built toward it yet, and until it exists parity is the contract.
-> Tracked in `GAPS.md`.
+> It is tracked in the template's own planning, not in this project's `GAPS.md`.

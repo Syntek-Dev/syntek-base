@@ -22,6 +22,8 @@ model: opus
 - [ ] Each flag value is consistent with the slice manifest, or the divergence was settled in the
       grilling pass
 - [ ] The allocated `US###` is written back into the map's **Slices** row
+- [ ] Any `GAPS.md` / `DEFERRED.md` entry the story carries is in its scope, acceptance or a
+      provenance comment, and removed from the register in the same change
 
 ## Execution Checklist
 

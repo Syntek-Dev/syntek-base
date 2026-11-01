@@ -78,8 +78,8 @@ repairs_.
 ## Register claimed
 
 Every open `GAPS.md` entry has a verdict; the unrelated count is what makes the triage provably
-exhaustive. **This is a claim, not a close** — `workflows/22-implementation-documentation/` marks
-`✅ CLOSED` against shipped code, never this map.
+exhaustive. **Claimed means gone** (`.claude/CLAUDE.md` Section 9): the **blocks** entry below left
+`GAPS.md` on 01/11/2026, carried by `US002` and Node N-004.
 
 | Register    | Entry                                                                                     | Verdict    | Retired by / note                                                                                                                               |
 | ----------- | ----------------------------------------------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |

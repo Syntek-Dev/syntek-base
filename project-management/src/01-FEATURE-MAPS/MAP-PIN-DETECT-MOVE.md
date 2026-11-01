@@ -105,12 +105,11 @@ Sam, this conversation, 16/10/2026 (Q15); narrowed by N-029 at Step 8a the same 
 
 ## Register claimed
 
-**This is a claim, not a close.** This map edits neither `GAPS.md` nor `DEFERRED.md`, and nothing
-was closed. One entry is appended to `GAPS.md` alongside it, not by it: the 16/10/2026 public
-tracking-issue entry, the home Q8 gave that concern. At Step 8a two `GAPS.md` citations into
-MAP-UPSTREAM-TRACKING and that entry's slice references were re-pointed alongside it too, with
-nothing claimed or closed. Closing is `workflows/22-implementation-documentation/`'s, against
-shipped code.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9): the **blocks** entry below left `GAPS.md` on
+01/11/2026, carried by `US002`. One entry is appended to `GAPS.md` alongside this map, not claimed
+by it: the 16/10/2026 public tracking-issue entry, the home Q8 gave that concern. At Step 8a two
+`GAPS.md` citations into MAP-UPSTREAM-TRACKING and that entry's slice references were re-pointed
+alongside it too.
 
 | Register | Entry                                                                                           | Verdict | Retired by / wired to                                                                                                                                                                                                                                                                                                                                                                             |
 | -------- | ----------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -133,7 +132,7 @@ shipped code.
   `audits/playwright-pin.sh`.
 - **16/10/2026 issue #14 publishes advisory detail.** Appended alongside this map; S-07's leg
   reports into that issue through the step every leg shares, so the entry's outcome binds S-07's
-  section as it binds the others; the entry's slice references (`GAPS.md:963`, `:971`) were
+  section as it binds the others; the entry's two slice references were
   re-pointed from S-02 alongside Step 8a, not by this map.
 
 The other eighteen are unrelated outright: the three other loose items under "Still open, found on

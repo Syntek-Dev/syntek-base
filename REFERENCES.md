@@ -230,16 +230,16 @@ all three build rows name the same pass — entered at `18`, closed at `20`, nev
 
 **Ownership boundaries — do not duplicate across the seam:**
 
-| Fact                                                   | Sole owner                                 |
-| ------------------------------------------------------ | ------------------------------------------ |
-| Implementation record formats, templates, destinations | PM `22-implementation-documentation`       |
-| Findings, `GAPS.md` / `DEFERRED.md` writes and closes  | PM `22-implementation-documentation`       |
-| `GAPS.md` / `DEFERRED.md` reads — suggest and triage   | PM `01-feature-map` (claims, never closes) |
-| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh      | PM `22-implementation-documentation`       |
-| Branch promotion, approvals, merge gates               | PM `23-pr-and-review`                      |
-| Code content review (OWASP, coverage, principles)      | code `07-review`                           |
-| Coverage floors (one floor: 75% line+branch, 90% auth) | `code/docs/testing/COVERAGE.md`            |
-| Bruno `.bru` API tests                                 | code layer (`code/src/tests/api/`)         |
+| Fact                                                                   | Sole owner                                             |
+| ---------------------------------------------------------------------- | ------------------------------------------------------ |
+| Implementation record formats, templates, destinations                 | PM `22-implementation-documentation`                   |
+| Findings, `GAPS.md` / `DEFERRED.md` writes; closing an unclaimed entry | PM `22-implementation-documentation`                   |
+| `GAPS.md` / `DEFERRED.md` reads — suggest, triage, remove on claim     | PM `01-feature-map` (a story cut: `02-story-creation`) |
+| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh                      | PM `22-implementation-documentation`                   |
+| Branch promotion, approvals, merge gates                               | PM `23-pr-and-review`                                  |
+| Code content review (OWASP, coverage, principles)                      | code `07-review`                                       |
+| Coverage floors (one floor: 75% line+branch, 90% auth)                 | `code/docs/testing/COVERAGE.md`                        |
+| Bruno `.bru` API tests                                                 | code layer (`code/src/tests/api/`)                     |
 
 ---
 

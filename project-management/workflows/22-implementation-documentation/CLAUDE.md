@@ -66,9 +66,10 @@ record its findings in `src/20-FINDINGS/`, before the PR is raised in `23-pr-and
 - **Close a plan gap only with evidence** — never mark a GDPR, security, QA, SEO, or API
   task done without pointing at the shipped code; keep every claim consistent with
   `code/docs/SECURITY.md`.
-- **This workflow is the only place `GAPS.md` and `DEFERRED.md` close.** `01-feature-map` claims
-  entries on the feature map; the close happens here, against shipped code. A claim the story did
-  not in fact retire stays open and the reason becomes a finding.
+- **This workflow closes only unclaimed `GAPS.md` and `DEFERRED.md` entries**, against shipped
+  code. A claimed entry left the register when a map or story took it on; one the story did not in
+  fact retire becomes a finding routed to a `Next story` row, or a new dated `GAPS.md` entry
+  citing it where no follow-on story exists (`STEPS.md`).
 - **Findings are recorded, never fixed here** — the record states the smallest fix; the fix
   lands in a later story, `src/21-BUGS/`, or `src/22-REFACTORING/`. Where a migration, index,
   or model carries no explanation for its shape, **flag the absence rather than inventing the

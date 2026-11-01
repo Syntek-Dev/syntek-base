@@ -207,12 +207,14 @@ Route each finding onward by disposition: a defect to `src/21-BUGS/`, structural
 `src/22-REFACTORING/`, a reopened hard-to-reverse trade-off to `src/15-DECISIONS/`, a
 deferral with a named target story to `DEFERRED.md`, an active blocker to `GAPS.md`.
 
-**Then close what the story actually retired.** If the story's feature map
-(`src/01-FEATURE-MAPS/MAP-<FEATURE>.md` → _Register claimed_) claimed a `GAPS.md` or `DEFERRED.md`
-entry, settle it here — **this workflow is the only place the register closes**. Mark the
-`GAPS.md` entry `✅ CLOSED DD/MM/YYYY`, or remove the `DEFERRED.md` row, **only against shipped
-code**; a claim the story did not in fact retire stays open, and the reason why becomes a finding.
-Charting made the promise; this step is the evidence.
+**Then close what the story actually retired — unclaimed entries only.** An entry a feature map or
+story claimed is already gone from `GAPS.md` / `DEFERRED.md` (`.claude/CLAUDE.md` Section 9); it
+is retired by this story's acceptance. A claim the story did not in fact retire becomes a finding
+routed to a `Next story` row — the map is frozen once its slices are cut, so it never goes back
+there. Where no follow-on story exists to take that row, record it as a **new** dated `GAPS.md`
+entry citing the finding. For an entry **no map or story claimed** that this story nonetheless
+retired, **this workflow is the only place it closes**: mark the `GAPS.md` entry
+`✅ CLOSED DD/MM/YYYY`, or remove the `DEFERRED.md` row, **only against shipped code**.
 
 Rows marked `Next story` are inputs to the next `src/17-STORY-PLANS/` plan — that is what
 this record is for.

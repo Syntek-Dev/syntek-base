@@ -65,7 +65,8 @@ for them.
 | `GAPS.md`     | 22/08/2026 — `main` has never received this branch | **unrelated** | Its own PR merging; the entry says _"Do not chart it"_ |
 | `DEFERRED.md` | _(no rows — 17 lines of preamble)_                 | —             | —                                                      |
 
-**This is a claim, not a close.** Nothing here edits either register.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9); nothing is claimed here, so neither register
+was edited.
 
 ---
 

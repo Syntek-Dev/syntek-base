@@ -180,8 +180,9 @@ Three rules follow from it:
 
 **The register is a loop, not a dead end.** `GAPS.md` and `DEFERRED.md` are written at `22` and
 **read at `01`**: the discovery gate mines them for candidate features and triages every open
-entry against the feature being charted — closes, blocks, or unrelated. `01` **claims**; only
-`22` **closes**, against shipped code. Without the read half, the register accumulates while
+entry against the feature being charted — closes, blocks, or unrelated. An entry `01` claims (or
+`02` cuts into a story) **leaves the register** once the map or story carries it; `22` closes only
+what nothing claimed, against shipped code. Without the read half, the register accumulates while
 features are chosen from memory.
 
 ## The numbers are the running order

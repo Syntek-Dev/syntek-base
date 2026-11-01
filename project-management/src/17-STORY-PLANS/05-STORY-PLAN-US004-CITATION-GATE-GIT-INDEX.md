@@ -292,7 +292,8 @@ per-project instance — `project-management/src/02-STORIES/CONTEXT.md:16`,
 taken from this list**. Mark `research/CLAUDE.md:26` `doc-references: ignore`: its backticked
 `LICENSE` names an upstream source's licence file, not this repository's own, so it is a
 generic-noun false positive and not the genuine finding `N-009` claimed. Record that overturned
-claim on the map. Close `GAPS.md`'s 02/09/2026 entry and correct its stale blocked-by sentence.
+claim on the map. Record the 02/09/2026 entry's three retirement conditions as met; the entry
+left `GAPS.md` on 01/11/2026, carried by US004, so nothing is closed or corrected there.
 
 ### Pre-existing corrections this story owes
 
@@ -451,7 +452,7 @@ citable in advance**, the story demonstrating its own deliverable — and walks
 | `how-to/src/PROJECT-PATHS.md`              | Two rows, plus the header note that a row may be patterned                                            |
 | `code/docs/FORWARD-VOICE.md`               | Section 3 gains the pattern form and the duty to add a row                                            |
 | `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` | `S-06`'s `Story` cell already reads `US004`; N-009's overturned claim recorded                        |
-| `GAPS.md`                                  | 02/09/2026 entry closed; its stale blocked-by sentence corrected                                      |
+| `GAPS.md`                                  | none — the 02/09/2026 entry left it on 01/11/2026, carried by US004                                   |
 | `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md`  | This plan's row in _Story Plans — the code master_ — Status cell kept in step with this plan's header |
 
 ## Deferred Items
@@ -483,7 +484,8 @@ citable in advance**, the story demonstrating its own deliverable — and walks
       stock-versus-arm-only US999/US997 proof; historical 16 to 38 and five to zero are not thresholds
 - [ ] Both missing shipped-US000 target fixtures report with class rows present and clear on
       restoration; citer exemption remains a distinct proof and three-digit bounds are retained
-- [ ] `GAPS.md`'s 02/09/2026 entry closed against all three retirement conditions
+- [ ] The 02/09/2026 entry's three retirement conditions recorded as met (it left `GAPS.md`
+      on 01/11/2026)
 - [ ] N-009's overturned claim recorded on `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md`
 - [ ] `syntax/lint.sh` passes over what it reads — the Markdown leg, over the documents touched
 - [ ] ShellCheck clean over the edited script, run by hand and recorded as run or as not run —

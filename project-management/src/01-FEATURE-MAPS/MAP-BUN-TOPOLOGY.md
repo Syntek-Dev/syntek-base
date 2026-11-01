@@ -70,15 +70,16 @@ table (N-024), per the graduation table — a map never authors an ADR direct.
 
 ## Register claimed
 
-**A claim, not a close.** Nothing here marks an entry `✅ CLOSED`; that is
-`workflows/22-implementation-documentation/`, against shipped code.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9). Every row below has left `GAPS.md`; the
+three this map carries are in the _Carried from `GAPS.md`_ frontier notes, and the 09/09/2026 entry
+is carried by `US008`.
 
 | Register | Entry                                                                                              | Verdict | Retired by                                                                                                                                                                                                                                                                                                                        |
 | -------- | -------------------------------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | GAPS.md  | 16/08/2026 sitting, _Still open_ — `pnpm-update.sh`'s header claims files it no longer updates     | closes  | N-026 / N-019 — the script retires or is replaced by the Bun pin mover _(Edge 16/10/2026: S-03 on MAP-PIN-DETECT-MOVE (S-01 until that map's Step 8a re-cut, same day) sets a 7-day cooldown for tool moves; the script's bare `pnpm self-update` takes pnpm's built-in one-day age, and whichever change lands second conforms)_ |
 | GAPS.md  | 11/09/2026 — `install-frontend.sh --local` hands two stray arguments to `sudo rm -rf`              | closes  | **Conditional** — `bugfix` first; if still open, S-01 retires it when N-024 rewrites the file                                                                                                                                                                                                                                     |
 | GAPS.md  | 09/09/2026 — a print-only `_migrations:` advisory is invisible in the `template-update.sh` preview | blocks  | Frontier **N-022**. An advisory half is certain even in an acting migration (N-021)                                                                                                                                                                                                                                               |
-| GAPS.md  | 11/09/2026 — the Bun map's eight tracers have no Bun to run on                                     | blocks  | Manual provisioning, not a node — blocks N-006 to N-013 until an environment exists                                                                                                                                                                                                                                               |
+| GAPS.md  | 11/09/2026 — the Bun map's eight tracers have no Bun to run on                                     | blocks  | Manual provisioning, not a node — carried in the _N-006 to N-013 provisioning_ frontier note; blocks those tracers until an environment exists                                                                                                                                                                                    |
 
 **Unrelated (10):** 31/08 PE-gate markup half and prefix set · 31/08 htmx pinned at major 2 ·
 01/09 RUSTSEC advisory invisible (**adjacent** — N-026 edits the same `audit-deps.yml`; a
@@ -153,7 +154,7 @@ Cuttable only when every node a slice names is `✅`. `Story` is back-filled by 
 ## Frontier
 
 Dependency order, unblocked first. **Takeable now: N-002 to N-010** — the tracers among them also
-wait on the GAPS.md environment entry above.
+wait on the manual environment in the _N-006 to N-013 provisioning_ note below.
 
 | Node  | Decision                                                                                                                           | Type     | Blocked by                                      | Blocking a story? |
 | ----- | ---------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------------------------- | ----------------- |
@@ -238,6 +239,37 @@ findings are listed under _Resolved decisions_ and are not repeated here.
   ban `next`).
 - **N-024 to N-030** — deliverables are named in each build node; S-01 is atomic because deleting
   the lock breaks every pnpm call site at once.
+
+**Carried from `GAPS.md` on 01/11/2026**, when a claimed entry left the register
+(`.claude/CLAUDE.md` Section 9). Each was measured on the date it names; re-measure first.
+
+- **N-006 to N-013 provisioning — manual work, not a node** (GAPS.md, 11/09/2026, "the Bun map's
+  eight tracers have no Bun to run on"). On 11/09/2026 `command -v bun` was empty on the
+  development host (Node v24.13.0, pnpm 11.25.0); the overrides set a floor of Bun 1.4.0. Every
+  tracer runs in a throwaway worktree or scratch clone, **never this tree**, and between them they
+  need: a Bun >= 1.4.0 binary; scratch Copier renders on both `INCLUDE_MOBILE` paths at a pinned
+  Copier version (CI's `uvx copier` is unpinned; the local copy is 9.17.0); a scratch project
+  generated at `--vcs-ref=v7.5.0` with one added dependency committed, so its `pnpm-lock.yaml`
+  diverges from the template's (N-010); a Node-free shell — a container, or a PATH scrubbed of
+  `node`, `npx`, `pnpm` and `corepack` — with the test stack up for the Bruno leg (N-012, N-013);
+  an Expo Go device on the LAN for the manual `server.sh` check; and a throwaway branch with a Bun
+  job on ubuntu runners for CI parity, dispatched by hand because `test-api.yml`'s path filter skips
+  a JS-only change unless N-005 widens it. Sam decides where Bun is installed. Retired when the
+  first tracer has run.
+- **N-024 / S-01 — `install-frontend.sh --local` hands two stray arguments to `sudo rm -rf`**
+  (GAPS.md, 11/09/2026). `code/src/scripts/development/install-frontend.sh:79-81` ends the path
+  line of its `sudo rm -rf` with a line continuation, so `log "Removed."` is parsed as two further
+  arguments: `--local` (and `--clean`) runs `sudo rm -rf "$PROJECT_ROOT/node_modules" log Removed.`
+  from the project root and never prints "Removed.". Latent, not live, on 11/09/2026 — neither
+  `log` nor `Removed.` existed at the root — but anything later named `log` there is deleted as
+  root, silently; root `install.sh:421` reaches it on every first-time setup. The step's premise is
+  stale too: no image installs Node (`code/src/docker/django/CLAUDE.md`). Class **B**. It should
+  not wait for this epic: fix through `bugfix` (drop the trailing `\`, and decide whether a `sudo`
+  removal still has a reason to exist); if still open when N-024 rewrites the file, S-01 retires
+  it. Retired when `--local` passes exactly one path to `rm`.
+- **N-019 / N-026 — `pnpm-update.sh`'s header claims files it no longer updates** (GAPS.md,
+  16/08/2026 sitting, _Still open_). Retired when the script is removed or replaced by the Bun pin
+  mover and no header names a file the script does not touch.
 
 ---
 

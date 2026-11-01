@@ -435,8 +435,8 @@ this phase and is a merge gate. It writes the story's test-status record under
 `17-story-plans` authors from the specs before code, straight after the story plan and committed with
 it. And it owns this sprint's register writes, as the sole writer of `GAPS.md`:
 
-- **One closure** — `GAPS.md`'s 01/09/2026 entry on the `CONTEXT.md` index-row instruction, which
-  this story claims, closed against the shipped change and dated the day it closes.
+- **No closure** — `GAPS.md`'s 01/09/2026 entry on the `CONTEXT.md` index-row instruction, which
+  this story carries, left the register on 01/11/2026 (`.claude/CLAUDE.md` Section 9).
 - **Four openings, each dated the day gate `22` writes it** — TM-14's seed-if-absent migration,
   TM-18's guard, the memory-survival probe's blind case, and the one entry naming the three
   sprint-plan prerequisite defects. None is backdated to the day its answer was settled.

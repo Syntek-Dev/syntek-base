@@ -78,11 +78,11 @@ the silence ships a change whose own User Story is still false afterwards. That 
 arming path, chosen and reported, with a `postinstall` notice for the contributor who never runs
 `install.sh`.
 
-**What this story is not.** It does not fix the eleven unsuppressed invocations (threat model
-TM-02 — **and the register row that is supposed to hold them does not exist yet**; see
-_Deferred Items_), it does not fix `install-frontend.sh:79-81`'s live `sudo rm -rf`
-defect (the `GAPS.md` row of 11/09/2026), and it does not touch the Bun swap. Each is named in
-_Dependencies_ so a later reader does not re-merge them into this one.
+**What this story is not.** It does not fix the eleven unsuppressed invocations (threat model TM-02
+— **and the register row that is supposed to hold them does not exist yet**; see _Deferred Items_),
+it does not fix `install-frontend.sh:79-81`'s live `sudo rm -rf` defect (`MAP-BUN-TOPOLOGY.md`'s
+N-024 / S-01 note (the `GAPS.md` row of 11/09/2026 until 01/11/2026)), and it does not touch the Bun
+swap. Each is named in _Dependencies_ so a later reader does not re-merge them into this one.
 
 ---
 
@@ -492,11 +492,11 @@ it unexamined**, which is what an unwritten PA row would have done.
 81:  log "Removed."
 ```
 
-— where line 80's trailing `\` makes `log` and `Removed.` arguments to `rm -rf`. **`:84` is the
-next `pnpm install` after that block**, so an assertion written as "lines 79 to 93 are unchanged"
-would tick while walking straight past it. **Each assertion names its own single line and asserts
-the flag on that line only.** The `GAPS.md` row of 11/09/2026 owns the defect; US009 does not fix
-it (Section 7.6, TM-06).
+— where line 80's trailing `\` makes `log` and `Removed.` arguments to `rm -rf`. **`:84` is the next
+`pnpm install` after that block**, so an assertion written as "lines 79 to 93 are unchanged" would
+tick while walking straight past it. **Each assertion names its own single line and asserts the flag
+on that line only.** `MAP-BUN-TOPOLOGY.md`'s N-024 / S-01 note (the `GAPS.md` row of 11/09/2026
+until 01/11/2026) owns the defect; US009 does not fix it (Section 7.6, TM-06).
 
 **Do not stage that defect to test it.** Planting a file named `log` or `Removed.` at the project
 root to prove the finding would have it deleted as root. The assertion's **form** is what is
@@ -622,9 +622,10 @@ P1 or P2 and can land first.
    `prepare` target disappears with P3, so they stop arming anything — but the surface is open for
    the next lifecycle script anyone adds. **Out of scope**, and ST01 is scoped in its own wording so
    a tick reads as three lines of sixteen rather than as a posture (AC-GAP-3, Section 7.2).
-2. **`install-frontend.sh:79-81`'s `sudo rm -rf`** — the `GAPS.md` row of 11/09/2026 owns it. This
-   story reads that file, asserts against three of its lines, and must neither depend on the defect
-   nor mask it (Section 7.6, TM-06). Re-confirmed live 18/09/2026.
+2. **`install-frontend.sh:79-81`'s `sudo rm -rf`** — `MAP-BUN-TOPOLOGY.md`'s N-024 / S-01 note (the
+   `GAPS.md` row of 11/09/2026 until 01/11/2026) owns it. This story reads that file, asserts
+   against three of its lines, and must neither depend on the defect nor mask it (Section 7.6,
+   TM-06). Re-confirmed live 18/09/2026.
 3. **`../01-FEATURE-MAPS/MAP-GATE-PARITY.md`'s `S-03`**, the retained half (N-006 + N-017) — ships after `S-05`, not
    after this story. The two halves were split at slice selection on 17/09/2026 and are not
    re-merged.
@@ -1002,7 +1003,7 @@ hand.
 | Deferred                                                                       | To                                                                                                       | Why                                                                                                                                                          |
 | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | The eleven unsuppressed `pnpm install` invocations                             | A later story — **but the `GAPS.md` row does not exist yet**; `22-implementation-documentation` opens it | TM-02. Eleven edits across six files for a control whose only consumer this story deletes. Section 7.2's second limb is unsatisfied until the row is written |
-| `install-frontend.sh:79-81`'s `sudo rm -rf`                                    | The `GAPS.md` row of 11/09/2026                                                                          | Not this story's defect. This story must not mask it, which is a different obligation from fixing it                                                         |
+| `install-frontend.sh:79-81`'s `sudo rm -rf`                                    | `MAP-BUN-TOPOLOGY.md` N-024 / S-01 (from `GAPS.md`, 11/09/2026)                                          | Not this story's defect. This story must not mask it, which is a different obligation from fixing it                                                         |
 | Whether Step 4 should use `--frozen-lockfile`                                  | A dependency-management story                                                                            | TM-08. `install-frontend.sh:84` carries `--ignore-scripts` but **not** `--frozen-lockfile`, so Step 4 may resolve a newer 2.x and rewrite the lockfile       |
 | Persisting whether the hooks were armed for a commit                           | **Nothing — accepted residual**                                                                          | TM-12, `INFO`. A setup script is not the audit trail                                                                                                         |
 | `../01-FEATURE-MAPS/MAP-GATE-PARITY.md`'s `S-03` retained half (N-006 + N-017) | After `S-05`, which lands the shared `_lib/template-tree.sh`                                             | Cutting it now writes three ad-hoc guards `S-05` then rewrites                                                                                               |

@@ -37,9 +37,9 @@ Open `GAPS.md` and `DEFERRED.md` entries this feature touches, from the Step 2 t
 open entry gets a verdict** — the unrelated count in Notes is what makes the triage provably
 exhaustive.
 
-**This is a claim, not a close.** Nothing here edits `GAPS.md` or `DEFERRED.md`. The entry is
-marked `✅ CLOSED` (or the `DEFERRED.md` row removed) by
-`workflows/22-implementation-documentation/`, against shipped code.
+**A claim removes the entry.** Each **closes** / **blocks** row is carried by what _Retired by_
+names, then deleted from the register in the same change (`workflows/01-feature-map/` Step 2).
+This table is the provenance record of what left.
 
 | Register    | Entry                                   | Verdict | Retired by                     |
 | ----------- | --------------------------------------- | ------- | ------------------------------ |

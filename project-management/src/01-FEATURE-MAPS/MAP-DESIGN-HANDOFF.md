@@ -101,17 +101,17 @@ by hand. _(Confirmed by Sam, this conversation, 15/10/2026 (Q14).)_
 
 ## Register claimed
 
-**This is a claim, not a close.** This map edits neither `GAPS.md` nor `DEFERRED.md`, and nothing
-was closed. One blocker entry is appended to `GAPS.md` alongside it, not by it: the 15/10/2026
-tracer-provisioning entry, because manual unblocking work is a `GAPS.md` blocker, never a node
-(`workflows/01-feature-map/STEPS.md` Step 6). Closing is
-`workflows/22-implementation-documentation/`'s, against shipped code.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9). The three **blocks** entries below left
+`GAPS.md` on 01/11/2026; each is carried where _Retired by_ points. The 15/10/2026
+tracer-provisioning entry was appended alongside this map as manual unblocking work — never a node
+(`workflows/01-feature-map/STEPS.md` Step 6) — and is now carried in the _Tracer provisioning_ note
+under _Frontier_.
 
-| Register | Entry                                                                                           | Verdict | Retired by / wired to                                                                                                                                                                                                    |
-| -------- | ----------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| GAPS.md  | 09/10/2026 — the Playwright pin needs a Chromium the current NixOS generation no longer roots   | blocks  | N-018 — building the pre-hand-off gate needs render checks that can run, and on this host they take the no-browser path. The entry's own action (the pin bump) retires it; N-013 on MAP-NATIVE-DESIGN-TIER claims it too |
-| GAPS.md  | 17/09/2026 — the audits register's headroom is one line smaller than nineteen artefacts believe | blocks  | N-018, **only if** it places the pre-hand-off gate in a new `audits/` row; the headroom itself is `US002`'s                                                                                                              |
-| GAPS.md  | 15/10/2026 — the design hand-off map's six tracers have no account or instance to run on        | blocks  | N-031 to N-036 — each tracer waits on the account or instance its Blocked-by names. Appended alongside this map, not by it; it retires when every tracer has run or left the map                                         |
+| Register | Entry                                                                                           | Verdict | Retired by / wired to                                                                                                                                                                                                          |
+| -------- | ----------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| GAPS.md  | 09/10/2026 — the Playwright pin needs a Chromium the current NixOS generation no longer roots   | blocks  | N-018 — building the pre-hand-off gate needs render checks that can run, and on this host they take the no-browser path. Carried, with its action (the pin bump), in the N-013 note under _Frontier_ on MAP-NATIVE-DESIGN-TIER |
+| GAPS.md  | 17/09/2026 — the audits register's headroom is one line smaller than nineteen artefacts believe | blocks  | N-018, **only if** it places the pre-hand-off gate in a new `audits/` row; the headroom itself is `US002`'s, which carries the entry                                                                                           |
+| GAPS.md  | 15/10/2026 — the design hand-off map's six tracers have no account or instance to run on        | blocks  | N-031 to N-036 — each tracer waits on the account or instance its Blocked-by names. Carried in the _Tracer provisioning_ note under _Frontier_                                                                                 |
 
 **Unrelated (22).** Eight constrain this map without blocking it: 18/09/2026 Codex instruction
 budget (binds N-012 if a guide joins an instruction chain); 16/09/2026 MCP declared twice (no MCP
@@ -273,8 +273,18 @@ the node that weighs it (N-021, N-022, N-034) or parked in Fog of war; it sharpe
 Every tracer still needs an account or an instance: a Canva account (N-031), a Figma Full seat (N-032),
 a Penpot instance (N-033, and N-034 with a Figma account), a signed-in `claude-design` session
 (N-035; Sam's per-user `/design-login`, listed only as that tracer's precondition) and a Figma
-account on the remote MCP server (N-036). Provisioning them is manual work, recorded in the
-15/10/2026 tracer-provisioning `GAPS.md` entry, which is appended alongside this map, not by it.
+account on the remote MCP server (N-036). Provisioning them is manual work, carried below.
+
+**Tracer provisioning — carried from `GAPS.md` on 01/11/2026** (15/10/2026, "the design hand-off
+map's six tracers have no account or instance to run on"; `.claude/CLAUDE.md` Section 9). None of
+the accounts or instances above existed for this repository on 15/10/2026. N-034's Figma account
+also tests Figma's native DTCG import on the Starter plan only if it is a Starter team; N-036's
+signs in over OAuth from this NixOS/Wayland host; N-033's Penpot file is DTCG 2025.10 with object
+colours. Evidence: `research/DESIGN-HANDOFF-TARGETS.md`, sections "Figma", "Claude Design" and
+"What this note does not settle". The accounts are syntek-base's own, for charting; provisioning
+a tool for a generated project stays out of scope. Sam decides which accounts are opened, on
+which plans, and whether Penpot is self-hosted or SaaS; the tracers then run in frontier order.
+Retired when each of the six tracers has run or has left the map.
 
 ---
 

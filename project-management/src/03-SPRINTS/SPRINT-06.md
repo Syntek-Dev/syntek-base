@@ -669,8 +669,8 @@ governs: the baseline is captured before the first edit, read as a diff, and "ne
 gate passing while the baseline stands". The class is `instance citation` — a record in house style
 cites artefacts by full path in backticks, which is not what the gate flags; the bare `US###` and
 `SPRINT-##` names are. `copier.yml:157` excludes `/project-management/src/**`, so no record ships <!-- doc-references: template-only -->
-and the shipped-file citation rule does not apply to one; that is `GAPS.md`'s entry of 02/09/2026,
-whose fix is US004. <%DEVELOPER_NAME%> settled on 20/09/2026 that these findings **wait for US004**
+and the shipped-file citation rule does not apply to one; that is the 02/09/2026 gap US004
+carries and fixes. <%DEVELOPER_NAME%> settled on 20/09/2026 that these findings **wait for US004**
 rather than carrying interim `doc-references: template-only` markers. **Nothing is suppressed, and the figures are recorded rather than promised** — this
 paragraph pointed at "the measured figures in the Verification Checks below" when none existed,
 which an independent review on 20/09/2026 called correctly as worse than silence, and the numbers

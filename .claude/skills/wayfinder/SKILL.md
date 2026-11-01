@@ -37,8 +37,9 @@ Facts are looked up, not asked: `code-review-graph` MCP → Read/Grep/Glob → `
 dependencies) and `DEFERRED.md` (work explicitly deferred from a shipped story to a named future
 one) are where earlier work recorded its unfinished business. Wayfinder reads them at both ends:
 they **suggest** what the next feature should be, and they are **claimed** by the feature that
-will close them, so the map records the debt it retires. Treating them as write-only destinations
-is what lets a register accumulate for a year while features are chosen from memory.
+will close them, which moves the entry off the register and onto the map. Treating them as
+write-only destinations is what lets a register accumulate for a year while features are chosen
+from memory.
 
 Wayfinder runs in one of three modes per session: **SUGGEST** (optional, before there is a
 feature — mine the register for candidates), **CHART** (one session — read the register, pin the
@@ -90,14 +91,15 @@ mode — no map, and no edit to the register.
 4. **Wire the blocking edges.** In a second pass, write each node's blockers as prose links to the
    nodes it depends on, so the takeable edge — the unblocked nodes — is visible at a glance.
    _Done when every Frontier node names its blockers (or "none") and at least one node is unblocked._
-5. **Write the map.** Create `MAP-<FEATURE>.md` in `project-management/src/01-FEATURE-MAPS/` with the
-   sections below; tag each Frontier node with its type (research / tracer / grilling / build),
-   record the triaged register entries under **Register claimed**, and list the buildable slices
-   under **Slices**, each naming its nodes, its acceptance and its flag manifest (`N/A` omitted).
-   Set `**Status:** Charting` with a one-line `**Status note:**`, then run
+5. **Write the map.** Create `MAP-<FEATURE>.md` in `project-management/src/01-FEATURE-MAPS/` with
+   the sections below; tag each Frontier node with its type (research / tracer / grilling / build),
+   record the triaged register entries under **Register claimed** (each carried and removed — see
+   _Claiming removes the entry_), and list the buildable slices under **Slices**, each naming its
+   nodes, its acceptance and its flag manifest (`N/A` omitted). Set `**Status:** Charting` with a
+   one-line `**Status note:**`, then run
    `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` so the map appears on
-   `src/01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md`. _Done when the map exists, is on the board, and reads as a
-   low-resolution route rather than a storage vault._
+   `src/01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md`. _Done when the map exists, is on the board, and
+   reads as a low-resolution route rather than a storage vault._
 6. **Fire the research nodes, then stop.** Dispatch any research nodes (facts, not decisions) in
    parallel now — they need no human. Charting is one session: do **not** settle grilling, tracer,
    or build nodes here. _Done when the research nodes are dispatched and the session ends with the
@@ -165,15 +167,12 @@ mode — no map, and no edit to the register.
 ## Out of scope          consciously ruled out, plus why
 ```
 
-### Claiming versus closing — the ownership line
+### Claiming removes the entry
 
-Wayfinder **claims** a register entry: it records on the map that this feature will retire it, so
-the intent survives into the stories cut from the map. It never edits `GAPS.md` or `DEFERRED.md`
-to mark anything done. **Closing belongs to
-`project-management/workflows/22-implementation-documentation/`**, which owns register routing and
-marks an entry `✅ CLOSED <date>` (or removes the `DEFERRED.md` row) against shipped code. A claim
-is a promise; a close is evidence. Crossing that line puts a gap in the closed state with nothing
-built behind it.
+A **closes** or **blocks** entry the map claims is carried on the map and leaves `GAPS.md` /
+`DEFERRED.md` in the same change — the map, then the story cut from it, is its one working copy.
+Rule: `.claude/CLAUDE.md` Section 9; procedure: `project-management/workflows/01-feature-map/`
+Step 2.
 
 ### Decision-node types
 
@@ -247,8 +246,8 @@ charts a new map rather than reopening it.
 - **Treating the register as write-only** — a feature charted without reading `GAPS.md` and
   `DEFERRED.md` re-decides what a past story already deferred, and leaves the debt it happens to
   retire unrecorded and therefore unclosed.
-- **Closing a register entry from here** — wayfinder claims; `22-implementation-documentation`
-  closes, against shipped code.
+- **Leaving a claimed entry in the register, or removing one the map does not carry** — the first
+  is two copies that drift, the second loses the entry outright.
 - **Suggesting a feature that is one story** — a single small gap is a story, not a feature; route
   it to `02-story-creation` rather than inflating it into a map.
 

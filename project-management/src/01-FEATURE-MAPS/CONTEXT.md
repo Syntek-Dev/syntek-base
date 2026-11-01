@@ -74,9 +74,9 @@ story is written is a feature that never starts.
 
 - `MAP-000-TEMPLATE.md` — the map template
 - `.claude/skills/wayfinder/SKILL.md` — SUGGEST, CHART and RESOLVE, node types, the graduation
-  table, and the claiming-versus-closing line
-- `GAPS.md` · `DEFERRED.md` — the standing register a map claims from; closed by
-  `project-management/workflows/22-implementation-documentation/`, never here
+  table, and the claim-removes-the-entry rule
+- `GAPS.md` · `DEFERRED.md` — the standing register a map claims from; a claimed entry moves here
+  and leaves the register
 - `../15-DECISIONS/` — where hard-to-reverse resolutions graduate
 - `../02-STORIES/` — the stories cut from a resolved map
 - `../17-STORY-PLANS/` — per-story plans, which cite the ADRs this map produced

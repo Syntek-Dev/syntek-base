@@ -569,8 +569,9 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] All sprint-level tasks checked off
 - [ ] All verification checks passed
 - [ ] No `[OPEN]` acceptance-criteria gap remains in either member's QA plan
-- [ ] `GAPS.md`'s entry of 01/09/2026 closed and `DEFERRED.md`'s two US007 rows written, both by
-      `22-implementation-documentation`, as US007's own Definition of Done provides
+- [ ] `DEFERRED.md`'s two US007 rows written by `22-implementation-documentation`, as US007's own
+      Definition of Done provides (`GAPS.md`'s entry of 01/09/2026 left the register on 01/11/2026,
+      carried by US007 — nothing to close)
 - [ ] No outstanding TODO or FIXME comments introduced in this sprint
 - [ ] All changes merged to `main` (or the active release branch)
 - [ ] Sprint `**Status:**` set to `Done`

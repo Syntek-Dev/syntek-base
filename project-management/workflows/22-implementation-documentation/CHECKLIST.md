@@ -76,9 +76,11 @@ model: opus
 - [ ] Every manual-guide row amended at the walk recorded as a finding — and a missing guide, where
       the plan postdates 30/09/2026
 - [ ] `Next story` rows carried into the next `src/17-STORY-PLANS/` plan
-- [ ] Every _Register claimed_ row on the story's feature map checked: retired entries closed
-      here (`GAPS.md` → `✅ CLOSED DD/MM/YYYY`, `DEFERRED.md` → row removed) **against shipped
-      code**; a claim the story did not retire left open, with the reason recorded as a finding
+- [ ] Every _Register claimed_ row on the story's feature map checked: a claim the story did not
+      retire recorded as a finding and routed to a `Next story` row — or, with no follow-on story,
+      a new dated `GAPS.md` entry citing the finding
+- [ ] Any **unclaimed** register entry this story retired closed here **against shipped code** —
+      `GAPS.md` → `✅ CLOSED DD/MM/YYYY`, `DEFERRED.md` → row removed
 
 ---
 

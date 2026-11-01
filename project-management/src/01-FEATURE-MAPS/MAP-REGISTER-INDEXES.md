@@ -86,9 +86,9 @@ live register holds six dated entries, three loose items and three standing limi
 · 0 blocks · 6 unrelated**, and this map's fog pass **wrote a seventh** (the story `**Status:**`
 vocabularies) rather than claiming it.
 
-**This is a claim surface, not a close surface.** Nothing here edits either register to mark
-anything done; closing belongs to `workflows/22-implementation-documentation/`, against shipped
-code.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9) — the state the register has been in for the
+Plans Index entry since 31/08/2026. `S-01` carries it; `22-implementation-documentation` never
+closes a claimed entry.
 
 ---
 

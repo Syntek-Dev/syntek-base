@@ -381,8 +381,9 @@ numbers them.
   `22-implementation-documentation` pass, which makes the ADR's claim true (settled 28/09/2026,
   16-sprint-plans grilling round 2 Q6). The entry is dated the day it is written and cites the
   ADR's 17/09/2026 claim as the date it was owed from — never backdated to it
-- **`install-frontend.sh:79-81`'s `sudo rm -rf`** — the `GAPS.md` row of 11/09/2026 owns it. This
-  story reads that file and must not mask it (TM-06)
+- **`install-frontend.sh:79-81`'s `sudo rm -rf`** — `MAP-BUN-TOPOLOGY.md`'s N-024 / S-01 note (the
+  `GAPS.md` row of 11/09/2026 until 01/11/2026) owns it. This story reads that file and must not
+  mask it (TM-06)
 - **The Bun swap** — `MAP-BUN-TOPOLOGY.md` puts `install.sh` and four lefthook legs in its
   surface; that map is 29 open / 21 blocking and cannot produce a story
 - **`copier.yml`'s `--trust` execution surface** — untouched by this story

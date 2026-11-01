@@ -525,9 +525,9 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] No `[OPEN]` acceptance-criteria gap remains in any member's QA plan
 - [ ] The sprint plan (`16-sprint-plans`) and both story plans (`17-story-plans`) written — owed
       from 01/11/2026, when this record reached the fill trigger
-- [ ] The `DEFERRED.md` entry for the out-of-scope vendor literals written, and items 1-2 of
-      `GAPS.md`'s 17/09/2026 entry closed, both by `22-implementation-documentation`, as US013's own
-      Definition of Done provides
+- [ ] The `DEFERRED.md` entry for the out-of-scope vendor literals written by
+      `22-implementation-documentation`, as US013's own Definition of Done provides (items 1-2 of
+      `GAPS.md`'s 17/09/2026 entry left the register on 01/11/2026 — nothing to close)
 - [ ] No outstanding TODO or FIXME comments introduced in this sprint
 - [ ] All changes merged to `main` (or the active release branch)
 - [ ] Sprint `**Status:**` set to `Done`

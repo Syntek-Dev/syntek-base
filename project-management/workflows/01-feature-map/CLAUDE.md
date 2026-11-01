@@ -55,10 +55,8 @@ re-asking the same questions.
   write-only. Every open entry gets a verdict — closes / blocks / unrelated — because a feature
   charted without them re-decides what a past story already deferred, and silently leaves the debt
   it happens to retire unrecorded.
-- **Claim, never close.** This workflow writes claimed entries onto the map; it does not mark
-  `✅ CLOSED` or delete a `DEFERRED.md` row. That is
-  `22-implementation-documentation`'s, against shipped code — editing the register here puts a gap
-  in the closed state with nothing built behind it.
+- **A claim removes the entry** — carried on the map, then deleted from the register in the same
+  change (`.claude/CLAUDE.md` Section 9; procedure: `STEPS.md` Step 2).
 - **Step 0 suggests; it never chooses.** Candidates are put to <%DEVELOPER_NAME%> ranked, and nothing is
   written until one is picked. A candidate that is really one story routes to `02-story-creation`
   rather than being inflated into a map.

@@ -76,7 +76,8 @@ advisory gap, the missing staging/production mail backend, the story `**Status:*
 the index-row instruction surviving in three shipped files. **0 closes · 0 blocks · 6 unrelated**,
 plus three loose items that touch no host surface. Nothing here is claimed.
 
-**This is a claim, not a close.** Nothing here edits either register.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9); nothing is claimed here, so neither register
+was edited.
 
 **SL-2's reopen trigger does not fire on this map.** It reopens when a workflow **publishes** an
 image to a registry; nothing here publishes anything.

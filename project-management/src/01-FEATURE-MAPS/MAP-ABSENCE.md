@@ -112,9 +112,10 @@ remains empty. **Nothing closes and nothing blocks.**
 | `GAPS.md`     | 6 open entries (re-triage 31/08/2026) | unrelated | —          |
 | `DEFERRED.md` | _(no open entries)_                   | unrelated | —          |
 
-**This is a claim, not a close.** One entry was **appended** this sitting, never closed:
-_31/08/2026 — htmx is pinned at major 2, and the v4 migration waits on two named triggers_ —
-the N-012 outcome, recorded per RESOLVE step 6.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9): an entry claimed here leaves the register.
+One entry was **appended** this sitting, and claimed by nothing here: _31/08/2026 — htmx is pinned
+at major 2, and the v4 migration waits on two named triggers_ — the N-012 outcome, recorded per
+RESOLVE step 6.
 
 **One shipped guide family constrains this one without sharing an edge**, and two shipped defects
 constrain it from outside any map. The **`TYPES-*` family** owns the type-shape half, above — six

@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 16/10/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 01/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -18,10 +18,9 @@ template repository, not any project generated from it.
 **Read at the discovery gate.** `project-management/workflows/01-feature-map/` reads this file
 and `DEFERRED.md` before charting a feature — to **suggest** candidate features from what has
 accumulated, and to triage every open entry against the feature being charted (closes / blocks /
-unrelated). An entry a feature will close is **claimed** on its `MAP-<FEATURE>.md`; the
-`✅ CLOSED` mark itself is only applied by `workflows/22-implementation-documentation/`, against
-shipped code. **Standing limitations are exempt from that triage** — they are accepted
-properties, not open entries, and can take none of the three verdicts.
+unrelated). **An entry a map claims, or a story is cut carrying, leaves this file in that change**
+(rule: `.claude/CLAUDE.md` Section 9). **Standing limitations are exempt from that triage** — they
+are accepted properties, not open entries, and can take none of the three verdicts.
 
 ---
 
@@ -221,19 +220,18 @@ in a **generated project** — so the template was shipping them:
   `addopts`, and `pytest-xdist` is not a declared dependency.
 - **The dev stack and every generated project both claim `10.0.1.0/24`**, so they cannot run
   concurrently on one host. Only the base pair collides; worktrees offset by story number.
-- **`pnpm-update.sh`'s header** claims files it no longer updates.
 - **Added 15/10/2026, found by the mutation-testing research.** `code/docs/testing/TAXONOMY.md:189`
   also advertises `backend.sh -n auto`. The Testcontainers lines (`BACKEND-TESTING.md:114-115`,
   `TAXONOMY.md:22`) contradict `BACKEND-TESTING.md:84-85`, which puts integration tests on the
-  Compose-managed `postgres:18-alpine` test database. `code/src/scripts/rust/test.sh:10-12`
-  describes Python-side PyO3 boundary tests that do not exist: no `.py` file imports `nativecore`.
+  Compose-managed `postgres:18-alpine` test database.
 
 ---
 
 ## Format
 
 New items are recorded here first, in the format below, then charted onto a feature map at the
-next pass. The blank seed at `.copier/GAPS.md` carries the same format, so an entry reads
+next pass — and removed from here in the change that charts them. The blank seed at
+`.copier/GAPS.md` carries the same format, so an entry reads
 identically in a generated project:
 
 ```text
@@ -339,215 +337,6 @@ notification feature to be scheduled.
 
 ---
 
-## 01/09/2026 — the story `**Status:**` header carries two competing vocabularies — ✅ CLOSED 31/10/2026
-
-**Type:** Active gap
-**Resolution (31/10/2026, v7.7.0):** One vocabulary won and every surface now routes to it. The
-twelve-status story lifecycle (`Open` through `Closed`, with the three customer statuses) is owned
-by `.claude/skills/completion/SKILL.md`; `project-management/docs/planning/STORIES.md`, the story
-and plan templates, `.copier/README.md` and `23-pr-and-review` were repaired in the same change. <!-- doc-references: template-only -->
-Plans carry no status of their own, so the cross-artefact agreement the plan template's _Definition
-of Done_ demanded falls away; the generated `*-BOARD.md` boards in `01`, `02`, `03`, `16` and `17`
-are the indexes the entry anticipated, mirroring each status line verbatim. Promotion: the
-vocabulary is a skill-owned rule rather than an architecture, security or token pattern, so
-nothing moves to the Section 9 target docs. **Overlap to settle:** US007 was written for the same
-intent and is not edited by this change. Remove this entry on the next tidy pass.
-**Summary:** One field, two canonical sets, and both self-declare. `.claude/skills/completion/SKILL.md:37-41`
-defines five states for a `US###.md` header (`Pending · Open · Blocked · In Review · Completed`);
-four other surfaces define the **same header** with the eleven-state ClickUp vocabulary —
-`project-management/docs/planning/STORIES.md:79-93`, which states outright "This is the canonical
-set", the `Status` row of the header table in
-`project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md`,
-`.copier/README.md:568-570`, and `project-management/workflows/23-pr-and-review/STEPS.md:73-74`, <!-- doc-references: template-only -->
-which moves a story to `Accepted` / `Accepted Customer` — values the five-state set does not admit,
-so the shipped PR workflow instructs a transition the shipped completion skill forbids. Class **D**,
-split doctrine. Surfaced 01/09/2026 while resolving `MAP-REGISTER-INDEXES.md`'s fog, which parked it
-as "belongs to whoever owns the story lifecycle" and correctly declined to settle another register's
-semantics to make its own index fillable.
-**Blocked by / Action:** Nothing blocks it. A pass decides which vocabulary wins, or writes the
-mapping that reconciles them, and repairs all five surfaces in one change. **Two consumers make the
-repair wider than the five sites:** `00-STORY-PLAN-US000-TEMPLATE.md`'s `## Definition of Done`
-requires the status to agree across story + plan + sprint/sprint-plan, including the plan's row
-in the sprint plan's _Story Plans — the code master_ table, and
-`MAP-REGISTER-INDEXES.md` N-003's gate will string-equal the field in "STORY-INDEX.md" and
-"STORY-PLAN-INDEX.md", so a reconciliation lands with both indexes and the gate's
-`broken/`+`clean/` fixtures. The gate is indifferent to _which_ set wins —
-it mirrors verbatim — but not to the cost. Likely charting home is `MAP-RULE-OWNERSHIP.md`, four of
-the five sites sitting inside the surfaces its four architecture passes measured; its frontier is
-closed, so this is recorded here first per the Format section above.
-
-<!--
-08/09/2026 — the story plans gained an `<exec-order>` prefix, so both citations above were
-re-pointed and de-numbered to their section names; the template is being edited in the same pass
-and a line anchor would go stale on landing. Superseded citations, verbatim:
-"project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md:9" and
-"STORY-PLAN-US000-TEMPLATE.md:773". The 01/09/2026 finding itself is unchanged.
-
-08/09/2026, later the same day — the template's `## Definition of Done` stopped naming a Plans
-Index (none exists; the template was re-pointed at the sprint plan's _Story Plans — the code
-master_ table), so the consumer clause above was corrected in place to the template's current
-wording. Superseded clause, verbatim: "requires the status to agree across story + plan + Plans
-Index + sprint". The 01/09/2026 finding and the index-gate sentence are unchanged.
-
-08/09/2026, evening — the two index filenames in the index-gate sentence, left alone by the note
-above, were de-backticked to "double quotes": neither "STORY-INDEX.md" nor "STORY-PLAN-INDEX.md"
-exists anywhere in the repository (the story US007 records both as absent), and the citation
-gate reads backticked tokens. Nothing else in the 01/09/2026 finding is touched.
--->
-
----
-
-## 01/09/2026 — the `CONTEXT.md` index-row instruction survives in three shipped files no slice repairs — ✅ CLOSED 31/10/2026
-
-**Type:** Active gap
-**Resolution (31/10/2026, v7.7.0):** All three sites are rewritten. `wayfinder/SKILL.md` and
-`01-FEATURE-MAPS/CLAUDE.md` now point at the generated `FEATURE-MAPS-BOARD.md`, which
-`pm-board.sh --write` builds from each map's status line, and `01-FEATURE-MAPS/CONTEXT.md` no
-longer carries a hand-written index table. No shipped file instructs a row any more, so the three
-decline rationales recorded below are moot rather than disposed of one by one. No permanent
-decision to promote beyond what the `completion` skill and the folder pair already hold; remove
-this entry on the next tidy pass.
-**Summary:** `MAP-REGISTER-INDEXES.md` N-001 (31/08/2026) relocated the map index out of the shipped
-`CONTEXT.md` into a seeded map-index file of its own, and every map in `01-FEATURE-MAPS/` has declined the index
-row on the record. But the instruction to add it is still shipped in three places:
-`.claude/skills/wayfinder/SKILL.md:97-98` ("Add the map to the index in
-`src/01-FEATURE-MAPS/CONTEXT.md`") with `:256` naming that file "the map index, where a new map is
-registered", and `project-management/src/01-FEATURE-MAPS/CLAUDE.md:22-23` and `:26`, which repeat it
-as a concrete step **and** a definition-of-done. That map's S-01 scopes itself to
-`MAP-000-TEMPLATE.md:8`/`:146` plus the seven `CONTEXT.md` H2s — the wayfinder skill and the folder
-`CLAUDE.md` are in no slice on any map. Meanwhile `01-FEATURE-MAPS/CONTEXT.md:47` reads
-"_None charted yet_" against **12** maps present, under that file's own rule at `:50-52` that a map
-with no row is "an index that has drifted". So the shipped instruction, the shipped
-definition-of-done and the shipped index are all currently false, and the work to make them true is
-unowned. Surfaced 01/09/2026 while resolving `MAP-GATE-PARITY.md`'s fog, whose own entry said the
-exception "is not this map's to write" — correct, and now discharged to nobody.
-**Blocked by / Action:** Nothing blocks it. Either widen `MAP-REGISTER-INDEXES.md` S-01's Acceptance
-to name the three sites, so they are repaired in the same change as the seeded map index ships, or repair
-them independently. This entry retires when the three files stop instructing a row into a shipped
-file.
-
-**Re-measured 17/09/2026** during `02-story-creation`'s Step 0 sweep. The count is now **13** maps,
-not the 12 recorded above, and the drift has hardened rather than held: the decline is on the record
-in every map, but under **three different rationales** —
-`MAP-SUBDOMAIN-ROUTING.md:12-14`, `MAP-CAP-POSTURE.md:13-15` and `MAP-BUN-TOPOLOGY.md:10-13` cite
-`MAP-RULE-OWNERSHIP` N-010's interim decline; `MAP-REGISTER-INDEXES.md:9-13` cites its own N-001
-relocation to `MAP-INDEX.md`; `MAP-GATE-PARITY.md:85-92` declines for an unrelated third reason, the
-`copier.yml` re-include leak that would ship a row naming a syntek-base map into every generated
-project. Only the `MAP-REGISTER-INDEXES` rationale is retired by a slice, so two of the three
-justifications survive whatever that map's `S-01` ships. Whoever repairs this must dispose of all
-three, not just the one with an owner.
-
----
-
-## 02/09/2026 — `doc-references.sh` applies its shipped-file citation rule to a tree that never ships
-
-**Type:** Active gap
-**Summary:** Check 2 of `code/src/scripts/audits/doc-references.sh` (`:673-678`) bans a citation to
-a per-project instance artefact — `US###`, `SPRINT-##`, `ADR-###`, `MAP-*`, `*-PLAN-US###` — on the
-stated reasoning that the reader of a generated project has no such file. It never tests whether
-the **citing** file ships. `copier.yml` <!-- doc-references: template-only --> line 152 excludes `/project-management/src/**` and re-includes
-only `**/CONTEXT.md`, `**/CLAUDE.md` and `**/*TEMPLATE*`, so a story, sprint record, QA plan and
-ADR are all copier-excluded — the rule's premise does not hold for any of them. It has now fired
-twice on correct, resolvable citations: seven findings on the first draft of `project-management/src/02-STORIES/US001.md` (01/09/2026) and
-nine on its QA plan (01/09/2026). The exemption arm at `:333` already carries this reasoning for
-`project-management/src/01-FEATURE-MAPS/*` and for the `WALK-*` evidence files; the rest of
-`src/` has no equivalent.
-
-**Corrected 02/09/2026 — the rule also UNDER-applies, and the original wording here repeated a
-false mechanism.** This entry previously read that the check "records a finding only where the
-token does not resolve (`[ ! -e "$token" ]`), so a full repo-relative path passes and a bare
-filename does not". A full path does not _pass_ that test — it never reaches it. Check 2's regex
-at `:675` is `^`-anchored, so a token beginning `project-management/` matches no alternative and
-the block containing the existence test is never entered; and Check 1's checkable-tree `case` at
-`:762-780` has **no `project-management/src/*` arm**, so the same token falls to `*) continue`
-before its own existence test. **No gate checks a PM `src/` instance citation in either form.**
-Proof in the tree: `project-management/src/02-STORIES/US001.md` cites
-`../18-TESTS/US001-MANUAL-TESTING.md` twice, that file does not exist, and the audit exits 0.
-_(Example retired 30/09/2026: the `18-TESTS` split backfilled that guide at
-`project-management/src/18-TESTS/MANUAL/US001-MANUAL-TESTING.md` and repointed both citations, so
-this proof no longer reproduces. The gap it proved stands — still no gate checks a PM `src/`
-instance citation.)_
-Two further defects found by the same measurement — the alternation still carries `ADR-[0-9]{3}`,
-the counter retired 31/08/2026, and `QA-US[0-9]{3}` against the live
-`QA-PLAN-US###-<DESCRIPTOR>.md` spelling, so **no ADR or QA-plan filename is checkable in any
-form**. The interim convention is unchanged and now argued honestly in
-`project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`, which
-supersedes `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-FULL-PATHS-02-09-2026.md`
-for claiming the full path was machine-verified.
-**Third symptom, measured 02/09/2026 — the rule fires INCONSISTENTLY on identical citation
-forms.** On that date `project-management/src/02-STORIES/US001.md` and
-`project-management/src/03-SPRINTS/SPRINT-01.md` both cited PM `src/` artefacts by full
-repo-relative path and scanned **clean**, while `project-management/src/02-STORIES/US003.md`,
-`project-management/src/03-SPRINTS/SPRINT-02.md` and
-`project-management/src/11-QA/PLANNING/QA-PLAN-US003-ABSENCE-GUIDE.md` cited in the
-byte-identical form and produced twelve
-`[template-only citation]` findings between them. Extracting US001's two Decisions bullets
-verbatim into a probe file made them fire immediately, so the difference was not the citation
-form and not the citing directory. `is_exempt()` (`:311`) covers
-`project-management/src/01-FEATURE-MAPS/*` but no other `src/` tree; the register at
-`how-to/src/PROJECT-PATHS.md` holds three rows, none of them relevant; and the naming-row rule
-does not apply. **The mechanism is not established**, and the fix must not be attempted until it
-is — a repair aimed at the wrong cause would silence the finding rather than correct it.
-**Re-measured 09/09/2026 at `ff24084`, those per-file verdicts no longer hold** — and they were
-produced by a different instrument, `96982d3` (08/09/2026) having added Check 4 and widened
-Check 2's alternation in between. US001 is still clean (0). SPRINT-01 is not: 10 findings, eight
-`[instance citation]` and two `[dangling path]`. US003, SPRINT-02 and the QA plan produce **30**
-between them — 13 instance and 17 dangling — and **no** `[template-only citation]` at all. The
-02/09/2026 observation stands as a dated record that the rule fired inconsistently; the class
-labels and per-file verdicts attached to it are that day's, not today's. The whole-run total,
-re-measured **09/09/2026** at `ff24084` on a clean tree, is **253 findings** (exit 1): 135
-instance citations and 106 dangling paths, every one of them cited **from** a file under
-`project-management/src/`, plus 12 template-only citations, nine of which are this entry's own —
-eight above this sentence and the disposition citation that closes this paragraph. That is
-against 22 on 02/09/2026 — the figure `c57a8ed`'s commit message records, and one that does not
-reproduce at that commit: re-run there on 09/09/2026, the gate returns 26 (15 dangling, 11
-template-only). It is **not comparable** for a second reason too: the gate changed once
-between the two runs (`96982d3`, above) and the tree gained artefacts — 246 to 274 files under
-`project-management/src/` — so part of the rise is the instrument seeing a class it previously
-could not, not the tree accumulating citations, and the two shares are not apportioned here. 253
-is also the **pre-edit baseline** the disposition below requires, never a claim about the merge
-commit; US008's own change adds nothing to it — measured 09/09/2026 per file with `--path`, this
-file's count is unchanged at nine, and the story, its two ADRs and its one map edit contribute
-none, so the tree US008 lands on still runs at 253. Disposition while the gate stays red:
-`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`.
-_(Superseded 30/09/2026 by
-`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, <!-- doc-references: template-only -->
-which restates the disposition unchanged but for the manual testing guide's path, now under
-18-TESTS/MANUAL/ — settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18. The
-disposition stands; only the record that states it moved.)_
-
-**Blocked by / Action:** `project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` <!-- doc-references: template-only --> slice `S-06` owns the first edit to
-`doc-references.sh` and is itself blocked on that map's RESOLVE sitting. The fix is now **four
-changes, not one**: a `project-management/src/*` arm on Check 1's checkable-tree `case`; the
-`ADR-US###` and `QA-PLAN-US###` spellings in Check 2's alternation; a decision on whether Check 2
-should exempt copier-excluded citers outright; and fixtures covering a dead PM citation, which
-today's `broken/` set does not. Either widen `S-06`'s acceptance to carry all four, or take it
-independently once the sitting has settled who owns the file. This entry retires when a
-copier-excluded artefact can cite another by its short name without a finding, a dead
-citation to a PM `src/` artefact is caught, **and** the inconsistency above is explained rather
-than merely no longer firing.
-
-<!--
-09/09/2026 — the whole-run total in the Summary was re-measured at ff24084 on a clean tree and
-corrected in place; the 02/09/2026 two-part split (forward references / this class) was replaced
-by the classes the gate itself reports. Superseded sentence, verbatim: "The whole-run total on
-02/09/2026 was **22 findings**: 10 forward references to a guide US003 creates, and 12 of this
-class." The 02/09/2026 finding, its mechanism and the disposition are unchanged.
-
-09/09/2026, later — the same paragraph's 02/09/2026 per-file verdicts were re-measured at
-ff24084 and found not to hold (SPRINT-01 10 findings; the US003 group 30, none template-only),
-so they are date-qualified in place rather than replaced; the 22 is marked non-comparable
-because the gate changed at 96982d3 between the two runs; and the paragraph now states what
-US008's own change adds to the baseline (nothing, measured per file). Superseded wording,
-verbatim — the paths in those sentences are unchanged and are not repeated here, because the
-gate reads a backticked path inside a comment as it reads one in prose: "both cite PM `src/`
-artefacts by full repo-relative path and scan **clean**.", "cite in the byte-identical form
-and produce twelve" and "so the difference is not the citation form"; the lead-in "On that
-date" is new. Nothing else in the entry is touched.
--->
-
----
-
 ## 09/09/2026 — the staging/production security-settings block ships twice and has already drifted
 
 **Type:** Active gap
@@ -561,9 +350,8 @@ excluded — returns exactly one hunk,
 identical order — and the copies already differ in two respects, the ninth setting
 `SECURE_BROWSER_XSS_FILTER`, last in the OWASP fence, and the `# settings/production.py` comment
 on that fence's first line, neither of which the `AUTH-AND-AUTHZ.md` copy carries. Line anchors
-are deliberately omitted here: US008 edits both fences and both settings modules below, and the
-08/09/2026 note above records why an anchor into a file the same story edits goes stale on
-landing. The ninth is dead: the Django 6.1 that `uv.lock` pins and `.venv` holds declares twelve
+are deliberately omitted here: US008 edits both fences and both settings modules below, and an
+anchor into a file the same story edits goes stale on landing. The ninth is dead: the Django 6.1 that `uv.lock` pins and `.venv` holds declares twelve
 `SECURE_*` names in its `global_settings.py` and `SECURE_BROWSER_XSS_FILTER` is not among them,
 with zero hits across its `conf` and `middleware` packages, so the OWASP copy ships a line
 Django no longer reads. Nor does either copy describe what runs:
@@ -588,147 +376,25 @@ under `code/docs/security/`.
 
 ---
 
-## 09/09/2026 — a print-only `_migrations:` advisory is invisible in the `template-update.sh` preview
+## 17/09/2026 — `MAP-UPSTREAM-TRACKING.md` asserts things about itself that its own table refutes
+
+<!-- Retitled 01/11/2026. Filed 17/09/2026 as "three feature maps assert things about themselves
+     that their own tables refute"; items 1-2 (MAP-RULE-OWNERSHIP) were repaired at US013's cut on
+     31/10/2026 and left this entry, so only the MAP-UPSTREAM-TRACKING item remains. -->
 
 **Type:** Active gap
-**Summary:** `code/src/scripts/development/template-update.sh:143-144` runs the preview
-`copier update` against a scratch clone with stdout and stderr redirected wholesale to
-`$UPDATE_LOG`; `:148-151` shows the log (`tail -20`) only when copier exits non-zero, and
-`cleanup()` (`:122`), registered on `EXIT` at `:123`, unlinks it, so nothing survives to be read
-afterwards. Two of the six shipped migrations under `.copier/migrations/` <!-- doc-references: template-only --> are advisories — they
-print guidance and always exit 0: `v3.0.0-self-authored-agents.sh`, whose header says it "cannot
-fail an update", and `v5.0.0-git-guide-split.sh`, headed "WHY THIS ADVISES RATHER THAN ACTS".
-The other four act on the project tree — `v2.0.0-renumber-src.sh` and `v7.0.0-renumber-src.sh`
-move stranded artefacts, `v4.0.0-manifest-name.sh` restores the manifest name,
-`v6.0.0-rename-feature-surfaces.sh` is headed "WHY IT ACTS ON DIRECTORIES" — and what they do to
-the scratch clone surfaces in the preview's modified/deleted/added counts and its orphan audit.
-An advisory leaves no such trace: its whole effect is the text the redirect swallows, so the
-preview, which is the step a human reads before deciding to `--apply`, shows none of it, and
-prints "Preview only — your project is unchanged" (`:275`) over an update whose migration had
-something to say. The `--apply` invocation at `:281-282` is not redirected, so the advice reaches
-the terminal exactly once, after the decision it was written to inform. Class **B**, false
-green. Measured 09/09/2026 while cutting US008, whose planned v7.6.0 entry — `CSRF_COOKIE_HTTPONLY`
-and the per-environment `__Host-` cookie names — will be exactly such an advisory; the story
-accepts the blindness and does not fix the script.
-**Blocked by / Action:** Nothing blocks it. Either the preview echoes copier's output on success
-as well, filtered to the migration section before the trap deletes the log, or the log is kept
-and its path printed beside the "Preview only" line. Retire when a print-only advisory's text
-appears in the output of a successful preview.
-
----
-
-## 11/09/2026 — `install-frontend.sh --local` hands two stray arguments to `sudo rm -rf`
-
-**Type:** Active gap
-**Summary:** `code/src/scripts/development/install-frontend.sh:79-81` ends the path line of its
-`sudo rm -rf` with a line continuation, so the next line — `log "Removed."` — is parsed as two
-further arguments rather than a log call. `--local`, and its `--clean` alias, therefore runs
-`sudo rm -rf "$PROJECT_ROOT/node_modules" log Removed.` from the project root (the script `cd`s
-there first) and never prints "Removed.". Measured 11/09/2026: neither `log` nor `Removed.` exists
-at the root, so `-f` swallows both silently and nothing is lost **today** — the hazard is latent:
-anything later named `log` at the root is deleted as root, with no message. Root `install.sh:421`
-reaches this path on every first-time setup. The step's premise is stale as well: it removes
-"Docker-owned" `node_modules`, but no image installs Node (`code/src/docker/django/CLAUDE.md`).
-Class **B**, false green — the step reports nothing and exits 0 either way. Found by the footprint
-sweep that charted `project-management/src/01-FEATURE-MAPS/MAP-BUN-TOPOLOGY.md`. <!-- doc-references: template-only -->
-**Blocked by / Action:** Nothing blocks it, and it should not wait for that epic. Fix through the
-`bugfix` skill: drop the trailing `\`, and decide whether a `sudo` removal still has any reason to
-exist once nothing root-owned creates `node_modules`. If it is still open when the map's script
-slice rewrites this file for Bun, that slice retires it. Retire when `--local` passes exactly one
-path to `rm`.
-
----
-
-## 11/09/2026 — the Bun map's eight tracers have no Bun to run on
-
-**Type:** Infrastructure gap
-**Summary:** `project-management/src/01-FEATURE-MAPS/MAP-BUN-TOPOLOGY.md` <!-- doc-references: template-only -->
-settles supply-chain and runtime parity by **running** Bun (tracers N-006 to N-013), and none of
-what they need exists. Measured 11/09/2026 on the development host: `command -v bun` is empty;
-Node v24.13.0 and pnpm 11.25.0 are present. The overrides set a floor of Bun 1.4.0. Every tracer
-runs in a throwaway worktree or scratch clone, **never this tree**, and between them they need: a
-Bun >= 1.4.0 binary; scratch Copier renders on both `INCLUDE_MOBILE` paths at a pinned Copier
-version (CI's `uvx copier` is unpinned; the local copy is 9.17.0); a scratch project generated at
-`--vcs-ref=v7.5.0` with one added dependency committed, so its `pnpm-lock.yaml` diverges from the
-template's (N-010); a Node-free shell — a container, or a PATH scrubbed of `node`, `npx`, `pnpm`
-and `corepack` — with the test stack up for the Bruno leg (N-012, N-013); an Expo Go device on the
-LAN for the manual `server.sh` check; and a throwaway branch with a Bun job on ubuntu runners for
-CI parity, dispatched by hand because `test-api.yml`'s path filter skips a JS-only change unless
-N-005 widens it. Provisioning is manual work, so it is recorded here rather than as a map node.
-**Blocked by / Action:** Nothing blocks it. Sam decides where Bun is installed; the tracers then
-run in the order the map's frontier sets. Retire when the first tracer has run.
-
----
-
-## 16/09/2026 — MCP servers are declared twice, and the shared `.ai/` entry point cannot yet hold them
-
-**Type:** Doctrine gap
-**Summary:** `.ai/` resolves every other duplication by symlink — `.ai/skills/` points at
-`.claude/skills/`, `.ai/MEMORY.md` at `.claude/MEMORY.md` — but MCP configuration cannot be
-resolved that way. `.mcp.json` is Claude Code's, `.codex/config.toml` is Codex's, the formats are
-JSON and TOML, and neither host reads the other's file. So the four servers are declared twice by
-hand, and were held in step by nothing at all until `code/src/scripts/audits/mcp-parity.sh` landed
-in this change. That audit is a **drift detector, not a fix**: it proves the two agree, it cannot
-make one declaration serve both, and every server added from here costs two edits in two formats.
-The intended destination is a single declaration under `.ai/` that every provider and model reads,
-which would delete the parity rule in `.ai/INSTRUCTIONS.md` rather than refine it — but neither
-host reads a neutral file today, so it needs a generator (one source rendering both) or upstream
-support, and nothing is built toward it.
-**Blocked by / Action:** Nothing blocks the generator approach; it is unscheduled and deliberately
-so — two servers and one audit is a cheaper state than a rendering step nobody asked for. Revisit
-when a third host joins, or when the server count makes the double edit a real cost. Until then
-parity is the contract and the audit is the gate. Retire when `.ai/` holds the single declaration.
-
----
-
-## 17/09/2026 — the audits register's headroom is one line smaller than nineteen artefacts believe
-
-**Type:** Active gap
-**Summary:** `code/src/scripts/audits/CONTEXT.md` measures **299 of 300** counted lines as
-`audits/docs-length.sh` measures them, not 298. The file itself is **correct and current** — its
-`docs-length-allow` comment at `:8` records the move in its own words, "Done again on those terms
-on 16/09/2026, registering `mcp-parity.sh` … Re-measured at 299". What is stale is everything
-downstream: **19 artefacts** under `project-management/src/` still state 298, including `US002.md`
-(whose entire premise is shrinking that file 298 → 230, and whose stated headroom of two lines is
-now one), `US004.md`, `US006.md`, `US008.md`, four `SPRINT-0*.md` records, four sprint plans, three
-story plans, two QA plans and
-`ADR-US002-REGISTER-SPLITS-RATHER-THAN-RELOCATES-02-09-2026.md`. Four of those phrase it as a
-standing instruction — "is not grown while at 298" — which is a guard written against a number that
-has already moved. `MAP-PROGRESSIVE-ENHANCEMENT.md:365` and `MAP-BUN-TOPOLOGY.md:146` carry it in
-their slice Flags too, so two uncut slices would inherit it. Surfaced 17/09/2026 during
-`02-story-creation`'s Step 0 sweep, by running the gate rather than reading any artefact.
-**Blocked by / Action:** Nothing blocks it. The cheapest correct fix is **not** a find-and-replace
-to 299 — that re-creates the same defect one line later. US002 is the owner: it should state the
-figure as "whatever `audits/docs-length.sh` reports at implementation time" and re-measure at the
-start of its own build, and the standing "not grown while at 298" guards elsewhere should cite the
-gate rather than a literal. This entry retires when no artefact asserts a bare line count for that
-file.
-
----
-
-## 17/09/2026 — three feature maps assert things about themselves that their own tables refute
-
-**Type:** Active gap
-**Summary:** Map prose was not re-measured when the slice tables beneath it changed, and in three
-places the prose now states something falsifiable by the same file.
-(1) `MAP-RULE-OWNERSHIP.md:1042` justifies cutting Batch E first on the ground that "the gate below
-already names Batch E _'the intended first slice'_, so the identification is the map's own" —
-`grep -c 'intended first slice'` over that file returns **1**, and the hit is line 1042 itself. The
-`## Gate to stories` section contains no such phrase. A cut-first warrant that cites only itself is
-the most dangerous shape here, because a later reader takes it as the map's settled judgement.
-(2) `:1041` on the same map reads "This map's six batches are its slices" against **nine** slice
-rows — Batch G split and Batch H was charted after that sentence was written.
-(3) `MAP-UPSTREAM-TRACKING.md:534` reads "**This is a template-development map, so there are no
+**Summary:** Map prose was not re-measured when the slice tables beneath it changed, and the prose
+then stated something falsifiable by the same file:
+`MAP-UPSTREAM-TRACKING.md:534` reads "**This is a template-development map, so there are no
 stories to cut.**" It carries four slice rows, `US002.md:112` names its `S-01` among the slices it
 unblocks, and four other template-development maps have already produced `US001`, `US004`, `US006`
 and `US008`. Its `:537` also says "the remaining open nodes refine them without gating them" while
 `:5` records zero open nodes. Surfaced 17/09/2026 during `02-story-creation`'s Step 0 sweep across
 all thirteen maps.
 **Blocked by / Action:** Nothing blocks it, and none of it is a node — this is prose maintenance,
-not a decision. Each map's next RESOLVE sitting should re-read its own Slices preamble against its
-table and either delete the claim or make it true; `MAP-RULE-OWNERSHIP.md:1042` should be struck
-rather than repaired unless the Gate section is genuinely given the phrase. Retires when a
-re-measure pass has cleared all three.
+not a decision. `MAP-UPSTREAM-TRACKING.md`'s next RESOLVE sitting should re-read its own Slices
+preamble against its table and either delete the claim or make it true. Retires when a re-measure
+pass has cleared it.
 
 ---
 
@@ -802,164 +468,6 @@ same day. **The register's prose also lost its hardcoded count of five**, which 
 have made seven; `project-management/docs/planning/SPRINTS.md`'s own rule was already count-free
 and the records had added a count it never had. The register now stands at **seven copies**, and
 the count lives only in the table.
-
----
-
-## 18/09/2026 — Codex's instruction budget is already exceeded in 65 of 355 directories
-
-**Type:** Active gap
-**Summary:** Codex builds its instruction chain from the project root **down to the working
-directory**, taking at most one file per directory in the order `AGENTS.override.md` →
-`AGENTS.md` → any name in `project_doc_fallback_filenames`, and it **stops adding files once the
-combined size reaches `project_doc_max_bytes`, which defaults to 32 KiB**
-(`https://developers.openai.com/codex/agent-configuration/agents-md`, read 18/09/2026). Because
-the merge runs root-first, the file dropped when the budget runs out is the one **closest to the
-work** — the most specific guidance, not the most general. This repository sets
-`project_doc_fallback_filenames = ["CLAUDE.md"]` in `.codex/config.toml`, which pulls
-`.claude/CLAUDE.md` into the chain for any session launched under `.claude/`. That file is
-**26.2 KiB — 82% of the entire budget on its own**. Measured 18/09/2026 by walking all 355
-directories and summing each chain under Codex's documented rules: **65 exceed 32 KiB**, every one
-of them under `.claude/`, the worst being `.claude/hooks/lib` and `.claude/hooks` at 34.9 KiB,
-where `.claude/hooks/CLAUDE.md` is the file silently dropped. A root-launched session is fine at
-3.9 KiB (12%); the median chain is 18.1 KiB. Nothing reports this — Codex drops the file without
-an error, which is the `code/docs/GATE-REPORTING.md` failure class: the run looks complete and is
-not.
-**Blocked by / Action:** Nothing blocks it, and two repairs exist at different depths. The
-**immediate** one is a one-line change to `.codex/config.toml` — raise `project_doc_max_bytes`
-above the worst measured chain — which buys time without deciding anything and should not be
-mistaken for the fix. The **principled** one is `MAP-INSTRUCTION-DELIVERY.md` slice **S-02**:
-`.claude/CLAUDE.md` carries neutral doctrine that belongs in the shared layer, and an adapter thin
-enough to be a per-host file is also thin enough to fit a per-host budget. Note that raising the
-limit does not make the chain measurable — nothing in this repository counts it, so the gate the
-map's S-05 specifies is what stops this recurring. This entry retires when no directory's chain
-exceeds the configured limit **and** a gate fails when one does.
-
----
-
-## 09/10/2026 — the Playwright pin needs a Chromium the current NixOS generation no longer roots
-
-**Type:** Infrastructure gap
-**Summary:** `pyproject.toml:106` and `code/src/scripts/audits/render-slop.sh:114` pin Playwright
-**1.61.0**, which needs Chromium revision **1228**. On this machine the browsers arrive as a Nix
-store bundle (`.claude/MEMORY.md`, 18/09/2026), and the current system generation roots only a
-bundle at revision **1243** (Playwright 1.63); revision 1228 survives only through older
-generations, so the next garbage collection of those removes it (Nix store root query, 09/10/2026,
-`research/NATIVE-DESIGN-TIER-TOOLING.md` N-001.10). Once it goes, `render-slop.sh` takes its
-no-browser path (`:409-431`) and **exits 0 with a note** — a run that rendered nothing reports
-clean, the `code/docs/GATE-REPORTING.md` failure class — and every future Playwright-backed design
-check inherits the same hole. The `mcp-mermaid` server already fails here for the same reason
-(the note, N-003.1).
-**Re-measured 15/10/2026 — the predicted loss has happened.** No path in `/nix/store` carries a
-Chromium **1228** any more; the store holds bundles at revisions **1234** and **1243** only (store
-listing, 15/10/2026). The pin is unchanged at `playwright==1.61.0` (`render-slop.sh:114`), so on
-this host the no-browser path above is now the path every run takes. The sibling template has
-already moved: `syntek-media` pinned Playwright **1.63.0** with Chromium **1243** in `9bcec39`
-(its 0.4.2). The pin is a constraint, so moving it also moves the `playwright` that
-`pytest-playwright` resolves for the e2e suite (`pyproject.toml:95-106`, `:213`): the design
-tier's render checks and the e2e suite move in one change. `render-slop.sh:102` says "Seven sites" where
-`audits/playwright-pin.sh` holds eight; correct it in the change that moves the pin.
-**Blocked by / Action:** Nothing blocks it. Bump `PLAYWRIGHT_PIN` to the release `just
-check-playwright` reports in `~/Repos/personal/nix-config`, and move every site
-`audits/playwright-pin.sh` holds in step in the same change. Claimed as a blocker by
-`MAP-NATIVE-DESIGN-TIER.md` N-013. This entry retires when the pin matches the bundle the current
-generation roots.
-
----
-
-## 09/10/2026 — the human and every agent act as one GitHub identity, and `main` needs no approval
-
-**Type:** Active gap
-**Summary:** `Syntek-Studio` is the organisation admin, the only member and collaborator, the
-sole code owner (`.github/CODEOWNERS:4`), the git user, and the active `gh` login every agent <!-- doc-references: template-only -->
-session on this host uses; `gh` also holds two further accounts. The `main` ruleset requires
-**0** approving reviews and lets the admin role bypass the whole ruleset at all times, and all
-twelve pull requests were authored and merged by that one account with no review (`gh api`,
-09/10/2026; `research/NATIVE-DESIGN-TIER-TOOLING.md` N-005.1–4 and N-005.9). So no human review is
-enforceable on any pull request: an agent holding the token can approve, and a required review
-would deadlock, because an author cannot approve their own pull request. Raised by
-`MAP-NATIVE-DESIGN-TIER.md`, whose destination needs approval only a human can grant, but the gap
-is repository-wide.
-**Blocked by / Action:** The mechanism is that map's N-017, which holds the options. Whatever it chooses,
-the provisioning (a key, an account, a ruleset change, keeping the human's token out of agent
-sessions) is manual work recorded here, not on the map. This entry retires when an approval an
-agent can produce is no longer counted as a human's.
-
----
-
-## 15/10/2026 — `mutmut.sh` cannot complete a run, and its docs promise what mutmut 3 does not do
-
-**Type:** Active gap
-**Summary:** `code/src/scripts/tests/mutmut.sh` has never finished a run, and it ships to every
-generated project, because `copier.yml` excludes neither `scripts/tests/` nor the `mutmut>=3.0` <!-- doc-references: template-only -->
-floor in the `test` group (`pyproject.toml:201`, `:208`; locked at 3.7.0, `uv.lock:1116-1117`).
-Any one of four failures stops it:
-
-- **Not installed.** It runs `uv run mutmut` inside the dev container (`mutmut.sh:70`), whose image
-  syncs the default `dev` group only (`Dockerfile.dev:22`), so mutmut is absent.
-- **A removed flag.** `run --paths-to-mutate` (`mutmut.sh:100`) is a usage error in mutmut 3.
-- **No configuration where mutmut looks.** It reads its config from the working directory,
-  `code/src/django`, which has none, and the root `pyproject.toml` has no `[tool.mutmut]`.
-- **The wrong settings.** The container's `config.settings.dev` (`docker-compose.dev.yml:53`)
-  outranks the ini's `config.settings.test` (`pyproject.toml:223`), so a run would use the dev
-  services.
-
-The script's promises are false too: its header says exit 0 means every mutant was killed
-(`:18`) and it prints "complete" (`:102`), but mutmut 3 exits 0 with survivors and on an
-interrupt; `apply` writes a mutant into the source the dev server is serving and advises reverting
-with `git checkout` (`:119-126`), which also discards uncommitted edits in that file. `mutants/` is
-not ignored. The doctrine around it is wrong in the same direction: `how-to/src/INVARIANTS.md:110-118`
-says a run "removes the enforcement", which mutmut 3 cannot do to a database constraint, a
-decorated function or a deleted statement, and `code/docs/testing/ADVANCED-TESTING.md:175` sets an
-80% bar nothing computes. It fails loudly today, so nothing currently reports a false clean.
-Evidence: `research/MUTATION-TESTING.md`.
-**Blocked by / Action:** Nothing blocks it. To be claimed by the first slice of
-`MAP-MUTATION-TESTING.md` (charted 15/10/2026), which decides the container, the config home and
-the exit contract together. This entry retires when a run completes **in a generated tree** and
-every shipped claim about mutation testing is true.
-
----
-
-## 15/10/2026 — the design hand-off map's six tracers have no account or instance to run on
-
-**Type:** Infrastructure gap
-**Summary:** `project-management/src/01-FEATURE-MAPS/MAP-DESIGN-HANDOFF.md` <!-- doc-references: template-only -->
-settles what an external design tool does with a hand-off by **running** it (tracers N-031 to
-N-036), and none of the accounts or instances they need exists for this repository (15/10/2026).
-Between them they need: a Canva account (N-031, whether an imported PDF stays editable); a Figma
-Full seat, which `use_figma` requires (N-032); a Penpot instance, SaaS or self-hosted (N-033, a
-DTCG 2025.10 file with object colours), plus a Figma account for the Penpot-to-Figma round trip
-(N-034), which also tests Figma's native DTCG import on the Starter plan only if that account is a
-Starter team; a signed-in `claude-design` session (N-035) — listed only as that tracer's precondition,
-since running `/design-login` is a per-user step and fixing the login itself is out of scope on the
-map; and a Figma account signed in over OAuth to the remote MCP server from this NixOS/Wayland host
-(N-036). Evidence: `research/DESIGN-HANDOFF-TARGETS.md`, sections "Figma", "Claude Design" and
-"What this note does not settle". These accounts are syntek-base's own, for charting; provisioning
-a tool for a generated project stays out of scope on the map. Provisioning is manual work, so it is
-recorded here rather than as a map node (`project-management/workflows/01-feature-map/STEPS.md`
-Step 6).
-**Blocked by / Action:** Nothing blocks it. Sam decides which accounts are opened, on which
-plans, and whether Penpot is self-hosted or SaaS; the tracers then run in the order the map's
-frontier sets. Claimed as a blocker by `MAP-DESIGN-HANDOFF.md` N-031 to N-036. This entry retires
-when each of the six tracers has run or has left the map.
-
----
-
-## 15/10/2026 — the design tier's external store waits on two sibling templates' 0.5.0
-
-**Type:** Infrastructure gap
-**Summary:** Sam settled on 15/10/2026 that the `external` store for design outputs follows the
-data-root design syntek-author and syntek-media share (author D50: `SYNTEK_DATA_ROOT` read from the
-environment, a `.syntek-data-root` marker, a `<root>/<DATA_AREA>/<kind>/<DATA_SLUG>/<repo-relative path>`
-layout and an `external.toml` sha256 manifest), **re-authored here only once both templates ship
-it in their 0.5.0** (`MAP-NATIVE-DESIGN-TIER.md` N-023). That design is approved but unbuilt: it is
-recorded only in untracked handoffs in the two sibling repositories and is marked for revision
-(`research/NATIVE-DESIGN-TIER-TOOLING.md`, Addendum, "Family storage, decided but unbuilt"). <!-- doc-references: template-only -->
-Until it ships, the `external` store cannot be built here; the `lfs` and `repo` stores do not wait
-on it (N-022).
-**Blocked by / Action:** Blocked by syntek-author 0.5.0 and syntek-media 0.5.0 releasing the
-data-root contract. When both have shipped, read the released contract — not the handoffs — and
-re-author it under N-023. Claimed as a blocker by `MAP-NATIVE-DESIGN-TIER.md` N-023. This entry
-retires when the released contract has been read and N-023's build work can be cut into a slice.
 
 ---
 

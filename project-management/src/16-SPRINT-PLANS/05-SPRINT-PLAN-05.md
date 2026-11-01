@@ -371,12 +371,12 @@ ceremonial.
 ### Phase 4 — PR & Review (`../../workflows/23-pr-and-review`)
 
 Both stories, US008 then US009, each behind its own gate. `22-implementation-documentation` runs
-between the lane above and this phase and is a merge gate: it writes each story's test-status
-record under `../18-TESTS/AUTOMATED/` and walks its manual-testing guide under
-`../18-TESTS/MANUAL/`, authored from the specs before code, and it owns this sprint's register
-writes — the `GAPS.md` **closure** of the 09/09/2026 preview-blindness row that US008 now repairs,
-and the two `GAPS.md` **openings** owed from 17/09/2026, each dated the day it is written, for
-`shared-ai-symlinks.sh`'s missing register row and for the eleven unsuppressed `pnpm install`
+between the lane above and this phase and is a merge gate: it writes each story's test-status record
+under `../18-TESTS/AUTOMATED/` and walks its manual-testing guide under `../18-TESTS/MANUAL/`,
+authored from the specs before code, and it owns this sprint's register writes — the two `GAPS.md`
+**openings** owed from 17/09/2026 (the 09/09/2026 preview-blindness row US008 repairs left the
+register on 01/11/2026, carried by US008, so there is no closure), each dated the day it is written,
+for `shared-ai-symlinks.sh`'s missing register row and for the eleven unsuppressed `pnpm install`
 invocations.
 
 <!-- AMENDED 28/09/2026: the openings read "the two `GAPS.md` **openings** of 17/09/2026" until
@@ -611,10 +611,10 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 - [ ] No `[OPEN]` gap remains in either member's QA plan — nineteen resolved on 17/09/2026, and
       none reopened
 - [ ] GDPR constraints implemented and verified — **N/A**, the sprint's GDPR flag reads `N/A`
-- [ ] Both stories' implementation records written by `22-implementation-documentation`;
-      `GAPS.md`'s 09/09/2026 preview-blindness row **closed**, dated the day it closes, and the two
-      entries owed from 17/09/2026 open, each dated the day it is written and citing its ADR's
-      17/09/2026 claim — never backdated to it
+- [ ] Both stories' implementation records written by `22-implementation-documentation`; the two
+      `GAPS.md` entries owed from 17/09/2026 open (the 09/09/2026 preview-blindness row left the
+      register on 01/11/2026, carried by US008 — nothing to close), each dated the day it is written
+      and citing its ADR's 17/09/2026 claim — never backdated to it
 - [ ] No outstanding TODO or FIXME comments introduced in this sprint
 - [ ] PRs merged and the version bumped
 - [ ] `../03-SPRINTS/SPRINT-05.md` `**Status:**` set to `Done`

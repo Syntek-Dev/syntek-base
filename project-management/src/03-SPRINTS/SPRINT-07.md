@@ -942,8 +942,8 @@ which the 18-TESTS split superseded for the manual testing guide's path alone (s
 governs: the baseline is captured
 before the first edit, read as a diff, and never reported as the gate passing while the baseline
 stands. `copier.yml:157` excludes `/project-management/src/**`, so no record ships and the <!-- doc-references: template-only -->
-shipped-file citation rule does not apply to one; that is `GAPS.md`'s entry of 02/09/2026, whose fix
-is US004. <%DEVELOPER_NAME%> settled on 20/09/2026 that these findings **wait for US004** rather
+shipped-file citation rule does not apply to one; that is the 02/09/2026 gap US004 carries and
+fixes. <%DEVELOPER_NAME%> settled on 20/09/2026 that these findings **wait for US004** rather
 than carrying interim `doc-references: template-only` markers. **Nothing is suppressed, and the figures are recorded rather than promised** — this
 paragraph pointed at "the measured figures in the Verification Checks below" when none existed,
 which an independent review on 20/09/2026 called correctly as worse than silence, and the numbers

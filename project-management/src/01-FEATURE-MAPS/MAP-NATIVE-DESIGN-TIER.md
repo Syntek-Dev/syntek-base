@@ -104,18 +104,18 @@ the node's own row below where it is an input to that node.
 
 ## Register claimed
 
-**This is a claim, not a close.** Nothing here edits `GAPS.md` or `DEFERRED.md` to close an
-entry — that is `workflows/22-implementation-documentation/`, against shipped code. **One recorded
-exception:** this charting appended two blocker entries (09/10/2026) and closed none, authorised by
-Sam in grilling round 1 Q3, under `workflows/01-feature-map/STEPS.md` Step 6 (manual unblocking work
-is a `GAPS.md` blocker). The 15/10/2026 external-store entry, which N-023 claims, was appended
-alongside this map by the main session, not by it.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9). All four **blocks** entries below have left
+`GAPS.md`: the two 09/10/2026 entries on 01/11/2026, now carried in the _Carried from `GAPS.md`_
+note under _Frontier_; the headroom by `US002`; the external store by N-023. This charting had
+appended the two 09/10/2026 entries, authorised by Sam in grilling round 1 Q3, as manual unblocking
+work (`workflows/01-feature-map/STEPS.md` Step 6). The 15/10/2026 external-store entry, which N-023
+claims, was appended alongside this map by the main session, not by it.
 
 | Register | Entry                                                                                           | Verdict | Retired by / wired to                                                                                                                                                                                                                                               |
 | -------- | ----------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | GAPS.md  | 17/09/2026 — the audits register's headroom is one line smaller than nineteen artefacts believe | blocks  | N-015, **only if** it chooses a new audit row; the headroom itself is `US002`'s                                                                                                                                                                                     |
-| GAPS.md  | 09/10/2026 — the Playwright pin needs a Chromium the current NixOS generation no longer roots   | blocks  | N-013 — building S-02 needs a browser at the pin                                                                                                                                                                                                                    |
-| GAPS.md  | 09/10/2026 — the human and every agent act as one GitHub identity, and `main` needs no approval | blocks  | N-017 — building S-05 needs the identity or key its mechanism names                                                                                                                                                                                                 |
+| GAPS.md  | 09/10/2026 — the Playwright pin needs a Chromium the current NixOS generation no longer roots   | blocks  | N-013 — building S-02 needs a browser at the pin; carried in the N-013 note under _Frontier_                                                                                                                                                                        |
+| GAPS.md  | 09/10/2026 — the human and every agent act as one GitHub identity, and `main` needs no approval | blocks  | N-017 — building S-05 needs the identity or key its mechanism names; carried in the N-017 note under _Frontier_                                                                                                                                                     |
 | GAPS.md  | 15/10/2026 — the design tier's external store waits on two sibling templates' 0.5.0             | blocks  | N-023 — building the `external` store (S-02, or a slice of its own per N-011) waits on syntek-author and syntek-media 0.5.0; the `lfs` and `repo` stores do not. It retires when the released contract has been read and N-023's build work can be cut into a slice |
 
 **Unrelated (21).** Seven constrain this map without blocking it: 18/09/2026 Codex instruction
@@ -132,7 +132,7 @@ ungated; 15/10/2026 `mutmut.sh` (claimed by `MAP-MUTATION-TESTING`; it reaches t
 through N-020 on MAP-MUTATION-TESTING, an input to N-015); 15/10/2026 tracer provisioning (appended
 alongside `MAP-DESIGN-HANDOFF`; N-031 to N-036 on MAP-DESIGN-HANDOFF only). Re-triaged 15/10/2026
 against the four entries added since charting: only the external-store entry blocks this map
-(N-023, above), and all four **blocks** rows above are open.
+(N-023, above), and all four **blocks** rows above are unresolved.
 
 ---
 
@@ -251,6 +251,38 @@ N-017.
 N-026 and N-027 block none here, and every open node belongs to a slice. Across maps, N-019 and
 N-026 block nodes on MAP-DESIGN-HANDOFF that block its stories, and N-027 blocks N-024 on
 MAP-DESIGN-HANDOFF, which blocks no story (Edges across maps).
+
+**Carried from `GAPS.md` on 01/11/2026**, when the two 09/10/2026 entries this map claims left the
+register (`.claude/CLAUDE.md` Section 9). Both are manual work, so neither is a node; each is
+carried here beside the node it blocks. Re-measure before leaning on either.
+
+- **N-013 / S-02 — the Playwright pin needs a Chromium the current NixOS generation no longer
+  roots** (GAPS.md, 09/10/2026). `pyproject.toml:106` and
+  `code/src/scripts/audits/render-slop.sh:114` pin Playwright **1.61.0**, which needs Chromium
+  revision **1228**; on this host the browsers come from a Nix store bundle (`.claude/MEMORY.md`,
+  18/09/2026). Re-measured 15/10/2026: no store path carries 1228 any more, only **1234** and
+  **1243**, so `render-slop.sh` takes its no-browser path (`:409-431`) on every run and **exits 0
+  with a note** — the `code/docs/GATE-REPORTING.md` failure class every Playwright-backed design
+  check inherits. `syntek-media` already moved to Playwright **1.63.0** / Chromium **1243** in
+  `9bcec39`. The pin is a constraint, so moving it also moves the `playwright` `pytest-playwright`
+  resolves (`pyproject.toml:95-106`, `:213`): render checks and the e2e suite move in one change.
+  `render-slop.sh:102` says "Seven sites" where `audits/playwright-pin.sh` holds eight; correct it
+  in that change. **Action:** bump `PLAYWRIGHT_PIN` to the release `just check-playwright` reports
+  in `~/Repos/personal/nix-config` and move every site `audits/playwright-pin.sh` holds in step.
+  Retired when the pin matches the bundle the current generation roots. Also blocks N-018 on
+  MAP-DESIGN-HANDOFF.
+- **N-017 / S-05 — the human and every agent act as one GitHub identity, and `main` needs no
+  approval** (GAPS.md, 09/10/2026; repository-wide, raised here). `Syntek-Studio` is the
+  organisation admin, the only member and collaborator, the sole code owner
+  (`.github/CODEOWNERS:4`), the git user and the `gh` login every agent session on this host uses;
+  `gh` holds two further accounts. The `main` ruleset requires **0** approving reviews and lets the
+  admin role bypass it, and all twelve pull requests were authored and merged by that account with
+  no review (`gh api`, 09/10/2026; `research/NATIVE-DESIGN-TIER-TOOLING.md` N-005.1–4, N-005.9).
+  So no human review is enforceable: an agent holding the token can approve, and a required review
+  would deadlock, since an author cannot approve their own pull request. N-017 chooses the
+  mechanism; the provisioning it needs (a key, an account, a ruleset change, the human's token kept
+  out of agent sessions) is manual. Retired when an approval an agent can produce is no longer
+  counted as a human's.
 
 ---
 

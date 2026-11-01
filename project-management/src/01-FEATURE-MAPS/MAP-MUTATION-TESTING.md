@@ -57,10 +57,9 @@ finding in the 16/08/2026 sitting's 15/10/2026 addition. See Register claimed.
 
 ## Register claimed
 
-**This is a claim, not a close.** Nothing here edits `GAPS.md` or `DEFERRED.md`. An entry is marked
-`✅ CLOSED` by `workflows/22-implementation-documentation/`, against shipped code. The 15/10/2026
-`mutmut.sh` entry was written in conversation on Sam's Q11, before this chart; the chart wrote nothing
-to either register.
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9). Every **closes** / **blocks** entry below
+has left the register; _Retired by_ names what carries it. The 15/10/2026 `mutmut.sh` entry was
+written in conversation on Sam's Q11, before this chart.
 
 | Register | Entry                                                                                                                                           | Verdict                    | Retired by / wired to                                                                                                                                                                                                                                 |
 | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

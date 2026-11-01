@@ -729,7 +729,8 @@ reader does not raise them again.
 - `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` · `ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` · `ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` · `ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the four records the story rests on; the last is the regime Section 6 executes and AC-GAP-1 and AC-GAP-2 sharpen, and since 30/09/2026 is superseded by `ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
   which the 18-TESTS split superseded for the manual testing guide's path alone (settled
   30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
-- `GAPS.md` — the entry of 01/09/2026 this story closes at its Definition of Done
+- `GAPS.md` — the entry of 01/09/2026 this story carries; it left the register on 01/11/2026
+  (`.claude/CLAUDE.md` Section 9), so its Definition of Done closes nothing there
 - `code/src/scripts/audits/doc-references.sh` · `doctrine-drift.sh` · `skill-conformance.sh` — the three gates whose behaviour Section 1 turns on; the first edited today, uncommitted
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US006-POSTURE-GUARD.md` — the sibling plan whose Section 7 first recorded a citation-gate figure with its HEAD and index state
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide

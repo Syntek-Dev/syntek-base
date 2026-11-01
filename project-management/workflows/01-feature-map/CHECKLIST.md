@@ -48,8 +48,10 @@ Every box must be ticked before `02-story-creation/` may begin.
 - [ ] Entries this feature **closes** are on the map under **Register claimed**
 - [ ] Entries that **block** this feature are frontier nodes, typed and wired — not assumptions
 - [ ] What the feature closes is reflected in the **destination**, not left as a footnote
-- [ ] **`GAPS.md` and `DEFERRED.md` were not edited** — claiming is not closing; the close belongs
-      to `22-implementation-documentation`, against shipped code
+- [ ] **Every claimed entry is carried in substance** by a node, fog item or slice that cites it —
+      not by its _Register claimed_ row alone
+- [ ] **Every claimed entry is removed** from `GAPS.md` / `DEFERRED.md` in the same change — no
+      `✅ CLOSED` mark, no pointer, a manual blocker included (carried in a frontier note)
 
 ## CHART
 
@@ -81,13 +83,14 @@ Every box must be ticked before `02-story-creation/` may begin.
 - [ ] No answer lives only on the map
 - [ ] The frontier was redrawn after each resolution; no resolved node still sits on it
 - [ ] Fog sharpened by an outcome was promoted to a node
-- [ ] An outcome that retired a further register entry added a **Register claimed** row; one that
-      raised a new blocker was appended to `GAPS.md`
+- [ ] An outcome that retired a further register entry added a **Register claimed** row, carried
+      it and removed it from the register; one that raised a new blocker was appended to `GAPS.md`
 
 ## Close-out
 
 - [ ] The map reads as a low-resolution route, not a storage vault
-- [ ] Every claimed register entry names the node or story that will retire it
+- [ ] Every claimed register entry names the node or story that will retire it, and is gone from
+      `GAPS.md` / `DEFERRED.md`
 - [ ] **Every slice carries all six columns** — `Slice | Story | Title | Nodes | Acceptance |
 Flags`
 - [ ] **Every slice has a flag manifest** — each gate it needs, `N/A` omitted, first-pass values set

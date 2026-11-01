@@ -34,10 +34,9 @@ and recording each node as it is settled; the foundation every later planning ga
   map that grows the detail becomes the document nobody reads, which defeats its only purpose.
 - **Every resolved node graduates.** An answer left only here dies with the map. It belongs in
   `../15-DECISIONS/`, a plan, a story, `GAPS.md`, or `DEFERRED.md`.
-- **Register claimed is a claim, never a close.** A map records which `GAPS.md` / `DEFERRED.md`
-  entries the feature will retire, so the intent survives into the stories cut from it. Marking
-  `✅ CLOSED` or deleting a `DEFERRED.md` row is `workflows/22-implementation-documentation/`'s,
-  against shipped code — never done from a map.
+- **A claimed entry leaves the register** in the change that carries it here
+  (`.claude/CLAUDE.md` Section 9; procedure: `workflows/01-feature-map/` Step 2). _Register
+  claimed_ is the provenance record of what left.
 - **Fog of war stays honest.** Do not promote something to a node to make the map look complete —
   a decision node with nothing behind it produces a decision made on nothing.
 - **Do not settle nodes during charting.** CHART draws the frontier; RESOLVE settles it. Mixing
