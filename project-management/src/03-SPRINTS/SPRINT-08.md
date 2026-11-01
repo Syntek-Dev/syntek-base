@@ -239,7 +239,7 @@ reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
 full: no further story is admitted, and grace is not taken. The `16-sprint-plans` pass and the
 `17-story-plans` passes for US013 and US014 are **owed**, written once every member has cleared the
 specify tier (`project-management/docs/planning/SPRINTS.md` -> _Capacity_): US013's one gate, 11,
-has run and awaits sign-off; US014 has entered none of 09, 10, 11 and 14. The paragraph below is
+is closed — its QA plan signed off 31/10/2026 (`c4a5245`), re-confirmed by <%DEVELOPER_NAME%> 01/11/2026; US014 has entered none of 09, 10, 11 and 14. The paragraph below is
 the record of the opening position, kept as written.
 
 **Opening position (31/10/2026). Capacity: 3 / 11 — inside capacity, all committed, and under capacity by 8 SP, called out rather
