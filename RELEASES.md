@@ -59,6 +59,10 @@ few statuses whose new spelling is obvious; anything else is listed for you to c
 - A gap or deferred item now leaves the gaps and deferred lists as soon as a feature map or a
   story takes it on, so it is tracked in one place rather than two; only items nothing has picked
   up are closed off there after the work ships.
+- Loose ends on a feature map are now numbered and must each go somewhere: become a decision,
+  be ruled out, travel with the story that will deal with them, or be logged as a known gap
+  waiting for a named event. A map is only marked complete once none are left, and the board
+  check warns when one is.
 - A web-search assistant is available to the AI tools for quick, cited answers, with a clear rule
   that anything written down permanently must cite the original source.
 

@@ -127,7 +127,8 @@ _Done when the destination and out-of-scope bounds are written and confirmed._
 
 Explore the feature's surface and surface **every currently-knowable open decision**. Breadth
 first — do not follow one branch to the bottom. Anything in scope but not yet sharp enough to
-state as a decision goes to **fog of war**, honestly.
+state as a decision goes to **fog of war**, honestly, as an `F-NN` item — the IDs, and the five
+routes an item leaves by, are the wayfinder skill's _Fog of war — every item leaves by one route_.
 
 _Done when every knowable decision is a node or parked in fog of war._
 
@@ -192,8 +193,8 @@ Per session:
    `src/15-DECISIONS/`, a `GAPS.md` entry, a `DEFERRED.md` row, or a glossary term. Never leave
    the answer only on the map. A `DEFERRED.md` row needs a `US###` this workflow cannot supply,
    so a deferral surfaced here — before `02-story-creation` cuts a story — goes to `GAPS.md`.
-5. **Redraw the frontier** — move the whole batch to resolved, sharpen any fog the outcome
-   clarified into new nodes, re-wire the blocking edges.
+5. **Redraw the frontier** — move the whole batch to resolved, send any fog item the outcome
+   moved out by its route (wayfinder → _Fog of war_), re-wire the blocking edges.
 6. **Re-triage the register if the outcome moved it** — a settled node that retires a further
    entry adds a **Register claimed** row, carries its substance, and removes the entry (Step 2);
    one that raises a new blocker appends to `GAPS.md`.
@@ -209,8 +210,8 @@ _Repeat until no **blocking** node remains open._
 > **Model:** opus
 
 Once no blocking node remains, fill the map's **Slices** section: one row per buildable slice of
-user-visible value, in the six canonical columns
-`Slice | Story | Title | Nodes | Acceptance | Flags`.
+user-visible value, in the seven canonical columns
+`Slice | Story | Title | Nodes | Acceptance | Flags | Carries`.
 
 - **Nodes** — every node the slice carries, with its state (`✅` resolved · `○` open · `⛔` open
   and blocking). A slice is cuttable only when all of its nodes are `✅`, and **no open node may
@@ -221,6 +222,9 @@ user-visible value, in the six canonical columns
 - **Flags** — every **gate** the story will need, `N/A` omitted, carrying first-pass values
   (`DB: ModelA · API: POST /model-a · GDPR: yes`). The 13-flag roster is
   `src/02-STORIES/US000-TEMPLATE.md`.
+- **Carries** — always last: the fog items whose trigger is this slice's cut, `—` when none. The
+  cell format, the two-map cross-reference and why carried fog never blocks a cut are the wayfinder
+  skill's _Fog of war_ section.
 
 Acceptance and Flags are not the same column and never restate each other: **Acceptance is what
 must be true, Flags is which gates run.**
@@ -228,8 +232,8 @@ must be true, Flags is which gates run.**
 This is the base `02-story-creation` writes each story from. Leave the `Story` column `—`; that
 gate allocates the number and back-fills it.
 
-_Done when every slice names its nodes, its acceptance and its flags, every open node belongs to a
-slice, and no slice has a reserved `US###`._
+_Done when every slice names its nodes, its acceptance, its flags and its carried fog, every open
+node belongs to a slice, and no slice has a reserved `US###`._
 
 ### Step 9 — Close out
 
@@ -239,7 +243,9 @@ slice, and no slice has a reserved `US###`._
 - Confirm every claimed register entry names the node or story that will retire it, is carried in
   substance on the map, and no longer appears in `GAPS.md` or `DEFERRED.md`
 - Confirm no story has been written yet — that is `02-story-creation`
-- Once Frontier and Fog of war are both empty, set `**Status:** Complete` and regenerate the board
+- Once Frontier and Fog of war are both **genuinely** empty — every fog item gone by its route, none
+  left "with a trigger" — set `**Status:** Complete` and regenerate the board; `pm-board.sh --warn`
+  names a `Complete` map still listing fog
 - **Closing the map comes later, and is never a hand edit.** When `02-story-creation` has cut
   every slice into a story (`pm-board.sh --warn` names the map), run
   `bash project-management/src/00-ASSETS/scripts/pm-archive.sh MAP-<FEATURE>` — it sets

@@ -38,9 +38,10 @@ story is cut from the settled answers.
 | **Notes**              | Domain, skills to load, standing preferences, umbrella plans/ADRs      |
 | **Register claimed**   | `GAPS.md` / `DEFERRED.md` entries this feature closes or is blocked by |
 | **Resolved decisions** | Settled nodes, each linking to the ADR / plan / story it became        |
+| **Slices**             | Buildable slices — nodes, acceptance, flags, and the fog each carries  |
 | **Frontier**           | Open decisions in dependency order, with blocking edges                |
-| **Fog of war**         | In scope, not yet sharp enough to state as a decision                  |
-| **Out of scope**       | Consciously ruled out, and why                                         |
+| **Fog of war**         | `F-##` items in scope, not yet sharp enough to state as a decision     |
+| **Out of scope**       | Consciously ruled out, and why — cleared and event-triggered fog too   |
 
 **The map is an index, not a vault.** Detail lives in the artefact each node graduates to.
 
@@ -66,7 +67,8 @@ written with its map name (`N-019 on MAP-<FEATURE>`), never as a bare node numbe
 
 ## The map is not finished when stories start
 
-Stories may begin once every **blocking** node is resolved. Fog of war and non-blocking nodes
+Stories may begin once every **blocking** node is resolved — a slice depends on nodes only, and
+fog its cut must take rides in its **Carries** column. Fog of war and non-blocking nodes
 routinely stay open — a map is a living route, and a feature that must be fully known before any
 story is written is a feature that never starts.
 

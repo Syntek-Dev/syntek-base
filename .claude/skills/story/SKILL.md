@@ -32,9 +32,11 @@ What must be settled here: the specific **user role**, the measurable **goal and
 error case**. Make reasonable calls on minor gaps; always grill where the feature touches
 personal data, permissions, or money.
 
-A story cut from a feature map arrives with recorded answers — the slice row's `Nodes` and
-`Acceptance`, the map's `## Resolved decisions`, `## Register claimed` and `## Session log`, and
-`GAPS.md` / `DEFERRED.md` (`grilling` → _A decision already recorded is a fact_).
+A story cut from a feature map arrives with recorded answers — the slice row's `Nodes`,
+`Acceptance` and `Carries` (fog the cut must land as criteria or Open questions:
+`project-management/workflows/02-story-creation/` Step 1), the map's `## Resolved decisions`,
+`## Register claimed` and `## Session log`, and `GAPS.md` / `DEFERRED.md` (`grilling` → _A
+decision already recorded is a fact_).
 
 **A requirement too large for one grilling pass is charted first.** Load the `wayfinder` skill,
 map its decision frontier, resolve it across sessions, and cut stories from the settled answers.

@@ -60,7 +60,8 @@ questions, story by story, and answering them inconsistently.
   and every story inherits the same answers.
 - **Not every node resolves before stories start.** A map with its blocking nodes settled and its
   fog honestly marked is enough. The bar is "no story will be written on an unanswered blocker",
-  not "nothing is unknown".
+  not "nothing is unknown" — a slice depends on nodes only, and fog its cut must settle rides in
+  its **Carries** column. `Complete` is stricter: the fog genuinely empty (wayfinder → _Fog of war_).
 - **The standing register is an input, not just an output.** `GAPS.md` and `DEFERRED.md` are where
   earlier work recorded its unfinished business. This gate reads them at both ends: to **suggest**
   what the next feature should be (Step 0), and to **triage** every open entry against the feature

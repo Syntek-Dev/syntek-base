@@ -52,7 +52,9 @@
 #              are all Completed/Closed; a Customer Accepted (or N/A-customer Accepted)
 #              story past its window, ready for Completed; a Completed story, ready to
 #              archive; a sprint whose stories are all Closed; a Complete map with every
-#              slice cut; an unrecognised status. Windows: CUSTOMER_REVIEW_WEEKS and
+#              slice cut; a Complete or Closed map whose Fog of war still lists an item
+#              (a list item or table row; prose such as "_Empty._" lists nothing); an
+#              unrecognised status. Windows: CUSTOMER_REVIEW_WEEKS and
 #              FEEDBACK_WEEKS from .copier-answers.yml, default 2 and 4.
 #   --root DIR Operate on another project root (used by .github/scripts/shipped-boards.sh
 #              to render the boards a generated project is seeded with).
@@ -100,7 +102,7 @@ while [[ $# -gt 0 ]]; do
       [[ -n "${2:-}" && -d "${2:-}" ]] || die "--root needs an existing directory"
       PROJECT_ROOT="$(cd "$2" && pwd)"; shift 2 ;;
     --quiet|-q) QUIET=true; shift ;;
-    --help|-h) sed -n '2,68p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '2,70p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) die "unknown argument: '$1'. Use --help for usage." ;;
   esac
 done

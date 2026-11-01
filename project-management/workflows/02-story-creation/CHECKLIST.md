@@ -22,6 +22,10 @@ model: opus
 - [ ] Each flag value is consistent with the slice manifest, or the divergence was settled in the
       grilling pass
 - [ ] The allocated `US###` is written back into the map's **Slices** row
+- [ ] **Every fog item in the row's Carries cell is in the story** — an acceptance criterion or an
+      Open question, citing its `F-NN`; none dropped
+- [ ] A two-map carried item (`↔ MAP-OTHER S-##`) was removed from the other map's Carries cell
+      in the same change
 - [ ] Any `GAPS.md` / `DEFERRED.md` entry the story carries is in its scope, acceptance or a
       provenance comment, and removed from the register in the same change
 

@@ -58,11 +58,13 @@ Every box must be ticked before `02-story-creation/` may begin.
 - [ ] Destination written in one or two lines and confirmed by <%DEVELOPER_NAME%>
 - [ ] Out-of-scope bounds written — what is consciously ruled out, and why
 - [ ] Frontier mapped **breadth-first**; no branch followed to the bottom at the expense of others
-- [ ] Everything in scope but not yet sharp is in **fog of war**, not forced into a node
+- [ ] Everything in scope but not yet sharp is in **fog of war**, not forced into a node, each
+      item with an append-only `F-NN` ID
 - [ ] Every frontier node names its blockers, or "none"
 - [ ] At least one node is unblocked — a frontier with no takeable edge is mis-wired
 - [ ] Every node tagged research / tracer / grilling / build
-- [ ] No node is manual unblocking work — that is a `GAPS.md` blocker, not a node
+- [ ] No node is manual unblocking work — a `GAPS.md` blocker until claimed, then a frontier
+      note (wayfinder → _Decision-node types_)
 - [ ] `MAP-<FEATURE>.md` created from the template; `**Status:** Charting` + `**Status note:**` set; board regenerated (`pm-board.sh --write`)
 - [ ] Research nodes dispatched
 - [ ] **Nothing else settled in the charting session**
@@ -82,7 +84,8 @@ Every box must be ticked before `02-story-creation/` may begin.
       glossary term
 - [ ] No answer lives only on the map
 - [ ] The frontier was redrawn after each resolution; no resolved node still sits on it
-- [ ] Fog sharpened by an outcome was promoted to a node
+- [ ] Every fog item an outcome moved left by **exactly one** of the five routes (wayfinder →
+      _Fog of war_); a `GAPS.md` hand-off is **never** under Register claimed
 - [ ] An outcome that retired a further register entry added a **Register claimed** row, carried
       it and removed it from the register; one that raised a new blocker was appended to `GAPS.md`
 
@@ -91,14 +94,16 @@ Every box must be ticked before `02-story-creation/` may begin.
 - [ ] The map reads as a low-resolution route, not a storage vault
 - [ ] Every claimed register entry names the node or story that will retire it, and is gone from
       `GAPS.md` / `DEFERRED.md`
-- [ ] **Every slice carries all six columns** — `Slice | Story | Title | Nodes | Acceptance |
-Flags`
+- [ ] **Every slice carries all seven columns** — `Slice | Story | Title | Nodes | Acceptance |
+Flags | Carries`, Carries last and `—` when empty
+- [ ] No slice depends on a fog item — fog a slice needs became a node first
 - [ ] **Every slice has a flag manifest** — each gate it needs, `N/A` omitted, first-pass values set
 - [ ] **Every slice states its acceptance** — what must be **true**, never how it is produced
 - [ ] **Every open node belongs to a slice**, and no slice names a node that does not exist
 - [ ] No slice reserves a `US###` — the `Story` column reads `—` until `02-story-creation` fills it
 - [ ] No story has been written — that is `02-story-creation`
 - [ ] Map status line current (`Resolving` / `Blockers Clear` / `Complete`); `FEATURE-MAPS-BOARD.md` regenerated
+- [ ] `Complete` only with Fog of war **genuinely empty** — `pm-board.sh --warn` names none
 - [ ] `Closed` never typed — only `pm-archive.sh MAP-<FEATURE>` sets it, once every slice is cut
 - [ ] Instructional `.md` files ≤ 300 code lines — `bash code/src/scripts/audits/docs-length.sh`
 - [ ] British English throughout; dates DD/MM/YYYY

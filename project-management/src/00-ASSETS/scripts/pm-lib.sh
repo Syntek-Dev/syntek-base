@@ -25,7 +25,9 @@
 #     (or ` · `) — the rest is a note — and trimmed. Never translated: a value outside the
 #     vocabulary is reported as Unrecognised, not guessed at.
 #   * The `## Status history` table (| Date | From | To | Note |), the `Customer review`
-#     FLAGS row, a story's dependencies, a sprint's Story Summary and a map's Slices table.
+#     FLAGS row, a story's dependencies, a sprint's Story Summary, a map's Slices table (read
+#     by column position from the left, so a trailing Carries column changes nothing) and the
+#     items still listed under a map's Fog of war.
 #   * The acceptance clock: CUSTOMER_REVIEW_WEEKS and FEEDBACK_WEEKS, read from
 #     .copier-answers.yml and defaulting to 2 and 4 where absent (always, in syntek-base,
 #     whose answers file is a template rather than data).
@@ -219,6 +221,20 @@ def map_slices(text):
             out.append((sid, cell, cut))
     return out
 
+FOG_ITEM = re.compile(r"^(?:[-*+]|\d+[.)])\s+\S")
+FOG_OPEN = re.compile(r"^\*\*F-\d+\s+—")
+
+def map_fog(text):
+    """The items still listed under `## Fog of war`: every top-level list item, every bold
+    open-form paragraph (`**F-01 — title**`, no leading `- `), plus every body row of a table
+    there. Prose ("_Empty._") and a departed item's record (`**F-01 → … (route n).**`) list
+    nothing. A struck-through item still counts — an item leaves the fog by moving to its route
+    (wayfinder → Fog of war), not by a strike."""
+    lines = section(text, "Fog of war")
+    items = [l.strip() for l in lines if FOG_ITEM.match(l) or FOG_OPEN.match(l)]
+    rows = table_rows(lines)
+    return items + [" | ".join(r) for r in rows[1:]]
+
 # ── The registers ─────────────────────────────────────────────────────────────
 
 class Item:
@@ -362,6 +378,9 @@ def eligibility(item):
         for sid, cell, cut in slices:
             if not cut:
                 why.append(f"slice {sid} is not cut into a story (Story cell reads {cell or 'empty'!r})")
+        fog = map_fog(item.text)
+        if fog:
+            why.append(f"its ## Fog of war still lists {len(fog)} item(s); each leaves by its route first")
     return why
 
 def warnings():
@@ -396,7 +415,12 @@ def warnings():
             out.append(f"{sp.id}: every story in it is Closed — set it Closed and archive it "
                        f"(pm-archive.sh {sp.id})")
     for m in items("maps"):
-        if not m.archived and m.status == "Complete" and not eligibility(m):
+        fog = map_fog(m.text) if m.status in ("Complete", "Closed") else []
+        if fog:
+            out.append(f"{m.id} is {m.status} but its Fog of war still lists {len(fog)} "
+                       f"item(s) — each leaves by one route (wayfinder → Fog of war); "
+                       f"'Complete' needs the fog empty")
+        elif not m.archived and m.status == "Complete" and not eligibility(m):
             out.append(f"{m.id} is Complete and every slice is cut — ready to archive "
                        f"(pm-archive.sh {m.id})")
     return out

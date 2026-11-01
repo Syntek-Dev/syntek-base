@@ -93,6 +93,15 @@ As a [role], I want [capability], so that [benefit].
 
 - `project-management/src/15-DECISIONS/ADR-US###-<DECISION>-DD-MM-YYYY.md` — [what it settles]
 
+## Open questions
+
+<!-- Every fog item the slice row's Carries cell brought in that the grilling did not settle
+     into an acceptance criterion, one bullet each citing its map ID — rule:
+     project-management/workflows/02-story-creation/STEPS.md Step 1. Each is answered before
+     the story leaves Open. Write "None." where every carried item became a criterion. -->
+
+- `MAP-<FEATURE> F-NN` — [the question still open, and who answers it]
+
 ---
 
 ## Acceptance Criteria

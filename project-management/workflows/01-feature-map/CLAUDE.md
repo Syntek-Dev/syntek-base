@@ -46,6 +46,8 @@ re-asking the same questions.
   graduates to. A map that accumulates the reasoning becomes the thing nobody reads.
 - **Fog of war is honest, not embarrassing.** Something in scope but not yet sharp enough to
   state as a decision goes there. Forcing it into a node produces a decision made on nothing.
+  **Leaving it is honest too, and has exactly one route per item** — the wayfinder skill's
+  _Fog of war_ section; a map is not `Complete` while one is still listed.
 - **Do not write stories here.** A slice graduates to a **Slices** row carrying its flag
   manifest — never to `US###.md`, and never with a story number reserved. `02-story-creation`
   cuts the story and allocates the number. A story written during discovery bypasses its own gate.

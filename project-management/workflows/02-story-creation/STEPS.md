@@ -31,7 +31,8 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 Stories are cut from the resolved `MAP-<FEATURE>.md` (`src/01-FEATURE-MAPS/`), not invented from
 a conversation — `project-management/docs/planning/STORIES.md`. Open the map and take this
-story's **Slices** row: its title and its **flag manifest**.
+story's **Slices** row: its title, its **flag manifest** and its **Carries** cell — the fog items
+whose trigger is this cut (`.claude/skills/wayfinder/SKILL.md` → _Fog of war_).
 
 Two things must be true before drafting:
 
@@ -39,6 +40,8 @@ Two things must be true before drafting:
   open node encodes a guess in its acceptance criteria.
 - The slice has a flag manifest. If it does not, the map is unfinished — go back to
   `01-feature-map/` Step 8a rather than inventing one here.
+
+Carried fog does **not** gate the cut — a slice depends on nodes only. It is input to Step 1.
 
 _Done when the slice row and its flags are in view._
 
@@ -55,6 +58,10 @@ interview <%DEVELOPER_NAME%> — the specific user role, the measurable benefit,
 the success signal, constraints and dependencies, priority, and at least one edge/error
 case — before drafting. Always grill when the feature touches personal data, permissions,
 or money. Record the resolved behaviour straight into the story's Gherkin acceptance criteria.
+
+**Every carried fog item lands in the story** — as an acceptance criterion where the grilling
+settled it, otherwise as an **Open question** — citing its ID (`MAP-<FEATURE> F-01`). None is
+dropped and none is left behind on the map as the only copy.
 
 **Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
 the slice row's `Nodes` and `Acceptance`, the map's `## Resolved decisions`, `## Register claimed`
@@ -100,8 +107,15 @@ an archived story keeps its number. Name the file `US###.md`.
 Save to `project-management/src/02-STORIES/US###.md`.
 
 Then write the allocated `US###` into the map's **Slices** row `Story` column, so the map reads
-as a progress view of what has been cut. This is the one edit `02-story-creation` makes to a
-wayfinder artefact; it does not touch the frontier or the resolved decisions.
+as a progress view of what has been cut. That, and the two-map removal below, are the only edits
+`02-story-creation` makes to a wayfinder artefact; it does not touch the frontier or the resolved
+decisions.
+
+**Check every carried item arrived.** Each `F-NN` in the row's Carries cell must appear in the
+story as an acceptance criterion or Open question — a missing one is a cut that lost scope. **A
+two-map item** (`F-03 (…) ↔ MAP-OTHER S-02`) is carried by whichever cut comes first: in the same
+change, delete it from the other map's Carries cell (`—` if that empties it). This cut's own cell
+stays as written — it is the provenance record.
 
 **A register entry the story carries leaves the register now** (`.claude/CLAUDE.md` Section 9).
 One its map claimed is gone already (`01-feature-map` Step 2). Any other `GAPS.md` entry or

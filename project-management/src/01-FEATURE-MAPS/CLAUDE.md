@@ -38,7 +38,9 @@ and recording each node as it is settled; the foundation every later planning ga
   (`.claude/CLAUDE.md` Section 9; procedure: `workflows/01-feature-map/` Step 2). _Register
   claimed_ is the provenance record of what left.
 - **Fog of war stays honest.** Do not promote something to a node to make the map look complete —
-  a decision node with nothing behind it produces a decision made on nothing.
+  a decision node with nothing behind it produces a decision made on nothing. Nor leave an item
+  parked "with a trigger" and call the map `Complete`: each `F-NN` leaves by exactly one route
+  (wayfinder → _Fog of war_), and `pm-board.sh --warn` names a `Complete` map still listing fog.
 - **Do not settle nodes during charting.** CHART draws the frontier; RESOLVE settles it. Mixing
   them biases the map towards whatever was easiest to answer in the moment.
 - **The map is not a story list.** Stories are cut in `workflows/02-story-creation/` from the
@@ -62,5 +64,6 @@ and recording each node as it is settled; the foundation every later planning ga
 - **Generated:** `FEATURE-MAPS-BOARD.md` (committed) and `feature-maps-board.json` / `.html`
   (gitignored), by `pm-board.sh --write` — never hand-edit. `archive/` is written only by
   `pm-archive.sh`.
-- Maps `MAP-<FEATURE>.md` (`SCREAMING-KEBAB-CASE`); nodes `N-###`; stories `US###`;
-  decisions `ADR-###`; dates DD/MM/YYYY.
+- Maps `MAP-<FEATURE>.md` (`SCREAMING-KEBAB-CASE`); nodes `N-###`; fog items `F-##`
+  (append-only, never renumbered); slices `S-##`; stories `US###`; decisions `ADR-###`; dates
+  DD/MM/YYYY.
