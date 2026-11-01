@@ -15,7 +15,7 @@ describe it.
 ## User Story
 
 As **a developer in a generated project investigating a staging or production fault**, I want
-**every log line to be one valid JSON object carrying a `request_id`, written by a pipeline the
+**every line Django's `LOGGING` emits to be one valid JSON object carrying a `request_id`, written by a pipeline the
 settings actually configure and queried by the label the collector really sets**, so that **the
 LogQL queries in the guides return the lines they describe, and I can follow one request across
 its log lines without reading personal data I did not need**.
