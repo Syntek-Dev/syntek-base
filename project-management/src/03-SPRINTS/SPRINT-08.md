@@ -171,6 +171,10 @@ are **owed** once every member has cleared the specify tier. See Notes.
   pins `dev.py` and `test.py` unchanged; US014 rewrites all five, so it lands second. Sprint
   numbering is not execution order, and setting US014 `Blocked` is `completion`'s call when work
   starts, not this record's.
+  **Amended 01/11/2026 (17-story-plans grilling round 2 Q3):** US013 and US008 are **hard start
+  gates** for US014 — no work on it starts until both have merged — superseding, for its start,
+  the merge-order-only reading above. `completion` set US014 `Blocked` at `17-story-plans` Step 10
+  the same day, and US013 `Pending`; the merge order is unchanged.
 - **Sprint numbering and build order agree.** The settled build order is the prefix on each plan in
   `project-management/src/17-STORY-PLANS/` — twelve plans on disk on 31/10/2026, `01-` to `12-` —
   and US013 builds thirteenth, at a **reserved `13-`**. It is a **reserved number, not a plan**,

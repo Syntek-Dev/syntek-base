@@ -85,10 +85,10 @@
 
 ### Must
 
-| ID    | Title                                                                                                                      | Phases touched                          | SP  | Story plan                      | Git branch              |
-| ----- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | --- | ------------------------------- | ----------------------- |
-| US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Docs + `copier.yml` text — no code lane | 3   | reserved `13-`, not yet written | _set by its story plan_ |
-| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label                               | Backend                                 | 8   | reserved `14-`, not yet written | _set by its story plan_ |
+| ID    | Title                                                                                                                      | Phases touched                          | SP  | Story plan                                                         | Git branch                      |
+| ----- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | --- | ------------------------------------------------------------------ | ------------------------------- |
+| US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Docs + `copier.yml` text — no code lane | 3   | `../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md` | `us013/log-debug-workflow-seam` |
+| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label                               | Backend                                 | 8   | `../17-STORY-PLANS/14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md` | `us014/structured-json-logging` |
 
 ### Should
 
@@ -114,9 +114,9 @@ drop, has no receiving record here (19 / 11 is past the grace ceiling) and stays
 
 ## Build order — US013 then US014, and both name segments read `08`
 
-- **US013 builds first, at reserved `13-`.** It has no upstream dependency
+- **US013 builds first, at `13-`.** It has no upstream dependency
   (`../02-STORIES/US013.md` -> Dependencies).
-- **US014 builds second, at reserved `14-`,** and merges after US013, rebasing onto its edits to 09
+- **US014 builds second, at `14-`,** and merges after US013, rebasing onto its edits to 09
   Step 4, 09 `CONTEXT.md` and the `code/src/logs/` pair.
 - **US014 merges after US008** (`../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`).
   US008 edits `base.py`, `staging.py`, `production.py` and `EDGE-REQUIREMENTS.md` and pins
@@ -126,25 +126,30 @@ drop, has no receiving record here (19 / 11 is past the grace ceiling) and stays
   cannot reach `Done` without it (settled 01/11/2026, 16-sprint-plans grilling round 1 Q1). It is
   never landed first with US008 rebased onto it: that reverses the settled order and stales US008's
   story plan.
+- **Amended 01/11/2026 — US013 and US008 are hard start gates for US014** (17-story-plans grilling
+  round 2 Q3). No work on US014, its before-first-edit baselines included, starts until both have
+  merged, and its branch is cut from `main` after both. This supersedes, for US014's start, the
+  merge-order-only reading in the two bullets above; the merge order itself is unchanged. At
+  `17-story-plans` Step 10 US014 moved `Open` -> `Blocked`, and US013 `Open` -> `Pending`.
 - **Neither blocks on US004.** `doc-references.sh` is read under the baseline-diff regime unless
   US004 has landed and the gate is green.
 
-The reserved numbers move if build order does; nothing here may cite either as a plan before
-`17-story-plans` writes it (SPRINT-04's rule for US006's `07-`).
+The numbers move if build order does. Until 01/11/2026 both were reservations, which nothing here
+could cite as a plan (SPRINT-04's rule for US006's `07-`); `17-story-plans` wrote both that day.
 
 ---
 
 ## Story Plans — the code master
 
-Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **Neither plan exists
-yet.** `17-story-plans` writes each after this plan — its Step 1 gathers the sprint plan first —
-and repoints the row below at its file. Neither prefix is assigned by this file; each is the
-reservation the record holds.
+Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **Both plans exist.**
+`17-story-plans` wrote each on 01/11/2026, after this plan — its Step 1 gathers the sprint plan
+first — and its Step 10 repointed each row below at its file. Neither prefix was assigned by this
+file; each is the reservation the record held.
 
-| Story | Story plan (`../17-STORY-PLANS/`)            | Manual testing guide (`../18-TESTS/MANUAL/`) |
-| ----- | -------------------------------------------- | -------------------------------------------- |
-| US013 | reserved `13-` — written by `17-story-plans` | `US013-MANUAL-TESTING.md`, owed              |
-| US014 | reserved `14-` — written by `17-story-plans` | `US014-MANUAL-TESTING.md`, owed              |
+| Story | Story plan (`../17-STORY-PLANS/`)                                  | Manual testing guide (`../18-TESTS/MANUAL/`) |
+| ----- | ------------------------------------------------------------------ | -------------------------------------------- |
+| US013 | `../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md` | `../18-TESTS/MANUAL/US013-MANUAL-TESTING.md` |
+| US014 | `../17-STORY-PLANS/14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md` | `../18-TESTS/MANUAL/US014-MANUAL-TESTING.md` |
 
 **Each manual testing guide is written straight after its story plan and committed with it**
 (settled 03/10/2026, 16-sprint-plans grilling round 9 Q22). Both members owe one: US013's QA flag
@@ -284,7 +289,8 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       Done complete and verified by a reviewer
 - [ ] **US014 merged after US008.** Until US008 merges, US014 waits — `Blocked` is `completion`'s
       call — and this sprint cannot reach `Done` (settled 01/11/2026, 16-sprint-plans grilling
-      round 1 Q1)
+      round 1 Q1). **Since 17-story-plans grilling round 2 Q3 (01/11/2026), US014 also does not
+      start until US013 and US008 have both merged**
 - [ ] US014 merged after US013, rebased onto its edits to the 09 folder and the `code/src/logs/`
       pair
 - [ ] No open Critical or High security finding
@@ -305,16 +311,18 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 
 Per `../../docs/GIT-GUIDE.md`: `us###/<kebab-descriptor>`, five words or fewer.
 
-| Story | Branch                                             |
-| ----- | -------------------------------------------------- |
-| US013 | _not yet set — the `Branch` row of its story plan_ |
-| US014 | _not yet set — the `Branch` row of its story plan_ |
+| Story | Branch                          |
+| ----- | ------------------------------- |
+| US013 | `us013/log-debug-workflow-seam` |
+| US014 | `us014/structured-json-logging` |
 
-Neither is invented here. `17-story-plans` sets each, and this table is filled from the plan when it
-exists — the precedent `./01-SPRINT-PLAN-01.md` set on 07/09/2026.
+Neither is invented here. `17-story-plans` set each on 01/11/2026, and this table was filled from
+each plan's `Branch` row — the precedent `./01-SPRINT-PLAN-01.md` set on 07/09/2026. Both rows read
+"_not yet set — the `Branch` row of its story plan_" until then.
 
 **Both branches are cut from `main`, and not yet**, on the reasoning `./01-SPRINT-PLAN-01.md`
 recorded on 02/09/2026: every planning artefact these stories depend on lives on
 `pm/story-creation`, none of it merged to `main`. The sequence is: the planning workflows complete
 -> `pm/story-creation` is raised as a PR to `main` -> the `us###/` branches are cut from `main` and
-the stories implemented, US013 ahead of US014, US014 after US008.
+the stories implemented, US013 ahead of US014; US014's branch is cut only after US013 and US008
+have both merged (17-story-plans grilling round 2 Q3).
