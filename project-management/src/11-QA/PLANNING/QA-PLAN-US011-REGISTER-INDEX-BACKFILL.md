@@ -266,7 +266,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   measurement task) and :455-457 (the plan backfill task).
 - **AC-GAP-2** `[RESOLVED] 27/09/2026` · material — **`Updated` has no source, and the obvious ones are wrong.**
   US011.md:211 asks only for "a DD/MM/YYYY date", and :276 for every `Updated` to be "correct".
-  N-002's gloss, "the only date every register can produce" (MAP-REGISTER-INDEXES.md:185), is false
+  N-002's gloss, "the only date every register can produce" (MAP-REGISTER-INDEXES.md:186), is false
   of the files' own headers: a story carries no date line, a sprint `**Last Updated**`, an ADR
   `**Date:**`, a plan a Date row. Settled 21/09/2026, grilling round 1 Q6: `Updated` is the
   instance file's **last commit date** (`git log -1`, rendered DD/MM/YYYY); no gate reads it. Two
@@ -312,7 +312,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   (US001 FULL-PATHS then UNVERIFIED; US002 REGISTER-SPLITS then SPLIT-TARGET, all 02/09), so the
   decision's own purpose holds for them only through a tie-break nothing states. A filename
   tie-break happens to put both predecessors first — F before U, R before S — by alphabet, not by
-  rule. The map already concedes "a legitimate same-day tie" (MAP-REGISTER-INDEXES.md:244).
+  rule. The map already concedes "a legitimate same-day tie" (MAP-REGISTER-INDEXES.md:245).
   **The ground under the scenario is also stale on US010's side.** The ordering prose US011 asserts
   against is US010's to write, and US010's own criterion still states the pre-settlement order for
   all four: "ascending by identifier for STORY, SPRINT, STORY-PLAN and DECISION"
@@ -354,7 +354,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   map-order row 10 — so round 1 Q1's "cut straight after these gates, into a new SPRINT-08" and
   round 2 Q13's "the next action" no longer describe its schedule.
   The ground is N-003's
-  presence clause (MAP-REGISTER-INDEXES.md:240): run before US011, it is red on the four
+  presence clause (MAP-REGISTER-INDEXES.md:241): run before US011, it is red on the four
   debt-carrying indexes, and the gate's lefthook entry (:248-251) would block every commit. So
   **S-03 cannot land green until US011 has**, and two sentences become false. The MoSCoW comment's
   "Nothing is blocked from shipping by its absence" (US011.md:128) is false of S-03; the
@@ -365,7 +365,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   no room for 8 SP, and S-03 is not in it (CUT-PLAN.md P8). A dropped US011's reservation therefore
   stays owed and unplaced, and the ordering binds on whichever record first schedules S-03: a
   dropped US011 lands **ahead of** S-03 or S-03 is red on arrival. The map's
-  own permission for S-03 to run "once S-02 has landed" (MAP-REGISTER-INDEXES.md:420-421)
+  own permission for S-03 to run "once S-02 has landed" (MAP-REGISTER-INDEXES.md:421-422)
   contradicts the presence clause; that is recorded in US010's Dependencies and left to S-03's
   cutting gate, so no map edit is proposed for it here. **Resolution:** the Dependencies bullet
   names S-03 as the successor US011 gates, with the settlement; the MoSCoW sentence is corrected to
@@ -408,7 +408,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   the index files are policed for the form a row might cite in.** The criterion "every one of the
   43-odd links this story writes resolves" (:263-264) is assigned to a script that reads backticked
   tokens only (`code/src/scripts/audits/doc-references.sh:599`), and the Instance cell is a
-  Markdown link by N-002 (MAP-REGISTER-INDEXES.md:183) — so not one row's link is read, and a
+  Markdown link by N-002 (MAP-REGISTER-INDEXES.md:184) — so not one row's link is read, and a
   green run would say nothing about them. In the other direction, the four in-tree index files are
   **not** exempt: only the feature-map folder and `.copier/` are
   (`code/src/scripts/audits/doc-references.sh:334`, `:345`). A bare backticked story, sprint or
@@ -507,7 +507,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   (the three automated criteria) and :520-521 (the Verification Check).
 - **AC-GAP-12** `[RESOLVED] 27/09/2026` · minor — **the population figure is stale in four places, and the title
   still states one.** US011.md's title (:1) says "43 rows"; the Provenance (:26-33) counts 43;
-  MAP-REGISTER-INDEXES.md:353 still reads "(42 at cutting: 9 · 5 · 20 · 8)", the figure US011
+  MAP-REGISTER-INDEXES.md:354 still reads "(42 at cutting: 9 · 5 · 20 · 8)", the figure US011
   corrected to 43 on 20/09/2026 (US011.md:35-44) without the map being told; SPRINT-07's Story
   Summary repeats the title and its working tree says "43-odd" five times at 17:02, one of them
   inside a dated comment that quotes superseded wording and stays as written. **Measured 21/09/2026:

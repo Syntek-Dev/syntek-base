@@ -50,7 +50,7 @@ the same pass, before the sprint plan locks scope. Sign-off is <%DEVELOPER_NAME%
   `.github/workflows/audit-style-check.yml:2`, `code/src/scripts/desktop/CONTEXT.md:17` (all
   → _The AI-slop family_), `code/src/scripts/audits/CLAUDE.md:35` (→ _Common Flags_), `:160`
   (→ _Markdown: two limits, two scripts_), `:168-169` (→ _Reports_), and the line anchor at
-  `project-management/src/01-FEATURE-MAPS/MAP-PROGRESSIVE-ENHANCEMENT.md:476` <!-- doc-references: template-only --> citing
+  `project-management/src/01-FEATURE-MAPS/MAP-PROGRESSIVE-ENHANCEMENT.md:477` <!-- doc-references: template-only --> citing
   `code/src/scripts/audits/CONTEXT.md:154`. That anchor has drifted once already.
 - **AC-GAP-5** `[RESOLVED]` — **the command named to prove the headline figure cannot print it.** A
   bare `bash code/src/scripts/audits/docs-length.sh` lists only files **at or above the 270 warn

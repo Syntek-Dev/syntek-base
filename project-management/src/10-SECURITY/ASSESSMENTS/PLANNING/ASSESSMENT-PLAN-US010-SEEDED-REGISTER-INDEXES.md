@@ -183,7 +183,7 @@ template guides instead. Step 1's grilling pass and Step 4's independent pass **
 
 **Why this story has a Security flag at all, restated because it is unusual.** The slice manifest
 for `S-01` names QA only, with Security recorded as added at `02-story-creation`
-(`project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md:349`). The story fills the flag on
+(`project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md:350`). The story fills the flag on
 the US006 rule it quotes (`project-management/src/02-STORIES/US010.md:102-112`, as read
 21/09/2026): _"a manifest written for one kind of slice must not skip the only gate able to check
 what the story actually ships. QA proves the states it was told to prove; Security asks whether

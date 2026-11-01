@@ -848,7 +848,7 @@ planning resumes"; this is a recorded departure from that order, not an oversigh
 precedent, because US011 was cut and admitted after `SPRINT-06` closed on 20/09/2026 with no plan
 written. It also costs little here. The next stories are cut from `MAP-RULE-OWNERSHIP.md`, and
 only one of its slices touches a file this record's members edit: `S-09` (Batch H) edits
-`.github/scripts/shipped-artefacts.sh` beside US012 (`MAP-RULE-OWNERSHIP.md:1011-1024`), so that
+`.github/scripts/shipped-artefacts.sh` beside US012 (`MAP-RULE-OWNERSHIP.md:1036-1049`), so that
 story names US012 in its dependencies.
 
 <!-- 21/09/2026, on the close by call. The bold sentence opening this block read "**No ... is

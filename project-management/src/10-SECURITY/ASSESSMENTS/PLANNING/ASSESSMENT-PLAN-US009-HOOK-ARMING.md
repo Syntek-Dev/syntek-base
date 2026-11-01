@@ -155,7 +155,7 @@ from the install script, the pnpm lifecycle and the git hook directory instead. 
 deviation** is the missing grilling pass — see the header.
 
 **Why this story has a Security flag at all, restated because it is unusual.**
-`project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md:464-466` declares eight flags `N/A` map-wide and the `S-03` row leaves
+`project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md:465-467` declares eight flags `N/A` map-wide and the `S-03` row leaves
 Security absent rather than `N/A`. The story fills it anyway, on the
 `project-management/src/02-STORIES/US006.md:15-22` precedent:
 _"a manifest written for one kind of slice must not skip the only gate able to check what the
@@ -335,7 +335,7 @@ until it was retired on 17/09/2026.
       plan's Key Decision 3)
 - [ ] **7.12** The step runs **after** dependency installation, so it can never arm a hook
       referencing a toolchain not yet present — the failure mode `N-019` rejects a copier `_task`
-      for (`project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md:241-244`). _(Carried from
+      for (`project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md:242-245`). _(Carried from
       US009/ST04, unchanged.)_
 - [ ] **7.13** The step introduces no new network fetch, no new credential read, and no new write
       outside `.git/hooks/`. _(Carried from US009/ST05, unchanged.)_

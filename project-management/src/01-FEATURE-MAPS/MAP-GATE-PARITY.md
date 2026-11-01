@@ -500,7 +500,7 @@ and only one of them was takeable:
 
 **The split follows `S-09`'s precedent (`:325`) — a new appended number, never a suffix.**
 `N-027` does not travel as a node: it is **moot and retired unbuilt** (`:159`), so `S-11` names
-`N-019` alone and satisfies `MAP-000-TEMPLATE.md:78` without a notation fix. `.copier/README.md`
+`N-019` alone and satisfies `MAP-000-TEMPLATE.md:82` without a notation fix. `.copier/README.md`
 is not edited by `US009`; its claim becomes true because the step it describes starts existing.
 Its line has drifted since `:326` was written — `:436` then, **`:441`** today, re-measured
 17/09/2026.

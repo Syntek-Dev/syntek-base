@@ -1463,7 +1463,7 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US008
 - [ ] Code reviewed and approved (minimum 1 reviewer); the security pass re-read 7.1 to 7.13
       against the shipped text
 - [ ] No TODO or FIXME introduced; no secret, debug flag or hardcoded ID
-- [ ] `../01-FEATURE-MAPS/MAP-SUBDOMAIN-ROUTING.md:323` carries US008 in its Story column, and
+- [ ] `../01-FEATURE-MAPS/MAP-SUBDOMAIN-ROUTING.md:325` carries US008 in its Story column, and
       `:116`, `:118`, `:119`, `:120`, `:211` and `:447` are byte-identical to `82ec176` — **the
       re-cut is filed separately, not smuggled**. That pin is carried from the story's own DoD;
       unlike the settings pair it names a file no story here edits, so the commit stays the

@@ -950,7 +950,7 @@ carries it until it is.
 1. **The `pnpm install` sweep re-run at close.** The QA plan's own instruction: if the 16 / 5 / 11
    split has moved between P0 and the close, the finding has moved, and AC-GAP-1's and AC-GAP-3's
    shared evidence has to be restated rather than inherited.
-2. **The map's line drift.** `project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md:325` cites `.copier/README.md:436`; the claim is at
+2. **The map's line drift.** `project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md:326` cites `.copier/README.md:436`; the claim is at
    `:442` today. Substance intact, and the map is not edited by this story. <!-- CORRECTED 30/09/2026: read "`../01-FEATURE-MAPS/MAP-GATE-PARITY.md` `:326` cites" until then, the story's own off-by-one this plan names under _Measured divergences_; the map carries the citation at :325 -->
 3. **What `.git/hooks/pre-commit` held at P0** — present, lefthook's, and armed by none of this
    story's paths. It is the evidence the silent channel was live, and it is destroyed by the

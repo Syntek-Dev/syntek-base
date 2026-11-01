@@ -269,7 +269,7 @@ the final pass: this cited the row as SPRINT-06.md:622-625 and read "so AC-GAP-2
   `.claude/skills/wayfinder/SKILL.md:97-98`), so a clean grep proves nothing about them. It runs
   "across the repository", where every live map's own Gate-to-stories line reads "Index row in
   `CONTEXT.md` current" or a variant (for example
-  `project-management/src/01-FEATURE-MAPS/MAP-ABSENCE.md:740`), outside any comment, so a correct
+  `project-management/src/01-FEATURE-MAPS/MAP-ABSENCE.md:742`), outside any comment, so a correct
   build fails it. And it looks only for the old instruction, so it cannot see a site that says an
   index is absent. **Resolution:** the site scenario enumerates all twenty-four live sites measured
   on 21/09/2026 and says what each must say.
@@ -441,7 +441,7 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   not exist.** The spine scenario (US010.md:308, as read 21/09/2026) names the column and nothing more. The manual check
   (:443-446) requires every row's `Updated` to match "its map's own header", and a map header
   carries `Charted`, `Status`, `Frontier open` and `Blocking open` — no updated date
-  (`project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md:3-5`). Settled 21/09/2026, grilling
+  (`project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md:3-6`). Settled 21/09/2026, grilling
   round 1 Q6: `Updated` is the instance file's last commit date, rendered `DD/MM/YYYY`; no gate
   reads it. Two refinements, aligned with the US011 plan's AC-GAP-2 so the two stories read one
   column one way: the **author** date (`%ad`, the one `git log -1` prints and a rebase keeps), in
@@ -454,10 +454,10 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   project-management/src/02-STORIES/US010.md:587, the manual check at :902-903, and the How to read a row task at :977-979.
 - **AC-GAP-7** `[RESOLVED] 27/09/2026` · material — **the manual check names a count the map header does not carry,
   and the Instance label has no rule for descriptor-less registers.** "Slice count matches its map's
-  own header" (US010.md:445, as read 21/09/2026) — no map header carries a slice count (MAP-000-TEMPLATE.md:3-5);
+  own header" (US010.md:445, as read 21/09/2026) — no map header carries a slice count (MAP-000-TEMPLATE.md:3-6);
   slices are rows of each map's Slices table. The tail columns are the implementer's to design
   (:467), so the check must name each column's **source**, not a literal column set. Separately, N-002
-  labels each Instance "with its descriptor" (MAP-REGISTER-INDEXES.md:183), and a story or sprint
+  labels each Instance "with its descriptor" (MAP-REGISTER-INDEXES.md:184), and a story or sprint
   file is named by its identifier alone — shared with the US011 plan's AC-GAP-13, which routed it
   here. **Resolution:** the manual check reads "every tail count equals its source — a header-derived
   count its header field, a slice count the rows of that map's Slices table"; the spine scenario
@@ -467,7 +467,7 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   at :903-905, and the How to read a row task at :974-981.
 - **AC-GAP-8** `[RESOLVED] 27/09/2026` · material — **the map instance test counts the index itself.** US010.md:314
   (as read 21/09/2026) defines a map instance as "a tracked MAP-\*.md file that is not MAP-000-TEMPLATE.md". N-003's
-  test also excludes "the index itself" (MAP-REGISTER-INDEXES.md:231-233). Once this story lands
+  test also excludes "the index itself" (MAP-REGISTER-INDEXES.md:232-234). Once this story lands
   MAP-INDEX.md in `project-management/src/01-FEATURE-MAPS/`, it matches `MAP-*.md` and the scenario
   demands a row for itself — and S-03, inheriting the story's wording, would demand it too. A
   suffix exclusion is not the fix: `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md`
@@ -604,10 +604,10 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   debt-line clause, and its lefthook entry would block every commit. Grilling round 2 Q13 had S-03
   cut at `02-story-creation` into a new SPRINT-08 straight after these gates were committed. **Since
   27/09/2026 SPRINT-08 is RULE-OWNERSHIP's (US013, US014), and S-03 has no sprint: it is
-  unscheduled, at map-order row 10 (CUT-PLAN.md P8).** MAP-REGISTER-INDEXES.md:420-421's permission
+  unscheduled, at map-order row 10 (CUT-PLAN.md P8).** MAP-REGISTER-INDEXES.md:421-422's permission
   that S-03 "may run once `S-02` has landed" contradicts N-003's presence clause. **Resolution:**
   the bullet reads "S-03 ships after US011, not after this story alone …
-  MAP-REGISTER-INDEXES.md:420-421 contradicts N-003's presence clause; recorded here, and the map
+  MAP-REGISTER-INDEXES.md:421-422 contradicts N-003's presence clause; recorded here, and the map
   text is left for S-03's own cutting gate". Its 21/09/2026 clause "cut into SPRINT-08 straight
   after gates 10, 11 and 15 are committed" is dropped, because S-03 has no sprint (CUT-PLAN.md P8).
   The FLAGS paragraph gains a dated "SETTLED 21/09/2026" note. **Settled 27/09/2026, grilling round
@@ -664,7 +664,7 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   criterion and no task.** US010.md:321 (as read 21/09/2026) puts "no row asserts the retired no-ADR house rule in an
   Umbrella ADRs cell" in the MAP-INDEX scenario, but MAP-INDEX.md has no such cell; the rows are
   each map's own `Umbrella ADRs` header row, which S-02 took on at
-  MAP-REGISTER-INDEXES.md:365-392 (eight rows at 31/08/2026) and whose Acceptance and QA cells
+  MAP-REGISTER-INDEXES.md:366-393 (eight rows at 31/08/2026) and whose Acceptance and QA cells
   still name (:350). No Map Task, manual check or QA task performs the sweep, and four maps have
   been charted since that measurement. **Resolution:** the line moves to its own scenario ("Given
   each live map's Umbrella ADRs header row, re-measured at implementation time … Then none asserts
@@ -676,7 +676,7 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
 - **AC-GAP-17** `[RESOLVED] 27/09/2026` · material — **the "verify, do not re-cut" task checks two Acceptance cells
   that the settlement has made stale.** US010.md:523-527 (as read 21/09/2026) confirms the S-01, S-02 and S-05 rows "still
   read as `02-story-creation` left them". S-01's cell gives MAP-INDEX.md's seed "one `TBD` row"
-  (MAP-REGISTER-INDEXES.md:349), S-02's says "four-value enum" (:350), and S-05's still reads "42 at
+  (MAP-REGISTER-INDEXES.md:350), S-02's says "four-value enum" (:351), and S-05's still reads "42 at
   cutting" (:353). The enum ADR's Follow-on routes the first two to a wayfinder RESOLVE sitting, the
   owner the map names for its Acceptance cells (:356-357); the US011 plan routes the third to
   `01-feature-map`. **Resolution:** the task reads "Confirm … and record S-01's `TBD` seed-row
@@ -950,7 +950,7 @@ S-01 deletes the key.
 | EC-03 | This story edits nearly every map in its landing commit                                                               | `Updated` is written                          | Each edited map's row takes the landing commit's date: written with the intended date, re-checked after the commit exists. The author date survives a later rebase                                                                                                                                                                                                                                                                                                                                         |
 | EC-04 | MAP-PROGRESSIVE-ENHANCEMENT.md reads `Charting` over a frontier closed on 31/08/2026                                  | Its value is derived                          | It changes although its format already parses, to `Blockers clear — stories may start` under the final criteria (grilling round 3 Q18 and round 6 Q31, both 27/09/2026): `Blocking open` 0, and not `Complete` while its Fog of war holds an item; at least thirteen headers change, twelve being the format count (the enum ADR's Context, :44-59)                                                                                                                                                        |
 | EC-05 | MAP-CAP-POSTURE.md:6, MAP-SUBDOMAIN-ROUTING.md:4 and MAP-REGISTER-INDEXES.md:8 carry middle dots in their prose       | They are rewritten, then read                 | The first middle dot, the one after the enum, ends the value; later ones are prose                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| EC-06 | MAP-REGISTER-INDEXES.md:6-8 and MAP-ABSENCE.md:4-5 wrap their status                                                  | Rewritten                                     | The value sits on the key's own line; the rule is line-scoped                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| EC-06 | MAP-REGISTER-INDEXES.md:6-8 and MAP-ABSENCE.md:4-6 wrap their status                                                  | Rewritten                                     | The value sits on the key's own line; the rule is line-scoped                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | EC-07 | The key sits at :4, :5, :6, :15 or :19, and maps also carry table rows keyed `**Status**`                             | The carrier line is found                     | The first line **beginning** with `**Status**:` — never a fixed line number, never a table row                                                                                                                                                                                                                                                                                                                                                                                                             |
 | EC-08 | A finding's metadata line, `**Status**:` its last middle-dot-separated field                                          | The read rule runs                            | It runs on the value after the key. Cutting the whole line at its first middle dot yields the Last Updated field and loses the Status                                                                                                                                                                                                                                                                                                                                                                      |
 | EC-09 | A bug's bold-key Status row, still holding the template's legend                                                      | The read rule runs                            | It returns `Open / Fixed / Verified` without complaint; the rule reads, it does not validate                                                                                                                                                                                                                                                                                                                                                                                                               |
@@ -1220,7 +1220,7 @@ Each candidate was raised during the pass, each was plausible, and each fails on
 
 - **"US010 must add a write-the-row duty to each register's `CLAUDE.md`, or the indexes drift the
   day US011 fills them."** N-004 settled on 31/08/2026 that the duty attaches to the artefact
-  template and ships in the same change as its gate (MAP-REGISTER-INDEXES.md:103), which is S-03.
+  template and ships in the same change as its gate (MAP-REGISTER-INDEXES.md:104), which is S-03.
   US010 repoints the map instructions that already exist; it does not create the duty for the other
   six. The window is TM-10's. It runs from US011 shipping until S-03 is cut, S-03 is unscheduled
   (CUT-PLAN.md P8, map-order row 10), and the window is tracked in `GAPS.md` through gate 22
@@ -1235,7 +1235,7 @@ Each candidate was raised during the pass, each was plausible, and each fails on
 
 **Flagged, not refuted: the settled count of rewritten maps.** Grilling round 2 Q11 settled that
 "12 of the 15 live maps are rewritten". Measured 21/09/2026, at least thirteen headers change
-value: MAP-PROGRESSIVE-ENHANCEMENT.md:4 already parses as `Charting` over a frontier its own :5
+value: MAP-PROGRESSIVE-ENHANCEMENT.md:4 already parses as `Charting` over a frontier its own :6
 records closed. Twelve is the number that fail the format, and the enum ADR draws the same line
 (ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md:57-59). It is reported with this pass's
 return as a contradiction of the settled figure's wording. The decision is untouched: the format,

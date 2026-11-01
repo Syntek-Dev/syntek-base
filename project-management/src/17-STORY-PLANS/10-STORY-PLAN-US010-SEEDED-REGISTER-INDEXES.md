@@ -130,7 +130,7 @@ this slice shipping — the deadlock the map's own gate names.
   ship declaring their debt (slice `S-05`, US011, SPRINT-07).
 - **The index gate** — `S-03`, `N-003` and `N-004` — unscheduled, and never between US010 and US011
   (settled 21/09/2026, grilling round 1 Q1; CUT-PLAN.md P8).
-  `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md:420-421`'s "may run once `S-02` has landed"
+  `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md:421-422`'s "may run once `S-02` has landed"
   contradicts `N-003`'s presence clause and is left for `S-03`'s own cutting gate.
 - **US012's check-4 `SEEDED` loop and its deletion probe** — this story grows the array and nothing
   else in check 4.
@@ -1055,7 +1055,7 @@ hand.
 | The memory-survival probe's blind case                                    | `GAPS.md`, through gate `22`              | Its second tag never changes the memory seed (settled 27/09/2026, grilling round 3 Q16)             |
 | The flag-blind sprint-plan prerequisites and the unwritten gate-`11` rule | `GAPS.md`, through this story's gate `22` | Routed here by `16-sprint-plans`; repairing them is outside this story                              |
 | The TM-10 window                                                          | US011's gate `22`                         | It opens when US011 ships                                                                           |
-| `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md:420-421`'s ordering sentence  | `S-03`'s cutting gate                     | Contradicts `N-003`'s presence clause; left as found                                                |
+| `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md:421-422`'s ordering sentence  | `S-03`'s cutting gate                     | Contradicts `N-003`'s presence clause; left as found                                                |
 | `S-05`'s "42 at cutting" (`:353`)                                         | `01-feature-map`                          | Outside the RESOLVE sitting of 27/09/2026; known-stale, not this story's to correct                 |
 | Who changed an index row (TM-17)                                          | **Nothing — accepted residual**           | `INFO`; a register file is not the audit trail                                                      |
 

@@ -375,17 +375,17 @@ instance of the re-measure rule now in `STEPS.md` Step 8.1:
 
 | Row                               | State                                                                                                                                                                                                                                                     |
 | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MAP-CLAUDE-DESIGN-HANDOFF.md:35` | **Flatly wrong** — "none is possible; this template authors no ADRs"                                                                                                                                                                                      |
-| `MAP-NAVIGATION.md:48`            | **Flatly wrong** — "this repository does not write ADRs"                                                                                                                                                                                                  |
-| `MAP-SUBDOMAIN-ROUTING.md:48`     | Superseded — cites the 16/08 house rule as live                                                                                                                                                                                                           |
-| `MAP-UPSTREAM-TRACKING.md:44`     | Superseded — same wording                                                                                                                                                                                                                                 |
-| `MAP-RETRY-AND-IDEMPOTENCY.md:36` | Superseded twice — and "ADRs are workflow `15`" is now wrong too, `15` being the coherence gate, not the author                                                                                                                                           |
-| `MAP-GATE-PARITY.md:50`           | Superseded — same wording                                                                                                                                                                                                                                 |
-| `MAP-REGISTER-INDEXES.md:32`      | This map's own row — "whether that rule survives is N-026" is now answered                                                                                                                                                                                |
-| `MAP-ABSENCE.md:84`               | **Borderline, re-measure at the sweep** — its stated reason survives N-026, only its "settled precedent" framing does not; it also had uncommitted concurrent-session edits when this was written, so trust neither the line number nor the wording above |
+| `MAP-CLAUDE-DESIGN-HANDOFF.md:36` | **Flatly wrong** — "none is possible; this template authors no ADRs"                                                                                                                                                                                      |
+| `MAP-NAVIGATION.md:49`            | **Flatly wrong** — "this repository does not write ADRs"                                                                                                                                                                                                  |
+| `MAP-SUBDOMAIN-ROUTING.md:50`     | Superseded — cites the 16/08 house rule as live                                                                                                                                                                                                           |
+| `MAP-UPSTREAM-TRACKING.md:45`     | Superseded — same wording                                                                                                                                                                                                                                 |
+| `MAP-RETRY-AND-IDEMPOTENCY.md:38` | Superseded twice — and "ADRs are workflow `15`" is now wrong too, `15` being the coherence gate, not the author                                                                                                                                           |
+| `MAP-GATE-PARITY.md:51`           | Superseded — same wording                                                                                                                                                                                                                                 |
+| `MAP-REGISTER-INDEXES.md:35`      | This map's own row — "whether that rule survives is N-026" is now answered                                                                                                                                                                                |
+| `MAP-ABSENCE.md:88`               | **Borderline, re-measure at the sweep** — its stated reason survives N-026, only its "settled precedent" framing does not; it also had uncommitted concurrent-session edits when this was written, so trust neither the line number nor the wording above |
 
-Already consistent, **not to be touched**: `MAP-PROGRESSIVE-ENHANCEMENT.md:75`,
-`MAP-SCRIPT-GUARDS.md:30`, `MAP-RULE-OWNERSHIP.md:84`. `MAP-000-TEMPLATE.md:25` is a placeholder.
+Already consistent, **not to be touched**: `MAP-PROGRESSIVE-ENHANCEMENT.md:76`,
+`MAP-SCRIPT-GUARDS.md:40`, `MAP-RULE-OWNERSHIP.md:85`. `MAP-000-TEMPLATE.md:29` is a placeholder.
 The replacement wording is `../15-DECISIONS/CLAUDE.md` — an ADR needs a driving `US###`, and a map
 reaches one only through the slice that becomes a story.
 
@@ -432,7 +432,7 @@ otherwise act on the same numbers. None of it changes a decision; all of it chan
 | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | N-006's backfill population — "the ten maps"                   | **14**, and **15** within the hour — see the concurrency note below. The real obligation across all seven registers is **56 rows**, which is what split `S-02`                                             |
 | `copier.yml:908-919` — the `_tasks` `mv` block                 | **`:973-984`**, ending `rmdir .copier`; seven new `mv` lines land ahead of that, inside the existing `copy` gate                                                                                           |
-| `MAP-000-TEMPLATE.md:146` — the index-row checklist line       | **`:159`**                                                                                                                                                                                                 |
+| `MAP-000-TEMPLATE.md:146` — the index-row checklist line       | **`:186`**                                                                                                                                                                                                 |
 | `doc-references.sh:322` — "parses `SEEDED` out of `_tasks`"    | **`:373`**, and it parses the `mv .copier/...` lines themselves rather than a named array                                                                                                                  |
 | Batch B — "`SPRINT-00-TEMPLATE.md` has no `**Status:**` field" | **Already fixed.** That file reads `**Status:** Planned` at `:10`. **The rider `S-01` was carrying is discharged**                                                                                         |
 | Batch B — "`17-STORY-PLANS/CONTEXT.md` has no such H2"         | **It has one** — `## The plans index` at `:81-91`, written 08/09/2026, explaining the absence and naming this map's work as what creates the file. `S-01` **rewrites** that section rather than adding one |
@@ -687,18 +687,18 @@ Sam's standing preference, **not until the frontier is empty**.
      artefacts cite this map by line down to `:598` (measured 27/09/2026), including `:231-236`,
      `:349`, `:350`, `:351` and `:420-421`. The one added line is the Session log row, below all of
      them.
-     (1) S-01 ACCEPTANCE (`:349`). Was: "bar `MAP-INDEX.md`'s seed, which carries one `TBD` row for
+     (1) S-01 ACCEPTANCE (`:350`). Was: "bar `MAP-INDEX.md`'s seed, which carries one `TBD` row for
      the seeded `MAP-SCALE-PLANNING.md`". Now one row reading `Not started` (settled 21/09/2026,
      grilling round 1 Q4; `../15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`
      item 5, which also fixes the row's Summary as generic and its Updated as `TBD`). Batch A's
-     "every column `TBD`" at `:144-145` is left as the 31/08/2026 record; the S-01 cell supersedes
+     "every column `TBD`" at `:145-146` is left as the 31/08/2026 record; the S-01 cell supersedes
      it. Same row, Flags cell: this sitting also edited it to `ST01`-`ST08` (gate `10`'s widening,
-     21/09/2026, now in US010); REVERTED 27/09/2026 as outside its authority — `:355-357` covers only
+     21/09/2026, now in US010); REVERTED 27/09/2026 as outside its authority — `:356-358` covers only
      the Nodes and Acceptance columns, and Q30 named three items. The cell's `ST01`-`ST05` stands.
-     (2) S-02 ACCEPTANCE (`:350`). "four-value enum" became five-value, and "one value in four"
+     (2) S-02 ACCEPTANCE (`:351`). "four-value enum" became five-value, and "one value in four"
      became one in five; the fifth value is `Not started`, which US010 writes into
      `MAP-000-TEMPLATE.md:4` (settled 21/09/2026, grilling round 1 Q4; the same record, item 4).
-     (3) N-003's INSTANCE TEST (`:231-236`). Was: "A file in one of the seven is an instance iff it
+     (3) N-003's INSTANCE TEST (`:232-237`). Was: "A file in one of the seven is an instance iff it
      is a tracked `.md` that is not `CONTEXT.md`, not `CLAUDE.md`, not `*TEMPLATE*`, and not the
      index itself." Now a positive filename pattern per register, still excluding `*TEMPLATE*` and
      the index (settled 27/09/2026, grilling round 3 Q22). Re-measured 27/09/2026 over tracked
