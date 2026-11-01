@@ -1013,7 +1013,7 @@ This story is unusual in that one of its deliverables **is** one of those wrappe
 | Tests (regression)         | `bash code/src/scripts/tests/all.sh [--coverage]`                                                | Docker                          |
 | The dev-stack cookie walk  | `bash code/src/scripts/development/server.sh up`                                                 | Docker                          |
 | The preview proofs         | `bash code/src/scripts/development/template-update.sh` against a scratch copy                    | Local                           |
-| Worktree `/etc/hosts`      | `bash code/src/scripts/development/hosts-story-add.sh us008`                                     | Local                           |
+| Worktree `/etc/hosts`      | `bash code/src/scripts/development/hosts-story-add.sh 008`                                       | Local                           |
 
 **Three things are not wrappers and are recorded as such.** **ShellCheck** has no project script —
 run by hand, or recorded as not run, never as a `lint.sh` pass. **`migrate.sh check`** is `N/A`:
@@ -1311,7 +1311,7 @@ files they are copied from do exist and are backticked.
 127.0.0.8 dev-us008.<%PROJECT_SLUG%>.localhost test-us008.<%PROJECT_SLUG%>.localhost
 ```
 
-`bash code/src/scripts/development/hosts-story-add.sh us008`, reversed by `hosts-story-remove.sh`.
+`bash code/src/scripts/development/hosts-story-add.sh 008`, reversed by `hosts-story-remove.sh`.
 The worktree-aware scripts auto-detect the `us008/` branch through `_lib/worktree-detect.sh` and
 layer the two overrides in.
 
