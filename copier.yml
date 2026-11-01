@@ -993,8 +993,12 @@ _migrations:
   # the job and never the boards — every updated project's first CI run would fail "missing"
   # five times. This renames the four retired status values with exactly one new spelling
   # (`Accepted Customer`, `Rejected Customer`, sprint `In progress`, map `Blockers clear`),
-  # writes the five boards, and REPORTS any other out-of-vocabulary status for a human. Always
-  # exits 0. Keyed v7.7.0 because that is the release the boards ship in.
+  # writes the five boards, and REPORTS any other out-of-vocabulary status for a human. The blank
+  # CUT-PLAN.md rides the same copy-gated _task, so it also writes 02-STORIES/CUT-PLAN.md from
+  # .copier/CUT-PLAN.md when the project has none — rendering <%DATE%> and <%DEVELOPER_NAME%>
+  # itself (from .copier-answers.yml), because the seed is unrendered in src_path — and never
+  # overwrites an existing one. Always exits 0. Keyed v7.7.0 because that is the release the
+  # boards and the cut plan ship in.
   - version: v7.7.0
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v7.7.0-pm-boards.sh"
     when: "<% _stage == 'after' %>"
@@ -1046,7 +1050,8 @@ _tasks:
   # CUT-PLAN.md follows (7.7.0, 31/10/2026). syntek-base's own plan in 02-STORIES/ maps its
   # maps' slices to its stories and never travels; the seed is the same canvas with no rows,
   # so a project's first cut has a register to write to. `.github/scripts/shipped-registers.sh`
-  # checks 10-12 gate the move, the canvas and the emptiness.
+  # checks 10-12 gate the move, the canvas and the emptiness. An UPDATED project gets it from the
+  # v7.7.0 migration above instead, since this task never runs on `update`.
   - command: >-
       mv .copier/README.md README.md &&
       mv .copier/VERSION VERSION &&

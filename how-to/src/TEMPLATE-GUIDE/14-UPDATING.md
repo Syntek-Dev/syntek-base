@@ -357,14 +357,18 @@ CI probes included — breaks the day such a question is added. The two week cou
 `CUSTOMER_REVIEW_WEEKS` and `FEEDBACK_WEEKS`, both carry defaults (`2` and `4`), so an unattended
 update past that release proceeds and records the defaults.
 
-**Updating across 7.7.0 writes your PM boards and renames four statuses.** The five
+**Updating across 7.7.0 writes your PM boards and cut plan, and renames four statuses.** The five
 `*-BOARD.md` files are seeded only at generation, so a migration writes them on update and the
-new CI board check starts green. It renames the four retired values that have exactly one new
+new CI board check starts green. The same migration writes a blank
+`project-management/src/02-STORIES/CUT-PLAN.md` if you have none, dated with the `DATE` answer
+in `.copier-answers.yml` (today, if that answer is missing) and maintained by its
+`DEVELOPER_NAME` (`TBD`, with a warning, if that answer is missing); an existing cut plan is
+never touched. It renames the four retired values that have exactly one new
 spelling: `Accepted Customer` to `Customer Accepted`, `Rejected Customer` to `Customer Rejected`,
 a sprint's `In progress` to `In Progress`, and a map's `Blockers clear` to `Blockers Clear`.
 Anything else outside the vocabulary — a map still reading `Not started`, say — is printed for
-you to correct, and sits in the board's `Unrecognised` column until you do. Commit the boards
-with the update.
+you to correct, and sits in the board's `Unrecognised` column until you do. Commit the boards,
+and the cut plan if one was written, with the update.
 
 **Your generation predates `.copier-answers.yml`.** Projects created with the old `setup.sh` flow
 have no answers file and cannot be updated. Recreate one by hand — copy the format from a fresh

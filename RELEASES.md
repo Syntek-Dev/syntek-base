@@ -46,8 +46,8 @@ every tool.
 New projects are asked how many weeks a customer has to review a story (two by default) and how
 long the period after acceptance runs before further changes become chargeable (four by default).
 Press Enter to accept both, or update with `--defaults` to take them without being asked. Updating
-an existing project also writes its boards and renames the few statuses whose new spelling is
-obvious; anything else is listed for you to correct.
+an existing project also writes its boards and, if it has none, a blank cut plan, and renames the
+few statuses whose new spelling is obvious; anything else is listed for you to correct.
 
 ### Also in this release
 
@@ -56,6 +56,9 @@ obvious; anything else is listed for you to correct.
   folders. Existing projects have their records moved across automatically on update.
 - New projects start with an empty cut plan — the page recording which feature-map slice
   becomes which story — ready for the first map to be cut into stories.
+- A gap or deferred item now leaves the gaps and deferred lists as soon as a feature map or a
+  story takes it on, so it is tracked in one place rather than two; only items nothing has picked
+  up are closed off there after the work ships.
 - A web-search assistant is available to the AI tools for quick, cited answers, with a clear rule
   that anything written down permanently must cite the original source.
 
