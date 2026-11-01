@@ -5,7 +5,7 @@
 | **Story**       | US014 — Structured JSON logging with a `request_id` on every entry, queried by Compose service label                                                                                                                                                         |
 | **Date**        | 01/11/2026                                                                                                                                                                                                                                                   |
 | **Author**      | Claude (`gdpr-mechanics`), for <%DEVELOPER_NAME%>                                                                                                                                                                                                            |
-| **Status**      | Draft — sign-off pending <%DEVELOPER_NAME%>; the lawful basis, the retention numbers and the rights position are surfaced to each generated project's controller, and the rights position is flagged for legal sign-off (Section 5)                          |
+| **Status**      | Signed off 01/11/2026 by <%DEVELOPER_NAME%> — the lawful basis, the retention numbers and the rights position are surfaced to each generated project's controller, and the rights position is flagged for legal sign-off (Section 5)                         |
 | **PII in play** | Yes — incidental, no new field. The story adds no personal-data column or form; personal data can reach the log stream through the unscrubbed `message`, through dev's wide extras, and through `request_id`, which the edge access log joins to a client IP |
 
 <!-- Written 01/11/2026 on pm/story-creation at HEAD 66eb725. Every line number below was

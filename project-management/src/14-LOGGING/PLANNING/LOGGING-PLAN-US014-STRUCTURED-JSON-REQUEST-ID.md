@@ -15,7 +15,7 @@ created: "01/11/2026"
 | **Sprint**       | SPRINT-08 — admitted 01/11/2026 at `03-sprint-planning`, standing the record at 11 / 11                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | **Logging flag** | the pipeline itself — JSON formatter and `request_id` filter on every handler Django's `LOGGING` declares; per-environment levels and field sets, the `django` logger at `WARNING` with no handlers in staging, production and test (gates grilling 01/11/2026, Q8; round 2, R2-Q2); the process-server stderr stream documented outside it with a query that keeps it (R2-Q1); the collector relabels `com.docker.compose.service` to `service_name` and `com.docker.compose.project` to an environment label (Q10, Q11) — confirmed 01/11/2026 against Grafana Alloy v1.21 (this plan) |
 | **Upstream**     | API design N/A (`US014.md` Flags table, API row, no endpoint) · schema N/A (`US014.md` Flags table, DB row, no model) · GDPR plan `GDPR-PLAN-US014-STRUCTURED-JSON-LOGGING.md` (gate 09, written in the same round)                                                                                                                                                                                                                                                                                                                                                                      |
-| **Status**       | Draft — independently reviewed 01/11/2026; round-2 rulings folded 01/11/2026, resolving `LOG-GAP-9`, `LOG-GAP-10` and `LOG-GAP-11`; round-3 rulings and the consistency pass folded 01/11/2026, resolving `LOG-GAP-12` (R3-Q4); no `[OPEN]` row; sign-off pending <%DEVELOPER_NAME%>                                                                                                                                                                                                                                                                                                     |
+| **Status**       | Signed off 01/11/2026 by <%DEVELOPER_NAME%> — independently reviewed 01/11/2026; round-2 rulings folded 01/11/2026, resolving `LOG-GAP-9`, `LOG-GAP-10` and `LOG-GAP-11`; round-3 rulings and the consistency pass folded 01/11/2026, resolving `LOG-GAP-12` (R3-Q4); no `[OPEN]` row                                                                                                                                                                                                                                                                                                    |
 
 <!-- Written 01/11/2026 on pm/story-creation at HEAD 66eb725. The first logging plan in the
      repository: 14-LOGGING/PLANNING/ and IMPLEMENTATION/ held only their pairs and templates, so
@@ -410,8 +410,8 @@ customised `discover_service_name` limits — outside this tree.
 **No `[OPEN]` row remains** (amended 01/11/2026). `LOG-GAP-12` was resolved by the round-3
 ruling of 01/11/2026 (R3-Q4); it changes no field and no line Django's `LOGGING` emits.
 `LOG-GAP-9`, `LOG-GAP-10` and `LOG-GAP-11` were resolved by the round-2 rulings of 01/11/2026;
-`LOG-GAP-9`'s resolution bounds the claim the contract is stated under. The plan stays Draft,
-sign-off pending <%DEVELOPER_NAME%>.
+`LOG-GAP-9`'s resolution bounds the claim the contract is stated under. The plan was signed off by
+<%DEVELOPER_NAME%> on 01/11/2026.
 
 ---
 

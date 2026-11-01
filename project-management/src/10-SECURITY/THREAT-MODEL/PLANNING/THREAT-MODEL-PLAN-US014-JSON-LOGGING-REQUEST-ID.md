@@ -5,7 +5,7 @@
 | **Story**           | US014 — Structured JSON logging with a `request_id` on every entry, queried by Compose service label                                                                                                                                     |
 | **Date**            | 01/11/2026                                                                                                                                                                                                                               |
 | **Author**          | Claude Code — `security` skill, Opus · **not yet reviewed by <%DEVELOPER_NAME%>**                                                                                                                                                        |
-| **Status**          | Draft — sign-off pending <%DEVELOPER_NAME%>                                                                                                                                                                                              |
+| **Status**          | Signed off 01/11/2026 by <%DEVELOPER_NAME%>                                                                                                                                                                                              |
 | **Feature surface** | No endpoint, screen or model. One new module (`apps/core/observability.py`), `RequestIDMiddleware`'s stored id (`apps/core/middleware.py`), four `LOGGING` dicts and one deleted, one Compose mount, three entrypoints, two edge clauses |
 
 <!-- STEP 1's GRILLING PASS RAN, unlike US008's. The three questions this gate owned were put to

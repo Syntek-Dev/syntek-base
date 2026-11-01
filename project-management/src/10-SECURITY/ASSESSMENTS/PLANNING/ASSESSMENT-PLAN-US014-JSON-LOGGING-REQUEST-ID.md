@@ -6,7 +6,7 @@
 | **Date**       | 01/11/2026                                                                                           |
 | **Author**     | Claude Code — `security` skill, Opus · **not yet reviewed by <%DEVELOPER_NAME%>**                    |
 | **Sprint**     | SPRINT-08 — admitted 01/11/2026 at `03-sprint-planning`, 8 SP; the record stands at 11 / 11          |
-| **Status**     | Draft — sign-off pending <%DEVELOPER_NAME%>                                                          |
+| **Status**     | Signed off 01/11/2026 by <%DEVELOPER_NAME%>                                                          |
 | **Frameworks** | STRIDE · OWASP Top 10 (A01–A10, 2025) · NIST CSF 2.0 (GV/ID/PR/DE/RS/RC)                             |
 
 > This assessment establishes the security **baseline** for the story before any code is
