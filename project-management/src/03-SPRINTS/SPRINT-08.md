@@ -1,6 +1,6 @@
 # SPRINT-08
 
-**Last Updated**: 31/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 01/11/2026 **Version**: 0.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -19,17 +19,20 @@ is honest and every log line carries a request_id.
      the goal already reads true of both members. If US014 is not admitted here, the goal is
      rewritten in that change from the members it then has — SPRINT-07's rewrite of 21/09/2026
      is the precedent. Worded so that a re-pricing of US014 at its own cut does not reach it: no
-     figure, no estimate and no file count appears in the sentence. -->
+     figure, no estimate and no file count appears in the sentence.
+
+     CONFIRMED 01/11/2026 on US014's admission: the goal reads true of both members as written
+     and is not rewritten (03-sprint-planning grilling round 1, Settled — Goal). -->
 
 **Status:** Planned
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
 
-**Timeline:** TBD · **Capacity:** **3 SP Must = 3 / 11 SP** — inside capacity, one member,
-all-`Must`, and **OPEN to admission**, with the remaining 8 SP reserved by
-`project-management/src/02-STORIES/CUT-PLAN.md` P8 for US014. 3 / 11 is not the fill trigger, so
-no plan is owed by this admission. See Notes.
+**Timeline:** TBD · **Capacity:** **11 SP Must = 11 / 11 SP** — at capacity, the fill trigger,
+two members, all-`Must`. US014 took the 8 SP `project-management/src/02-STORIES/CUT-PLAN.md` P8
+reserved, admitted 01/11/2026. The record is **full**, and its sprint plan and both story plans
+are **owed** once every member has cleared the specify tier. See Notes.
 
 <!-- FLAGS — the union of the member stories' flags. Recompute this table on every story admitted,
      never edit it directly.
@@ -82,23 +85,32 @@ no plan is owed by this admission. See Notes.
      list, the two "proven alternates" lists go to Out of Scope and the DEFERRED.md entry, and the
      recorded reason is that Alloy is the reference deployment's own shipper. US013's flag table
      did not change, so nothing is recopied. Gate 11 has no [OPEN] gap, its qa-tester run and
-     scoped re-check are done; it closes on <%DEVELOPER_NAME%>'s sign-off. -->
+     scoped re-check are done; it closes on <%DEVELOPER_NAME%>'s sign-off.
 
-| Flag       | Value                                                                                                                                                                                                                                                                                                                                                                            |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| DB         | N/A                                                                                                                                                                                                                                                                                                                                                                              |
-| User Flow  | N/A                                                                                                                                                                                                                                                                                                                                                                              |
-| Brand      | N/A                                                                                                                                                                                                                                                                                                                                                                              |
-| Components | N/A                                                                                                                                                                                                                                                                                                                                                                              |
-| Wireframes | N/A                                                                                                                                                                                                                                                                                                                                                                              |
-| GDPR       | N/A — the personal-data path left this slice for S-07 and S-08 when Batch E split (Q14, 27/08/2026)                                                                                                                                                                                                                                                                              |
-| Security   | N/A — no authentication, permission, endpoint or personal-data path; the edit set is Markdown and `copier.yml` comment and help text                                                                                                                                                                                                                                             |
-| QA         | manual — `docs-length.sh`, `docs-pairing.sh`, `doc-references.sh`, `doctrine-drift.sh`; generated-project check — on every render path the template offers, every token in scope renders; on the non-default Bugsink / Fluent Bit render only, no unmarked vendor literal survives, searched case-insensitively, in `code/workflows/09-debugging-with-logs/` or `code/src/logs/` |
-| SEO        | N/A — no public page; every file edited is developer documentation                                                                                                                                                                                                                                                                                                               |
-| API        | N/A                                                                                                                                                                                                                                                                                                                                                                              |
-| Logging    | N/A — a document about logs: no logger, event, field, level or retention is added or changed                                                                                                                                                                                                                                                                                     |
-| Backend    | N/A                                                                                                                                                                                                                                                                                                                                                                              |
-| Frontend   | N/A                                                                                                                                                                                                                                                                                                                                                                              |
+     RECOMPUTED 01/11/2026 ON US014'S ADMISSION — the union over two members, each value copied
+     verbatim from its story's table and prefixed with the member it comes from, SPRINT-05's
+     convention. US014 brings five live rows — GDPR, Security, QA, Logging, Backend — and US013
+     contributes only to QA, so four rows that read N/A with US013's reason now read US014's value:
+     a union is never narrower than a member, and an N/A cannot narrow a value. SEO and API carry each
+     member's reason, prefixed; both members are N/A there. US014's values are FIRST-PASS: it has entered none of its
+     gates (09, 10, 11, 14), so each row is recomputed when that gate closes. Customer review is
+     not a sprint row — the template's 13 gates are. -->
+
+| Flag       | Value                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DB         | N/A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| User Flow  | N/A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Brand      | N/A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Components | N/A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Wireframes | N/A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| GDPR       | US014: Yes — no redaction ships (N-020); the minimisation claim is the staging/prod extras allowlist and the dropped exception message, and `message` is not scrubbed (Q9, Q11)                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Security   | US014: A09:2025 — `request_id` on every entry; the staging/prod field allowlist; no exception message off dev; request paths in `django.request` messages left to this gate                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| QA         | unit, manual — US013: manual — `docs-length.sh`, `docs-pairing.sh`, `doc-references.sh`, `doctrine-drift.sh`; generated-project check — on every render path the template offers, every token in scope renders; on the non-default Bugsink / Fluent Bit render only, no unmarked vendor literal survives, searched case-insensitively, in `code/workflows/09-debugging-with-logs/` or `code/src/logs/` · US014: unit — formatter (valid JSON on quote, backslash, newline; field set; allowlist; exception shape), filter (`request_id` in and out of a request), the filter on every handler in every environment; manual — the dev mount, the doc gates |
+| SEO        | N/A — US013: no public page; every file edited is developer documentation · US014: no public page                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| API        | N/A — US014: no endpoint                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Logging    | US014: the pipeline itself — JSON formatter and `request_id` filter on every handler; per-environment levels and field sets; the collector relabels the Compose service label to `service_name` (confirmed at this gate)                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Backend    | US014: Yes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Frontend   | N/A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 ---
 
@@ -107,9 +119,9 @@ no plan is owed by this admission. See Notes.
 | ID    | Title                                                                                                                      | MoSCoW    | SP  |
 | ----- | -------------------------------------------------------------------------------------------------------------------------- | --------- | --- |
 | US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Must Have | 3   |
+| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label                               | Must Have | 8   |
 
-**Total:** 3 SP — all committed, no stretch tier. One member; the 8 SP P8 reserves for US014 is
-**not** counted here, because US014 is not cut. See Notes.
+**Total:** 11 SP — all committed, no stretch tier. Two members, in build order US013 then US014.
 
 <!-- US013 admitted 31/10/2026 at 03-sprint-planning, cut the same day from
      project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md slice `S-01` (nodes N-001, N-012
@@ -117,7 +129,13 @@ no plan is owed by this admission. See Notes.
      project-management/src/02-STORIES/US013.md: the `Must` was settled 21/09/2026 (CUT-PLAN.md,
      MAP-RULE-OWNERSHIP round, Q6) and the 3 SP the same day, confirmed at cut. This record derives
      its tiers FROM its stories and edits neither figure. Its `**Status:**` reads `Open` and this
-     record moves it nowhere. US013 sits in no other record's table. -->
+     record moves it nowhere. US013 sits in no other record's table.
+
+     US014 admitted 01/11/2026 at 03-sprint-planning (grilling round 1 Q1), cut 31/10/2026 from
+     MAP-RULE-OWNERSHIP.md slice `S-07` (node N-020). Must Have at 8 SP, matching
+     project-management/src/02-STORIES/US014.md: the `Must` settled 21/09/2026 (CUT-PLAN.md Q6 = 2)
+     and the 8 SP the same day, confirmed at cut. Its `**Status:**` reads `Open`; this record moves
+     it nowhere. US014 sits in no other record's table. -->
 
 ## Dependencies
 
@@ -131,21 +149,33 @@ no plan is owed by this admission. See Notes.
   MAP-BUN-TOPOLOGY) all edit the 09 folder and merge **after** US013, rebasing onto it. `S-07` is
   the one P8 places in this record; the build order inside the record is therefore US013 then
   US014, which is also P8's order.
-- **US013 does not block on US004**, for the reason SPRINT-04 to SPRINT-07 each record for their
+- **Neither US013 nor US014 blocks on US004**, for the reason SPRINT-04 to SPRINT-07 each record for their
   own members: the citation gate's baseline-diff regime
   (`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`)
   is a reporting regime and sequences nothing. US013's own QA criterion reads `doc-references.sh`
-  under it unless US004 has landed and the gate is green.
+  under it unless US004 has landed and the gate is green, and US014's doc-gate row does the same
+  (added 01/11/2026 on its admission).
+- **US014 merges after US013 inside this record**, rebasing onto its edits to 09 Step 4, 09
+  `CONTEXT.md` and the `code/src/logs/` pair (`project-management/src/02-STORIES/US014.md` ->
+  Dependencies).
+- **US014 merges after US008, which sits in the closed `SPRINT-05` and still reads `Open`** — a
+  merge-order dependency, not a block on admission (settled 01/11/2026, 03-sprint-planning grilling
+  round 1 Q2). US008 edits `base.py`, `staging.py`, `production.py` and `EDGE-REQUIREMENTS.md` and
+  pins `dev.py` and `test.py` unchanged; US014 rewrites all five, so it lands second. Sprint
+  numbering is not execution order, and setting US014 `Blocked` is `completion`'s call when work
+  starts, not this record's.
 - **Sprint numbering and build order agree.** The settled build order is the prefix on each plan in
   `project-management/src/17-STORY-PLANS/` — twelve plans on disk on 31/10/2026, `01-` to `12-` —
   and US013 builds thirteenth, at a **reserved `13-`**. It is a **reserved number, not a plan**,
   until `17-story-plans` writes it, and nothing here may cite it as a plan before then (SPRINT-04's
   rule for US006's `07-`). This is this gate's reading on SPRINT-07's precedent of 21/09/2026, not
-  a call made on the day; it moves if build order does.
+  a call made on the day; it moves if build order does. **US014 builds fourteenth, at a reserved
+  `14-`** (settled 01/11/2026, 03-sprint-planning grilling round 1 Q3) — likewise a number, not a
+  plan, until `17-story-plans` writes it.
 - **Nothing carries into this record, and nothing is reserved out of it.** US003's carry is
   reserved into SPRINT-03 and US009's into SPRINT-06. SPRINT-07's US011 has a drop branch with no
   receiving record, and this record does not become one: see Notes.
-- **`Blocked` is a story status, not a sprint one.** US013's own `**Status:**` reads `Open`, and a
+- **`Blocked` is a story status, not a sprint one.** US013's and US014's own `**Status:**` lines read `Open`, and a
   status flip is `.claude/skills/completion/SKILL.md`'s to make when the work starts.
 
 ## Notes
@@ -157,14 +187,17 @@ new admission opens SPRINT-08" and that it "is opened by the first story admitte
 It is the first story cut since SPRINT-07 closed by call, and the first cut under CUT-PLAN.md's
 one-story-at-a-time rule (P1).
 
-**The rest of this record is reserved, and the reservation is stated here rather than in the
-register.** `project-management/src/02-STORIES/CUT-PLAN.md` P8 (27/09/2026) gives SPRINT-08 to
+**At opening (31/10/2026) the rest of this record was reserved, and the reservation is stated here rather than in the
+register.** The paragraph is kept in its opening tense. `project-management/src/02-STORIES/CUT-PLAN.md` P8 (27/09/2026) gives SPRINT-08 to
 RULE-OWNERSHIP: US013 then US014, at 11 / 11. US014 is **provisional** — slice `S-07` on
 `MAP-RULE-OWNERSHIP.md`, priced at 8 SP in CUT-PLAN.md's cut order and not yet cut — so it is a
 reservation, not a member. It is not in the Story Summary, it is not counted in the capacity
 figure, and the backlog register's row names US013 alone (settled 31/10/2026, 03-sprint-planning
 grilling round 1 Q2). Under P1, US013's own QA gate, `11-qa-checks`, runs before US014 is cut.
 US014's admission is `03-sprint-planning`'s at that time, on the figure its own cut gives it.
+**Discharged 01/11/2026:** US014 was cut on 31/10/2026 at the priced 8 SP and admitted the next
+day (03-sprint-planning grilling round 1 Q1); the reservation is now a member, and this paragraph is
+kept as the record of the opening.
 
 **The backlog register.** Every live record carries this table and the copies are identical; **this
 record is `SPRINT-08`**. It became a live register on 17/09/2026, when US009 was placed into
@@ -180,7 +213,7 @@ SPRINT-05 — until that day it stood in three records only, four rows long, and
 | `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
 | `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
 | `SPRINT-07` | US012 (`Must`, 2) then US011 (`Should`, 8, stretch)             | 10 / 11 — closed                                            |
-| `SPRINT-08` | US013 (`Must`, 3)                                               | 3 / 11 — open                                               |
+| `SPRINT-08` | US013 (`Must`, 3) then US014 (`Must`, 8)                        | 11 / 11 — at capacity, open                                 |
 
 Each record owns its own row, and **every record carries the whole table**: a membership or a
 capacity change is written into every copy in the same change. It is maintained by hand — no gate
@@ -196,7 +229,20 @@ reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
      history of those rows is in the dated comments under the register in SPRINT-01 to SPRINT-07,
      and is not restated here. -->
 
-**Capacity: 3 / 11 — inside capacity, all committed, and under capacity by 8 SP, called out rather
+<!-- ROW AMENDED, 01/11/2026 at 03-sprint-planning: US014 (`Must`, 8) admitted to `SPRINT-08`,
+     cut 31/10/2026 from MAP-RULE-OWNERSHIP slice `S-07` — the admission CUT-PLAN.md P8 reserved.
+     It stands the record at 11 / 11, the fill trigger (settled 01/11/2026, 03-sprint-planning
+     grilling round 1 Q1). No other row moved; checked against each record's own capacity line as
+     well as against the other copies, per project-management/src/03-SPRINTS/CLAUDE.md. -->
+
+**Capacity: 11 / 11 — at capacity, the fill trigger, all committed (01/11/2026).** The record is
+full: no further story is admitted, and grace is not taken. The `16-sprint-plans` pass and the
+`17-story-plans` passes for US013 and US014 are **owed**, written once every member has cleared the
+specify tier (`project-management/docs/planning/SPRINTS.md` -> _Capacity_): US013's one gate, 11,
+has run and awaits sign-off; US014 has entered none of 09, 10, 11 and 14. The paragraph below is
+the record of the opening position, kept as written.
+
+**Opening position (31/10/2026). Capacity: 3 / 11 — inside capacity, all committed, and under capacity by 8 SP, called out rather
 than padded.** The 8 SP is **spoken for** by P8's reservation above, as SPRINT-06's 3 SP was by
 US009's reserved carry, and it is not padded with a story cut to fill it.
 `project-management/docs/planning/CADENCE.md` -> _Sprint capacity — the trigger_ owns both figures
@@ -215,7 +261,11 @@ ever carried a date, and this one follows SPRINT-07's reading of the same box. P
 `code/docs/GATE-REPORTING.md` a check that could not run is reported, never passed. It becomes
 answerable the moment a timeline is set.
 
-**OPEN to admission, and what would change the position** — each <%DEVELOPER_NAME%>'s call at the
+**CLOSED to admission from 01/11/2026** — the record is at 11 / 11 and P8's reservation is
+discharged. The list below is the opening position's, kept as the record; its first branch is the
+one taken.
+
+**OPEN to admission, and what would change the position** (31/10/2026) — each <%DEVELOPER_NAME%>'s call at the
 time, and not this record's to pre-empt:
 
 - **US014 at its priced 8 SP** lands the record on 11 / 11, the fill trigger, which closes it on
@@ -240,7 +290,7 @@ record now exists.
 
 ## Acceptance Criteria
 
-One outcome, the sole member's: workflow 09 and the `code/src/logs/` pair carry no raw `docker`
+Two outcomes, one per member. US013's outcome: workflow 09 and the `code/src/logs/` pair carry no raw `docker`
 call and no unmarked vendor literal; their vendor names render from the project's own answers; and
 09 ends at the root cause, with a verification step that runs nothing it does not own. The four
 documentation gates and the generated-project check in the QA flag run against it, each under the
@@ -250,16 +300,74 @@ restated here (`project-management/src/02-STORIES/US013.md` -> Acceptance Criter
 <!-- AMENDED 31/10/2026 after 11-qa-checks grilling round 3: "six" until then. Q14 added a seventh
      scenario to US013 — a dev fault rooted at Step 2 is routed to 10-debug. -->
 
+<!-- AMENDED 01/11/2026 on US014's admission: the paragraph above opened "One outcome, the sole
+     member's:" until then. -->
+
+US014's outcome: in staging and production every log line is one valid JSON object with a fixed
+field set and a `request_id`; dev logs wide and to a mounted host path; test stays console-only;
+every handler in every environment carries the filter; and the documents describing the pipeline
+describe this one. Its scenarios and per-discipline criteria — Backend, GDPR, Security, Logging and
+QA — are its own and are not restated here (`project-management/src/02-STORIES/US014.md` ->
+Acceptance Criteria).
+
+### Backend Acceptance Criteria
+
+<!-- Restored 01/11/2026 with the Backend flag going live on US014's admission, as rollups: the
+     template's generic criteria name surfaces (transactions, IDOR, signals, Celery, audit writes)
+     that neither member introduces, so each is stated against what this sprint does ship. -->
+
+- [ ] US014's `apps/core/observability.py` is standard library only, typed throughout, and no
+      source file exceeds 750 lines
+- [ ] No service method, endpoint, signal, Celery task or audit write is introduced this sprint —
+      the template's transaction, IDOR, idempotence and audit criteria have nothing to bind
+- [ ] Every Backend criterion in `project-management/src/02-STORIES/US014.md` is met
+
+### GDPR Acceptance Criteria
+
+- [ ] No redaction is claimed anywhere; the minimisation claim — the staging/prod extras allowlist
+      and the dropped exception message, `message` not scrubbed — is the only one written
+- [ ] No PII field is introduced, so the template's encryption, HMAC, erasure and consent criteria
+      have nothing to bind
+- [ ] `09-GDPR/DATA-INVENTORY.md`:199 and :201 reconciled; every GDPR criterion in US014 met
+
+### Security Acceptance Criteria
+
+- [ ] [A09:2025] Every log entry in every environment carries `request_id`, including a
+      `django.request` line for a returned error response
+- [ ] No exception message and no non-allowlisted extra reaches staging or production stdout
+- [ ] No endpoint, rate limit or rendered input is introduced; no secrets, debug flags or
+      hardcoded credentials; every Security criterion in US014 met
+
+### Logging Acceptance Criteria
+
+<!-- US014's own Logging flag is the only one that is not N/A; US013's reads N/A with its reason. -->
+
+- [ ] Every handler in every environment's `LOGGING` carries the `request_id` filter, and staging
+      and production write one JSON object per line to stdout
+- [ ] Every LogQL selector in the 09 workflow and `OBSERVABILITY.md` selects
+      `{service_name="django"}`, and `EDGE-REQUIREMENTS.md` states the relabel
+- [ ] No raw PII appears in `code/src/logs/django.log` after exercising the dev stack; every
+      Logging criterion in US014 met
+
+### QA Acceptance Criteria — Automated
+
+- [ ] US014's unit suite, `apps/core/tests/unit/test_observability.py`, passes under
+      `tests/all.sh --coverage`, with `apps/core` at or above the 75 % line and branch floor
+
 ### QA Acceptance Criteria — Manual
 
-<!-- The automated QA sections are removed: this sprint's QA flag names a manual type and no
-     automated one, matching its member, which ships documentation and no code path. Every other
-     discipline section is removed with its N/A flag, per the template. Per
-     code/docs/GATE-REPORTING.md the skip is recorded here rather than left to be inferred. -->
+<!-- The automated QA sections were removed at opening, when the sole member shipped
+     documentation and no code path; US014's admission (01/11/2026) brings a unit type, so the
+     automated criterion above is restored, as are the Backend, GDPR, Security and Logging
+     sections. -->
 
 - [ ] All manual checks listed in the QA Tasks section below are complete and signed off
 - [ ] `project-management/src/18-TESTS/MANUAL/US013-MANUAL-TESTING.md` carries a tester sign-off
       block — a path that does not exist on 31/10/2026; `17-story-plans` writes it
+- [ ] `project-management/src/18-TESTS/MANUAL/US014-MANUAL-TESTING.md` carries a tester sign-off
+      block — likewise absent on 01/11/2026; `17-story-plans` writes it
+- [ ] **No `[OPEN]` acceptance-criteria gap remains** in US014's QA plan, which `11-qa-checks`
+      writes; none exists on 01/11/2026
 - [x] **No `[OPEN]` acceptance-criteria gap remains** in US013's QA plan,
       `project-management/src/11-QA/PLANNING/QA-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`, written at
       `11-qa-checks` on 31/10/2026 — AC-GAP-1 to -5 resolved into the story the same day (AC-GAP-5
@@ -278,8 +386,9 @@ restated here (`project-management/src/02-STORIES/US013.md` -> Acceptance Criter
 ## Tasks
 
 All tasks below are sprint-level rollups. Detailed task lists live in the story file —
-`project-management/src/02-STORIES/US013.md` -> Tasks carries seventeen documentation tasks and is not
-restated here.
+`project-management/src/02-STORIES/US013.md` -> Tasks carries seventeen documentation tasks and
+`project-management/src/02-STORIES/US014.md` -> Tasks its Backend, GDPR, Security, Logging,
+Documentation and QA tasks; neither is restated here.
 
 <!-- AMENDED 31/10/2026 at 11-qa-checks: "twelve" until then. The gate added two tasks to the story
      — the browser-SDK rewording (11-qa-checks grilling round 1, Q7) and LOG_AGGREGATOR's help text
@@ -300,6 +409,34 @@ restated here.
      below read "run on every render path the template offers and on one extra answer set …, the
      vendor-literal search case-insensitive" until then. -->
 
+### Backend Tasks
+
+- [ ] US014 — `apps/core/observability.py`, the four environment `LOGGING` dicts with the filter on
+      every handler, `base.py`'s block deleted, the dated exception in `config/settings/CLAUDE.md`,
+      and the dev logs mount
+
+### GDPR Tasks
+
+- [ ] US014 — `09-gdpr-compliance` run and closed; the redaction forward reference, the
+      `DJANGO-LOGGING.md`:47 identifier and the `DATA-INVENTORY.md` reconciliation
+
+### Security Tasks
+
+- [ ] US014 — `10-security-checks` run and closed, ruling on request paths in `django.request`
+      messages; the two-stream split written into `MONITORING-AND-INCIDENT.md`
+
+### Logging Tasks
+
+- [ ] US014 — `14-logging-checks` run and closed, confirming the collector relabel; the selector
+      rewrites and the `EDGE-REQUIREMENTS.md` section
+
+<!-- Each gate above, and 11-qa-checks, recomputes the FLAGS union when it closes, as US013's gate
+     11 did. -->
+
+### QA Tasks — Automated
+
+- [ ] US014 — `apps/core/tests/unit/test_observability.py`, marked `story("US014")`
+
 ### QA Tasks — Manual
 
 - [ ] US013 — the four documentation gates run, and their output recorded in its manual testing
@@ -312,6 +449,9 @@ restated here.
 - [ ] US013 — the human read-across: the truncate stated once between 09 Step 2 and
       `code/src/logs/CONTEXT.md`, and no sentence in scope reading wrongly with a substituted name
 - [ ] US013 — a tester other than the author has signed the walk-through off
+- [ ] US014 — every row of its manual testing guide walked and marked: the host-mounted log file,
+      the documented host-path commands, a staging-settings line through a JSON parser, the doc gates
+- [ ] US014 — a tester other than the author has signed the walk-through off
 - [ ] Cross-browser, responsive and accessibility walk-throughs — **N/A**, this sprint adds no
       page, component or interactive surface
 
@@ -324,12 +464,15 @@ Run all of the following before closing the sprint. All must pass.
 Every command is a project script under `code/src/scripts/**/*.sh` — never a raw `python`,
 `manage.py`, `pytest`, or `docker` call.
 
-<!-- The code-path checks are marked N/A with a reason rather than deleted: this sprint ships
-     documentation only, and per code/docs/GATE-REPORTING.md a skip is never reported as a pass. -->
+<!-- At opening the code-path checks were marked N/A because the sole member shipped
+     documentation only. US014's admission (01/11/2026) makes the ones it touches live; the rest
+     keep N/A with a reason restated against both members, because per code/docs/GATE-REPORTING.md
+     a skip is never reported as a pass (03-sprint-planning grilling round 1 Q4). -->
 
-- [ ] `bash code/src/scripts/audits/docs-length.sh` — no file US013 edits crosses 270 counted lines
-      without a dated allowance
-- [ ] `bash code/src/scripts/audits/docs-pairing.sh` — both pairs US013 edits keep their four H2s
+- [ ] `bash code/src/scripts/audits/docs-length.sh` — no file US013 or US014 edits crosses 270
+      counted lines without a dated allowance
+- [ ] `bash code/src/scripts/audits/docs-pairing.sh` — every pair US013 or US014 edits keeps its
+      four H2s
 - [ ] `bash code/src/scripts/audits/doc-references.sh` — **read as a diff against the baseline
       captured before the first edit**, per
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
@@ -338,25 +481,29 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] `bash code/src/scripts/audits/doctrine-drift.sh` — **regression guard only**: it reads fenced
       code, so the prose half of US013 is the read-across, never this gate
 - [ ] The generated-project check, with the render paths it ran recorded
-- [ ] `bash code/src/scripts/syntax/lint.sh` passes — the leg that reads Markdown
-- [ ] `bash code/src/scripts/syntax/check.sh` — **N/A**, it has no Markdown leg and this sprint
-      ships Markdown only
-- [ ] `bash code/src/scripts/database/migrate.sh check` — **N/A**, no story here touches a model
-- [ ] `bash code/src/scripts/tests/all.sh --coverage` — **N/A**, no story here ships a code path
-- [ ] Template, django-component, and HTMX-partial tests — **N/A**, no template or component added
+- [ ] `bash code/src/scripts/syntax/lint.sh` passes — the Markdown leg for both members and the ruff leg
+      for US014's Python
+- [ ] `bash code/src/scripts/syntax/check.sh` passes — US014's Python (`observability.py`, the
+      settings modules, the test)
+- [ ] `bash code/src/scripts/audits/negative-space.sh` passes — `RequestIDMiddleware` stays listed
+- [ ] `bash code/src/scripts/database/migrate.sh check` — **N/A**, neither member touches a model
+- [ ] `bash code/src/scripts/tests/all.sh --coverage` passes — US014's unit suite, `apps/core` at
+      or above the floor
+- [ ] Template, django-component, and HTMX-partial tests — **N/A**, neither member adds a template
+      or component
 - [ ] No secrets, debug flags, or hardcoded IDs introduced in this sprint
-- [ ] All GDPR tasks checked off — **N/A**, the sprint's GDPR flag reads `N/A`
-- [ ] Every story's logging plan satisfied — **N/A**, the sprint's Logging flag reads `N/A`
-- [ ] All security acceptance criteria signed off — **N/A**, the sprint's Security flag reads `N/A`
+- [ ] All GDPR tasks checked off — US014's
+- [ ] Every story's logging plan satisfied and the exclusion check run — US014's
+- [ ] All security acceptance criteria signed off — US014's
 - [ ] SEO acceptance criteria signed off — **N/A**, the sprint's SEO flag reads `N/A`
-- [ ] Accessibility (WCAG 2.2 AA) — **N/A**, this sprint renders no interactive surface
+- [ ] Accessibility (WCAG 2.2 AA) — **N/A**, neither member renders an interactive surface
 
 ---
 
 ## Definition of Done
 
 - [ ] All stories in the Story Summary are individually marked **Completed** (their own DoD
-      complete) — US013, the sole `Must`
+      complete) — US013 and US014, both `Must`
 - [ ] **Admitting a story recomputes this record in the same change** — the FLAGS union, the Story
       Summary, the capacity line, the Notes' admission position, the goal if its members no longer
       carry it, and the backlog register in every copy
@@ -364,11 +511,13 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] All sprint-level tasks checked off
 - [ ] All verification checks passed
 - [ ] No `[OPEN]` acceptance-criteria gap remains in any member's QA plan
+- [ ] The sprint plan (`16-sprint-plans`) and both story plans (`17-story-plans`) written — owed
+      from 01/11/2026, when this record reached the fill trigger
 - [ ] The `DEFERRED.md` entry for the out-of-scope vendor literals written, and items 1-2 of
       `GAPS.md`'s 17/09/2026 entry closed, both by `22-implementation-documentation`, as US013's own
       Definition of Done provides
 - [ ] No outstanding TODO or FIXME comments introduced in this sprint
 - [ ] All changes merged to `main` (or the active release branch)
 - [ ] Sprint `**Status:**` set to `Done`
-- [ ] GDPR gaps identified during the sprint documented here — **N/A**, the GDPR flag reads `N/A`
+- [ ] GDPR gaps identified during the sprint documented here — US014's GDPR flag is live
 - [ ] Retrospective notes captured (optional — link or inline)

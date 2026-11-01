@@ -262,7 +262,7 @@ SPRINT-05 — until that day it stood in three records only, four rows long, and
 | `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
 | `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
 | `SPRINT-07` | US012 (`Must`, 2) then US011 (`Should`, 8, stretch)             | 10 / 11 — closed                                            |
-| `SPRINT-08` | US013 (`Must`, 3)                                               | 3 / 11 — open                                               |
+| `SPRINT-08` | US013 (`Must`, 3) then US014 (`Must`, 8)                        | 11 / 11 — at capacity, open                                 |
 
 Each record owns its own row, and **every record carries the whole table**: a membership or a
 capacity change is written into every copy in the same change. It is maintained by hand — no gate
@@ -280,6 +280,12 @@ reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
      not in its cell, because US014 is not cut. No other row moved; checked against each record's
      own capacity line as well as against the other copies, per
      project-management/src/03-SPRINTS/CLAUDE.md, and every row agrees with its source. -->
+
+<!-- ROW AMENDED, 01/11/2026 at 03-sprint-planning: US014 (`Must`, 8) admitted to `SPRINT-08`,
+     cut 31/10/2026 from MAP-RULE-OWNERSHIP slice `S-07` — the admission CUT-PLAN.md P8 reserved.
+     It stands the record at 11 / 11, the fill trigger (settled 01/11/2026, 03-sprint-planning
+     grilling round 1 Q1). No other row moved; checked against each record's own capacity line as
+     well as against the other copies, per project-management/src/03-SPRINTS/CLAUDE.md. -->
 
 <!-- THE SAME ROW CHANGED AGAIN LATER ON 21/09/2026, at 03-sprint-planning. The SPRINT-07 row's
      SP cell read "10 / 11 — open" from US012's admission, recorded below, until
