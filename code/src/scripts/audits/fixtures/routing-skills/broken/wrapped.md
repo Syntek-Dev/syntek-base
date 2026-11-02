@@ -11,7 +11,7 @@ skills:
     refactor,
     no-such-skill-wrapped,
   ]
-model: fable
+model: opus
 ---
 
 # Broken fixture — the wrapped flow sequence

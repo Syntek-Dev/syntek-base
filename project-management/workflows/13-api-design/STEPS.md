@@ -2,7 +2,7 @@
 workflow: 13-api-design
 phase: design
 skills: [backend, stack-django]
-model: fable
+model: opus
 ---
 
 # Steps — API Design
@@ -38,6 +38,10 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> about each read and state-changing
 endpoint, its permission rules, and ownership checks before identifying the API surface.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story's acceptance criteria and wireframes, its schema in `src/04-DATABASE/`, and its threat
+model in `src/10-SECURITY/`.
 
 Review the user story acceptance criteria and wireframes. List every data operation the story
 requires:

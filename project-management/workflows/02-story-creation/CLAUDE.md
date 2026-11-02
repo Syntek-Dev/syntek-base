@@ -20,11 +20,11 @@ criteria before any design or code begins; every feature starts here.
 - **Charting a big epic first:** when the input is a large, ambiguous epic rather than
   one story, chart its decision frontier with `.claude/skills/wayfinder/SKILL.md` (a
   decision map resolved across sessions) before decomposing it into `US###` stories.
-- **Model:** Fable — acceptance criteria drive downstream tests, GDPR, security, and
-  SEO scope, so they are substantive, not mechanical.
+- **Model:** Opus throughout.
 - **Concrete steps:** confirm role/goal/criteria are understood → draft the story in
   the Connextra format → surface GDPR, security, and SEO acceptance criteria per the
-  `docs/` guides → save as `US###.md` in `project-management/src/02-STORIES/`.
+  `docs/` guides → save as `US###.md` in `project-management/src/02-STORIES/`, numbered across
+  that folder and its `archive/` → `pm-board.sh --write` to regenerate `STORIES-BOARD.md`.
 - **Definition of done:** story named `US###.md`, acceptance criteria testable and
   complete enough to seed `code/workflows/02-tdd-cycle/`, checklist satisfied.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `workflow`/`phase`/`skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
@@ -42,5 +42,6 @@ criteria before any design or code begins; every feature starts here.
 ## Output & naming
 
 - **Hand-written:** the story file and any updates to `STEPS.md`/`CHECKLIST.md`.
+- **Generated:** the story's row on `src/02-STORIES/STORIES-BOARD.md` (`pm-board.sh --write`).
 - Stories `US###.md` — three-digit zero-padded (`US001.md`); template at
   `src/02-STORIES/US000-TEMPLATE.md`; dates DD/MM/YYYY.

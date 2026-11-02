@@ -75,6 +75,11 @@ backend [implement deletion and anonymisation functions for DSAR compliance]
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** none
 
+> **CMS-only.** Skip if `code/docs/WAGTAIL.md` does not exist — the project has no CMS.
+> Wagtail's own tables hold personal data — form submissions, user profiles, uploader columns,
+> revisions — and cannot expose these functions themselves, so the content app owns wrappers
+> for them. That is merge-blocking: `code/docs/wagtail/CONTRIB-SURFACES.md`.
+
 ### Step 5 — Verify No PII Leaks
 
 Check that no personal data appears in:

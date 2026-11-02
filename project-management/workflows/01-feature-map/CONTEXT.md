@@ -20,7 +20,8 @@ project-management/workflows/01-feature-map/
 
 Turn a feature idea into a **resolved decision map** before a single story is written. Wayfinder
 charts the feature's decision frontier — every open question, in dependency order — and then each
-node is settled one at a time. The output is `MAP-<FEATURE>.md` in `src/01-FEATURE-MAPS/`.
+node is settled one at a time. The output is `MAP-<FEATURE>.md` in `src/01-FEATURE-MAPS/`, plus
+its generated row on `FEATURE-MAPS-BOARD.md`.
 
 This is the foundation the whole planning loop stands on. Stories written against a resolved map
 describe _what to build_; stories written without one spend `02`–`15` rediscovering the same
@@ -59,16 +60,15 @@ questions, story by story, and answering them inconsistently.
   and every story inherits the same answers.
 - **Not every node resolves before stories start.** A map with its blocking nodes settled and its
   fog honestly marked is enough. The bar is "no story will be written on an unanswered blocker",
-  not "nothing is unknown".
+  not "nothing is unknown" — a slice depends on nodes only, and fog its cut must settle rides in
+  its **Carries** column. `Complete` is stricter: the fog genuinely empty (wayfinder → _Fog of war_).
 - **The standing register is an input, not just an output.** `GAPS.md` and `DEFERRED.md` are where
   earlier work recorded its unfinished business. This gate reads them at both ends: to **suggest**
   what the next feature should be (Step 0), and to **triage** every open entry against the feature
   being charted (Step 2) — closes, blocks, or unrelated. What a feature closes is part of what
   "done" means; what blocks it is a decision node, not an assumption discovered at implementation.
-- **Claiming is not closing.** This gate records on the map that a feature will retire an entry.
-  Marking `✅ CLOSED` — or removing a `DEFERRED.md` row — belongs to
-  `22-implementation-documentation`, against shipped code. A claim is a promise; a close is
-  evidence.
+- **Claiming moves the entry, it does not mark it** — one working copy, on the map and then the
+  story cut from it, not two that drift (`.claude/CLAUDE.md` Section 9).
 
 ## Reading order — what wayfinder loads, in order
 
@@ -96,7 +96,7 @@ a map drawn from the plans alone loses the drift.
 ### Governing documents
 
 - `.claude/skills/wayfinder/SKILL.md` — SUGGEST, CHART and RESOLVE, the map artefact, node types,
-  the graduation table, and the claiming-versus-closing line
+  the graduation table, and the claim-removes-the-entry rule
 - `project-management/docs/PLANNING-GUIDE.md` — the cadence this map feeds
 - `GAPS.md` · `DEFERRED.md` — the standing register, read at Step 0 and Step 2
 

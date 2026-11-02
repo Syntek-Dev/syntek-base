@@ -2,7 +2,7 @@
 workflow: 09-gdpr-compliance
 phase: compliance
 skills: [gdpr-mechanics, global-workflow]
-model: fable
+model: opus
 ---
 
 # GDPR Compliance Review — Steps
@@ -35,7 +35,16 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 interview <%DEVELOPER_NAME%> about the personal data collected, its lawful basis,
 retention, and data subject rights before documenting the data flows.
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the schema's personal-data columns (`src/04-DATABASE/`), the data touchpoints annotated on the user
+flow (gate `05`), and the registers in `src/09-GDPR/`.
+
 Document what personal data is collected, why, and how it is stored.
+
+> **CMS-only.** Skip if `code/docs/WAGTAIL.md` does not exist — the project has no CMS.
+> `wagtail.contrib.forms` is on Wagtail's mandatory app list and stores submitted form data
+> as a JSON blob, so a CMS project has a personal-data sink switched on before the first
+> story. Include it in the inventory: `code/docs/wagtail/CONTRIB-SURFACES.md`.
 
 ### Step 2 — GDPR Review
 
@@ -43,7 +52,7 @@ Document what personal data is collected, why, and how it is stored.
 gdpr-mechanics [describe the feature and its data flows]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `gdpr-mechanics` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `gdpr-mechanics` · **Model:** opus · **MCP:** none
 
 ### Step 3 — Address Findings
 

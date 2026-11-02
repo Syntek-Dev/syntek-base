@@ -15,6 +15,11 @@ _min_copier_version: "9.6.0"
 # Every file is a template — tokens are not confined to a suffixed subset.
 _templates_suffix: ""
 
+# Shared AI entry points and skill discovery paths are relative aliases. Preserve them
+# rather than rendering another copy of their targets: dereferencing .ai/MEMORY.md would
+# bypass the /.claude/MEMORY.md exclusion and ship this template's own project memory.
+_preserve_symlinks: true
+
 # Tokens are written <%TOKEN%> rather than {{TOKEN}} so they cannot collide with
 # anything already in the tree: Django templates ({{ }} / {% %}), GitHub Actions
 # expressions (${{ }}), Bruno variables ({{ }}) or bash test syntax ([[ ]]).
@@ -175,8 +180,10 @@ _exclude:
   - "!/project-management/src/09-GDPR/RETENTION-DELETION.md"
   - "!/project-management/src/09-GDPR/THIRD-PARTY-PROCESSORS.md"
   # The two test records are templates named for the story they are copied to, not for their role.
-  - "!/project-management/src/18-TESTS/US000-MANUAL-TESTING.md"
-  - "!/project-management/src/18-TESTS/US000-TEST-STATUS.md"
+  # Each sits in its own half of the 18-TESTS split (30/09/2026): a negation left on the old
+  # root path matches nothing, and the template silently stops shipping.
+  - "!/project-management/src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md"
+  - "!/project-management/src/18-TESTS/AUTOMATED/US000-TEST-STATUS.md"
   # The incident register's index — the one file in 23-INCIDENTS that is not an incident.
   - "!/project-management/src/23-INCIDENTS/INCIDENT-INDEX.md"
   # Optional mobile frontend, gated by INCLUDE_MOBILE. A templated _exclude entry is the
@@ -228,6 +235,7 @@ _exclude:
   # unconditionally, flagged mobile-only — that keeps .claude/skills/CONTEXT.md free of
   # templated contents, which is the rule this entry exists to protect.
   - "<: if not INCLUDE_MOBILE :>/.claude/skills/stack-react-native<: endif :>"
+  - "<: if not INCLUDE_MOBILE :>/.agents/skills/stack-react-native<: endif :>"
   # Optional Rust surface, gated by INCLUDE_RUST — the same one-mechanism rule as mobile
   # above. Rust is for PyO3 extensions, standalone binaries, CLI tools and services;
   # consuming a published wheel needs none of it, so this gates AUTHORING only.
@@ -245,6 +253,7 @@ _exclude:
   # reason: a Rust skill with no Rust to work on is worse than no skill at all. The shipped
   # INDEX still lists it unconditionally, flagged rust-only.
   - "<: if not INCLUDE_RUST :>/.claude/skills/stack-rust<: endif :>"
+  - "<: if not INCLUDE_RUST :>/.agents/skills/stack-rust<: endif :>"
   # Optional native desktop app (Slint), gated by INCLUDE_DESKTOP — which is itself only
   # asked when INCLUDE_RUST is true, because Slint is Rust. The crate is a member of the
   # existing workspace rather than a second one: `members = ["crates/*"]` is a glob, so it
@@ -260,10 +269,25 @@ _exclude:
   - "<: if not INCLUDE_DESKTOP :>/code/docs/visual-design/DESKTOP.md<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/code/workflows/13-desktop-app<: endif :>"
   - "<: if not INCLUDE_DESKTOP :>/.claude/skills/stack-slint<: endif :>"
+  - "<: if not INCLUDE_DESKTOP :>/.agents/skills/stack-slint<: endif :>"
   # The Slint style gate travels with the script it runs — see the audit-style-check.yml
   # header. A workflow shipped without its script is a permanently-red job on every
   # web-only project, which is the one thing a generated baseline must never carry.
   - "<: if not INCLUDE_DESKTOP :>/.github/workflows/audit-style-check.yml<: endif :>"
+  # Optional Wagtail CMS surface, gated by INCLUDE_WAGTAIL. Unlike mobile, rust and desktop
+  # this one adds NO SOURCE tree: Wagtail installs into the existing Django deployable, so
+  # what travels is documentation and its routing skill. The guide family carries the three
+  # choices a project must not re-litigate per story — native Willow renditions, Cloudinary
+  # as the storage beneath them, and the admin off /admin/ — plus what the CMS owes the auth,
+  # audit and PII doctrine. A project answering false has no CMS and reads no guide about one.
+  #
+  # The skill is gated WITH the guides for the reason 12-EXTENDING.md step 5 gives: a skill
+  # fires on description match, so one shipped without the documents it routes to would
+  # compete for work it cannot do. Its row in .claude/skills/CONTEXT.md stays, flagged.
+  - "<: if not INCLUDE_WAGTAIL :>/code/docs/WAGTAIL.md<: endif :>"
+  - "<: if not INCLUDE_WAGTAIL :>/code/docs/wagtail<: endif :>"
+  - "<: if not INCLUDE_WAGTAIL :>/.claude/skills/stack-wagtail<: endif :>"
+  - "<: if not INCLUDE_WAGTAIL :>/.agents/skills/stack-wagtail<: endif :>"
   # Optional ClickUp sync, gated by INCLUDE_CLICKUP. Unlike the three flags above this one
   # gates an INTEGRATION rather than a deployable, and it defaults TRUE — the sync has
   # shipped in every generation to date, so defaulting false would delete a working workflow
@@ -645,6 +669,39 @@ SPRINT_GRACE_SP:
     The grace ceiling must be greater than SPRINT_CAPACITY_SP.
     <: endif :>
 
+# ── Story acceptance windows ─────────────────────────────────────────────────
+# The two clocks between a story passing internal review and it being Completed. A story
+# enters Customer Review on a staging deployment; once the customer accepts it, it stays open
+# to feedback for FEEDBACK_WEEKS, and is ready for Completed at the LATER of (accepted +
+# FEEDBACK_WEEKS) and (entered review + CUSTOMER_REVIEW_WEEKS + FEEDBACK_WEEKS). A story whose
+# `Customer review` flag is N/A skips the customer statuses and runs Accepted + FEEDBACK_WEEKS.
+# Changes after Completed are chargeable. The scripts read both answers from
+# .copier-answers.yml (`pm-board.sh --warn` raises the "ready for Completed" warning) and fall
+# back to 2 and 4 when the answer is absent. Vocabulary and clock:
+# .claude/skills/completion/SKILL.md.
+
+CUSTOMER_REVIEW_WEEKS:
+  type: int
+  help: >-
+    Weeks the customer has to review a story on staging (Customer Review) before its
+    feedback window is counted from the end of that review period.
+  default: 2
+  validator: >-
+    <: if CUSTOMER_REVIEW_WEEKS < 0 :>
+    The review window cannot be negative.
+    <: endif :>
+
+FEEDBACK_WEEKS:
+  type: int
+  help: >-
+    Weeks after acceptance during which feedback is still free; once it elapses the story
+    is ready for Completed and later changes are chargeable.
+  default: 4
+  validator: >-
+    <: if FEEDBACK_WEEKS < 0 :>
+    The feedback window cannot be negative.
+    <: endif :>
+
 # ── ClickUp sync (optional) ───────────────────────────────────────────
 # syntek-base manages its own stories and sprints in ClickUp, and the sync it ships is
 # ClickUp-specific end to end: the CI workflow, the export format and the three scripts under
@@ -741,6 +798,33 @@ DESKTOP_APP_NAME:
   default: "<% PROJECT_NAME %>"
   when: "<% INCLUDE_DESKTOP %>"
 
+# ── Wagtail CMS surface (optional) ───────────────────────────────────────────
+# Opt-in content management system, installed INTO the existing Django deployable rather
+# than beside it — one process, one database, one deploy. Unlike the three surfaces above
+# it excludes no source tree, because there is none to exclude: what it gates is
+# code/docs/WAGTAIL.md, the guide that decides how Wagtail meets this stack's doctrine.
+#
+# This gates a CMS, not a content model. A project whose pages are authored by developers
+# in templates should answer false; answer true only when a non-developer edits published
+# content through an admin UI. That is the question, because everything expensive about
+# Wagtail follows from it: a second admin login against the same session, a second
+# permission store, a page tree that owns URLs Django views would otherwise own, and an
+# editor-authored PII sink in wagtail.contrib.forms.
+#
+# WHAT IT COSTS BEYOND THE GUIDE, so the answer is given with open eyes. Wagtail brings
+# Django REST Framework and django-tasks into the dependency graph for its own older API
+# and task interface — neither is this project's, and neither may be built on. Its media
+# pipeline needs Cloudinary wired as STORAGES["default"], which the baseline leaves as
+# FileSystemStorage. And its own log models duplicate the audit record rather than
+# discharging it. None of that is a blocker; all of it is work the guide names.
+
+INCLUDE_WAGTAIL:
+  type: bool
+  help: >-
+    Include the optional Wagtail CMS surface (page tree, editor admin, StreamField).
+    Answer true only when a non-developer edits published content.
+  default: false
+
 # ── Meta ─────────────────────────────────────────────────────────────────────
 
 DATE:
@@ -772,6 +856,13 @@ DATE:
 # a project has no use for the migrations that produced it.
 
 _migrations:
+  # Older generated projects contain materialised Cloudinary skill directories.
+  # Copier cannot replace a directory with a preserved link during its render pass.
+  # Convert identical duplicates first; divergent local changes stop the update intact.
+  # Ungated by version so this also reaches a project upgrading from an unreleased ref.
+  - command: bash "<% _copier_conf.src_path %>/.copier/migrations/shared-ai-symlinks.sh"
+    when: "<% _stage == 'before' %>"
+
   # v7.0.0 opens src/14 for the new 14-LOGGING artefact folder, shifting 14-DECISIONS and
   # everything after it up by one. That is the SECOND deliberate exercise of the exception to
   # the frozen-numbering rule in project-management/src/CONTEXT.md — a release may renumber
@@ -878,6 +969,40 @@ _migrations:
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v6.0.0-rename-feature-surfaces.sh"
     when: "<% _stage == 'after' %>"
 
+  # The 18-TESTS split (30/09/2026) moves the two per-story test records off the folder root
+  # into MANUAL/ and AUTOMATED/, filenames unchanged. Copier moves its own two US000 templates;
+  # every US### record the DEVELOPER wrote stays at the root — the v2.0.0 silent orphan again,
+  # and harder to see, because that root keeps its CONTEXT.md and `audits/template-orphans.sh`
+  # keys on a missing one. This moves each record by its filename, never overwrites, reports a
+  # collision or a leftover template copy, and always exits 0.
+  #
+  # Declared AFTER v7.0.0 and v2.0.0 on purpose: migrations run in declaration order, and those
+  # two are what deposit an older project's records at this root in the first place.
+  #
+  # UNGATED, AND ITS VERSION KEY IS PENDING. The release this ships in is chosen once the open
+  # feature maps resolve (noted in CHANGELOG.md [Unreleased]), so there is no release to key it
+  # to yet — and a key written before its release is the mis-keying the v6.0.0 entry above names.
+  # Running on every update is safe meanwhile, as `shared-ai-symlinks.sh` is: the trigger is
+  # project state, not a version crossing, so a tree with nothing at the root is a no-op and a
+  # second run finds nothing to do. Revisit when the version is chosen.
+  - command: bash "<% _copier_conf.src_path %>/.copier/migrations/split-18-tests.sh"
+    when: "<% _stage == 'after' %>"
+
+  # v7.7.0 adds the five generated PM boards and a CI job (`pm-board.sh --check`) that fails on
+  # a missing one. The boards are seeded by the copy-gated _task below, so an update delivers
+  # the job and never the boards — every updated project's first CI run would fail "missing"
+  # five times. This renames the four retired status values with exactly one new spelling
+  # (`Accepted Customer`, `Rejected Customer`, sprint `In progress`, map `Blockers clear`),
+  # writes the five boards, and REPORTS any other out-of-vocabulary status for a human. The blank
+  # CUT-PLAN.md rides the same copy-gated _task, so it also writes 02-STORIES/CUT-PLAN.md from
+  # .copier/CUT-PLAN.md when the project has none — rendering <%DATE%> and <%DEVELOPER_NAME%>
+  # itself (from .copier-answers.yml), because the seed is unrendered in src_path — and never
+  # overwrites an existing one. Always exits 0. Keyed v7.7.0 because that is the release the
+  # boards and the cut plan ship in.
+  - version: v7.7.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v7.7.0-pm-boards.sh"
+    when: "<% _stage == 'after' %>"
+
   # .copier/ is a staging directory, not project content. The _task that empties it and
   # removes it is gated to `copy`, so on an `update` the staged seeds land in the project
   # and simply sit there, looking like version files a developer might edit.
@@ -914,6 +1039,19 @@ _tasks:
   # content permanently and no update can correct it — so emptiness is gated rather than
   # trusted: `.github/scripts/shipped-memory.sh` for the first,
   # `.github/scripts/shipped-registers.sh` for the other two.
+  #
+  # The five PM boards (*-BOARD.md) ride it last. In syntek-base each lists syntek-base's own
+  # maps, stories, sprints and plans, and `/project-management/src/**` above already keeps the
+  # live ones from travelling; the seeds are what `pm-board.sh --write` renders for a project
+  # holding nothing but the seeded MAP-SCALE-PLANNING.md — so a new project's first
+  # `pm-board.sh --check` is green, and every board but the maps one starts with no rows.
+  # `.github/scripts/shipped-boards.sh` proves the seeds are exactly that render.
+  #
+  # CUT-PLAN.md follows (7.7.0, 31/10/2026). syntek-base's own plan in 02-STORIES/ maps its
+  # maps' slices to its stories and never travels; the seed is the same canvas with no rows,
+  # so a project's first cut has a register to write to. `.github/scripts/shipped-registers.sh`
+  # checks 10-12 gate the move, the canvas and the emptiness. An UPDATED project gets it from the
+  # v7.7.0 migration above instead, since this task never runs on `update`.
   - command: >-
       mv .copier/README.md README.md &&
       mv .copier/VERSION VERSION &&
@@ -924,6 +1062,12 @@ _tasks:
       mv .copier/MEMORY.md .claude/MEMORY.md &&
       mv .copier/GAPS.md GAPS.md &&
       mv .copier/DEFERRED.md DEFERRED.md &&
+      mv .copier/FEATURE-MAPS-BOARD.md project-management/src/01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md &&
+      mv .copier/STORIES-BOARD.md project-management/src/02-STORIES/STORIES-BOARD.md &&
+      mv .copier/SPRINTS-BOARD.md project-management/src/03-SPRINTS/SPRINTS-BOARD.md &&
+      mv .copier/SPRINT-PLANS-BOARD.md project-management/src/16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md &&
+      mv .copier/STORY-PLANS-BOARD.md project-management/src/17-STORY-PLANS/STORY-PLANS-BOARD.md &&
+      mv .copier/CUT-PLAN.md project-management/src/02-STORIES/CUT-PLAN.md &&
       rmdir .copier
     when: "<% _copier_operation == 'copy' %>"
 

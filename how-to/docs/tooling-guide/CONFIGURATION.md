@@ -55,11 +55,16 @@ Markdown formatting rules.
 
 ## Hooks and MCP servers
 
-| Surface        | What it does                                                                                                           | Registry                      |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| Hooks          | Eight pre-PR quality gates, plus the two session-continuity hooks that intercept compaction and warn as context fills  | `.claude/hooks/CONTEXT.md`    |
-| MCP servers    | `code-review-graph` (structural context), `context7` (library docs), `mcp-mermaid` (diagrams), `claude-in-chrome` (UI) | `.claude/CLAUDE.md` Section 3 |
-| Helper scripts | Read-only inspection helpers a skill calls to gather context — they never run dev operations                           | `.claude/plugins/CONTEXT.md`  |
+| Surface        | What it does                                                                                                                                                                                  | Registry                      |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| Hooks          | Eight pre-PR quality gates, plus the two session-continuity hooks that intercept compaction and warn as context fills                                                                         | `.claude/hooks/CONTEXT.md`    |
+| MCP servers    | `code-review-graph` (structural context), `context7` (library docs), `perplexity` (cited web answers), `scrapling` (primary-source reader), `mcp-mermaid` (diagrams), `claude-in-chrome` (UI) | `.claude/CLAUDE.md` Section 3 |
+| Helper scripts | Read-only inspection helpers a skill calls to gather context — they never run dev operations                                                                                                  | `.claude/plugins/CONTEXT.md`  |
+
+The first five ship in `.mcp.json` and `.codex/config.toml`; `claude-in-chrome` is the browser
+extension. `perplexity` is lookup tier 3, between `context7` and web search (`.claude/CLAUDE.md`
+Section 3.2): it reads `PERPLEXITY_API_KEY` from the environment, and the key is optional —
+without it only that server fails to start.
 
 ---
 

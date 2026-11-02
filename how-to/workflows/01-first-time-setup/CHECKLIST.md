@@ -31,19 +31,19 @@ These four run once, before the first feature is charted — they are what the p
 downstream are measured against, and each depends on the one before it.
 
 - [ ] `CONTEXT.md` → _What this project is_ expanded beyond the raw Copier answer and confirmed:
-      what it does, who for, what it replaces, what it deliberately is not · _fable_
+      what it does, who for, what it replaces, what it deliberately is not · _opus_
 - [ ] `how-to/src/BRAND-VOICE.md` Section 3 carries this project's tone, person, formality, reader,
-      signature and vocabulary — not `TBD` placeholders · _fable_
+      signature and vocabulary — not `TBD` placeholders · _opus_
 - [ ] `code/docs/VISUAL-DESIGN.md` Section 3 names a visual direction, and every axis — alignment,
-      rhythm, contrast, ornament, density, motion — carries a setting rather than `TBD` · _fable_
+      rhythm, contrast, ornament, density, motion — carries a setting rather than `TBD` · _opus_
 - [ ] If the direction is not `editorial`, Section 3's colour, typography and layout clauses have been
-      restated against the chosen axes · _fable_
-- [ ] `BRAND-VOICE.md` Section 3 and `code/docs/VISUAL-DESIGN.md` Section 3 do not contradict each other · _fable_
-- [ ] `/scale-planning` run against live code · _fable_
-- [ ] `how-to/src/SCALE-ARCHITECTURE/` carries real figures, not `TBD — regenerate` markers · _fable_
-- [ ] `how-to/src/SERVER-ARCHITECTURE/` carries the server/edge contract the deploy repo consumes · _fable_
+      restated against the chosen axes · _opus_
+- [ ] `BRAND-VOICE.md` Section 3 and `code/docs/VISUAL-DESIGN.md` Section 3 do not contradict each other · _opus_
+- [ ] `/scale-planning` run against live code · _opus_
+- [ ] `how-to/src/SCALE-ARCHITECTURE/` carries real figures, not `TBD — regenerate` markers · _opus_
+- [ ] `how-to/src/SERVER-ARCHITECTURE/` carries the server/edge contract the deploy repo consumes · _opus_
 - [ ] The scaling phase-gate this project is designing under is named, and so is what it therefore
-      does **not** need · _fable_
+      does **not** need · _opus_
 
 ---
 

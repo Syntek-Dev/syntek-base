@@ -124,8 +124,8 @@ These are distinct from pytest endpoint tests (which bypass the HTTP server). Bo
 
 ```bash
 ./code/src/scripts/tests/api.sh
-./code/src/scripts/tests/api.sh --collection auth
-./code/src/scripts/tests/api.sh --reporter junit
+./code/src/scripts/tests/api.sh --folder health
+./code/src/scripts/tests/api.sh --env docker
 ```
 
 ### Collection structure
@@ -151,6 +151,33 @@ code/src/tests/api/
 - [ ] Response body shape — required fields present on the happy path
 - [ ] Error body — Ninja returns a JSON `detail` payload on failure, never an HTML error page
 - [ ] Authentication failure returns a JSON error (`401`/`403`), not a Django HTML error page
+
+### What every `.bru` file must declare — its story
+
+A request declares the story it exists for in its `meta` block. This is the Bruno half of the
+pytest story marker, and [`TAXONOMY.md`](TAXONOMY.md) — _Markers_ — owns the convention, its
+purpose, and the warn-only audit behind it:
+
+```text
+meta {
+  name: Update profile
+  type: http
+  seq: 1
+  tags: [
+    US012
+  ]
+}
+```
+
+Add a second `US###` on its own line where more than one story genuinely exercises the request.
+
+**The generator reads the tag from the `.bru` source, not from a filtered run.** One
+`./code/src/scripts/tests/api.sh` pass runs the whole collection and writes one
+`code/src/scripts/tests/reports/api/results.json`; `test-record.sh US###` then matches those
+results against the tags it parsed out of the files, so a single pass feeds every story's record
+at once. A story-scoped, tag-filtered run is explicitly not how this works — Bruno's own `--tags`
+filter runs a subset, which is the opposite of what a record needs, and `api.sh` exposes no story
+flag. An untagged request is silently absent from the record rather than failing the run.
 
 ### Difference from pytest endpoint tests
 

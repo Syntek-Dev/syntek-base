@@ -24,6 +24,9 @@
 # These tests are marked `e2e` and are excluded from both phases of backend.sh, so they
 # never run as part of the ordinary suite.
 #
+# Writes: reports/e2e/results.xml (JUnit) — read by test-record.sh for the per-story record.
+#         reports/a11y/*.json is written by the axe test itself, not by this script.
+#
 # Exit codes:  0 = all passed   1 = failures   2 = script error
 #
 set -euo pipefail
@@ -87,9 +90,15 @@ fi
 # syncs `dev` alone and dies with "Failed to spawn: playwright". It works on a developer
 # laptop only because install-backend.sh --sync installs EVERY group — so this failed
 # nowhere a human looked and everywhere CI ran.
+#
+# The cap is load-bearing, not tidiness. Where the browsers come from a host bundle rather
+# than from `playwright install`, that bundle's layout need not satisfy the installer's own
+# check for the pinned revision — so it attempts a download every run and can stall against
+# a read-only store. Output goes to /dev/null, so an unguarded stall is a silent hang: no
+# suite, no message, no exit. Launching a browser is unaffected; only this check is.
 log 'Installing Playwright Chromium if needed…'
-uv run --group test playwright install chromium > /dev/null 2>&1 ||
-  log 'WARNING: chromium install failed; continuing in case it is already present'
+timeout 120 uv run --group test playwright install chromium > /dev/null 2>&1 ||
+  log 'WARNING: chromium install failed or timed out; continuing in case it is already present'
 
 # Default to the whole suite ONLY when the caller named no target of their own —
 # otherwise `e2e-py.sh <path>` would append to the default path and silently run
@@ -113,4 +122,14 @@ fi
 
 log "Running the e2e suite against ${E2E_BASE_URL}…"
 # -m e2e selects the browser suite. `-x` (stop on first failure) comes from addopts.
-E2E_BASE_URL="$E2E_BASE_URL" uv run --group test pytest -m e2e "$@"
+# --junit-xml is not optional decoration. It is the only machine record this suite leaves, and
+# code/src/scripts/tests/test-record.sh reads it to put the browser and accessibility rows into a
+# story's test record — without it those two suites are invisible there while every other suite is
+# not, which reads as "no browser tests" rather than "no report". The axe test writes its own
+# per-page JSON into reports/a11y/ alongside; that carries the violation counts, this carries the
+# pass or fail. Placed before "$@" so a caller can still override it.
+E2E_REPORTS="$SCRIPT_DIR/reports/e2e"
+mkdir -p "$E2E_REPORTS"
+
+E2E_BASE_URL="$E2E_BASE_URL" uv run --group test pytest -m e2e \
+  --junit-xml="$E2E_REPORTS/results.xml" "$@"

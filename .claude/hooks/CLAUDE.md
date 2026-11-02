@@ -19,7 +19,7 @@ the shipped template documentation read-only in a generated project.
 
 - **Routing:** shell-script changes — edit `pre-pr-check.sh`, `post-pr-comment.sh`, or
   a `lib/check-*.sh`. `lib/` scripts are sourced by `pre-pr-check.sh`, never called
-  directly. Opus for any gate-logic change; Opus for a message tweak or rename.
+  directly. Opus throughout — gate logic, message tweaks and renames alike.
 - **Dual-check design is deliberate:** each `lib/` check runs the tool both on the host
   (raw `ruff`, `pnpm exec`, `basedpyright`, `uv sync`, `pnpm audit`) and inside Docker
   via `_dc exec`, to catch host/container drift. **Do not replace the local-side raw

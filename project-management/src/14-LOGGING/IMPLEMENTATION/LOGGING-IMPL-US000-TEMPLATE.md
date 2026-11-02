@@ -96,4 +96,4 @@ Anything this record surfaces that the story does not close — routed to `GAPS.
 - `../PLANNING/LOGGING-PLAN-US###-<DESCRIPTOR>.md` — the plan this closes
 - `code/docs/LOGGING.md` — the governing standard
 - `code/docs/GATE-REPORTING.md` — why an unrun check is never reported as a clean one
-- `../../18-TESTS/US###-TEST-STATUS.md` · `../../19-REVIEWS/` — the sibling records
+- `../../18-TESTS/AUTOMATED/US###-TEST-STATUS.md` · `../../19-REVIEWS/` — the sibling records

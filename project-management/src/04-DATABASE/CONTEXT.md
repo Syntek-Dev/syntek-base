@@ -39,7 +39,7 @@ behaviour.
 `18-consolidate-design-work` is the second half of that bargain: it reconciles the per-story
 designs into one schema before any migration is written. **Schema is the expensive kind of
 drift** — a fragmented schema gets costlier with every story that ships on top of it, unlike a
-duplicated button — which is why `16` resolves this folder first.
+duplicated button — which is why `18` resolves this folder first.
 
 ## The three stages
 

@@ -70,6 +70,7 @@ code/docs/
 ├── URL-STRATEGY.md          ← route naming, slug patterns, Django URL conventions
 ├── VISUAL-DESIGN.md         ← visual language: the direction slot + axes, anti-generic layout, signature
 │   └── visual-design/                ← WEB.md · MOBILE.md (mobile-only) · DESKTOP.md (desktop-only)
+├── WAGTAIL.md               ← CMS-ONLY — Wagtail 8 in the Django deployable, and what it owes
 └── cloudinary/              ← Cloudinary SDK reference docs (Python)
     └── CONTEXT.md
 ```
@@ -112,4 +113,5 @@ code/docs/
 | `RUST.md`                       | **Rust-only.** The Cargo workspace — the gate question, the PyO3 boundary, secret memory hygiene, the cargo-deny supply-chain gate                                                                                                                                                                                                                                         |
 | `DESKTOP.md`                    | **Desktop-only.** The native Slint app — read `desktop/LICENSING.md` before shipping or selling                                                                                                                                                                                                                                                                            |
 | `VISUAL-DESIGN.md`              | Visual language — Section 3 names the **direction** and its six axes (settled at first-time setup); Section 4.1 universal tells, Section 4.2 direction deviations; Section 5 the motion numbers                                                                                                                                                                            |
+| `WAGTAIL.md`                    | **CMS-only.** Wagtail 8 inside the Django deployable — native renditions on Cloudinary storage, the catch-all route, the second admin surface, the audit and PII debt                                                                                                                                                                                                      |
 | `cloudinary/CONTEXT.md`         | Cloudinary SDK docs index — Python SDK                                                                                                                                                                                                                                                                                                                                     |

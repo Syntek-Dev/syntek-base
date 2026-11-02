@@ -15,10 +15,11 @@ before the story merges.
 ## How to work here
 
 - **Routing:** written during `project-management/workflows/22-implementation-documentation/`, after the
-  feature's Ninja API ships and before it moves to `../../18-TESTS/`, against the story's
-  contract in `../PLANNING/API-PLAN-US###-*.md`; governed by `code/docs/API-DESIGN.md`.
-- **Model:** Fable — the contract diff, permission-matrix check, and breaking-change
-  assessment are substantive judgement; Opus only for a rename, filing, or date-stamp.
+  feature's Ninja API ships and before its test record is written in `../../18-TESTS/AUTOMATED/`,
+  against the story's contract in `../PLANNING/API-PLAN-US###-*.md`; governed by `code/docs/API-DESIGN.md`.
+- **Model:** Opus throughout — the contract diff, permission-matrix check, and
+  breaking-change assessment are substantive judgement; a rename, filing or date-stamp is a
+  mechanical touch.
 - **Concrete steps:** copy `API-IMPL-US000-TEMPLATE.md` →
   `API-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → open the design contract → mark each
   endpoint and Schema Present / Changed / Missing with a Python symbol and handler file as

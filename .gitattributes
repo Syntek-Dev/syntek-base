@@ -38,9 +38,10 @@ Dockerfile*   text eol=lf
 .nvmrc        text eol=lf
 
 # ── Binary ────────────────────────────────────────────────────────────────────
-# Never normalised, never diffed as text. No binary file is tracked today; these
-# rules exist so the first design asset committed under
-# project-management/src/00-ASSETS/ cannot be corrupted by the `text=auto` guess.
+# Never normalised, never diffed as text. A tracked binary may already exist (a
+# source PDF pinned beside a research note, for one); these rules keep it, and the
+# first design asset committed under project-management/src/00-ASSETS/, from being
+# corrupted by the `text=auto` guess.
 *.png   binary
 *.jpg   binary
 *.jpeg  binary

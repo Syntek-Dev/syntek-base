@@ -2,7 +2,7 @@
 workflow: 04-database-schema
 phase: design
 skills: [database, stack-django]
-model: fable
+model: opus
 ---
 
 # Database Schema Design — Steps
@@ -27,7 +27,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ### Step 1 — Grill, then Identify Entities and Relationships
 
-> **Model:** fable · **MCP:** code-review-graph
+> **Model:** opus · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — entities and their real-world meaning,
@@ -35,6 +35,10 @@ relationships and cardinality, ownership/tenancy (RLS scope), constraints and
 invariants, PII fields and lawful basis, retention, and expected query shapes. Record
 resolved terminology in the nearest `CONTEXT.md` glossary and hard-to-reverse calls as
 an ADR in `project-management/src/15-DECISIONS/`.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story, the resolved nodes behind its feature-map slice, and the schema earlier stories settled
+in `src/04-DATABASE/`.
 
 Then list all entities involved, their fields, data types, constraints, and how they
 relate to one another (one-to-many, many-to-many, etc.).

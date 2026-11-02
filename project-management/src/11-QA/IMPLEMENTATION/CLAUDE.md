@@ -14,12 +14,12 @@ sign-off before merge.
 ## How to work here
 
 - **Routing:** written during `project-management/workflows/22-implementation-documentation/`, once the
-  feature is implemented and before the story closes, using the `qa-tester` skill (Fable)
+  feature is implemented and before the story closes, using the `qa-tester` skill
   against the story's plan in `../PLANNING/QA-PLAN-US###-*.md`; governed by
   `project-management/docs/QA-GUIDE.md`.
-- **Model:** Fable — verifying scenarios, deviations, and edge cases against a running
-  build is substantive judgement, not a mechanical touch; Opus only to file, rename, or
-  date-stamp.
+- **Model:** Opus throughout — verifying scenarios, deviations, and edge cases against a
+  running build is substantive judgement; filing, renaming and date-stamping are mechanical
+  touches.
 - **Concrete steps:** copy `QA-IMPL-US000-TEMPLATE.md` →
   `QA-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → open the story's plan → mark each
   HP / ES / EC / PA scenario Pass / Fail / Deviation with evidence → close the plan's
@@ -34,14 +34,18 @@ sign-off before merge.
 - **Verify against the real implementation, never restate the plan** — mark a scenario
   Pass only with evidence (a test name, file, or observed behaviour). If the plan is
   missing, flag it; do not invent one.
+- **A hand-verified scenario may cite the manual row that exercised it** — a `{AREA}-{NN}` row ID
+  from `../../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` — instead of a test name. Optional, and never
+  the reason a test was not written; the template's Section 3 carries the rule.
 - **The sign-off blocks the merge** — an unresolved Fail or an unjustified deviation is a
   blocker, not a footnote.
 - One review per story; do not batch multiple stories into one file.
 - **Documentation only — no source, secrets, or `.env` content.** Keep accessibility,
   GDPR, and security claims consistent with `project-management/docs/QA-GUIDE.md` and
   `code/docs/SECURITY.md`.
-- Downstream automated status and manual guides live in `../../18-TESTS/`; code-review
-  notes in `../../19-REVIEWS/` — do not duplicate them here.
+- Automated status lives in `../../18-TESTS/AUTOMATED/`, the walked manual testing guides in
+  `../../18-TESTS/MANUAL/`, and code-review notes in `../../19-REVIEWS/` — do not duplicate them
+  here.
 
 ## Output & naming
 

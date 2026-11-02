@@ -1,9 +1,181 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: <%DATE%> **Version**: 7.5.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 31/10/2026 **Version**: 7.7.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
+
+---
+
+## Unreleased
+
+## v7.7.0 — 31/10/2026
+
+**Status:** Minor — every story, sprint and feature map now says where it stands in one agreed
+way, each planning folder has a board you can glance at, and finished work is filed away rather
+than left in the way.
+
+### One set of statuses
+
+A story's status used to be described two different ways in different places. There is now one
+list, from `Open` through `Completed` to `Closed`, and every guide points at the same definition.
+Nothing reaches the customer or counts as finished without first passing internal review, and a
+story turned down — by the team or by the customer — goes back in the queue to be picked up again.
+Each change of status is recorded with its date, so you can see how a story got where it is.
+
+Sprints move from `Planned` to `In Progress` to `Done` to `Closed`, and feature maps from
+`Charting` to `Closed`, with a short free-text note alongside.
+
+### A board for each planning folder
+
+Stories, sprints, feature maps and both kinds of plan each get a board: a page listing everything
+in the folder, grouped by status. A browser version is produced alongside for a quick visual view.
+The boards are rebuilt when you commit — the commit stops once so you can include the updated
+board — and the automated checks flag one that has fallen behind. A separate report tells you what is ready to move on — a blocked story whose blockers have
+cleared, or finished work ready to file away.
+
+### Finished work is archived, not deleted
+
+Once a story is complete it can be closed with one command, which moves it and its plan into an
+`archive` folder and updates the links to it from the other planning documents. Sprints and maps archive the same way once
+everything in them is done. Archived files are kept exactly as they were and are still found by
+every tool.
+
+### Two new set-up questions
+
+New projects are asked how many weeks a customer has to review a story (two by default) and how
+long the period after acceptance runs before further changes become chargeable (four by default).
+Press Enter to accept both, or update with `--defaults` to take them without being asked. Updating
+an existing project also writes its boards and, if it has none, a blank cut plan, and renames the
+few statuses whose new spelling is obvious; anything else is listed for you to correct.
+
+### Also in this release
+
+- The manual testing guide for each story is now written from the plans before any code exists,
+  then checked against the finished work, and test records are split into manual and automated
+  folders. Existing projects have their records moved across automatically on update.
+- New projects start with an empty cut plan — the page recording which feature-map slice
+  becomes which story — ready for the first map to be cut into stories.
+- A gap or deferred item now leaves the gaps and deferred lists as soon as a feature map or a
+  story takes it on, so it is tracked in one place rather than two; only items nothing has picked
+  up are closed off there after the work ships.
+- Loose ends on a feature map are now numbered and must each go somewhere: become a decision,
+  be ruled out, travel with the story that will deal with them, or be logged as a known gap
+  waiting for a named event. A map is only marked complete once none are left, and the board
+  check warns when one is.
+- A web-search assistant is available to the AI tools for quick, cited answers, with a clear rule
+  that anything written down permanently must cite the original source.
+
+## v7.6.0 — 14/09/2026
+
+**Status:** Minor — Claude Code and Codex can now work from the same project instructions,
+skills and memory. Existing projects keep their own notes when updated, and the test records
+described below make it easier to see what has actually been checked.
+
+### Work with either coding tool
+
+The new shared `.ai/` folder connects both tools to the project's existing rules and skills.
+There is one maintained copy of each skill and one project memory file, so switching tools
+does not create a second set of instructions to keep up to date.
+
+Codex now has its own project settings and access to the same documentation and code-inspection
+services. Open the project in a fresh Codex session and trust its configuration to load them.
+Your personal Codex settings still choose the model. Claude's automatic checks have not been
+ported to Codex; the shared instructions explain which checks the assistant needs to run.
+
+### Updates keep your project's knowledge
+
+New projects start with empty project memory. Existing projects keep the knowledge they have
+already recorded, while shared skill updates reach both tools. Skills for optional parts of the
+project arrive only when those parts were selected.
+
+Older projects may have duplicate copies of the supplied Cloudinary skills. The update checks
+those copies before joining them to the shared source. If a copy contains different local
+changes, it stops and identifies the files to reconcile; those changes are kept intact.
+
+### Claude uses one model tier
+
+Claude sessions now use Opus for planning, design, implementation and review. The previous
+Fable tier is retired. This affects Claude's settings; Codex continues to use its own model
+selection.
+
+### Shared instructions remain covered by the checks
+
+The documentation checks now include the new shared instructions and Codex entry point.
+They also compare linked documents with their actual earlier contents, so an unchanged
+document is no longer mistaken for one that grew. Automated checks cover fresh projects,
+updates, preserved memory and the cases where a link or local skill copy is wrong.
+
+### The test record nobody had ever written
+
+Your project has always had a place to record what was tested for each piece of work and whether it
+passed. In practice not one of those records has ever been written, and the reason turned out to be
+mundane: three different documents each described whose job it was, and they did not agree. One
+step said it wrote every record of this kind but left this one off its own list. The next step said
+it wrote them too. The folder itself said neither of them did, and pointed at a third place.
+
+It is now settled in one direction. The documentation step that runs after the code is written owns
+both files; the step that raises the pull request only checks they are there and says something
+useful. A step that is meant to review a record should not be the step that writes it.
+
+### The manual guide is now a walk through your product
+
+The manual testing guide used to be a second copy of the test plan: the same four categories —
+normal use, errors, edge cases, permissions — under the same labels the plan already owned. Three
+documents were asking the same question and none of them was clearly responsible for the answer.
+
+Each of the three now answers one question and only one. The plan asks whether the scenarios that
+were promised were met. The user-flow record asks whether the journey exists as it was designed.
+This guide asks the simplest question of the three: when somebody actually sat down and used it,
+did each step work?
+
+So it now reads as a walk through the product, area by area, in the order a person really moves
+through it — sign-up, then the thing they came to do, then whatever comes next. Every step is
+marked passed or failed as you go, and a failure has to say why. Accessibility and behaviour on a
+small screen are part of the same walk rather than a separate box-ticking exercise, because that is
+how a person meets them. Work with no screens at all — a command-line tool, an automated check —
+says so at the top and gets rows in its own vocabulary rather than being left out.
+
+Running it again replaces the previous run. There is one current answer per piece of work, and the
+history is in version control where history belongs.
+
+### The same page works for a person or for the assistant
+
+Steps name buttons and fields by the words you can actually see on them — "click **Book now** in
+the banner" — never by a hidden code name. That single rule is what lets either a human tester or
+Claude driving a browser follow exactly the same page, with no second version to keep in step.
+
+It has a useful side effect. If a control cannot be found by the name a person would call it, that
+is not a gap in the instructions to work around with a hidden name — it is an accessibility
+problem, and it gets recorded as one.
+
+### The automated half now writes itself
+
+The other file records the automated tests, and it has gained the thing it was missing: every test
+listed individually, in plain words, saying what it checks and why, grouped the way the tests
+themselves are grouped. Where a test runs several times over different inputs, each one gets its
+own line, so a failure names the exact case that broke rather than a heading.
+
+All of that is now written by a command from the test run's own output rather than typed up by
+hand — including the coverage percentages, which used to be copied across by a person and could
+quietly stop being true. The parts that need judgement are still written by a person: how to
+reproduce the run, what is still missing or unreliable, and why.
+
+The command that writes the record is kept separate from the commands that run the tests, on
+purpose. The tests keep their plain pass-or-fail signal for everything that depends on it, and a run
+that failed still gets written down — a failing run is the one whose record is worth most.
+
+### Each test now says which piece of work it belongs to
+
+For a per-story record to be assembled from a run of the whole test suite, each test has to say
+which story it belongs to. That is one short line on the test, and a test can name more than one
+story where more than one genuinely depends on it.
+
+Tests that say nothing are not rejected. A check lists them and never blocks anything, because
+insisting would immediately fail every shared helper and every test written before the convention
+existed. The trade-off is worth knowing, and it is written on the record itself: a test that names
+no story simply does not appear, so a suspiciously short list is a reason to run that check before
+believing it.
 
 ---
 

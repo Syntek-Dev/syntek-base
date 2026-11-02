@@ -39,4 +39,13 @@ model: opus
 - [ ] `bash code/src/scripts/development/server.sh up` inside each worktree prints the worktree-specific URL (e.g. `http://dev-us003.<%PROJECT_SLUG%>.localhost`) · _opus_
 - [ ] `bash code/src/scripts/development/server.sh status` run **inside each worktree** lists that worktree's own containers as `<%PROJECT_SLUG%>-dev-us###-*-1` · _opus_
 - [ ] No container name appears in two of those lists — compared by hand, because `server.sh status` is `docker compose ps` scoped to a single compose project · _opus_
-- [ ] Both story plan files (`STORY-PLAN-US###-*.md`) are present in `project-management/src/17-STORY-PLANS/` · _opus_
+- [ ] Both story plan files (`<exec-order>-STORY-PLAN-US###-*.md`) are present in `project-management/src/17-STORY-PLANS/` · _opus_
+
+<!-- UPDATED 08/09/2026. The story-plan filename pattern in the last Definition of Done row
+     gained its `<exec-order>-` prefix; superseded form, quoted without backticks so no dead name
+     is recorded as a fresh citation: "STORY-PLAN-US###-*.md". The prefix is the story's 2-digit
+     position in the settled build order across the whole backlog, renumbered whenever that order
+     changes — the OPPOSITE of the two-number sprint-plan rule in
+     `project-management/src/16-SPRINT-PLANS/CLAUDE.md`, where a mismatch between prefix and
+     sprint number is deliberate and must never be "corrected". Rule:
+     `project-management/src/17-STORY-PLANS/CLAUDE.md`. -->

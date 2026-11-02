@@ -24,6 +24,14 @@ would. It is a peer surface, not a layer: it never renders a Django page, and Dj
 bundles it. See _Mobile_ below. Everything on this page describes the **web surface** unless it
 says otherwise.
 
+`INCLUDE_WAGTAIL` is a fourth answer and not a fourth surface. Wagtail runs **inside** the one
+deployable above — same process, same database, same deploy — so it adds no tree, no toolchain
+and no second runtime. What the answer ships is `code/docs/WAGTAIL.md`, the guide that decides
+how a CMS meets this stack: renditions stay native, their bytes go to Cloudinary, and the editor
+admin never takes `/admin/`. The install itself is yours to perform, because this template never
+templates the contents of a shared file. Answer it on **who publishes content** — a developer
+writing templates needs no CMS.
+
 ```text
                      ┌──────────────────────────────┐
   browser  ──HTML──▶ │  Django 6 (ASGI)             │ ──▶ PostgreSQL 18

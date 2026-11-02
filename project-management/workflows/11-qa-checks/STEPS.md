@@ -2,7 +2,7 @@
 workflow: 11-qa-checks
 phase: verify
 skills: [qa-tester, stack-django, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # QA Checks — Steps
@@ -35,6 +35,9 @@ interview <%DEVELOPER_NAME%> — the test scope, the highest-risk areas, and the
 scenarios to cover (happy path, error states, edge cases, accessibility) before writing
 the QA plan.
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story's acceptance criteria, its security findings in `src/10-SECURITY/`, and its wireframes.
+
 Open `project-management/src/02-STORIES/` and identify every user story covered by the completed
 wireframes. This is the scope for the QA review.
 
@@ -54,14 +57,14 @@ For each wireframe in `project-management/src/08-WIREFRAMES/`, identify:
 qa-tester [describe the story, its wireframe, and user flow]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus · **MCP:** none
 
 ### Step 4 — Document QA Plans
 
 For each story, save a QA document in `project-management/src/11-QA/PLANNING/`:
 
 ```text
-QA-US###-<DESCRIPTION>.md
+QA-PLAN-US###-<DESCRIPTOR>.md
 ```
 
 Each document should include:

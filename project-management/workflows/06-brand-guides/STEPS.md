@@ -2,7 +2,7 @@
 workflow: 06-brand-guides
 phase: design
 skills: [frontend, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # Brand Guides — Steps
@@ -27,10 +27,14 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ### Step 0 — Grill first
 
-> **Model:** fable
+> **Model:** opus
 
 Load `.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%>
 (`.claude/CLAUDE.md` Section 10).
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+`how-to/src/BRAND-VOICE.md`, the visual direction in `code/docs/VISUAL-DESIGN.md`, and the tokens
+earlier stories settled in `src/06-BRAND-GUIDE/`.
 
 Ask about:
 

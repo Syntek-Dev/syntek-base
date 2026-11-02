@@ -15,7 +15,7 @@ shipped routes and screens follow `../CONSOLIDATED-IDEAS/`.
 - **Routing:** written during `workflows/22-implementation-documentation/` by the `doc-writer`
   skill against the consolidated journey and the shipped views, templates, and routes.
 - **Model:** Opus — recording what was built against an approved journey is a documentation
-  closeout. Escalate to `planner` (Fable) only when a deviation needs judging.
+  closeout. Escalate to `planner` only when a deviation needs judging.
 - **Concrete steps:** copy `USER-FLOW-IMPL-US000-TEMPLATE.md` →
   `USER-FLOW-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → mark each consolidated step
   Present / Changed / Missing with the view or template as evidence → **walk every failure path
@@ -36,6 +36,28 @@ shipped routes and screens follow `../CONSOLIDATED-IDEAS/`.
 - **Never rename or back-date a filed record** — the date is load-bearing for the audit trail.
 - **Documentation only** — never code, secrets, or PII sample data.
 - One record per story.
+- **Section 1's step numbers are cited by a third file.** They originate in
+  `../CONSOLIDATED-IDEAS/USER-FLOW-CONSOLIDATED-<AREA>.md`, this record carries them in
+  _1 — Steps implemented_, and `../../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` cites them in its
+  `Flow` column as `<AREA> <step>`. Renumbering a step is a three-file change, and nothing raises
+  an error if one is missed. The guide's own `{AREA}-{NN}` row IDs are permanent and never follow
+  a step (`../../18-TESTS/MANUAL/CLAUDE.md` → _Row IDs_).
+
+<!-- UPDATED 09/09/2026. The 18-TESTS records were redesigned: the manual guide is now a journey
+walk-through whose row IDs reuse the consolidated flow's step numbers as {AREA}-{NN} rather than
+carrying a parallel set of their own, so one number identifies a flow step, this record's Section 1
+line, its diagram node and the walked row. The dependency runs one way — the consolidated flow
+owns the number, this record and the manual guide both cite it. Written here rather than as an ADR
+because 15-DECISIONS keys every ADR to a driving story, and this was template maintenance with
+none. -->
+
+<!-- UPDATED 30/09/2026. The reuse described in the 09/09/2026 comment above is REVERSED. The
+manual guide moved to "../../18-TESTS/MANUAL/" and is now authored at 17-story-plans, before
+consolidation at 18 has produced the step number the old rule keyed on, so each row owns a
+permanent {AREA}-{NN} ID and cites the flow step in a Flow column instead. The dependency still
+runs one way — the consolidated flow owns the number, this record and the guide both cite it —
+but a renumbered step now moves a Flow cell, never a row ID. The argument is recorded where the
+rule now lives: "../../18-TESTS/MANUAL/CLAUDE.md". -->
 
 ## Output & naming
 

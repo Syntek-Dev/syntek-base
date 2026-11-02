@@ -61,7 +61,9 @@ with `wayfinder` first, then cut into stories — the unit here is one story, ne
   this one.** It owns the implementation records, the findings record, the `CONTEXT.md`/`CLAUDE.md`
   closeout, and the code-review-graph refresh — all a hard gate before commit. Never duplicate
   its record formats here.
-- `project-management/workflows/23-pr-and-review/` — follows 19; raises and merges the PR, and
-  only **verifies** the records 19 wrote
+- `project-management/workflows/23-pr-and-review/` — follows 22; raises and merges the PR, and
+  only **verifies** the records 22 wrote and walked
+- `project-management/src/18-TESTS/MANUAL/` — the story's manual testing guide, authored at
+  `17-story-plans` before code, read at the red-tests step and walked at 22
 - `project-management/workflows/21-frontend-code/` · `19-backend-code/` · `20-api-code/` — the
   PM-layer build phases that drive this workflow; a story reaches here through them, not directly

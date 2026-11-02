@@ -15,10 +15,11 @@ closing each planned constraint with evidence.
 
 - **Routing:** written during `project-management/workflows/22-implementation-documentation/` (or on
   `workflows/10-security-checks/` verification) for any story that shipped a security
-  surface, using the `security` skill (Fable) against the story's plan in
+  surface, using the `security` skill against the story's plan in
   `../PLANNING/AUDIT-PLAN-US###-*.md` and the shipped code.
-- **Model:** Fable — judging findings and control results against shipped code is
-  substantive; Opus only for a status flip, a date-header bump, or a file move.
+- **Model:** Opus throughout — judging findings and control results against shipped code
+  is substantive; a status flip, a date-header bump, or a file move is a mechanical
+  touch.
 - **Concrete steps:** copy `AUDIT-IMPL-US000-TEMPLATE.md` →
   `AUDIT-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → open the story's plan → verdict each
   audited file → raise findings with STRIDE + OWASP + NIST columns and a severity →

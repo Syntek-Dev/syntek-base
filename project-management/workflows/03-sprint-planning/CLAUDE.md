@@ -18,7 +18,7 @@ scope via MoSCoW — early in a sprint cycle, before design work begins.
 - **Charting an epic:** before decomposing a big, ambiguous feature/epic into candidate
   stories, load `.claude/skills/wayfinder/SKILL.md` to chart it into a decision map
   resolved across sessions.
-- **Model:** Fable — scoping and prioritisation are judgement calls.
+- **Model:** Opus throughout.
 - **Concrete steps:** confirm a story backlog exists in `src/02-STORIES/` and the prior
   sprint is closing → pick candidate stories with MoSCoW (Must/Should/Could/Won't) →
   write the goal and scope as `SPRINT-##.md` in `project-management/src/03-SPRINTS/` →
@@ -42,5 +42,9 @@ scope via MoSCoW — early in a sprint cycle, before design work begins.
 ## Output & naming
 
 - **Hand-written:** the sprint record and `STEPS.md`/`CHECKLIST.md` updates.
+- **Generated:** the sprint's row on `src/03-SPRINTS/SPRINTS-BOARD.md` (`pm-board.sh --write`).
+  A sprint starts `Planned`; `Done` and `Closed` are recorded by `completion` and
+  `pm-archive.sh SPRINT-##` (which moves the record and its plan into `archive/`).
 - High-level records `SPRINT-##.md` in `src/03-SPRINTS/`; detailed plans
-  `SPRINT-PLAN-##.md` live under `src/16-SPRINT-PLANS/`; dates DD/MM/YYYY.
+  `<exec-order>-SPRINT-PLAN-<sprint-number>.md` live under `src/16-SPRINT-PLANS/` (rule:
+  `src/16-SPRINT-PLANS/CLAUDE.md`); dates DD/MM/YYYY.

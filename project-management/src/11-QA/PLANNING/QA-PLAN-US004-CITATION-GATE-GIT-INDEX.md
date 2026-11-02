@@ -1,0 +1,275 @@
+# QA Plan — US004 The citation gate stops depending on the git index
+
+| Field         | Value                                                                          |
+| ------------- | ------------------------------------------------------------------------------ |
+| **Story**     | US004 — The citation gate stops depending on the git index                     |
+| **Date**      | 02/09/2026                                                                     |
+| **Sprint**    | SPRINT-03 — US004, with US003's reserved carry                                 |
+| **Wireframe** | N/A — this story edits one bash script, its fixtures, a register and four docs |
+| **Status**    | Signed off                                                                     |
+
+---
+
+## 1. Acceptance criteria gaps
+
+**Nine initial gaps found on 02/09/2026; the tenth and fixture resolutions were accepted
+09/10/2026 below.** The first two overturn premises the story was written on. Every initial
+candidate was tested by executing the script rather than by reading it — the standing lesson from
+`project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` Batch D, whose own proposed glob
+was measured and rejected. Two candidates were refuted and are not listed. **All nine were
+resolved into `project-management/src/02-STORIES/US004.md` on 02/09/2026**, in the same pass,
+before the sprint plan locks scope. Sign-off is <%DEVELOPER_NAME%>'s.
+
+- **AC-GAP-1** `[RESOLVED]` — **Check 1 already has a naming-row guard, so the story's proposed
+  one was a restatement.** `code/src/scripts/audits/doc-references.sh:791` reads
+  `[ "$is_naming_row" = true ] && continue`, last in the chain after exists → seeded →
+  registered. The story's Scenario 4 asserted the opposite — _"Check 1 consults neither
+  is_naming_row nor is_marked"_ — and required a second, token-level guard beside it. That is the
+  duplication `MAP-RULE-OWNERSHIP` was chartered to remove, in a story cut from that map. The
+  false claim came from grepping lines 700–760, a window ending 31 lines short of the guard.
+  **The guard is dropped and the scenario is rewritten.**
+- **AC-GAP-2** `[RESOLVED]` — **the register mechanism the story leans on cannot match a patterned
+  row.** `is_registered()` (`code/src/scripts/audits/doc-references.sh:376-378`) is
+  `grep -qxF` — fixed-string, whole-line — and all three existing rows in
+  `how-to/src/PROJECT-PATHS.md` are literal paths. A row reading
+  `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` matches no concrete citation, so
+  covering the population would need one row per story, forever. **`is_registered()` becomes
+  pattern-aware, translating `###` to `[0-9][0-9][0-9]` before matching**, and
+  `code/docs/FORWARD-VOICE.md` Section 3 plus the register's own header state that a row may be
+  patterned. The `###` spelling was chosen over a shell glob because it is the spelling the
+  naming rules, `US000-TEMPLATE.md` and `is_naming_row` itself already use.
+- **AC-GAP-3** `[RESOLVED]` — **"the run exits 0" cannot be satisfied by a correct
+  implementation.** Six findings survive US004 whatever it does: three citations of
+  `code/docs/ABSENCE.md` belonging to US003, and three of
+  `code/src/scripts/audits/SLOP-FAMILY.md` belonging to the parallel session's US002 ADRs. This
+  is `project-management/src/11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` AC-GAP-2
+  recurring one story later. **The criterion is restated as a class delta** — no finding of the
+  classes this story owns remains, and every survivor is named with the story that owns it, per
+  `code/docs/GATE-REPORTING.md`.
+- **AC-GAP-4** `[RESOLVED]` — **the Check 2 exemption was keyed on a predicate that evaporates
+  downstream.** It read `is_template_only()`, and `build_template_only()`
+  (`code/src/scripts/audits/doc-references.sh:412-415`) returns early when `copier.yml` is
+  unreadable — which is every generated project, because `copier.yml:36` excludes itself. `N-009`
+  Q31 rejected that same delegation in the same script, in the same sitting this story is cut
+  from: _"correct-by-construction here and vacuous downstream, because nothing reports its
+  absence."_ **The exemption is re-keyed onto a property of the citing file**, settled at
+  AC-GAP-5.
+- **AC-GAP-5** `[RESOLVED]` — **and a bare `project-management/src/*` glob fails in the other
+  direction.** That tree is not a proxy for "does not ship": `copier.yml:120-146` re-includes the
+  `CONTEXT.md`/`CLAUDE.md` pairs, every `*TEMPLATE*`, and a named allowlist —
+  `00-ASSETS/scripts/*.sh`, `06-BRAND-GUIDE/guide-build/*`, `07-COMPONENTS/component-build/*`,
+  `08-WIREFRAMES/SHARED/wireframe.css`, six `09-GDPR/*.md` registers,
+  `18-TESTS/{MANUAL,AUTOMATED}/US000-*`, `23-INCIDENTS/INCIDENT-INDEX.md` and the `WALK-TESTS/` pair. A glob would
+  exempt roughly twenty shipped files, and two of them carry genuine findings today:
+  `project-management/src/02-STORIES/CONTEXT.md:16` cites `US001.md` and
+  `project-management/src/03-SPRINTS/CONTEXT.md:17` cites `SPRINT-01.md`. **The exemption instead
+  tests whether the citing file is itself an instance artefact** — `US###`, `SPRINT-##`,
+  `ADR-US###`, `QA-PLAN-US###`, `STORY-PLAN-US###`, `SPRINT-PLAN-##`, `REVIEW-US###`, `BUG-*` —
+  with the `US000` and `*TEMPLATE*` forms excluded, those being the allowlist's only
+  instance-shaped entries. It holds identically in both trees and cannot reach a pair file,
+  because a pair file is not instance-shaped.
+- **AC-GAP-6** `[RESOLVED]` — **the story's second register row covers nothing.** It named
+  `17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md`. Measured: of the 22 findings the
+  `project-management/src/*` arm newly produces, **every one cites
+  `project-management/src/18-TESTS/`** — nothing in the repository cites a story plan that does
+  not exist. `how-to/src/PROJECT-PATHS.md`'s own rule is that a row must never answer a question
+  in passing. **The two rows become `18-TESTS/MANUAL/US###-MANUAL-TESTING.md` and
+  `18-TESTS/AUTOMATED/US###-TEST-STATUS.md`.**
+- **AC-GAP-7** `[RESOLVED]` — **the ~70-token figure behind the naming guard was never
+  measured.** The story's Scenario 4 cited "roughly seventy naming patterns" as the reason the
+  guard was needed. That count came from an ad-hoc grep applying no naming-row test. **Measured
+  by executing a patched copy of the script**: the arm alone takes `project-management/src` from
+  **16 dangling-path findings to 38**, and all 22 additions are forward references to
+  `18-TESTS/US###-*.md`. **Zero are naming patterns.** The figure is replaced by the measurement
+  and the method recorded. **09/10/2026:** retain those totals as historical evidence only;
+  HP-06 now requires current controlled counts and finding composition, not numeric reproduction.
+- **AC-GAP-8** `[RESOLVED]` — **the untracked-file probe cannot see the file it creates.**
+  `build_template_only` and `build_template_only_index` run once at load
+  (`code/src/scripts/audits/doc-references.sh:485-486`); `self_test()` is not called until
+  `:913`. A file created inside the probe is invisible to a set built 428 lines earlier, so the
+  probe as written would assert against a stale set and pass for the wrong reason. **The probe
+  must re-run both builders after creating the file**, and carry a `trap` so a failure between
+  creation and assertion does not leak an untracked file into the working tree.
+- **AC-GAP-9** `[RESOLVED]` — **the `audits/CONTEXT.md` refresh collides with US002.** That file
+  sits at **298 of 300 counted lines**, and US002 in SPRINT-01 owns shrinking it to 230 by moving
+  rows out. US004's task refreshes the `doc-references.sh` row in the same file. Whichever lands
+  second reverts or duplicates the other, and if US004 lands first it grows a file two lines from
+  a hard limit. **US004's edit is scoped to replacing text within the existing row, never adding
+  a line**, and the story records that US002 owns the file's shape.
+- **AC-GAP-10** `[RESOLVED] 09/10/2026` — **class registration also matches shipped US000
+  templates.** Check 2's citer exclusion cannot prove Check 1's missing-target detection.
+  The approved successor `project-management/src/15-DECISIONS/ADR-US004-PATTERNED-REGISTRATION-PRESERVES-SHIPPED-TEMPLATES-09-10-2026.md`
+  requires literal shipped-template presence before suppression and excludes `US000` and
+  `*TEMPLATE*` targets from class registration. EC-01 and EC-06 independently remove each
+  shipped test template while retaining its class row; citer proofs remain separate.
+- **Fixture decisions** `[RESOLVED] 09/10/2026` — Q1/Q2 use disposable clones: a byte-identical
+  US003 story copy named US998 for the index A/B, and a separate US999 citer. US997's absent
+  story target is unregistered; its absent automated record target is registered. Record source
+  commit, identical bytes, finding identities and index restoration. The historical 16 to 38
+  and five to zero counts are context only; HP-06 asserts current controlled composition.
+
+---
+
+## 2. Test scenarios
+
+**Every scenario below runs against the script, not against a rendered surface.** The two proof
+modes are the script's own: `st_probe` (a fixture file with an expected finding count) and a
+direct predicate assertion in the `st_set_probe` style.
+
+### Happy path (HP-nn)
+
+- **HP-01** — With the fall-through arm in place, a `CONTEXT.md` inside `research/` is no longer
+  exempt: the direct assertion `is_exempt research/CONTEXT.md` answers **no**, and the three tree
+  arms still exempt `research/NOTE.md`.
+- **HP-02** — In a disposable clone, copy US003.md byte for byte from the recorded baseline
+  commit to "project-management/src/02-STORIES/US998.md". Verify scratch names are free before
+  creating them. Run `--path` on US998 untracked, then intent-to-add, restore only that path's
+  index entry and confirm it is untracked again. Use the same bytes and target tree for both
+  detector versions; post-change template-only findings are zero in both states and other
+  finding identities match. Record the pre-change differential, not a fixed five-to-zero count.
+- **HP-03** — A citation of "project-management/src/18-TESTS/AUTOMATED/US997-TEST-STATUS.md" from a
+  story passes on the patterned register row, and `is_registered` answers yes for the concrete form.
+- **HP-04** — A dead citation to a `project-management/src/` artefact that no register row covers
+  is reported for the first time.
+- **HP-05** — `bash code/src/scripts/audits/doc-references.sh --self-test` exits 0 with its probe
+  count risen by one case per repair.
+- **HP-06** — On the same frozen clone tree, compare the stock detector with a copy having only
+  the PM Check 1 arm added. US999 cites the absent unregistered US997 story on a plain line.
+  The arm-only run adds its `[dangling path]` finding; record current counts and every addition
+  by identity and class, with no naming-pattern additions. Historical 16 to 38 is not required.
+
+<!-- NOTE 30/09/2026. HP-03's premise broke that day: the backfill wrote
+     "project-management/src/18-TESTS/MANUAL/US001-MANUAL-TESTING.md", so a citation of it now
+     resolves because the file exists, not because of the patterned register row, and HP-03 no
+     longer tests the forward-reference path. The developer settled it the same day: HP-03 is
+     re-keyed to an automated record that cannot exist, matching the guide's REGISTER-03 row.
+     US997 rather than US001, because US001 is built before US004 (story plans 02 and 05), so
+     "US001-TEST-STATUS.md" would already resolve when this scenario is walked. It is quoted, not
+     backticked, as a path that does not exist. -->
+
+### Error states (ES-nn)
+
+- **ES-01** — With `how-to/src/PROJECT-PATHS.md` absent or its `## Registered paths` heading
+  renamed, `REGISTERED` is empty and every registered path reports. The gate must fail loudly
+  rather than silently pass — the failure mode `code/docs/GATE-REPORTING.md` names.
+- **ES-02** — With `copier.yml` unreadable, `TEMPLATE_ONLY` is empty and Check 3 finds nothing.
+  The instance-artefact citer test still exempts Check 2 correctly, which is AC-GAP-4's whole
+  point; assert both halves.
+- **ES-03** — The untracked-file probe fails mid-way; the `trap` removes the file and the working
+  tree is unchanged.
+- **ES-04** — A malformed register row — no backticks, or a pattern with no digits — neither
+  crashes the parser nor silently registers everything.
+
+### Edge cases (EC-nn)
+
+- **EC-01** — Independently prove both roles of the shipped manual US000 template: (a) as a
+  citer, it is not exempt from Check 2; (b) as a target, move it outside the clone root, retain
+  the manual class row, and cite its literal path from US999 on a plain line. Check 1 emits
+  `[dangling path]`, class registration rejects it, and restoration clears that target finding.
+- **EC-02** — A `*TEMPLATE*` file under an exempt tree: the fall-through arm admits it, and the
+  instance-artefact citer test does not exempt it.
+- **EC-03** — A patterned register row must not over-match: `US###-MANUAL-TESTING.md` translates
+  to three digits exactly, so `US1234-MANUAL-TESTING.md` and `USxyz-MANUAL-TESTING.md` still
+  report.
+- **EC-04** — A naming row and a real dangling path on the same line. `is_naming_row` is
+  line-level, so the dangling path is suppressed. This is a **known limitation the story does not
+  fix** — recorded here so the next reader does not mistake it for a regression US004 introduced.
+- **EC-05** — Scratch instance US999 cites "project-management/src/02-STORIES/US997.md", verified
+  absent and unregistered, on its own plain line. Check 2 exempts the citer, but Check 1 emits
+  `[dangling path]` for the target. This missing-target proof is distinct from citer exemption
+  and from HP-03's registered absent automated record with the same number.
+- **EC-06** — Repeat EC-01's target proof for the shipped automated US000 template with its
+  class row retained: missing target reports, restoring it clears the finding. Neither US000
+  template is admitted by class registration; `*TEMPLATE*` targets also require literal presence.
+
+### Permission and access (PA-nn)
+
+- **PA-01** — **N/A.** This story ships no endpoint, no view and no protected action; the script
+  runs with the developer's own permissions and reads only tracked and untracked repository files.
+  Recorded rather than omitted, per `code/docs/GATE-REPORTING.md`.
+
+---
+
+## 3. Accessibility notes (WCAG 2.2 AA)
+
+**N/A — this story renders no interactive surface.** It ships a shell script, Markdown fixtures
+and register rows, read in an editor or a terminal. The one accessibility-adjacent obligation is
+the script's own output: findings stay in the `file:line [class] token` shape the existing report
+uses, so a screen reader and a terminal pager read them identically to today's.
+
+---
+
+## 4. Responsive behaviour
+
+**N/A — no layout, no breakpoint, no rendered page.**
+
+---
+
+## 5. GDPR & security constraints
+
+- **No personal data is read, written or logged.** The script reads repository documentation and
+  emits paths.
+- **One security-adjacent property is worth asserting:** the untracked-file probe writes inside
+  the repository. It must create its file under a path the repository already owns, never in
+  `/tmp` with a predictable name, and must remove it on every exit path.
+- **No secret, token or environment value enters the script's output.** The findings are paths
+  taken from backticked spans in committed documentation.
+
+---
+
+## 6. Developer notes — testability
+
+- **Approved setup, 09/10/2026:** all mutations for the walk happen in disposable clones of the
+  recorded commit, never in another agent's checkout. US998 is the A/B copy, US999 the separate
+  citer, US997.md the absent unregistered target, and US997-TEST-STATUS.md under AUTOMATED the
+  absent registered target. Confirm each required absence before use; a collision blocks setup.
+  Restore the index after each A/B with `git restore --staged -- <scratch path>`; confirm bytes
+  unchanged and the path untracked. Restore moved templates after each case and discard clones.
+- **Measure by executing, never by reading.** Every figure in the story was produced by patching
+  a scratch copy of the script and running it; two claims made by reading were wrong, and both
+  are AC-GAPs above. Copy to an untracked sibling, patch, run scoped with `--path`, delete.
+- **`--path` scoping is the cheap loop.** A whole-tree run takes seconds but mixes in every other
+  story's findings; `--path project-management/src` isolates this story's population.
+- **The before/after must be captured on the same tree.** The parallel session is writing to
+  `project-management/src/` continuously — the whole-tree count moved from 22 to 44 during
+  02/09/2026 — so a baseline taken an hour before the change is not a baseline.
+- **A fixture that passes both scripts proves nothing.** Every new fixture case is run against
+  the pre-change script and must fail there.
+- **The set builders run once at load.** Any probe that changes what they would read must re-run
+  `build_template_only` and `build_template_only_index` explicitly (AC-GAP-8).
+- **The A/B changes only index membership.** `git add --intent-to-add` followed by the scoped
+  restore above preserves the fixture's bytes; record `git status --porcelain` after every A/B.
+- **Do not edit `code/src/scripts/audits/CONTEXT.md`'s line count.** US002 owns that file's shape
+  and it is at 298 of 300 (AC-GAP-9).
+
+---
+
+## Cross-references
+
+- `project-management/src/02-STORIES/US004.md` — the story these gaps were resolved into
+- `project-management/src/03-SPRINTS/SPRINT-03.md` — the sprint after the 07/09/2026 cascade; corrected 09/10/2026
+- `project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` — slice `S-06`, nodes `N-009` and `N-010`
+- `project-management/src/11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` — AC-GAP-2 there is AC-GAP-3 here
+- `code/docs/GATE-REPORTING.md` — a skip is never reported as a pass
+- `code/docs/FORWARD-VOICE.md` — Section 3 owns the register this story makes pattern-aware
+- `how-to/src/PROJECT-PATHS.md` — the register gaining the two rows
+
+<!-- UPDATED 08/09/2026. AC-GAP-6's story-plan filename pattern was repointed at the names now on
+     disk: `project-management/src/17-STORY-PLANS/` was renamed that day to
+     `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, a 2-digit build-order prefix
+     renumbered whenever build order changes. The row as the story wrote it on 02/09/2026 carried
+     no prefix — quoted here without backticks so no dead name is recorded as a fresh citation:
+     "17-STORY-PLANS/STORY-PLAN-US###-*.md". The finding itself is unchanged and stays true: the
+     row covered nothing measured, and the two rows that shipped were the `18-TESTS/` pair.
+
+     AC-GAP-5's list of instance forms is deliberately NOT repointed. "STORY-PLAN-US###" there is
+     an artefact-class noun naming a filename SHAPE the citer test matches, not a document, and
+     the shape is what the exemption keys on. `code/src/scripts/audits/doc-references.sh` was
+     corrected the same day so its Check 2 alternation accepts the 2-digit prefix as OPTIONAL —
+     a plan may still be cited by the unprefixed name it was written under.
+
+     The story-plan rule is the OPPOSITE of the sibling one in
+     `project-management/src/16-SPRINT-PLANS/CLAUDE.md`: a sprint plan carries TWO numbers and a
+     mismatch between them is deliberate information that must never be "corrected"; a story plan
+     carries ONE, so a prefix that has drifted from build order says nothing at all and is a
+     defect. Owner: `project-management/src/17-STORY-PLANS/CLAUDE.md`. -->

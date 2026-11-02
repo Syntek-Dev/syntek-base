@@ -19,9 +19,8 @@ writing `SEO-PLAN-US###-<DESCRIPTOR>.md` into `src/12-SEO/PLANNING/`.
 - **Grill first:** open with a grilling pass — the primary keyword, the schema type, whether the
   page should be indexed at all — (`.claude/CLAUDE.md` Section 10). These are
   judgement calls, and getting them wrong is expensive once the page ships and ranks.
-- **Model:** Fable — choosing a schema type, a canonical strategy, and an indexing posture is
-  substantive SEO judgement, not mechanical verification. (This gate previously ran on Opus
-  because it _was_ verification; it no longer is.)
+- **Model:** Opus — choosing a schema type, a canonical strategy, and an indexing posture is
+  substantive SEO judgement, not mechanical verification.
 - **Concrete steps:** confirm the story has a public URL → copy `SEO-PLAN-US000-TEMPLATE.md` →
   set a concrete planned value on every dimension → state the route's robots/sitemap handling →
   raise any `SEO-GAP-n` → keep the story's `### SEO Acceptance Criteria` in step.

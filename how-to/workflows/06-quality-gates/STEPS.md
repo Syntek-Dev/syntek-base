@@ -90,6 +90,8 @@ bash code/src/scripts/audits/template-slop.sh # AI-slop, markup half
 bash code/src/scripts/audits/copy-slop.sh     # AI-slop, prose half
 bash code/src/scripts/audits/render-slop.sh   # AI-slop, rendered half (needs Chromium)
 bash code/src/scripts/desktop/style-check.sh  # desktop-only; a Slint style is chosen
+bash project-management/src/00-ASSETS/scripts/pm-board.sh --check # PM boards current, archive/ untouched
+bash project-management/src/00-ASSETS/scripts/pm-board.sh --warn  # work ready to move on; never fails
 ```
 
 `security.sh` mirrors the CI `[8/8]` gate exactly, so a hit here is what the next PR would

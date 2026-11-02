@@ -1,14 +1,14 @@
 ---
 type: guide
 skills: [gdpr-mechanics, global-workflow]
-model: fable
+model: opus
 ---
 
 # GDPR Guide — Compliance Obligations
 
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
-**Claude Model:** fable — GDPR retention tasks, Celery Beat purge scheduling, anonymisation
+**Claude Model:** opus — GDPR retention tasks, Celery Beat purge scheduling, anonymisation
 
 ---
 

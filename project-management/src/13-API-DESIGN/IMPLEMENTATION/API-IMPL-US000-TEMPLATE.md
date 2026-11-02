@@ -164,5 +164,6 @@ _Every `[OPEN]` item resolves to Closed, a justified deviation, or a Deferred en
 - `../../02-STORIES/US###.md` — the story under review
 - `code/docs/API-DESIGN.md` — Django Ninja conventions this contract follows
 - `code/docs/SECURITY.md` — the permission/IDOR enforcement these checks must stay consistent with
-- `../../18-TESTS/US###-TEST-STATUS.md` · `../../19-REVIEWS/` — downstream test and review records
+- `../../18-TESTS/AUTOMATED/US###-TEST-STATUS.md` · `../../19-REVIEWS/` — downstream test and
+  review records
 - `project-management/workflows/22-implementation-documentation/` — where this verification is written

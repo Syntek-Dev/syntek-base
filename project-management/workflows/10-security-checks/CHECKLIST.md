@@ -2,7 +2,7 @@
 workflow: 10-security-checks
 phase: harden
 skills: [security, stack-django, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # Security Checks — Checklist

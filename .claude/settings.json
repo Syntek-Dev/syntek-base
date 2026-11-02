@@ -118,7 +118,6 @@
       "ReportFindings",
       "DesignSync",
       "NotebookEdit",
-      "SendMessage",
       "PushNotification",
       "RemoteTrigger",
       "ScheduleWakeup",
@@ -221,7 +220,7 @@
       }
     ]
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "medium",
   "ultracode": true,
   "enableWorkflows": true,
   "skipWorkflowUsageWarning": true,

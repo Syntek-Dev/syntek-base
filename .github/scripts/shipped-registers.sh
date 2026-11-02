@@ -16,7 +16,8 @@
 #                       which a real `copier copy` handed to a generated project as its own
 #                       active gap and a real `copier update` delivered as a merge conflict.
 #
-#                       Nine checks, three per register plus the wiring:
+#                       Twelve checks — three per register plus the wiring, and three for
+#                       the cut-plan canvas:
 #                         1. copier.yml excludes /GAPS.md.
 #                         2. copier.yml excludes /DEFERRED.md.
 #                         3. _tasks seeds GAPS.md from .copier/GAPS.md on `copy`.
@@ -26,6 +27,16 @@
 #                         7. The DEFERRED seed carries its add-a-row rule.
 #                         8. The GAPS seed carries no entry.
 #                         9. The DEFERRED seed carries no row.
+#                        10. _tasks seeds 02-STORIES/CUT-PLAN.md from .copier/CUT-PLAN.md.
+#                        11. The CUT-PLAN seed exists and carries its `## Status legend`.
+#                        12. The CUT-PLAN seed carries no map section and no table row from
+#                            `## Programme decisions` down.
+#
+#                       CUT-PLAN.md (7.7.0) is not an appended register but carries the same
+#                       risk: syntek-base's own plan maps its own slices to its own stories.
+#                       It needs no _exclude check of its own — `/project-management/src/**`
+#                       already keeps the live file from travelling, and the re-include list
+#                       names nothing that matches it.
 #
 #                       Exclusion and seed are a PAIR and neither is sufficient, which is
 #                       the lesson `shipped-memory.sh` records: exclusion alone leaves a
@@ -66,6 +77,7 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 GAPS_SEED="$PROJECT_ROOT/.copier/GAPS.md"
 DEFERRED_SEED="$PROJECT_ROOT/.copier/DEFERRED.md"
+CUTPLAN_SEED="$PROJECT_ROOT/.copier/CUT-PLAN.md"
 COPIER="$PROJECT_ROOT/copier.yml"
 
 # The paths as copier.yml writes them, and as _tasks lands them.
@@ -75,6 +87,9 @@ GAPS_SEED_REL=".copier/GAPS.md"
 DEFERRED_SEED_REL=".copier/DEFERRED.md"
 GAPS_LIVE_REL="GAPS.md"
 DEFERRED_LIVE_REL="DEFERRED.md"
+CUTPLAN_SEED_REL=".copier/CUT-PLAN.md"
+CUTPLAN_LIVE_REL="project-management/src/02-STORIES/CUT-PLAN.md"
+CUTPLAN_HEADING="## Status legend"
 
 # One heading per register that proves the seed arrived as a canvas rather than a blank
 # file. GAPS.md's `## Format` block is what an appending session copies; DEFERRED.md has no
@@ -200,6 +215,40 @@ run_checks() {
       done <<< "$deferred_rows"
     fi
   fi
+
+  # ── 10. _tasks seeds the cut plan ───────────────────────────────────────────
+  grep -qF "mv $CUTPLAN_SEED_REL $CUTPLAN_LIVE_REL" <<< "$tasks" \
+    || finding "copier.yml _tasks does not move $CUTPLAN_SEED_REL into $CUTPLAN_LIVE_REL — a generated project gets no cut plan"
+
+  # ── 11 and 12. The CUT-PLAN seed: its canvas, and its emptiness ─────────────
+  if [[ ! -f "$CUTPLAN_SEED" ]]; then
+    finding "missing $CUTPLAN_SEED_REL — nothing to seed a generated project's cut plan with"
+  else
+    grep -qxF "$CUTPLAN_HEADING" "$CUTPLAN_SEED" \
+      || finding "$CUTPLAN_SEED_REL omits the '$CUTPLAN_HEADING' heading — it must arrive as a canvas, not a blank file"
+
+    # Content is a `## MAP-` section, or a table row past the header and divider in the
+    # project's own part of the file — everything from `## Programme decisions` down. Above
+    # it sit the canvas's fixed tables (what this is not, the legend), which ship filled.
+    # The per-map exemplar sits in a fenced block, so the fence is tracked; header and
+    # divider rows are told apart by position: the first two rows of a table are structure.
+    local cut_content
+    cut_content=$(awk '
+      /^## Programme decisions/ { own = 1 }
+      !own { next }
+      /^```/ { fence = !fence; next }
+      fence { next }
+      /^## MAP-/ { print; next }
+      /^\|/ { row++; if (row > 2) print; next }
+      { row = 0 }
+    ' "$CUTPLAN_SEED" || true)
+    if [[ -n "$cut_content" ]]; then
+      while read -r c; do
+        [[ -z "$c" ]] && continue
+        finding "$CUTPLAN_SEED_REL carries content: $(printf '%s' "$c" | cut -c1-60) — a generated project must start empty"
+      done <<< "$cut_content"
+    fi
+  fi
 }
 
 # ── Self-test ─────────────────────────────────────────────────────────────────
@@ -229,10 +278,11 @@ self_test() {
   log  ""
   command -v mktemp >/dev/null 2>&1 || die "mktemp unavailable — refusing to report a proof that never ran"
 
-  real_gaps="$GAPS_SEED"; real_deferred="$DEFERRED_SEED"; real_copier="$COPIER"
+  local real_cutplan
+  real_gaps="$GAPS_SEED"; real_deferred="$DEFERRED_SEED"; real_copier="$COPIER"; real_cutplan="$CUTPLAN_SEED"
   tmpdir=$(mktemp -d) || die "could not create a temporary directory"
   # shellcheck disable=SC2064
-  trap "rm -rf '$tmpdir'; GAPS_SEED='$real_gaps'; DEFERRED_SEED='$real_deferred'; COPIER='$real_copier'" RETURN
+  trap "rm -rf '$tmpdir'; GAPS_SEED='$real_gaps'; DEFERRED_SEED='$real_deferred'; COPIER='$real_copier'; CUTPLAN_SEED='$real_cutplan'" RETURN
 
   # ── The known-negative: the real inputs must trip nothing ───────────────────
   run_checks
@@ -289,6 +339,21 @@ self_test() {
   DEFERRED_SEED="$tmpdir/a-row.md"; probe "check 9 fires when a DEFERRED row is added" "carries a row:"
   DEFERRED_SEED="$real_deferred"
 
+  # ── 10. Drop the CUT-PLAN _tasks move ───────────────────────────────────────
+  grep -vF "mv $CUTPLAN_SEED_REL $CUTPLAN_LIVE_REL" "$real_copier" > "$tmpdir/no-cut-task.yml"
+  COPIER="$tmpdir/no-cut-task.yml"; probe "check 10 fires when the CUT-PLAN _tasks move is dropped" "_tasks does not move $CUTPLAN_SEED_REL"
+  COPIER="$real_copier"
+
+  # ── 11. Remove the CUT-PLAN legend heading ──────────────────────────────────
+  grep -vxF "$CUTPLAN_HEADING" "$real_cutplan" > "$tmpdir/no-legend.md"
+  CUTPLAN_SEED="$tmpdir/no-legend.md"; probe "check 11 fires when the CUT-PLAN legend heading is removed" "omits the '$CUTPLAN_HEADING' heading"
+  CUTPLAN_SEED="$real_cutplan"
+
+  # ── 12. Add a CUT-PLAN map section ──────────────────────────────────────────
+  { cat "$real_cutplan"; printf '\n## MAP-EXAMPLE\n'; } > "$tmpdir/a-section.md"
+  CUTPLAN_SEED="$tmpdir/a-section.md"; probe "check 12 fires when a CUT-PLAN map section is added" "carries content: ## MAP-EXAMPLE"
+  CUTPLAN_SEED="$real_cutplan"
+
   # Leave the globals holding the real inputs so nothing downstream inherits a
   # deliberately broken one.
   run_checks
@@ -327,4 +392,5 @@ log ""
 log "  .copier/GAPS.md and .copier/DEFERRED.md are the registers a generated project"
 log "  receives — each must carry its writing rules and NO entries. syntek-base's own"
 log "  registers are the root GAPS.md and DEFERRED.md, which copier.yml excludes."
+log "  .copier/CUT-PLAN.md is the cut-plan canvas: its legend and empty tables only."
 exit 1

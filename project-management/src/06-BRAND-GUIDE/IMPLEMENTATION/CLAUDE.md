@@ -14,8 +14,8 @@ tokens a story consumed exist in the token layer and match `../CONSOLIDATED-IDEA
 
 - **Routing:** written during `workflows/22-implementation-documentation/` by the `doc-writer`
   skill against the consolidated set and the shipped CSS.
-- **Model:** Opus — verifying tokens landed is mechanical. Escalate to `frontend` (Fable) only
-  where a deviation needs judging.
+- **Model:** Opus — verifying tokens landed is mechanical. Escalate to `frontend` only where a
+  deviation needs judging.
 - **Concrete steps:** copy `BRAND-IMPL-US000-TEMPLATE.md` →
   `BRAND-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → confirm each consumed token exists in the
   DB-canonical token layer (`code/docs/DESIGN-TOKENS.md`) and resolves in the token CSS → **run

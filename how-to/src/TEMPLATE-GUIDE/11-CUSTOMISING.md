@@ -72,12 +72,12 @@ documentation. Adding scripts is cheap; renaming is not.
 
 ### CI workflows
 
-A web-only project ships 32 workflows, 22 of them path-filtered (24 carry a filter in the
+A web-only project ships 34 workflows, 24 of them path-filtered (26 carry a filter in the
 template; two of those are among the three excluded). If you move source out of the
 paths they watch, they silently stop running — and a job that never runs is indistinguishable
 from one that passes. Check `.github/workflows/*.yml` `paths:` after any structural move.
 
-Three of the template's 35 do not reach your project: `audit-template.yml` is template-integrity
+Three of the template's 37 do not reach your project: `audit-template.yml` is template-integrity
 only, and `syntax-rust.yml` and `audit-style-check.yml` travel with the surfaces they test. A
 workflow shipped without the script it runs is a permanently-red job, which a generated baseline
 must never carry.

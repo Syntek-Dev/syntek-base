@@ -23,9 +23,9 @@ plans that gate a feature into code, and the post-implementation records, plus t
   ADR, or plan — opens with a grilling pass (the owning skill loads
   `.claude/skills/grill-with-docs`) before the artefact is
   produced; only trivial/mechanical work skips it (`.claude/CLAUDE.md` Section 10).
-- **Model:** Fable for substantive artefacts (stories, ADRs, sprint & story plans,
-  GDPR/security/QA reports); Opus for mechanical touches — status flips, version-header
-  bumps, moving a file, doc-index lookups.
+- **Model:** Opus throughout — stories, ADRs, sprint & story plans and GDPR/security/QA
+  reports are substantive judgement; status flips, version-header bumps, moving a file and
+  doc-index lookups are mechanical touches.
 - **Concrete steps:** read the workflow `STEPS.md` → write the artefact under the
   matching numbered `src/NN-…/` folder using its naming pattern → cross-link the story
   (`US###`) → satisfy the workflow `CHECKLIST.md`. Version bumps go through
@@ -46,15 +46,35 @@ plans that gate a feature into code, and the post-implementation records, plus t
   `CONTEXT.md`/`CLAUDE.md`); split oversized files, entry point becomes a thin index.
   Root-level artefacts under `src/` are exempt from the 300-line rule.
 - **Every new directory in any layer needs a `CONTEXT.md` + `CLAUDE.md`.**
+- **`src/*/archive/` is frozen, and every lookup is by ID across the folder and its
+  `archive/`.** Only `src/00-ASSETS/scripts/pm-archive.sh` writes an archive;
+  `pm-board.sh --check` fails on any other change there (`src/CLAUDE.md` carries the rule in full).
 - Single-track semver: bump only via `docs/VERSIONING-GUIDE.md` / the `version` skill.
 
 ## Output & naming
 
 - **Hand-written:** all artefacts under `src/`, the `docs/` guides, and workflow
   `STEPS.md`/`CHECKLIST.md`.
-- **Generated:** PDFs and zip archives under `export/` (client delivery) — never
-  hand-edit; regenerate from source.
+- **Generated:** PDFs and zip archives under `export/` (client delivery), and the five
+  `src/*/*-BOARD.md` boards (committed; their `.json` / `.html` siblings gitignored) written by
+  `src/00-ASSETS/scripts/pm-board.sh --write` — never hand-edit; regenerate from source.
 - Numbered `src/` folders `NN-SCREAMING-SNAKE-CASE/`; artefacts follow their fixed
   patterns — `US###.md`, `SPRINT-##.md`, `ADR-US###-<DECISION>-DD-MM-YYYY.md`, `##-SPRINT-PLAN-##.md`,
-  `STORY-PLAN-US###-*.md`, `<TYPE>-PLAN-US###-*.md` / `<TYPE>-IMPL-US###-*.md`,
-  `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`; dates DD/MM/YYYY.
+  `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, `<TYPE>-PLAN-US###-*.md` /
+  `<TYPE>-IMPL-US###-*.md`, `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`; dates DD/MM/YYYY.
+- **The two plan prefixes read as one convention and are governed by opposite rules.** A
+  sprint plan carries **two** numbers — `<exec-order>-SPRINT-PLAN-<sprint-number>.md` — and a
+  mismatch between build sequence and sprint identity is deliberate information, never
+  "corrected" (`src/16-SPRINT-PLANS/CLAUDE.md`). A story plan carries **one**: the prefix is the
+  story's position in the settled build order across the **whole backlog** — not its sprint, not
+  a per-sprint counter — and is **renumbered whenever build order changes**, so a prefix that has
+  drifted there is a defect (`src/17-STORY-PLANS/CLAUDE.md`, which owns the rule). `00-` is the
+  template in both folders.
+
+<!-- RENAMED 08/09/2026. The _Output & naming_ pattern for a story plan gained its
+     `<exec-order>-` prefix, and the guardrail stating the contrast with the sprint-plan rule
+     was added beside it. The previous pattern read "STORY-PLAN-US###-*.md", unprefixed. This
+     list is the PM layer's authoritative naming table (`.claude/CLAUDE.md` Section 5); the
+     per-folder `CLAUDE.md` files under `src/16-SPRINT-PLANS/` and `src/17-STORY-PLANS/` own the
+     two rules in full, and this states only enough of each to stop a reader carrying one across
+     into the other. -->

@@ -66,8 +66,8 @@ checklist reads the flag rather than demanding this gate's artefact unconditiona
 | `code/workflows/04-api-design/` | Code-layer counterpart — expresses this contract as Ninja routers, Schemas, and endpoints; entered **from** `20-api-code`, never directly from here |
 | `23-pr-and-review`              | Review gate — API doc checked against implementation                                                                                                |
 
-**Layer split:** this workflow decides the contract (Fable); `code/workflows/04-api-design/`
-decides how that contract is expressed in Django Ninja code (Opus). Design here, build there.
+**Layer split:** this workflow decides the contract; `code/workflows/04-api-design/`
+decides how that contract is expressed in Django Ninja code. Design here, build there.
 
 ## Cross-references
 

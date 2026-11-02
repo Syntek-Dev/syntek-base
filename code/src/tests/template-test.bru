@@ -19,10 +19,21 @@ meta {
   ## type:  Always "http".
   ## seq:   Execution order within this folder (1, 2, 3...).
   ##        Folders run alphabetically, requests by seq within the folder.
+  ## tags:  The US### story this request belongs to — the Bruno half of the story marker
+  ##        pytest spells @pytest.mark.story("US###"). It is NOT a run filter: the whole
+  ##        collection still runs in one pass, and code/src/scripts/tests/test-record.sh
+  ##        reads the tag from THIS FILE to decide which story's test record the request
+  ##        belongs in. Leave it off and the request is silently absent from every record
+  ##        rather than failing — code/src/scripts/audits/story-markers.sh lists what has
+  ##        no tag. More than one story may be listed where more than one genuinely
+  ##        exercises this request. Rule: code/docs/testing/API-TESTING.md.
   ##
   name: <Your Test Name Here>
   type: http
   seq: 1
+  tags: [
+    US000
+  ]
 }
 
 ##

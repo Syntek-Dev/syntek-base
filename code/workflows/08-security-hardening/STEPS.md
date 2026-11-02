@@ -34,6 +34,12 @@ security [scope to review]
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** opus · **MCP:** code-review-graph
 
+> **CMS-only.** Skip if `code/docs/WAGTAIL.md` does not exist — the project has no CMS.
+> Two extra surfaces are in scope: Wagtail's own login, which reaches the same session as the
+> project's, and the editor upload path, whose validation is weaker than this project requires.
+> Both are covered by `code/docs/wagtail/ADMIN-AND-PERMISSIONS.md` and
+> `code/docs/wagtail/IMAGES-AND-MEDIA.md`.
+
 ### Step 2 — Address Findings
 
 Address all `security` findings in severity order (critical first).

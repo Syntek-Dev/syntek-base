@@ -19,9 +19,9 @@ maintained by the `scale-planning` skill via `/scale-planning`.
   `how-to/src/SCALE-ARCHITECTURE/`). Edge-security rows → `security` skill input;
   observability rows → `logging`; compute rows → `cicd`.
   Every substantial change opens with a grilling pass (`.claude/CLAUDE.md` Section 10).
-- **Model:** Fable for reshaping the contract or the buffer policy (it is a sizing /
-  architecture judgement); Opus for mechanical touches — status flips on a
-  requirement row, citation fixes, re-verifying a `file:line` reference.
+- **Model:** Opus throughout — for reshaping the contract or the buffer policy as much as
+  for a status flip on a requirement row, a citation fix or a re-verified `file:line`
+  reference.
 - **Concrete steps:** re-verify each claim against the LIVE codebase (the cited
   `file:line`) and the live deploy repo before editing → update the requirement's
   _Current status_ when either side moves (a `GAPS.md` gap closes, a NixOS module

@@ -1,6 +1,8 @@
 # .claude
 
-Claude Code configuration for the <%PROJECT_NAME%> project.
+Claude Code configuration for the <%PROJECT_NAME%> project. The shared entry layer is
+`../.ai/`; the existing manual, skills and memory remain maintained here and are exposed
+through aliases for other coding tools.
 
 ## Directory Tree
 

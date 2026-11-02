@@ -15,12 +15,12 @@ each tied to a user story.
 ## How to work here
 
 - **Routing:** produced by `project-management/workflows/10-security-checks/` using the
-  `security` skill (Fable). Every finding originates in a sibling category — an audit
+  `security` skill. Every finding originates in a sibling category — an audit
   under `../AUDITS/` or a threat model under `../THREAT-MODEL/`. Standards:
   `project-management/docs/SECURITY-GUIDE.md`.
-- **Model:** Fable for the finding and the closure write-up (severity, framework
-  mapping, controls, verification are substantive judgement); Opus only for a status
-  flip or a filename/date touch-up.
+- **Model:** Opus throughout — the finding and the closure write-up are substantive
+  judgement (severity, framework mapping, controls, verification); a status flip or a
+  filename/date touch-up is a mechanical touch.
 - **Concrete steps:** copy `PLANNING/VULN-PLAN-US000-TEMPLATE.md` →
   `PLANNING/VULN-PLAN-US###-<DESCRIPTOR>.md`, fill every section (classification,
   description, affected code, safe PoC, controls) → ensure a remediation `US###` enters

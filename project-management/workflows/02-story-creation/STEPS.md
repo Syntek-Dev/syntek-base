@@ -2,7 +2,7 @@
 workflow: 02-story-creation
 phase: design
 skills: [story, global-workflow]
-model: fable
+model: opus
 ---
 
 # User Story Creation — Steps
@@ -31,7 +31,8 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 Stories are cut from the resolved `MAP-<FEATURE>.md` (`src/01-FEATURE-MAPS/`), not invented from
 a conversation — `project-management/docs/planning/STORIES.md`. Open the map and take this
-story's **Slices** row: its title and its **flag manifest**.
+story's **Slices** row: its title, its **flag manifest** and its **Carries** cell — the fog items
+whose trigger is this cut (`.claude/skills/wayfinder/SKILL.md` → _Fog of war_).
 
 Two things must be true before drafting:
 
@@ -39,6 +40,8 @@ Two things must be true before drafting:
   open node encodes a guess in its acceptance criteria.
 - The slice has a flag manifest. If it does not, the map is unfinished — go back to
   `01-feature-map/` Step 8a rather than inventing one here.
+
+Carried fog does **not** gate the cut — a slice depends on nodes only. It is input to Step 1.
 
 _Done when the slice row and its flags are in view._
 
@@ -48,7 +51,7 @@ _Done when the slice row and its flags are in view._
 story [describe the feature and user role]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `story` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `story` · **Model:** opus · **MCP:** none
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — the specific user role, the measurable benefit,
@@ -56,9 +59,17 @@ the success signal, constraints and dependencies, priority, and at least one edg
 case — before drafting. Always grill when the feature touches personal data, permissions,
 or money. Record the resolved behaviour straight into the story's Gherkin acceptance criteria.
 
+**Every carried fog item lands in the story** — as an acceptance criterion where the grilling
+settled it, otherwise as an **Open question** — citing its ID (`MAP-<FEATURE> F-01`). None is
+dropped and none is left behind on the map as the only copy.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the slice row's `Nodes` and `Acceptance`, the map's `## Resolved decisions`, `## Register claimed`
+and `## Session log`, and `GAPS.md` / `DEFERRED.md`.
+
 ### Step 1a — Fill the FLAGS table
 
-> **Model:** fable
+> **Model:** opus
 
 Transcribe the slice's manifest into the story's 13-row FLAGS table, one row per gate, filling
 `N/A` for every gate this story does not need. **The flag is that gate's entry condition** — a
@@ -68,7 +79,7 @@ The manifest is a first pass, not the design: the gate owns the design, may add 
 the story is updated to match when the gate closes. Sharpen a value here only where the grilling
 in Step 1 settled it.
 
-_Done when all 13 rows carry a value or a deliberate `N/A`._
+_Done when all 13 gate rows carry a value or a deliberate `N/A` (the optional `Customer review` row is the 14th)._
 
 ### Step 2 — Review and Edit
 
@@ -79,21 +90,38 @@ Review the generated story for:
 - Clear "As a [role], I want [goal], so that [benefit]" format
 - Specific, testable acceptance criteria
 - No ambiguity in scope
-- `**Status:**` header set to a valid ClickUp status — a new story starts as `Open`
-  (see `project-management/docs/PLANNING-GUIDE.md` → Story Statuses for the full set)
+- `**Status:** Open` — every new story starts there (the lifecycle:
+  `project-management/docs/planning/STORIES.md` → _Story statuses_; vocabulary owner:
+  `.claude/skills/completion/SKILL.md`)
+- An empty `## Status history` table, as the template ships it
+- The FLAGS `Customer review` row left as the template documents it — absent or `Yes` means
+  customer review applies; `N/A` only for a story no customer will review
 
 ### Step 3 — Assign Story Number
 
-Check `project-management/src/02-STORIES/` for the next available number.
-Name the file `US###.md`.
+Check `project-management/src/02-STORIES/` **and** its `archive/` for the next available number —
+an archived story keeps its number. Name the file `US###.md`.
 
 ### Step 4 — Save, and back-fill the map
 
 Save to `project-management/src/02-STORIES/US###.md`.
 
 Then write the allocated `US###` into the map's **Slices** row `Story` column, so the map reads
-as a progress view of what has been cut. This is the one edit `02-story-creation` makes to a
-wayfinder artefact; it does not touch the frontier or the resolved decisions.
+as a progress view of what has been cut. That, and the two-map removal below, are the only edits
+`02-story-creation` makes to a wayfinder artefact; it does not touch the frontier or the resolved
+decisions.
+
+**Check every carried item arrived.** Each `F-NN` in the row's Carries cell must appear in the
+story as an acceptance criterion or Open question — a missing one is a cut that lost scope. **A
+two-map item** (`F-03 (…) ↔ MAP-OTHER S-02`) is carried by whichever cut comes first: in the same
+change, delete it from the other map's Carries cell (`—` if that empties it). This cut's own cell
+stays as written — it is the provenance record.
+
+**A register entry the story carries leaves the register now** (`.claude/CLAUDE.md` Section 9).
+One its map claimed is gone already (`01-feature-map` Step 2). Any other `GAPS.md` entry or
+`DEFERRED.md` row this story takes on is written into its scope, acceptance criteria or a
+provenance comment citing it (register, date, title), then removed in the same change. An entry
+the story only mentions, without carrying, is not taken on and stays.
 
 ### Step 5 — Commit
 

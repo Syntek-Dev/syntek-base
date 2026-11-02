@@ -2,7 +2,7 @@
 workflow: 16-sprint-plans
 phase: design
 skills: [sprint, global-workflow]
-model: fable
+model: opus
 ---
 
 # Sprint Plans — Checklist
@@ -16,6 +16,8 @@ model: fable
 
 ## Execution Checklist
 
+- [ ] Step 0 drew its round from the recorded answers
+      (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_)
 - [ ] GDPR review complete and documented for every in-scope story whose `GDPR` flag is not `N/A`
 - [ ] Security checks complete with no unresolved HIGH/CRITICAL findings
 - [ ] QA documents exist for every in-scope story whose `QA` flag is not `N/A`
@@ -26,10 +28,12 @@ model: fable
 - [ ] All in-scope stories have complete acceptance criteria
 - [ ] Stories selected and prioritised using MoSCoW
 - [ ] Each story mapped to its development phases (backend / API / frontend)
-- [ ] Sprint plan document created: `SPRINT-PLAN-##.md` in `project-management/src/16-SPRINT-PLANS/`
+- [ ] Sprint plan document created: `<exec-order>-SPRINT-PLAN-<sprint-number>.md` in
+      `project-management/src/16-SPRINT-PLANS/`, both segments 2-digit zero-padded
 - [ ] Sprint goal is clearly stated in one sentence
 - [ ] Phase breakdown defines which stories are addressed in each phase
 - [ ] Definition of Done recorded in the sprint plan
+- [ ] No status line or status cell in the plan (the board mirrors the sprint); board regenerated (`pm-board.sh --write`)
 
 ---
 
@@ -44,6 +48,6 @@ model: fable
 
 ## Definition of Done
 
-- [ ] `SPRINT-PLAN-##.md` committed and pushed
+- [ ] `<exec-order>-SPRINT-PLAN-<sprint-number>.md` committed and pushed
 - [ ] All developers have reviewed the plan
 - [ ] Ready to proceed to `workflows/17-story-plans`

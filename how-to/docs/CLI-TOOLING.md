@@ -230,6 +230,7 @@ bash code/src/scripts/syntax/lint.sh --file-type markdown
 bash code/src/scripts/syntax/lint.sh --file-type javascript
 bash code/src/scripts/syntax/format.sh --file-type css
 bash code/src/scripts/audits/css-tokens.sh
+bash project-management/src/00-ASSETS/scripts/pm-board.sh --check
 ```
 
 **On a project with the mobile or Rust surface, prefer the unscoped pair** — it adds
@@ -245,6 +246,20 @@ To run the full suite (backend + API) in one go:
 
 ```bash
 bash code/src/scripts/tests/all.sh --api
+```
+
+---
+
+## Project-Management Boards
+
+The PM status boards (`01`, `02`, `03`, `16`, `17`) are kept by two host scripts; statuses are
+owned by `.claude/skills/completion/SKILL.md`.
+
+```bash
+bash project-management/src/00-ASSETS/scripts/pm-board.sh --write  # regenerate (pre-commit: --staged)
+git add <paths> $(bash project-management/src/00-ASSETS/scripts/pm-board.sh --boards-for <paths>)  # stage with its boards
+bash project-management/src/00-ASSETS/scripts/pm-board.sh --warn   # work ready to move on; exits 0
+bash project-management/src/00-ASSETS/scripts/pm-archive.sh US###  # close + archive with its plan
 ```
 
 ---

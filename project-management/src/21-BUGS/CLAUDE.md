@@ -25,8 +25,9 @@ verification, cross-linked to the `US###` it belongs to.
   (or the story-less fallback for a cross-cutting defect) → fill metadata, summary,
   environment, numbered repro, Expected vs Actual, root cause, and the fix → **write the
   regression test first and watch it fail before the fix** (TDD, per `10-debug`) → link the
-  story (`../02-STORIES/US###.md`) and its plan (`../17-STORY-PLANS/STORY-PLAN-US###-*.md`) →
-  verify with `bash code/src/scripts/tests/all.sh`.
+  story (`../02-STORIES/US###.md`) and its plan
+  (`../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md`) → verify with
+  `bash code/src/scripts/tests/all.sh`.
 - **Definition of done:** report named to convention with a real `DD/MM/YYYY` discovery date,
   reproducible steps, a severity, a named target story, and a regression test seen to fail
   then pass; the full suite green; British English throughout.
@@ -54,3 +55,11 @@ verification, cross-linked to the `US###` it belongs to.
 - Filename `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md` (story-anchored, primary) or
   `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` (cross-cutting fallback); descriptor in
   `SCREAMING-KEBAB-CASE`; stories `US###`; dates DD/MM/YYYY.
+
+<!-- UPDATED 08/09/2026. The story-plan citation in _Concrete steps_ gained the `<exec-order>-`
+     build-order prefix; it read "STORY-PLAN-US###-*.md" before.
+     `code/src/scripts/audits/doc-references.sh` reads backticked tokens even inside a comment, so
+     the superseded name is quoted in double quotes and never in backticks. The prefix is the
+     story's position in the settled build order across the whole backlog and is renumbered when
+     that order changes — the opposite of the sprint-plan rule, where a mismatch between prefix and
+     suffix is deliberate. Owner: `../17-STORY-PLANS/CLAUDE.md`. -->

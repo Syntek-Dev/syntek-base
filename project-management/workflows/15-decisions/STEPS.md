@@ -2,7 +2,7 @@
 workflow: 15-decisions
 phase: design
 skills: [planner, codebase-design]
-model: fable
+model: opus
 ---
 
 # Decisions (ADRs) — Steps
@@ -67,6 +67,10 @@ what happens if we do nothing, and who owns the call. Not every choice needs an 
 it for a decision hard to reverse, or that a later decision would need to explicitly
 supersede. A call the implementer should just make does not belong here — say so and move on.
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story's own `## Decisions` candidates, the `04`–`14` plans written for it, and its feature
+map's settled nodes and umbrella ADRs.
+
 ### Step 5 — Copy the template for each record this gate writes
 
 Copy `src/15-DECISIONS/ADR-US000-TEMPLATE.md` to
@@ -85,7 +89,7 @@ the trade-off.
 
 ### Step 7 — Document the options considered
 
-> **Model:** opus (drafting the option summaries once the trade-offs are settled)
+> **Model:** opus
 
 For each realistic option — including "do nothing" where relevant — write a Summary,
 Pros, and Cons. Consult `.claude/skills/codebase-design/SKILL.md` to reason about each
@@ -100,7 +104,7 @@ planner [state the decision under discussion, the driving US### or spec, and the
 options already gathered from Steps 4–5]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:** none
 
 ### Step 9 — Write the Decision section
 

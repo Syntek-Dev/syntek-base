@@ -1,4 +1,4 @@
-# Workflow 21 — Implementation Documentation
+# Workflow 22 — Implementation Documentation
 
 **Last Updated**: <%DATE%>
 
@@ -30,7 +30,12 @@ and carries three responsibilities:
 2. **PM implementation records.** Write the IMPLEMENTATION-side record for each
    design/compliance spec that applied to the story — GDPR, security, QA, SEO, API — one
    per story, copied from its `US000-TEMPLATE.md` and closing the matching `PLANNING/`
-   artefact with evidence of what was actually built and any deviation.
+   artefact with evidence of what was actually built and any deviation. **The two
+   `src/18-TESTS/` records are part of this responsibility**, and are the one pair with no
+   `PLANNING/` side to close. This workflow **writes** `AUTOMATED/US###-TEST-STATUS.md`, half of
+   it generated from the suites' own report artefacts, and **walks**
+   `MANUAL/US###-MANUAL-TESTING.md` — the guide `17-story-plans` authored from the specs before
+   any code — marking every row step by step, by a tester or by Claude Chrome.
 3. **Findings.** Write one `FINDING-US###-*.md` into `src/20-FINDINGS/` recording what
    shipping the story revealed about the project's standards — each divergence with its
    smallest fix, its retrofit cost, and a disposition. Findings are **recorded, never fixed
@@ -38,7 +43,8 @@ and carries three responsibilities:
 
 > **This workflow absorbs the implementation-record duty that used to live in
 > `23-pr-and-review`.** `23-pr-and-review` now only **verifies** these records exist and
-> are complete — it does not write them.
+> are complete — it does not write them. That includes the automated test record and the walk of
+> the manual testing guide; the guide itself is authored earlier, at `17-story-plans`.
 
 ## When to run
 
@@ -49,6 +55,8 @@ and carries three responsibilities:
 ## Inputs
 
 - The user story (`src/02-STORIES/US###.md`) and its story plan (`src/17-STORY-PLANS/`).
+- The story's manual testing guide (`src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`), authored at
+  `17-story-plans` and given its `Flow` column at `18-consolidate-design-work`.
 - Every applicable `PLANNING/` artefact for the story: GDPR plan, security plans
   (threat model / assessment / audit / vulnerability), QA plan, SEO plan, API contract.
 - The shipped code diff for the story, and the `CONTEXT.md`/`CLAUDE.md` pairs in each
@@ -58,6 +66,9 @@ and carries three responsibilities:
 
 - One IMPLEMENTATION record per applicable spec, filed under its `.../IMPLEMENTATION/`
   folder and cross-linked to the story `US###`.
+- `src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md`, written for every story whatever the suites
+  returned, and `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` walked — every row marked, any
+  deliberate departure amended with its trail and recorded as a finding.
 - One findings record in `src/20-FINDINGS/`, written whether or not anything was found.
 - Updated `CONTEXT.md`/`CLAUDE.md` (trees, `Last Updated` dates, new constraints) across
   every touched layer.
@@ -81,7 +92,7 @@ and carries three responsibilities:
 - **Upstream:** `19-backend-code`, `20-api-code`, `21-frontend-code` — the code this
   workflow documents and records.
 - **Context:** `15-decisions`, `16-sprint-plans`, `17-story-plans` — the decisions and
-  plans whose implementation is recorded here.
+  plans whose implementation is recorded here, and the manual testing guide walked here.
 - **Downstream:** `23-pr-and-review` — now only verifies these records; `24-release`.
 
 ## Cross-references
@@ -100,6 +111,10 @@ and carries three responsibilities:
 - `project-management/src/11-QA/IMPLEMENTATION/` — `QA-IMPL-US000-TEMPLATE.md`
 - `project-management/src/12-SEO/IMPLEMENTATION/` — `SEO-IMPL-US000-TEMPLATE.md`
 - `project-management/src/13-API-DESIGN/IMPLEMENTATION/` — `API-IMPL-US000-TEMPLATE.md`
+- `project-management/src/18-TESTS/` — its `CLAUDE.md` owns the record lifecycle and the
+  three-record boundary; `AUTOMATED/` holds `US000-TEST-STATUS.md` and its `CLAUDE.md` the
+  generated-block rule; `MANUAL/` holds `US000-MANUAL-TESTING.md` and its `CLAUDE.md` the walk,
+  the amendment trail and the browser-tool contract
 - `project-management/src/20-FINDINGS/` — `FINDING-US000-TEMPLATE.md`; one record per story
 - `code/docs/DATABASE.md` — the data-layer rules findings are assessed against
 - `project-management/src/21-BUGS/` · `src/22-REFACTORING/` · `src/15-DECISIONS/` — where a

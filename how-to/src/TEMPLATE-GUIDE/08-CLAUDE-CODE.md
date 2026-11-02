@@ -65,19 +65,19 @@ work writes nothing.
 
 ## Models
 
-Two tiers only. `sonnet` and `haiku` are never used.
+One tier only. `sonnet` and `haiku` are never used.
 
-| Alias   | For                                                                                         |
-| ------- | ------------------------------------------------------------------------------------------- |
-| `fable` | Planning, specification, design — architecture, schema, user flows, stories, sprints, plans |
-| `opus`  | Everything else — code, tests, migrations, review, PR, release, docs, mechanical touches    |
+| Alias  | For                                                                                                                  |
+| ------ | -------------------------------------------------------------------------------------------------------------------- |
+| `opus` | **Everything** — planning, specification and design as well as code, tests, migrations, review, PR, release and docs |
 
-Sessions run on Opus. Skills and workflows route by tier through their `model:` frontmatter.
+Sessions run on Opus at `effortLevel: xhigh`. Every skill, workflow and docs-guide still declares
+`model:` in its frontmatter — the value is uniform, and the key stays because it is the carrier
+any future tier split would use.
 
-> **Plan requirement.** The Fable tier means this is designed for **Claude Max 20× or above, or
-> the Anthropic API**. On a smaller plan, retarget the design skills (`planner`,
-> `scale-planning`, `sprint`, `story`) to `opus` in their frontmatter — everything still works,
-> you just lose the tier separation.
+> **Plan requirement.** Opus at extra-high effort means this is designed for **Claude Max 20× or
+> above, or the Anthropic API**. On a smaller plan everything still works, but expect to hit
+> usage limits during a long implementation or review pass.
 >
 > **On another provider?** Only the model routing is Claude-specific. Swap the aliases in
 > `.claude/CLAUDE.md` Section 4, each skill's `model:` frontmatter, and the `model:` lines in `docs/` and
@@ -239,16 +239,27 @@ through `code/src/scripts/`.
 
 ## MCP servers
 
-| Server              | Use                                                        | How you get it       |
-| ------------------- | ---------------------------------------------------------- | -------------------- |
-| `code-review-graph` | Structural context and impact analysis — cheaper than Grep | `.mcp.json`          |
-| `context7`          | Current library and framework documentation                | `.mcp.json`          |
-| `mcp-mermaid`       | Architecture and flow diagrams                             | `.mcp.json`          |
-| `claude-in-chrome`  | Rendered UI inspection and browser automation              | the Chrome extension |
+| Server              | Use                                                                   | How you get it                |
+| ------------------- | --------------------------------------------------------------------- | ----------------------------- |
+| `code-review-graph` | Structural context and impact analysis — cheaper than Grep            | `.mcp.json`                   |
+| `context7`          | Current library and framework documentation                           | `.mcp.json`                   |
+| `mcp-mermaid`       | Architecture and flow diagrams                                        | `.mcp.json`                   |
+| `perplexity`        | Cited web answers — the lookup tier between `context7` and web search | `.mcp.json` + an optional key |
+| `scrapling`         | Reading a primary source — the page's own markdown                    | `.mcp.json`                   |
+| `claude-in-chrome`  | Rendered UI inspection and browser automation                         | the Chrome extension          |
 
-The first three are **repo-scoped** — `.mcp.json` ships with the project, so anyone who clones it
+The first five are **repo-scoped** — `.mcp.json` ships with the project, so anyone who clones it
 gets them, launched on demand through `uvx` and `npx`. The last one is yours to install; nothing
 in the repository supplies it.
+
+**`perplexity` alone fails to start without its key.** It reads `PERPLEXITY_API_KEY` from the
+environment, as `context7` reads `CONTEXT7_API_KEY`; the key is optional, and Claude Code asks before
+enabling a project's servers either way. How its answers may be used is `.claude/CLAUDE.md` Section
+3.2.
+
+**Codex gets the same five from `.codex/config.toml`.** The two files are hand-maintained, neither
+host reads the other's, and `code/src/scripts/audits/mcp-parity.sh` is the only thing holding them
+to the same server set, commands and arguments — so add a server to both or to neither.
 
 **The graph and the layered docs are two views of the same codebase** — machine-derived structure
 and human-curated orientation. Explore with both, and refresh the graph whenever you revise the

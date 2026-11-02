@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 31/08/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 01/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -18,10 +18,9 @@ template repository, not any project generated from it.
 **Read at the discovery gate.** `project-management/workflows/01-feature-map/` reads this file
 and `DEFERRED.md` before charting a feature — to **suggest** candidate features from what has
 accumulated, and to triage every open entry against the feature being charted (closes / blocks /
-unrelated). An entry a feature will close is **claimed** on its `MAP-<FEATURE>.md`; the
-`✅ CLOSED` mark itself is only applied by `workflows/22-implementation-documentation/`, against
-shipped code. **Standing limitations are exempt from that triage** — they are accepted
-properties, not open entries, and can take none of the three verdicts.
+unrelated). **An entry a map claims, or a story is cut carrying, leaves this file in that change**
+(rule: `.claude/CLAUDE.md` Section 9). **Standing limitations are exempt from that triage** — they
+are accepted properties, not open entries, and can take none of the three verdicts.
 
 ---
 
@@ -221,14 +220,18 @@ in a **generated project** — so the template was shipping them:
   `addopts`, and `pytest-xdist` is not a declared dependency.
 - **The dev stack and every generated project both claim `10.0.1.0/24`**, so they cannot run
   concurrently on one host. Only the base pair collides; worktrees offset by story number.
-- **`pnpm-update.sh`'s header** claims files it no longer updates.
+- **Added 15/10/2026, found by the mutation-testing research.** `code/docs/testing/TAXONOMY.md:189`
+  also advertises `backend.sh -n auto`. The Testcontainers lines (`BACKEND-TESTING.md:114-115`,
+  `TAXONOMY.md:22`) contradict `BACKEND-TESTING.md:84-85`, which puts integration tests on the
+  Compose-managed `postgres:18-alpine` test database.
 
 ---
 
 ## Format
 
 New items are recorded here first, in the format below, then charted onto a feature map at the
-next pass. The blank seed at `.copier/GAPS.md` carries the same format, so an entry reads
+next pass — and removed from here in the change that charts them. The blank seed at
+`.copier/GAPS.md` carries the same format, so an entry reads
 identically in a generated project:
 
 ```text
@@ -331,3 +334,270 @@ choosing a relay is a real decision, not a doc repair.
 declared-not-wired, so this lands with the notification surface rather than ahead of it —
 but the silent fall-through is a defect in its own right and should not wait for a
 notification feature to be scheduled.
+
+---
+
+## 09/09/2026 — the staging/production security-settings block ships twice and has already drifted
+
+**Type:** Active gap
+**Summary:** The fenced Python block under `code/docs/security/AUTH-AND-AUTHZ.md`'s _Django
+Security Settings (staging and production)_ heading and the one under
+`code/docs/security/OWASP-AND-CHECKLIST.md`'s _Django Stack_ heading, led in by "Security
+settings that must be enabled in staging and production", carry the same settings. Measured
+09/09/2026: a `diff` of the two settings bodies — OWASP's `# settings/production.py` first line
+excluded — returns exactly one hunk,
+`8a9 > SECURE_BROWSER_XSS_FILTER = True`, so the eight shared settings are byte-identical and in
+identical order — and the copies already differ in two respects, the ninth setting
+`SECURE_BROWSER_XSS_FILTER`, last in the OWASP fence, and the `# settings/production.py` comment
+on that fence's first line, neither of which the `AUTH-AND-AUTHZ.md` copy carries. Line anchors
+are deliberately omitted here: US008 edits both fences and both settings modules below, and an
+anchor into a file the same story edits goes stale on landing. The ninth is dead: the Django 6.1 that `uv.lock` pins and `.venv` holds declares twelve
+`SECURE_*` names in its `global_settings.py` and `SECURE_BROWSER_XSS_FILTER` is not among them,
+with zero hits across its `conf` and `middleware` packages, so the OWASP copy ships a line
+Django no longer reads. Nor does either copy describe what runs:
+`code/src/django/config/settings/production.py` assigns six of the shared eight —
+`X_FRAME_OPTIONS` and `SECURE_CONTENT_TYPE_NOSNIFF` are not assigned there, though both hold as
+Django's defaults — plus `SECURE_PROXY_SSL_HEADER`, which neither guide lists; and
+`code/src/django/config/settings/staging.py` is further off again, assigning only three of the
+eight (`SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE`, `CSRF_COOKIE_SECURE`) and no HSTS setting
+at all, while both fences are headed _staging and production_. Class **D**, split doctrine — one
+rule, two homes, neither routing to the other. US008 (the cookie doctrine,
+`project-management/src/01-FEATURE-MAPS/MAP-SUBDOMAIN-ROUTING.md` <!-- doc-references: template-only --> S-02)
+adds `CSRF_COOKIE_HTTPONLY = True` beside `CSRF_COOKIE_SECURE` in **both** blocks rather than
+collapsing them: a story landing the cookie doctrine is not the change in which two security
+guides swap ownership of a block, so the paste keeps the copies in step and this row holds the
+collapse.
+**Blocked by / Action:** Nothing blocks it. One block becomes canonical and the other routes to
+it in a sentence; `SECURE_BROWSER_XSS_FILTER` goes; the survivor is reconciled with **both**
+`code/src/django/config/settings/production.py` and `staging.py`, which are what actually run,
+and says which of its lines are Django defaults rather than assignments and which hold in only
+one of the two environments. Retire when `SECURE_SSL_REDIRECT` appears in exactly one guide
+under `code/docs/security/`.
+
+---
+
+## 17/09/2026 — `MAP-UPSTREAM-TRACKING.md` asserts things about itself that its own table refutes
+
+<!-- Retitled 01/11/2026. Filed 17/09/2026 as "three feature maps assert things about themselves
+     that their own tables refute"; items 1-2 (MAP-RULE-OWNERSHIP) were repaired at US013's cut on
+     31/10/2026 and left this entry, so only the MAP-UPSTREAM-TRACKING item remains. -->
+
+**Type:** Active gap
+**Summary:** Map prose was not re-measured when the slice tables beneath it changed, and the prose
+then stated something falsifiable by the same file:
+`MAP-UPSTREAM-TRACKING.md:541` reads "**This is a template-development map, so there are no
+stories to cut.**" It carries four slice rows, `US002.md:112` names its `S-01` among the slices it
+unblocks, and four other template-development maps have already produced `US001`, `US004`, `US006`
+and `US008`. Its `:544` also says "the remaining open nodes refine them without gating them" while
+`:6` records zero open nodes. Surfaced 17/09/2026 during `02-story-creation`'s Step 0 sweep across
+all thirteen maps.
+**Blocked by / Action:** Nothing blocks it, and none of it is a node — this is prose maintenance,
+not a decision. `MAP-UPSTREAM-TRACKING.md`'s next RESOLVE sitting should re-read its own Slices
+preamble against its table and either delete the claim or make it true. Retires when a re-measure
+pass has cleared it.
+
+---
+
+## 17/09/2026 — the backlog register is a set of hand-maintained copies with no gate behind it
+
+<!-- HEADING DE-NUMBERED 20/09/2026. It read "is **five** hand-maintained copies" from
+     17/09/2026 until that day, when SPRINT-06 and SPRINT-07 took the register to seven and the
+     count in the heading went stale — the exact defect the same change stripped out of seven sprint
+     records and `project-management/src/03-SPRINTS/CLAUDE.md`. De-numbered rather than re-numbered,
+     so the eighth record does not buy it a third time. The count lives in the register table.
+     `project-management/src/01-FEATURE-MAPS/MAP-INSTRUCTION-DELIVERY.md` quotes this title and is
+     left to the session that owns `01-FEATURE-MAPS/`. -->
+
+**Type:** Active gap
+**Summary:** Every `SPRINT-##.md` under `project-management/src/03-SPRINTS/` now carries the same
+backlog register — one row per live record, its members in build order, its capacity and its
+admission posture — and every copy is meant to be identical. <!-- 20/09/2026: read "and the five
+     copies" until the register reached seven. --> **Nothing checks that they are.** `code/src/scripts/audits/doctrine-drift.sh` is the audit built for exactly this defect
+class, "a rule restated in two guides is not redundancy, it is a fork", and it cannot see these
+tables on two independent counts: it reads **fenced code blocks only** by design ("Prose is free;
+examples are the contract"), and a markdown table in prose is not fenced; and its `SCAN_DIRS` is
+`code/docs`, `.claude/skills`, `code/workflows`, `project-management/workflows` and
+`how-to/workflows` — `project-management/src/` is not among them. No other audit reads a sprint
+record. So the day two copies disagree, every gate stays green and both are believed. The shape is
+the one `doctrine-drift.sh`'s own header describes: "every individual file was internally
+consistent and every citation resolved".
+**Blocked by / Action:** Nothing blocks it, and the cost was accepted knowingly —
+<%DEVELOPER_NAME%> settled the five-copy register at `03-sprint-planning` on 17/09/2026 (Q6 and
+Q11) over a single-canonical-table alternative, with the drift risk stated before the call. Two
+repairs are available and the second is the cheaper one to reach for first: (1) widen
+`doctrine-drift.sh` — add `project-management/src/` to `SCAN_DIRS` and teach it a prose-table
+mode, which is a change to the scanner's core assumption and should not be undertaken lightly;
+(2) a new single-purpose `code/src/scripts/audits/sprint-register.sh` that extracts the register
+from every `SPRINT-##.md` and fails when any two differ — no new doctrine, one comparison, and it
+needs nothing from the existing gate. The obligation to hand-update **every** copy is written in
+`project-management/src/03-SPRINTS/CLAUDE.md` and the rule in
+`project-management/docs/planning/SPRINTS.md`; both are instructions to a reader, not enforcement.
+
+<!-- 20/09/2026: this sentence read "The obligation to hand-update **all five**", which by that
+     date attributed to `project-management/src/03-SPRINTS/CLAUDE.md` a five-copy obligation the
+     same change had just deleted from it — that file now reads "Every live record carries the same
+     backlog register". A gap entry citing a claim its own change removed is the drift this entry
+     exists to catch, turned on itself. -->
+
+This entry retires when a gate fails on a divergent register, or when the register collapses to
+one canonical copy the other records cite.
+
+**It fired on 20/09/2026, three days after it was filed — and on an axis neither proposed repair
+can see.** `SPRINT-06` and `SPRINT-07` were opened at `03-sprint-planning`, which meant editing
+the register in every copy, and the `SPRINT-05` row was found stale in **all five**: it read
+"US009 (`Should`, 3, stretch)" and "11 / 11 — at capacity, closed" while
+`project-management/src/03-SPRINTS/SPRINT-05.md`'s own capacity line read **13 / 11 at the grace
+ceiling**. US009's re-estimate from 3 to 5 SP on 17/09/2026 moved that record's header, Story
+Summary and Total in the same change that first wrote the five-copy register, and never reached
+the register itself.
+
+**The five copies were byte-identical to one another throughout.** The divergence was
+register-versus-**record**, not copy-versus-copy — so proposed repair (2) above, "a new
+single-purpose `code/src/scripts/audits/sprint-register.sh` that extracts the register from every
+`SPRINT-##.md` and fails when any two differ", **would have stayed green through this**. It is
+still the cheaper repair and is still worth writing, but it is not sufficient on its own: whatever
+gate lands has to compare each row against the capacity line and Story Summary of the record it
+names, which is the harder half. Recorded here rather than only in the sprint records, because the
+proposal it qualifies lives in this entry.
+
+Repaired in the same change, along with a second finding of the same class in the same file: four
+further sites in `project-management/src/03-SPRINTS/SPRINT-05.md` carried the pre-re-estimate
+figures, and a fifth denied the existence of
+`project-management/src/16-SPRINT-PLANS/05-SPRINT-PLAN-05.md`, which had been written later the
+same day. **The register's prose also lost its hardcoded count of five**, which this change would
+have made seven; `project-management/docs/planning/SPRINTS.md`'s own rule was already count-free
+and the records had added a count it never had. The register now stands at **seven copies**, and
+the count lives only in the table.
+
+---
+
+## 16/10/2026 — the nightly sweep publishes advisory detail in a public issue that never closes
+
+**Type:** Active gap
+**Summary:** The tracking-issue step at `.github/workflows/audit-deps.yml:190-224` writes each
+failing night's audit output into one issue, creating it once and commenting on it after that. In
+syntek-base that is issue #14, open since 03/09/2026 with 41 comments, in a public repository
+(16/10/2026). No step closes it after a run passes (the file, `:190-230`, has none), so the green
+runs on 15/10/2026 and 16/10/2026 left it open. Its comments list vulnerable package names and version
+ranges. The template ships the same workflow, so a generated project whose repository is public
+publishes the same detail; once a surface is live, part of that detail (the runtime Python
+packages, and the prod image once an images leg reports here) describes what is deployed.
+`code/docs/security/MONITORING-AND-INCIDENT.md:88-89` says not to discuss a vulnerability in public
+channels, GitHub issues included, until it is resolved. The advisories themselves are public; what
+the issue adds is which of them this repository has not yet fixed. Found while charting
+`project-management/src/01-FEATURE-MAPS/MAP-PIN-DETECT-MOVE.md` (N-008, Sam's Q8), whose S-07 adds <!-- doc-references: template-only -->
+an images leg that reports into the same issue.
+**Blocked by / Action:** Nothing blocks it. Sam decides what the issue may carry (the full output,
+counts and a link to the run, or nothing, with a private advisory channel instead) and whether it
+closes when a run passes. A posture-dependent answer is a documented rule tied to
+`.claude/CLAUDE.md` Section 0, as N-008 chose for the scan, unless the decision is explicitly to
+make the workflow the first CI reader of the posture. The answer binds every leg of the nightly,
+not only images. Graduated from N-008 on `MAP-PIN-DETECT-MOVE.md`, which triages it as unrelated
+(it constrains S-07's issue section without blocking it) and names it in Out of scope; no map
+claims it yet. This entry retires when the workflow does what that decision says.
+
+---
+
+## 01/11/2026 — no django-component declares its rung, because none exists
+
+**Type:** Planned feature
+**Summary:** Fog item `F-06` on `MAP-PROGRESSIVE-ENHANCEMENT.md`, handed here on 01/11/2026
+because its trigger is an event, not a slice cut. The open question is whether a django-component
+carries a machine-checkable declaration of the progressive-enhancement rung it sits on, which
+the unbuilt "audits/progressive-enhancement.sh" can correlate, or whether placement is judged at review
+against `THE-LADDER.md` alone. Deciding now would be a decision made on nothing: at the map's
+re-measure (01/09/2026) the tree held one template (`500.html`), zero django-components, zero
+`hx-*` and zero `x-data`, and `code/src/django/templates/` still holds only `500.html`.
+**Blocked by / Action:** Waits on its trigger — **the first django-component ships**, in the first
+story running PM `21-frontend-code` that creates one. By then `THE-LADDER.md` (the map's `S-03`)
+names the rungs and the `S-04` gate exists to correlate against. That story's plan answers the
+question above. No map claims this entry, because a claim would remove it before the trigger
+fires; it retires when the answer is written.
+
+---
+
+## 01/11/2026 — which sections of a shipped guide a project owns is stated in prose, two ways
+
+**Type:** Active gap
+**Summary:** Fog item `F-05` on `MAP-RULE-OWNERSHIP.md`, handed here on 01/11/2026 because its
+trigger is an event, not a slice cut. `how-to/src/BRAND-VOICE.md:13` puts its portable core at
+"Sections 1, 2 and 4 to 7" and `:237` at "Section 1 … and Section 4"; both yield the
+same action and nothing measures which sections a project owns. A sweep on 01/09/2026 found
+exactly two guides stating such a split, both self-consistent (`code/docs/VISUAL-DESIGN.md` is
+the other), so there is no drift to fix yet.
+**Blocked by / Action:** Waits on its trigger — **a third guide states its own section split a
+third way**. The map proposed making the trigger checkable at the birth path: one line in
+`how-to/workflows/09-write-operator-guide/CHECKLIST.md` asking whether a guide shipping with
+fillable sections states which sections a project owns. That line does not exist yet (re-measured
+01/11/2026); adding it is the cheap first action. When the trigger fires, one owner states where a
+guide's section split lives. No map claims this entry.
+
+---
+
+## 01/11/2026 — the moderate six registers have no index, and only a measured trigger reopens that
+
+**Type:** Planned feature
+**Summary:** Fog item `F-03` on `MAP-REGISTER-INDEXES.md`, handed here on 01/11/2026 because its
+trigger is an event, not a slice cut. Q36 settled the index scope at the strong seven registers
+**now**, not permanently. The moderate six measured 01/09/2026: `04-DATABASE` 0, `05-USER-FLOW` 0,
+`09-GDPR` 6, `10-SECURITY` 0, `18-TESTS` 2, `22-REFACTORING` 0. `09-GDPR` is excluded outright,
+because Q35 rules its files register facts, not instances.
+**Blocked by / Action:** Waits on either arm of its trigger: (a) a moderate register other than
+`09-GDPR` reaches **ten** instances, counting a `.md` file that names a real `US###` and excluding
+`CONTEXT.md`, `CLAUDE.md`, any `US000-` name and any file opening with the `_Template —_` marker;
+or (b) **a drift incident** — a session states a moderate register's contents wrongly and the
+error traces to the absence of an index. Arm (b) is the observable one. Only the developer
+reopens Q36, so the trigger raises the question rather than building an index. No map claims
+this entry.
+
+---
+
+## 01/11/2026 — no client-delegated subdomain exists to classify
+
+**Type:** Planned feature
+**Summary:** Fog item `F-01` on `MAP-SUBDOMAIN-ROUTING.md`, handed here on 01/11/2026 because its
+trigger is an event, not a slice cut. `email.`, `chat.` and `video.` motivated the host register,
+but a vendor CNAME, a proxied third-party app and a Django-served surface have three different
+security answers, and the map's three-kind taxonomy rests on zero worked examples. N-005 settles
+the cookie half only. One kind has an in-tree anchor: `how-to/docs/FEATURE-DEPLOY.md:64-65`
+contemplates a private Cloudinary delivery CNAME as a CSP obligation.
+**Blocked by / Action:** Waits on its trigger — a candidate row for a **non-Django-served host**
+is proposed for "how-to/src/HOSTS.md" (unbuilt; the map's `S-01` creates it), **or** a Cloudinary private
+delivery CNAME is activated. Either brings a real host to classify; the classification then lands
+in the host register and its rule. "A generated project asks for one" is deliberately not a
+trigger: nothing reports a downstream request back here. No map claims this entry.
+
+---
+
+## 01/11/2026 — presence has a posture but no feature definition
+
+**Type:** Planned feature
+**Summary:** Fog item `F-05` on `MAP-CAP-POSTURE.md`, handed here on 01/11/2026 because its
+trigger is an event, not a slice cut. N-016 settled presence's **posture** — soft state on the
+pub/sub plane, lost on outage, rebuilt by the next heartbeat — but nothing defines the
+**feature**: no visibility rules, no staleness window, no owner, and zero presence code (measured
+01/09/2026). `code/docs/DESIGN-TOKENS.md` already ships a three-state vocabulary as colour tokens
+— `--presence-online`, `--presence-unavailable`, `--presence-offline` — which constrains the
+feature without defining it.
+**Blocked by / Action:** Waits on its trigger — **the first story that needs presence as a
+user-facing capability**. Its `05-user-flow-design` pass defines the state semantics, visibility
+rules and staleness window, and must reconcile its state names with the shipped token vocabulary.
+No map claims this entry.
+
+---
+
+## 01/11/2026 — multi-node Valkey has no posture until its ADR or envelope exists
+
+**Type:** Planned feature
+**Summary:** Fog item `F-02` on `MAP-CAP-POSTURE.md`, handed here on 01/11/2026 because its
+trigger is an event, not a slice cut. Quorum, replication and split-brain behaviour for Valkey are
+unwritten. `how-to/src/SCALE-ARCHITECTURE/TOPOLOGY.md:57` and `:88` defer them to a cache-posture
+ADR that does not exist, which is legal under the Template-skeleton banner N-020's sanction
+covers, provided `cache-posture` enters the closed eight-name set the map's `S-07` writes.
+Provisioning is ruled out by the map's anti-forecast bound, and quorum doctrine for an instance
+count of one would be a decision made on nothing.
+**Blocked by / Action:** Waits on its trigger — the ADR stops being phantom: **a story authors
+`ADR-US###-*CACHE-POSTURE*`**, or **a `/scale-planning` run regenerates `TOPOLOGY.md` with Valkey
+HA inside the sized envelope**. The posture then lands as a row in the dependency-posture
+register MAP-CAP-POSTURE `S-01` creates. No map claims this entry, because a claim would remove
+it before the trigger fires.

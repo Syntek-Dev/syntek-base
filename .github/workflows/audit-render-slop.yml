@@ -51,8 +51,12 @@ jobs:
       # `--no-project` throughout: pyproject.toml names the root package
       # <%PROJECT_SLUG%>, which is not a valid package name, so a bare `uv run` fails in
       # the base template. The audit invokes Playwright the same way for the same reason.
+      # The pin must equal PLAYWRIGHT_PIN in audits/render-slop.sh. Playwright ties each
+      # release to an exact Chromium revision, so this step and the detector it feeds have
+      # to name one version: pin only one of them and CI installs a revision the detector
+      # refuses to launch, turning a locally-green gate red here for a reason no diff shows.
       - name: Install Chromium
-        run: uv run --no-project --with playwright playwright install --with-deps chromium
+        run: uv run --no-project --with 'playwright==1.61.0' playwright install --with-deps chromium
 
       # Runs BEFORE the scan, and its failure is the only way this job goes red in a
       # project that has not wireframed anything yet. Exits 2 rather than 0 if Chromium

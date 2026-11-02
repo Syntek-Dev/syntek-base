@@ -25,8 +25,10 @@ model: opus
 
 ## Execution Checklist
 
+- [ ] Story moved `Pending` → `In Progress` (and its sprint `Planned` → `In Progress` with its first story) by the `completion` skill, with a _Status history_ row · _opus_
 - [ ] Architectural plan saved to `project-management/src/17-STORY-PLANS/` · _opus_
 - [ ] Failing tests written before implementation · _opus_
+- [ ] The story's manual guide (`project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`) in `test-writer`'s brief, every row triaged in its handoff · _opus_
 - [ ] Models and migration created and applied · _opus_
 - [ ] Service layer implemented with `transaction.atomic()` on multi-write methods · _opus_
 - [ ] Django Ninja endpoints and Schema models added; every state-changing endpoint checks permissions · _opus_
@@ -53,12 +55,13 @@ not restated here.
 
 ## Documentation closeout — verified, not written here
 
-Workflow 21 writes these; this checklist only confirms they exist before the PR. The record
-formats, templates, and destinations live in
+Workflow 22 writes these — and walks the manual guide rather than writing it; this checklist only
+confirms they exist before the PR. The record formats, templates, and destinations live in
 `project-management/workflows/22-implementation-documentation/` — never restate them here.
 
 - [ ] `project-management/workflows/22-implementation-documentation/` run to completion for this story · _opus_
 - [ ] Its `CHECKLIST.md` fully satisfied — every applicable IMPLEMENTATION record written from template and linked to `US###` · _opus_
+- [ ] `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md` written and `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` walked, every row marked · _opus_
 - [ ] No spec left with a `PLANNING/` artefact but no `IMPLEMENTATION/` record · _opus_
 - [ ] Findings record written to `project-management/src/20-FINDINGS/` (even if nothing was found) · _opus_
 - [ ] `/GAPS.md` and `/DEFERRED.md` updated from those findings · _opus_
@@ -77,4 +80,4 @@ formats, templates, and destinations live in
 - [ ] `git` run with accurate commit message
 - [ ] Open issues from implementation docs logged in `/GAPS.md` (security, architectural, infrastructure gaps)
 - [ ] Cross-story deferred items logged in `/DEFERRED.md`
-- [ ] User story updated with completion status
+- [ ] Story status advanced (`In Progress` → `In Review`) by the `completion` skill, with a _Status history_ row; boards regenerated (`pm-board.sh --write`)

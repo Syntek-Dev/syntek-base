@@ -2,7 +2,7 @@
 workflow: 15-decisions
 phase: design
 skills: [planner, codebase-design]
-model: fable
+model: opus
 ---
 
 # Decisions (ADRs) — Checklist

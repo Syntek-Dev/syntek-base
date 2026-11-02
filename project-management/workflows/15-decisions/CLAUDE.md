@@ -19,8 +19,9 @@ sprint and story planning lock the decisions into an execution schedule.
   `ADR-US000-TEMPLATE.md` (the five-section scaffold) — must be read before Step 1.
   Inputs: the driving `US###` and **every ADR already written for it** by steps `04`–`14`
   (`04-database-schema`, `10-security-checks`, `13-api-design`, and the rest).
-- **Model:** Fable for the reasoned trade-off record itself; Opus for a mechanical
-  status flip (`Proposed` → `Accepted`, or the supersession cross-link) or a typo fix.
+- **Model:** Opus throughout — the reasoned trade-off record itself is substantive judgement;
+  a status flip (`Proposed` → `Accepted`, or the supersession cross-link) or a typo fix is a
+  mechanical touch.
 - **Skills:** load `.claude/skills/codebase-design/SKILL.md` to reason through the
   options with the deep-module vocabulary (module, interface, seam, depth, leverage,
   locality; the deletion test); load `.claude/skills/research/SKILL.md` when a

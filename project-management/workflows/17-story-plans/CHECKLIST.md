@@ -2,7 +2,7 @@
 workflow: 17-story-plans
 phase: design
 skills: [planner, global-workflow]
-model: fable
+model: opus
 ---
 
 # Story Plans — Checklist
@@ -24,13 +24,27 @@ Use this checklist to verify the story plan is complete before implementation be
 
 ## Template & Naming
 
-- [ ] Plan copied from `STORY-PLAN-US000-TEMPLATE.md` — never started from scratch
-- [ ] Filename follows `STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`
+<!-- 08/09/2026: the naming rows gained the `<exec-order>-` prefix. Superseded text, preserved
+     rather than deleted: "Plan copied from "STORY-PLAN-US000-TEMPLATE.md"" and
+     "Filename follows `STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`". -->
+
+- [ ] Plan copied from `00-STORY-PLAN-US000-TEMPLATE.md` — never started from scratch
+- [ ] Filename follows `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, the prefix
+      2-digit zero-padded
+- [ ] `<exec-order>` is the story's position in the settled backlog build order (STEPS.md
+      Step 2) — **not** its sprint number and **not** a per-sprint counter
+- [ ] No other plan holds that number, and any number reserved for an unwritten plan is
+      left alone
+- [ ] If build order moved while this plan was written, every affected plan, its row in the
+      sprint plans' _Story Plans — the code master_ tables, and every citation was renumbered
+      in the same change
 - [ ] ★-marked core sections are all present; ◇-marked sections kept only where the
       concern applies, with a one-line reason for any dropped
 
 ## Technical Approach
 
+- [ ] Step 1 drew its round from the recorded answers
+      (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_)
 - [ ] Problem Statement, Reference Documents gate map, and Approach are complete for every
       in-scope layer
 - [ ] Architecture Decision section links a new or existing ADR where the story makes a
@@ -59,12 +73,28 @@ Use this checklist to verify the story plan is complete before implementation be
 ## Test Strategy
 
 - [ ] Test strategy defined per layer: unit & integration, component, API/contract,
-      Django Ninja permission-check tests, accessibility/E2E, manual testing
+      Django Ninja permission-check tests, accessibility/E2E — manual testing is the guide below
 - [ ] Coverage floors referenced (`code/docs/TESTING.md`: 75% line and branch / auth 90% — one floor)
+
+## Manual Testing Guide
+
+- [ ] `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` copied from that folder's
+      `US000-MANUAL-TESTING.md` (STEPS.md Step 7.2) and `src/18-TESTS/MANUAL/CLAUDE.md` read first
+- [ ] Authored from the specs alone — its _Authored from_ line names every artefact read, and no
+      row was drawn from code, a branch or a prototype
+- [ ] Its _Surface_ (Browser / CLI / Gate / API) named in the header, so a story with no UI still
+      has rows a person can walk
+- [ ] Each of the story's _QA Acceptance Criteria — Manual_ is met by at least one row, and every
+      QA-plan scenario is exercised by a row or named under _Out of scope_ with its reason
+- [ ] Every row carries a permanent `{AREA}-{NN}` ID, `Flow` as `—`, a `QA` citation or `—`, and
+      a blank `Result`
+- [ ] Every row the records could not decide was put to <%DEVELOPER_NAME%> and written from the
+      recorded answer — none guessed
 
 ## Review
 
-- [ ] Plan reviewed by 2–3 independent adversarial passes; findings resolved
+- [ ] Plan and manual testing guide reviewed by 2–3 independent adversarial passes; findings
+      resolved
 - [ ] Deferred items and risks recorded, each with a target future story where applicable
 
 ## Context
@@ -78,7 +108,30 @@ Use this checklist to verify the story plan is complete before implementation be
 
 ## Sign-off
 
-- [ ] Plan saved to `src/17-STORY-PLANS/STORY-PLAN-US###-<descriptor>.md`
-- [ ] Row added to `src/17-STORY-PLANS/CONTEXT.md` → Plans Index, with Status
+<!-- 08/09/2026: superseded, preserved rather than deleted — the row read
+     "Plan saved to `src/17-STORY-PLANS/STORY-PLAN-US###-<descriptor>.md`". -->
+
+<!-- 08/09/2026, later the same day: both "Plans Index" rows in this file were rewritten to
+     describe what exists. Superseded text, preserved rather than deleted — under Template &
+     Naming: "every affected plan, Plans Index row and citation was renumbered in the same
+     change" (added earlier today with the `<exec-order>` prefix); here under Sign-off: "Row
+     added to `src/17-STORY-PLANS/CONTEXT.md` → Plans Index, with Status, and the index still
+     reads in `<exec-order>` sequence" (the row-added clause pre-dates today; the sequence
+     clause was added today). Why: no Plans Index exists —
+     `src/17-STORY-PLANS/CONTEXT.md` → _The plans index_ records its absence as a decision,
+     because that file ships and an index row would put a per-project citation in it. The job
+     each row did is re-pointed at where a plan is indexed today: its sprint plan's
+     _Story Plans — the code master_ table in `src/16-SPRINT-PLANS/`. The folder-level index is
+     deferred to the register-index work charted in `src/01-FEATURE-MAPS/`; no file is named
+     for it because none exists yet. -->
+
+- [ ] Plan saved to `src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<descriptor>.md`
+- [ ] The story's row in its sprint plan's _Story Plans — the code master_ table
+      (`src/16-SPRINT-PLANS/##-SPRINT-PLAN-##.md`) names this file, any reserved-number
+      placeholder replaced (no status cell — a plan carries no status of its own)
+- [ ] Nothing added to `src/17-STORY-PLANS/CONTEXT.md`; `STORY-PLANS-BOARD.md` regenerated
+      (`pm-board.sh --write`) — the generated board is the folder index
 - [ ] Driving user story (`src/02-STORIES/US###.md`) updated with a reference to this plan
+- [ ] Manual testing guide saved to `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`; its header
+      names this plan's saved filename, and the plan's _Manual testing_ section names the guide
 - [ ] Ready to proceed to `project-management/workflows/19-backend-code/`

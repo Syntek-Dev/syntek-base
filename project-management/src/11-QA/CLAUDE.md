@@ -16,10 +16,12 @@ merged, verified feature.
 
 - **Routing:** never write here free-hand — `PLANNING/` plans come from
   `workflows/11-qa-checks/` (after security checks and wireframe sign-off);
-  `IMPLEMENTATION/` reviews come from `workflows/23-pr-and-review/`. Both are governed by
-  `docs/QA-GUIDE.md`; run the heavier passes through the `qa-tester` skill.
-- **Model:** Fable for the QA reasoning (scenarios, edge cases, deviation analysis,
-  sign-off); Opus only for mechanical touches — filing, renaming, date-stamping.
+  `IMPLEMENTATION/` reviews come from `workflows/22-implementation-documentation/` and are
+  only verified in `workflows/23-pr-and-review/`. Both are governed by `docs/QA-GUIDE.md`;
+  run the heavier passes through the `qa-tester` skill.
+- **Model:** Opus throughout — the QA reasoning (scenarios, edge cases, deviation
+  analysis, sign-off) is substantive judgement; filing, renaming and date-stamping are
+  mechanical touches.
 - **Concrete steps:** pick the phase → copy that folder's `US000-TEMPLATE.md` to
   `QA-<PLAN|IMPL>-US###-<DESCRIPTOR>.md` → complete every section for the story →
   cross-link the `US###` and the paired plan/review → satisfy the workflow `CHECKLIST.md`.
@@ -35,9 +37,10 @@ merged, verified feature.
   verified outcomes in the review; the review answers the plan, never backfills it.
 - **Per story** — one plan and one review per story, tied to a `US###`; there is no
   cross-cutting report folder.
-- QA here **precedes or accompanies** development; automated results and manual guides
-  live downstream in `src/18-TESTS/` — do not duplicate them here. Every new directory
-  needs a `CONTEXT.md`; instructional files stay ≤ 300 code lines.
+- QA here **precedes or accompanies** development; automated results live downstream in
+  `src/18-TESTS/AUTOMATED/` and the manual testing guides in `src/18-TESTS/MANUAL/`, which cite
+  the QA plan's scenario IDs — do not duplicate either here. Every new directory needs a
+  `CONTEXT.md`; instructional files stay ≤ 300 code lines.
 
 ## Output & naming
 

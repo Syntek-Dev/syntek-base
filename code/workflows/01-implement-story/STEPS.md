@@ -28,7 +28,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 
 ## Prerequisites
 
-- [ ] User story confirmed and branch created
+- [ ] User story confirmed and branch created; story moved `Pending` → `In Progress` by `completion`
 - [ ] Containers running (`bash code/src/scripts/development/server.sh up`)
 - [ ] No uncommitted changes from a previous workflow
 
@@ -42,13 +42,36 @@ Consult `code/REFERENCES.md` as you work through these steps:
 planner [feature name and scope]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> about the feature's scope, data model, API surface,
 permissions, and edge cases before producing the plan.
 
-Save the plan to `project-management/src/17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md`.
+<!-- UPDATED 08/09/2026. Step 1's save instruction named the plan without its `<exec-order>-`
+     prefix. This is a LIVE instruction, so followed as written it produced a wrongly-named plan
+     on the next story built. Superseded text, preserved rather than deleted and quoted without
+     backticks so no dead name is recorded as a fresh citation:
+     "Save the plan to project-management/src/17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md."
+     The convention is owned by `project-management/src/17-STORY-PLANS/CLAUDE.md`. Note the
+     contrast with the sibling rule in `project-management/src/16-SPRINT-PLANS/CLAUDE.md`: a
+     sprint plan carries TWO numbers, so a mismatch between its `<exec-order>` prefix and its
+     `<sprint-number>` suffix is deliberate information and must never be "corrected"; a story
+     plan carries ONE, so a prefix that has drifted from build order says nothing at all, and
+     here a mismatch is a defect. Do not read the sprint-plan guardrail across. -->
+
+Save the plan to
+`project-management/src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` — the
+`<exec-order>` prefix is the story's 2-digit position in the settled build order across the whole
+backlog (read it off `project-management/src/03-SPRINTS/`), never its sprint number.
+
+**The manual testing guide is not written here.** It comes from
+`project-management/workflows/17-story-plans/` Step 7.2 with the plan, authored from the specs;
+the planner here, with the code in view, never writes or overwrites
+`project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`. A guide missing at this step
+goes back to `17-story-plans` Step 7.2 before Step 2 begins. Before the first edit, fill the
+guide's _Recorded during the build_ slots that fall due then —
+`project-management/src/18-TESTS/MANUAL/CLAUDE.md` → _Recorded during the build_.
 
 ### Step 2 — Write Failing Tests First (Red Phase)
 
@@ -57,6 +80,17 @@ test-writer [feature name] --mode failing-first
 ```
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `test-writer` · **Model:** opus · **MCP:** none
+
+<!-- UPDATED 30/09/2026. The manual testing guide became a named Red-phase input when its
+     authorship moved to 17-story-plans, before code; argued at "../02-tdd-cycle/STEPS.md"
+     Phase 1. Step 10's heading also said "PM 19" while its body named 22, and the list below
+     gained the two test records 22 closes. -->
+
+The brief carries the story, its acceptance criteria and **its manual testing guide** —
+`project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, authored from the specs at
+`project-management/workflows/17-story-plans/` Step 7.2. `test-writer` triages every row and
+names the outcome in its handoff (`.claude/skills/test-writer/SKILL.md` → _Triage the manual
+guide_); the full Red phase is `code/workflows/02-tdd-cycle/` Phase 1.
 
 Verify all new tests are **red** before proceeding.
 
@@ -208,7 +242,7 @@ qa-tester
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus · **MCP:** code-review-graph
 
-### Step 10 — Implementation Documentation (hand off to PM 19)
+### Step 10 — Implementation Documentation (hand off to PM 22)
 
 Hand the story to `project-management/workflows/22-implementation-documentation/`. That
 workflow **owns** the closeout and is its single source of truth — do not restate the record
@@ -225,9 +259,12 @@ It covers, in order:
 1. the IMPLEMENTATION record for every design/compliance spec that applied to the story —
    GDPR, security, QA, SEO, API — each copied from its `.../IMPLEMENTATION/US000-TEMPLATE.md`
    and closed against its `PLANNING/` artefact with code evidence
-2. the story's findings record in `project-management/src/20-FINDINGS/`
-3. the `/GAPS.md` and `/DEFERRED.md` routing for anything that cannot close in this PR
-4. the `CONTEXT.md` / `CLAUDE.md` closeout across every touched layer, **and** the
+2. the automated test record `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md`
+   written, and the manual guide `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`
+   — authored at `17-story-plans`, never here — walked with every row marked
+3. the story's findings record in `project-management/src/20-FINDINGS/`
+4. the `/GAPS.md` and `/DEFERRED.md` routing for anything that cannot close in this PR
+5. the `CONTEXT.md` / `CLAUDE.md` closeout across every touched layer, **and** the
    code-review-graph refresh alongside it
 
 **Hard gate:** implementation docs, the touched `CONTEXT.md`/`CLAUDE.md`, and the graph refresh

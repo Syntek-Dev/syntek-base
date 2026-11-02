@@ -47,6 +47,7 @@ a quiet addition here.
 - `../../08-WIREFRAMES/CONSOLIDATED-IDEAS/` — the screens that realise these journeys
 - `../../09-GDPR/` — where data touchpoints get a lawful basis
 - `../../17-STORY-PLANS/` — plans that may need correcting when a journey changes
+- `../../18-TESTS/MANUAL/` — manual testing guides whose `Flow` column cites these steps
 - `project-management/workflows/18-consolidate-design-work/` — the workflow that produces these
 
 **Last Updated**: <%DATE%>

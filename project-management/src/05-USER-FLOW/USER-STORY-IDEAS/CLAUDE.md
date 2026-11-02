@@ -15,7 +15,8 @@ journey slice that story introduces, written before it reaches `15-decisions`.
 - **Routing:** produced by `workflows/05-user-flow-design/` during the story's own pass through
   the specify tier. Read the story in `../../02-STORIES/US###.md` and every earlier fragment
   here first.
-- **Model:** Fable — journey mapping is design judgement; Opus for a rename or a date bump.
+- **Model:** Opus throughout — journey mapping is design judgement; a rename or a date bump is
+  a mechanical touch.
 - **Concrete steps:** copy `USER-FLOW-IDEA-US000-TEMPLATE.md` →
   `USER-FLOW-IDEA-US###-<DESCRIPTOR>.md` → map this story's screens, decision points, and
   transitions → flag every personal-data touchpoint → note the seams where the slice hands off

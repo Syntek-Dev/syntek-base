@@ -13,12 +13,13 @@ sprint blocker classifying the threat and listing the controls the remediation m
 ## How to work here
 
 - **Routing:** produced by `project-management/workflows/10-security-checks/` using the
-  `security` skill (Fable). Each finding originates in a planning-phase audit
+  `security` skill. Each finding originates in a planning-phase audit
   (`../../AUDITS/PLANNING/`) or threat model (`../../THREAT-MODEL/PLANNING/`) and is
   referenced from the assessment in `../../ASSESSMENTS/PLANNING/`. Standards:
   `project-management/docs/SECURITY-GUIDE.md`.
-- **Model:** Fable — classifying the threat, judging severity, and specifying controls is
-  substantive; Opus only for a status flip or a filename/date touch-up.
+- **Model:** Opus throughout — classifying the threat, judging severity, and specifying
+  controls is substantive; a status flip or a filename/date touch-up is a mechanical
+  touch.
 - **Concrete steps:** copy `VULN-PLAN-US000-TEMPLATE.md` →
   `VULN-PLAN-US###-<DESCRIPTOR>.md` → complete every section for that finding → ensure a
   remediation `US###` enters the sprint plan (this is a blocker) → cross-link the

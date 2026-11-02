@@ -2,7 +2,7 @@
 workflow: 18-consolidate-design-work
 phase: design
 skills: [planner, global-workflow, codebase-design, domain-modelling]
-model: fable
+model: opus
 ---
 
 # Consolidate Design Work — Steps
@@ -21,12 +21,13 @@ model: fable
 | Step 2 (05) | `code/docs/DESIGN-TOKENS.md` — token-first; DB-canonical values               |
 | Step 4      | `project-management/src/15-DECISIONS/` — where a hard-to-reverse choice lands |
 | Step 7      | `project-management/src/17-STORY-PLANS/` — plans this pass may invalidate     |
+| Step 7      | `project-management/src/18-TESTS/MANUAL/CLAUDE.md` — the guides' Flow column  |
 
 ---
 
 ## Prerequisites
 
-- [ ] Every story is through `17-story-plans/`
+- [ ] Every story is through `17-story-plans/` — its plan and its manual testing guide written
 - [ ] Every in-scope story has `USER-STORY-IDEAS/` artefacts, or an explicit `N/A`
 - [ ] `code/docs/DATABASE.md` and `code/docs/DESIGN-TOKENS.md` read
 
@@ -34,21 +35,28 @@ model: fable
 
 ## Steps
 
-### Step 1 — Grill, then Scope the Pass
+### Step 1 — Scope the Pass, then Grill
 
-> **Model:** fable
+> **Model:** opus
 
-**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
+**Which of the five folders accumulated work this cycle is measured, not asked.** List
+`USER-STORY-IDEAS/` in each of `src/04`–`src/08` against this cycle's planned stories: a folder
+holding an artefact of theirs is in scope, and one holding none is out.
+
+**Then grill** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%>:
 
-- Which of the five folders genuinely accumulated work this cycle?
 - What counts as a collision here — identical concept only, or near-neighbours too?
 - How aggressively to merge: one canonical component with variants, or several siblings?
 - Anything already known to be contentious between two stories?
 
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the `USER-STORY-IDEAS/` folders of `src/04`–`src/08`, each planned story's story plan, the ADRs in
+`src/15-DECISIONS/`, and the feature maps in `src/01-FEATURE-MAPS/`.
+
 ### Step 2 — Inventory Stage 1
 
-> **Model:** fable
+> **Model:** opus
 
 Walk `USER-STORY-IDEAS/` in each in-scope folder and build one inventory table per folder:
 artefact, owning `US###`, the concept it introduces, and what it depends on.
@@ -58,7 +66,7 @@ once both sides are on the page.
 
 ### Step 3 — Find the Collisions
 
-> **Model:** fable
+> **Model:** opus
 
 Against the inventory, mark every:
 
@@ -74,7 +82,7 @@ say so explicitly rather than reporting a clean sweep.
 
 ### Step 4 — Resolve, Escalating What Is Hard to Reverse
 
-> **Model:** fable
+> **Model:** opus
 
 Resolve each finding to **one canonical form**, taking `04-DATABASE` first — schema
 fragmentation is the expensive kind (`code/docs/DATABASE.md`).
@@ -88,7 +96,7 @@ Where resolving reveals a genuine capability gap, **write a new user story** thr
 
 ### Step 5 — Write the Consolidated Artefacts
 
-> **Model:** fable
+> **Model:** opus
 
 Write `CONSOLIDATED-IDEAS/` in each in-scope folder. Every consolidated artefact:
 
@@ -121,7 +129,7 @@ recurring **across the set** — the second is the page-set property nothing els
 reaches. Both are warnings, because a directory or taxonomy screen repeats one card legitimately.
 It needs no stack. If it reports that Chromium is absent it has **measured nothing** — that is not
 a clean run either; install it and re-run
-(`uv run --no-project --with playwright playwright install chromium`).
+(`uv run --no-project --with 'playwright==1.61.0' playwright install chromium`).
 
 ### Step 6 — Regenerate the Deliverables
 
@@ -136,15 +144,38 @@ Consolidated tokens and components are only real once the generators agree:
 
 Commit `.py`, `.tex`, and `.pdf` together. Never hand-edit the generated files.
 
-### Step 7 — Reconcile the Story Plans
+### Step 7 — Reconcile the Story Plans and Manual Testing Guides
 
-> **Model:** fable
+> **Model:** opus
 
-For every `STORY-PLAN-US###-*.md` whose technical approach assumed a shape this pass
+<!-- UPDATED 08/09/2026. The story-plan filename pattern gained its `<exec-order>-` prefix;
+     superseded form, quoted without backticks so no dead name is recorded as a fresh citation:
+     "STORY-PLAN-US###-*.md". The prefix is the story's position in the settled build order and
+     is renumbered when that order changes, so a correction here may also renumber — which is the
+     OPPOSITE of `project-management/src/16-SPRINT-PLANS/CLAUDE.md`, where a two-number mismatch
+     is deliberate and never "corrected". Rule: `project-management/src/17-STORY-PLANS/CLAUDE.md`. -->
+
+For every `<exec-order>-STORY-PLAN-US###-*.md` whose technical approach assumed a shape this pass
 changed, correct the plan and note the consolidation that drove it.
 
 This step is what makes the two-stage model safe: the developer codes from the story
 plan, so a plan left asserting a superseded design silently undoes the consolidation.
+
+**Then every story's manual testing guide** (`src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`), in
+the same pass:
+
+- **Set the `Flow` column.** Each row cites the consolidated step it exercises, or `—` where it
+  maps to none. The step numbers exist only from this pass, which is why the guide was authored
+  with `—` throughout.
+- **Correct every row this pass invalidated** — an action or expected outcome asserting a shape
+  the consolidation changed. Retire a row that no longer applies, and add one for a step the
+  consolidated journey now needs.
+
+The rules for all three — the citation format, the correction note, and how a row is retired or
+added without reusing a number — are `src/18-TESTS/MANUAL/CLAUDE.md` → _The Flow and QA
+columns_, _Changing a row after authoring_ and _Row IDs_. `Result` stays blank: nothing has been
+built to walk. The guide is corrected here for the plan's reason — the Red phase reads it, and a
+row asserting a superseded design becomes a test of the wrong thing.
 
 ### Step 8 — Close Out
 

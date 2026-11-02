@@ -54,17 +54,28 @@ skill (`.claude/CLAUDE.md` Section 10). What must be settled:
 
 ## Status and field mapping
 
-Map this repository's story lifecycle to the tool's columns. The baseline:
+Map this repository's story lifecycle to the tool's columns. The twelve repo statuses — their
+meanings and transitions are owned by the `completion` skill — are keyed by board slug, and
+**each one must exist as a status in the tool or be mapped onto one** (for ClickUp, through
+`CLICKUP_STATUS_MAP`, keyed by the Title Case status word — `{"Customer Review": "In QA"}` — or by
+its slug; `sync-clickup.sh` accepts either) — check it before the first sync that carries a new
+status. The baseline is identity:
 
 ```json
 {
   "status_mapping": {
-    "backlog": ["Backlog", "To Do"],
-    "ready": ["Ready", "Sprint Backlog"],
-    "in_progress": ["In Progress"],
-    "review": ["In Review", "QA"],
-    "done": ["Done", "Closed"],
-    "blocked": ["Blocked", "On Hold"]
+    "open": "Open",
+    "pending": "Pending",
+    "in-progress": "In Progress",
+    "in-review": "In Review",
+    "accepted": "Accepted",
+    "customer-review": "Customer Review",
+    "customer-accepted": "Customer Accepted",
+    "rejected": "Rejected",
+    "customer-rejected": "Customer Rejected",
+    "blocked": "Blocked",
+    "completed": "Completed",
+    "closed": "Closed"
   },
   "field_mapping": {
     "story_points": "estimate",
@@ -76,6 +87,10 @@ Map this repository's story lifecycle to the tool's columns. The baseline:
 ```
 
 MoSCoW labels map to `must-have` / `should-have` / `could-have` / `wont-have`.
+
+**Archived stories still sync.** A `Closed` story lives in `02-STORIES/archive/`; the export and
+sync scripts resolve each story by ID across the folder and its `archive/`, so archiving never
+orphans a task in the tool.
 
 ## Configuration
 

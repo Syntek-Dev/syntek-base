@@ -17,10 +17,10 @@ PII-handling feature into code.
 
 - **Routing:** GDPR work runs through `project-management/workflows/09-gdpr-compliance/`
   (`STEPS.md` + `CHECKLIST.md`) against `project-management/docs/GDPR-GUIDE.md`, using
-  the `gdpr-mechanics` skill (Fable). Write a story's `PLANNING/` plan before implementing it; the
+  the `gdpr-mechanics` skill. Write a story's `PLANNING/` plan before implementing it; the
   code-side enforcement lives in `code/workflows/06-gdpr-enforcement/`.
-- **Model:** Fable for all register content, plans, and records; Opus for mechanical
-  touches — a date-header bump, moving a file, a status flip.
+- **Model:** Opus throughout — all register content, plans, and records are substantive
+  judgement; a date-header bump, moving a file, or a status flip is a mechanical touch.
 - **Concrete steps:** fill the relevant register skeleton (replace `[EXAMPLE]` rows and
   `{PLACEHOLDER}` values) → write the story's `PLANNING/` plan → after the PR, write the
   `IMPLEMENTATION/` record closing each planned task with evidence → cross-link the

@@ -13,8 +13,8 @@ as its single source of truth, emits `brand-guide.tex`, and compiles the deliver
 
 ## How to work here
 
-- **Model:** Fable for brand-token decisions (colour roles, type scale, voice); Opus for
-  mechanical touches — running the generator, a rename, a wording fix.
+- **Model:** Opus throughout — brand-token decisions (colour roles, type scale, voice) are
+  substantive judgement; running the generator, a rename or a wording fix is a mechanical touch.
 - **Concrete steps:** edit the `INPUTS` section of `brand_guide.py` (never the generated
   files) → run `python3 brand_guide.py` → visually check `brand-guide.pdf` → commit the
   `.py`, `.tex`, and `.pdf` together so they stay in lock-step.

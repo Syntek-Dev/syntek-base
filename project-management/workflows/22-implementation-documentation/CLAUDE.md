@@ -10,9 +10,9 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 The documentation closeout after code is built — update every touched `CONTEXT.md`/`CLAUDE.md`
 and refresh the code-review-graph (the documentation hard gate), write the
-IMPLEMENTATION-side record for each design/compliance spec that applied to the story, and
-record the story's findings in `src/20-FINDINGS/`, before the PR is raised in
-`23-pr-and-review`.
+IMPLEMENTATION-side record for each design/compliance spec that applied to the story, write
+the story's automated test record and walk its manual testing guide in `src/18-TESTS/`, and
+record its findings in `src/20-FINDINGS/`, before the PR is raised in `23-pr-and-review`.
 
 ## How to work here
 
@@ -23,15 +23,22 @@ record the story's findings in `src/20-FINDINGS/`, before the PR is raised in
   verification is needed, the discipline skill (`gdpr-mechanics`, `security`, `qa-tester`,
   `seo`, `planner`) may be loaded against the story's already-approved `PLANNING/` artefact.
 - **Model:** Opus throughout — this is a documentation/mechanical closeout that records
-  what shipped against approved plans, not a design grill. No Fable pass here.
+  what shipped against approved plans, not a design grill.
 - **Concrete steps:** identify which specs applied to the story → copy each applicable
-  `IMPLEMENTATION/` template, noting what was built vs the plan and any deviation → write
-  the findings record from `src/20-FINDINGS/FINDING-US000-TEMPLATE.md` → update the touched
+  `IMPLEMENTATION/` template, noting what was built vs the plan and any deviation → copy
+  `src/18-TESTS/AUTOMATED/US000-TEST-STATUS.md` to `US###-TEST-STATUS.md`, run the suites
+  through `code/src/scripts/tests/**/*.sh` then `test-record.sh US###` for the generated block →
+  walk the story's pre-authored guide in `src/18-TESTS/MANUAL/`, marking every row and amending a
+  deliberate departure with its trail → write the findings record, amendments included, from
+  `src/20-FINDINGS/FINDING-US000-TEMPLATE.md` → update the touched
   `CONTEXT.md`/`CLAUDE.md` across every layer → refresh the code-review-graph → confirm
   every record is cross-linked to its `US###` → satisfy `CHECKLIST.md`.
 - **Definition of done:** every applicable IMPLEMENTATION record written from template and
   linked to `US###`; no spec left with a `PLANNING/` record but no `IMPLEMENTATION/`
-  record; a findings record written (even if `Nothing found`) with every finding carrying a
+  record; the automated record present with its generated block regenerated against the last
+  suite run; the manual guide walked, every row marked `Pass` or `Fail` and every amended row
+  carrying its trail and a finding; a findings record written
+  (even if `Nothing found`) with every finding carrying a
   retrofit cost and a disposition; touched docs complete and the graph refreshed; British
   English; DD/MM/YYYY.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
@@ -44,13 +51,25 @@ record the story's findings in `src/20-FINDINGS/`, before the PR is raised in
   `CONTEXT.md`/`CLAUDE.md` must be complete, and the code-review-graph refreshed, **before
   any commit**. Not optional.
 - **This workflow writes the records; `23-pr-and-review` only verifies them** — do not
-  defer record-writing to the PR workflow.
+  defer record-writing to the PR workflow. **That includes the `src/18-TESTS/` pair**: the
+  automated record is written here and the manual guide walked here, for every story, and both
+  are merely checked there.
+- **The manual guide is walked here, not written here.** `17-story-plans` authors it from the
+  specs. How it is walked, how a row may change and how a missing guide is authored are
+  `MANUAL/CLAUDE.md`'s; `STEPS.md` Step 4 runs them and Step 5 records each amendment.
+- **The test pair is unconditional and has no `PLANNING/` side** — it is not part of the
+  no-orphaned-plan check, and a story with no automated suite still records that fact rather than
+  skipping the file. Its rules belong to `project-management/src/18-TESTS/` — the lifecycle and
+  the re-run rule to its `CLAUDE.md`, the generated-block ban to `AUTOMATED/CLAUDE.md`, and the
+  row IDs, the marking rule, the amendment trail and the browser-tool contract to
+  `MANUAL/CLAUDE.md`; route there rather than restating them.
 - **Close a plan gap only with evidence** — never mark a GDPR, security, QA, SEO, or API
   task done without pointing at the shipped code; keep every claim consistent with
   `code/docs/SECURITY.md`.
-- **This workflow is the only place `GAPS.md` and `DEFERRED.md` close.** `01-feature-map` claims
-  entries on the feature map; the close happens here, against shipped code. A claim the story did
-  not in fact retire stays open and the reason becomes a finding.
+- **This workflow closes only unclaimed `GAPS.md` and `DEFERRED.md` entries**, against shipped
+  code. A claimed entry left the register when a map or story took it on; one the story did not in
+  fact retire becomes a finding routed to a `Next story` row, or a new dated `GAPS.md` entry
+  citing it where no follow-on story exists (`STEPS.md`).
 - **Findings are recorded, never fixed here** — the record states the smallest fix; the fix
   lands in a later story, `src/21-BUGS/`, or `src/22-REFACTORING/`. Where a migration, index,
   or model carries no explanation for its shape, **flag the absence rather than inventing the
@@ -66,10 +85,72 @@ record the story's findings in `src/20-FINDINGS/`, before the PR is raised in
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`; the per-story IMPLEMENTATION records under
   `src/09-GDPR/IMPLEMENTATION/`, `src/10-SECURITY/<CATEGORY>/IMPLEMENTATION/`,
   `src/11-QA/IMPLEMENTATION/`, `src/12-SEO/IMPLEMENTATION/`,
-  `src/13-API-DESIGN/IMPLEMENTATION/`, each linked to its `US###`; and the per-story findings
-  record under `src/20-FINDINGS/`.
-- **Generated:** the code-review-graph — refreshed, never hand-edited.
+  `src/13-API-DESIGN/IMPLEMENTATION/`, each linked to its `US###`; the per-story findings
+  record under `src/20-FINDINGS/`; and, under `src/18-TESTS/`, everything in
+  `AUTOMATED/US###-TEST-STATUS.md` outside its generated block, plus the walk of
+  `MANUAL/US###-MANUAL-TESTING.md` — its `Result` and `Notes` cells, any amended row with its
+  trail, its _Failures_ and its sign-off. The guide's rows are `17-story-plans`'.
+- **Generated:** the code-review-graph — refreshed, never hand-edited; and
+  `US###-TEST-STATUS.md`'s `BEGIN GENERATED: test-record` block, written by
+  `code/src/scripts/tests/test-record.sh` after the suites run, green or red.
 - Findings `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`;
   records `<TYPE>-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` (descriptor SCREAMING-KEBAB-CASE);
+  test records `AUTOMATED/US###-TEST-STATUS.md` and `MANUAL/US###-MANUAL-TESTING.md`, no
+  descriptor and no date in the name (each sub-folder's `CLAUDE.md` under
+  `../../src/18-TESTS/` owns its pattern, and the root `CLAUDE.md` the reason for it);
   documentation `SCREAMING-SNAKE-CASE.md`; workflow folders `NN-kebab-case/`; dates
   DD/MM/YYYY.
+
+<!-- UPDATED 09/09/2026. This workflow now writes the two `src/18-TESTS/` records, settled by the
+     grilling pass of 09/09/2026 and argued here rather than in an ADR, because
+     `../../src/15-DECISIONS/` keys every ADR to a driving story and this ships as template
+     maintenance under no US###.
+
+     THE OWNERSHIP FIX. Three files gave three answers and the records were therefore never
+     written by anyone:
+
+       1. this file — claimed the workflow writes the IMPLEMENTATION-side record for every
+          design/compliance spec, while `STEPS.md` Step 3's discipline table listed only GDPR,
+          Security, QA, SEO and API design, so 18-TESTS fell outside the only enumeration;
+       2. `../23-pr-and-review/STEPS.md` — listed both test files in its "Write (PR-stage
+          records)" table, claiming authorship at the PR stage;
+       3. `../../src/18-TESTS/CLAUDE.md` — said the records were updated as part of the code
+          workflows and finalised in `23-pr-and-review`, naming a third writer again.
+
+     Zero records had ever been written. 22 WRITES; 23 VERIFIES. That is the whole rule, and it
+     matches how every other implementation record already flows.
+
+     WHY ITS OWN STEP AND NOT A ROW IN STEP 3. Step 3 is conditional — its table maps a story's
+     `PLANNING/` artefacts to their `IMPLEMENTATION/` records, and Steps 1 and 8 both police the
+     no-orphaned-plan invariant across exactly that set. The test pair has no `PLANNING/` side
+     and is written for every story regardless, so a row in that table would have made an
+     unconditional obligation look conditional and put a plan-less record inside a plan-to-record
+     check. It sits at Step 4 instead, beside the other always-written record (findings) and
+     ahead of it, because a red suite or a failed manual row is a findings input. The old Steps
+     4-8 became 5-9. -->
+
+<!-- UPDATED 30/09/2026. This workflow no longer WRITES the manual testing guide; it WALKS it.
+     The guide is now authored at `../17-story-plans/` (its Step 7.2) from the specs, before any
+     code, and walked here row by row; the automated record is still written here, with
+     unchanged mechanics, at its new path under `src/18-TESTS/AUTOMATED/`. Settled by the
+     grilling pass of 30/09/2026 and argued here, beside the 09/09/2026 comment above, for the
+     same reason that one gives: `../../src/15-DECISIONS/` keys every ADR to a driving story, and
+     this ships as template maintenance under no US###.
+
+     WHAT CHANGED FOR THIS WORKFLOW. Step 4 used to copy both templates and warned that drafting
+     the guide from the code and marking it afterwards "is the one way this record can lie". The
+     strong form of that warning is to take the drafting away from the stage that has the code
+     in front of it, which is what moving authorship to 17 does; the argument is in
+     "../../src/18-TESTS/CLAUDE.md". What remains here is the walk, and one new duty the move
+     creates. A guide written before the code will sometimes be wrong about the code for a good
+     reason — the build took a decision the specs did not foresee — so a deliberate departure is
+     amended at the walk with its trail in Notes and recorded as a finding, never silently
+     rewritten; a departure nobody decided is a Fail. The rule lives in
+     "../../src/18-TESTS/MANUAL/CLAUDE.md"; Step 4 runs it and Step 5 records the finding.
+
+     A MISSING GUIDE. A story arriving here without one is never walked without one and never
+     given one drafted from the code: the guide is authored from the specs first. Whether the gap
+     is also a finding depends on when the plan was written. A plan written after this change ran
+     a 17 that authors guides, so its missing guide is a skipped step and a finding; a plan
+     written before it never had the step — this repository backfilled its own in the same
+     change, but a project updating into it may not have. -->

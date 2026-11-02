@@ -20,8 +20,9 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 | ---- | ----------------------------------------------------------------------------------------------------------- |
 | 1    | **Internal — Live Artefacts** → src/17-STORY-PLANS/, and each spec's PLANNING/ folder                       |
 | 3    | **Internal — Live Artefacts** → src/09-GDPR/, src/10-SECURITY/, src/11-QA/, src/12-SEO/, src/13-API-DESIGN/ |
-| 4    | **Internal — Live Artefacts** → src/20-FINDINGS/ · **Internal — Guides** → code/docs/DATABASE.md            |
-| 5–6  | **Internal — Guides** → code/docs/CODE-REVIEW-GRAPH.md (docs ⇄ graph lockstep)                              |
+| 4    | **Internal — Live Artefacts** → src/18-TESTS/ · **Internal — Guides** → code/docs/TESTING.md                |
+| 5    | **Internal — Live Artefacts** → src/20-FINDINGS/ · **Internal — Guides** → code/docs/DATABASE.md            |
+| 6–7  | **Internal — Guides** → code/docs/CODE-REVIEW-GRAPH.md (docs ⇄ graph lockstep)                              |
 
 ---
 
@@ -29,10 +30,18 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ### Step 1 — Confirm Code Phases Complete and Identify Applicable Specs
 
+<!-- UPDATED 08/09/2026. The story-plan filename pattern below gained its `<exec-order>-`
+     prefix; superseded form, quoted without backticks so no dead name is recorded as a fresh
+     citation: "src/17-STORY-PLANS/STORY-PLAN-US###-*.md". The prefix is the story's position in
+     the settled build order, renumbered whenever that order changes — the OPPOSITE of the
+     two-number sprint-plan rule in `project-management/src/16-SPRINT-PLANS/CLAUDE.md`, where a
+     mismatch is deliberate and never "corrected". Rule:
+     `project-management/src/17-STORY-PLANS/CLAUDE.md`. -->
+
 Verify all in-scope code phases have shipped for the story (`19-backend-code`,
 `20-api-code`, `21-frontend-code`). Then open the story plan
-(`src/17-STORY-PLANS/STORY-PLAN-US###-*.md`) and list every design/compliance spec that
-carried a `PLANNING/` artefact for this story:
+(`src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md`) and list every design/compliance
+spec that carried a `PLANNING/` artefact for this story:
 
 | Discipline | Applies when                         | PLANNING artefact                                       |
 | ---------- | ------------------------------------ | ------------------------------------------------------- |
@@ -72,6 +81,10 @@ Security notes (read `src/10-SECURITY/CLAUDE.md` to place records correctly):
 - Any newly discovered Critical/High finding is escalated to
   `src/10-SECURITY/VULNERABILITIES/IMPLEMENTATION/` immediately.
 
+Where the QA record's evidence for a scenario is a **manual** verification, it may cite the
+`src/18-TESTS/MANUAL/` row ID that exercised it (`SIGNUP-03`) instead of a test name — see Step 4,
+and walk the guide before closing that row. An automated test name stays preferred where one exists.
+
 Reuse the `PLANNING/` artefact's `<DESCRIPTOR>` (SCREAMING-KEBAB-CASE) so plan and record
 pair by name. A story that ships no public URL records `SEO: N/A` with a reason; a story
 that ships no Django Ninja API surface records that fact in the API record header.
@@ -96,7 +109,71 @@ The SEO record is the **only** one whose evidence must be gathered from a runnin
 
 A dimension marked Pass without a rendered value or a measured number is not evidence.
 
-### Step 4 — Record Findings
+### Step 4 — Write the Automated Record and Walk the Manual Guide
+
+<!-- UPDATED 30/09/2026. This step wrote both test records; it now writes the automated record
+     and WALKS the manual testing guide, which 17-story-plans authored from the specs before any
+     code. Argued in this folder's CLAUDE.md beside the 09/09/2026 comment that gave 22 the
+     pair. -->
+
+Unlike Step 3, the test pair is **not** conditional on a `PLANNING/` artefact and has none. Both
+records are completed for **every** story, because their subject is not plan-versus-built but
+whether executing the tests passed. Which workflow touches which record, and when:
+`src/18-TESTS/CLAUDE.md` → _The record lifecycle_.
+
+| Record    | At this step                  | Template → record                                                      |
+| --------- | ----------------------------- | ---------------------------------------------------------------------- |
+| Automated | **Written**                   | `src/18-TESTS/AUTOMATED/US000-TEST-STATUS.md` → `US###-TEST-STATUS.md` |
+| Manual    | **Walked** — authored at `17` | already present as `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`       |
+
+Read `src/18-TESTS/CLAUDE.md` and the sub-folder pair of each record before touching it. The
+lifecycle, the three-record boundary and the re-run rule are the root's; the generated-block ban
+is `AUTOMATED/CLAUDE.md`'s; the row IDs, the `Flow` and `QA` columns, the marking rule, the
+amendment trail and the browser-tool contract are `MANUAL/CLAUDE.md`'s. None is restated here.
+
+#### The automated record — written
+
+**Its generated block is generated, never typed.** Copy the template, run the story's suites
+through `code/src/scripts/tests/**/*.sh`, then run the generator over their report artefacts:
+
+```bash
+bash code/src/scripts/tests/test-record.sh US###
+```
+
+Run it **after the suites, green or red** — a failing run still records. It is the only writer of
+everything between `<!-- BEGIN GENERATED: test-record -->` and `<!-- END GENERATED -->`, the
+coverage figures included. Everything after the block — how to reproduce the run, the
+outstanding gaps and flaky tests, the status line — is yours to write.
+
+**A test only reaches the record if it declares its story.** A pytest test carries
+`@pytest.mark.story("US###")`, inheritable from its class or module via `pytestmark`; a Bruno
+request carries `tags: [US###]` in its `meta` block, read from the `.bru` source so one
+whole-collection run still feeds every story — the marker registry is `code/docs/testing/TAXONOMY.md`.
+Enforcement warns and exits 0:
+
+```bash
+bash code/src/scripts/audits/story-markers.sh
+```
+
+Because it never fails a build, **an unmarked test is silently absent from the record** — a short
+table is not evidence of a small suite. Read the audit's output before trusting one.
+
+#### The manual guide — walked, not written
+
+`17-story-plans` authored the guide from the specs before any code existed; here it is walked, by
+a human tester or by Claude Chrome against the same file. Walk and mark it per `MANUAL/CLAUDE.md`
+→ _Walking and marking_, reading its build captures per _Recorded during the build_; change a row
+only per _Changing a row after authoring_; and a guide missing at this step per _Authoring_.
+
+Two things are this step's own. **Every amendment made at the walk goes to Step 5 as a finding.**
+And **a missing guide is also a finding** where the story's plan was written after 30/09/2026,
+when `17-story-plans` Step 7.2 began authoring guides — a skipped step; a plan older than that
+never had the step.
+
+A red suite, a failed manual row or an amended row is an **input** to Step 5, never a reason to
+skip this step.
+
+### Step 5 — Record Findings
 
 Write one findings record per story, capturing what shipping it revealed about the
 project's standards — divergences observed, their smallest fix, and what the **next**
@@ -106,6 +183,11 @@ Copy `src/20-FINDINGS/FINDING-US000-TEMPLATE.md` →
 `src/20-FINDINGS/FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`, reusing the story's
 `<DESCRIPTOR>`. Assess the delivered work against the governing guides — data-layer work
 against `code/docs/DATABASE.md`, and the guides it routes to.
+
+**Step 4 feeds this record.** Every manual-guide row amended at the walk is a finding — the spec it
+was authored from proved wrong, and the next plan should know — and so is a guide Step 4 found
+missing for a plan written after `17-story-plans` began authoring guides. The amended row's trail
+names its finding's `F-0NN`.
 
 Give every finding a stable `F-0NN` ID, a **retrofit cost** (`Cheap` / `Expensive`), and a
 disposition. Repeat the `Expensive` rows in their own section — schema shape, a missing
@@ -125,17 +207,19 @@ Route each finding onward by disposition: a defect to `src/21-BUGS/`, structural
 `src/22-REFACTORING/`, a reopened hard-to-reverse trade-off to `src/15-DECISIONS/`, a
 deferral with a named target story to `DEFERRED.md`, an active blocker to `GAPS.md`.
 
-**Then close what the story actually retired.** If the story's feature map
-(`src/01-FEATURE-MAPS/MAP-<FEATURE>.md` → _Register claimed_) claimed a `GAPS.md` or `DEFERRED.md`
-entry, settle it here — **this workflow is the only place the register closes**. Mark the
-`GAPS.md` entry `✅ CLOSED DD/MM/YYYY`, or remove the `DEFERRED.md` row, **only against shipped
-code**; a claim the story did not in fact retire stays open, and the reason why becomes a finding.
-Charting made the promise; this step is the evidence.
+**Then close what the story actually retired — unclaimed entries only.** An entry a feature map or
+story claimed is already gone from `GAPS.md` / `DEFERRED.md` (`.claude/CLAUDE.md` Section 9); it
+is retired by this story's acceptance. A claim the story did not in fact retire becomes a finding
+routed to a `Next story` row — the map is frozen once its slices are cut, so it never goes back
+there. Where no follow-on story exists to take that row, record it as a **new** dated `GAPS.md`
+entry citing the finding. For an entry **no map or story claimed** that this story nonetheless
+retired, **this workflow is the only place it closes**: mark the `GAPS.md` entry
+`✅ CLOSED DD/MM/YYYY`, or remove the `DEFERRED.md` row, **only against shipped code**.
 
 Rows marked `Next story` are inputs to the next `src/17-STORY-PLANS/` plan — that is what
 this record is for.
 
-### Step 5 — Update Touched Context and Documentation
+### Step 6 — Update Touched Context and Documentation
 
 For every layer the implementation touched (`code/`, `how-to/`, `project-management/`):
 
@@ -146,18 +230,23 @@ For every layer the implementation touched (`code/`, `how-to/`, `project-managem
 
 This is the documentation hard gate — it must be complete before any commit.
 
-### Step 6 — Refresh the Code-Review-Graph
+### Step 7 — Refresh the Code-Review-Graph
 
 Run `code-review-graph update` (or the `build_or_update_graph_tool` MCP tool) so the
 layered docs and the graph stay in lockstep. See `code/docs/CODE-REVIEW-GRAPH.md`.
 
-### Step 7 — Confirm Every Record Is Linked and No Plan Is Orphaned
+### Step 8 — Confirm Every Record Is Linked and No Plan Is Orphaned
 
 Cross-check each record against Step 1: every applicable spec now has an
 `IMPLEMENTATION/` record naming its `US###` and linking back to its `PLANNING/` artefact.
 No spec is left with a `PLANNING/` record but no `IMPLEMENTATION/` record.
 
-### Step 8 — Commit
+The `src/18-TESTS/` pair has no `PLANNING/` side and is therefore outside that check. Confirm
+instead that **both** files exist for the story, that the generated block was regenerated against
+the last suite run, that every manual row carries a `Pass` or a `Fail`, and that every amended row
+carries its trail and a finding.
+
+### Step 9 — Commit
 
 ```text
 git

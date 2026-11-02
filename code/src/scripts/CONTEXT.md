@@ -32,7 +32,9 @@ code/src/scripts/
         ├── a11y/
         ├── api/
         ├── backend/
-        └── backend-coverage/
+        ├── backend-coverage/
+        ├── e2e/
+        └── story-map.json    ← story markers, read by tests/test-record.sh
 ```
 
 ## Subdirectories

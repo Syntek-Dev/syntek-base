@@ -15,15 +15,18 @@ and recording each node as it is settled; the foundation every later planning ga
 - **Routing:** never author here free-hand — maps come from `workflows/01-feature-map/` via the
   `planner` skill loading `.claude/skills/wayfinder/SKILL.md`. CHART writes the map; RESOLVE
   updates it one node per session.
-- **Model:** Fable — charting a frontier and settling trade-offs is the reasoning tier
-  everything downstream builds on. Opus only for moving a resolved row, fixing a link, or
-  updating the index.
+- **Model:** Opus throughout — charting a frontier and settling trade-offs is substantive
+  judgement; moving a resolved row, fixing a link, or updating the index is a mechanical touch.
 - **Concrete steps:** copy `MAP-000-TEMPLATE.md` → `MAP-<FEATURE>.md` → fill destination, notes,
-  frontier (typed and blocker-wired), fog of war, out of scope → add the index row in
-  `CONTEXT.md` → on each RESOLVE session, move the settled node to Resolved decisions with a link
-  to what it became, and redraw the frontier.
+  frontier (typed and blocker-wired), fog of war, out of scope → set `**Status:** Charting` and
+  a `**Status note:**` → `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` →
+  on each RESOLVE session, move the settled node to Resolved decisions with a link to what it
+  became, redraw the frontier, advance the status (`Resolving` → `Blockers Clear` → `Complete`)
+  and regenerate the board. Once `Complete` with every slice cut, `pm-archive.sh MAP-<FEATURE>`
+  closes and archives it.
 - **Definition of done:** destination and bounds confirmed; every node typed and wired; every
-  resolved node links to its artefact; the index row current; British English; DD/MM/YYYY.
+  resolved node links to its artefact; the status line current and the board regenerated;
+  British English; DD/MM/YYYY.
 
 ## Guardrails
 
@@ -31,26 +34,36 @@ and recording each node as it is settled; the foundation every later planning ga
   map that grows the detail becomes the document nobody reads, which defeats its only purpose.
 - **Every resolved node graduates.** An answer left only here dies with the map. It belongs in
   `../15-DECISIONS/`, a plan, a story, `GAPS.md`, or `DEFERRED.md`.
-- **Register claimed is a claim, never a close.** A map records which `GAPS.md` / `DEFERRED.md`
-  entries the feature will retire, so the intent survives into the stories cut from it. Marking
-  `✅ CLOSED` or deleting a `DEFERRED.md` row is `workflows/22-implementation-documentation/`'s,
-  against shipped code — never done from a map.
+- **A claimed entry leaves the register** in the change that carries it here
+  (`.claude/CLAUDE.md` Section 9; procedure: `workflows/01-feature-map/` Step 2). _Register
+  claimed_ is the provenance record of what left.
 - **Fog of war stays honest.** Do not promote something to a node to make the map look complete —
-  a decision node with nothing behind it produces a decision made on nothing.
+  a decision node with nothing behind it produces a decision made on nothing. Nor leave an item
+  parked "with a trigger" and call the map `Complete`: each `F-NN` leaves by exactly one route
+  (wayfinder → _Fog of war_), and `pm-board.sh --warn` names a `Complete` map still listing fog.
 - **Do not settle nodes during charting.** CHART draws the frontier; RESOLVE settles it. Mixing
   them biases the map towards whatever was easiest to answer in the moment.
 - **The map is not a story list.** Stories are cut in `workflows/02-story-creation/` from the
   resolved map; a story written here bypasses its own gate.
 - **Blocking nodes gate stories; the rest do not.** Requiring a fully-resolved map before writing
   a story means never writing one.
+- **Status is one of five words, and `Closed` is never typed.** `Charting` · `Resolving` ·
+  `Blockers Clear` · `Complete` · `Closed`, colon inside the bold, owned by the `completion`
+  skill; only `pm-archive.sh` sets `Closed`.
+- **`archive/` is frozen.** A closed map is never edited (`pm-board.sh --check` fails on it, bar
+  the archive rename and `pm-archive.sh`'s reference rewrites); new work makes a new map. Look a
+  map up by name across this folder and `archive/`.
 - **Documentation only** — no code, secrets, or `.env` content.
 - Root-level artefacts under `src/` are exempt from the 300-line limit; `CONTEXT.md` and this
   file are not.
 
 ## Output & naming
 
-- **Hand-written:** every `MAP-<FEATURE>.md` and the index in `CONTEXT.md`.
+- **Hand-written:** every `MAP-<FEATURE>.md`.
 - **Template:** `MAP-000-TEMPLATE.md` — the copy source; do not delete or repurpose.
-- **Generated:** none.
-- Maps `MAP-<FEATURE>.md` (`SCREAMING-KEBAB-CASE`); nodes `N-###`; stories `US###`;
-  decisions `ADR-###`; dates DD/MM/YYYY.
+- **Generated:** `FEATURE-MAPS-BOARD.md` (committed) and `feature-maps-board.json` / `.html`
+  (gitignored), by `pm-board.sh --write` — never hand-edit. `archive/` is written only by
+  `pm-archive.sh`.
+- Maps `MAP-<FEATURE>.md` (`SCREAMING-KEBAB-CASE`); nodes `N-###`; fog items `F-##`
+  (append-only, never renumbered); slices `S-##`; stories `US###`; decisions `ADR-###`; dates
+  DD/MM/YYYY.

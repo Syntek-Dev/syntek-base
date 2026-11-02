@@ -33,7 +33,7 @@ Steps 2 and 3 are **first-mount only** — skip them when adding a tool to an ex
 
 ### Step 1 — Grill, then Design the Tool Surface
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:** code-review-graph
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and interview
 <%DEVELOPER_NAME%>. Settle, in this order:

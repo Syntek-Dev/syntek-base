@@ -1,10 +1,10 @@
 # Answering the Questions
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 31/10/2026
 
-Copier asks **thirty-four questions** on a web-only project. The optional surfaces add four more
+Copier asks **thirty-eight questions** on a web-only project. The optional surfaces add four more
 between them: two for mobile, one to offer the desktop surface once Rust is on, and one for the
-desktop app name — thirty-eight if you take all three. Most have a good default. A few are
+desktop app name — forty-two if you take all three. Most have a good default. A few are
 load-bearing and awkward to change later — this explains which is which.
 
 The formal contract is `../TEMPLATE-TOKENS.md`; `copier.yml` is its executable form. This file is <!-- doc-references: template-only -->
@@ -208,14 +208,17 @@ every project and are never asked about.
 
 ## Planning cadence
 
-Two questions setting the story-point ceiling that drives the planning loop. **Press Enter on
-both** — the defaults are the house values, and you cannot sensibly pick a number before your
-team has a measured velocity.
+Four questions: two set the story-point ceiling that drives the planning loop, and two set the
+windows a finished story waits through before it counts as complete. **Press Enter on all
+four** — the defaults are the house values, and you cannot sensibly pick a number before your
+team has a measured velocity or a client has shown how long it takes to review.
 
-| Question             | Default | Means                                                    |
-| -------------------- | ------- | -------------------------------------------------------- |
-| `SPRINT_CAPACITY_SP` | `11`    | Points that fill a sprint and trigger the `16`+`17` pass |
-| `SPRINT_GRACE_SP`    | `13`    | Hard ceiling, for when the next story would split badly  |
+| Question                | Default | Means                                                                 |
+| ----------------------- | ------- | --------------------------------------------------------------------- |
+| `SPRINT_CAPACITY_SP`    | `11`    | Points that fill a sprint and trigger the `16`+`17` pass              |
+| `SPRINT_GRACE_SP`       | `13`    | Hard ceiling, for when the next story would split badly               |
+| `CUSTOMER_REVIEW_WEEKS` | `2`     | Weeks a story may sit in `Customer Review` on staging                 |
+| `FEEDBACK_WEEKS`        | `4`     | Weeks after acceptance before a story is `Completed` and change costs |
 
 These drive the cadence in `project-management/docs/PLANNING-GUIDE.md`: you plan one story
 at a time through workflows `02`–`14`, and when the open sprint reaches the capacity figure you
@@ -224,18 +227,32 @@ run `16-sprint-plans` and `17-story-plans` for that sprint before starting the n
 Revisit them after two sprints, once you know what you actually deliver. Changing them later is a
 one-line edit in `project-management/docs/PLANNING-GUIDE.md` — no regeneration needed.
 
+The two week counts drive the story lifecycle's clock. A story is ready for `Completed` once
+`FEEDBACK_WEEKS` have passed since the customer accepted it, and never sooner than
+`CUSTOMER_REVIEW_WEEKS` plus `FEEDBACK_WEEKS` after it entered customer review; after `Completed`,
+further change is chargeable. A story whose `Customer review` flag is `N/A` skips the customer
+statuses and waits `FEEDBACK_WEEKS` from `Accepted`. Nothing blocks on them: they only decide when
+`pm-board.sh --warn` reports a story as ready to move on. The statuses themselves are owned by
+`.claude/skills/completion/SKILL.md`.
+
+**They are read from `.copier-answers.yml` at run time**, not rendered into any file, so the
+scripts default to `2` and `4` if the answers are absent. Change one by editing the answer there,
+deliberately and on a branch (`14-UPDATING.md`) — the next run of the scripts picks it up.
+
 ## Optional surfaces
 
-Three booleans, each adding a whole toolchain. All default to `false`, and all are cheap to turn
-on later with `copier update` — so answer `false` when unsure. `INCLUDE_DESKTOP` is only asked at
-all when `INCLUDE_RUST` is true, because Slint is Rust; each `true` also unlocks a name question
-(`MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID`, `DESKTOP_APP_NAME`).
+Four booleans. Three add a whole toolchain; the fourth adds none. All default to `false`, and all
+are cheap to turn on later with `copier update` — so answer `false` when unsure.
+`INCLUDE_DESKTOP` is only asked at all when `INCLUDE_RUST` is true, because Slint is Rust; the
+first three each unlock a name question on `true` (`MOBILE_APP_NAME` and `MOBILE_BUNDLE_ID`,
+`DESKTOP_APP_NAME`).
 
 | Question          | Turn it on when                                                                                         |
 | ----------------- | ------------------------------------------------------------------------------------------------------- |
 | `INCLUDE_MOBILE`  | The project ships a React Native app. Adds Node, pnpm and the Expo toolchain                            |
 | `INCLUDE_RUST`    | **This repository compiles Rust.** Adds `rustup` as a prerequisite for `uv sync` and a Rust image stage |
 | `INCLUDE_DESKTOP` | The project ships a **native desktop app** (Slint). Only offered when `INCLUDE_RUST` is true            |
+| `INCLUDE_WAGTAIL` | A **non-developer edits published content** through an admin UI. Adds no tree — see below               |
 
 The three name questions each `true` unlocks:
 
@@ -259,6 +276,20 @@ use Slint. The generated app does that with an `AboutSlint` widget, and the pack
 refuses to build a release without it. The tier does **not** cover embedded systems (an appliance
 screen, a POS terminal, a car dashboard), nor redistributing anything that exposes Slint's own
 APIs. If either applies to you, budget for a paid Commercial licence before you start.
+
+`INCLUDE_WAGTAIL` is the odd one out, and worth reading twice. **It installs nothing.** Wagtail
+lives inside the existing Django deployable rather than beside it, so there is no tree to gate —
+what the answer gates is `code/docs/WAGTAIL.md`, the guide that decides how Wagtail meets this
+stack's doctrine. Answering `true` gives you that guide and the obligation to follow it; the
+`pip` install, the settings and the URL routes are yours to add, for the reason in
+`12-EXTENDING.md` — this template never templates the contents of a shared file.
+
+Answer it on **who edits published content**, not on whether you want a CMS. If developers author
+pages in templates, answer `false`; the marketing pages are ordinary Django views and nothing is
+missing. Answer `true` only when someone who does not write code publishes through an admin UI.
+Everything expensive follows from that one fact: a second admin login against the same session, a
+second permission store, a page tree that takes ownership of URLs Django views would otherwise
+own, and an editor-authored personal-data sink in `wagtail.contrib.forms`.
 
 ## The ClickUp sync
 
@@ -295,6 +326,7 @@ Everything is recoverable; the cost varies.
 | `DEPLOYMENT_POSTURE`                  | Trivial, and expected — it is designed to be changed. Edit `.copier-answers.yml`, run `copier update`, update the register rows in the same commit. |
 | The seven platform providers          | Trivial — each records a choice behind an interface; edit the answer and the register row.                                                          |
 | `INCLUDE_MOBILE` · `RUST` · `DESKTOP` | Easy to turn **on** — `copier update` adds the tree. Turning one **off** leaves files behind that you delete by hand.                               |
+| `INCLUDE_WAGTAIL`                     | Easy either way _as an answer_ — it moves one guide. The **integration** it authorises is not reversible cheaply once pages exist.                  |
 | `DEVELOPER_*`, app names              | Easy — a scoped find-and-replace.                                                                                                                   |
 | `PRIMARY_DOMAIN`, `ENV_PREFIX`        | Moderate — dozens of occurrences, all in docs and config.                                                                                           |
 | `ORG_SLUG`                            | Moderate — also touches the server namespace and cache prefix.                                                                                      |

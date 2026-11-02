@@ -13,10 +13,11 @@ its GDPR requirements were met in code and closing its `../PLANNING/` plan with 
 ## How to work here
 
 - **Routing:** written during `project-management/workflows/22-implementation-documentation/` for any
-  story that processes personal data, loading the `gdpr-mechanics` skill (Fable) against the
+  story that processes personal data, loading the `gdpr-mechanics` skill against the
   story's plan in `../PLANNING/GDPR-PLAN-US###-*.md`.
-- **Model:** Fable — verifying data flows, lawful bases, retention, and erasure paths
-  against shipped code is substantive judgement, not a mechanical touch.
+- **Model:** Opus throughout — verifying data flows, lawful bases, retention, and erasure
+  paths against shipped code is substantive judgement; filing, renaming and date-stamping
+  are mechanical touches.
 - **Concrete steps:** copy `GDPR-IMPL-US000-TEMPLATE.md` →
   `GDPR-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → open the story's plan → document data
   flows and lawful bases, retention configured, rights verified, processor DPA status,

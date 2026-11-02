@@ -16,11 +16,12 @@ CSF 2.0, consumed by the posture assessments under `../ASSESSMENTS/`.
 
 - **Routing:** threat models run through `project-management/workflows/10-security-checks/`
   (`STEPS.md` + `CHECKLIST.md`) against `project-management/docs/SECURITY-GUIDE.md`, using
-  the `security` skill (Fable) — after wireframes are signed off and the GDPR review is
+  the `security` skill — after wireframes are signed off and the GDPR review is
   complete, before sprint planning. Write a story's `PLANNING/` model before implementing
   it; the code-side enforcement lives in `code/docs/SECURITY.md`.
-- **Model:** Fable for every threat model and review — STRIDE analysis and re-assessment
-  is substantive judgement; Opus only for a status flip, a date-header bump, or a rename.
+- **Model:** Opus throughout — the STRIDE analysis and re-assessment behind every threat
+  model and review is substantive judgement; a status flip, a date-header bump, or a
+  rename is a mechanical touch.
 - **Concrete steps:** copy the `PLANNING/` template →
   `THREAT-MODEL-PLAN-US###-<DESCRIPTOR>.md` → complete scope, the `TB1..TBn` table, and
   the STRIDE threat table → escalate blocking CRITICAL/HIGH findings to

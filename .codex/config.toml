@@ -1,0 +1,49 @@
+# Keep model choice in the user's configuration so the template does not pin a provider release.
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+# Existing scoped manuals stay discoverable while shared instructions are adopted.
+project_doc_fallback_filenames = ["CLAUDE.md"]
+
+[sandbox_workspace_write]
+network_access = false
+
+[mcp_servers.code-review-graph]
+command = "uvx"
+args = ["code-review-graph", "serve"]
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp"]
+env_vars = ["CONTEXT7_API_KEY"]
+
+[mcp_servers.mcp-mermaid]
+command = "npx"
+args = ["-y", "mcp-mermaid"]
+
+[mcp_servers.mcp-mermaid.env]
+npm_config_ignore_scripts = "true"
+
+# Web-grounded search, ask, reason and research over the Perplexity API. Needs
+# PERPLEXITY_API_KEY in the environment; without it this one server fails to start.
+#
+# tool_timeout_sec matches the server's own request deadline (PERPLEXITY_TIMEOUT_MS,
+# default 300000): perplexity_research runs for minutes, and Codex's default tool timeout
+# would cut it off first.
+[mcp_servers.perplexity]
+command = "npx"
+args = ["-y", "@perplexity-ai/mcp-server"]
+env_vars = ["PERPLEXITY_API_KEY"]
+tool_timeout_sec = 300
+
+# Primary-source reader. `get` / `bulk_get` return the page's own markdown or a
+# CSS-selected fragment, so a claim is cited to text the model actually read — which
+# WebFetch cannot supply, because it answers a prompt against the page with a small model
+# rather than handing back the source. See .claude/CLAUDE.md Section 3.2, tier 4.
+#
+# startup_timeout_sec is NOT optional: the default is 10s and a cold `uvx` resolves and
+# downloads ~110MB (the playwright and patchright driver bundles) before the server speaks.
+[mcp_servers.scrapling]
+command = "uvx"
+args = ["--from", "scrapling[ai]", "scrapling-mcp"]
+startup_timeout_sec = 120

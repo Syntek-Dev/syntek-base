@@ -146,4 +146,9 @@ Always preview before applying; behaviour must stay identical (workflow `11` gol
   `.git/hooks/pre-commit` after lefthook's, which silently makes the hook non-blocking; the graph's
   advisory `detect-changes` lives in `lefthook.yml` instead. After any `code-review-graph install`,
   run `lefthook install` to reclaim the hook so lint and format stay blocking.
-- Tool config lives in `.mcp.json`; the graph store is `.code-review-graph/` (gitignored).
+- Root `AGENTS.md` is maintained by this repository. When registering the graph server, use
+  the install command's `--no-instructions` option to preserve the shared entry point; inspect
+  the diff after changing any assistant configuration.
+- Tool config lives in `.mcp.json` for Claude Code and `.codex/config.toml` for Codex;
+  the graph store is `.code-review-graph/` (gitignored). Codex uses the explicit refresh
+  procedure above; Claude's lifecycle hooks do not run in Codex.

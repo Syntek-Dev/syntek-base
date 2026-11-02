@@ -44,6 +44,11 @@ After adding or changing a model, update the app's `admin.py`:
 - `auto_now` / `auto_now_add` fields must always be in `readonly_fields`.
 - Encrypted fields are not searchable — never add them to `search_fields`.
 
+> **CMS-only.** Skip if `code/docs/WAGTAIL.md` does not exist — the project has no CMS.
+> Wagtail's own tables carry no scope column and no row-security policy reads one. Whether
+> that is acceptable here is settled once and recorded, not re-decided per migration —
+> `code/docs/wagtail/ADMIN-AND-PERMISSIONS.md`.
+
 ### Step 2 — Generate Migration
 
 ```bash

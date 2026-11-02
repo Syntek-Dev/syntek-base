@@ -13,11 +13,12 @@ proving with code evidence that a `../PLANNING/` finding is fixed and closing it
 ## How to work here
 
 - **Routing:** written during `project-management/workflows/22-implementation-documentation/` once the
-  remediation story ships, using the `security` skill (Fable), against the finding in
+  remediation story ships, using the `security` skill, against the finding in
   `../PLANNING/VULN-PLAN-US###-*.md`. Standards:
   `project-management/docs/SECURITY-GUIDE.md`.
-- **Model:** Fable — confirming the fix, mapping each control to shipped code, and
-  judging residual risk is substantive; Opus only for a status flip or a date touch-up.
+- **Model:** Opus throughout — confirming the fix, mapping each control to shipped code,
+  and judging residual risk is substantive; a status flip or a date touch-up is a
+  mechanical touch.
 - **Concrete steps:** copy `VULN-IMPL-US000-TEMPLATE.md` →
   `VULN-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → open the finding → restate it → close
   each control with a code reference and named tests → record residual risk and any

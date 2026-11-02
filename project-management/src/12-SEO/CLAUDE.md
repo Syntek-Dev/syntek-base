@@ -18,9 +18,9 @@ verified, indexable feature.
   `workflows/12-seo-checks/` (after wireframe sign-off); `IMPLEMENTATION/` records come
   from `workflows/23-pr-and-review/`. Both governed by `docs/SEO-CHECKLIST.md`; run the
   heavier analysis through the `seo` skill.
-- **Model:** Fable for the SEO reasoning (acceptance criteria, gap analysis, verification
-  judgement); Opus for mechanical touches — dropping a Lighthouse `.json`, filing,
-  renaming, date-stamping.
+- **Model:** Opus throughout — the SEO reasoning (acceptance criteria, gap analysis,
+  verification judgement) is substantive; dropping a Lighthouse `.json`, filing, renaming
+  and date-stamping are mechanical touches.
 - **Concrete steps:** pick the phase → copy that folder's `US000-TEMPLATE.md` to
   `SEO-<PLAN|IMPL>-US###-<DESCRIPTOR>.md` → complete every SEO dimension for the story's
   route(s) → cross-link the `US###` and the paired plan/record → satisfy the workflow

@@ -3,7 +3,7 @@
 **A Django-monolith project template that ships with its own documentation system and a Claude
 Code skill suite.**
 
-[![Version](https://img.shields.io/badge/version-7.5.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-7.7.0-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 [![Template: Copier](https://img.shields.io/badge/template-copier-blue.svg)](https://copier.readthedocs.io/)
 [![Status: active](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/Syntek-Dev/syntek-base)
@@ -27,14 +27,16 @@ the product, and the application skeleton is almost incidental.
 
 Generate a project from it and you get, on day one:
 
-| You get                      | What it means                                                                                                                                                       |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **A Django 6 monolith**      | Django Ninja JSON API + server-rendered templates, HTMX, Alpine, token CSS. One deployable, no bundler, no build step.                                              |
-| **A three-layer doc system** | `code/`, `how-to/`, `project-management/` — each with reference guides and numbered step-by-step workflows, grouped into families by what they do.                  |
-| **Skills, loaded on demand** | Stack idioms (Django, HTMX, FastMCP), design grilling, architecture vocabulary, operator-doc craft, session handoff, scale planning, legal and compliance drafting. |
-| **A working dev stack**      | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Nginx — plus scripts to drive them. Celery and S3 storage are declared, not wired (see below).       |
-| **CI that already bites**    | GitHub Actions covering lint, format, type-check, tests, secrets, dependency advisories, line-count, stub and CSS-token audits.                                     |
-| **Compliance scaffolding**   | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.                                                       |
+| You get                      | What it means                                                                                                                                                                                                         |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A Django 6 monolith**      | Django Ninja JSON API + server-rendered templates, HTMX, Alpine, token CSS. One deployable, no bundler, no build step.                                                                                                |
+| **A three-layer doc system** | `code/`, `how-to/`, `project-management/` — each with reference guides and numbered step-by-step workflows, grouped into families by what they do.                                                                    |
+| **Skills, loaded on demand** | Stack idioms (Django, HTMX, FastMCP), design grilling, architecture vocabulary, operator-doc craft, session handoff, scale planning, legal and compliance drafting.                                                   |
+| **A working dev stack**      | Docker Compose for dev/test/staging/prod, Postgres 18, Valkey, Nginx — plus scripts to drive them. Celery and S3 storage are declared, not wired (see below).                                                         |
+| **CI that already bites**    | GitHub Actions covering lint, format, type-check, tests, secrets, dependency advisories, line-count, stub and CSS-token audits.                                                                                       |
+| **Compliance scaffolding**   | UK GDPR registers, STRIDE threat models, QA plans, SEO checklists, ADRs, and the workflows that produce them.                                                                                                         |
+| **A test record per story**  | Two records per story in `project-management/src/18-TESTS/` — a manual testing guide written from the specs before any code and walked once it ships, and an automated record generated from the suites' own reports. |
+| **A board per PM folder**    | Stories, sprints, feature maps and their plans each get a generated status board, plus an `archive/` that closed work moves into — `pm-board.sh` keeps them current and CI fails a stale one.                         |
 
 It is opinionated on purpose. The stack is fixed, the coverage floors are fixed, the file-length
 limits are fixed. What varies between projects is captured in the template tokens and nothing else.
@@ -79,21 +81,40 @@ WSL 2 to run its own engine, so this asks for no component you would not have.
 
 ### Claude Code plan
 
-The skill suite routes across **two model tiers** — `fable` for planning, specification and design
-work, `opus` for everything else. That is a deliberate split: the reasoning tier sets the
-foundation, the implementation tier builds on it.
+The skill suite runs on a **single model tier** — `opus` for everything, from planning,
+specification and design through to implementation, review and every mechanical touch. Every
+`model:` frontmatter declaration in the repository reads `opus`.
 
-Because of the Fable usage, this template is designed for **Claude Max 20× or above, or the
-Anthropic API**. On a smaller plan the Fable-tier skills (`story`, `sprint`, `planner`,
-`scale-planning`, and the design/compliance workflows) will not run as configured — you can
-retarget them to `opus` by editing the `model:` frontmatter, but you lose the tier separation the
-process is built around.
+Earlier versions split the work across two tiers, reserving `fable` for the design and
+specification skills. That split was retired on cost grounds; the `model:` frontmatter key
+remains as the carrier, so reintroducing a tier is an edit to those declarations rather than a
+structural change.
 
-**Using a different LLM provider?** Everything except the model routing is provider-agnostic — the
-documentation system, workflows, gates and directory conventions work with any coding agent. Expect
-to make one pass over `.claude/` to swap the model names and aliases for your provider's
-equivalents: `.claude/CLAUDE.md` Section 4, every skill's `model:` frontmatter in `.claude/skills/`, and
-the `model:` lines in `**/docs/*.md` and `**/workflows/**/*.md` routing frontmatter.
+Sessions still run Opus at `effortLevel: xhigh` with ultracode on, so this template is designed
+for **Claude Max 20× or above, or the Anthropic API**. On a smaller plan it will run, but expect
+to hit usage limits during a long implementation or review pass.
+
+### Codex and shared project instructions
+
+Claude Code and Codex enter through [`.ai/INSTRUCTIONS.md`](.ai/INSTRUCTIONS.md). Codex loads the
+tracked [`AGENTS.md`](AGENTS.md); Claude Code imports the shared instructions from its manual.
+`.agents/skills/` exposes the existing skill definitions, with one maintained copy per skill.
+`.ai/skills/` and `.ai/MEMORY.md` also point to the existing skills and project memory.
+These relative links are committed alongside their source files, so a fresh checkout carries
+the same skill set. Copier preserves the links and seeds a new project's memory separately.
+
+Open the repository in Codex and trust its project configuration to load `.codex/config.toml`.
+It defines workspace permissions and the same MCP servers as `.mcp.json`; model selection inherits
+your personal Codex settings. Context7 uses `CONTEXT7_API_KEY` from the environment. Perplexity,
+the cited web-answer tier between Context7 and web search in the lookup order, uses
+`PERPLEXITY_API_KEY` the same way; that key is optional, and without it only the Perplexity server
+fails to start. Use `/mcp` and `/skills` to inspect discovery in a fresh session. MCP commands require the existing host
+toolchain; no credentials are stored in the project configuration.
+
+Claude model names, fork metadata and hooks remain specific to Claude Code. The shared instructions
+explain how Codex follows the same project procedures using its available tools. Codex hooks are
+not installed by this setup; existing Git hooks and CI continue to own their checks. Concurrent
+coding sessions should use separate worktrees. See the [Codex configuration documentation](https://learn.chatgpt.com/docs/config-file/config-basic).
 
 ---
 
@@ -199,6 +220,11 @@ dependency is direct and the credit is owed accordingly.
 
 ### Platform and engineering craft
 
+The [official Codex documentation](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+informs the shared entry point, [skill discovery](https://learn.chatgpt.com/docs/build-skills)
+and [project configuration](https://learn.chatgpt.com/docs/config-file/config-basic).
+These interfaces are referenced; documentation text and upstream code are not bundled.
+
 The backend, background-job, observability and security doctrine draws on these. As above, **rules
 are derived and re-authored, never copied**, and **every row is self-citing** — it links the
 source and names what that source contributed, so the primary source _is_ the citation. The two
@@ -246,4 +272,4 @@ see [SECURITY.md](SECURITY.md).
 
 ---
 
-_Maintained by Syntek Studio · v7.5.0 · British English (en_GB) throughout_
+_Maintained by Syntek Studio · v7.7.0 · British English (en_GB) throughout_

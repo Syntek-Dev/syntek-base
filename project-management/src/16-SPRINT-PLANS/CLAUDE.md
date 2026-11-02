@@ -20,9 +20,9 @@ implementation depth lives there, never duplicated here.
   MoSCoW, and phase-breakdown conventions come from
   `project-management/docs/PLANNING-GUIDE.md`. Use `sprint`
   for the heavier drafting.
-- **Model:** Fable to draft a plan (story selection, phasing, Definition of Done);
-  Opus for mechanical touches — renaming, re-prefixing execution order, or
-  fixing a header.
+- **Model:** Opus throughout — story selection, phasing and the Definition of Done are
+  substantive judgement; renaming, re-prefixing execution order or fixing a header is a
+  mechanical touch.
 - **Concrete steps:** copy `00-SPRINT-PLAN-00-TEMPLATE.md` → pull stories from
   `../02-STORIES/` and the matching record in `../03-SPRINTS/SPRINT-##.md` →
   prioritise with MoSCoW → break into phases → link each story to its story plan in
@@ -48,13 +48,17 @@ implementation depth lives there, never duplicated here.
   plan carries only sprint-wide summaries and the story-plans index.
 - **Every plan needs a matching `../03-SPRINTS/SPRINT-##.md`** record — the two are
   paired; do not create an orphan plan.
-- No new file without going through the workflow; this is a flat leaf folder — do not
-  add sub-directories.
+- **No status line, no status cells.** The plan's board column is its `SPRINT-##`'s status;
+  the story-plans table carries no status column either. A plan is archived only by
+  `pm-archive.sh SPRINT-##`, with its sprint; `archive/` is frozen.
+- No new file without going through the workflow; apart from the `archive/` that
+  `pm-archive.sh` writes, this is a flat leaf folder — do not add sub-directories.
 
 ## Output & naming
 
 - **Hand-written:** every `##-SPRINT-PLAN-##.md` and the `00-…-TEMPLATE.md`.
-- **Generated:** none here — the client-facing `SPRINT-PLANS.pdf` is regenerated one
-  level up in `project-management/export/`, never hand-edited.
+- **Generated:** `SPRINT-PLANS-BOARD.md` (committed) and `sprint-plans-board.json` / `.html`
+  (gitignored), by `pm-board.sh --write`; the client-facing `SPRINT-PLANS.pdf` is regenerated
+  one level up in `project-management/export/`. Never hand-edit either.
 - Files `<exec-order>-SPRINT-PLAN-<sprint-number>.md` (both 2-digit zero-padded);
   stories referenced as `US###`, sprints as `SPRINT-##`; dates DD/MM/YYYY.

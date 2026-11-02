@@ -2,7 +2,7 @@
 workflow: 05-user-flow-design
 phase: design
 skills: [planner, global-workflow]
-model: fable
+model: opus
 ---
 
 # User Flow Design — Steps
@@ -27,12 +27,16 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ### Step 1 — Grill, then Identify the Product Area
 
-> **Model:** fable
+> **Model:** opus
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> — the product area's boundaries, the roles and their
 entry points, the decision nodes and their success/failure outcomes, and every
 personal-data touchpoint — before mapping. Record hard-to-reverse calls as an ADR.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story, the resolved nodes behind its feature-map slice, the flows earlier stories settled in
+`src/05-USER-FLOW/`, and the threat findings already filed in `src/10-SECURITY/`.
 
 Review the in-scope user stories and group them by product area (e.g. auth, client portal,
 public pages, admin content). Confirm which area this flow document covers.

@@ -19,8 +19,8 @@ metadata:
 conversation, and every phase below is a dispatch rather than work done here).
 
 **A story is not codeable without its plan.** `project-management/workflows/17-story-plans/`
-produces the master this sequence builds from; if there is no `STORY-PLAN-US###`, phase 1 makes
-one before anything else starts.
+produces the master this sequence builds from; if there is no
+`<exec-order>-STORY-PLAN-US###-<DESC>.md` for it, phase 1 makes one before anything else starts.
 
 ---
 
@@ -32,6 +32,9 @@ one before anything else starts.
   through `handoff`.
 - **Check the ground.** `git status` (the branch is `us###/short-description`) and
   `bash code/src/scripts/development/server.sh status` (the dev stack is up).
+- **Start the clock.** As the branch is created, `completion` moves the story `Pending` →
+  `In Progress` with a status-history row; the sprint moves `Planned` → `In Progress` with its
+  first story.
 
 ## The phase sequence
 
@@ -56,6 +59,11 @@ runtime enforces none of it.
 | 10  | Documentation               | _(none)_                     | **Hard gate before phase 11** — see below                            |
 | 11  | Commit                      | `git`                        | Conventional message, scoped to the story                            |
 
+**Phase 2's brief carries the story's manual testing guide** —
+`project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, authored from the specs at
+`17-story-plans` Step 7.2 — beside the story, its acceptance criteria and the seams. What
+`test-writer` does with it is that skill's own _Triage the manual guide_.
+
 ## The documentation gate
 
 Nothing commits until this is done, and it is the gate most often skipped:
@@ -63,7 +71,8 @@ Nothing commits until this is done, and it is the gate most often skipped:
 1. Every `CONTEXT.md` the feature affects is updated — directory trees, `**Last Updated**`, and
    any new constraint, pattern or decision.
 2. Every new directory the feature introduced carries a `CONTEXT.md` **and** its `CLAUDE.md`.
-3. The implementation records from phase 9 are written — owned by
+3. The implementation records from phase 9 are written, with the automated test record, and the
+   manual testing guide is walked — all owned by
    `project-management/workflows/22-implementation-documentation/`, which also refreshes the
    code-review-graph so the docs and the graph stay in lockstep.
 4. `GAPS.md` and `DEFERRED.md` are current.

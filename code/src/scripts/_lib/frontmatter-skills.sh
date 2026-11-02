@@ -67,7 +67,7 @@ frontmatter_skills() {
 
     seen {
       # A sibling top-level key ends a block sequence. It cannot end a flow sequence:
-      # `model: fable` never appears inside brackets, and a value that contains a colon
+      # `model: opus` never appears inside brackets, and a value that contains a colon
       # legitimately can.
       if (!inbr && /^[A-Za-z_][A-Za-z0-9_-]*:/) exit
       buf = buf " " $0

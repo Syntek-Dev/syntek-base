@@ -129,6 +129,8 @@ Two things to do on a freshly generated project:
 
 ```text
 <%PROJECT_SLUG%>/
+├── .ai/                                 ← shared AI instructions and aliases to skills and project memory
+├── .codex/                              ← Codex project settings and MCP connections
 ├── .claude/                             ← Claude Code configuration
 │   ├── CLAUDE.md                        ← authoritative operating manual: read-order, skills, plugins, rules
 │   ├── MEMORY.md                        ← project memory store (always read second, after CLAUDE.md)
@@ -165,6 +167,8 @@ Two things to do on a freshly generated project:
 │       ├── audit-negative-space.yml     ← the invariant register against the code, both directions
 │       ├── audit-render-slop.yml        ← the AI-slop family, rendered half
 │       ├── audit-routing-skills.yml     ← every skill named in routing frontmatter must exist
+│       ├── audit-mcp-parity.yml         ← `.mcp.json` and `.codex/config.toml` declare the same servers
+│       ├── audit-playwright-pin.yml     ← eight sites declare the Playwright pin; all must name one release
 │       ├── audit-seam-contract.yml      ← the build/operate seam in the server contract
 │       ├── audit-secrets.yml            ← scans for accidentally committed secrets
 │       ├── audit-skill-conformance.yml  ← every skill against the Agent Skills specification
@@ -174,6 +178,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-template-slop.yml      ← the AI-slop family, markup half
 │       ├── claude.yml                   ← Claude Code GitHub Actions integration
 │       ├── clickup-sync.yml             ← CLICKUP-ONLY — pushes story exports to ClickUp (push/PR)
+│       ├── pm-boards.yml                ← PM boards current and archive/ frozen; stale-status warnings
 │       ├── syntax-js-ts.yml
 │       ├── syntax-markdown.yml
 │       ├── syntax-python.yml
@@ -294,9 +299,9 @@ Two things to do on a freshly generated project:
 │   ├── REFERENCES.md
 │   ├── src/                             ← live PM artefacts (numbered to mirror workflows)
 │   │   ├── 00-ASSETS/
-│   │   ├── 01-FEATURE-MAPS/             ← MAP-<FEATURE>.md decision maps (wayfinder)
-│   │   ├── 02-STORIES/
-│   │   ├── 03-SPRINTS/
+│   │   ├── 01-FEATURE-MAPS/             ← MAP-<FEATURE>.md decision maps (wayfinder) · board · archive/
+│   │   ├── 02-STORIES/                  ← US###.md · CUT-PLAN.md · STORIES-BOARD.md (generated) · archive/
+│   │   ├── 03-SPRINTS/                  ← SPRINT-##.md · SPRINTS-BOARD.md (generated) · archive/
 │   │   ├── 04-DATABASE/
 │   │   ├── 05-USER-FLOW/
 │   │   ├── 06-BRAND-GUIDE/
@@ -309,9 +314,9 @@ Two things to do on a freshly generated project:
 │   │   ├── 13-API-DESIGN/
 │   │   ├── 14-LOGGING/
 │   │   ├── 15-DECISIONS/
-│   │   ├── 16-SPRINT-PLANS/
-│   │   ├── 17-STORY-PLANS/
-│   │   ├── 18-TESTS/
+│   │   ├── 16-SPRINT-PLANS/             ← sprint plans · board (shows the sprint's status) · archive/
+│   │   ├── 17-STORY-PLANS/              ← story plans · board (shows the story's status) · archive/
+│   │   ├── 18-TESTS/                    ← MANUAL/ guides (authored before code) · AUTOMATED/ records
 │   │   ├── 19-REVIEWS/
 │   │   ├── 20-FINDINGS/
 │   │   ├── 21-BUGS/
@@ -342,7 +347,8 @@ Two things to do on a freshly generated project:
 │       ├── 22-implementation-documentation/ ← docs closeout + graph refresh
 │       ├── 23-pr-and-review/
 │       └── 24-release/
-├── .agents/                             ← vendored third-party skills (Cloudinary) — see THIRD-PARTY-NOTICES.md
+├── .agents/                             ← Codex discovery links and vendored Cloudinary skills
+├── AGENTS.md                            ← Codex entry point into .ai/INSTRUCTIONS.md
 ├── .zed/                                ← Zed editor settings
 ├── handoffs/                            ← session handoff documents (the auto-compaction replacement)
 ├── questionnaires/                      ← /to-questionnaire — outbound discovery questionnaires
@@ -368,7 +374,7 @@ Two things to do on a freshly generated project:
 ├── pnpm-workspace.yaml
 ├── pyproject.toml                       ← Python tooling (ruff, basedpyright, uv)
 ├── skills-lock.json                     ← vendored Claude Code skills — source, version, content hash
-├── .mcp.json                            ← project MCP servers (code-review-graph, context7, mcp-mermaid)
+├── .mcp.json                            ← project MCP servers (code-review-graph, context7, mcp-mermaid, perplexity, scrapling)
 ├── .copier-answers.yml                  ← your generation answers — keep committed, `copier update` needs it
 └── uv.lock                              ← generated at project creation; commit it (Dockerfiles build --frozen)
 ```
@@ -563,11 +569,38 @@ Each story should define acceptance criteria, the affected layer (backend / fron
 any GDPR or accessibility considerations. Use the PM workflow
 `project-management/workflows/02-story-creation/` to write stories consistently.
 
+### Status, boards and the archive
+
+Stories, sprints and feature maps each carry a `**Status:**` line, and that line is the only
+source of truth for where the work stands. A story runs `Open → Pending → In Progress → In Review →
+Accepted`, then through `Customer Review` and `Customer Accepted` on staging (unless its `Customer
+review` flag is `N/A`), and is `Completed` once the feedback window has elapsed. Every transition
+appends a row to the story's _Status history_. The vocabulary, the rejection paths and the clock
+are owned by the `completion` skill (`.claude/skills/completion/SKILL.md`); the planning rules by
+`project-management/docs/planning/STORIES.md`.
+
+`01-FEATURE-MAPS/`, `02-STORIES/`, `03-SPRINTS/`, `16-SPRINT-PLANS/` and `17-STORY-PLANS/` each hold
+a generated board — `STORIES-BOARD.md` and its siblings, committed, plus a `.json` and a
+self-contained `.html` kanban that are gitignored. **Never hand-edit a board**:
+
+```bash
+bash project-management/src/00-ASSETS/scripts/pm-board.sh --write   # regenerate every board
+bash project-management/src/00-ASSETS/scripts/pm-board.sh --check   # fail on a stale board
+bash project-management/src/00-ASSETS/scripts/pm-board.sh --warn    # list work ready to move on
+bash project-management/src/00-ASSETS/scripts/pm-archive.sh US###   # close and archive one item
+```
+
+`pm-archive.sh` closes a `Completed` story, a sprint whose stories are all `Closed`, or a `Complete`
+map whose every slice is cut, and moves it — with its plan — into that folder's `archive/`.
+Archived files are frozen. Every script, the ClickUp export included, finds an artefact by its ID
+across the folder **and** its `archive/`.
+
 ### ClickUp story sync — client-facing exports
 
 Until the site is deployed, scrum boards are tracked in **ClickUp**. Each story's `**Status:**`
-header uses the ClickUp status vocabulary: `Open`, `Pending`, `In Progress`, `In Review`,
-`Accepted`, `Accepted Customer`, `Rejected`, `Rejected Customer`, `Blocked`, `Completed`, `Closed`.
+header uses the repository lifecycle above; a status your ClickUp list does not have — the three
+customer statuses most often — must be created there or mapped through `CLICKUP_STATUS_MAP`
+(`project-management/export/clickup/README.md`). Archived stories are still exported and synced.
 
 Only client-facing fields go to ClickUp. A generator produces **one read-only Markdown file per
 story** in `project-management/export/clickup/US###-CLIENT.md`, containing just the title, a
@@ -614,6 +647,10 @@ Written _after_ GDPR, security, and QA checks are complete. Records the definiti
 assignments, per-phase breakdown (backend → API → frontend → PR), developer constraints from the
 checks, and the sprint definition of done. Use `project-management/workflows/16-sprint-plans/`.
 
+A sprint runs `Planned → In Progress → Done → Closed`: `Done` once every story in it is `Accepted`
+or later, `Closed` once every story is `Closed`, when `pm-archive.sh SPRINT-##` archives it with its
+plan.
+
 Both use **MoSCoW** prioritisation (Must / Should / Could / Won't). See
 `project-management/docs/PLANNING-GUIDE.md` for the full format and conventions.
 
@@ -622,16 +659,11 @@ Both use **MoSCoW** prioritisation (Must / Should / Could / Won't). See
 Database schemas and entity-relationship diagrams are documented in
 `project-management/src/04-DATABASE/` using Mermaid diagrams.
 
-The `mcp-mermaid` MCP server renders Mermaid diagrams inside Claude Code sessions. Install it once
-on your machine:
+The `mcp-mermaid` MCP server renders Mermaid diagrams inside Claude Code sessions. It is declared in
+`.mcp.json` and `.codex/config.toml`, so there is nothing to install. Project page:
+[github.com/hustcc/mcp-mermaid](https://github.com/hustcc/mcp-mermaid).
 
-```bash
-npx -y @anthropic-ai/mcp-install mcp-mermaid
-```
-
-Full installation guide: [github.com/hustcc/mcp-mermaid](https://github.com/hustcc/mcp-mermaid)
-
-Once installed, use the `mcp__mcp-mermaid__generate_mermaid_diagram` tool inside Claude Code to
+Use the `mcp__mcp-mermaid__generate_mermaid_diagram` tool inside Claude Code to
 render diagrams from Mermaid syntax. Schema design is formalised before any migration is written —
 use `project-management/workflows/04-database-schema/` to go through the sign-off process.
 
@@ -673,12 +705,17 @@ begins.
 | QA plan (pre-development)       | `QA-US###-<DESCRIPTION>.md`      | `project-management/src/11-QA/PLANNING/`       |
 | QA review (post-implementation) | `QA-IMPL-US###-<DESCRIPTION>.md` | `project-management/src/11-QA/IMPLEMENTATION/` |
 | Sprint plan                     | `SPRINT-PLAN-##.md`              | `project-management/src/16-SPRINT-PLANS/`      |
-| Test status tracker             | `US###-TEST-STATUS.md`           | `project-management/src/18-TESTS/`             |
-| Manual testing guide            | `US###-MANUAL-TESTING.md`        | `project-management/src/18-TESTS/`             |
+| Test status tracker             | `US###-TEST-STATUS.md`           | `project-management/src/18-TESTS/AUTOMATED/`   |
+| Manual testing guide            | `US###-MANUAL-TESTING.md`        | `project-management/src/18-TESTS/MANUAL/`      |
 | Bug report                      | `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` | `project-management/src/21-BUGS/`              |
 
-Automated tests are written first (TDD) and their status is tracked in `TEST-STATUS.md`. Manual
-tests are documented in `MANUAL-TESTING.md` and run before any PR is promoted to `staging`.
+The manual testing guide is authored from the story's specifications before any code exists,
+beside its story plan (`project-management/workflows/17-story-plans/`), so it states what the
+build should do before there is a build for it to agree with. Automated tests are then written
+first (TDD) and their status is tracked in `US###-TEST-STATUS.md`. At the documentation closeout
+(`project-management/workflows/22-implementation-documentation/`), before the PR is raised, the
+automated record is written and every manual row walked and marked — `23-pr-and-review` verifies
+both records rather than writing them.
 
 ### PM workflows — when to use each
 
@@ -888,6 +925,19 @@ fix reveals a design problem, open a separate refactoring task using `11-refacto
 
 ## Claude Code Tooling
 
+Codex reads `AGENTS.md` and Claude Code imports `.ai/INSTRUCTIONS.md` from its manual. Both
+entry points reach the same project rules, skills and memory. `.agents/skills/` exposes the
+existing skill definitions to Codex; `.ai/skills/` and `.ai/MEMORY.md` are shared aliases.
+The physical sources remain under `.claude/`, except for vendored Cloudinary skills.
+
+Codex project settings and MCP servers live in `.codex/config.toml`; trust the project and
+start a fresh session to load them. The model inherits your personal settings. Context7 uses
+`CONTEXT7_API_KEY` and Perplexity uses `PERPLEXITY_API_KEY` from the environment; the Perplexity
+key is optional, and without it only that one server fails to start. `/mcp` and `/skills` show
+available integrations.
+Claude-specific model metadata and hooks are interpreted as described in `.ai/INSTRUCTIONS.md`.
+Codex hooks are not installed by this setup. Existing Git and CI checks remain in place.
+
 ### Skills
 
 Everything Claude Code does here runs from a skill under `.claude/skills/` (register of record:
@@ -897,8 +947,8 @@ a **reference skill** states conventions and runs inline; a **task skill** is a 
 dispatches `general-purpose` through the Agent tool — naming the skill to load — when a step
 needs a fresh context. Each phase dispatches separately, so no skill reviews its own work, and
 the multi-phase ones carry a **Documentation phase** as a hard gate before their commit phase.
-Skills run `opus` by default; the planning set (`story`, `sprint`, `planner`, `scale-planning`)
-runs `fable`. `sonnet` and `haiku` are never used.
+Every skill runs `opus` — planning, specification and design as well as implementation and
+review. `sonnet` and `haiku` are never used.
 
 | Skill                                               | Load when                                                                    |
 | --------------------------------------------------- | ---------------------------------------------------------------------------- |
@@ -961,12 +1011,18 @@ inspect the local environment for context. They do **not** run dev operations �
 
 ### MCP servers
 
-| Server              | Scope              | Always available                       |
-| ------------------- | ------------------ | -------------------------------------- |
-| `code-review-graph` | Repo — `.mcp.json` | Yes — auto-loaded for all contributors |
-| `context7`          | Machine-global     | Only if installed locally              |
-| `claude-in-chrome`  | Machine-global     | Only if installed locally              |
-| `mcp-mermaid`       | Machine-global     | Only if installed locally              |
+| Server              | Scope              | Always available                                                                                      |
+| ------------------- | ------------------ | ----------------------------------------------------------------------------------------------------- |
+| `code-review-graph` | Repo — `.mcp.json` | Yes — auto-loaded for all contributors                                                                |
+| `context7`          | Repo — `.mcp.json` | Yes — reads `CONTEXT7_API_KEY` from the environment                                                   |
+| `mcp-mermaid`       | Repo — `.mcp.json` | Yes                                                                                                   |
+| `perplexity`        | Repo — `.mcp.json` | Only with `PERPLEXITY_API_KEY` set — the key is optional; without it this server alone fails to start |
+| `scrapling`         | Repo — `.mcp.json` | Yes — `get` needs no browser; the browser tiers depend on the host                                    |
+| `claude-in-chrome`  | Machine-global     | Only if installed locally                                                                             |
+
+All five repo-scoped servers are also declared in `.codex/config.toml`, and
+`code/src/scripts/audits/mcp-parity.sh` holds the two files to the same set. `perplexity` is tier 3
+of the lookup order; how its answers may be used is `.claude/CLAUDE.md` Section 3.2.
 
 ---
 
@@ -1196,32 +1252,35 @@ backwards to satisfy itself.
 The register of record is `code/src/scripts/audits/CONTEXT.md` — it is authoritative if this
 table ever falls behind it.
 
-| Script                 | Purpose                                                                                  |
-| ---------------------- | ---------------------------------------------------------------------------------------- |
-| `cloc.sh`              | Count lines per file (warns at 750, fails at 800) and produce a language breakdown       |
-| `stubs.sh`             | Detect hard stubs (`NotImplementedError`, `// STUB`) and soft markers (TODO/FIXME/HACK)  |
-| `conflict-markers.sh`  | Unresolved git conflict markers in any text file, raw or reformatted by Prettier         |
-| `css-tokens.sh`        | Verify component CSS only consumes resolvable `var(--token)` design tokens               |
-| `security.sh`          | Dependency CVE audit (`pip-audit`, `pnpm audit`)                                         |
-| `static-analysis.sh`   | In-house Opengrep rules — Django template XSS, taint to sink, secrets in source          |
-| `dict-discipline.sh`   | A dictionary used as a record in domain code, where a named type belongs                 |
-| `css-slop.sh`          | Machine-authored CSS tells — inline gradients, uniform radius/shadow, flat backgrounds   |
-| `template-slop.sh`     | Markup tells — emoji chrome, pill-above-heading, whole-sentence bold                     |
-| `copy-slop.sh`         | Prose tells in rendered user-facing copy (`BRAND-VOICE.md` Section 4)                    |
-| `render-slop.sh`       | Repeated-device tells that need a viewport — one row signature recurring across screens  |
-| `copy-emdash.sh`       | Em dashes in user-facing copy                                                            |
-| `css-gradients.sh`     | Raw gradient literals outside the token layer                                            |
-| `seam-contract.sh`     | Every `**Source:**` in the server contract resolves (`BUILD-OPERATE-SEAM.md`)            |
-| `dependency-drift.sh`  | What a template update would change about your dependencies, before it changes them      |
-| `doc-references.sh`    | Every citation resolves, and no per-project instance is cited as real                    |
-| `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                 |
-| `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` Section 8)           |
-| `doctrine-drift.sh`    | Each rule in the claims table has exactly one home — not restated, dropped, or revived   |
-| `negative-space.sh`    | `INVARIANTS.md` and the code agree, by name, on both surfaces                            |
-| `skill-conformance.sh` | Every skill matches the Agent Skills spec and the six keys this project authors          |
-| `routing-skills.sh`    | Every skill named in routing frontmatter exists, and gated names co-vary with their flag |
-| `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                     |
-| `mobile-tokens.sh`     | **Mobile-only.** StyleSheet values resolve to generated tokens                           |
+| Script                 | Purpose                                                                                        |
+| ---------------------- | ---------------------------------------------------------------------------------------------- |
+| `cloc.sh`              | Count lines per file (warns at 750, fails at 800) and produce a language breakdown             |
+| `stubs.sh`             | Detect hard stubs (`NotImplementedError`, `// STUB`) and soft markers (TODO/FIXME/HACK)        |
+| `conflict-markers.sh`  | Unresolved git conflict markers in any text file, raw or reformatted by Prettier               |
+| `css-tokens.sh`        | Verify component CSS only consumes resolvable `var(--token)` design tokens                     |
+| `security.sh`          | Dependency CVE audit (`pip-audit`, `pnpm audit`)                                               |
+| `static-analysis.sh`   | In-house Opengrep rules — Django template XSS, taint to sink, secrets in source                |
+| `dict-discipline.sh`   | A dictionary used as a record in domain code, where a named type belongs                       |
+| `css-slop.sh`          | Machine-authored CSS tells — inline gradients, uniform radius/shadow, flat backgrounds         |
+| `template-slop.sh`     | Markup tells — emoji chrome, pill-above-heading, whole-sentence bold                           |
+| `copy-slop.sh`         | Prose tells in rendered user-facing copy (`BRAND-VOICE.md` Section 4)                          |
+| `render-slop.sh`       | Repeated-device tells that need a viewport — one row signature recurring across screens        |
+| `copy-emdash.sh`       | Em dashes in user-facing copy                                                                  |
+| `css-gradients.sh`     | Raw gradient literals outside the token layer                                                  |
+| `seam-contract.sh`     | Every `**Source:**` in the server contract resolves (`BUILD-OPERATE-SEAM.md`)                  |
+| `dependency-drift.sh`  | What a template update would change about your dependencies, before it changes them            |
+| `doc-references.sh`    | Every citation resolves, and no per-project instance is cited as real                          |
+| `docs-pairing.sh`      | `CONTEXT.md` orients, `CLAUDE.md` instructs (`DOCUMENTATION-PAIRING.md`)                       |
+| `docs-length.sh`       | Instructional `.md` within 300 cloc code lines (`.claude/CLAUDE.md` Section 8)                 |
+| `doctrine-drift.sh`    | Each rule in the claims table has exactly one home — not restated, dropped, or revived         |
+| `negative-space.sh`    | `INVARIANTS.md` and the code agree, by name, on both surfaces                                  |
+| `skill-conformance.sh` | Every skill matches the Agent Skills spec and the six keys this project authors                |
+| `routing-skills.sh`    | Every skill named in routing frontmatter exists, and gated names co-vary with their flag       |
+| `mcp-parity.sh`        | `.mcp.json` and `.codex/config.toml` declare the same MCP servers, commands and arguments      |
+| `playwright-pin.sh`    | Eight sites declare the Playwright pin - checks they agree with each other, never the host     |
+| `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                           |
+| `story-markers.sh`     | Tests carrying no `story` marker — warns and always exits `0`; they are absent from the record |
+| `mobile-tokens.sh`     | **Mobile-only.** StyleSheet values resolve to generated tokens                                 |
 
 ```bash
 ./code/src/scripts/audits/cloc.sh
@@ -1257,6 +1316,12 @@ A commit is rejected if any lint hook fails. Fix the reported issues and recommi
 A separate non-blocking pre-commit step — `clickup-export` (`precommit-clickup.sh`) — regenerates
 and re-stages the read-only `export/clickup/` ClickUp story exports whenever a source story or a
 generated file is staged, keeping them in sync with `02-STORIES/`.
+
+`pm-board.sh --write --staged` runs alongside it: when a PM artefact is staged it regenerates the
+`*-BOARD.md` boards from what is staged, and stops the commit once, naming any board to stage, so
+a commit never carries a stale one. `pm-board.sh --boards-for <paths>` names those boards before
+the commit, for the same `git add` — neither stages anything itself. CI runs `pm-board.sh --check`, which
+fails on a stale board or an edit inside an `archive/`, and `--warn`, which only reports.
 
 ---
 

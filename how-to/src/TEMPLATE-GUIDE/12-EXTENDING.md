@@ -127,7 +127,7 @@ Which one yours is, and why the fork target is fixed:
 
 Conventions to keep:
 
-- **`fable` for planning and design; `opus` for everything else.** Never `sonnet` or `haiku`.
+- **`opus` for everything**, planning and design included. Never `sonnet` or `haiku`.
 - **No skill reviews its own work.** Where yours produces something that needs an independent
   check, it dispatches `general-purpose` through the Agent tool and names the skill to load in
   the prompt, so each pass runs as its own dispatch. Nothing in the runtime enforces the

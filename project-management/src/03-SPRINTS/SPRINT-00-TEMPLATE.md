@@ -7,6 +7,14 @@
 
 **Goal:** [One sentence describing the primary outcome this sprint delivers.]
 
+**Status:** Planned
+
+<!-- Planned · In Progress · Done · Closed. The vocabulary and its transitions are owned by
+     `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here.
+     `Closed` is set only by `pm-archive.sh SPRINT-##` once every story in the sprint is Closed;
+     it moves this file and its sprint plan into archive/, where they are frozen. Run
+     `pm-board.sh --write` after any status edit. -->
+
 **Timeline:** TBD · **Capacity:** [used] / [total] SP
 
 <!-- FLAGS — the UNION of the member stories' flags, one row per gate.
@@ -306,12 +314,10 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 
 ### QA Tasks — Manual
 
-<!-- Remove this section when the QA flag names no manual type. -->
+<!-- Remove this section when the QA flag names no manual type. A pointer, never a list: each
+     story's manual tasks are the rows of its guide, written from its specs at 17-story-plans. -->
 
-- [ ] [UI behaviour not reachable by automation — e.g. drag-and-drop, colour picker, file upload]
-- [ ] Cross-browser: Chrome, Firefox, Safari (latest stable)
-- [ ] Responsive: verify layout at mobile, tablet, and desktop breakpoints (mobile-first) — Web (public pages)
-- [ ] Accessibility: keyboard navigation and screen reader on `[component]` — WCAG 2.2 AA
+- [ ] Every story's `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` (authored at `17-story-plans` Step 7.2) walked, every row marked
 
 ---
 

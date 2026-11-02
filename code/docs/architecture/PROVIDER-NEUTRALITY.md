@@ -1,14 +1,14 @@
 ---
 type: guide
 skills: [planner, codebase-design, domain-modelling]
-model: fable
+model: opus
 ---
 
 # Provider Neutrality — Interfaces, Seams and Substrate
 
 **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
 British English (en_GB) **Timezone:** <%TIMEZONE%>
-**Claude Model:** fable — deciding whether a dependency is a seam or substrate, and what evidence
+**Claude Model:** opus — deciding whether a dependency is a seam or substrate, and what evidence
 that claim needs
 
 How this project decides whether an infrastructure dependency is something a project may swap or

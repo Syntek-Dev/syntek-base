@@ -18,9 +18,9 @@ what shipped (`IMPLEMENTATION/`), plus the rendered ERDs in `ERD-DIAGRAMS/`.
   `workflows/04-database-schema/`, stage 2 from `workflows/18-consolidate-design-work/`,
   stage 3 from `workflows/22-implementation-documentation/`. Use the `database` skill for
   the heavier modelling.
-- **Model:** Fable for schema design, consolidation, RLS decisions, and PII classification —
-  all substantive judgement; Opus for mechanical touches (a status flip, a rename, re-exporting
-  an ERD).
+- **Model:** Opus throughout — schema design, consolidation, RLS decisions, and PII
+  classification are substantive judgement; a status flip, a rename, or re-exporting an ERD is a
+  mechanical touch.
 - **Concrete steps:** pick the stage → copy that folder's template using its naming pattern →
   complete every section → export the ERD to `ERD-DIAGRAMS/erd-<domain>.png` on sign-off →
   cross-link the `US###` and, for stages 2 and 3, the stage-1 designs involved.
@@ -32,7 +32,7 @@ what shipped (`IMPLEMENTATION/`), plus the rendered ERDs in `ERD-DIAGRAMS/`.
 
 - **Design, not code** — no migrations, models, secrets, or `.env` content land here; the
   schema is _specified_ in these documents and _enforced_ in `code/`.
-- **Never edit a `USER-STORY-IDEAS/` file once `17` has run.** Stage 1 is the frozen record of
+- **Never edit a `USER-STORY-IDEAS/` file once `18` has run.** Stage 1 is the frozen record of
   what each story asked for; consolidation is additive and cross-links back to it.
 - **Build from the consolidated schema, not a stage-1 design.** A migration written from a
   per-story design reintroduces the drift consolidation removed — this is the single most

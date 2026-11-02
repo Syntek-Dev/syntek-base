@@ -14,7 +14,7 @@ Where the per-story logging plan lands — the log surface set before the code e
 - **Routing:** written by `project-management/workflows/14-logging-checks/` with the `logging`
   skill. Inputs are the story, its API design (`../../13-API-DESIGN/PLANNING/`), and the
   schema's `[enc]` marks (`../../04-DATABASE/USER-STORY-IDEAS/`).
-- **Model:** Fable — what is worth logging and what must never appear is judgement.
+- **Model:** Opus — what is worth logging and what must never appear is judgement.
 - **Concrete steps:** copy `LOGGING-PLAN-US000-TEMPLATE.md` → one row per event → name every
   exclusion → cross-link the `US###`.
 - **Definition of done:** every event carries a level and a field list; every `[enc]` field in

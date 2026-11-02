@@ -13,8 +13,8 @@ _Template — copy to `REVIEW-US###-<DESCRIPTOR>.md`, replace every `{PLACEHOLDE
 | **Date**     | {DD/MM/YYYY}                                    |
 | **Verdict**  | Approve / Approve-with-nits / Changes-requested |
 
-**Codes from:** `../17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md` — the implementation
-master this review closes the loop on.
+**Codes from:** `../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` — the
+implementation master this review closes the loop on.
 **Story:** `../02-STORIES/US###.md` — the acceptance criteria the code must satisfy.
 
 ---
@@ -103,7 +103,7 @@ scripts — never raw `pytest` / `pnpm` / `docker` / `python`.
 
 ### 3.6 Accessibility (WCAG 2.2 AA)
 
-- [ ] Accessibility verified on affected route(s) — pytest markup assertions plus the manual WCAG 2.2 AA checklist.
+- [ ] Accessibility verified on affected route(s) — pytest markup assertions plus the accessibility journey walked in `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md`.
 - [ ] Keyboard operable; logical focus order; visible focus ring; focus trap in any modal.
 - [ ] Labels, contrast, and reduced-motion honoured; primary/secondary actions equal
       weight (no dark patterns).
@@ -127,9 +127,9 @@ verdict) before the PR merges. "None — approved as-is." is a valid entry.
 
 - **Verdict:** Approve / Approve-with-nits / Changes-requested.
 - **Reasoning:** {one or two lines — what carries the verdict}.
-- **Status transition:** {In Review → Accepted} (or `In Review → Rejected` /
-  `Changes-requested → In Review` on re-review). Use the canonical status vocabulary from
-  `project-management/docs/PLANNING-GUIDE.md`.
+- **Status transition:** {In Review → Accepted} (or `In Review → Rejected → Pending`; a
+  `Changes-requested` verdict is a review outcome, not a status). Use the canonical vocabulary
+  owned by `.claude/skills/completion/SKILL.md`, and append the story's `## Status history` row.
 
 A `Changes-requested` verdict **blocks the merge** until every Section 4 action is `Done` and the
 PR is re-reviewed.
@@ -148,8 +148,9 @@ rationale, or a forward-compatibility pattern accepted. Keep it factual.
 ## Cross-references
 
 - `../02-STORIES/US###.md` — the story under review
-- `../17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md` — the plan this code was written from
-- `../18-TESTS/US###-TEST-STATUS.md` · `US###-MANUAL-TESTING.md` — the test records this review reads against
+- `../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` — the plan this code was written from
+- `../18-TESTS/AUTOMATED/US###-TEST-STATUS.md` · `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` — the
+  test records this review reads against
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` — the paired QA review from the same PR
 - `../21-BUGS/` — file a `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` for any defect this review surfaces
 - `code/docs/SECURITY.md` — the OWASP / IDOR obligations Section 3.1 checks against
@@ -159,3 +160,11 @@ rationale, or a forward-compatibility pattern accepted. Keep it factual.
 > **Cross-cutting reviews** — an audit not tied to a single story (e.g. a cross-module
 > alignment or design-token sweep) is filed as `REVIEW-<DESCRIPTOR>-DD-MM-YYYY.md` instead
 > of `REVIEW-US###-*.md`; drop the story-specific header rows and the `US###` links.
+
+<!-- UPDATED 08/09/2026. Both story-plan citations gained the `<exec-order>-` build-order prefix;
+     they read "STORY-PLAN-US###-<DESCRIPTOR>.md" before.
+     `code/src/scripts/audits/doc-references.sh` reads backticked tokens even inside a comment, so
+     the superseded name is quoted in double quotes and never in backticks. The prefix is the
+     story's 2-digit position in the settled build order across the whole backlog, renumbered when
+     that order changes — copy it whole off the plan's filename rather than deriving it. Owner of
+     the rule: `../17-STORY-PLANS/CLAUDE.md`. -->

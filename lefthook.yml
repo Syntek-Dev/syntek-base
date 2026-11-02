@@ -18,6 +18,10 @@ pre-commit:
       glob: "*.{js,mjs,cjs,ts,tsx,json,yaml,yml,css,html,md}"
       exclude:
         - "project-management/export/**"
+        # Prettier rejects explicitly supplied symlinks before applying its ignore file.
+        - ".agents/**"
+        - ".ai/skills/**"
+        - ".ai/MEMORY.md"
       run: pnpm exec prettier --check {staged_files}
 
     # `uvx --from` rather than `uv run`, for the same reason as .github/workflows/
@@ -54,7 +58,17 @@ pre-commit:
       glob: "*.md"
       exclude:
         - "project-management/export/**"
-      run: pnpm exec markdownlint-cli2 {staged_files}
+        - ".agents/**"
+        - ".ai/skills/**"
+        - ".ai/MEMORY.md"
+      # --no-globs is load-bearing. .markdownlint-cli2.jsonc carries a top-level `globs`
+      # of **/*.md, which markdownlint-cli2 MERGES with the arguments it is given - so this
+      # leg linted the whole tree regardless of {staged_files}, and any dirty .md anywhere
+      # blocked every unrelated commit. Measured 17/09/2026: an untracked handoff from a
+      # parallel session blocked an infra commit that touched none of it. Whole-tree
+      # coverage is not lost; .github/workflows/syntax-markdown.yml runs `pnpm lint:md`
+      # over everything. The flag drops `globs` only - the `ignores` exclusions still apply.
+      run: pnpm exec markdownlint-cli2 --no-globs {staged_files}
 
     # code-review-graph advisory risk analysis of the staged change; never blocks the commit
     # (|| true). Replaces the raw hook `code-review-graph install` appends to
@@ -75,6 +89,29 @@ pre-commit:
     sync-trees:
       run: bash code/src/scripts/development/sync-trees.sh --write --staged
       stage_fixed: true
+
+    # Regenerate the five PM boards (01-FEATURE-MAPS, 02-STORIES, 03-SPRINTS, 16-SPRINT-PLANS,
+    # 17-STORY-PLANS) when anything in those folders is staged. It renders from the INDEX, so an
+    # unstaged status edit never reaches a committed board, WRITES the board into the working
+    # tree and RE-STAGES NOTHING — deliberately no stage_fixed (unlike sync-trees above, which
+    # restages its fixes and fails only on a TODO row): the board is staged by the author, with
+    # the status edit that moved it. When a staged *-BOARD.md is stale the script names it and
+    # exits 1, because a board left unstaged would sail through here and fail
+    # `pm-board.sh --check` in CI instead. Re-commit once it is staged.
+    #
+    # The stop is the fallback, not the procedure. The author's half is
+    # `pm-board.sh --boards-for <paths>`, run inside the `git add` itself: it renders the index
+    # those paths are about to produce, writes the boards that would change and prints their
+    # paths, so one `git add` carries them and this leg passes first time. It stages nothing
+    # either — the rule above holds on both sides (00-ASSETS/scripts/CLAUDE.md: never let a pm
+    # script stage or commit).
+    #
+    # The existence guard keeps the leg a no-op in any tree without the script, the same shape
+    # as the clickup-export leg below.
+    pm-boards:
+      run: |
+        [ -f project-management/src/00-ASSETS/scripts/pm-board.sh ] || exit 0
+        bash project-management/src/00-ASSETS/scripts/pm-board.sh --write --staged
 
     # The CONTEXT.md/CLAUDE.md split guard (code/docs/DOCUMENTATION-PAIRING.md): orientation
     # in one file, operating rules in the other. Unscoped by design — the pairing checks are
@@ -221,11 +258,13 @@ pre-commit:
           bash .github/scripts/shipped-readme.sh --self-test
           bash .github/scripts/shipped-memory.sh --self-test
           bash .github/scripts/shipped-registers.sh --self-test
+          bash .github/scripts/shipped-boards.sh --self-test
         fi
         bash .github/scripts/check-template-tokens.sh
         bash .github/scripts/shipped-readme.sh
         bash .github/scripts/shipped-memory.sh
         bash .github/scripts/shipped-registers.sh
+        bash .github/scripts/shipped-boards.sh
 
     # Regenerate the read-only ClickUp client exports from source stories and re-stage
     # them. Self-gating: exits instantly unless a story or generated file is staged.

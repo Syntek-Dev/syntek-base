@@ -1,6 +1,6 @@
 # Repository Tour
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 31/10/2026
 
 You have generated a project and it has a lot of directories. This is what they are and how to
 find your way.
@@ -52,7 +52,7 @@ you add a directory, you add both — CI and the documentation gate both check.
 
 ```text
 code/
-├── docs/            ← 37 guides plus 20 sub-directories: architecture, security,
+├── docs/            ← 40 guides plus 21 sub-directories: architecture, security,
 │                      testing, rendering, RLS, tokens, discoverability, visual design
 ├── src/
 │   ├── django/      ← the application
@@ -70,18 +70,18 @@ An oversized guide splits into a sub-directory beside it and the entry point bec
 **`code/src/scripts/` is the interface to everything** — around eighty shell scripts, grouped by
 what they do:
 
-| Group                            | Examples                                                                                                                                               |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `development/`                   | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `new-django-view.sh`, `template-update.sh`                                                    |
-| `database/`                      | `migrate.sh`, `reset.sh`, `backup.sh`, `restore.sh`, `manageusers.sh`, `verify-db-security.sh`                                                         |
-| `tests/`                         | `all.sh`, `backend.sh`, `api.sh`, `e2e-py.sh`, `backend-coverage.sh`, `mutmut.sh`                                                                      |
-| `syntax/`                        | `lint.sh`, `check.sh`, `format.sh`                                                                                                                     |
-| `audits/`                        | 24 of them — `cloc.sh`, `docs-length.sh`, `docs-pairing.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`, `skill-conformance.sh` |
-| `dependencies/`                  | `update.sh` — add, upgrade or remove a dependency and re-resolve                                                                                       |
-| `deployment/`                    | a scaffold — the sanctioned deploy entry point is not written yet                                                                                      |
-| `mobile/` · `rust/` · `desktop/` | present only where the project opted into that surface                                                                                                 |
-| `_lib/`                          | shared helpers the other groups source, never run directly                                                                                             |
-| `reports/`                       | generated output, gitignored — the one place a `CONTEXT.md` pair is not required                                                                       |
+| Group                            | Examples                                                                                                                                                       |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `development/`                   | `server.sh`, `logs.sh`, `shell.sh`, `new-django-app.sh`, `new-django-view.sh`, `template-update.sh`                                                            |
+| `database/`                      | `migrate.sh`, `reset.sh`, `backup.sh`, `restore.sh`, `manageusers.sh`, `verify-db-security.sh`                                                                 |
+| `tests/`                         | `all.sh`, `backend.sh`, `api.sh`, `e2e-py.sh`, `backend-coverage.sh`, `mutmut.sh`, `test-record.sh` (writes the `18-TESTS/AUTOMATED` record's generated block) |
+| `syntax/`                        | `lint.sh`, `check.sh`, `format.sh`                                                                                                                             |
+| `audits/`                        | 25 of them — `cloc.sh`, `docs-length.sh`, `docs-pairing.sh`, `stubs.sh`, `css-tokens.sh`, `security.sh`, `template-orphans.sh`, `skill-conformance.sh`         |
+| `dependencies/`                  | `update.sh` — add, upgrade or remove a dependency and re-resolve                                                                                               |
+| `deployment/`                    | a scaffold — the sanctioned deploy entry point is not written yet                                                                                              |
+| `mobile/` · `rust/` · `desktop/` | present only where the project opted into that surface                                                                                                         |
+| `_lib/`                          | shared helpers the other groups source, never run directly                                                                                                     |
+| `reports/`                       | generated output, gitignored — the one place a `CONTEXT.md` pair is not required                                                                               |
 
 Every script takes `--help`. Never run `python`, `pytest`, `pnpm` or `docker` directly — the
 scripts handle the container, the environment and the compose overrides for your branch.
@@ -117,6 +117,10 @@ project-management/src/
 └── 23-INCIDENTS/
 ```
 
+`01`, `02`, `03`, `16` and `17` each carry a generated `*-BOARD.md` — a kanban of the folder by
+status — and an `archive/` sub-folder where closed artefacts are frozen (`09-PROJECT-MANAGEMENT.md`
+→ _Status and boards_).
+
 The numbered `src/` folders mirror the numbered `workflows/` up to `17`. **`17-STORY-PLANS/` is
 what a developer actually codes from** — it references the sprint plan, the decisions, and every
 02–14 specification.
@@ -144,6 +148,41 @@ incident tracker, never in git. The practice is `how-to/docs/INCIDENT-PRACTICE.m
 ```
 
 Covered properly in `08-CLAUDE-CODE.md`.
+
+## `.ai/`, `.agents/`, `.codex/` — the same project, a second coding tool
+
+Claude Code is not the only host this repository expects. The rules, the skills and the project
+memory stay where they are, under `.claude/`; these three directories are how another tool reaches
+them without a second copy being written.
+
+```text
+.ai/                ← the shared entry point
+├── CONTEXT.md      ← what is here
+├── CLAUDE.md       ← how to work here
+├── INSTRUCTIONS.md ← how ANY coding tool loads this project: read order, host mapping
+├── skills/         → symlink to .claude/skills/
+└── MEMORY.md       → symlink to .claude/MEMORY.md
+.agents/skills/     ← Codex's skill discovery: one link per first-party skill, plus the
+                      vendored Cloudinary skills, which physically live HERE and are
+                      linked back the other way from .claude/skills/
+.codex/config.toml  ← Codex's own settings and MCP servers
+AGENTS.md           ← root entry point: read .ai/INSTRUCTIONS.md, then work
+```
+
+**The links are the point.** Editing a skill means editing `.claude/skills/<name>/SKILL.md` — the
+one physical file every host resolves to. Replacing a link with a copy is how the two tools start
+disagreeing about what the project's rules are.
+
+**MCP configuration is the one duplication a link cannot resolve**, because the formats differ and
+neither host reads the other's file. `.mcp.json` and `.codex/config.toml` must declare the same
+servers, commands and arguments; `code/src/scripts/audits/mcp-parity.sh` is the gate that says so.
+Per-host supervision keys — Codex's `startup_timeout_sec`, Claude's `${VAR}` interpolation — are
+expected to differ and are not drift.
+
+`.ai/INSTRUCTIONS.md` also carries the translation table for procedures written in Claude's
+vocabulary: what `model: opus`, an `Agent` dispatch, a `Workflow`, an `@` import or a `/skill`
+invocation mean in a host that has none of them. A procedure keeps its steps, gates and required
+independence whichever tool executes it.
 
 ## The four scratch directories
 
@@ -173,7 +212,8 @@ note answering a question about the template means nothing in a project built fr
 | `VERSION`                                             | The single source of truth — a new project starts at `0.1.0`        |
 | `CHANGELOG.md` · `RELEASES.md` · `VERSION-HISTORY.md` | The three version logs, all seeded empty                            |
 | `install.sh`                                          | Toolchain bootstrap                                                 |
-| `.mcp.json`                                           | The three repo-scoped MCP servers                                   |
+| `.mcp.json`                                           | The four repo-scoped MCP servers (mirrored in `.codex/config.toml`) |
+| `AGENTS.md`                                           | Codex's entry point into the shared instructions in `.ai/`          |
 | `.copier-answers.yml`                                 | Your generation answers — **commit this**, `copier update` needs it |
 
 ---

@@ -61,11 +61,8 @@ DJANGO_SETTINGS_MODULE = "config.settings.test"
 python_files = ["test_*.py", "*_test.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-markers = [
-    "unit: pure unit tests with no DB access",
-    "integration: tests that require a real database",
-    "e2e: end-to-end browser tests",
-]
+# markers = [...]  — not repeated here: the registered set is the three tier markers plus
+#                    story. What each one declares: TAXONOMY.md, section Markers.
 ```
 
 ### pytest-django fixture example

@@ -1,6 +1,6 @@
 # Your First Feature — Idea to Merged PR
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 31/10/2026
 
 A walk through the whole process once, so the numbered workflows stop being abstract. Assumes a
 generated project with the stack running (`04-QUICKSTART.md`), and that you have read
@@ -167,7 +167,7 @@ Only the ones your story actually touches:
 
 Each writes its artefact under the matching numbered `src/` folder, tied to US001.
 
-These run on **Fable** — the reasoning tier. Specification is where thinking is cheapest.
+Specification is where thinking is cheapest — spend the effort here, before code exists.
 
 ## 4. Decide and plan
 
@@ -177,8 +177,16 @@ review six weeks later.
 **Sprint plan** (`16-sprint-plans/`) — the definitive assignments and per-phase breakdown, written
 _after_ the gates because they constrain it.
 
-**Story plan** (`17-story-plans/`) — `STORY-PLAN-US001-*.md`. **This is what you code from.** It
-references the sprint plan, the decisions, and every specification above it.
+**Story plan** (`17-story-plans/`) — `<exec-order>-STORY-PLAN-US001-<DESCRIPTOR>.md`; the 2-digit
+prefix is the story's place in the settled build order across the backlog, so a first feature with
+nothing built ahead of it is `01-`. **This is what you code from.** It references the sprint plan,
+the decisions, and every specification above it.
+
+**Manual testing guide** (same workflow) —
+`project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, written beside the plan from the
+specifications alone, every result left blank. It says what the build should do before there is a
+build to agree with. The Red phase turns every row a test can reach into one, and every row —
+automated or not — is still walked by hand at the documentation gate (Section 8).
 
 ## 5. Branch
 
@@ -211,7 +219,17 @@ Test-first throughout — Red, Green, Refactor:
 bash code/src/scripts/tests/backend.sh            # full suite
 bash code/src/scripts/tests/backend.sh -k test_x  # one test
 bash code/src/scripts/tests/all.sh --coverage     # enforce the floor
+bash code/src/scripts/tests/test-record.sh US###  # the story's test record — see Section 8
 ```
+
+`test-record.sh` is deliberately **not** a runner — it reads the reports a run leaves in
+`code/src/scripts/tests/reports/`, so a red run records as faithfully as a green one, and the
+runners' exit codes stay untouched. It only sees a test that declares the story it belongs to:
+tag each one as you write it — `@pytest.mark.story("US###")` on a pytest test (inheritable from
+its class or module), `tags: [US###]` in a Bruno request's `meta` block. Nothing blocks on a
+missing tag; `bash code/src/scripts/audits/story-markers.sh` lists them and exits 0. The cost is
+silent — an untagged test is simply absent from the record. Full marker rules:
+`code/docs/testing/TAXONOMY.md` — _Markers_.
 
 Migrations:
 
@@ -241,7 +259,15 @@ owns it:
 
 - update the directory tree in every affected `CONTEXT.md`
 - create `CONTEXT.md` + `CLAUDE.md` in every new directory
-- write the implementation records — GDPR, security, QA, SEO, API, review, tests
+- write the implementation records — GDPR, security, QA, SEO, API, review
+- write the automated test record,
+  `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md`, whose suite, coverage and
+  per-test tables `test-record.sh` generates between its `BEGIN GENERATED` markers, and **walk**
+  the manual testing guide written at `17`,
+  `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`, a tester or Claude Chrome
+  marking every row as it is executed. A row the build deliberately departed from is amended with
+  its reason and recorded as a finding — never quietly rewritten to match. **Workflow `22` writes
+  the one and walks the other**; `23-pr-and-review` only verifies them
 - route findings: `20-FINDINGS/`, bugs to `21-BUGS/`, refactors to `22-REFACTORING/`
 - update `GAPS.md` and `DEFERRED.md`
 - refresh the code-review-graph
@@ -264,8 +290,15 @@ us###/feature  →  testing  →  dev  →  staging  →  main
 
 ## 10. Close the story
 
-The `completion` skill flips the status once the work is verified, and updates the story index and
-sprint record.
+A story is not closed in one step. The `completion` skill records each transition on its
+`**Status:**` line with a row in its _Status history_: `In Review` while review and QA run, then
+`Accepted` once both pass — or `Rejected`, which sends it back to `Pending`. From `Accepted` it goes
+to the customer on staging (`Customer Review`, then `Customer Accepted` or `Customer Rejected`),
+unless its `Customer review` flag is `N/A`. It becomes `Completed` only once the feedback window
+has elapsed, and `pm-archive.sh US###` then closes it and moves it, with its plan, into
+`02-STORIES/archive/`. The boards regenerate when a commit
+touches a PM artefact; the hook stops that commit once so you can stage the regenerated board. The statuses and the clock are the
+`completion` skill's to define (`.claude/skills/completion/SKILL.md`).
 
 ---
 

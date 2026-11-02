@@ -16,8 +16,8 @@ The three planning sub-documents — `CADENCE.md` (the loop and the point ceilin
 - **Routing:** reference guides, not artefacts. Read the one matching the artefact being written;
   edit it when the convention changes. Enter via `../PLANNING-GUIDE.md`. Substantive edits load
   the `sprint` or `story` skill.
-- **Model:** Fable — planning conventions are design decisions about how work is shaped; Opus for
-  mechanical touches (a link fix, a version-header bump, a renamed path).
+- **Model:** Opus throughout — planning conventions are design decisions about how work is
+  shaped; a link fix, a version-header bump or a renamed path is a mechanical touch.
 - **Concrete steps:** edit the owning sub-document → check the other two do not now contradict it
   → update `../PLANNING-GUIDE.md` if the split itself changed → keep each file ≤ 300 code lines.
 - **Definition of done:** the convention is stated in exactly one of the three; the index table in

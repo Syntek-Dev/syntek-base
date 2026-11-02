@@ -14,15 +14,15 @@ re-asking the same questions.
 
 ## How to work here
 
-- **Routing:** run `STEPS.md` in order; drive with the `planner` skill (Fable), loading
+- **Routing:** run `STEPS.md` in order; drive with the `planner` skill, loading
   `.claude/skills/wayfinder/SKILL.md`. Grilling nodes open `grill-with-docs`; research nodes use
   `research`; tracer nodes use `prototype`, which **any** node may also be probed with before it
   resolves. **Build nodes are specified onto their slice row and never performed here** — the work
   belongs to the story `02-story-creation` cuts. The hard gate — the wayfinder skill itself — must
   be read before Step 1.
-- **Model:** Fable throughout — mapping a decision frontier and settling trade-offs is the
-  reasoning tier the whole implementation builds on. Opus only for mechanical touches: a link
-  fix, moving a resolved row, a date bump.
+- **Model:** Opus throughout — mapping a decision frontier and settling trade-offs is
+  substantive judgement; a link fix, moving a resolved row or a date bump is a mechanical
+  touch.
 - **Concrete steps:** load the context in the documented order → CHART (pin the destination, map
   the frontier breadth-first, wire blocking edges, write the map with its **Slices** manifest,
   fire research nodes) → then RESOLVE a batch of related nodes per session until no blocker
@@ -46,6 +46,8 @@ re-asking the same questions.
   graduates to. A map that accumulates the reasoning becomes the thing nobody reads.
 - **Fog of war is honest, not embarrassing.** Something in scope but not yet sharp enough to
   state as a decision goes there. Forcing it into a node produces a decision made on nothing.
+  **Leaving it is honest too, and has exactly one route per item** — the wayfinder skill's
+  _Fog of war_ section; a map is not `Complete` while one is still listed.
 - **Do not write stories here.** A slice graduates to a **Slices** row carrying its flag
   manifest — never to `US###.md`, and never with a story number reserved. `02-story-creation`
   cuts the story and allocates the number. A story written during discovery bypasses its own gate.
@@ -55,10 +57,8 @@ re-asking the same questions.
   write-only. Every open entry gets a verdict — closes / blocks / unrelated — because a feature
   charted without them re-decides what a past story already deferred, and silently leaves the debt
   it happens to retire unrecorded.
-- **Claim, never close.** This workflow writes claimed entries onto the map; it does not mark
-  `✅ CLOSED` or delete a `DEFERRED.md` row. That is
-  `22-implementation-documentation`'s, against shipped code — editing the register here puts a gap
-  in the closed state with nothing built behind it.
+- **A claim removes the entry** — carried on the map, then deleted from the register in the same
+  change (`.claude/CLAUDE.md` Section 9; procedure: `STEPS.md` Step 2).
 - **Step 0 suggests; it never chooses.** Candidates are put to <%DEVELOPER_NAME%> ranked, and nothing is
   written until one is picked. A candidate that is really one story routes to `02-story-creation`
   rather than being inflated into a map.
@@ -68,7 +68,11 @@ re-asking the same questions.
 ## Output & naming
 
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`; the map `MAP-<FEATURE>.md` under
-  `src/01-FEATURE-MAPS/`.
+  `src/01-FEATURE-MAPS/`, its `**Status:**` (`Charting` → `Resolving` → `Blockers Clear` →
+  `Complete`; vocabulary owner: the `completion` skill) and `**Status note:**`.
+- **Generated:** the map's row on `src/01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md`
+  (`pm-board.sh --write`); the move to `archive/` with `Closed`, by `pm-archive.sh` once every
+  slice is cut — the archived map is frozen.
 - **Produced by following it:** ADRs in `src/15-DECISIONS/`, `GAPS.md`/`DEFERRED.md` entries, and
   the resolved-decision links the map carries.
 - Maps `MAP-<FEATURE>.md` — `<FEATURE>` in `SCREAMING-KEBAB-CASE`; workflow folders

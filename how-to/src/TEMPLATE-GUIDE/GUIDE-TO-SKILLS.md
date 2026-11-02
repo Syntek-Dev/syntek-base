@@ -1,6 +1,6 @@
 # Guide to Skills — What Each One Does and How to Reach It
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 31/10/2026
 
 There are more skills here than anyone should meet at once. You do not have to. **Describe the work
 in plain English and the right one loads itself** — that is the design, and for most of a working
@@ -63,7 +63,7 @@ other — they meet at an artefact: wayfinder graduates a buildable slice into
 
 ## Plan and decide
 
-Design work runs on the **Fable** tier, because thinking is cheapest before code exists.
+Design work is where the thinking is cheapest, so it is where the effort belongs.
 
 | Skill               | What it is for                                                      |
 | ------------------- | ------------------------------------------------------------------- |
@@ -73,7 +73,7 @@ Design work runs on the **Fable** tier, because thinking is cheapest before code
 | `grilling`          | The interview engine itself. Design skills load it; you do not      |
 | `planner`           | Turn a story into a phased, independently-testable plan             |
 | `sprint`            | Slice written stories into a balanced, dependency-ordered sprint    |
-| `completion`        | Record verified work as complete in the PM artefacts                |
+| `completion`        | Advance a story, sprint or map through its status lifecycle         |
 | `/research`         | A primary-source-cited note that feeds a decision                   |
 | `/prototype`        | A throwaway spike answering exactly one question                    |
 | `/to-questionnaire` | The answer lives with a client or vendor, not in the session        |

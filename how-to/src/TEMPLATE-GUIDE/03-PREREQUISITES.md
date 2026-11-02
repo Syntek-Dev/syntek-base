@@ -159,16 +159,21 @@ hostnames.
 
 ## Optional
 
-| Tool                        | For                                                                                                                                                                                                     |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Claude Code**             | The skills, hooks and MCP wiring. The template is far less useful without it. The suite uses the Fable tier, so it assumes **Claude Max 20× or above, or the Anthropic API** — see `08-CLAUDE-CODE.md`. |
-| **Bruno**                   | Running the committed API collections through a GUI.                                                                                                                                                    |
-| **`gh` CLI**                | PR creation from the terminal; the `pr` skill uses it.                                                                                                                                                  |
-| **Claude Chrome extension** | Rendered UI inspection and browser automation. Nothing in the repository supplies it.                                                                                                                   |
+| Tool                        | For                                                                                                                                                                                                                   |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Claude Code**             | The skills, hooks and MCP wiring. The template is far less useful without it. The suite runs on Opus at extra-high effort, so it assumes **Claude Max 20× or above, or the Anthropic API** — see `08-CLAUDE-CODE.md`. |
+| **Bruno**                   | Running the committed API collections through a GUI.                                                                                                                                                                  |
+| **`gh` CLI**                | PR creation from the terminal; the `pr` skill uses it.                                                                                                                                                                |
+| **Claude Chrome extension** | Rendered UI inspection and browser automation. Nothing in the repository supplies it.                                                                                                                                 |
 
-The three MCP servers the project actually depends on — `code-review-graph`, `context7` and
-`mcp-mermaid` — need **no installation**. They are declared in the shipped `.mcp.json` and
-launched on demand through `uvx` and `npx`.
+The five MCP servers the project ships — `code-review-graph`, `context7`, `mcp-mermaid`,
+`perplexity` and `scrapling` — need **no installation**. They are declared in the shipped
+`.mcp.json` (and in `.codex/config.toml`, which must declare the same set) and launched on demand
+through `uvx` and `npx`.
+
+**`perplexity` needs one optional thing more: a `PERPLEXITY_API_KEY` in your environment.** It is
+the cited web-answer tier of the lookup order, between `context7` and web search. Without the key
+only that one server fails to start; everything else runs as normal.
 
 ---
 

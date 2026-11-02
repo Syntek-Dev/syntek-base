@@ -216,6 +216,26 @@ migration, never as a literal. See `code/docs/DESIGN-TOKENS.md`.
 A source file passed 800 lines. Split it — the limit is 750 with grace to 800, and it is a design
 signal rather than an arbitrary rule.
 
+### Playwright says `Executable doesn't exist at .../chromium-<rev>`
+
+Playwright ties each release to an exact Chromium **revision**, so the browser that is installed
+and the release that drives it have to be the same pair. Install it the way the audit asks and the
+pair holds:
+
+```bash
+uv run --no-project --with 'playwright==1.61.0' playwright install chromium
+```
+
+**Do not drop the `==` and take the latest.** An unpinned install resolves whichever release is
+newest today, downloads that release's revision, and the pinned detector then asks for a different
+one — which is this error, arrived at by following an instruction.
+
+If your host supplies browsers as a **bundle** instead — a Nix store path, a distro package, a
+warmed CI cache — it has one revision and only the matching Playwright release can launch. That is
+provisioning, not a repository fault: take the matching release from whoever owns the bundle, put
+it on `PLAYWRIGHT_PIN` in `code/src/scripts/audits/render-slop.sh`, and run
+`code/src/scripts/audits/playwright-pin.sh` — it names every other site that has to follow.
+
 ### The stub audit fails
 
 `NotImplementedError`, `TODO`, `FIXME` or `HACK` reached a commit. Either finish it, or move it to

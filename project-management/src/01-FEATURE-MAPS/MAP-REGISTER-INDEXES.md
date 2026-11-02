@@ -3,7 +3,10 @@
 **Charted**: 28/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Charted at**: `7a82095` — **graduated out of `MAP-RULE-OWNERSHIP.md` N-010, which settled the
 map-folder case and claimed the rest (Q38, 28/08/2026)**
-**Status**: Blockers clear — stories may start
+**Status:** Blockers Clear
+**Status note:** cutting. `S-01` + the narrowed `S-02` → `US010`,
+new `S-05` → `US011` (both 20/09/2026). Fog `F-01`–`F-05` left by their routes 01/11/2026
+(`F-03` to `GAPS.md` with its trigger); `F-06`, added 05/09/2026, is open, so not `Complete`
 **Frontier open**: 0 · **Blocking open**: 0
 
 > **Written from `MAP-000-TEMPLATE.md`.** Its instruction _"add a row to `CONTEXT.md` → Map index"_
@@ -74,9 +77,18 @@ resolve sittings rather than inherited, so neither was in the triage above.
 **Creating an entry is not claiming one.** A claim promises retirement; only the second earns one,
 and it is retired when `S-01` ships, never by this map.
 
-**This is a claim surface, not a close surface.** Nothing here edits either register to mark
-anything done; closing belongs to `workflows/22-implementation-documentation/`, against shipped
-code.
+**Re-triaged 01/09/2026 during the fog pass, and both rows above are stale in the register.**
+Commit `637c3c3` (31/08/2026, _"GAPS.md keeps only what waits"_) removed both entries: the
+`SEEDED` one was charted onto `MAP-SCRIPT-GUARDS.md` (its N-005 and slice `S-02`), and the Plans
+Index one was dropped as already claimed here. **The claim survives on this map; the register rows
+do not** — which is the correct state, since a claim is a promise and the work is unshipped. The
+live register holds six dated entries, three loose items and three standing limitations; **0 closes
+· 0 blocks · 6 unrelated**, and this map's fog pass **wrote a seventh** (the story `**Status:**`
+vocabularies) rather than claiming it.
+
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9) — the state the register has been in for the
+Plans Index entry since 31/08/2026. `S-01` carries it; `22-implementation-documentation` never
+closes a claimed entry.
 
 ---
 
@@ -218,11 +230,11 @@ Recorded in Fog of war rather than charted here.
 ### Batch C — N-003 and N-004 settled 31/08/2026
 
 **N-003 — the gate asserts three things, and instance recognition turned out to be mechanical.**
-A file in one of the seven is an instance **iff** it is a tracked `.md` that is not `CONTEXT.md`,
-not `CLAUDE.md`, not `*TEMPLATE*`, and not the index itself. Exceptionless: `18-TESTS` was the
-known counter-example and is not one of the seven, and the seeded
-`project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md` is a genuine instance that Batch A
-already gave a row.
+A file in one of the seven is an instance **iff** it is tracked, is not `*TEMPLATE*` or the index
+itself, and matches its register's **positive filename pattern**, in Q36's order: `MAP-*.md`,
+`US[0-9]{3}.md`, `SPRINT-[0-9]{2}.md`, `ADR-*.md`, `[0-9]{2}-STORY-PLAN-US[0-9]{3}-*.md`, `FINDING-*.md`, `BUG-*.md`.
+**Corrected 27/09/2026 from the charted denylist** (Sam, settled 27/09/2026, grilling round 3 Q22; end note), which admitted any other `.md` — `project-management/src/02-STORIES/CUT-PLAN.md` is not an instance. Exceptionless: `18-TESTS`
+is not one of the seven, and the seeded `project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md` still matches — the genuine instance Batch A gave a row.
 
 | Clause   | Asserts                                                 |
 | -------- | ------------------------------------------------------- |
@@ -323,22 +335,33 @@ never carried it. `S-04` repairs it while it is there.
 
 Cut 31/08/2026, at Step 8a, on N-001 — the only blocking node — being settled. **Rows, not
 stories:** per Sam's standing preference `02-story-creation` does not run until the frontier is
-empty, so the `Story` column stays `—`.
+empty, so the `Story` column stayed `—`.
+
+**That preference is discharged, and two rows became stories on 20/09/2026.** The frontier has
+been empty since 31/08/2026, and `02-story-creation` cut `S-01` and the narrowed `S-02` as
+`US010`, and the new `S-05` as `US011`. The `Story` column is now what Step 4 intends it to be —
+a progress view of what has been cut.
 
 **The 13-flag roster is application-shaped and this work is template plumbing**, so most flags are
 `N/A` and omitted. That is the honest manifest, not a thin one.
 
-| Slice | Story | Title                                                    | Nodes | Acceptance | Flags                                                                                                                                                                       |
-| ----- | ----- | -------------------------------------------------------- | ----- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| S-01  | —     | Wire seven seeded register indexes                       | TBD   | TBD        | QA: unit (`shipped-artefacts.sh --self-test`), integration (generation smoke, `audit-template.yml`) — seed-lands, seed-blank                                                |
-| S-02  | —     | Backfill `MAP-INDEX.md`, and correct the rows it indexes | TBD   | TBD        | QA: manual — row-per-map, counts match each header, and no `Umbrella ADRs` row still asserts the reversed no-ADR rule                                                       |
-| S-03  | —     | The index gate, and the duty it enforces                 | TBD   | TBD        | QA: unit (`register-indexes.sh --self-test`, `broken/`+`clean/` fixtures), integration (lefthook + `audit-register-indexes.yml`) — missing-row, orphan-row, status-mismatch |
-| S-04  | —     | Artefact frontmatter across `project-management/src/`    | TBD   | TBD        | QA: unit (mirror `--check`, `doc-references.sh --self-test`), manual — 62 artefacts, PDF export unaffected                                                                  |
+| Slice | Story   | Title                                                                                   | Nodes                          | Acceptance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Flags                                                                                                                                                                                                                                     | Carries |
+| ----- | ------- | --------------------------------------------------------------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| S-01  | `US010` | Wire seven seeded register indexes                                                      | N-001 ✅ · N-002 ✅ · N-005 ✅ | **Back-filled 20/09/2026 at `02-story-creation`; the cells read `TBD` at cutting.** Seven index files named by the `<THING>` rule — the folder's own noun, singularised — each **excluded and seeded** from `.copier/<NOUN>-INDEX.md` and carrying the shared spine `Status · Instance · Summary · Updated` with a per-register tail and a stated ordering rule. **Three registration surfaces**: the `.copier/` file · an `mv` line inside the `copy`-gated `_tasks` entry · a `SEEDED` registration in `shipped-artefacts.sh`. **No `_exclude` negation** — `/project-management/src/**` already covers the path. All seven ship **present and blank**, bar `MAP-INDEX.md`'s seed, which carries one row for the seeded `MAP-SCALE-PLANNING.md`, reading `Not started` (`../15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`) — **corrected 27/09/2026 at this map's resolve sitting from "one `TBD` row"** (settled 21/09/2026, grilling round 1 Q4; recorded under grilling round 5 Q30). All seven `CONTEXT.md` take a `## The index` H2 (Batch B's amendment), and `MAP-000-TEMPLATE.md` is repointed. Detail: `../02-STORIES/US010.md` | QA: unit (`shipped-artefacts.sh --self-test`), integration (generation smoke, `audit-template.yml`) — seed-lands, seed-blank · **Security added at `02-story-creation`** — the seed-once `copy` gate is fail-closed (US010 `ST01`–`ST05`) | —       |
+| S-02  | `US010` | Backfill `MAP-INDEX.md` only, and correct the rows it indexes — **narrowed 20/09/2026** | N-006 ✅ (map half)            | **Narrowed and back-filled 20/09/2026 at `02-story-creation`; the cells read `TBD` at cutting.** `MAP-INDEX.md` carries **one row per map, counted at implementation time** — never a literal, the folder having moved from 14 to 15 under a concurrent session on the day this was cut. No `Umbrella ADRs` row still asserts the reversed no-ADR rule. Each map's `**Status**` header gains a leading value from `MAP-000-TEMPLATE.md:4`'s five-value enum (the fifth, `Not started`, is the pre-charting state, which US010 writes into `:4`; `../15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`), separated from any existing prose by a **middle dot, never an em-dash** — the enum's own third value contains one, so an em-dash separator is unparseable for one value in five. **Corrected 27/09/2026 at this map's resolve sitting from "four-value enum" and "one value in four"** (settled 21/09/2026, grilling round 1 Q4; recorded under grilling round 5 Q30). **The other six registers' backfill is no longer here** — it is `S-05`. Detail: `../02-STORIES/US010.md`                                                        | QA: manual — row-per-map, counts match each header, and no `Umbrella ADRs` row still asserts the reversed no-ADR rule                                                                                                                     | —       |
+| S-03  | —       | The index gate, and the duty it enforces                                                | N-003 ✅ · N-004 ✅            | **The gate's header states its compatibility surface** (fog, 01/09/2026): the columns it reads are `Instance` and `Status`, and a release changing either **ships a `.copier/migrations/` script in the same commit**, on the v2.0.0/v7.0.0 precedent; additive spine or tail columns need no migration, because no clause reads them. Remaining acceptance unbackfilled                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | QA: unit (`register-indexes.sh --self-test`, `broken/`+`clean/` fixtures), integration (lefthook + `audit-register-indexes.yml`) — missing-row, orphan-row, status-mismatch                                                               | —       |
+| S-04  | —       | Artefact frontmatter across `project-management/src/`                                   | TBD                            | **The two derived conditional-key placements are settled** (fog, 01/09/2026) and `S-04` may write them: `01-FEATURE-MAPS` takes **no `Flags:`** (slice flags live per-slice in the body table; a file-level union would be a fourth agreement point) and `23-INCIDENTS` takes **no `Story:`** — the latter reversible on <%DEVELOPER_NAME%>'s word, an optional key being a live alternative on the softer source at `23-INCIDENTS/CONTEXT.md:40-44`. Remaining acceptance unbackfilled                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | QA: unit (mirror `--check`, `doc-references.sh --self-test`), manual — 62 artefacts, PDF export unaffected                                                                                                                                | —       |
+| S-05  | `US011` | Backfill the four indexes `S-01` ships declared-but-empty — **appended 20/09/2026**     | N-006 ✅ (four-register half)  | **Cut at `02-story-creation` on 20/09/2026, as the split half of `S-02`.** `STORY-INDEX.md`, `SPRINT-INDEX.md`, `DECISION-INDEX.md` and `STORY-PLAN-INDEX.md` gain one row per instance, **counted at implementation time** (42 at cutting: 9 · 5 · 20 · 8). Each register's `Status` is read from **its own carrier** — a bold `**Status:**` prose line for three of them, a backticked table cell for `17-STORY-PLANS`. `15-DECISIONS` fills the `Supersedes` / `Superseded by` tail `S-01` designs. The `Backfill owed — US011` lines `S-01` wrote are removed, and the `.copier/` seeds stay blank. `20-FINDINGS` and `21-BUGS` are **not** here — both hold zero instances and are `S-01`'s presence clause. Detail: `../02-STORIES/US011.md`                                                                                                                                                                                                                                                                                                                                                                                                              | QA: integration (generated-tree grep — no syntek-base row reaches a seed; `shipped-artefacts.sh --self-test` unchanged), manual — row-per-instance, status string-equality, supersession-chain walk                                       | —       |
 
 **The `Nodes` and `Acceptance` columns were added 31/08/2026** with the `task` -> `build`
 type change. Cells reading `TBD` are **not empty, they are unbackfilled** — this map's next
 RESOLVE sitting fills them, and until it does the checklist item _every open node belongs to a
 slice_ is unverified here.
+
+**S-02's population is twelve, not ten — re-measured 01/09/2026.** `MAP-CAP-POSTURE.md` and
+`MAP-SCRIPT-GUARDS.md` were charted after the Batch A sitting, so every "ten maps" literal below
+and in the backfill scope is stale by two; the count is an input to N-003's gate and is corrected
+here rather than left for a third map to find.
 
 **S-02 absorbed the superseded-ADR-wording sweep, 31/08/2026.** Each live map's `Umbrella ADRs`
 row still asserts the house rule that `MAP-PROGRESSIVE-ENHANCEMENT` N-026 reversed the same day.
@@ -352,17 +375,17 @@ instance of the re-measure rule now in `STEPS.md` Step 8.1:
 
 | Row                               | State                                                                                                                                                                                                                                                     |
 | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MAP-CLAUDE-DESIGN-HANDOFF.md:35` | **Flatly wrong** — "none is possible; this template authors no ADRs"                                                                                                                                                                                      |
-| `MAP-NAVIGATION.md:48`            | **Flatly wrong** — "this repository does not write ADRs"                                                                                                                                                                                                  |
-| `MAP-SUBDOMAIN-ROUTING.md:48`     | Superseded — cites the 16/08 house rule as live                                                                                                                                                                                                           |
-| `MAP-UPSTREAM-TRACKING.md:44`     | Superseded — same wording                                                                                                                                                                                                                                 |
-| `MAP-RETRY-AND-IDEMPOTENCY.md:36` | Superseded twice — and "ADRs are workflow `15`" is now wrong too, `15` being the coherence gate, not the author                                                                                                                                           |
-| `MAP-GATE-PARITY.md:50`           | Superseded — same wording                                                                                                                                                                                                                                 |
-| `MAP-REGISTER-INDEXES.md:32`      | This map's own row — "whether that rule survives is N-026" is now answered                                                                                                                                                                                |
-| `MAP-ABSENCE.md:84`               | **Borderline, re-measure at the sweep** — its stated reason survives N-026, only its "settled precedent" framing does not; it also had uncommitted concurrent-session edits when this was written, so trust neither the line number nor the wording above |
+| `MAP-CLAUDE-DESIGN-HANDOFF.md:36` | **Flatly wrong** — "none is possible; this template authors no ADRs"                                                                                                                                                                                      |
+| `MAP-NAVIGATION.md:49`            | **Flatly wrong** — "this repository does not write ADRs"                                                                                                                                                                                                  |
+| `MAP-SUBDOMAIN-ROUTING.md:50`     | Superseded — cites the 16/08 house rule as live                                                                                                                                                                                                           |
+| `MAP-UPSTREAM-TRACKING.md:45`     | Superseded — same wording                                                                                                                                                                                                                                 |
+| `MAP-RETRY-AND-IDEMPOTENCY.md:38` | Superseded twice — and "ADRs are workflow `15`" is now wrong too, `15` being the coherence gate, not the author                                                                                                                                           |
+| `MAP-GATE-PARITY.md:51`           | Superseded — same wording                                                                                                                                                                                                                                 |
+| `MAP-REGISTER-INDEXES.md:35`      | This map's own row — "whether that rule survives is N-026" is now answered                                                                                                                                                                                |
+| `MAP-ABSENCE.md:88`               | **Borderline, re-measure at the sweep** — its stated reason survives N-026, only its "settled precedent" framing does not; it also had uncommitted concurrent-session edits when this was written, so trust neither the line number nor the wording above |
 
-Already consistent, **not to be touched**: `MAP-PROGRESSIVE-ENHANCEMENT.md:75`,
-`MAP-SCRIPT-GUARDS.md:30`, `MAP-RULE-OWNERSHIP.md:84`. `MAP-000-TEMPLATE.md:25` is a placeholder.
+Already consistent, **not to be touched**: `MAP-PROGRESSIVE-ENHANCEMENT.md:76`,
+`MAP-SCRIPT-GUARDS.md:40`, `MAP-RULE-OWNERSHIP.md:85`. `MAP-000-TEMPLATE.md:29` is a placeholder.
 The replacement wording is `../15-DECISIONS/CLAUDE.md` — an ADR needs a driving `US###`, and a map
 reaches one only through the slice that becomes a story.
 
@@ -392,9 +415,44 @@ repaired, and `project-management/docs/ARTEFACT-FRONTMATTER.md` is authored as t
 It also corrects **every affected folder `CLAUDE.md`**, each of which declares _"Generated: none"_
 under **Output & naming** — false the moment frontmatter is machine-mirrored.
 
-**Order: `S-01` → `S-02` → `S-03`; `S-04` is independent** and may run at any point, because
-frontmatter and the index rows are separate surfaces. Only `S-03` requires `S-02`, and only
-because a gate wants a population it can go red against.
+**Order: `S-01` → `S-02` → `S-05` → `S-03`; `S-04` is independent** and may run at any point,
+because frontmatter and the index rows are separate surfaces. `S-01` and `S-02` ship together as
+`US010`. Only `S-03` requires a populated register to go red against — and after the 20/09/2026
+split that population arrives in two parts, `MAP-INDEX.md` from `S-02` and the other four from
+`S-05`, so `S-03` may run once `S-02` has landed and simply gets a wider fixture after `S-05`.
+
+---
+
+### Measured at `02-story-creation`, 20/09/2026 — six of this map's own figures were stale
+
+Recorded here rather than left in the stories, because a later reader of **this file** would
+otherwise act on the same numbers. None of it changes a decision; all of it changes an arithmetic.
+
+| This map said                                                  | The tree says (20/09/2026)                                                                                                                                                                                 |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| N-006's backfill population — "the ten maps"                   | **14**, and **15** within the hour — see the concurrency note below. The real obligation across all seven registers is **56 rows**, which is what split `S-02`                                             |
+| `copier.yml:908-919` — the `_tasks` `mv` block                 | **`:973-984`**, ending `rmdir .copier`; seven new `mv` lines land ahead of that, inside the existing `copy` gate                                                                                           |
+| `MAP-000-TEMPLATE.md:146` — the index-row checklist line       | **`:186`**                                                                                                                                                                                                 |
+| `doc-references.sh:322` — "parses `SEEDED` out of `_tasks`"    | **`:373`**, and it parses the `mv .copier/...` lines themselves rather than a named array                                                                                                                  |
+| Batch B — "`SPRINT-00-TEMPLATE.md` has no `**Status:**` field" | **Already fixed.** That file reads `**Status:** Planned` at `:10`. **The rider `S-01` was carrying is discharged**                                                                                         |
+| Batch B — "`17-STORY-PLANS/CONTEXT.md` has no such H2"         | **It has one** — `## The plans index` at `:81-91`, written 08/09/2026, explaining the absence and naming this map's work as what creates the file. `S-01` **rewrites** that section rather than adding one |
+
+**A seventh drift is `GAPS.md`'s, not this map's**, and is named so whoever repairs that entry does
+not re-measure from scratch: its 01/09/2026 citation of `01-FEATURE-MAPS/CLAUDE.md:22-23` and `:26`
+is off by one — the instruction is at **`:21-22`** and the definition-of-done at **`:25`**.
+
+**The Plans Index population is re-measured by the story, not inherited.** Batch B counted eight
+citation sites; a pass on 08/09/2026 rewrote the four shipped plan-template sites in place, and
+`../02-STORIES/US007.md:170` already binds this slice to "re-measure its population from the tree
+as it stands". `S-01` does.
+
+**The map count moved under a concurrent session while these stories were being written.**
+`01-FEATURE-MAPS/` held 14 maps when the slice was selected and 15 an hour later —
+`MAP-NATIVE-MOBILE-SURFACE.md`, charted 20/09/2026 by a parallel session and untracked at the time
+of writing. **Neither story holds a literal count as a result**; both assert one row per instance
+counted at implementation time. The precedent is `MAP-RULE-OWNERSHIP.md` Batch A, which found
+`N-016` had "shrunk under a parallel session and grown back by one" between charting and
+settlement.
 
 ---
 
@@ -415,9 +473,10 @@ retired with the nodes, which is what _index, not vault_ requires.
 
 **The map is not `Complete`, and the distinction is the template's own.** Its four statuses are
 `Charting / Resolving / Blockers clear — stories may start / Complete`, and wayfinder's criterion
-is _"done when Frontier **and** Fog of war are both empty"_. **Five fog items remain** — four
-inherited, one opened by Batch C — so this map sits at **Blockers clear**. Stories may be cut; the
-map stays open.
+is _"done when Frontier **and** Fog of war are both empty"_. ~~**Five fog items remain**~~ **— four
+of the five discharged 01/09/2026 (two answered, one decided outright, one cleared); one stays,
+carrying a corrected two-arm trigger.** So this map still sits at **Blockers clear**, not
+`Complete`, and correctly: one live item is one live item. Stories may be cut; the map stays open.
 
 ### Batches — why each set belongs in one sitting
 
@@ -435,51 +494,127 @@ is that a gate designed before the rule it asserts is a gate designed against a 
 
 ## Fog of war
 
-- **Two status vocabularies that must agree and cannot.** `STORY-PLAN-US000-TEMPLATE.md` runs
-  **eleven** states including `Accepted Customer` and `Rejected Customer`, and requires the status
-  to agree _"across story + plan + Plans Index + sprint"_ — but `completion/SKILL.md:37` gives a
-  `US###.md` only five, none of them those. Found in Batch B and deliberately **not charted here**:
-  it belongs to whoever owns the story lifecycle, and this map would be settling another register's
-  semantics to make its own index fillable. It bites `STORY-INDEX.md` and `STORY-PLAN-INDEX.md`
-  only if the two indexes are ever asserted against each other, which no node proposes.
-- **Whether `01-FEATURE-MAPS` should carry `Flags:` and `23-INCIDENTS` a `Story:`.** Both were
-  **derived, not asked**, when the frontmatter schema was settled — the first because slice flags
-  live in a body table and a file-level union would be a fourth place they must agree, the second
-  because that folder's `CONTEXT.md` states an incident is not owned by a story. Neither reasoning
-  was put to Sam, so neither is a settled decision. `S-04` must not treat them as one.
-- **Whether the moderate six earn an index later, and what evidence would say so.** Q36 settled
-  _the strong seven_ **now**; it did not settle that the answer is permanent. A revisit trigger is
-  the honest shape — `MAP-RULE-OWNERSHIP.md` N-008 built exactly one for the coverage floors — but
-  what the trigger measures is not yet sharp enough to state.
-- **Whether an index is the right artefact at all for a register a script can list.** `ls` answers
-  _what instances exist_; an index answers _what they are and what state they are in_. Where a
-  register's rows would carry nothing but filenames, the index is a cache of the filesystem, and a
-  cache with a gate is worse than no cache. Which of the seven those are is not yet measured.
-- **Whether seed-once is the right trade for an index, and what the escape hatch is.** N-001 chose
-  it knowingly: an index format that gains a column upstream **never reaches** a project generated
-  before the change, because `_tasks` seeding is gated to `copy`. `GAPS.md` and `MEMORY.md` accept
-  the identical property. What is not yet sharp is whether an index — which a gate asserts against,
-  unlike those two — can tolerate a format that drifts per generation, or needs a migration path
-  the other accumulators never needed.
+**One item open, `F-06`.** Five were dispositioned 01/09/2026 — two answered, one decided
+outright, one cleared, one staying with a trigger — and on 01/11/2026 each took an `F-NN` ID and
+left by its route (wayfinder → _Fog of war_): `F-01` had already left for `GAPS.md` and became
+`US007`, `F-02` and `F-04` are in _Out of scope_, `F-03` is a `GAPS.md` entry dated 01/11/2026,
+and `F-05` was answered into `S-03`'s acceptance. `F-06`, added 05/09/2026, is undispositioned
+and is the only item still listed; it keeps the map at `Blockers Clear`. The reasoning for the
+five stays below as the record, not as open items.
+
+**F-01 → `GAPS.md` 01/09/2026, since cut as `US007` (route 5, discharged).** ~~**Two status vocabularies that must agree and cannot.**~~ **Answered 01/09/2026 — confirmed,
+measurably wider than recorded, and graduated off this map.** The eleven-state ClickUp vocabulary
+defines the story's **own** `**Status:**` header on **four** surfaces — the plan template,
+`docs/planning/STORIES.md:79-93` (which states outright "This is the canonical set"),
+`.copier/README.md:568-570`, and `23-pr-and-review/STEPS.md:73-74`, which moves a story to
+`Accepted` / `Accepted Customer` — while `completion/SKILL.md:37-41` defines the same header as
+five states. **So the shipped PR workflow instructs a transition the shipped completion skill
+forbids**; it is not plan-versus-story, as charted, but four surfaces against one over a single
+contested field. Class **D**. **This map correctly declined to settle another register's
+semantics**, so it graduates to a `GAPS.md` entry (01/09/2026) — appended, never closed. **The
+map's own caveat is upheld with one correction:** N-003's gate mirrors the field verbatim and is
+indifferent to _which_ set wins, but not to the **cost** — once `STORY-INDEX.md` and
+`STORY-PLAN-INDEX.md` ship, the field is frozen by a script in two places plus its fixtures, so a
+later reconciliation lands with both indexes and the gate's `broken/`+`clean/` pair.
+
+**F-02 → _Out of scope_ (route 2).** ~~**Whether `01-FEATURE-MAPS` should carry `Flags:` and `23-INCIDENTS` a `Story:`.**~~
+**Decided 01/09/2026, and deliberately not opened as a node — the reasoning was already complete
+on both sides and only ratification was missing.** **Neither key applies.**
+`01-FEATURE-MAPS` takes **no `Flags:`**, because slice flags live per-slice in the body Slices
+table (the shape `01-feature-map/STEPS.md` Step 8a mandates) and a file-level union would be a
+**fourth** place they must agree — this map's own defect class. `23-INCIDENTS` takes **no
+`Story:`**, because an incident is not owned by a story. **One nuance recorded for override, since
+the source is softer than this map stated:** the categorical form is in
+`project-management/src/CONTEXT.md`'s naming table, while `23-INCIDENTS/CONTEXT.md:40-44` says
+only that an incident "frequently has no story behind it at all" and cross-references a
+story-anchored `21-BUGS` report where one exists — so an **optional** key is a live alternative,
+and if <%DEVELOPER_NAME%> prefers it, this reverses on his word alone. **Why no node was opened:**
+a frontier node here would reopen this map's frontier, and under the standing preference — _no
+story is cut until the frontier is empty_ — that would freeze **all four** slices, not just
+`S-04`. Five maps have parked their unticked index-row gate boxes on `S-01` shipping, and the
+deadlock ruling at _Gate to stories_ turns on `S-01` being cuttable. **A question about two
+optional YAML keys may not freeze five maps.** `S-04` may now write the conditional-key table.
+
+**F-03 → `GAPS.md` 01/11/2026, "the moderate six registers have no index, and only a measured trigger reopens that" (route 5).** **Whether the moderate six earn an index later — stays, with a corrected trigger.** Q36 settled
+the scope at the strong seven **now**, not permanently, and only <%DEVELOPER_NAME%> reopens it.
+The precedent this item leans on for a trigger's shape — `MAP-RULE-OWNERSHIP` N-008's dated
+allowance — is itself **specified into an unbuilt slice** (`COVERAGE.md` carries no allowance
+marker at HEAD), so there is no shipped mechanism to copy and choosing what the trigger measures
+is a design decision nobody has taken. **The charted count trigger was measured and does not
+work as stated**, so it is corrected rather than recorded: populations are `04-DATABASE` 0,
+`05-USER-FLOW` 0, `09-GDPR` 6, `10-SECURITY` 0, `18-TESTS` 2, `22-REFACTORING` 0 — and
+**`09-GDPR` must be excluded outright**, because Q35 (a chartered input no node may reopen)
+already rules its six files register **facts, not instances**, so firing on them would reopen it;
+and the flat recognition rule **miscounts seeds**, since `18-TESTS`'s two `US000-` templates carry
+no `TEMPLATE` in the filename. **Trigger, in two arms:** (a) any moderate register **other than
+`09-GDPR`** reaches **ten** instances, counting a `.md` file that names a real `US###` and
+excluding `CONTEXT.md`, `CLAUDE.md`, any `US000-` name and any file opening with the
+`_Template —_` marker; or (b) **a drift incident is recorded** — a session states a moderate
+register's contents wrongly and the error traces to the absence of an index. **Arm (b) is the
+observable one**, and the strongest evidence for it is already in hand one folder over.
+
+**F-04 → _Out of scope_ (route 2).** ~~**Whether an index is the right artefact at all for a register a script can list.**~~
+**Cleared 01/09/2026 by measurement: the set is empty.** Every one of the seven registers'
+artefacts carries a `Status` the filename cannot encode — stories, sprints (the vocabulary exists
+at `completion/SKILL.md:42`; the field's absence from `SPRINT-00-TEMPLATE.md` is the known defect
+`S-01` already repairs), decisions (a status **plus** a supersession chain), story plans, findings,
+bugs, and maps. With `Status`, `Summary` and `Updated` all non-derivable from a filename, **no
+index of the seven is a cache of the filesystem**, and the "a cache with a gate is worse than no
+cache" concern applies to none of them. Q36's scope and N-002's spine stand unchanged; nothing to
+build, and the measurement lives in the strike.
+
+**F-05 → N-001, carried by `S-03`'s acceptance (route 1).** ~~**Whether seed-once is the right trade for an index, and what the escape hatch is.**~~
+**Answered 01/09/2026: seed-once stands, and the escape hatch already exists — it needed
+identifying, not inventing.** N-001 chose seed-once knowingly and nothing measured reopens it;
+copier's `_migrations` with `.copier/migrations/` scripts is the hatch, with six shipped
+precedents, under this repository's own rule that a structural change to developer-held files
+ships its migration **in the same commit**. **The sharp half the item was actually asking for:
+the gate defines the index's compatibility surface.** `register-indexes.sh` travels on
+`copier update`; the seeded index does not. The gate's three clauses read only the **Instance**
+link and the **Status** column — so an upstream change to a **gate-read** column must ship a
+migration in the same release, while additive spine or tail columns need none, because no clause
+reads them and their per-generation drift is harmless. **That is precisely what distinguishes the
+index from `GAPS.md` and `MEMORY.md`**, which the item suspected but could not name: those drift
+freely because nothing asserts against their live format; the index's format is pinned to exactly
+the columns its gate reads, and only those. Graduates to `S-03`'s acceptance.
+
+- **F-06 — Four `★ always include` sections the shipped plan template mandates and no plan carries.**
+  **Found 05/09/2026, outside a resolve sitting on this map; unclaimed, and neither register
+  edited.** `00-STORY-PLAN-US000-TEMPLATE.md:17-20` reads _"This is a SUPERSET. Keep the ★-marked
+  core sections always"_, and **fifteen** H2s carry the `★ Always` marker. **Eleven reach all
+  five real plans; four reach none** — `## Execution & Verification via Claude Dynamic Workflows`
+  (`:397`), `## Quality Gates, Scripts & Local↔Docker Alignment` (`:470`), `## Status
+Propagation & ClickUp Sync` (`:633`) and `## Docker & Nginx Infrastructure` (`:693`), absent from
+  US001, US002, US003, US004 and US005 alike, **and no plan says why** — the template's own
+  _"say why in one line"_ escape covers `◇` deletions, not `★` ones. The plans are not
+  thin: each keeps **six** `◇` sections it was free to drop, so the shortfall is exactly the
+  mandatory four. **A written duty with no gate and no instance — class E**, in the same shipped
+  file as the Plans Index above, and sharper than merely adjacent: one of the four Plans Index
+  citations `S-01` must repoint (`:646`) sits **inside** one of the four sections no plan keeps.
+  **Not assigned here.** Whether the repair is the sections or the marker on them is a decision
+  nobody has taken, and this map does not widen a slice from a sitting it did not hold.
 
 ---
 
 ## Out of scope
 
-| Ruled out                                                | Why                                                                                                                                                                                 |
-| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Deleting any file under `project-management/src/NN-*/`   | **Sam, 27/08/2026** — those files carry the perspective behind design decisions, features, mappings, database shape and branding. A drifted index is repaired, never deleted        |
-| Renaming the six GDPR registers to `-INDEX.md`           | Q35 — they register **facts**, not instances; `copier.yml:170-176` ships them as bare nouns deliberately                                                                            |
-| Giving the weak five or the no five an index             | Q36 settled the scope at the strong seven; reopening it is a fog-of-war revisit, not a node                                                                                         |
-| Changing how `23-INCIDENTS` works                        | It already has an index and a skill duty; it is the **precedent**, not the subject                                                                                                  |
-| The template rule those instances are written from       | That is `MAP-RULE-OWNERSHIP.md` **N-024** — adjacent, and deliberately not duplicated here                                                                                          |
-| The ten maps' `Gate to stories` checklist wording        | **One later sweep, deliberately deferred** — the 31/08 handoff excluded it from the parallel resolve window. `MAP-000-TEMPLATE.md` is not one of the ten and rides `S-01`           |
-| Fixing `shipped-artefacts.sh`'s unchecked `SEEDED`       | Surfaced here, owned by its own `GAPS.md` entry (31/08/2026). True with or without this feature; N-003 cites it as an input                                                         |
-| Reconciling the story and story-plan status vocabularies | Found in Batch B; another register's semantics. **Fog of war**, not a node — settling it here would make this map the owner of the story lifecycle                                  |
-| Asserting index **ordering** in the gate                 | N-003 — it fails on a legitimate same-day tie, and a gate people learn to ignore is worse than none. Stated rule, reviewer judgement, on `docs-pairing.sh`'s precedent              |
-| Frontmatter on the 138 `CONTEXT.md` / `CLAUDE.md` files  | They are orientation and rules, not artefacts, and `audits/docs-pairing.sh` already polices them. The `S-04` population is **62**, not 198                                          |
-| Reconciling `Version:` with `VERSIONING-GUIDE.md`        | Avoided rather than reconciled — a revision **counter** is not semver, so line 175's ban on _"a versioning document anywhere else in the tree"_ is never engaged                    |
-| Writing an ADR for any of this                           | The fifteenth consecutive decline on the house rule. Whether that rule survives is `MAP-PROGRESSIVE-ENHANCEMENT.md` **N-026**, live in a concurrent session and not pre-empted here |
+| Ruled out                                                                                                        | Why                                                                                                                                                                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Deleting any file under `project-management/src/NN-*/`                                                           | **Sam, 27/08/2026** — those files carry the perspective behind design decisions, features, mappings, database shape and branding. A drifted index is repaired, never deleted                                                                                   |
+| Renaming the six GDPR registers to `-INDEX.md`                                                                   | Q35 — they register **facts**, not instances; `copier.yml:170-176` ships them as bare nouns deliberately                                                                                                                                                       |
+| Giving the weak five or the no five an index                                                                     | Q36 settled the scope at the strong seven; reopening it is a fog-of-war revisit, not a node                                                                                                                                                                    |
+| Changing how `23-INCIDENTS` works                                                                                | It already has an index and a skill duty; it is the **precedent**, not the subject                                                                                                                                                                             |
+| The template rule those instances are written from                                                               | That is `MAP-RULE-OWNERSHIP.md` **N-024** — adjacent, and deliberately not duplicated here                                                                                                                                                                     |
+| The ten maps' `Gate to stories` checklist wording                                                                | **One later sweep, deliberately deferred** — the 31/08 handoff excluded it from the parallel resolve window. `MAP-000-TEMPLATE.md` is not one of the ten and rides `S-01`                                                                                      |
+| Fixing `shipped-artefacts.sh`'s unchecked `SEEDED`                                                               | Surfaced here, owned by its own `GAPS.md` entry (31/08/2026). True with or without this feature; N-003 cites it as an input                                                                                                                                    |
+| Reconciling the story and story-plan status vocabularies                                                         | Found in Batch B; another register's semantics. **Fog of war**, not a node — settling it here would make this map the owner of the story lifecycle                                                                                                             |
+| Asserting index **ordering** in the gate                                                                         | N-003 — it fails on a legitimate same-day tie, and a gate people learn to ignore is worse than none. Stated rule, reviewer judgement, on `docs-pairing.sh`'s precedent                                                                                         |
+| Frontmatter on the 138 `CONTEXT.md` / `CLAUDE.md` files                                                          | They are orientation and rules, not artefacts, and `audits/docs-pairing.sh` already polices them. The `S-04` population is **62**, not 198                                                                                                                     |
+| Reconciling `Version:` with `VERSIONING-GUIDE.md`                                                                | Avoided rather than reconciled — a revision **counter** is not semver, so line 175's ban on _"a versioning document anywhere else in the tree"_ is never engaged                                                                                               |
+| Writing an ADR for any of this                                                                                   | The fifteenth consecutive decline on the house rule. Whether that rule survives is `MAP-PROGRESSIVE-ENHANCEMENT.md` **N-026**, live in a concurrent session and not pre-empted here                                                                            |
+| F-02 — `Flags:` on a map, `Story:` on an incident                                                                | Decided 01/09/2026 — neither key applies: slice flags live per slice in the Slices table, and an incident is not owned by a story. An **optional** `Story:` remains a live alternative that reverses on the developer's word alone (record under _Fog of war_) |
+| F-04 — An index for a register a script can list                                                                 | Cleared 01/09/2026 by measurement — the set is empty: every artefact in the seven registers carries a `Status` a filename cannot encode (record under _Fog of war_)                                                                                            |
+| F-03 → `GAPS.md` 01/11/2026 "the moderate six registers have no index, and only a measured trigger reopens that" | Trigger: (a) a moderate register other than `09-GDPR` reaches ten instances, or (b) a drift incident traces to a missing index — an event, not a cut                                                                                                           |
 
 ---
 
@@ -492,6 +627,8 @@ is that a gate designed before the rule it asserts is a gate designed against a 
 | 31/08/2026 | **N-001 · N-005** (Batch A)                     | **The blocking node fell, and the sole precedent turned out to answer neither half.** `INCIDENT-INDEX.md` is not excluded — it is **negated back in and ships**, which it can only do while permanently empty; an index of `01-FEATURE-MAPS` copying it would ship ten false rows, and `shipped-artefacts.sh` states it **cannot** check content. Settled instead on **excluded-and-seeded** — the mechanism the charter never named — which is true in both trees at once and needs **no copier negation** and **no `doc-references.sh` edit**. `<THING>` sharpened to _the folder's noun, singularised_: an exceptionless rule that explains the precedent instead of special-casing it. **Four of this map's own literals corrected**, including the reason recorded for its own ten declines: `doc-references.sh:306` exempts that whole folder today, so the row raises no finding at all — **the conclusion survived its reason**, on content-correctness. **Slices cut at Step 8a** (`S-01` mechanism, `S-02` backfill and provisional on N-006), and **one `GAPS.md` entry created, not claimed**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | **Yes — B is takeable.** N-002 is the new root; 0 blocking remain          |
 | 31/08/2026 | **N-002 · N-006** (Batch B)                     | **One read of seven templates settled both nodes and found two defects neither predicted.** A single shared column set is **unrepresentable**, not merely undesirable — seven status vocabularies, and one column cannot hold `17-STORY-PLANS`'s eleven states beside `15-DECISIONS`'s supersession chain. Settled on a **spine** (`Status · Instance · Summary · Updated`) with a per-register tail, `Status` mirrored **verbatim** because N-003 can assert string equality but not a mapping table, and ordering declared per file. **N-006 answered _backfill_**, which retires `S-02`'s provisional flag and repurposes the ten maps: **Q45 sent the gate to fixtures believing the population was zero, and that premise was already false** — these ten are the only real instances in the repository and are what proves a clause can go red. **Two class-E defects found**: the **Plans Index**, gated in eight places including a shipped tick-box and never once built (`GAPS.md`, **claimed**, retired by `S-01`), and `SPRINT-00-TEMPLATE.md`'s missing `**Status:**` field, which `completion/SKILL.md:42` already edits (rides `S-01`). Together with `01-FEATURE-MAPS` that is **two written duties, zero gates, zero working indexes** — the measured case for Q37. **Batch A's pointer decision amended**: `## The index` H2, not a Cross-references line, on the `23-INCIDENTS` precedent                                                                                                                                                                                                                                                                                                                                  | **No new nodes.** N-003 and N-004 both unblock; **Batch C closes the map** |
 | 31/08/2026 | **N-003 · N-004** (Batch C) · **scope widened** | **The frontier emptied, and the node as charted was wrong.** N-004 asked _which skill gains the duty_ — unanswerable for two of the seven (`15-DECISIONS` has no owning skill; `20-FINDINGS` has three), and the one register with a single owner wrote the duty **eight** times against a destination that never existed. Settled on **the artefact template**: the only surface existing exactly once per register and guaranteed in the author's hands. **N-003** asserts presence · symmetry · status in its own `audits/register-indexes.sh`, pre-commit and in CI; **ordering is deliberately unasserted**; instance recognition proved mechanical and exceptionless. Duty and gate ship together in `S-03`, because a duty landing a release ahead of its gate recreates the very state this map was chartered on. **Sam then widened scope mid-sitting** from seven index files to **all 62 artefacts**, settling the frontmatter schema — 11 universal keys, six conditional ones placed by _not already the file's identity_, `Version` as a revision counter rather than semver, and `Status` mirrored from a body that stays canonical because it is what reaches a client PDF. **Three collisions were measured before writing any of it**: the three path registers would have been **entirely unpoliced** (`doc-references.sh` reads backticked tokens only) — 186 pointer lists creating this map's own defect class while curing it; `Owner`/`Author` collide with `23-INCIDENTS`'s non-negotiable blameless rule, resolved by Sam as _custodianship is not blame_ and obliging a carve-out in the same change; and that blameless rule has a **circular attribution**, two files deferring to a third that never carried it | **Empty.** 6 resolved, 0 open, 0 blocking. Fog gained one item             |
+| 20/09/2026 | _(none — `02-story-creation`)_                  | **Two rows became stories, and one slice split.** `S-01` and `S-02` cut as **`US010`**; `S-02` **narrowed** to `MAP-INDEX.md` alone and a new **`S-05`** appended for the other four registers, cut as **`US011`**. The split's ground was measurement, not preference: `N-006`'s backfill population reads **14 maps** in the tree against the charted "ten", and the real obligation across all seven registers is **56 rows** — which prices the unsplit slice at 13 or above, an epic by shape under `docs/planning/STORIES.md`. `S-01`'s and `S-02`'s `TBD` `Nodes` and `Acceptance` cells **back-filled from Batches A and B in the same change**, on the US004 precedent, and recorded rather than made silently. **Six of this map's own figures measured stale** and tabled above, including the discharge of the `SPRINT-00-TEMPLATE.md` rider `S-01` was carrying. **Security added to `S-01`'s manifest** on the US004 Q6 / US006 precedent — the seed-once `copy` gate is a fail-closed control the QA-only manifest could not check. **Neither the frontier nor the resolved decisions were touched**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | **Untouched.** Still 0 open, 0 blocking; this gate settles no node         |
+| 27/09/2026 | _(none — resolve sitting, three corrections)_   | **Three already-settled corrections recorded, on the authority this map gives its Acceptance cells** (_"this map's next RESOLVE sitting fills them"_, `:356-357`) — Sam, settled 27/09/2026, grilling round 5 Q30. `S-01`'s Acceptance: `MAP-INDEX.md`'s seed carries **one row reading `Not started`**, not one `TBD` row (settled 21/09/2026, grilling round 1 Q4). `S-02`'s Acceptance: the Status enum is **five-value**, not four. N-003's instance test: a **positive filename pattern per register** replaces the charted denylist (settled 27/09/2026, grilling round 3 Q22), so `project-management/src/02-STORIES/CUT-PLAN.md` is not an instance. An edit to `S-01`'s Flags cell recording gate `10`'s widening to `ST01`-`ST08` was **reverted 27/09/2026 as outside this sitting's authority** — `:355-357` covers only the Nodes and Acceptance columns, and Q30 named three items — so the cell reads `ST01`-`ST05` as before; the widening lives in `../02-STORIES/US010.md`. **Re-measured before writing, 27/09/2026**: the two instance tests agree on every tracked file in the seven, and part only on the untracked cut plan. Every outcome already lives in its home — `../15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`, `../02-STORIES/US010.md` and the grilling record — so nothing graduates from here. All edits made in place; provenance in the end note. **`S-03`'s Acceptance and the `:420-421` ordering text are left to `S-03`'s own cutting**, which `project-management/src/02-STORIES/CUT-PLAN.md` P8 leaves unscheduled                                                                                                                                                          | **Untouched.** Still 0 open, 0 blocking; no node settled                   |
 
 ---
 
@@ -505,15 +642,72 @@ is that a gate designed before the rule it asserts is a gate designed against a 
 - [x] **Every node marked "blocking a story" is resolved** — **N-001 settled 31/08/2026; none remain**
 - [x] Every resolved node links to the artefact it became — N-001, N-002, N-005 to `S-01`; N-006 to `S-02`; N-003, N-004 to `S-03`
 - [x] **Every slice has a flag manifest** — all four do, and **`S-02` is no longer provisional** (N-006, 31/08/2026)
-- [ ] Index row in `CONTEXT.md` current — **superseded by N-001, and this box is a deadlock.** The row moves to `MAP-INDEX.md`; `MAP-INDEX.md` is built by `S-01`; `S-01` needs a story; a story needs this box. **The gate binds the work that repairs the gate** — the same unenforceable-duty shape `MAP-RULE-OWNERSHIP.md` N-010 diagnosed, met from the other side. Resolved by ruling that a **recorded refusal is not drift**: `CONTEXT.md:50` calls a missing row _"an index that has drifted"_, and this one is neither missing by accident nor unexplained. **`S-01` may be cut on that basis; the box closes when `S-01` ships**
+- [ ] Index row in `CONTEXT.md` current — **superseded by N-001, and this box is a deadlock.** The row moves to `MAP-INDEX.md`; `MAP-INDEX.md` is built by `S-01`; `S-01` needs a story; a story needs this box. **The gate binds the work that repairs the gate** — the same unenforceable-duty shape `MAP-RULE-OWNERSHIP.md` N-010 diagnosed, met from the other side. Resolved by ruling that a **recorded refusal is not drift**: `CONTEXT.md:50` calls a missing row _"an index that has drifted"_, and this one is neither missing by accident nor unexplained. **`S-01` may be cut on that basis; the box closes when `S-01` ships**. **The ruling was exercised on 20/09/2026** — `S-01` is cut as `US010`. The box stays open, correctly: cutting is not shipping, and `MAP-INDEX.md` does not exist yet
 
 **Node-count invariant: 0 open + 6 resolved = 6 = N-006.**
 
 **Status is `Blockers clear`, not `Complete`, and the gap is deliberate.** Wayfinder closes a map
-only when **Frontier and Fog of war are both empty**; five fog items remain, one of them opened by
-this sitting. A map stamped `Complete` over live fog is the same defect as an index stamped current
-over a missing row — which is the thing this map exists to stop, and it would be a poor place to
-make an exception.
+only when **Frontier and Fog of war are both empty**; ~~five fog items remain, one of them opened by
+this sitting~~ **one remains after the 01/09/2026 fog pass — whether the moderate six earn an index
+later, which only <%DEVELOPER_NAME%> reopens per Q35/Q36.** A map stamped `Complete` over live fog is
+the same defect as an index stamped current over a missing row — which is the thing this map exists
+to stop, and it would be a poor place to make an exception. **The pass deliberately opened no
+frontier node**, because doing so would have frozen all four slices under the standing preference
+and un-broken the deadlock ruling below that five sibling maps are parked on.
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked** — and per
 Sam's standing preference, **not until the frontier is empty**.
+
+<!-- STORY-PLAN RENAME, 08/09/2026. The six plans in `project-management/src/17-STORY-PLANS/` were
+     renamed by `git mv` that day to `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`,
+     the 2-digit prefix being the story's position in the settled build order across the whole
+     backlog — not its sprint, and not a per-sprint counter — renumbered whenever that order
+     changes (`project-management/src/17-STORY-PLANS/CLAUDE.md` owns the rule). This map's one
+     citation of the plan template, in the fog-of-war item about the four `★ always include`
+     sections, was repointed the same day to
+     `project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md`. THIS NOTE SITS AT
+     THE END OF THE FILE DELIBERATELY: a live story cites this map at `:72`, `:212`, `:213`,
+     `:215-219`, `:344`, `:392`, `:456-469`, `:556`, `:571` and `:572`, and an insertion higher up
+     would silently invalidate all of them. Nothing else here changed, and the template's own
+     `:17-20`, `:397`, `:470`, `:633`, `:646` and `:693` all still resolve, because that rename
+     repointed three naming patterns in place and appended its own note at the end rather than
+     inserting lines. SLICE `S-01` IS UNAFFECTED IN SUBSTANCE AND SHARPENED IN ONE DETAIL: the
+     index file it creates keeps the name `N-001`'s rule gives it — the folder's own noun,
+     singularised — which a build-order prefix does not touch; but the `Instance` column `N-002`
+     specifies now links a PREFIXED filename, and `N-003`'s symmetry clause reads that prefixed
+     name, so a renumber renames rows as well as files. Not assigned here; `S-01` re-measures its
+     own population as it already provides for. -->
+
+<!-- RESOLVE SITTING, 27/09/2026 (Sam; settled 27/09/2026, grilling round 5 Q30). Three
+     corrections already settled elsewhere were recorded on this map, on the authority it gives
+     its Acceptance cells at `:356-357` ("this map's next RESOLVE sitting fills them"). No node
+     was settled, the Frontier and Blocking counts and the Status header are unchanged, and the
+     slice order and the `:420-421` ordering text were not touched. EVERY EDIT WAS MADE IN PLACE AT
+     THE SAME LINE COUNT, AND THIS NOTE SITS AT THE END FOR THE SAME REASON AS THE ONE ABOVE: live
+     artefacts cite this map by line down to `:598` (measured 27/09/2026), including `:231-236`,
+     `:349`, `:350`, `:351` and `:420-421`. The one added line is the Session log row, below all of
+     them.
+     (1) S-01 ACCEPTANCE (`:350`). Was: "bar `MAP-INDEX.md`'s seed, which carries one `TBD` row for
+     the seeded `MAP-SCALE-PLANNING.md`". Now one row reading `Not started` (settled 21/09/2026,
+     grilling round 1 Q4; `../15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`
+     item 5, which also fixes the row's Summary as generic and its Updated as `TBD`). Batch A's
+     "every column `TBD`" at `:145-146` is left as the 31/08/2026 record; the S-01 cell supersedes
+     it. Same row, Flags cell: this sitting also edited it to `ST01`-`ST08` (gate `10`'s widening,
+     21/09/2026, now in US010); REVERTED 27/09/2026 as outside its authority — `:356-358` covers only
+     the Nodes and Acceptance columns, and Q30 named three items. The cell's `ST01`-`ST05` stands.
+     (2) S-02 ACCEPTANCE (`:351`). "four-value enum" became five-value, and "one value in four"
+     became one in five; the fifth value is `Not started`, which US010 writes into
+     `MAP-000-TEMPLATE.md:4` (settled 21/09/2026, grilling round 1 Q4; the same record, item 4;
+     superseded 31/10/2026 by 7.7.0: the map vocabulary is now `Charting | Resolving | Blockers Clear | Complete | Closed` plus a `**Status note:**` line, owned by `.claude/skills/completion/SKILL.md` (_Feature maps_), and the template's line 4 carries only the starting value).
+     (3) N-003's INSTANCE TEST (`:232-237`). Was: "A file in one of the seven is an instance iff it
+     is a tracked `.md` that is not `CONTEXT.md`, not `CLAUDE.md`, not `*TEMPLATE*`, and not the
+     index itself." Now a positive filename pattern per register, still excluding `*TEMPLATE*` and
+     the index (settled 27/09/2026, grilling round 3 Q22). Re-measured 27/09/2026 over tracked
+     files: the two tests agree on every file in all seven registers. They part on
+     `project-management/src/02-STORIES/CUT-PLAN.md`, untracked at this sitting, which the denylist
+     would count once it is committed and the pattern never does. The untracked
+     `project-management/src/02-STORIES/US012.md` matches its register's pattern and is an instance
+     from the commit that tracks it. The three clauses the test feeds are unchanged.
+     LEFT FOR S-03's OWN `02-story-creation`: its Acceptance back-fill at `:351` and the `:420-421`
+     ordering text. `project-management/src/02-STORIES/CUT-PLAN.md` P8 gives S-03 no sprint; it
+     stays Proposed at map-order row 10. -->

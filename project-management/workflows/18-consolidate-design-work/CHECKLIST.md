@@ -2,7 +2,7 @@
 workflow: 18-consolidate-design-work
 phase: design
 skills: [planner, global-workflow, codebase-design, domain-modelling]
-model: fable
+model: opus
 ---
 
 # Consolidate Design Work — Checklist
@@ -16,7 +16,15 @@ Every box must be ticked before `19-backend-code/` may begin.
 
 ## Entry conditions
 
-- [ ] Every story in the cycle has a completed `STORY-PLAN-US###-*.md` in `src/17-STORY-PLANS/`
+<!-- UPDATED 08/09/2026. Both story-plan filename patterns in this file gained the
+     `<exec-order>-` prefix; superseded form, quoted without backticks so no dead name is
+     recorded as a fresh citation: "STORY-PLAN-US###-*.md". Rule, and its deliberate contrast
+     with the two-number sprint-plan convention in
+     `project-management/src/16-SPRINT-PLANS/CLAUDE.md`:
+     `project-management/src/17-STORY-PLANS/CLAUDE.md`. -->
+
+- [ ] Every story in the cycle has a completed `<exec-order>-STORY-PLAN-US###-*.md` in `src/17-STORY-PLANS/`
+- [ ] Every story in the cycle has its manual testing guide in `src/18-TESTS/MANUAL/`
 - [ ] Every sprint opened during planning has its `16-sprint-plans/` plan written
 - [ ] Every in-scope story has `USER-STORY-IDEAS/` artefacts, or an explicit `N/A` with a reason
 - [ ] `code/docs/DATABASE.md` and `code/docs/DESIGN-TOKENS.md` read
@@ -69,11 +77,14 @@ Every box must be ticked before `19-backend-code/` may begin.
 - [ ] Every consolidated artefact names the `US###` stories it supersedes
 - [ ] Every stage-1 artefact is either carried forward or explicitly recorded as superseded
 
-## Story-plan reconciliation
+## Story-plan and manual-guide reconciliation
 
-- [ ] Every `STORY-PLAN-US###-*.md` that assumed a changed shape has been corrected
+- [ ] Every `<exec-order>-STORY-PLAN-US###-*.md` that assumed a changed shape has been corrected
 - [ ] Each correction notes the consolidation that drove it
 - [ ] No story plan asserts a superseded design
+- [ ] Every manual testing guide's `Flow` column set — each cell a consolidated step or `—`
+- [ ] Every guide row this pass invalidated corrected in place, its ID kept and its `Notes` naming
+      the consolidation; no row renumbered, no `Result` filled
 
 ## Close-out
 

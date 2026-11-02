@@ -87,8 +87,8 @@ Exercise the spike until the question has a clear verdict, then land the answer 
 decisions live — the code, not the spike, keeps only what was validated:
 
 - Record the verdict and the question it settled in a story plan's `### Open Questions` /
-  `### Requirements` (`project-management/src/17-STORY-PLANS/STORY-PLAN-US###-*.md`, template
-  `STORY-PLAN-US000-TEMPLATE.md`).
+  `### Requirements` (`project-management/src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md`,
+  template `00-STORY-PLAN-US000-TEMPLATE.md`).
 - If the answer settles a hard-to-reverse, surprising, genuine trade-off, lay ADR groundwork —
   the next free `ADR-###-<TITLE>.md` under `project-management/src/15-DECISIONS/`.
 - If the answer pins a domain model or its terminology, record it through the grill-with-docs
@@ -145,7 +145,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/data-structures/DOMAIN-MODELLING.md` — the modelling reference for a LOGIC verdict.
 - `code/src/scripts/development/shell.sh` · `new-django-view.sh` · `server.sh` — the run
   commands; `code/src/scripts/audits/css-tokens.sh` — the relaxed token gate.
-- `project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` ·
+- `project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md` ·
   `project-management/src/01-FEATURE-MAPS/` · `project-management/workflows/08-wireframes/` — plan
   template, and the charted epics and workflow to distinguish a spike from.
 - `project-management/src/15-DECISIONS/` · `project-management/src/02-STORIES/US###.md` —

@@ -9,7 +9,7 @@ model: opus
 **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
 British English (en_GB) **Timezone:** <%TIMEZONE%>
 
-This guide owns the length rule for files that instruct Claude Code. `.claude/CLAUDE.md`
+This guide owns the length rule for files that instruct coding agents. `.claude/CLAUDE.md`
 Section 8 states it in one bullet and routes here; `code/src/scripts/audits/docs-length.sh`
 enforces it. Its sibling is `DOCUMENTATION-PAIRING.md`, which owns the shape of a
 `CONTEXT.md`/`CLAUDE.md` pair rather than its size.
@@ -26,19 +26,23 @@ the same as not being there. The remedy is always the same shape: split the deta
 
 ## 2. What is bound
 
-Instructional means it tells Claude Code how to work — a guide, a workflow step, a skill, or an
+Instructional means it tells a coding agent how to work — a guide, a workflow step, a skill, or an
 orientation/operating-rules pair.
 
-| Bound                                        | Exempt                                                |
-| -------------------------------------------- | ----------------------------------------------------- |
-| Every `CONTEXT.md` and `CLAUDE.md`, anywhere | Root-level `*.md` — `README`, `CHANGELOG`, `GAPS`, …  |
-| `**/docs/**/*.md`                            | `**/src/*.md` — operator guides, written for a human  |
-| `**/workflows/**/*.md`                       | Vendored trees — `.agents/`, `code/docs/cloudinary/*` |
-| `.claude/**/*.md`                            | Generated — `project-management/export/`              |
-|                                              | Sandboxes — `learning/`, `research/`, `handoffs/`     |
+| Bound                                                     | Exempt                                                                      |
+| --------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Every `CONTEXT.md`, `CLAUDE.md` and `AGENTS.md`, anywhere | Other root-level `*.md` — `README`, `CHANGELOG`, `GAPS`, …                  |
+| `**/docs/**/*.md`                                         | `**/src/*.md` — operator guides, written for a human                        |
+| `**/workflows/**/*.md`                                    | Vendor content and discovery aliases — `.agents/`, `code/docs/cloudinary/*` |
+| `.claude/**/*.md`, `.ai/**/*.md`, `.codex/**/*.md`        | Generated — `project-management/export/`                                    |
+|                                                           | Sandboxes — `learning/`, `research/`, `handoffs/`                           |
 
-**A `CONTEXT.md` or `CLAUDE.md` inside an exempt tree is still bound.** The pair is ours and
-instructional wherever it lives.
+**A `CONTEXT.md`, `CLAUDE.md` or `AGENTS.md` inside an exempt tree is still bound.** These files
+are instructional wherever they live. First-party skill aliases in `.agents/skills/` resolve to
+the existing `.claude/skills/` sources, which remain in scope and retain their house-rule audits.
+Instruction aliases are measured individually. With `--since`, their baseline contents come
+from their targets in the historical Git tree; unresolved or external targets are unmeasured
+errors, rather than a zero-length baseline.
 
 ## 3. The ratchet — the warn tier has teeth
 
@@ -75,7 +79,25 @@ A register, an index, a roster — the argument is always that this particular f
 naturally accumulates. It is not a defence. A register that outgrows the cap becomes an index over
 sub-registers, like anything else.
 
-## 6. How it is enforced
+## 6. Shrinking by relocation is moving the wall, not removing it
+
+A file over the ratchet has a sibling. `CONTEXT.md` has `CLAUDE.md` beside it, and the cheapest way
+to reach a number is to push text across the gap — the count falls, every gate passes, and the pair
+holds exactly as many lines as before.
+
+**A reduction states what share was paid by deletion and what by relocation, and the receiving file
+is given its own ceiling in the same change.** Without the second half the rule has no teeth: a
+sibling at 165 with a 270 ceiling is an invitation to write 104 more lines into it, and the next
+story arrives at the same wall one file along.
+
+Relocation is legitimate — `DOCUMENTATION-PAIRING.md` decides which half a line belongs in, and a
+rule sitting in the orientation half **should** move. What is not legitimate is relocating for the
+count rather than for the split, which is why the two are recorded separately: an operating rule
+moving to `CLAUDE.md` is the pairing rule being obeyed, and a rationale moving there to buy lines
+is this rule being evaded. `DOCUMENTATION-PAIRING.md` Section 3 names rationale as orientation of
+the highest value, so a why that lands in the operating half is the tell.
+
+## 7. How it is enforced
 
 `code/src/scripts/audits/docs-length.sh` — **never** `cloc.sh`, which passes
 `--exclude-lang=Markdown` and therefore cannot see this rule at all. Several guides once routed the

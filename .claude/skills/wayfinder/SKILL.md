@@ -37,8 +37,9 @@ Facts are looked up, not asked: `code-review-graph` MCP → Read/Grep/Glob → `
 dependencies) and `DEFERRED.md` (work explicitly deferred from a shipped story to a named future
 one) are where earlier work recorded its unfinished business. Wayfinder reads them at both ends:
 they **suggest** what the next feature should be, and they are **claimed** by the feature that
-will close them, so the map records the debt it retires. Treating them as write-only destinations
-is what lets a register accumulate for a year while features are chosen from memory.
+will close them, which moves the entry off the register and onto the map. Treating them as
+write-only destinations is what lets a register accumulate for a year while features are chosen
+from memory.
 
 Wayfinder runs in one of three modes per session: **SUGGEST** (optional, before there is a
 feature — mine the register for candidates), **CHART** (one session — read the register, pin the
@@ -85,18 +86,20 @@ mode — no map, and no edit to the register.
 3. **Map the frontier breadth-first.** Explore the epic's surface with the `code-review-graph`
    explore playbook (`code/docs/CODE-REVIEW-GRAPH.md`) plus the target `CONTEXT.md`, surfacing
    every currently-knowable open decision. Anything still too vague to state as a decision goes to
-   **Fog of war**. _Done when every knowable decision is either captured as a node or parked in
-   Fog of war._
+   **Fog of war** as an `F-NN` item (_Fog of war — every item leaves by one route_). _Done when
+   every knowable decision is either captured as a node or parked in Fog of war._
 4. **Wire the blocking edges.** In a second pass, write each node's blockers as prose links to the
    nodes it depends on, so the takeable edge — the unblocked nodes — is visible at a glance.
    _Done when every Frontier node names its blockers (or "none") and at least one node is unblocked._
-5. **Write the map.** Create `MAP-<FEATURE>.md` in `project-management/src/01-FEATURE-MAPS/` with the
-   sections below; tag each Frontier node with its type (research / tracer / grilling / build),
-   record the triaged register entries under **Register claimed**, and list the buildable slices
-   under **Slices**, each naming its nodes, its acceptance and its flag manifest (`N/A` omitted).
-   Add the map to the index in
-   `src/01-FEATURE-MAPS/CONTEXT.md`. _Done when the map exists, is indexed, and reads as a
-   low-resolution route rather than a storage vault._
+5. **Write the map.** Create `MAP-<FEATURE>.md` in `project-management/src/01-FEATURE-MAPS/` with
+   the sections below; tag each Frontier node with its type (research / tracer / grilling / build),
+   record the triaged register entries under **Register claimed** (each carried and removed — see
+   _Claiming removes the entry_), and list the buildable slices under **Slices**, each naming its
+   nodes, its acceptance, its flag manifest (`N/A` omitted) and any fog it carries. Set `**Status:** Charting` with a
+   one-line `**Status note:**`, then run
+   `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` so the map appears on
+   `src/01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md`. _Done when the map exists, is on the board, and
+   reads as a low-resolution route rather than a storage vault._
 6. **Fire the research nodes, then stop.** Dispatch any research nodes (facts, not decisions) in
    parallel now — they need no human. Charting is one session: do **not** settle grilling, tracer,
    or build nodes here. _Done when the research nodes are dispatched and the session ends with the
@@ -140,9 +143,14 @@ mode — no map, and no edit to the register.
    never leaving an answer only on the map. A batch settled together may still graduate to
    different artefacts. _Done when each outcome lives in the correct artefact and every
    Resolved-decisions entry links to it._
-5. **Redraw the frontier once.** Move the whole batch from Frontier to Resolved decisions; graduate
-   any Fog-of-war items the outcomes sharpened into new nodes; re-wire the blocking edges. _Done when
-   the Frontier reflects the new takeable edge and no resolved node remains open on it._
+5. **Redraw the frontier once.** Move the whole batch from Frontier to Resolved decisions; send
+   any fog item the outcomes moved out by its route (sharpened ones become new nodes); re-wire the
+   blocking edges. _Done when the Frontier reflects the new takeable edge and no resolved node
+   remains open on it._
+6. **Advance the map status.** `Charting` → `Resolving` once the first batch settles;
+   `Blockers Clear` once every node a slice depends on is settled (stories may start);
+   `Complete` once Frontier and Fog of war are genuinely empty. Update the `**Status note:**`,
+   then run `pm-board.sh --write`. _Done when the status line matches the map's state._
 
 ## Reference
 
@@ -154,21 +162,47 @@ mode — no map, and no edit to the register.
 ## Notes                 domain, skills to load, standing preferences, the umbrella PLAN/ADRs
 ## Register claimed      GAPS.md / DEFERRED.md entries this feature closes or is blocked by
 ## Resolved decisions    settled — each links to the ADR / STORY-PLAN-US### / US### it became
-## Slices                the buildable slices — nodes, acceptance, flags — the base for stories
+## Slices                the buildable slices — nodes, acceptance, flags, carried fog — the base for stories
 ## Frontier              open decisions in dependency order; blocking edges as prose links
-## Fog of war            in-scope but not yet sharp enough to be a node
-## Out of scope          consciously ruled out, plus why
+## Fog of war            F-NN items: in scope but not yet sharp enough to be a node
+## Out of scope          consciously ruled out, plus why — cleared and event-triggered fog included
 ```
 
-### Claiming versus closing — the ownership line
+### Fog of war — every item leaves by one route
 
-Wayfinder **claims** a register entry: it records on the map that this feature will retire it, so
-the intent survives into the stories cut from the map. It never edits `GAPS.md` or `DEFERRED.md`
-to mark anything done. **Closing belongs to
-`project-management/workflows/22-implementation-documentation/`**, which owns register routing and
-marks an entry `✅ CLOSED <date>` (or removes the `DEFERRED.md` row) against shipped code. A claim
-is a promise; a close is evidence. Crossing that line puts a gap in the closed state with nothing
-built behind it.
+Each fog item carries an ID, written `- **F-01 — <title>** …`: scoped per map, append-only, never
+renumbered or reused. It leaves the fog by **exactly one** route:
+
+| Route                | When                                                      | It goes to                                                                                                          |
+| -------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 1. **Sharpened**     | it can now be stated as a decision, or a node answers it  | a Frontier node — new, or the settled node that answers it, named (a slice's acceptance may then carry the answer)  |
+| 2. **Cleared**       | it is consciously ruled out                               | `## Out of scope` with its reason, keeping its `F-NN`                                                               |
+| 3. **Cut, one map**  | its trigger is cutting a slice in this map                | that slice's **Carries** cell: `F-01 (short summary)`                                                               |
+| 4. **Cut, two maps** | its trigger is whichever of two maps' slices is cut first | **both** slices' Carries cells, each naming the other: `F-03 (summary) ↔ MAP-OTHER S-02`                            |
+| 5. **Event**         | its trigger is an event, not a cut (`instance count > 1`) | a dated `GAPS.md` entry naming the trigger; Out of scope records `F-04 → GAPS.md DD/MM/YYYY "<title>" (trigger: …)` |
+
+- **Carries is the last column of the Slices table** — `—` when empty, several items separated by
+  semicolons. At the cut, `02-story-creation` turns each carried item into an acceptance criterion or an
+  Open question and checks every one arrived; the first cut of a route-4 item also removes it from
+  the other map's Carries cell, in the same change. The map whose fog held a route-4 item owns its
+  `F-NN`; the other map's cell names the owner: `<OWNER-MAP> F-03 (summary) ↔ <OWNER-MAP> S-02`.
+- **A route-5 hand-off is not a claim** — it never appears under Register claimed, because a claim
+  removes the entry (`.claude/CLAUDE.md` Section 9) and this one must stay to wait for its trigger.
+- **Slices depend on nodes only.** A fog item never blocks a slice or `Blockers Clear`; fog a
+  slice genuinely needs becomes a node first (route 1).
+- **`Complete` means genuinely empty.** An item left in the fog "with a trigger" is not
+  dispositioned — routes 3 to 5 are how a trigger is written down. `pm-board.sh --warn` names a
+  `Complete` or `Closed` map whose Fog of war still lists an item.
+- **An open item is a list item; a departed one may leave a record.** Once it has gone, the fog
+  section may keep one bold paragraph, `**F-NN → <where it went> (route n).**`, as history — never
+  the open form `**F-NN — <title>**`, which the board counts as open with or without a leading `- `.
+
+### Claiming removes the entry
+
+A **closes** or **blocks** entry the map claims is carried on the map and leaves `GAPS.md` /
+`DEFERRED.md` in the same change — the map, then the story cut from it, is its one working copy.
+Rule: `.claude/CLAUDE.md` Section 9; procedure: `project-management/workflows/01-feature-map/`
+Step 2.
 
 ### Decision-node types
 
@@ -184,9 +218,10 @@ built behind it.
   never be **Blocking a story?** `yes`, because it _is_ the story.
 
 **There is no node for manual unblocking work.** Provisioning infrastructure, running a script or
-seeding data is a **`GAPS.md` blocker**, which already owns blockers — not a decision the map
-settles. The `task` type this replaced was defined that way and used that way in none of its
-instances; every one was deliverable work miscast as unblocking.
+seeding data is a **`GAPS.md` blocker** until a map claims it, then a frontier note beside the node
+it blocks (`.claude/CLAUDE.md` Section 9) — not a decision the map settles. The `task` type this
+replaced was defined that way and used that way in none of its instances; every one was
+deliverable work miscast as unblocking.
 
 ### Graduation table (RESOLVE step 4)
 
@@ -213,8 +248,15 @@ A slice's `US###` is pushed to the ClickUp board by the `clickup-sync` workflow,
   is ordered, and every open register entry is triaged closes / blocks / unrelated.
 - A **resolve** session is done when the chosen node is settled, recorded in the right artefact, and
   the frontier is redrawn.
-- The **map** is done when Frontier and Fog of war are both empty — the route to the destination is
-  fully charted.
+- The **map** is done when Frontier and Fog of war are both empty — every fog item gone by its
+  route, the route to the destination fully charted — and its status is `Complete`.
+
+**Map status.** `**Status:** Charting | Resolving | Blockers Clear | Complete | Closed`, colon
+inside the bold, plus a free-text `**Status note:**` line; the vocabulary is owned by the
+`completion` skill. **`Closed` is never set by hand**: once every slice is cut into a story,
+`bash project-management/src/00-ASSETS/scripts/pm-archive.sh MAP-<FEATURE>` sets it and moves
+the map into `01-FEATURE-MAPS/archive/`. **A closed map is frozen** — new work on the same area
+charts a new map rather than reopening it.
 
 ### Anti-patterns
 
@@ -235,8 +277,8 @@ A slice's `US###` is pushed to the ClickUp board by the `clickup-sync` workflow,
 - **Treating the register as write-only** — a feature charted without reading `GAPS.md` and
   `DEFERRED.md` re-decides what a past story already deferred, and leaves the debt it happens to
   retire unrecorded and therefore unclosed.
-- **Closing a register entry from here** — wayfinder claims; `22-implementation-documentation`
-  closes, against shipped code.
+- **Leaving a claimed entry in the register, or removing one the map does not carry** — the first
+  is two copies that drift, the second loses the entry outright.
 - **Suggesting a feature that is one story** — a single small gap is a story, not a feature; route
   it to `02-story-creation` rather than inflating it into a map.
 
@@ -253,8 +295,9 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `.claude/skills/grill-with-docs/SKILL.md` — how a grilling node records its decision (the
   three-test ADR gate + glossary-into-`CONTEXT.md`).
 - `.claude/skills/grill-me/SKILL.md` — the stateless twin, for thinking a node through without recording.
-- `project-management/src/01-FEATURE-MAPS/CONTEXT.md` — the map index, where a new map is registered.
-- `project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` — the plan a buildable
+- `project-management/src/01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md` — the generated map index
+  (`pm-board.sh --write`); never a hand-maintained table.
+- `project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md` — the plan a buildable
   slice graduates into.
 - `project-management/src/15-DECISIONS/` — ADR home; `ADR-US###-<DECISION>-DD-MM-YYYY.md`, flat, and always driven by a `US###`.
 - `project-management/src/02-STORIES/US###.md` — the story a slice becomes; synced to ClickUp by `.github/workflows/clickup-sync.yml`.

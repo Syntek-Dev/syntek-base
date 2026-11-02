@@ -1,4 +1,4 @@
-# Workflow 17 — Consolidate Design Work
+# Workflow 18 — Consolidate Design Work
 
 **Last Updated**: <%DATE%>
 
@@ -53,7 +53,12 @@ produces the design a developer actually builds against.
   different delete behaviour. Finding none is a signal the pass was shallow, not that the
   design was clean.
 - **Consolidation can invalidate a story plan.** If unifying changes a shape a
-  `STORY-PLAN-US###-*.md` assumed, that plan is corrected here — before code, not after.
+  `<exec-order>-STORY-PLAN-US###-*.md` assumed, that plan is corrected here — before code, not
+  after.
+- **The manual testing guides meet their flows here.** Each story's guide was authored beside its
+  plan, before any consolidated flow existed, so its `Flow` column reads `—` until this workflow
+  cites the consolidated step each row exercises — and a row the consolidation invalidated is
+  corrected in the same pass as the plan.
 - **Hard-to-reverse resolutions become ADRs.** A consolidation choice that a later
   decision would need to explicitly supersede goes to `15-decisions/` as a new record.
 - **Schema consolidation is the expensive one.** Visual drift is cheap to fix after the
@@ -81,7 +86,15 @@ produces the design a developer actually builds against.
 ### Related reading
 
 - `project-management/src/17-STORY-PLANS/` — the plans this workflow may have to correct
+- `project-management/src/18-TESTS/MANUAL/` — the manual testing guides whose `Flow` column this
+  workflow sets, and whose invalidated rows it corrects
 - `project-management/src/15-DECISIONS/` — where a hard-to-reverse resolution lands
 - `project-management/docs/PLANNING-GUIDE.md` — the per-story cadence this closes
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA on the consolidated component set
 - `project-management/workflows/19-backend-code/` — the downstream phase this unblocks
+
+<!-- UPDATED 08/09/2026. The story-plan filename pattern in _Consolidation can invalidate a story
+     plan_ gained its `<exec-order>-` prefix; superseded form, quoted without backticks so no
+     dead name is recorded as a fresh citation: "STORY-PLAN-US###-*.md". The prefix tracks build
+     order and is renumbered when it changes — unlike the two-number sprint-plan form, where a
+     mismatch is deliberate. Rule: `project-management/src/17-STORY-PLANS/CLAUDE.md`. -->

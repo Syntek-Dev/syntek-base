@@ -14,7 +14,7 @@ after story creation and before brand guides or wireframes.
 
 - **Routing:** run `STEPS.md` against `CHECKLIST.md`. Pre-code design phase — no hard
   safety gates apply. Feeds `workflows/07-component-designs/` and `08-wireframes/`.
-- **Model:** Fable — journey mapping is design judgement.
+- **Model:** Opus throughout.
 - **Spike an open question:** when one design question blocks the flow, load
   `.claude/skills/prototype/SKILL.md` — a throwaway spike to answer that one question
   before committing to a real build; discard it after.

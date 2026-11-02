@@ -1,7 +1,7 @@
 ---
 type: guide
 skills: [planner, backend]
-model: fable
+model: opus
 ---
 
 # Clean fixture — the inline flow sequence

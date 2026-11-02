@@ -1,7 +1,8 @@
 # MAP-SUBDOMAIN-ROUTING — which surface answers on which host
 
 **Seeded**: 16/08/2026 · **Charted**: 28/08/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
-**Status**: **Frontier resolved** — every decision node settled; slices ready for `02-story-creation` (01/09/2026)
+**Status:** Complete
+**Status note:** every decision node settled; fog emptied 01/11/2026 — `F-01` handed to `GAPS.md`, `F-02` out of scope, `F-03` nodes, `F-04` carried by `S-01`; slices ready for `02-story-creation`
 **Frontier open**: 0 · **Blocking open**: 0 · **Resolved**: 26
 
 > **Committed here, never shipped.** This file is tracked, so it syncs across devices, and
@@ -63,13 +64,20 @@ carry the strong wording and this map does not settle it for them.
 
 **Nothing claimed.** Triaged against the live registers on 28/08/2026, not inherited from seeding.
 
-| Register      | Entry                                              | Verdict       | Retired by                                             |
-| ------------- | -------------------------------------------------- | ------------- | ------------------------------------------------------ |
-| `GAPS.md`     | SL-1, SL-2, SL-3 — _Standing limitations_          | **exempt**    | Never — accepted properties, not entries               |
-| `GAPS.md`     | 22/08/2026 — `main` has never received this branch | **unrelated** | Its own PR merging; the entry says _"Do not chart it"_ |
-| `DEFERRED.md` | _(no rows — 17 lines of preamble)_                 | —             | —                                                      |
+| Register      | Entry                                     | Verdict    | Retired by                               |
+| ------------- | ----------------------------------------- | ---------- | ---------------------------------------- |
+| `GAPS.md`     | SL-1, SL-2, SL-3 — _Standing limitations_ | **exempt** | Never — accepted properties, not entries |
+| `DEFERRED.md` | _(no rows)_                               | —          | —                                        |
 
-**This is a claim, not a close.** Nothing here edits either register.
+**Re-triaged 01/09/2026 during the fog pass.** The `22/08/2026 — main has never received this
+branch` entry the 28/08 triage verdicted is **gone from the register**, and six have arrived since.
+All six are **unrelated**: the PE gate's markup half and prefix set, htmx's v4 pin, the RUSTSEC
+advisory gap, the missing staging/production mail backend, the story `**Status:**` vocabularies, and
+the index-row instruction surviving in three shipped files. **0 closes · 0 blocks · 6 unrelated**,
+plus three loose items that touch no host surface. Nothing here is claimed.
+
+**Claimed means gone** (`.claude/CLAUDE.md` Section 9); nothing is claimed here, so neither register
+was edited.
 
 **SL-2's reopen trigger does not fire on this map.** It reopens when a workflow **publishes** an
 image to a registry; nothing here publishes anything.
@@ -311,12 +319,12 @@ slice; the remaining decision nodes settle inside the stories that carry them.
 `02-story-creation` cuts each `US###` from its row. **Build order: S-02 first** — the only
 slice with no open nodes, and S-01's rule section defers to the doctrine S-02 lands.
 
-| Slice | Story | Title                                                                           | Nodes                                             | Acceptance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Flags          |
-| ----- | ----- | ------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| S-01  | —     | **The host register and its rule** — `HOSTS.md` + the `code/docs/` rule section | N-013, N-020, N-022, N-023 _(all settled)_        | Register ships filled with the five measured families plus `admin.` (custom admin area), `portal.` and `control.` (developer Django admin) candidate rows with named triggers — each trigger carrying the N-017 worktree obligation — and the `api.` tooling note; the rule section defers cookie scope to `CRYPTO-AND-DATA.md`, states `/mcp/` is always a path, and extends edge entry 1 with the HSTS obligation; every row states its cookie, canonical, robots and edge obligations; `audits/hosts-register.sh` reconciles register and `ALLOWED_HOSTS` both ways | Security · SEO |
-| S-02  | —     | **The cookie doctrine lands**                                                   | — _(all settled)_                                 | `URL-STRATEGY.md:149-153` rewritten to defer to the owner; `CRYPTO-AND-DATA.md:122-123` respecified host-only + `__Host-`; the per-environment `__Host-` names and `CSRF_COOKIE_HTTPONLY = True` ship together                                                                                                                                                                                                                                                                                                                                                         | Security       |
-| S-03  | —     | **Dev/test host hygiene**                                                       | N-015, N-017, N-018, N-024 _(all settled)_        | The leading-dot `ALLOWED_HOSTS` allowlist lands and a foreign Host fails loudly in dev and test; the nginx catch-all is recorded as deliberate (N-018); `dev-us###.conf` is honoured or retracted (N-024); N-015 closed as mooted, N-017 discharged into the trigger obligations                                                                                                                                                                                                                                                                                       | —              |
-| S-04  | —     | **`URL-STRATEGY.md` corrections + `SITE_URL`**                                  | N-010, N-011, N-012, N-025, N-026 _(all settled)_ | The declared-not-wired banner is added; the Phase 2 table is re-cast as the candidate section with the two admin surfaces split — `admin.` the custom admin area, the developer Django admin at `/control/` with `control.` its candidate — the `api.` tooling note and `/mcp/` always-a-path; `SITE_URL` is defined once, a single apex value; `www` leaves `.env.prod.example`'s `ALLOWED_HOSTS` and CSRF origins (N-013)                                                                                                                                            | SEO            |
+| Slice | Story | Title                                                                           | Nodes                                             | Acceptance                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Flags          | Carries                                                                                                                                                                    |
+| ----- | ----- | ------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| S-01  | —     | **The host register and its rule** — `HOSTS.md` + the `code/docs/` rule section | N-013, N-020, N-022, N-023 _(all settled)_        | Register ships filled with the five measured families plus `admin.` (custom admin area), `portal.` and `control.` (developer Django admin) candidate rows with named triggers — each trigger carrying the N-017 worktree obligation — and the `api.` tooling note; the rule section defers cookie scope to `CRYPTO-AND-DATA.md`, states `/mcp/` is always a path, and extends edge entry 1 with the HSTS obligation; every row states its cookie, canonical, robots and edge obligations; `audits/hosts-register.sh` reconciles register and `ALLOWED_HOSTS` both ways | Security · SEO | F-04 (is host enumeration a threat this project answers? The threat model at `10-security-checks` takes the position, earlier if a sensitive row such as `control.` ships) |
+| S-02  | US008 | **The cookie doctrine lands**                                                   | — _(all settled)_                                 | `URL-STRATEGY.md:149-153` rewritten to defer to the owner; `CRYPTO-AND-DATA.md:122-123` respecified host-only + `__Host-`; the per-environment `__Host-` names and `CSRF_COOKIE_HTTPONLY = True` ship together                                                                                                                                                                                                                                                                                                                                                         | Security       | —                                                                                                                                                                          |
+| S-03  | —     | **Dev/test host hygiene**                                                       | N-015, N-017, N-018, N-024 _(all settled)_        | The leading-dot `ALLOWED_HOSTS` allowlist lands and a foreign Host fails loudly in dev and test; the nginx catch-all is recorded as deliberate (N-018); `dev-us###.conf` is honoured or retracted (N-024); N-015 closed as mooted, N-017 discharged into the trigger obligations                                                                                                                                                                                                                                                                                       | —              | —                                                                                                                                                                          |
+| S-04  | —     | **`URL-STRATEGY.md` corrections + `SITE_URL`**                                  | N-010, N-011, N-012, N-025, N-026 _(all settled)_ | The declared-not-wired banner is added; the Phase 2 table is re-cast as the candidate section with the two admin surfaces split — `admin.` the custom admin area, the developer Django admin at `/control/` with `control.` its candidate — the `api.` tooling note and `/mcp/` always-a-path; `SITE_URL` is defined once, a single apex value; `www` leaves `.env.prod.example`'s `ALLOWED_HOSTS` and CSRF origins (N-013)                                                                                                                                            | SEO            | —                                                                                                                                                                          |
 
 **Backfilled 01/09/2026** at the first RESOLVE sitting: the `TBD` cells the 31/08 column change
 left are filled, and the checklist item _every open node belongs to a slice_ is verified — 13
@@ -344,35 +352,76 @@ blocker. Renamed from `task` on 31/08/2026; the old name was never once used as 
 
 ## Fog of war
 
-In scope, not yet sharp enough to state as a decision. **Leaving something here is honest.**
+**Empty since 01/11/2026.** All four were dispositioned 01/09/2026 — one answered, one cleared,
+two staying with named triggers. On 01/11/2026 each took an `F-NN` ID and left by its route
+(wayfinder → _Fog of war_): `F-01` is a `GAPS.md` entry dated 01/11/2026, `F-02` is in _Out of
+scope_, `F-03` was sharpened into nodes, and `F-04` rides `S-01`'s **Carries** cell. The
+01/09/2026 reasoning stays below as the record, not as open items.
 
-- **What a client-delegated subdomain actually _is_.** `email.`, `chat.`, `video.` were named as the
-  motivating case, but a vendor CNAME, a proxied third-party app and a Django-served surface have
-  three different security answers. **The proposal treats them as one class; they are not one.**
-  N-005 settles the cookie half only.
-- **What the published API surface is made of**, if one is published — a second `NinjaAPI` is
-  **banned twice** (`NINJA-CONVENTIONS.md:130`, `AUTH-STRATEGY.md:46-48`), so "publish a filtered
-  subset" has no shipped mechanism. Deliberately not a node: `API_DOCS_ENABLED` was ruled **out of
-  scope** on 28/08/2026 (`Q3→3`).
-- **Whether an environment host is the same class as a surface host.** `staging.` is in the
-  inventory now, but nothing has argued whether the two obey one rule or two.
-- **Whether host enumeration is a threat this project answers.** `AUTH-AND-AUTHZ.md:93-126` has a
-  full anti-enumeration section and it is **entirely about API responses** — nothing about host,
-  path or subdomain enumeration.
+**F-01 → `GAPS.md` 01/11/2026, "no client-delegated subdomain exists to classify" (route 5).** **What a client-delegated subdomain actually _is_ — stays.** `email.`, `chat.`, `video.` were
+named as the motivating case, but a vendor CNAME, a proxied third-party app and a Django-served
+surface have three different security answers. **The proposal treats them as one class; they are
+not one.** N-005 settles the cookie half only. **What is missing is any instance of the class to
+classify**: no doc specifies such a host, no sibling map mentions one, and the three-kind taxonomy
+is this map's own unsupported assertion — shipping it into `HOSTS.md` now would be a taxonomy
+decided on zero worked examples. **One correction to that claim, measured 01/09/2026:** the tree
+is **not** silent on the vendor-CNAME kind — `how-to/docs/FEATURE-DEPLOY.md:64-65` already
+contemplates a private Cloudinary delivery CNAME as a CSP obligation, so one of the three kinds
+has an in-tree anchor. **Trigger, restricted to what this repository can witness:** a candidate
+row for a non-Django-served host is proposed for `HOSTS.md`, **or** a Cloudinary private delivery
+CNAME is activated — the first vendor-CNAME-class host, which opens the classification with a
+real host in hand. _(The charted "a generated project asks for one" is **not** a usable trigger
+and is dropped: nothing reports a downstream project's requests back here, so it would be a
+promise nobody can keep — the same test this map applied to the deploy repo.)_
+
+**F-02 → _Out of scope_ (route 2).** ~~**What the published API surface is made of.**~~ **Cleared 01/09/2026 — a shipped guide already
+owns the answer.** `code/docs/api-design/AUTH-STRATEGY.md`'s _Framework responsibility model_
+(`:44-55`) states what a published API surface is made of: a **second framework for a different
+consumer** — DRF for a genuine versioned public REST product, or a separately-deployed FastAPI
+service — and never the same resources re-exposed through a second contract (`:46-48`), with
+`NINJA-CONVENTIONS.md:130` separately banning a second `NinjaAPI` instance. **The fog item's
+premise was half-false**: nothing is installed, but the mechanism choice is decided and recorded.
+With Sam's `Q3→3` ruling that publication is an API decision rather than a host decision, no
+question remains for this map. The _Out of scope_ row is now the surviving in-map record.
+
+**F-03 → N-019 · N-022 (route 1).** ~~**Whether an environment host is the same class as a surface host.**~~ **Answered 01/09/2026:
+one rule, one class at the register level — and it was already committed rather than newly
+decided.** N-019 ships `HOSTS.md` filled with the five measured families, `staging.` among them,
+and `S-01`'s acceptance binds **every** row to its cookie, canonical, robots and edge obligations
+with **no environment-host carve-out**. An environment host therefore differs in its row
+**values**, never its row **schema**. **The measured hole worth keeping as evidence:** no
+host-level robots decision exists anywhere — the tree's only `noindex` is the per-page meta in
+`code/src/django/templates/500.html:29`, and `ROOT-SURFACE.md`'s robots rules are **path-scoped**
+and serve identically on every host — so a publicly-tunnelled `staging.` is **index-eligible by
+silence** until `S-01`'s story states its value. That is already bound by N-022 (_robots is a
+per-row obligation_) and needs no second acceptance clause.
+
+**F-04 → `S-01` (route 3, carried).** **Whether host enumeration is a threat this project answers — stays.**
+`AUTH-AND-AUTHZ.md:93-126` has a full anti-enumeration section and it is **entirely about API
+responses**; re-measured 01/09/2026, every other enumeration mention in the tree is record or ID
+enumeration. **The repository is silent on both sides**, so answering yes or no now would invent a
+security posture nobody has modelled — and under N-014's edge-only mechanism the answer would bind
+the edge contract, which this map only specifies. **Trigger:** `S-01`'s story reaches PM workflow
+`10-security-checks` — the threat model authored over the host register is the first artefact
+obliged to take a position, and `S-01` already carries the `Security` flag that routes it there.
+It fires earlier if any sensitive candidate row (`control.`, `admin.`) ships a host whose mere
+existence in DNS or CT logs is itself information.
 
 ---
 
 ## Out of scope
 
-| Ruled out                                                  | Why                                                                                                                                                                                                       |
-| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Provisioning any tunnel, vhost or DNS record               | This repo specifies and the deploy repo implements — `SERVER-ARCHITECTURE/CLAUDE.md:38`. The output here is a contract row, never a Nix module                                                            |
-| `API_DOCS_ENABLED` and whether an API surface is published | **Ruled out 28/08/2026 (`Q3→3`).** It is an API-publication decision, not a host decision, and it only bites if a docs host is chosen. Recorded in fog so it is not silently reopened                     |
-| The `status.` host itself                                  | Settled contract since before this map. It enters as a **worked example** of the per-host obligation                                                                                                      |
-| Tenant-per-subdomain multi-tenancy                         | A different feature. `SERVICE-AND-MIDDLEWARE.md:214` names tenant resolution from a subdomain; **this map is about surfaces, not tenants**                                                                |
-| Building any client-facing host                            | `email.` / `chat.` / `video.` are the motivating case for **not foreclosing** the shape. Building one is its own feature with its own map                                                                 |
-| Authoring an ADR for any of it                             | A dated house rule (`../15-DECISIONS/CLAUDE.md:34-41`), **not** an impossibility. Whether the decline stands is `MAP-PROGRESSIVE-ENHANCEMENT` N-026's, not this map's                                     |
-| Adopting Cloudflare Access                                 | **N-002 measured it absent from the entire repository.** It is not ruled out on merit — it has never been specified, so it cannot be cited. Making it a control is an `EDGE-REQUIREMENTS.md` change first |
+| Ruled out                                                                      | Why                                                                                                                                                                                                       |
+| ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Provisioning any tunnel, vhost or DNS record                                   | This repo specifies and the deploy repo implements — `SERVER-ARCHITECTURE/CLAUDE.md:38`. The output here is a contract row, never a Nix module                                                            |
+| `API_DOCS_ENABLED` and whether an API surface is published                     | **Ruled out 28/08/2026 (`Q3→3`).** It is an API-publication decision, not a host decision, and it only bites if a docs host is chosen. Recorded in fog so it is not silently reopened                     |
+| F-02 — What the published API surface is made of                               | Cleared 01/09/2026 — `AUTH-STRATEGY.md:44-55` already owns it (a second framework for a second consumer), and under `Q3→3` publication is an API decision, the row above (record under _Fog of war_)      |
+| The `status.` host itself                                                      | Settled contract since before this map. It enters as a **worked example** of the per-host obligation                                                                                                      |
+| Tenant-per-subdomain multi-tenancy                                             | A different feature. `SERVICE-AND-MIDDLEWARE.md:214` names tenant resolution from a subdomain; **this map is about surfaces, not tenants**                                                                |
+| Building any client-facing host                                                | `email.` / `chat.` / `video.` are the motivating case for **not foreclosing** the shape. Building one is its own feature with its own map                                                                 |
+| Authoring an ADR for any of it                                                 | A dated house rule (`../15-DECISIONS/CLAUDE.md:34-41`), **not** an impossibility. Whether the decline stands is `MAP-PROGRESSIVE-ENHANCEMENT` N-026's, not this map's                                     |
+| Adopting Cloudflare Access                                                     | **N-002 measured it absent from the entire repository.** It is not ruled out on merit — it has never been specified, so it cannot be cited. Making it a control is an `EDGE-REQUIREMENTS.md` change first |
+| F-01 → `GAPS.md` 01/11/2026 "no client-delegated subdomain exists to classify" | Trigger: a candidate `HOSTS.md` row for a non-Django-served host is proposed, or a Cloudinary private delivery CNAME is activated — an event, not a cut                                                   |
 
 ---
 

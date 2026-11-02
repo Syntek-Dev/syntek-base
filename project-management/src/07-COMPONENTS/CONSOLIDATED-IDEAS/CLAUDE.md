@@ -15,8 +15,8 @@ per-story needs into components with variants and driving the single regeneratio
 
 - **Routing:** produced only by `workflows/18-consolidate-design-work/`, after every story has
   cleared `17-story-plans`. Consolidate alongside `../../06-BRAND-GUIDE/CONSOLIDATED-IDEAS/`.
-- **Model:** Fable throughout — recognising that two needs are one component with two variants
-  is design judgement. Opus only for running the generator and committing its outputs.
+- **Model:** Opus throughout — recognising that two needs are one component with two variants
+  is design judgement; running the generator and committing its outputs is a mechanical touch.
 - **Concrete steps:** inventory every `../USER-STORY-IDEAS/` need → group the ones that are one
   component → decide the component, its variants, and its full state matrix → record the merge
   log with reasons → verify accessibility per component → edit the palette in

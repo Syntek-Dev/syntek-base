@@ -14,11 +14,12 @@ code is written.
 ## How to work here
 
 - **Routing:** models are produced by `project-management/workflows/10-security-checks/`
-  using the `security` skill (Fable), analysing a story in `../../../02-STORIES/` and its
+  using the `security` skill, analysing a story in `../../../02-STORIES/` and its
   `../../../05-USER-FLOW/` and `../../../08-WIREFRAMES/` artefacts against
   `project-management/docs/SECURITY-GUIDE.md`. Read a story's model before implementing it.
-- **Model:** Fable — STRIDE analysis (trust boundaries, threat identification, severity
-  scoring) is substantive judgement; Opus only for a date-header bump or a rename.
+- **Model:** Opus throughout — STRIDE analysis (trust boundaries, threat identification,
+  severity scoring) is substantive judgement; a date-header bump or a rename is a
+  mechanical touch.
 - **Concrete steps:** copy `THREAT-MODEL-PLAN-US000-TEMPLATE.md` →
   `THREAT-MODEL-PLAN-US###-<DESCRIPTOR>.md` → complete scope, the `TB1..TBn` table, and
   the STRIDE threat table → escalate blocking CRITICAL/HIGH findings to

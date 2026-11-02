@@ -16,7 +16,7 @@ migration strategy — **before** any Django model or migration is written.
   `code/docs/data-structures/SCHEMA-DESIGN.md` (naming/index conventions) and
   `code/docs/encryption/FIELD-ENCRYPTION.md` (PII flagging) before Step 1 — violations
   block model creation.
-- **Model:** Fable — schema design is architectural.
+- **Model:** Opus throughout.
 - **ADR groundwork:** when a schema decision hinges on a stack choice or feeds an
   ADR/PLAN, load `.claude/skills/research/SKILL.md` for a primary-source-cited note.
 - **Concrete steps:** confirm a driving `US###` exists and requirements are understood

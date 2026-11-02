@@ -1,6 +1,6 @@
 # Updating — Pulling Template Changes into a Live Project
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 31/10/2026
 
 A project generated with Copier stays connected to the template. When `syntek-base` gains a fix,
 you can pull it into a project that has been diverging for months.
@@ -327,7 +327,7 @@ holds, and its tested recovery path. **The posture and its evidence move togethe
 raised without a recovery path is the claim that matters least and the one most likely to be wrong.
 
 `--defaults` is right here: you have already made the only change you intended, and it stops the
-update re-asking thirty other questions you would only press Enter through. Raise the posture
+update re-asking thirty-seven other questions you would only press Enter through. Raise the posture
 **before** the first deploy, not after — the rules exist to shape the deploy, not to describe it
 afterwards.
 
@@ -353,7 +353,22 @@ described above, and it is the one worth being paranoid about.
 **A new question with no default halts an unattended update.** Copier cannot guess it, so
 `copier update --defaults` aborts rather than proceeding. Supply it:
 `template-update.sh -- --data KEY=value`. This is also why every automated caller of a template —
-CI probes included — breaks the day such a question is added.
+CI probes included — breaks the day such a question is added. The two week counts 7.7.0 added,
+`CUSTOMER_REVIEW_WEEKS` and `FEEDBACK_WEEKS`, both carry defaults (`2` and `4`), so an unattended
+update past that release proceeds and records the defaults.
+
+**Updating across 7.7.0 writes your PM boards and cut plan, and renames four statuses.** The five
+`*-BOARD.md` files are seeded only at generation, so a migration writes them on update and the
+new CI board check starts green. The same migration writes a blank
+`project-management/src/02-STORIES/CUT-PLAN.md` if you have none, dated with the `DATE` answer
+in `.copier-answers.yml` (today, if that answer is missing) and maintained by its
+`DEVELOPER_NAME` (`TBD`, with a warning, if that answer is missing); an existing cut plan is
+never touched. It renames the four retired values that have exactly one new
+spelling: `Accepted Customer` to `Customer Accepted`, `Rejected Customer` to `Customer Rejected`,
+a sprint's `In progress` to `In Progress`, and a map's `Blockers clear` to `Blockers Clear`.
+Anything else outside the vocabulary — a map still reading `Not started`, say — is printed for
+you to correct, and sits in the board's `Unrecognised` column until you do. Commit the boards,
+and the cut plan if one was written, with the update.
 
 **Your generation predates `.copier-answers.yml`.** Projects created with the old `setup.sh` flow
 have no answers file and cannot be updated. Recreate one by hand — copy the format from a fresh

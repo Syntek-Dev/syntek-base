@@ -6,6 +6,7 @@
 @../CONTEXT.md
 @../REFERENCES.md
 @./CONTEXT.md
+@../.ai/INSTRUCTIONS.md
 
 ---
 
@@ -162,29 +163,55 @@ nothing reads it on the next task and no gate applies to it.
 
 | Server              | When to use                                                                                  | How you get it                                                              |
 | ------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| `code-review-graph` | Before Grep/Glob/Read — structural context, impact analysis. Faster and token-cheaper.       | Configured in `.mcp.json`                                                   |
-| `context7`          | Library/framework/SDK/CLI docs — **second**, after the internal `**/docs/`. Order in 3.2.    | Configured in `.mcp.json`                                                   |
-| `mcp-mermaid`       | Architecture and flow diagrams.                                                              | Configured in `.mcp.json`                                                   |
+| `code-review-graph` | Before Grep/Glob/Read — structural context, impact analysis. Faster and token-cheaper.       | `.mcp.json` + `.codex/config.toml`                                          |
+| `context7`          | Library/framework/SDK/CLI docs — **second**, after the internal `**/docs/`. Order in 3.2.    | `.mcp.json` + `.codex/config.toml`                                          |
+| `mcp-mermaid`       | Architecture and flow diagrams.                                                              | `.mcp.json` + `.codex/config.toml`                                          |
 | `claude-in-chrome`  | Rendered UI inspection, visual verification, browser automation. Load schema via ToolSearch. | **Install the Claude Chrome extension and pair it** — no config supplies it |
+| `perplexity`        | Cited live-web answers at tier 3 below; source triage for `/research`.                       | `.mcp.json` + `.codex/config.toml`; optional `PERPLEXITY_API_KEY`           |
+| `scrapling`         | **Reading** a primary source at tier 4 below — the page's own markdown, not a summary.       | `.mcp.json` + `.codex/config.toml`                                          |
+
+**Every server is declared twice, and both declarations must agree** — `.mcp.json` is Claude's, `.codex/config.toml`
+is Codex's, and nothing but `audits/mcp-parity.sh` holds them in step (rule: `.ai/INSTRUCTIONS.md`
+→ _Maintain one source_). **`get` is the default tier** — it returns the page's own
+markdown with no browser, and it is what 3.2 below means by _read_. The browser-backed tools
+(`fetch`, `stealthy_fetch`, `screenshot`) are **host-dependent**: Playwright pins an exact Chromium
+_revision_ per release, so they run only where the host supplies that revision and otherwise fail
+at runtime with `Executable doesn't exist at .../chromium-<rev>`. **That is provisioning, not a
+repository gap** — report the tier unavailable (`code/docs/GATE-REPORTING.md`) rather than loosen a
+pin or fall back to `WebFetch`, which paraphrases and so cannot cite a primary source.
+**The three readers are an escalation ladder, climbed only on failure.** `get` is the default and
+needs no browser; `fetch` renders what `get` returns as an empty shell; `stealthy_fetch` is the
+anti-bot tier, for a source this project is **entitled** to read that answers `fetch` with a
+challenge. Entitled is the limit — a public standard, a vendor changelog, an advisory; never a
+paywall, a login or a rate limit, which are access controls rather than incidental protection.
 
 ### 3.2 How to look something up
 
-**The internal docs first. `context7` second. Web search last** — stop at the first tier that
-answers it. An internal guide is a **decision**; an external doc is a menu of possibilities, and
-reading the menu first produces answers this project has already rejected.
+**The internal docs first. `context7` second. Perplexity third. Web search last** — stop at the
+first tier that answers it. An internal guide is a **decision**; an external doc is a menu of
+possibilities, and reading the menu first produces answers this project has already rejected.
 
-| Order | Source                                                                                                | Answers                                                                                     |
-| ----- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 1     | **Internal** — the `**/docs/` guides, the layered `CONTEXT.md`/`CLAUDE.md` chain, and `REFERENCES.md` | What **this project has decided**: the convention, the constraint, the enforcement point    |
-| 2     | **`context7` MCP** — `resolve-library-id` → `query-docs`                                              | What a **library, framework, SDK or CLI does**, at the version pinned in `REFERENCES.md`    |
-| 3     | **Web search / `WebFetch`**                                                                           | What owns no library documentation — a vendor changelog, a standard's own page, an advisory |
+| Order | Source                                                                                                | Answers                                                                                      |
+| ----- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| 1     | **Internal** — the `**/docs/` guides, the layered `CONTEXT.md`/`CLAUDE.md` chain, and `REFERENCES.md` | What **this project has decided**: the convention, the constraint, the enforcement point     |
+| 2     | **`context7` MCP** — `resolve-library-id` → `query-docs`                                              | What a **library, framework, SDK or CLI does**, at the version pinned in `REFERENCES.md`     |
+| 3     | **`perplexity` MCP** — `perplexity_search`, `perplexity_ask` or `perplexity_reason`                   | What no library doc owns, as a **cited answer** — enough to decide in-session, never to cite |
+| 4     | **`WebSearch` to _find_ it, then `scrapling` to _read_ it**                                           | The **primary source's own text** — a vendor changelog, a standard's own page, an advisory   |
 
 - **Escalate on silence, not convenience.** Move outward when the docs are silent, name the library
   without naming the call, or describe a version we have left. "Faster to search" is not silence.
+- **Finding a source and reading one are different acts.** `WebSearch` locates it; `scrapling`'s
+  `get` returns the page's own markdown, or a `css_selector` fragment, so the text in context is
+  the source's. **`WebFetch` is not the reader**: a small fast model paraphrases the page, and a
+  claim cannot honestly be cited to a primary source nobody read. Keep it for a throwaway "is this
+  page even relevant?"; it fails on the JS-rendered or Cloudflare-fronted page `scrapling` reads.
+- **Perplexity's answer is a lookup, not a citation.** It may answer or decide in the session. A
+  claim written into a durable artefact — ADR, research note, guide, story, commit — is cited to the
+  primary source itself, re-read through `scrapling`, never to Perplexity's answer text.
 - **What comes back is a candidate, not a rule.** An external answer contradicting a guide loses;
   correcting a genuinely stale guide is its own change, through the Section 6 gate.
-- **Synthesis is not a search.** Several primary sources weighed against one another is `/research`
-  (`.claude/skills/research/SKILL.md`), not a search result pasted into an ADR.
+- **Synthesis is not a search.** Weighing several primary sources is `/research`
+  (`.claude/skills/research/SKILL.md`), not a search result or Perplexity report pasted into an ADR.
 - **This chain answers doctrine, not project facts** — those run `code-review-graph` →
   Read/Grep/Glob → `.claude/plugins/*.py`, owned by `.claude/skills/grilling/SKILL.md`.
 
@@ -208,14 +235,14 @@ never run dev operations. Registry: `.claude/plugins/CONTEXT.md`. The `<%ORG_SLU
 
 Every session runs on **Opus** with **ultracode** on (`effortLevel: xhigh`, dynamic workflows) — baked into `.claude/settings.json` (`model: opus`, `effortLevel: xhigh`, `ultracode: true`, `enableWorkflows: true`). Opus is the default main-loop model. Use the latest in each family — never hardcode version strings.
 
-Sub-agents, workflows, and docs-guides route by **tier** through their `model:` frontmatter (Section 2.5): **Fable** sets the foundation, **Opus** builds on it and handles every mechanical touch. **Never use `sonnet` or `haiku`.**
+**This project runs a single tier.** Sub-agents, workflows and docs-guides all declare `model: opus` in their routing frontmatter (Section 2.5) — the value is uniform across every declaration, and the key stays because it is the carrier any future tier split would use. **Never use `fable`, `sonnet` or `haiku`.**
 
-| Alias        | Use for                                                                                                                                                                                     |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fable`      | **Planning · spec · design.** Architecture, schema & data design, user flows, GDPR/security/QA specs, API design, stories, sprints, plans — the reasoning tier the implementation builds on |
-| `opus`       | **Everything else.** Backend/frontend code, tests, migrations, review, PR, release, docs — and all mechanical touches (renames, version bumps, running scripts, doc-index lookups)          |
-| ~~`sonnet`~~ | **Never used.**                                                                                                                                                                             |
-| ~~`haiku`~~  | **Never used.**                                                                                                                                                                             |
+| Alias        | Use for                                                                                                                                               |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `opus`       | **Everything.** Planning, spec and design as well as backend/frontend code, tests, migrations, review, PR, release, docs — and every mechanical touch |
+| ~~`fable`~~  | **Retired 10/09/2026 on cost.** The design tier collapsed into `opus`; substantive and mechanical work are now an effort distinction, not a model one |
+| ~~`sonnet`~~ | **Never used.**                                                                                                                                       |
+| ~~`haiku`~~  | **Never used.**                                                                                                                                       |
 
 ---
 
@@ -244,7 +271,7 @@ These apply in every task, regardless of layer:
 - Implementation docs and `CONTEXT.md`/`CLAUDE.md` updates are complete before any commit — hard gate — and the code-review-graph refreshed alongside them, **staged first, then refreshed**, because the incremental pass never sees an unstaged new file (`code/docs/CODE-REVIEW-GRAPH.md`).
 - **Token-first.** Design values are DB-canonical; component CSS only ever consumes `var(--token)`, and the name must resolve in the token layer — never a raw literal (`code/docs/DESIGN-TOKENS.md`, gate: `audits/css-tokens.sh`).
 - **Doctrine derived from an outside source is credited where it is written**, not retrospectively — the `README.md` Section _Influences and attribution_ table gains the row in the **same change** as the rule it credits. Attribution written once decays; written alongside, it stays true.
-- **Use, adapt and redistribute are three different permissions.** A **share-alike** source (CC-BY-SA) may be **read** as a checklist of concerns; its text and its rule wording may **never** be derived into anything this template redistributes, because every generated project would inherit the obligation. Check the licence column in `README.md` Section _Influences_ **before** deriving, not after. Permissive sources (MIT, Apache-2.0, unlicensed) are derived freely and credited.
+- **Use, adapt and redistribute are three different permissions.** A **share-alike** source (CC-BY-SA) may be **read** as a checklist of concerns; its text and its rule wording may **never** be derived into anything this template redistributes, because every generated project would inherit the obligation. Check the licence column in `README.md` Section _Influences_ **before** deriving, not after. Permissive sources (MIT, Apache-2.0, the Unlicense) are derived freely and credited.
 
 ---
 
@@ -289,9 +316,9 @@ project starts from a blank one — `copier.yml` `_exclude` plus the `_tasks` mo
 Write to them freely; nothing you record here travels. Gates: `.github/scripts/shipped-memory.sh` <!-- doc-references: template-only -->
 and `.github/scripts/shipped-registers.sh`. <!-- doc-references: template-only -->
 
-**Promotion — this file owns it.** When a `GAPS.md` entry is resolved, mark it `✅ CLOSED <date>`,
-promote any permanent decision to the doc below, then remove the closed entry on the next tidy
-pass:
+**Claimed means gone; promotion is this file's.** Any entry a `MAP-*.md` claims or a `US###.md`
+carries leaves `GAPS.md`/`DEFERRED.md` in that change, its substance already there. A resolved
+unclaimed gap is marked `✅ CLOSED <date>`, promoted below, and removed on the next tidy pass:
 
 | Entry type                      | Target doc                           |
 | ------------------------------- | ------------------------------------ |

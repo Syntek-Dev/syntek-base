@@ -1,7 +1,8 @@
 # MAP-SCALE-PLANNING — Size this system for the growth it is meant to survive
 
 **Charted**: TBD — run `/scale-planning` · **Charted by**: TBD · **Workflow**: `01-feature-map`
-**Status**: Not started
+**Status:** Charting
+**Status note:** seeded, not charted — run `/scale-planning`
 **Frontier open**: every node below · **Blocking open**: every node below
 
 > **This file is a seeded stub, and it is deliberately unfinished.** It ships with the project so

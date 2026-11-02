@@ -31,6 +31,8 @@ model: opus
 ### Phase 1 — Red
 
 - [ ] Tests written before any implementation · _opus_
+- [ ] The story's manual guide (`project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`) briefed to `test-writer` and read, never edited · _opus_
+- [ ] Every guide row triaged in `test-writer`'s handoff — automatable rows now a story-marked test, manual-only rows named with their reason · _opus_
 - [ ] Tests assert on outcomes (return values, DB state, API responses) — not on internals · _opus_
 - [ ] Test data is realistic: factories with Faker, not `"test@test.com"` or `id=999` · _opus_
 - [ ] Tests use factories (not inline model instances) · _opus_
@@ -61,12 +63,13 @@ model: opus
 
 ### Phase 4 — Documentation closeout (verified, not written here)
 
-Workflow 21 writes these; this checklist only confirms they exist before the PR. The record
-formats, templates, and destinations live in
+Workflow 22 writes these — and walks the manual guide rather than writing it; this checklist only
+confirms they exist before the PR. The record formats, templates, and destinations live in
 `project-management/workflows/22-implementation-documentation/` — never restate them here.
 
 - [ ] `project-management/workflows/22-implementation-documentation/` run to completion for this story · _opus_
 - [ ] Its `CHECKLIST.md` fully satisfied — every applicable IMPLEMENTATION record written from template and linked to `US###` · _opus_
+- [ ] `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md` written and `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` walked, every row marked · _opus_
 - [ ] No spec left with a `PLANNING/` artefact but no `IMPLEMENTATION/` record · _opus_
 - [ ] Findings record written to `project-management/src/20-FINDINGS/` (even if nothing was found) · _opus_
 - [ ] `/GAPS.md` and `/DEFERRED.md` updated from those findings · _opus_

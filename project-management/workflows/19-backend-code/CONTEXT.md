@@ -64,6 +64,7 @@ feature. The database schema must be approved before this workflow begins.
 
 #### project-management/ — what precedes this, and what follows
 
+- `project-management/src/17-STORY-PLANS/` — the story plan, the code master; Step 1 reads it first
 - `project-management/workflows/04-database-schema/` — schema must be approved before this workflow
 - `project-management/workflows/20-api-code/` — follow this after backend logic is tested
 - `project-management/src/02-STORIES/` — the story acceptance criteria driving the implementation

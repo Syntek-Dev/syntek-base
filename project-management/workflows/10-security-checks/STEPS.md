@@ -2,7 +2,7 @@
 workflow: 10-security-checks
 phase: harden
 skills: [security, stack-django, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # Security Checks — Steps
@@ -26,13 +26,9 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ## Steps
 
-### Step 1 — Grill, then Review User Flows and Wireframes
+### Step 1 — Review User Flows and Wireframes, then Grill
 
 > **Model:** opus
-
-**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> about the trust boundaries, authentication points,
-and data touchpoints before reviewing the user flows and wireframes.
 
 Read the completed user flows in `project-management/src/05-USER-FLOW/` and wireframes in
 `project-management/src/08-WIREFRAMES/`. Identify all points where:
@@ -41,6 +37,14 @@ Read the completed user flows in `project-management/src/05-USER-FLOW/` and wire
 - Data is submitted, stored, or transmitted
 - Roles or permissions gate access to a screen or action
 - Third-party integrations are invoked
+
+**Then grill** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
+interview <%DEVELOPER_NAME%> about the trust boundaries, authentication points, and data
+touchpoints at those points.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the story's feature-map nodes and ADRs, its GDPR plan (gate `09`), and the flows and screens
+already designed for it (gates `05` and `08`).
 
 ### Step 2 — Threat Model (STRIDE)
 
@@ -73,18 +77,21 @@ Add both columns to the threat table in the threat model document. Full mappings
 security [describe the feature, its user flows, and any identified threats]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** opus · **MCP:** none
 
 ### Step 5 — Document Findings
 
-Save a threat model and assessment file in `project-management/src/10-SECURITY/`:
+This gate writes **two** artefacts, both required, and the threat model first — the assessment
+synthesises it rather than restating it. For any `CRITICAL` or `HIGH` finding it writes a third,
+an individual vulnerability report; where there is none, the absence is recorded with its reason
+rather than left to be inferred (`code/docs/GATE-REPORTING.md`).
 
-- `THREAT-MODEL/THREAT-MODEL-<FEATURE>-DD-MM-YYYY.md`
-- `ASSESSMENTS/ASSESSMENT-<FEATURE>-DD-MM-YYYY.md`
-
-For any `CRITICAL` or `HIGH` finding, also create an individual vulnerability report:
-
-- `VULNERABILITIES/VULN-<DESCRIPTOR>-DD-MM-YYYY.md`
+**The category, the phase sub-folder and the filename are not stated here.** Read
+`project-management/src/10-SECURITY/CLAUDE.md`, which owns them — `.claude/CLAUDE.md` Section 5
+makes each folder's `CLAUDE.md` authoritative for its own tree, and this workflow does not own
+`src/10-SECURITY/`. A pattern copied into this file is a second owner that drifts silently from
+the first; that is not hypothetical here, and the three lines this paragraph replaced had drifted
+on every one of their three tokens.
 
 ### Step 6 — Resolve Blocking Findings
 

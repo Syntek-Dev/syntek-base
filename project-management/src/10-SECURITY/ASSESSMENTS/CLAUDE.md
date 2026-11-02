@@ -15,11 +15,12 @@ verification.
 ## How to work here
 
 - **Routing:** produced by `project-management/workflows/10-security-checks/`
-  (`STEPS.md` + `CHECKLIST.md`) via the `security` skill (Fable), against
+  (`STEPS.md` + `CHECKLIST.md`) via the `security` skill, against
   `project-management/docs/SECURITY-GUIDE.md`. Write a story's `PLANNING/` baseline
   before implementing it; the `IMPLEMENTATION/` review follows once the code ships.
-- **Model:** Fable — mapping posture across OWASP/NIST and judging finding severity is
-  substantive analysis; Opus only for a date-header bump, a status flip, or a rename.
+- **Model:** Opus throughout — mapping posture across OWASP/NIST and judging finding
+  severity is substantive analysis; a date-header bump, a status flip, or a rename is a
+  mechanical touch.
 - **Concrete steps:** copy the phase folder's `US000-TEMPLATE.md` →
   `ASSESSMENT-<PLAN|IMPL>-US###-<DESCRIPTOR>.md` → complete the OWASP A01–A10 and NIST
   CSF tables → tag every finding with STRIDE + OWASP + NIST + severity → list the

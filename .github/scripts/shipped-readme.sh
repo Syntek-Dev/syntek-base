@@ -261,7 +261,7 @@ run_readme_checks() {
 # ── 1. Root entries ───────────────────────────────────────────────────────────
 for entry in $(ls -A | grep -vE '^(\.git|node_modules|\.venv|\.code-review-graph)$'); do
   is_excluded "$entry" && continue
-  case "$entry" in .*) [[ "$entry" == ".claude" || "$entry" == ".agents" || "$entry" == ".mcp.json" || "$entry" == ".zed" ]] || continue ;; esac
+  case "$entry" in .*) [[ "$entry" == ".claude" || "$entry" == ".agents" || "$entry" == ".ai" || "$entry" == ".codex" || "$entry" == ".mcp.json" || "$entry" == ".zed" ]] || continue ;; esac
   in_tree "$TREE" "$entry" || finding "Project Tree omits shipping root entry: $entry"
 done
 

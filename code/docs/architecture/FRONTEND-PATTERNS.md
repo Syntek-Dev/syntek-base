@@ -1,7 +1,7 @@
 ---
 type: guide
 skills: [planner, stack-django, stack-htmx-templates]
-model: fable
+model: opus
 ---
 
 # Architecture Patterns — Frontend State, Routing, and Project Structure

@@ -25,7 +25,7 @@ tooling; plugin references were rewritten to internal paths.
 ├── sprint/                 ← slice written stories into balanced, dependency-ordered sprints
 ├── planner/                ← architect a feature into a phased, independently-testable plan
 ├── syntax/                 ← make it parse, lint, format and type-check — behaviour-preserving only
-├── completion/             ← record a verified story or sprint as complete in the PM artefacts
+├── completion/             ← advance a story, sprint or map through its status lifecycle
 ├── backend/                ← build the server side: models, migration, services, /api/ and /mcp/
 ├── frontend/               ← build the web pages: templates, components, HTMX, Alpine, token CSS
 ├── database/               ← the data layer: models, lock-safe migration, RLS policies, PII columns
@@ -59,6 +59,7 @@ tooling; plugin references were rewritten to internal paths.
 ├── stack-rust/             ← RUST-ONLY — build the crates: the gate question, PyO3 boundary, supply chain (task, forked)
 │   └── SKILL.md
 ├── stack-slint/            ← DESKTOP-ONLY — build the native Slint app; the licence obligation comes first (task, forked)
+├── stack-wagtail/          ← CMS-ONLY — Wagtail idioms: the page tree, blocks, the second admin surface (reference)
 │   └── SKILL.md
 ├── global-workflow/        ← cross-cutting standards (split index + sub-docs)
 │   ├── SKILL.md
@@ -135,7 +136,7 @@ tooling; plugin references were rewritten to internal paths.
 | `sprint`                        | Written stories have to be sliced into the next sprint — capacity, MoSCoW mix, dependency order                                                       |
 | `planner`                       | A design has to be settled before code — scope, system impact, phases, interfaces, risks                                                              |
 | `syntax`                        | The tree is mechanically broken or a syntax gate is red — lint, format, types, strictly behaviour-preserving                                          |
-| `completion`                    | Verified work needs recording — a story or sprint status transition in the PM artefacts                                                               |
+| `completion`                    | A story, sprint or map status transition needs recording, with its history row — archiving is `pm-archive.sh`'s                                       |
 | `backend`                       | The server half of a story — models, migration, service layer, Django Ninja endpoints, MCP tools                                                      |
 | `frontend`                      | The web half of a story — templates, django-components, HTMX, Alpine, token CSS, WCAG                                                                 |
 | `database`                      | The data layer itself — an approved schema as models and a lock-safe migration, RLS policies, PII columns                                             |
@@ -164,6 +165,7 @@ tooling; plugin references were rewritten to internal paths.
 | `stack-fastmcp`                 | Writing/reviewing MCP tools (`apps/**/mcp_tools.py`, `config/mcp.py`) — exposing domain operations to an LLM agent at `/mcp/`                         |
 | `stack-rust`                    | **Rust-only.** Native code has to be written or audited under `code/src/rust/` — and, first, whether it belongs in Rust at all                        |
 | `stack-slint`                   | **Desktop-only.** A story needs its desktop windows built or reviewed — the AboutSlint disclosure, the lint boundary, threading, AccessKit            |
+| `stack-wagtail`                 | **CMS-only.** A `Page` subclass, a StreamField block, a Wagtail hook or the CMS admin wiring is being written or reviewed                             |
 | `global-workflow`               | Branching, commits, PRs, version bumps, documentation, code comments                                                                                  |
 | `runbook`                       | Authoring a guide or runbook a human executes — `how-to/docs/`, `how-to/src/`; the conventions are `how-to/docs/OPERATOR-DOC-CRAFT.md`                |
 | `grilling`                      | Design work (architecture, DB, API, story) — the frontier-round interview engine                                                                      |

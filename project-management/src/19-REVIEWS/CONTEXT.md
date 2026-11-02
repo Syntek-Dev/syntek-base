@@ -23,9 +23,9 @@ created by copying `REVIEW-US000-TEMPLATE.md` when a story's PR is reviewed.
                                                           (18-TESTS · 19-REVIEWS · 20-FINDINGS · 21-BUGS · 22-REFACTORING)
 ```
 
-A review (18) is a **record-tier** artefact: it is written **after** the code ships, closing
-the loop on the `17-STORY-PLANS` plan the story was coded from and reading against the
-`18-TESTS` status.
+A review (19) is a **record-tier** artefact: it is written **after** the code ships, closing
+the loop on the `17-STORY-PLANS` plan the story was coded from and reading against the story's
+`18-TESTS` records — the automated record and the walked manual testing guide.
 
 ## What the record captures
 
@@ -36,7 +36,8 @@ the loop on the `17-STORY-PLANS` plan the story was coded from and reading again
   resolution/status)
 - Dimension checklists — Security (OWASP A01, IDOR, secrets/DEBUG), GDPR/PII, test coverage
   vs floors, quality/DRY/file-length, performance (N+1), accessibility (WCAG 2.2 AA)
-- Required actions before merge, and the status transition (e.g. In Review → Accepted)
+- Required actions before merge, and the status transition (e.g. In Review → Accepted, or
+  In Review → Rejected → Pending)
 
 ## When to write it
 
@@ -50,7 +51,8 @@ resolution. A `Changes-requested` verdict blocks the merge until re-review.
 - `REVIEW-US000-TEMPLATE.md` — the per-story review template
 - `../02-STORIES/` — the stories under review
 - `../17-STORY-PLANS/` — the implementation plans reviews close the loop on
-- `../18-TESTS/` — the test status/manual guides a review reads against
+- `../18-TESTS/AUTOMATED/` · `../18-TESTS/MANUAL/` — the automated test records and walked manual
+  testing guides a review reads against
 - `../11-QA/IMPLEMENTATION/` — the paired QA review from the same PR
 - `project-management/workflows/23-pr-and-review/` — where these reviews are written
 - `code/docs/SECURITY.md` — the OWASP / IDOR obligations the security checklist rests on

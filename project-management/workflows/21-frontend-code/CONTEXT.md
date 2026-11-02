@@ -91,6 +91,7 @@ that section entirely; nothing else in this workflow changes.
 
 #### project-management/ — what precedes this, what follows, and the guides
 
+- `project-management/src/17-STORY-PLANS/` — the story plan, the code master; Step 1 reads it first
 - `project-management/workflows/07-component-designs/` — component designs consumed here
 - `project-management/workflows/08-wireframes/` — wireframes consumed here
 - `project-management/workflows/20-api-code/` — the Django Ninja API must exist before this workflow

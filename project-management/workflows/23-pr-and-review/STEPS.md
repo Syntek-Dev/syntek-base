@@ -16,11 +16,11 @@ model: opus
 
 Consult `project-management/REFERENCES.md` as you work through these steps:
 
-| Step         | Section                                                                                                                                               |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5            | **Internal — Guides** → project-management/docs/GIT-GUIDE.md (gate rules: testing → dev → staging → main)                                             |
-| 5            | **External — Version Control & CI** → Conventional Commits 1.0, GitHub Actions, GitHub flow                                                           |
-| Impl records | Verified here, authored in `workflows/22-implementation-documentation/` → src/09-GDPR/, src/10-SECURITY/, src/11-QA/, src/12-SEO/, src/13-API-DESIGN/ |
+| Step         | Section                                                                                                                                                              |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 5            | **Internal — Guides** → project-management/docs/GIT-GUIDE.md (gate rules: testing → dev → staging → main)                                                            |
+| 5            | **External — Version Control & CI** → Conventional Commits 1.0, GitHub Actions, GitHub flow                                                                          |
+| Impl records | Verified here, authored in `workflows/22-implementation-documentation/` → src/09-GDPR/, src/10-SECURITY/, src/11-QA/, src/12-SEO/, src/13-API-DESIGN/, src/18-TESTS/ |
 
 ---
 
@@ -54,9 +54,11 @@ PR description must include:
 - User story reference (US###)
 - Test plan (how to verify)
 
-Set the story `**Status:**` to `In Review` in `src/02-STORIES/US###.md` and commit — the lefthook
-regenerates the ClickUp export and the `clickup-sync` workflow pushes it to the board. Status set
-per `project-management/docs/PLANNING-GUIDE.md` → Story Statuses.
+Set the story `**Status:**` to `In Review` in `src/02-STORIES/US###.md`, append its
+`## Status history` row, run `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`,
+and commit — the lefthook regenerates the ClickUp export and the `clickup-sync` workflow pushes
+it to the board. Lifecycle: `project-management/docs/planning/STORIES.md` → _Story statuses_;
+vocabulary owner: `.claude/skills/completion/SKILL.md`.
 
 ### Step 4 — Await CI and QA Sign-off
 
@@ -70,34 +72,67 @@ Follow the gate rules in `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md`
 testing → dev → staging → main
 ```
 
-Once merged to `testing`, set the story `**Status:**` to `Completed` (move to `Accepted` /
-`Accepted Customer` on sign-off). Commit the change so the ClickUp board updates.
+Record each transition through the `completion` skill — a `## Status history` row and a board
+regeneration every time:
+
+- **Review and QA pass** → `Accepted`. **Either fails** → `Rejected`, then back to `Pending`.
+- **Handed to the customer on a staging deployment** → `Customer Review`; their answer →
+  `Customer Accepted`, or `Customer Rejected` and back to `Pending`. A story whose
+  `Customer review` flag is `N/A` skips these three.
+- **`Completed` is never set at merge.** It comes from the window the `completion` skill owns
+  (`pm-board.sh --warn` names the stories that have reached it); `pm-archive.sh US###` then
+  closes and archives the story.
+
+Commit each change so the ClickUp board updates.
 
 ---
 
-### Step 6 — Verify Implementation Records, Write Review Records
+### Step 6 — Verify Implementation and Test Records, Write the Review Record
 
 **Hard gate — complete before marking this story done.**
 
-The design/compliance IMPLEMENTATION records are **written in `22-implementation-documentation`**, which runs before this workflow. Here you **verify** each applicable one exists and is complete, then **write** the two PR-stage records that are the outputs of Steps 1–2.
+The design/compliance IMPLEMENTATION records and the automated test record are **written**, and the manual testing guide **walked**, in `22-implementation-documentation`, which runs before this workflow. Here you **verify** each applicable one exists and is complete, then **write** the single PR-stage record that is the output of Steps 1–2.
 
-**Verify (authored in `22-implementation-documentation`)** — if any applicable record is missing or incomplete, return to `19` before proceeding; do not write it here:
+**Verify (authored in `22-implementation-documentation`)** — if any applicable record is missing or incomplete, return to `22-implementation-documentation` before proceeding; do not write it here:
 
-| Discipline                                          | Required                                           | Expected in                                  |
-| --------------------------------------------------- | -------------------------------------------------- | -------------------------------------------- |
-| GDPR review                                         | Always                                             | `src/09-GDPR/IMPLEMENTATION/`                |
-| Security (assessment / audit / threat model / vuln) | Always                                             | `src/10-SECURITY/<CATEGORY>/IMPLEMENTATION/` |
-| QA plan                                             | Always                                             | `src/11-QA/IMPLEMENTATION/`                  |
-| SEO review                                          | Only if story adds public-facing pages             | `src/12-SEO/IMPLEMENTATION/`                 |
-| API design                                          | Only if story adds or changes the Django Ninja API | `src/13-API-DESIGN/IMPLEMENTATION/`          |
-| Findings                                            | Always                                             | `src/20-FINDINGS/`                           |
+| Discipline                                          | Required                                           | Expected in                                        |
+| --------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| GDPR review                                         | Always                                             | `src/09-GDPR/IMPLEMENTATION/`                      |
+| Security (assessment / audit / threat model / vuln) | Always                                             | `src/10-SECURITY/<CATEGORY>/IMPLEMENTATION/`       |
+| QA plan                                             | Always                                             | `src/11-QA/IMPLEMENTATION/`                        |
+| SEO review                                          | Only if story adds public-facing pages             | `src/12-SEO/IMPLEMENTATION/`                       |
+| API design                                          | Only if story adds or changes the Django Ninja API | `src/13-API-DESIGN/IMPLEMENTATION/`                |
+| Test records (automated + manual)                   | Always                                             | `src/18-TESTS/AUTOMATED/` · `src/18-TESTS/MANUAL/` |
+| Findings                                            | Always                                             | `src/20-FINDINGS/`                                 |
 
-**Write (PR-stage records)** — the outputs of the Final QA Pass (Step 1) and Code Review (Step 2):
+**Complete is not the same as present** — the two test records in `src/18-TESTS/` are read, not
+counted. Rules and templates: `project-management/src/18-TESTS/CLAUDE.md` and its `AUTOMATED/`
+and `MANUAL/` sub-folders.
 
-| Discipline         | Required | File to create                                     | Save in           |
-| ------------------ | -------- | -------------------------------------------------- | ----------------- |
-| Code review record | Always   | `REVIEW-US###-<descriptor>[-DD-MM-YYYY].md`        | `src/19-REVIEWS/` |
-| Test record        | Always   | `US###-TEST-STATUS.md` + `US###-MANUAL-TESTING.md` | `src/18-TESTS/`   |
+- **`AUTOMATED/US###-TEST-STATUS.md`** — the block between `<!-- BEGIN GENERATED: test-record -->` and
+  `<!-- END GENERATED -->` regenerated against the **last** suite run, not an earlier green one.
+  Check a short per-test table against `bash code/src/scripts/audits/story-markers.sh` before
+  reading it as coverage: an unmarked test is silently absent from the record, never reported
+  as missing.
+- **`MANUAL/US###-MANUAL-TESTING.md`** — every row's `Result` marked `Pass` or `Fail`, none left
+  empty. An empty `Result` means the step was not run; it is never a pass. A retired stub, `—`
+  throughout, is the one row not walked (`MANUAL/CLAUDE.md` → _Row IDs_). Every _Recorded during
+  the build_ slot is filled, or recorded as missed.
+- **Every amended row carries its trail and its finding** — its `Notes` holding the before-text,
+  the reason and the evidence, and the `F-0NN` it names present in the story's `src/20-FINDINGS/`
+  record. An amendment missing either is a silent rewrite: return to
+  `22-implementation-documentation`.
+- **Every `Fail` carries a reason and a destination** — the reason in its own `Notes` cell, and
+  a row in the guide's _Failures_ table routed before merge, exactly as `src/20-FINDINGS/`
+  routes a finding.
+- **A green `TEST-STATUS` beside a failing manual row is a missing test, not a passing story.**
+  Return to `22-implementation-documentation`; never merge on the automated half alone.
+
+**Write (PR-stage record)** — the output of the Final QA Pass (Step 1) and Code Review (Step 2):
+
+| Discipline         | Required | File to create                              | Save in           |
+| ------------------ | -------- | ------------------------------------------- | ----------------- |
+| Code review record | Always   | `REVIEW-US###-<descriptor>[-DD-MM-YYYY].md` | `src/19-REVIEWS/` |
 
 Any newly discovered Critical or High findings during review must be escalated to
 `src/10-SECURITY/VULNERABILITIES/IMPLEMENTATION/` immediately and fed back to

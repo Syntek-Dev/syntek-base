@@ -2,7 +2,7 @@
 workflow: 03-sprint-planning
 phase: design
 skills: [sprint, global-workflow]
-model: fable
+model: opus
 ---
 
 # Sprint Planning — Steps
@@ -20,21 +20,28 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 | ---- | ------------------------------------------------------------------------------------------------------------------------- |
 | 2–3  | **External — Agile & Project Management** → MoSCoW prioritisation, Story point estimation (Fibonacci), Definition of Done |
 | 1    | **Internal — Live Artefacts** → src/02-STORIES/                                                                           |
-| 4    | **Internal — Live Artefacts** → src/03-SPRINTS/                                                                           |
+| 1, 4 | **Internal — Live Artefacts** → src/03-SPRINTS/                                                                           |
 
 ---
 
 ## Steps
 
-### Step 1 — Grill, then Review the Backlog
+### Step 1 — Review the Backlog, then Grill
 
 > **Model:** opus
 
-**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> about the sprint goal, capacity, and candidate
-stories before reviewing the backlog and identifying candidates.
+Read the open stories in `project-management/src/02-STORIES/` (`Closed` stories sit in its
+`archive/` and are never candidates, though a dependency is still resolved by ID there), the open `SPRINT-##.md` record in
+`project-management/src/03-SPRINTS/`, and the capacity table in
+`project-management/docs/planning/CADENCE.md` → _Sprint capacity — the trigger_, then identify
+candidates. **Capacity is a fact read from that table, not a question.**
 
-Read open stories in `project-management/src/02-STORIES/` and identify candidates.
+**Then grill** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
+interview <%DEVELOPER_NAME%> about the sprint goal and the candidate stories.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the open `SPRINT-##.md` record, each candidate's `## MoSCoW Priority` and `## Dependencies`, and
+the capacity table in `project-management/docs/planning/CADENCE.md`.
 
 ### Step 2 — Generate Sprint Plan
 
@@ -42,7 +49,7 @@ Read open stories in `project-management/src/02-STORIES/` and identify candidate
 sprint [describe sprint goal and available stories]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `sprint` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `sprint` · **Model:** opus · **MCP:** none
 
 ### Step 3 — Review and Balance
 
@@ -54,7 +61,10 @@ Check the generated sprint for:
 
 ### Step 4 — Save
 
-Save to `project-management/src/03-SPRINTS/SPRINT-##.md`.
+Save to `project-management/src/03-SPRINTS/SPRINT-##.md`, numbered after every `SPRINT-##` in
+that folder **and** its `archive/`, with `**Status:** Planned` — the sprint lifecycle
+(`Planned` → `In Progress` → `Done` → `Closed`) is `.claude/skills/completion/SKILL.md`'s. Then
+regenerate the board: `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`.
 
 ### Step 5 — Commit
 

@@ -12,8 +12,8 @@ _Template — copy to `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`, replace every 
 | **Assessed against** | `code/docs/DATABASE.md` + {other governing guides}     |
 | **Outcome**          | {N findings · M expensive-to-retrofit} / Nothing found |
 
-**Codes from:** `../17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md` — the implementation
-master this story was built from.
+**Codes from:** `../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` — the
+implementation master this story was built from.
 **Story:** `../02-STORIES/US###.md` — the acceptance criteria the work satisfied.
 
 ---
@@ -42,7 +42,9 @@ touching every call site; `Cheap` means it can be inserted as a layer when it hu
 | _[EXAMPLE] F-005_ | _Docs_        | _`{guide}`_          | _Guide asserts a rule the codebase does not follow_                              | _Correct the guide, or record why the exception stands_ | _Cheap_     | _Accepted — {reason}_ |
 
 **Area** — Schema · Constraints · Indexes · Migration · Query · Search · Scoping/RLS ·
-Encryption · Docs · Tooling.
+Encryption · Docs · Tooling · Manual guide (a row amended at the walk — **Where** names the guide
+and row ID, which the row's trail cites back as this `F-0NN`; rule:
+`../18-TESTS/MANUAL/CLAUDE.md` → _Changing a row after authoring_).
 **Disposition** — `Next story` (feeds the next plan) · `Deferred — US###` (named target,
 also recorded in `DEFERRED.md`) · `Bug — US###` (a defect; file in `../21-BUGS/`) ·
 `Refactor` (structural debt; action in `../22-REFACTORING/`) · `ADR` (reopens a
@@ -101,8 +103,9 @@ factual.
 ## Cross-references
 
 - `../02-STORIES/US###.md` — the story these findings came from
-- `../17-STORY-PLANS/STORY-PLAN-US###-<DESCRIPTOR>.md` — the plan this closes the loop on
+- `../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<DESCRIPTOR>.md` — the plan this closes the loop on
 - `../19-REVIEWS/REVIEW-US###-<DESCRIPTOR>.md` — the merge-gating review from the same PR
+- `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` — the walked guide; each row amended there is a finding here
 - `../21-BUGS/` — file a report for any finding that is a defect
 - `../22-REFACTORING/` — action any finding that is structural debt
 - `../15-DECISIONS/` — graduate any finding that reopens a hard-to-reverse trade-off
@@ -113,3 +116,12 @@ factual.
 > **Cross-cutting findings** — a sweep not tied to a single story (a periodic schema audit,
 > a dependency review) is filed as `FINDING-<DESCRIPTOR>-DD-MM-YYYY.md`; drop the
 > story-specific header rows and the `US###` links, and set them to `N/A — cross-cutting`.
+
+<!-- UPDATED 08/09/2026. Both story-plan citations gained the `<exec-order>-` build-order prefix;
+     they read "STORY-PLAN-US###-<DESCRIPTOR>.md" before.
+     `code/src/scripts/audits/doc-references.sh` reads backticked tokens even inside a comment, so
+     the superseded name is quoted in double quotes and never in backticks. The prefix is the
+     story's 2-digit position in the settled build order across the whole backlog, renumbered when
+     that order changes — copy it whole off the plan's filename. The bare `STORY-PLAN` in Section 2
+     is an artefact-class noun, not a filename, and is left as it is. Owner of the rule:
+     `../17-STORY-PLANS/CLAUDE.md`. -->

@@ -64,6 +64,7 @@ JSON (`/api/*`). Backend models and services must exist before this workflow beg
 
 #### project-management/ — what precedes this, and what follows
 
+- `project-management/src/17-STORY-PLANS/` — the story plan, the code master; Step 1 reads it first
 - `project-management/workflows/19-backend-code/` — backend models and services must exist first
 - `project-management/src/13-API-DESIGN/` — the signed-off API design doc being implemented
 - `project-management/workflows/21-frontend-code/` — follow this after the API is tested

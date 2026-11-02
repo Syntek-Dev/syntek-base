@@ -2,7 +2,7 @@
 workflow: 14-logging-checks
 phase: design
 skills: [logging, gdpr-mechanics, global-workflow]
-model: fable
+model: opus
 ---
 
 # Logging Checks — Steps
@@ -36,7 +36,7 @@ model: fable
 
 ### Step 1 — Confirm the flag and grill the surface
 
-> **Model:** fable
+> **Model:** opus
 
 Read the story's `Logging` flag. It carries the event shortlist the map or the story proposed —
 treat it as the first draft, not the answer.
@@ -44,6 +44,10 @@ treat it as the first draft, not the answer.
 **Grill before drafting** (`.claude/CLAUDE.md` Section 10): which failures would a human
 actually act on; where the `ERROR`/`WARNING` line sits for this story; whether any proposed
 event is really an **audit record** rather than a log line; whether a retention period exists.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the endpoint list in the story's API plan (gate `13`), the `[enc]` marks in its schema idea (gate
+`04`), and the PII classification and retention in its GDPR plan (gate `09`).
 
 _Done when the flag is confirmed, the event set is agreed, and anything belonging in the audit
 trail has been routed to `code/docs/security/AUDIT-TRAIL.md` instead._
@@ -57,7 +61,7 @@ Copy `src/14-LOGGING/PLANNING/LOGGING-PLAN-US000-TEMPLATE.md` to
 
 ### Step 3 — Name the loggers and the events
 
-> **Model:** fable
+> **Model:** opus
 
 Fill Section 1 (one row per module that logs, always `logging.getLogger("apps.<app>")`) and
 Section 2 (one row per event: level, trigger, and the **exhaustive** field list).
@@ -69,7 +73,7 @@ _Done when every event has a level and a named field list, and no row says "cont
 
 ### Step 4 — Build the exclusion table
 
-> **Model:** fable
+> **Model:** opus
 
 Fill Section 3 (the safe-field allowlist) and Section 4 (the exclusions). Section 4 is
 **derived, not invented**: every field marked `[enc]` in the story's schema design, plus every
@@ -84,7 +88,7 @@ answered rather than skipped._
 
 ### Step 5 — State channels and retention
 
-> **Model:** fable
+> **Model:** opus
 
 Fill Section 5. Retention is a **business and legal decision** — if none is set, mark the row
 `TBD` and raise it in the story's GDPR plan. Do not invent a number.

@@ -1,0 +1,55 @@
+# MCP parity guard — the CI half of code/src/scripts/audits/mcp-parity.sh.
+#
+# `.mcp.json` (Claude Code) and `.codex/config.toml` (Codex) declare the same MCP servers in
+# two formats. Neither host reads the other's file, and neither fails when they diverge — so a
+# server added to one host only is not a smaller capability, it is the same task answering two
+# different ways depending on which tool opened the repository, with nothing saying so.
+#
+# PATH-FILTERED, AND HERE THAT IS HONEST. Most of the unfiltered audit workflows are unfiltered
+# because their defect can land in any file. This one cannot: it reads exactly two files at fixed
+# paths, so a run triggered by anything else is guaranteed to reproduce the previous result. The
+# script itself is in the filter because a change to the comparison can turn a passing pair into a
+# failing one without either config moving.
+#
+# NOT ELIGIBLE FOR THE REQUIRED SET while it carries this filter. Criterion 1 of
+# project-management/docs/git/PR-AND-REQUIRED-CHECKS.md → What earns a place in the required set
+# asks that a check execute on every pull request; a path-filtered workflow does not run at all on
+# a PR that touches neither config, and a required check that never runs blocks the merge queue.
+# Drop the filter first if it is ever wanted there.
+name: Audit — MCP Parity
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - ".mcp.json"
+      - ".codex/config.toml"
+      - "code/src/scripts/audits/mcp-parity.sh"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - ".mcp.json"
+      - ".codex/config.toml"
+      - "code/src/scripts/audits/mcp-parity.sh"
+  workflow_dispatch:
+
+jobs:
+  mcp-parity:
+    name: MCP config parity audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # python3 reads both formats — json from the stdlib, TOML through tomllib. ubuntu-latest
+      # ships a 3.11+ interpreter, so no setup step is needed; the script exits 2 rather than
+      # reporting a clean run if that ever stops being true.
+      - name: Run MCP parity audit
+        run: bash code/src/scripts/audits/mcp-parity.sh --output md
+
+      - name: Upload MCP parity report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mcp-parity-report
+          path: code/src/scripts/audits/reports/mcp-parity-report.md
+          if-no-files-found: ignore

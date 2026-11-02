@@ -3,23 +3,25 @@
 A curated index of internal documentation and external resources Claude should
 consult when working in this repository.
 
-**In what order to consult them — the internal `**/docs/` first, `context7` second, web search
-last — is `.claude/CLAUDE.md` Section 3.2, _How to look something up_.** This index is what that
-rule navigates; it does not restate it.
+**In what order to consult them — the internal `**/docs/` first, `context7` second, Perplexity
+third, web search last — is `.claude/CLAUDE.md` Section 3.2, _How to look something up_.** This
+index is what that rule navigates; it does not restate it.
 
 ---
 
 ## Internal — Layer Entry Points
 
-| Document                                                       | Purpose                                                          |
-| -------------------------------------------------------------- | ---------------------------------------------------------------- |
-| [CONTEXT.md](CONTEXT.md)                                       | Project overview, directory tree, layer map                      |
-| [DESIGN.md](DESIGN.md)                                         | Design entry point: standards, constraints, design workflows     |
-| [GAPS.md](GAPS.md)                                             | Active architectural gaps, blockers, and sprint dependencies     |
-| [.claude/CLAUDE.md](.claude/CLAUDE.md)                         | Global rules, model selection, routing, security non-negotiables |
-| [code/CONTEXT.md](code/CONTEXT.md)                             | Code layer entry point                                           |
-| [how-to/CONTEXT.md](how-to/CONTEXT.md)                         | Setup and daily development entry point                          |
-| [project-management/CONTEXT.md](project-management/CONTEXT.md) | PM layer entry point                                             |
+| Document                                                       | Purpose                                                           |
+| -------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [CONTEXT.md](CONTEXT.md)                                       | Project overview, directory tree, layer map                       |
+| [AGENTS.md](AGENTS.md)                                         | Codex entry point into the shared project instructions            |
+| [.ai/INSTRUCTIONS.md](.ai/INSTRUCTIONS.md)                     | Shared context loading, skill aliases and host-specific behaviour |
+| [DESIGN.md](DESIGN.md)                                         | Design entry point: standards, constraints, design workflows      |
+| [GAPS.md](GAPS.md)                                             | Active architectural gaps, blockers, and sprint dependencies      |
+| [.claude/CLAUDE.md](.claude/CLAUDE.md)                         | Global rules, model selection, routing, security non-negotiables  |
+| [code/CONTEXT.md](code/CONTEXT.md)                             | Code layer entry point                                            |
+| [how-to/CONTEXT.md](how-to/CONTEXT.md)                         | Setup and daily development entry point                           |
+| [project-management/CONTEXT.md](project-management/CONTEXT.md) | PM layer entry point                                              |
 
 ---
 
@@ -77,9 +79,11 @@ rule navigates; it does not restate it.
 | [code/docs/DESKTOP.md](code/docs/DESKTOP.md)                                                                 | **Desktop-only.** The native Slint app: the Royalty-free licence obligation, the generated-code lint boundary, threading, AccessKit accessibility                                                           |
 | [code/docs/RUST.md](code/docs/RUST.md)                                                                       | **Rust-only.** The Cargo workspace: the gate question, the PyO3 boundary, secret memory hygiene, and the cargo-deny supply-chain policy                                                                     |
 | [code/docs/SECURITY.md](code/docs/SECURITY.md)                                                               | OWASP controls, permission checks, IDOR prevention                                                                                                                                                          |
-| [code/docs/TESTING.md](code/docs/TESTING.md)                                                                 | Coverage floors, test structure, mocking strategy                                                                                                                                                           |
+| [code/docs/TESTING.md](code/docs/TESTING.md)                                                                 | Coverage floors, test structure, mocking strategy — plus the `story` marker each test declares (generator: `tests/test-record.sh` · warn-only audit: `audits/story-markers.sh`)                             |
 | [code/docs/URL-STRATEGY.md](code/docs/URL-STRATEGY.md)                                                       | URL naming, slug patterns, API endpoint conventions                                                                                                                                                         |
 | [code/docs/VISUAL-DESIGN.md](code/docs/VISUAL-DESIGN.md)                                                     | Visual language — the per-project direction and its six axes, the universal tells, the motion standard (per-surface: `code/docs/visual-design/`)                                                            |
+| [code/docs/WAGTAIL.md](code/docs/WAGTAIL.md)                                                                 | **CMS-only.** Wagtail 8 inside the Django deployable: native renditions on Cloudinary storage, the catch-all route, the second admin surface, and what the CMS owes the audit and PII doctrine              |
+| [code/docs/wagtail/CONTEXT.md](code/docs/wagtail/CONTEXT.md)                                                 | **CMS-only.** The six sub-guides behind it — fundamentals and install, pages and StreamField, images and media, admin and permissions, contrib surfaces, API and search                                     |
 
 ### How-to guides (`how-to/docs/`)
 
@@ -204,7 +208,7 @@ complete.
 
 | PM workflow                       | Paired code workflow                                                                                | Relationship                                                                              |
 | --------------------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `04-database-schema`              | `03-database-migration`                                                                             | Schema designed (Fable) → migration written (Opus), **entered via `18`**                  |
+| `04-database-schema`              | `03-database-migration`                                                                             | Schema designed → migration written, **entered via `18`**                                 |
 | `09-gdpr-compliance`              | `06-gdpr-enforcement`                                                                               | Obligations specified → enforced in code; review is a hard prerequisite                   |
 | `10-security-checks`              | `08-security-hardening`                                                                             | Design threat model → built-code audit, **entered via `19`** or `23`                      |
 | `13-api-design`                   | `04-api-design`                                                                                     | Ninja contract decided → expressed as routers/Schemas, **entered via `19`**               |
@@ -226,16 +230,16 @@ all three build rows name the same pass — entered at `18`, closed at `20`, nev
 
 **Ownership boundaries — do not duplicate across the seam:**
 
-| Fact                                                   | Sole owner                                 |
-| ------------------------------------------------------ | ------------------------------------------ |
-| Implementation record formats, templates, destinations | PM `22-implementation-documentation`       |
-| Findings, `GAPS.md` / `DEFERRED.md` writes and closes  | PM `22-implementation-documentation`       |
-| `GAPS.md` / `DEFERRED.md` reads — suggest and triage   | PM `01-feature-map` (claims, never closes) |
-| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh      | PM `22-implementation-documentation`       |
-| Branch promotion, approvals, merge gates               | PM `23-pr-and-review`                      |
-| Code content review (OWASP, coverage, principles)      | code `07-review`                           |
-| Coverage floors (one floor: 75% line+branch, 90% auth) | `code/docs/testing/COVERAGE.md`            |
-| Bruno `.bru` API tests                                 | code layer (`code/src/tests/api/`)         |
+| Fact                                                                   | Sole owner                                             |
+| ---------------------------------------------------------------------- | ------------------------------------------------------ |
+| Implementation record formats, templates, destinations                 | PM `22-implementation-documentation`                   |
+| Findings, `GAPS.md` / `DEFERRED.md` writes; closing an unclaimed entry | PM `22-implementation-documentation`                   |
+| `GAPS.md` / `DEFERRED.md` reads — suggest, triage, remove on claim     | PM `01-feature-map` (a story cut: `02-story-creation`) |
+| `CONTEXT.md`/`CLAUDE.md` closeout + graph refresh                      | PM `22-implementation-documentation`                   |
+| Branch promotion, approvals, merge gates                               | PM `23-pr-and-review`                                  |
+| Code content review (OWASP, coverage, principles)                      | code `07-review`                                       |
+| Coverage floors (one floor: 75% line+branch, 90% auth)                 | `code/docs/testing/COVERAGE.md`                        |
+| Bruno `.bru` API tests                                                 | code layer (`code/src/tests/api/`)                     |
 
 ---
 
@@ -244,6 +248,7 @@ all three build rows name the same pass — entered at `18`, closed at `20`, nev
 | Technology             | Version | Documentation URL                                       |
 | ---------------------- | ------- | ------------------------------------------------------- |
 | Django                 | 6.x     | https://docs.djangoproject.com/en/6.0/                  |
+| Wagtail (cms-only)     | 8.x     | https://docs.wagtail.org/en/stable/                     |
 | Rust (rust-only)       | 1.92+   | https://doc.rust-lang.org/stable/book/                  |
 | PyO3 (rust-only)       | 0.29    | https://pyo3.rs/                                        |
 | maturin (rust-only)    | 1.x     | https://www.maturin.rs/                                 |

@@ -22,8 +22,8 @@ and code-quality standard (`CONTRIBUTING.md`), the base-template contract and it
   template contract and guides → see `TEMPLATE-GUIDE/CLAUDE.md`. The two architecture snapshots →
   the `scale-planning` skill via `/scale-planning` (each has its own `CLAUDE.md`). Server
   provisioning → the `<%DEPLOY_REPO%>` repository.
-- **Model:** Opus for substantive guide edits and for mechanical touches (renames, command and
-  link fixes); Fable where the snapshot directories say so.
+- **Model:** Opus throughout — substantive guide edits and mechanical touches alike (renames,
+  command and link fixes), the snapshot directories included.
 - **Concrete steps:** edit the guide → keep every developer command aligned with
   `code/src/scripts/**/*.sh` and the coverage floors (75 % / 90 % auth) → keep branch and commit
   rules in step with `project-management/docs/GIT-GUIDE.md` → update this folder's `CONTEXT.md`

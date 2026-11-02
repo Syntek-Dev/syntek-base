@@ -1,0 +1,510 @@
+# STORY-PLAN-US004 — The citation gate stops depending on the git index
+
+| Field  | Value                              |
+| ------ | ---------------------------------- |
+| Date   | 02/09/2026                         |
+| Branch | `us004/citation-gate-git-index`    |
+| Sprint | SPRINT-03 · Wave 1 · build order 1 |
+| Author | <%ORG_NAME%>                       |
+| Status | `Open`                             |
+
+<!-- RENAMED 08/09/2026, by `git mv`: this file took its `05-` prefix that day and carried the
+     same name without it before. The old name is not written out here, and no dead filename is
+     backticked anywhere in this change — `code/src/scripts/audits/doc-references.sh` reads
+     backticked tokens and would record every one as an unresolvable instance citation. The
+     convention settled 08/09/2026 is `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`,
+     the prefix 2-digit zero-padded. It is the story's position in the settled build order across
+     the WHOLE backlog — US007, US001, US002, US003, US004, US005, US006 — not its sprint and not
+     a per-sprint counter, so US004 is fifth, SPRINT-03's sole member. It is RENUMBERED whenever
+     build order changes, which is the OPPOSITE of the sibling rule for the sprint plans: a sprint
+     plan carries two numbers and a mismatch between them is information, while a story plan
+     carries one, so its prefix must track build order or it says nothing. `./CLAUDE.md` owns the
+     rule. Every story-plan citation in this file was repointed the same day. The `| Date |` row
+     above is this plan's authoring date and is not bumped for a rename; the `| Sprint |` row is
+     untouched — the prefix records build order, the row records the sprint, and the two are
+     different facts. -->
+
+<!-- The Sprint row read "SPRINT-02 · Wave 1 · build order 1" from 02/09/2026 until 07/09/2026.
+     Superseded by the cascade re-plan the note below records. Wave 1 is the story's position in
+     its feature map's cutting order and does not move with the sprint; build order 1 is unchanged
+     in figure — first of {US004, US003} then, first of one now. -->
+
+> **US004 moved from SPRINT-02 to SPRINT-03 on 07/09/2026, before any sprint was worked.** US007 —
+> the story `**Status:**` vocabulary gets one owner, `Must Have`, 5 SP — was cut that day and must
+> ship before US002; <%DEVELOPER_NAME%> settled a full cascade rather than an execution reorder:
+> US007 into SPRINT-01, US002 to SPRINT-02, US003 back to SPRINT-02 as its `Should` stretch, this
+> story to SPRINT-03 as its sole member, US005 to SPRINT-04. Its `Must` tier, its wave-1 position
+> and its content are unchanged — only the sprint moved. **Two ordering facts turn round with it.**
+> The US004-before-US003 order settled 02/09/2026 is REVERSED: US003 is worked in SPRINT-02, ahead
+> of this story, so its three `code/docs/ABSENCE.md` forward references clear before this story is
+> worked — the order `../02-STORIES/US004.md` → _Dependencies_ provided for at cutting, "whichever
+> lands second reads the other's disposition". And US002, which shrinks
+> `code/src/scripts/audits/CONTEXT.md` 298 → 230, now lands in SPRINT-02 rather than SPRINT-01 —
+> still before this sprint, so P5's never-add-a-line constraint stands only if US002 has not
+> landed. The "six survivors known at cutting" are re-measured at implementation, never inherited
+> (AC-GAP-3). The Dependencies rows for US002 and US003 are corrected in place below. The
+> `Sprint plan` row names `03-SPRINT-PLAN-03.md`, rewritten the same day to this story alone at
+> 8 / 11 with US003's reserved carry, as the sprint-plan half of the six-artefact discipline — it
+> indexes this plan and mirrors `../03-SPRINTS/SPRINT-03.md`. A full `16-sprint-plans` pass, with
+> its own grilling, is the one thing still owed; where plan and record disagree before it runs,
+> the record wins. If US003 carries into SPRINT-03 at SPRINT-02's
+> close, it lands behind this story — the original order — and its 5 SP takes the sprint to
+> 13 / 11. `Date` above is this plan's authoring date and is deliberately not bumped, on the
+> precedent `04-STORY-PLAN-US003-ABSENCE-GUIDE.md` set on 05/09/2026.
+
+<!-- The note's sprint-plan sentence read, from 07/09/2026 until 08/09/2026: "The `Sprint plan`
+     row names `03-SPRINT-PLAN-03.md`, which on 07/09/2026 still describes US005 and US003 and is
+     owed a rewrite by `16-sprint-plans`; until it runs, `../03-SPRINTS/SPRINT-03.md` is the
+     authoritative statement of this sprint." Written while a sibling agent was rewriting that
+     plan in the same pass; it described the file's 05/09/2026 state and was false by the time the
+     change was committed. Corrected against the plan as it stands on disk. -->
+
+Implements `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` (Check 2 reads
+the citing file's name, never `is_template_only()`) and
+`../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md` (a registered path may
+name a class, with `###` translated to three digits exactly). Both were superseded on 30/09/2026,
+for the 18-TESTS split, by
+`../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md` and
+`../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`,
+which restate them unchanged but for the 18-TESTS paths; this plan implements the two decisions
+as those successors state them. <!-- UPDATED 30/09/2026: the successors are added beside the two
+superseded records (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026,
+16-sprint-plans grilling round 7 Q18). The superseded records' citations are kept, not
+repointed. -->
+
+**Remediation accepted 09/10/2026:** registration now follows
+`../15-DECISIONS/ADR-US004-PATTERNED-REGISTRATION-PRESERVES-SHIPPED-TEMPLATES-09-10-2026.md`,
+which supersedes the 30/09/2026 registration record without rewriting its decision. The citer
+record remains in force. Literal shipped-template presence is checked separately from citer
+exemption; exactly-three-digit class registration cannot admit `US000` or `*TEMPLATE*` targets.
+
+> **Source authority.** Where this plan and `../02-STORIES/US004.md` differ on a **measurement**,
+> **this plan wins** — its figures were produced by executing a patched copy of the script, and
+> the story's two reading-derived claims were both wrong. Where they differ on **what must be
+> true**, the story wins. On how a gate's result is reported, `code/docs/GATE-REPORTING.md` wins
+> over both.
+
+---
+
+## Problem Statement
+
+`code/src/scripts/audits/doc-references.sh` gives **different verdicts on identical bytes**
+depending on whether the file has been `git add`ed. `candidates()` (`:307-310`) scans tracked
+**plus** untracked-but-not-ignored files; `build_template_only()` (`:432`) reads `git ls-files`,
+which returns tracked only. An uncommitted PM artefact therefore never enters `TEMPLATE_ONLY`,
+`file_ships` computes `true` for a file that will never ship, and Check 3 fires on every citation
+it makes to a committed, copier-excluded sibling.
+
+Measured on `../02-STORIES/US003.md`, byte-identical between runs:
+
+| State                     | `[template-only citation]` | `[dangling path]` |
+| ------------------------- | -------------------------- | ----------------- |
+| untracked (`??`)          | **5**                      | 3                 |
+| `git add --intent-to-add` | **0**                      | 3                 |
+
+Three further defects compound it, all measured at `7a82095` plus the working tree:
+
+- **`is_exempt()` exempts nine shipped files.** The `research/`, `learning/`, `handoffs/`,
+  `.copier/` and `01-FEATURE-MAPS/` arms exempt whole trees, but `copier.yml`'s `_exclude`
+  allowlist block — under its comment heading _The artefact trees: tracked HERE, never shipped_ —
+  re-includes `**/CONTEXT.md`, `**/CLAUDE.md` and `**/*TEMPLATE*` out of them: the `research/`,
+  `handoffs/` and `learning/` negations, and the `project-management/src/` ones beneath them.
+  Those nine ship and are unpoliced.
+- **Check 1 cannot see `project-management/src/`.** Its checkable-tree `case` (`:762-781`) has no
+  arm for the tree, so a dead PM citation is dropped before its existence test.
+- **Check 2's alternation names two dead conventions** — `ADR-[0-9]{3}`, retired 31/08/2026, and
+  `QA-US[0-9]{3}` against a live `QA-PLAN-US###-<DESCRIPTOR>.md`.
+
+<!-- Until 08/09/2026 the first bullet cited "`copier.yml:120-146`", and P1 under _Approach_ cited
+     the same range. Measured 08/09/2026: 120-140 are the block's comment, 141-146 re-include only
+     `research/` and `handoffs/`, `learning/` is 147-149, and the `*TEMPLATE*` re-include is 159 —
+     the range under-covered what the sentence describes. Both sites now cite the block by its
+     comment heading, which survives an edit above it. -->
+
+The cost is live and recorded: every story since 01/09/2026 carries a written disposition for this
+script's output, and `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
+superseded 30/09/2026 by
+`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+which restates it unchanged, retirement terms included — binds
+the whole backlog to reading a red gate as a diff against a baseline **until the gate is green**,
+not merely until US004's owned repairs land (clarified 09/10/2026). <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
+Whole-tree run at planning: **44 findings**, 989 files read, 87 exempt, 30,095 tokens, 5,665 path
+tests.
+
+## Reference Documents (code/docs gate map)
+
+| Concern                        | Document                                                     | What it binds here                                                                                                                                                                                                                                                                  |
+| ------------------------------ | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Reporting a gate's result      | `code/docs/GATE-REPORTING.md`                                | Six findings survive this story; none may be reported as a pass                                                                                                                                                                                                                     |
+| What a document may promise    | `code/docs/FORWARD-VOICE.md`                                 | Section 3 owns the register this story makes pattern-aware                                                                                                                                                                                                                          |
+| The register itself            | `how-to/src/PROJECT-PATHS.md`                                | Two new rows; its rule against answering a question in passing                                                                                                                                                                                                                      |
+| Length limit and the ratchet   | `code/docs/DOCUMENTATION-LENGTH.md`                          | `audits/CONTEXT.md` sits at 298/300; this story may not grow it                                                                                                                                                                                                                     |
+| The audit register's own rules | `code/src/scripts/audits/CLAUDE.md`                          | Row conventions for the file whose `doc-references.sh` entry is refreshed                                                                                                                                                                                                           |
+| Story                          | `../02-STORIES/US004.md`                                     | Eight scenarios, the acceptance this plan implements                                                                                                                                                                                                                                |
+| QA                             | `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | Nine resolved AC-gaps, the scenario tables, and the measurement method                                                                                                                                                                                                              |
+| Sprint plan                    | `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md`                    | Build order, phase disposition, gate-honesty constraint. Rewritten 07/09/2026 to this story alone plus US003's reserved carry, as the mirror of `../03-SPRINTS/SPRINT-03.md`; a full `16-sprint-plans` pass is still owed, and the record wins where the two disagree until it runs |
+| Feature map                    | `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md`                   | Slice `S-06`, nodes `N-009` and `N-010`, and Batch D's measurements                                                                                                                                                                                                                 |
+
+<!-- The Sprint plan row named `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` from 02/09/2026 until
+     07/09/2026, when this story moved to SPRINT-03. On 07/09/2026 this comment went on: "That plan
+     still describes this story alone at 8 / 11 and is itself stale against
+     ../03-SPRINTS/SPRINT-02.md. The row names the plan of the sprint the `| Sprint |` row names,
+     and says in its own cell that the file on disk lags." CORRECTED 08/09/2026: 02-SPRINT-PLAN-02.md
+     was rewritten to {US002, US003} in the same pass, and 03-SPRINT-PLAN-03.md to this story plus
+     the carry reservation; neither lags now, and the cell above says what is still owed instead.
+     The 07/09/2026 cell read: "Build order, phase disposition, gate-honesty constraint — **owed a
+     `16-sprint-plans` rewrite**; on 07/09/2026 it describes US005 and US003, and
+     `../03-SPRINTS/SPRINT-03.md` is authoritative until it runs". This comment sat BETWEEN the two
+     rows above from 07/09/2026 until 08/09/2026, severing the Feature map row from its table;
+     moved below the body so the table renders whole. -->
+
+**Not applicable, and why:** `../04-DATABASE/`, `../05-USER-FLOW/`, `../06-BRAND-GUIDE/`,
+`../07-COMPONENTS/`, `../08-WIREFRAMES/`, `../09-GDPR/`, `../10-SECURITY/`, `../12-SEO/`,
+`../13-API-DESIGN/`, `../14-LOGGING/` — the story's corresponding flags all read `N/A`. It edits
+one bash script, its fixtures, one register and four Markdown files: no model, endpoint, screen,
+personal-data path, log line or public page.
+
+## Architecture Decision
+
+**Two original decisions, authored at `15-decisions` because neither trade-off was visible
+until `11-qa-checks` measured it.** The citer decision is carried by its accepted 30/09/2026
+successor; registration is now carried by the accepted 09/10/2026 template-presence successor.
+
+`ADR-US004-INSTANCE-ARTEFACT-CITER-TEST` settles that Check 2 asks whether the **citing file is
+an instance artefact**, read from its filename. The obvious alternative — `is_template_only()` —
+is inert in every generated project, because `build_template_only()` returns early when
+`copier.yml` is unreadable and `copier.yml:36` excludes itself. `N-009` Q31 rejected that same
+delegation in this same script four days earlier. The other alternative, a
+`project-management/src/*` glob, exempts roughly twenty shipped files copier re-includes, two of
+which carry a genuine finding today.
+
+`ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS` settles that `is_registered()` — today
+`grep -qxF`, fixed-string and whole-line — translates `###` to three digit classes, so one row
+binds a per-story artefact class instead of two rows per story forever.
+
+**The measurement that forced the phase shape**, taken by patching a scratch copy of the script
+and running it scoped to `project-management/src`:
+
+| Change                                       | dangling-path findings | Reading                                               |
+| -------------------------------------------- | ---------------------- | ----------------------------------------------------- |
+| Stock script                                 | 16                     | The tree is invisible to Check 1                      |
+| `project-management/src/*` arm, nothing else | **38**                 | +22, **every one** a forward reference to `18-TESTS/` |
+
+**Historical measurement, 02/09/2026; not an acceptance threshold (settled 09/10/2026).** The
+30/09/2026 backfill changed the target population. Re-measure current counts and composition
+with the controlled US999-to-US997 fixture below; neither 16 to 38 nor five to zero must recur.
+
+**Not one of the historical 22 is a naming pattern.** Check 1 already carries the line-level `is_naming_row`
+guard at `:791`. The story's original plan to add a second, token-level guard was dropped at
+AC-GAP-1 as a restatement — the defect this story's own map exists to remove.
+
+## Approach
+
+**Approved fixtures, 09/10/2026.** Every destructive or index-mutating walk setup uses a
+disposable clone of a recorded commit. Copy US003.md byte for byte from the baseline commit to
+"project-management/src/02-STORIES/US998.md"; keep those bytes for both detector versions and
+both index states. Check scratch names are free first. Measure with `--path`, first untracked,
+then `git add --intent-to-add`, then `git restore --staged -- <scratch path>`; record unchanged
+bytes and US998's return to untracked state after each A/B. Retain the current pre-change
+differential and post-change equality, not the historical numeric differential.
+
+Create a separate scratch citer "project-management/src/02-STORIES/US999.md". Its ordinary
+one-citation-per-line probes name (a) "project-management/src/02-STORIES/US997.md", verified
+absent and unregistered, for Check 1 versus Check 2 hand-over; (b)
+"project-management/src/18-TESTS/AUTOMATED/US997-TEST-STATUS.md", verified absent but covered
+by the patterned row, for registration. The A/B copy US998 is never a missing target. Record
+setup and cleanup; discard clones rather than alter real stories or another agent's checkout.
+
+### Not applicable — Database, Service Layer, API, Frontend
+
+This story adds no Python, no template and no component. The four layer sections the template
+carries are dropped because the story touches none of them, not to dodge a gate.
+
+### Phase plan — five phases, each red before green
+
+**Every phase writes its failing proof first**, per `code/workflows/02-tdd-cycle/` applied to a
+bash gate. The reason is structural, not stylistic: once five repairs are in, the pre-change
+script no longer exists to test a fixture against without stashing, and
+`../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` makes "fails against the pre-change
+script" a named criterion.
+
+| Phase | Deliverable                                | Proof mode             | Blocked by |
+| ----- | ------------------------------------------ | ---------------------- | ---------- |
+| P1    | `is_exempt()` fall-through arm             | Direct assertion       | —          |
+| P2    | `build_template_only()` population         | Direct probe + `trap`  | —          |
+| P3    | Check 2 citer test + alternation spellings | Fixture pair           | —          |
+| P4    | The PM tree becomes checkable              | Fixture pair           | —          |
+| P5    | The sweep, and the records it owes         | Whole-tree measurement | P1–P4      |
+
+**P4's template-presence obligation, accepted 09/10/2026.** Add distinct broken/clean target
+fixtures for the manual and automated shipped US000 templates. With each class row present,
+move the literal target outside the clone root, cite it from US999 on a plain line, and require
+Check 1's `[dangling path]`; restoring it clears that finding. Check literal shipped-template
+presence before seeded, registered or naming-row suppression, and reject `US000`/`*TEMPLATE*`
+targets from patterned registration. The existing Check 2 fixture that makes a shipped template
+the citer remains separate. Keep real-instance registration and four-digit/letter rejection
+assertions; no existing assertion is weakened to let the class cover a missing template.
+
+**P1 — the exemption arm.** One fall-through arm for `*/CONTEXT.md`, `*/CLAUDE.md` and
+`*TEMPLATE*`, placed **ahead** of the tree arms so all nine shipped files enter. It mirrors
+the three negation patterns of `copier.yml`'s allowlist block (_The artefact trees: tracked
+HERE, never shipped_) — `CONTEXT.md`, `CLAUDE.md` and `*TEMPLATE*` — rather than listing
+folders, so the two cannot drift. The
+standing `"none of these ship"` comment is corrected in the same edit: true of the folders, never
+true of the nine files. Proved by a direct assertion that `research/CONTEXT.md` is no longer
+exempt — a fixture cannot reach a predicate.
+
+**P2 — the population.** `build_template_only()` reads the same population `candidates()` reads:
+tracked plus untracked-but-not-ignored. Proved by a probe that creates a temporary untracked file
+under an excluded tree, **re-runs `build_template_only` and `build_template_only_index`**, asserts
+`is_template_only` answers yes, and removes it. The re-run is not optional — both builders run
+once at `:485-486` and `self_test()` is not called until `:913`, so a probe without it asserts
+against a set built 428 lines earlier and passes for the wrong reason (AC-GAP-8). It carries a
+`trap` so a failure between creation and assertion leaks nothing.
+
+**P3 — Check 2.** The exemption tests whether the citing file is an instance artefact — `US###`,
+`SPRINT-##`, `ADR-US###`, `QA-PLAN-US###`, `STORY-PLAN-US###`, `SPRINT-PLAN-##`, `REVIEW-US###`,
+`BUG-*` — with `US000` and `*TEMPLATE*` excluded, those being the allowlist's only instance-shaped
+entries. The alternation gains `ADR-US[0-9]{3}`, drops `ADR-[0-9]{3}`, and corrects
+`QA-US[0-9]{3}` to `QA-PLAN-US[0-9]{3}`. The `clean/` fixture must include a `US000-` file:
+instance-shaped, shipped, and therefore **not** exempt.
+
+**P4 — the PM tree, and it is one phase for a measured reason.** Check 1's `case` gains a
+`project-management/src/*` arm; `is_registered()` gains the `###` translation;
+`how-to/src/PROJECT-PATHS.md` gains its two rows; `code/docs/FORWARD-VOICE.md` Section 3 and the
+register's header state that a row may be patterned and carry the duty to add one.
+Both owner texts also state the literal shipped-template exception from the 09/10/2026 successor.
+
+**These cannot be split.** Historically the arm alone reddened the tree by 22 findings; current
+controlled composition is re-measured, and the register rows
+are what makes them pass — landing the arm without the rows leaves the gate red on correct
+citations, which is the false-positive mirror of the defect this story fixes. Two rows only:
+`18-TESTS/MANUAL/US###-MANUAL-TESTING.md` and `18-TESTS/AUTOMATED/US###-TEST-STATUS.md`. **No `17-STORY-PLANS`
+row** — measured, nothing in the repository cites a story plan that does not exist, and a row for
+it would be the register answering a question in passing (AC-GAP-6).
+
+**P5 — the sweep and the records.** Repair every shipped file that genuinely cites an excluded
+per-project instance — `project-management/src/02-STORIES/CONTEXT.md:16`,
+`project-management/src/03-SPRINTS/CONTEXT.md:17` and
+`how-to/src/TEMPLATE-GUIDE/10-FIRST-FEATURE.md` at minimum, **the set re-measured rather than
+taken from this list**. Mark `research/CLAUDE.md:26` `doc-references: ignore`: its backticked
+`LICENSE` names an upstream source's licence file, not this repository's own, so it is a
+generic-noun false positive and not the genuine finding `N-009` claimed. Record that overturned
+claim on the map. Record the 02/09/2026 entry's three retirement conditions as met; the entry
+left `GAPS.md` on 01/11/2026, carried by US004, so nothing is closed or corrected there.
+
+### Pre-existing corrections this story owes
+
+- **`MAP-RULE-OWNERSHIP.md` N-009** — its "the one finding is genuine" claim is overturned, with
+  the sentence quoted, in the same change.
+- **`GAPS.md` 02/09/2026** — the "blocked on that map's RESOLVE sitting" sentence was true when
+  written and false since 28/08/2026. Corrected, not deleted.
+- **`code/src/scripts/audits/CONTEXT.md`** — the `doc-references.sh` row's text is replaced
+  **within** the row. Never a new line: the file is at 298 of 300 and US002 owns its shape.
+
+## Key Decisions
+
+| Decision                                    | Chosen                                                                                  | Rejected                                          | Why                                                                             |
+| ------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------- |
+| How Check 2 knows a citer ships             | Instance-artefact filename test                                                         | `is_template_only()` · `project-management/src/*` | Inert downstream · exempts ~20 shipped files (ADR, AC-GAP-4/5)                  |
+| How a register row covers a class           | `###` → three digit classes                                                             | One row per story · shell globs · 22 markers      | Unbounded · only glob in a repo of `###` · writes a false justification         |
+| Shipped-template targets, 09/10/2026        | Literal presence before suppression; no patterned registration for `US000`/`*TEMPLATE*` | Class registration masking absence                | Required shipped files must exist; missing-target and citer proofs are separate |
+| Whether Check 1 gains a second naming guard | No                                                                                      | Token-level guard                                 | `:791` already carries one; a restatement (AC-GAP-1)                            |
+| Whether Check 3's citer test changes too    | No — the population fix carries it                                                      | Instance test on Check 3 as well                  | Empty `TEMPLATE_ONLY` downstream is correct, not blind                          |
+| What "done" means for the gate              | A class delta, survivors named                                                          | `exits 0`                                         | Six findings belong to US002 and US003 (AC-GAP-3)                               |
+| Phase shape                                 | Red → green per repair                                                                  | Repairs then proofs                               | The pre-change script stops existing to test against                            |
+
+## Dependencies
+
+| Story | Relationship                                                                                                                                                                                                                                                                                         |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| US002 | **Softly blocking.** It shrinks `code/src/scripts/audits/CONTEXT.md` 298 → 230. Building SPRINT-02 first — where US002 sits since 07/09/2026 — removes a constraint P5 otherwise works around                                                                                                        |
+| US003 | **Lands before this story since 07/09/2026** — SPRINT-02's `Should` stretch. Its baseline-diff scenario, QA task and ADR are written against the defect P1–P4 remove, and it is worked under that regime rather than after the repair; blocked by this story again only if it carries into SPRINT-03 |
+| US001 | Independent. Its two ADRs disposed of the same defect and are unaffected                                                                                                                                                                                                                             |
+
+<!-- The US002 and US003 rows read, from 02/09/2026 until 07/09/2026:
+     "| US002 | **Softly blocking.** It shrinks `code/src/scripts/audits/CONTEXT.md` 298 → 230.
+     Building SPRINT-01 first removes a constraint P5 otherwise works around |
+      | US003 | **Blocked by this story.** Its baseline-diff scenario, QA task and ADR are all
+     written against the defect P1–P4 remove |"
+     Superseded by the cascade re-plan recorded under the header: US002 moved SPRINT-01 → SPRINT-02
+     and US003 SPRINT-03 → SPRINT-02, both still ahead of this sprint, and the US004-before-US003
+     order is reversed. This comment sat BETWEEN the US003 and US001 rows from 07/09/2026 until
+     08/09/2026, severing the US001 row from its table; moved below the body so the table renders
+     whole. -->
+
+- **Blocked by:** nothing. `MAP-RULE-OWNERSHIP`'s frontier is empty and its `Gate to stories`
+  records `02-story-creation` as unblocked. `GAPS.md`'s claim that `S-06` is blocked on that map's
+  RESOLVE sitting is **stale** — the sitting closed 28/08/2026.
+- **Blocks:** slice `S-01` on `../01-FEATURE-MAPS/MAP-NAVIGATION.md`, which changes the same
+  script's citation emit; and the retirement of the baseline-diff regime for the whole backlog.
+- **Can be done now:** all five phases. Nothing waits on another story.
+
+## GDPR
+
+**Not applicable.** The story's `GDPR` flag reads `N/A`. No personal data is read, written or
+logged; the script reads repository documentation and emits paths. Section dropped rather than
+filled with "none" per row.
+
+## Security
+
+The `Security` flag reads `N/A` — no endpoint, no view, no protected action, no mutation, so the
+permission-check and IDOR rows the template carries have no subject. **One property is asserted
+anyway**, because P2 writes inside the repository:
+
+| Concern                    | Obligation                                                                                   |
+| -------------------------- | -------------------------------------------------------------------------------------------- |
+| The self-test probe's file | Created under a path the repository already owns, never `/tmp` with a predictable name       |
+| Its removal                | A `trap`, firing on every exit path, so a failed assertion leaks no untracked file           |
+| The script's output        | Paths taken from backticked spans in committed documentation — no secret, token or env value |
+
+## Logging & Observability
+
+**Not applicable.** The `Logging` flag reads `N/A`. The script's only output is its findings
+report, and its shape is unchanged: `file:line [class] token`.
+
+## Performance, Rendering, Responsive & Accessibility
+
+**Not applicable** — no rendered surface, no layout, no breakpoint. One performance property is
+inherited and must not regress: `TEMPLATE_ONLY_BASE` exists so Check 3 costs one associative
+lookup per token rather than a `dirname` and a `stat`, measured at 7 s against 2m14s. **P2 widens
+the population that index is built from, so the whole-tree runtime is re-measured** and recorded
+beside the finding counts.
+
+## Implementation Workflows & Standards
+
+### PM workflow chain
+
+`02-story-creation` ✅ → `03-sprint-planning` ✅ → `11-qa-checks` ✅ → `15-decisions` ✅ →
+`16-sprint-plans` ✅ → **`17-story-plans` (this document)** → the lane below →
+`22-implementation-documentation` → `23-pr-and-review`.
+
+**No code lane.** `19-backend-code`, `20-api-code` and `21-frontend-code` are all `N/A` on this
+story's flags. The work runs directly against `code/src/scripts/audits/` and its fixtures.
+
+### Standards gates
+
+Every command through `code/src/scripts/**/*.sh`. `syntax/format.sh --file-type markdown` covers
+every document touched, and `syntax/lint.sh`'s Markdown leg reads them. **ShellCheck over the
+edited script is this story's own expectation, and no project script satisfies it**: `lint.sh`'s
+legs are ruff, markdownlint-cli2, ESLint and clippy (`code/src/scripts/syntax/CONTEXT.md`), and
+as of 08/09/2026 no script under `code/src/scripts/`, no CI job and no lefthook entry runs
+ShellCheck — only `# shellcheck source=` and `# shellcheck disable=` directives exist. It is run
+by hand and recorded in `../18-TESTS/MANUAL/US004-MANUAL-TESTING.md` as run or as not run, never as a
+`lint.sh` pass (`code/docs/GATE-REPORTING.md`).
+
+<!-- Until 08/09/2026 this read "ShellCheck via `syntax/lint.sh` covers the edited script", and the
+     Definition of Done row read "`syntax/lint.sh` passes, including ShellCheck over the edited
+     script" — a pass promised through a script with no ShellCheck leg. Both corrected the same
+     day, as `../03-SPRINTS/SPRINT-03.md` -> _Verification Checks_ was. -->
+
+## Testing
+
+**One coverage floor does not apply** — the story ships no Python path, so
+`tests/all.sh --coverage` is `N/A` with a reason rather than a skipped box. The proof is the
+script's own `--self-test`, which carries both modes this story needs.
+
+| Layer               | Method                                                                                                                           |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Predicates (P1, P2) | Direct assertions in the `st_set_probe` style — a fixture cannot reach a predicate                                               |
+| Clauses (P3, P4)    | `broken/` and `clean/` fixture pairs with expected finding counts                                                                |
+| Regression          | The existing "fixture tree is exempt from an ordinary run" assertion must still pass                                             |
+| Whole tree (P5)     | Before/after counts, exit codes, and the runtime, all recorded                                                                   |
+| Manual              | The tracked/untracked A/B reproduced before and after, index restored each time                                                  |
+| Missing targets     | Manual and automated US000 targets removed separately with class rows present, then restored; separate from template citer tests |
+
+The rows a person walks are in `../18-TESTS/MANUAL/US004-MANUAL-TESTING.md`, authored from this
+plan before code (backfilled 30/09/2026) and walked at `22`.
+
+**Two rules from the QA plan bind every case:** a fixture that passes both scripts proves nothing,
+and no existing probe is weakened to accommodate a change — a moved expected count carries its
+justification in its own comment.
+
+**Measure by executing, never by reading.** Two claims in the story made by reading the script
+were wrong and both became AC-gaps. Historical figures stay dated evidence; implementation
+records current counts and identities on a controlled tree. For the stock-versus-arm-only
+comparison, plant US999's absent unregistered US997 story citation on that same tree: the
+arm-only detector must add its `[dangling path]`, and no addition may be a naming pattern.
+Record every addition rather than require the historical 16-to-38 totals (QA HP-06).
+
+## Documentation Write-Ups (Implementation Records)
+
+`22-implementation-documentation` owns the records: it writes
+`../18-TESTS/AUTOMATED/US004-TEST-STATUS.md` — **which this story's own P4 register rows make
+citable in advance**, the story demonstrating its own deliverable — and walks
+`../18-TESTS/MANUAL/US004-MANUAL-TESTING.md`, authored before code from this plan (backfilled
+30/09/2026).
+
+<!-- 30/09/2026: read "writes ../18-TESTS/US004-TEST-STATUS.md and
+     ../18-TESTS/US004-MANUAL-TESTING.md — both of which this story's own P4 register rows make
+     citable in advance" until the 18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual
+     guide's authorship moved to 17-story-plans Step 7.2 (../18-TESTS/CLAUDE.md -> The record
+     lifecycle). The P4 register row for the manual guide still carries every later story's guide,
+     authored at 17 after the story that cites it is written. -->
+
+## CONTEXT.md & Index Updates
+
+| File                                       | Change                                                                                                |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| `code/src/scripts/audits/CONTEXT.md`       | `doc-references.sh` row text replaced **within** the row — no new line                                |
+| `how-to/src/PROJECT-PATHS.md`              | Two rows, plus the header note that a row may be patterned                                            |
+| `code/docs/FORWARD-VOICE.md`               | Section 3 gains the pattern form and the duty to add a row                                            |
+| `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` | `S-06`'s `Story` cell already reads `US004`; N-009's overturned claim recorded                        |
+| `GAPS.md`                                  | none — the 02/09/2026 entry left it on 01/11/2026, carried by US004                                   |
+| `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md`  | This plan's row in _Story Plans — the code master_ — Status cell kept in step with this plan's header |
+
+## Deferred Items
+
+- **`GAPS.md`'s 01/09/2026 entry** — the three shipped files still instructing the `CONTEXT.md`
+  index row. Adjacent subject, owned by no slice on any map. **Not** taken here.
+- **The `MAP-GATE-PARITY` question** — whether a gate means the same thing in a generated
+  project. `ADR-US004-INSTANCE-ARTEFACT-CITER-TEST` is one instance and claims none of its scope.
+- **Check 1's line-level naming guard suppressing a real dangling path** on a line containing
+  "e.g." — a known limitation, recorded as EC-04 in the QA plan, **not** introduced by this story
+  and not fixed by it.
+
+## Risks
+
+| Risk                                                                   | Mitigation                                                                    |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| P4 lands the arm without the register rows and reddens the tree by 22  | The two are one phase, and the phase's exit criterion is the whole-tree delta |
+| A new per-story artefact class silently loses its Check 2 exemption    | Named in the ADR's Consequences; the `clean/` fixture pins the current set    |
+| The parallel session moves the tree under the before/after measurement | Both halves taken in one sitting; the count moved 22 → 44 during 02/09/2026   |
+| P2 slows the whole run by widening the index population                | Runtime re-measured and recorded beside the counts                            |
+| `audits/CONTEXT.md` grows past 300 before US002 lands                  | P5 replaces text within the existing row and adds no line                     |
+
+## Definition of Done
+
+- [ ] All five phases complete, each having failed against the pre-change script first
+- [ ] `doc-references.sh --self-test` exits 0, probe count risen by one case per repair
+- [ ] No finding remains of the three classes this story owns; every survivor named with its owner
+- [ ] Current controlled counts and finding identities recorded for the US998 index A/B and
+      stock-versus-arm-only US999/US997 proof; historical 16 to 38 and five to zero are not thresholds
+- [ ] Both missing shipped-US000 target fixtures report with class rows present and clear on
+      restoration; citer exemption remains a distinct proof and three-digit bounds are retained
+- [ ] The 02/09/2026 entry's three retirement conditions recorded as met (it left `GAPS.md`
+      on 01/11/2026)
+- [ ] N-009's overturned claim recorded on `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md`
+- [ ] `syntax/lint.sh` passes over what it reads — the Markdown leg, over the documents touched
+- [ ] ShellCheck clean over the edited script, run by hand and recorded as run or as not run —
+      no project script carries it (_Standards gates_)
+- [ ] Every applicable check has evidence; N/A retains its reason, unavailable required checks
+      block sign-off, and whole-tree survivors retain owners without being reported as a pass
+- [ ] This plan's row in `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` → _Story Plans — the code
+      master_ mirrors the final status; story cross-references this plan
+- [ ] Reviewed and approved; merged; `../02-STORIES/US004.md` status set to **Completed**
+
+<!-- 08/09/2026, later the same day: the two "Plans Index" sites in this plan were rewritten to
+     describe what exists. Superseded text, preserved rather than deleted — the CONTEXT.md & Index
+     Updates table carried a row for `../17-STORY-PLANS/CONTEXT.md` reading "Plans Index row for
+     this plan"; the Definition of Done read "Plans Index row added; story cross-references this
+     plan". Both pre-date today. Why: no Plans Index exists — `../17-STORY-PLANS/CONTEXT.md` →
+     _The plans index_ records its absence as a decision, because that file ships and an index row
+     would put a per-project citation in it — so both sites sent a reader to a table that is not
+     there. The job each did is re-pointed at where a plan is indexed today: its sprint plan's
+     _Story Plans — the code master_ table, which for this plan is `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md`.
+     The `17-story-plans` workflow files and `../17-STORY-PLANS/CLAUDE.md` were re-pointed the same
+     way earlier on 08/09/2026; the folder-level index is deferred to the register-index work
+     charted in `../01-FEATURE-MAPS/`, which names its own file when it lands. -->

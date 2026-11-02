@@ -2,7 +2,7 @@
 workflow: 09-gdpr-compliance
 phase: compliance
 skills: [gdpr-mechanics, global-workflow]
-model: fable
+model: opus
 ---
 
 # GDPR Compliance Review — Checklist

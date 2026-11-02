@@ -19,10 +19,11 @@ implement the minimum to pass, then refactor with the suite green throughout.
 - **Model:** Opus for authoring tests and implementation and mechanical
   edits to the workflow files.
 - **Concrete steps:** confirm `code/src/scripts/syntax/check.sh` passes → **Red**:
-  write contract-level tests with realistic data, factories, and parametrisation,
-  watch them fail → **Green**: minimal implementation, add tests only for genuine
-  edge cases found while building → **Refactor**: improve without changing the public
-  contract. Run suites via `code/src/scripts/tests/*.sh`.
+  brief `test-writer` with the story, its acceptance criteria and its manual testing guide
+  (`project-management/src/18-TESTS/MANUAL/`), write contract-level tests with realistic
+  data, factories, and parametrisation, watch them fail → **Green**: minimal implementation,
+  add tests only for genuine edge cases found while building → **Refactor**: improve without
+  changing the public contract. Run suites via `code/src/scripts/tests/*.sh`.
 - **Definition of done:** tests green, coverage floors met (75% line and branch / auth 90%),
   no stubs left behind.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
@@ -31,6 +32,8 @@ implement the minimum to pass, then refactor with the suite green throughout.
 
 - **Never add a test solely to raise a coverage number** — tests assert observable
   outcomes (return values, DB state, API responses), not internals.
+- **The manual testing guide is an input, never an output** — the Red phase reads and triages
+  it and never edits it (`project-management/src/18-TESTS/MANUAL/CLAUDE.md` → _Guardrails_).
 - Refactor changes zero tests unless the public contract itself changes.
 - No stubs at green: a passing suite must exercise real behaviour.
 - Never invoke `pytest` or `python` directly — only the shell

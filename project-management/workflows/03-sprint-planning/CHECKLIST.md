@@ -2,7 +2,7 @@
 workflow: 03-sprint-planning
 phase: design
 skills: [sprint, global-workflow]
-model: fable
+model: opus
 ---
 
 # Sprint Planning — Checklist
@@ -26,7 +26,8 @@ model: fable
 - [ ] Stories are MoSCoW prioritised
 - [ ] Scope is realistic for the sprint duration
 - [ ] Dependencies between stories identified
-- [ ] Sprint saved at correct path: `project-management/src/03-SPRINTS/SPRINT-##.md`
+- [ ] Sprint saved at correct path: `project-management/src/03-SPRINTS/SPRINT-##.md`, numbered across `03-SPRINTS/` and its `archive/`
+- [ ] `**Status:** Planned`; board regenerated (`pm-board.sh --write`)
 
 ---
 

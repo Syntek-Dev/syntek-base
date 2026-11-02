@@ -14,10 +14,10 @@ with evidence and a sign-off.
 ## How to work here
 
 - **Routing:** written during `project-management/workflows/10-security-checks/` once a
-  story's implementation is complete, using the `security` skill (Fable) against the
+  story's implementation is complete, using the `security` skill against the
   story's model in `../PLANNING/THREAT-MODEL-PLAN-US###-*.md`.
-- **Model:** Fable — re-assessing each threat against shipped code is substantive
-  judgement, not a mechanical touch; Opus only for a status flip or a rename.
+- **Model:** Opus throughout — re-assessing each threat against shipped code is
+  substantive judgement; a status flip or a rename is a mechanical touch.
 - **Concrete steps:** copy `THREAT-MODEL-IMPL-US000-TEMPLATE.md` →
   `THREAT-MODEL-IMPL-US###-<DESCRIPTOR>-DD-MM-YYYY.md` → open the story's plan →
   re-assess every threat (Mitigated / Residual / New) with code evidence → document any

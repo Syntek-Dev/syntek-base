@@ -2,7 +2,7 @@
 workflow: 17-story-plans
 phase: design
 skills: [planner, global-workflow]
-model: fable
+model: opus
 ---
 
 # Story Plans — Steps
@@ -14,14 +14,36 @@ model: fable
 
 ## Key references
 
+<!-- 08/09/2026: every "Plans Index" instruction in this file was rewritten to describe what
+     exists. Superseded text, preserved rather than deleted — the Naming row read
+     "src/17-STORY-PLANS/CONTEXT.md — the Plans Index, which is where build order is read";
+     Step 2 item 4 ended "the Plans Index carries the row, and the file is added later at that
+     number"; the renumbering sentence listed "the plans, the Plans Index rows, and every
+     citation of them"; Step 10 item 2 read "Add the row to `src/17-STORY-PLANS/CONTEXT.md` →
+     Plans Index (file link, story, Status), keeping the index in `<exec-order>` sequence".
+     Step 10's row instruction pre-dates today; the other three sites arrived earlier today with
+     the `<exec-order>` prefix. Why: no Plans Index exists, and
+     `src/17-STORY-PLANS/CONTEXT.md` → _The plans index_ records its absence as a decision —
+     that file ships, so an index row would put a per-project citation in a shipped file. The
+     job each site did — recording that a plan exists, and where its number is read from — is
+     re-pointed at what holds the information today: the sprint plans in
+     `src/16-SPRINT-PLANS/`, whose `<exec-order>` sequence is the build order and whose
+     _Story Plans — the code master_ tables index each plan against its sprint, and the owning
+     story under `src/02-STORIES/`, which records a reserved number. A folder-level index is
+     deferred to the register-index work charted in `src/01-FEATURE-MAPS/`; no file is named for
+     it here because none exists yet. -->
+
 Consult `project-management/REFERENCES.md` as you work through these steps:
 
-| Step             | Section                                                                           |
-| ---------------- | --------------------------------------------------------------------------------- |
-| All steps        | **Internal — Live Artefacts** → src/17-STORY-PLANS/                               |
-| All steps        | src/17-STORY-PLANS/CLAUDE.md — copy-the-template rules, dependency DAG honesty    |
-| Template         | src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md — the canonical superset scaffold |
-| Gathering inputs | **Internal — Live Artefacts** → src/16-SPRINT-PLANS/, src/15-DECISIONS/           |
+| Step             | Section                                                                                                         |
+| ---------------- | --------------------------------------------------------------------------------------------------------------- |
+| All steps        | **Internal — Live Artefacts** → src/17-STORY-PLANS/                                                             |
+| All steps        | src/17-STORY-PLANS/CLAUDE.md — copy-the-template rules, dependency DAG honesty                                  |
+| Template         | src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md — the canonical superset scaffold                            |
+| Naming           | src/17-STORY-PLANS/CONTEXT.md → _The plans index_ — the generated `STORY-PLANS-BOARD.md`; plans carry no status |
+| Build order      | src/16-SPRINT-PLANS/ — the sprint plans in `<exec-order>` sequence; their _Story Plans_ tables                  |
+| Gathering inputs | **Internal — Live Artefacts** → src/16-SPRINT-PLANS/, src/15-DECISIONS/                                         |
+| Step 7.2         | src/18-TESTS/MANUAL/CLAUDE.md — the guide's rules; its template US000-MANUAL-TESTING.md                         |
 
 ---
 
@@ -36,13 +58,9 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 ## Steps
 
-### Step 1 — Grill, then Gather Inputs
+### Step 1 — Gather Inputs, then Grill
 
-> **Model:** fable
-
-**Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
-interview <%DEVELOPER_NAME%> — scope, which layers are in scope (database /
-service / API / frontend / infra / GDPR), phasing, and any open architectural question.
+> **Model:** opus
 
 Gather:
 
@@ -54,12 +72,52 @@ Gather:
 - The GDPR, security, and QA constraints each spec carries — these are **carried into** the
   plan, not re-derived
 
+**Grill before writing the plan** (`.claude/CLAUDE.md` Section 10): load
+`.claude/skills/grill-with-docs` and interview <%DEVELOPER_NAME%> — scope, which layers are in
+scope (database / service / API / frontend / infra / GDPR), phasing, and any open architectural
+question.
+
+**Recorded answers** (`.claude/skills/grilling/SKILL.md` → _A decision already recorded is a fact_):
+the inputs gathered above.
+
 ### Step 2 — Copy the Template
 
-Copy `src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md` to
-`src/17-STORY-PLANS/STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`. Never start from scratch.
-Keep the ★-marked core sections always; keep ◇-marked sections only where the story
-touches that concern, and say in one line why a dropped section does not apply.
+<!-- 08/09/2026: the naming convention gained an `<exec-order>-` prefix. Superseded text,
+     preserved rather than deleted: "Copy "src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md" to
+     `src/17-STORY-PLANS/STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`." -->
+
+Copy `src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md` to
+`src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`. Never start
+from scratch. Keep the ★-marked core sections always; keep ◇-marked sections only where the
+story touches that concern, and say in one line why a dropped section does not apply.
+
+**Computing `<exec-order>`** — 2-digit zero-padded, and it is the story's **position in the
+settled build order across the whole backlog**, not its sprint and not a per-sprint counter:
+
+1. Take the sprint plans in `src/16-SPRINT-PLANS/` in their own `<exec-order>` order — that
+   prefix is the sequence the sprints are built in, which is not always their sprint number.
+2. Within each sprint plan, take its stories in the order that plan sequences them.
+3. Concatenate those lists into one backlog-wide build order and number it from `01`. `00-`
+   is the template, mirroring `00-SPRINT-PLAN-00-TEMPLATE.md`, so a real plan never takes it.
+4. A number is **reserved** as soon as the position is settled, even where the plan is not
+   yet written. The reservation is recorded in the story that owns it
+   (`src/02-STORIES/US###.md`) and, where a sprint plan already carries that story, as a
+   no-file row naming the reserved prefix in that plan's _Story Plans — the code master_
+   table; the file is added later at that number. The folder index is the generated
+   `STORY-PLANS-BOARD.md` (`src/17-STORY-PLANS/CONTEXT.md` → _The plans index_), never hand-edited.
+
+**Renumber when build order changes.** The prefix is a claim about sequence, so a reordered
+backlog is renumbered — the plans, their rows in the sprint plans' _Story Plans — the code
+master_ tables, and every citation of them — in the same change that reorders it.
+
+> **This is the opposite of the sprint-plan guardrail, deliberately.**
+> `src/16-SPRINT-PLANS/CLAUDE.md` holds that a mismatch between a sprint plan's
+> `<exec-order>` prefix and its `<sprint-number>` suffix is **information, not a typo**, and
+> must never be "corrected". That rule protects a **pair** of numbers: a sprint plan carries
+> both, and the divergence between them is what says the sprint is being built out of
+> sprint-number order. A story plan carries **one** number, so it has no pair to disagree
+> with — if its prefix does not track build order it says nothing at all. Do not read the
+> sprint-plan guardrail across to this folder.
 
 ### Step 3 — Fix the Technical Approach
 
@@ -101,21 +159,63 @@ sections — do not re-derive them:
 Every mutation the plan introduces must carry an explicit permission check and ownership
 verification in the plan's Security table — no exceptions.
 
-### Step 7 — Define the Test Strategy
+### Step 7 — Define the Test Strategy, then Author the Manual Testing Guide
+
+<!-- UPDATED 30/09/2026. Step 7 gained sub-step 7.2: this workflow now authors the story's manual
+     testing guide, which "../22-implementation-documentation/" used to write after the code.
+     Settled by the grilling pass of 30/09/2026; the argument for authoring before code is in
+     "../../src/18-TESTS/CLAUDE.md". It went in as a sub-step rather than a new Step 8 because
+     Steps 8 to 11 are cited by number in dated history across the repository — "17-story-plans
+     Step 9" and "Step 10" among them — and renumbering would re-point every one of those
+     citations. The test strategy that was the whole of Step 7 is now 7.1, unchanged but for its
+     manual-testing item, which 7.2 now carries. -->
+
+#### 7.1 — Define the test strategy
 
 Complete the plan's Testing section per layer: unit & integration (services), template /
-component / HTMX-partial rendering, API permission-check tests, markup-level accessibility,
-browser e2e (a11y scan + responsive overflow), and manual testing — one coverage floor per
-`code/docs/TESTING.md` (75% line and branch, 90% auth). The browser suite is excluded from
-coverage; it exercises a running stack over HTTP and instruments nothing.
+component / HTMX-partial rendering, API permission-check tests, markup-level accessibility, and
+browser e2e (a11y scan + responsive overflow) — one coverage floor per `code/docs/TESTING.md`
+(75% line and branch, 90% auth). The browser suite is excluded from coverage; it exercises a
+running stack over HTTP and instruments nothing. The plan's _Manual testing_ section is a pointer
+to the guide 7.2 authors, not a list of its own.
+
+#### 7.2 — Author the manual testing guide
+
+Copy `src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md` to
+`src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` and author it **from the specs, never from code** —
+there is no code yet, and the guide is an independent oracle only because it predates the build.
+Read each of these the story has, and name every one read on the guide's _Authored from_ line:
+
+- **The story** — `src/02-STORIES/US###.md`; its _QA Acceptance Criteria — Manual_ is the bar the
+  guide is judged against
+- **Its stage-1 design** — `src/04-DATABASE/`, `src/05-USER-FLOW/`, `src/06-BRAND-GUIDE/`,
+  `src/07-COMPONENTS/`, `src/08-WIREFRAMES/`
+- **Its compliance specs** — the `PLANNING/` artefacts in `src/09-GDPR/`, `src/10-SECURITY/`,
+  `src/11-QA/`, `src/12-SEO/`, `src/13-API-DESIGN/` and `src/14-LOGGING/`; the QA plan's scenario
+  IDs fill the `QA` column
+- **Its decisions and sprint** — the ADRs in `src/15-DECISIONS/` and its sprint plan in
+  `src/16-SPRINT-PLANS/`
+- **This plan** — its approach, key decisions and test strategy as fixed in Steps 3 to 7.1
+
+Every row takes its permanent `{AREA}-{NN}` ID, `Flow` as `—` — no consolidated flow exists
+before `18-consolidate-design-work` — and a blank `Result`. How each column is filled, and every
+other rule of the guide: `src/18-TESTS/MANUAL/CLAUDE.md` → _Authoring — from the specs, never
+from the code_, _Row IDs_ and _The Flow and QA columns_.
+
+**A row the records cannot decide goes to <%DEVELOPER_NAME%> as a question, never a guess** —
+raise it through `.claude/skills/grill-with-docs`, which records the answer in the artefact that
+should have held it, then write the row from that answer.
+
+Finally, point the plan's _Manual testing_ section at the guide.
 
 ### Step 8 — Run the Planner Agent
 
 ```text
-planner [story, sprint plan, ADRs, and every 02–14 spec gathered in Step 1]
+planner [story, sprint plan, ADRs, and every 02–14 spec gathered in Step 1; for Step 7.2,
+         src/18-TESTS/MANUAL/CLAUDE.md and src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** fable · **MCP:** none
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:** none
 
 ### Step 9 — Adversarial Plan Review
 
@@ -123,14 +223,29 @@ planner [story, sprint plan, ADRs, and every 02–14 spec gathered in Step 1]
 
 Spawn 2–3 independent reviewers to critique the draft before it is treated as codeable:
 missing layers, unhandled GDPR/security, wrong doc references, dependency-order errors,
-unscoped deferrals. Resolve every finding.
+unscoped deferrals — and, in the manual testing guide, a row no spec supports, a QA-plan scenario
+no row exercises, or an expected outcome that guesses. Resolve every finding.
 
 ### Step 10 — Save, Index, and Cross-Reference
 
-1. Save to `src/17-STORY-PLANS/STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`
-2. Add the row to `src/17-STORY-PLANS/CONTEXT.md` → Plans Index (file link, story, Status)
+<!-- 08/09/2026: superseded, preserved rather than deleted — step 1 read
+     "Save to `src/17-STORY-PLANS/STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`". -->
+
+1. Save to `src/17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`,
+   with `<exec-order>` computed per Step 2 and confirmed still current — the build order may
+   have moved while the plan was being written
+2. Index the plan where a plan is indexed today: the story's row in its sprint plan's
+   _Story Plans — the code master_ table (`src/16-SPRINT-PLANS/##-SPRINT-PLAN-##.md`) — the
+   file path replacing any reserved-number placeholder (the table has no status cell — a plan
+   carries no status; the board shows it under its story's). Add nothing to
+   `src/17-STORY-PLANS/CONTEXT.md`: the folder index is the generated `STORY-PLANS-BOARD.md` —
+   run `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`. The plan moves to
+   `archive/` only with its story, by `pm-archive.sh US###`
 3. Reference the plan in the driving user story (`src/02-STORIES/US###.md`)
-4. Proceed to `workflows/19-backend-code/` to begin implementation
+4. Cross-link the manual testing guide: its header names this plan at the filename saved in item
+   1, and the plan's _Manual testing_ section names `src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`
+5. `completion` moves the story `Open` → `Pending` (`Blocked` if a dependency is open), then
+   proceed to `workflows/19-backend-code/` to begin implementation
 
 ### Step 11 — Commit
 

@@ -9,20 +9,20 @@ then `CHECKLIST.md`.
 ## Purpose (one line)
 
 The design-stage QA workflow — derive test scenarios, edge cases, and error states
-from signed-off wireframes and user flows, producing a `QA-US###-*.md` plan per story
+from signed-off wireframes and user flows, producing a `QA-PLAN-US###-*.md` plan per story
 in `src/11-QA/` before any code is written.
 
 ## How to work here
 
 - **Routing:** run `STEPS.md` in order; drive scenario generation with the
-  `qa-tester` skill (Fable). Prerequisites: signed-off wireframes and
+  `qa-tester` skill. Prerequisites: signed-off wireframes and
   completed security checks (`workflows/10-security-checks`). QA planning is pre-code,
   so **no hard safety gate applies** — `docs/QA-GUIDE.md` governs scenario format.
-- **Model:** Fable for scenario design and edge-case discovery; Opus for
-  mechanical touches (status flips, moving a file).
+- **Model:** Opus throughout — scenario design and edge-case discovery are substantive
+  judgement; a status flip or moving a file is a mechanical touch.
 - **Concrete steps:** read `docs/QA-GUIDE.md` → map scenarios against
   `src/02-STORIES/` and wireframes → cover the security findings from
-  `src/10-SECURITY/` and WCAG 2.2 AA checks → write `QA-US###-<DESCRIPTION>.md` into
+  `src/10-SECURITY/` and WCAG 2.2 AA checks → write `QA-PLAN-US###-<DESCRIPTOR>.md` into
   `src/11-QA/PLANNING/` → feed edge cases back into story acceptance criteria → satisfy
   `CHECKLIST.md`.
 - **Definition of done:** every in-scope story has a QA plan; edge cases and error
@@ -43,6 +43,6 @@ in `src/11-QA/` before any code is written.
 ## Output & naming
 
 - **Hand-written:** `STEPS.md`, `CHECKLIST.md`; QA plans under `src/11-QA/PLANNING/`
-  as `QA-US###-<DESCRIPTION>.md`, linked to their `US###`.
+  as `QA-PLAN-US###-<DESCRIPTOR>.md`, linked to their `US###`.
 - Documentation `SCREAMING-SNAKE-CASE.md`; workflow folders `NN-kebab-case/`; dates
   DD/MM/YYYY.

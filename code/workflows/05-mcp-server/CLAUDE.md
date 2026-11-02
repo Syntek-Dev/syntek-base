@@ -14,7 +14,7 @@ mounting, auth, tools, tests, and hardening.
 ## How to work here
 
 - **Routing:** governance folder — follow the workflow, do not casually edit it. Tools →
-  `backend` + `stack-fastmcp` (Opus); auth and the threat model → `security`; tests →
+  `backend` + `stack-fastmcp`; auth and the threat model → `security`; tests →
   `test-writer`. Read `CONTEXT.md` first. **Entered from
   `project-management/workflows/20-api-code/`**, never directly from a design gate. Hard
   gates before Step 1: `code/docs/mcp-server/TOOL-DESIGN.md` and
@@ -22,8 +22,8 @@ mounting, auth, tools, tests, and hardening.
 - **Grill first:** Step 1 is a grilling pass (`.claude/skills/grill-with-docs`), and its
   opening question is the workflow's own gate — is an agent genuinely the caller? Never skip
   it; a tool surface that mirrors the Ninja API is a second contract for no new capability.
-- **Model:** Fable for the Step 1 design and tool-set shaping; Opus for everything built,
-  tested, and audited, and for mechanical touches to these files.
+- **Model:** Opus throughout — the Step 1 design and tool-set shaping, everything built,
+  tested and audited, and any mechanical touch to these files.
 - **Concrete steps:** design → mount (`config/asgi.py`, first mount only) → verifier → tools
   in `apps/<app>/mcp_tools.py` → in-process `Client` tests → instrument → harden. All test and
   syntax runs go through `code/src/scripts/**/*.sh` — **never raw `pytest`, `python`,

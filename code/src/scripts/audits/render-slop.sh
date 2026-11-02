@@ -90,6 +90,30 @@ MIN_ROW_MEMBERS=3          # siblings needed before a row is a device at all
 MIN_SET_SCREENS=3          # screens a signature must recur on to speak across the set
 SIGNATURE_ROUND=10         # px the width is rounded to when forming a signature
 
+# The Playwright release this audit resolves, and the ONLY value in this file that is
+# not about slop detection. It is pinned because Playwright ties each release to an
+# exact Chromium *revision*, and a host that supplies its own browsers — a Nix store
+# bundle, a distro package, a warmed CI cache — has one revision, not whichever the
+# newest release happens to want. Unpinned, `--with playwright` drifts to the latest on
+# every run and the detector asks for a revision the host does not have:
+#
+#     Executable doesn't exist at .../chromium_headless_shell-1243/...
+#
+# Seven sites declare this release and `audits/playwright-pin.sh` holds them in step, so
+# move it here and let that gate name the rest. Pin and installer must name ONE version:
+# pinning only one means CI downloads a revision the detector refuses to use, and the gate
+# breaks in CI having been green locally.
+#
+# WHERE THE VALUE COMES FROM IS THE HOST'S, and deliberately not this repository's. The
+# audit compares the declarations to EACH OTHER and never to a machine's browsers, because
+# no such comparison is portable - a CI runner installs its own and has no bundle at all.
+# So when a host's browser bundle moves, the owner of that bundle reports the Playwright
+# release matching its Chromium revision, and that number is what lands on this line. A
+# bundle bump is therefore the one change this gate cannot start; it can only confirm that
+# every site followed.
+PLAYWRIGHT_PIN="playwright==1.61.0"
+PLAYWRIGHT_INSTALL="uv run --no-project --with '$PLAYWRIGHT_PIN' playwright install chromium"
+
 # ── Defaults ──────────────────────────────────────────────────────────────────
 OUTPUT_FORMAT=""
 OUTPUT_FILE=""
@@ -293,7 +317,7 @@ log ""
 tr '\0' '\n' < "$TMP_FILES" > "$TMP_LIST"
 
 set +e
-DETECTOR_OUT=$(uv run --no-project --with playwright python - \
+DETECTOR_OUT=$(uv run --no-project --with "$PLAYWRIGHT_PIN" python - \
   "$TMP_LIST" "$VIEWPORT_W" "$VIEWPORT_H" "$TOLERANCE_PCT" \
   "$MIN_ROW_MEMBERS" "$MIN_SET_SCREENS" "$SIGNATURE_ROUND" <<'PY' 2>/dev/null
 import sys, pathlib, collections
@@ -394,11 +418,11 @@ if [[ "$DETECTOR_RC" -eq 3 ]]; then
   # call here, and it matters more in CI than locally — a runner whose
   # `playwright install` step failed would otherwise turn the one job that proves this
   # gate into a rubber stamp.
-  $SELF_TEST && die "--self-test needs Chromium, and it is not installed. Install it with \`uv run --no-project --with playwright playwright install chromium\`. Refusing to report a passing self-test that rendered nothing."
+  $SELF_TEST && die "--self-test needs Chromium, and it is not installed. Install it with \`$PLAYWRIGHT_INSTALL\`. Refusing to report a passing self-test that rendered nothing."
   SURFACE_ABSENT=true
-  BROWSER_NOTE="Browser absent: Playwright's Chromium is not installed, so nothing was rendered. Install it with \`uv run --no-project --with playwright playwright install chromium\`. This run reports success rather than failing, the same way static-analysis.sh does without its engine — but it has measured nothing."
+  BROWSER_NOTE="Browser absent: Playwright's Chromium is not installed, so nothing was rendered. Install it with \`$PLAYWRIGHT_INSTALL\`. This run reports success rather than failing, the same way static-analysis.sh does without its engine — but it has measured nothing."
   log "  Chromium is not installed — nothing was rendered."
-  log "  Install: uv run --no-project --with playwright playwright install chromium"
+  log "  Install: $PLAYWRIGHT_INSTALL"
   log ""
   write_report
   bold "✓ Nothing rendered (no browser)."

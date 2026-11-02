@@ -2,7 +2,7 @@
 workflow: 01-feature-map
 phase: discovery
 skills: [planner, wayfinder, grill-with-docs, codebase-design, global-workflow]
-model: fable
+model: opus
 ---
 
 # Feature Map — Steps
@@ -19,7 +19,7 @@ model: fable
 | All    | `.claude/skills/wayfinder/SKILL.md` — SUGGEST, CHART, RESOLVE, the map, node types |
 | Step 0 | `GAPS.md` · `DEFERRED.md` — the standing register                                  |
 | Step 1 | This folder's `CONTEXT.md` → _Reading order_                                       |
-| Step 2 | The claiming-versus-closing boundary in the wayfinder skill                        |
+| Step 2 | The claim-removes-the-entry rule in the wayfinder skill                            |
 | Step 4 | `code/docs/CODE-REVIEW-GRAPH.md` — the explore playbook                            |
 | Step 8 | The graduation table in the wayfinder skill                                        |
 
@@ -38,7 +38,7 @@ model: fable
 
 ### Step 0 — Mine the register for candidates
 
-> **Model:** fable
+> **Model:** opus
 
 Skip if <%DEVELOPER_NAME%> already has the feature in mind. Run it when the next feature is not obvious, or
 on a cadence — after a release, at the start of a planning cycle.
@@ -63,7 +63,7 @@ _Done when every open entry is clustered and the ranked candidates are put to <%
 
 ### Step 1 — Load the ground truth
 
-> **Model:** fable
+> **Model:** opus
 
 Load in order, each layer narrowing the next:
 
@@ -77,12 +77,14 @@ Load in order, each layer narrowing the next:
 6. **The whole of `project-management/src/`** — stories, specs, decisions, plans, and records
 7. The codebase, via the `code-review-graph` explore playbook
 
-`src/` is the living state, not an archive: the `IMPLEMENTATION/` records say what shipped **and
-where it diverged from the plan**. Map against that, not against intentions.
+`src/` is the living state: the `IMPLEMENTATION/` records say what shipped **and where it
+diverged from the plan**. Map against that, not against intentions. **Read the `*/archive/`
+folders too** (`01`, `02`, `03`, `16`, `17`) — a `Closed` story or map is frozen there, not gone,
+and a feature that ignores it re-decides what was already settled.
 
 ### Step 2 — Triage the register against this feature
 
-> **Model:** fable
+> **Model:** opus
 
 Every open entry in `GAPS.md` and `DEFERRED.md` gets exactly one verdict — **except a standing
 limitation**, which takes none of the three. `GAPS.md`'s `## Standing limitations` section holds
@@ -99,15 +101,20 @@ A gap this feature retires is **part of what "done" means** — it belongs in th
 as a footnote discovered at implementation. A gap that blocks it is a decision node, never an
 assumption.
 
-**Claim, never close.** Do not edit `GAPS.md` or `DEFERRED.md` here. Closing an entry is
-`22-implementation-documentation`'s job, against shipped code — a claim is a promise, a close is
-evidence.
+**Claimed means removed** (`.claude/CLAUDE.md` Section 9). A **closes** or **blocks** entry is
+claimed when the map is written at Step 6, and it leaves `GAPS.md` or `DEFERRED.md` in **that same
+change** — no `✅ CLOSED` mark, no pointer left behind. The map is now its only copy, so in that
+change a **node, fog item, slice or frontier note carries its substance and cites it** (register,
+date, title); a title in the _Register claimed_ table alone is not enough. A **manual blocker**
+(provisioning a host, an account or a key) is never a node (Step 6), so it is carried in a
+frontier note beside the node it blocks. An entry the map cannot carry is not claimed: its verdict
+is **unrelated**. An **unrelated** entry is untouched and keeps the register's own lifecycle.
 
 _Done when every open entry carries a verdict and the closes/blocks entries are on the map._
 
 ### Step 3 — Pin the destination
 
-> **Model:** fable
+> **Model:** opus
 
 Open a `/grill-with-docs` pass to name, in one or two lines, what "done" looks like — and the
 bounds: what is consciously **out**. Look the repo up before asking.
@@ -116,17 +123,18 @@ _Done when the destination and out-of-scope bounds are written and confirmed._
 
 ### Step 4 — Map the frontier breadth-first
 
-> **Model:** fable
+> **Model:** opus
 
 Explore the feature's surface and surface **every currently-knowable open decision**. Breadth
 first — do not follow one branch to the bottom. Anything in scope but not yet sharp enough to
-state as a decision goes to **fog of war**, honestly.
+state as a decision goes to **fog of war**, honestly, as an `F-NN` item — the IDs, and the five
+routes an item leaves by, are the wayfinder skill's _Fog of war — every item leaves by one route_.
 
 _Done when every knowable decision is a node or parked in fog of war._
 
 ### Step 5 — Wire the blocking edges
 
-> **Model:** fable
+> **Model:** opus
 
 Second pass: write each node's blockers as links to the nodes it depends on, so the **takeable
 edge** — the unblocked nodes — is visible at a glance.
@@ -135,20 +143,24 @@ _Done when every frontier node names its blockers (or "none") and at least one i
 
 ### Step 6 — Write the map
 
-> **Model:** fable
+> **Model:** opus
 
 Copy `src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md` → `MAP-<FEATURE>.md`. Tag each frontier node with its
 type: **research** (looked up, no human), **tracer** (spike to raise fidelity), **grilling**
 (one `/grill-with-docs` surface), **build** (the work a slice's story carries — named here, never
-done here). Manual unblocking work is not a node: it is a `GAPS.md` blocker. Fill **Register
-claimed** from the Step 2 triage. Add the map to the index in `src/01-FEATURE-MAPS/CONTEXT.md`.
+done here). Manual unblocking work is not a node: it is a `GAPS.md` blocker until a map claims it,
+then a frontier note. Fill **Register claimed** from the Step 2 triage, carry each claimed entry
+and **remove it from `GAPS.md` / `DEFERRED.md` in the same change** (Step 2). Set
+`**Status:** Charting` and a one-line `**Status note:**`,
+then run `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` — the map's row on
+`FEATURE-MAPS-BOARD.md` is generated, never hand-written.
 
-_Done when the map exists, is indexed, carries its claimed register entries, and reads as a route
-rather than a vault._
+_Done when the map exists, is on the board, carries its claimed register entries — each gone from
+the register — and reads as a route rather than a vault._
 
 ### Step 7 — Fire the research nodes, then stop
 
-> **Model:** fable
+> **Model:** opus
 
 Dispatch research nodes now — they need no human. **Do not settle grilling, tracer, or build
 nodes in this session.** Charting ends with the frontier drawn and unresolved.
@@ -159,7 +171,7 @@ nodes in this session.** Charting ends with the frontier drawn and unresolved.
 
 ### Step 8 — Take a batch, settle it, graduate it
 
-> **Model:** fable
+> **Model:** opus
 
 Per session:
 
@@ -181,20 +193,25 @@ Per session:
    `src/15-DECISIONS/`, a `GAPS.md` entry, a `DEFERRED.md` row, or a glossary term. Never leave
    the answer only on the map. A `DEFERRED.md` row needs a `US###` this workflow cannot supply,
    so a deferral surfaced here — before `02-story-creation` cuts a story — goes to `GAPS.md`.
-5. **Redraw the frontier** — move the whole batch to resolved, sharpen any fog the outcome
-   clarified into new nodes, re-wire the blocking edges.
+5. **Redraw the frontier** — move the whole batch to resolved, send any fog item the outcome
+   moved out by its route (wayfinder → _Fog of war_), re-wire the blocking edges.
 6. **Re-triage the register if the outcome moved it** — a settled node that retires a further
-   entry adds a **Register claimed** row; one that raises a new blocker appends to `GAPS.md`.
+   entry adds a **Register claimed** row, carries its substance, and removes the entry (Step 2);
+   one that raises a new blocker appends to `GAPS.md`.
+
+Advance the map's `**Status:**` as it moves — `Resolving` after the first settled batch,
+`Blockers Clear` once no blocking node remains — update the `**Status note:**`, and regenerate
+the board (`pm-board.sh --write`). The vocabulary is `.claude/skills/completion/SKILL.md`'s.
 
 _Repeat until no **blocking** node remains open._
 
 ### Step 8a — Cut the slices
 
-> **Model:** fable
+> **Model:** opus
 
 Once no blocking node remains, fill the map's **Slices** section: one row per buildable slice of
-user-visible value, in the six canonical columns
-`Slice | Story | Title | Nodes | Acceptance | Flags`.
+user-visible value, in the seven canonical columns
+`Slice | Story | Title | Nodes | Acceptance | Flags | Carries`.
 
 - **Nodes** — every node the slice carries, with its state (`✅` resolved · `○` open · `⛔` open
   and blocking). A slice is cuttable only when all of its nodes are `✅`, and **no open node may
@@ -205,6 +222,9 @@ user-visible value, in the six canonical columns
 - **Flags** — every **gate** the story will need, `N/A` omitted, carrying first-pass values
   (`DB: ModelA · API: POST /model-a · GDPR: yes`). The 13-flag roster is
   `src/02-STORIES/US000-TEMPLATE.md`.
+- **Carries** — always last: the fog items whose trigger is this slice's cut, `—` when none. The
+  cell format, the two-map cross-reference and why carried fog never blocks a cut are the wayfinder
+  skill's _Fog of war_ section.
 
 Acceptance and Flags are not the same column and never restate each other: **Acceptance is what
 must be true, Flags is which gates run.**
@@ -212,17 +232,25 @@ must be true, Flags is which gates run.**
 This is the base `02-story-creation` writes each story from. Leave the `Story` column `—`; that
 gate allocates the number and back-fills it.
 
-_Done when every slice names its nodes, its acceptance and its flags, every open node belongs to a
-slice, and no slice has a reserved `US###`._
+_Done when every slice names its nodes, its acceptance, its flags and its carried fog, every open
+node belongs to a slice, and no slice has a reserved `US###`._
 
 ### Step 9 — Close out
 
 > **Model:** opus
 
 - Confirm every resolved node links to the artefact it became
-- Confirm every claimed register entry names the node or story that will retire it, and that
-  neither `GAPS.md` nor `DEFERRED.md` was closed here
+- Confirm every claimed register entry names the node or story that will retire it, is carried in
+  substance on the map, and no longer appears in `GAPS.md` or `DEFERRED.md`
 - Confirm no story has been written yet — that is `02-story-creation`
+- Once Frontier and Fog of war are both **genuinely** empty — every fog item gone by its route, none
+  left "with a trigger" — set `**Status:** Complete` and regenerate the board; `pm-board.sh --warn`
+  names a `Complete` map still listing fog
+- **Closing the map comes later, and is never a hand edit.** When `02-story-creation` has cut
+  every slice into a story (`pm-board.sh --warn` names the map), run
+  `bash project-management/src/00-ASSETS/scripts/pm-archive.sh MAP-<FEATURE>` — it sets
+  `Closed` and moves the map into `src/01-FEATURE-MAPS/archive/`, where it is frozen. New work on
+  the same area charts a **new** map.
 - Satisfy `CHECKLIST.md`
 
 Next: `02-story-creation/`, cutting stories from the resolved map.

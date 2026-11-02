@@ -14,7 +14,7 @@ HTMX / Alpine decision and the common HTMX/Alpine pitfalls with worked examples.
 
 - **Routing:** documentation, not code — `doc-writer` skill, and this guidance governs
   `stack-htmx-templates` work.
-  Opus for substantive edits; Opus for mechanical touches.
+  Opus throughout — substantive edits and mechanical touches alike.
 - **Concrete steps:** edit the relevant sub-doc → keep `code/docs/RENDERING.md` a thin index and
   the interaction-model doctrine authoritative → every example must be runnable against the
   current Django templates + HTMX + Alpine stack. Any dev command in an example invokes a

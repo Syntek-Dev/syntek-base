@@ -21,12 +21,12 @@
 #                  believed.
 #
 # Scope scanned:  tracked (and untracked-but-not-ignored) Markdown that instructs:
-#                   * every CONTEXT.md and CLAUDE.md, wherever it sits
-#                   * **/docs/**/*.md   · **/workflows/**/*.md   · .claude/**/*.md
+#                   * every CONTEXT.md, CLAUDE.md and AGENTS.md, wherever it sits
+#                   * **/docs/**/*.md · **/workflows/**/*.md · .claude/, .ai/, .codex/ Markdown
 #                 Exempt, per the same rule:
 #                   * root-level *.md          — README, CHANGELOG, GAPS, RELEASES, …
 #                   * **/src/*.md              — operator guides, written for a human in full
-#                   * vendored trees            — .agents/, code/docs/cloudinary/*_SDK*
+#                   * vendor/skill aliases      — .agents/, code/docs/cloudinary/*_SDK*
 #                   * generated                 — project-management/export/
 #                   * sandbox and session notes — learning/, research/, handoffs/,
 #                                                 questionnaires/
@@ -104,15 +104,15 @@ Measured in cloc CODE lines (`cloc --include-lang=Markdown`) — blank lines and
 do not count. This is a budget on content, not on formatting.
 
 In scope:
-  * every CONTEXT.md and CLAUDE.md, wherever it sits
+  * every CONTEXT.md, CLAUDE.md and AGENTS.md, wherever it sits
   * **/docs/**/*.md    (guides and their kebab-case sub-docs)
   * **/workflows/**/*.md   (STEPS.md, CHECKLIST.md, CONTEXT.md)
-  * .claude/**/*.md    (agents, skills, hooks, plugins)
+  * .claude/**/*.md, .ai/**/*.md, .codex/**/*.md (instructions and tool configuration)
 
 Exempt, per .claude/CLAUDE.md Section 8:
   * root-level *.md          README, CHANGELOG, GAPS, DEFERRED, RELEASES, REFERENCES, …
   * **/src/*.md              operator guides and PM artefacts — written for humans, in full
-  * vendored                 .agents/, code/docs/cloudinary/ SDK docs
+  * vendor/skill aliases     .agents/, code/docs/cloudinary/ SDK docs
   * generated                project-management/export/
   * sandbox / session        learning/, research/, handoffs/, questionnaires/
 
@@ -273,10 +273,47 @@ self_test() {
   gen 280 code/docs/NEW.md
   check 'a new file born in the warn band fires'            1
 
+  gen 20 code/docs/NEW.md
+  mkdir -p "$root/.ai" "$root/.codex"
+  gen 301 .ai/INSTRUCTIONS.md
+  check 'shared AI instructions obey the hard limit'       1
+  gen 20 .ai/INSTRUCTIONS.md
+  ln -s .ai/INSTRUCTIONS.md "$root/AGENTS.md"
+  check 'identical instruction aliases are all measured'   0
+  rm "$root/AGENTS.md"
+  gen 301 AGENTS.md
+  check 'root Codex instructions obey the hard limit'      1
+  gen 20 AGENTS.md
+  gen 301 .codex/INSTRUCTIONS.md
+  check 'Codex directory instructions obey the hard limit' 1
+
+  gen 20 .codex/INSTRUCTIONS.md
+  gen 280 .ai/INSTRUCTIONS.md
+  rm "$root/AGENTS.md"
+  ln -s INSTRUCTIONS.md "$root/.ai/ALIAS.md"
+  ln -s .ai/ALIAS.md "$root/AGENTS.md"
+  git -C "$root" add -A && git -C "$root" commit -qm 'instruction aliases'
+  check 'unchanged aliases in the warn band are clean'     0
+  gen 285 .ai/INSTRUCTIONS.md
+  check 'growth through historical aliases fires'          1
+  gen 280 .ai/INSTRUCTIONS.md
+  rm "$root/AGENTS.md"
+  ln -s AGENTS.md "$root/AGENTS.md"
+  git -C "$root" add -A && git -C "$root" commit -qm 'historical alias loop'
+  rm "$root/AGENTS.md"
+  gen 280 AGENTS.md
+  check 'a looping historical alias is unmeasured'         2
+  rm "$root/AGENTS.md"
+  ln -s ../outside.md "$root/AGENTS.md"
+  git -C "$root" add -A && git -C "$root" commit -qm 'historical external alias'
+  rm "$root/AGENTS.md"
+  gen 280 AGENTS.md
+  check 'an external historical alias is unmeasured'       2
+
   rm -rf "$root"
   log ""
   if [[ "$fail" -eq 0 ]]; then
-    bold "✓ self-test: $pass/$pass ratchet cases separated."; log ""; exit 0
+    bold "✓ self-test: $pass/$pass scope and ratchet cases separated."; log ""; exit 0
   fi
   bold "✗ self-test: $fail of $((pass + fail)) cases wrong — fix the detector, never the cases."
   log ""; exit 2
@@ -362,9 +399,9 @@ in_scope() {
 is_instructional() {
   local p="${1#./}" base="${1##*/}"
 
-  case "$base" in CONTEXT.md|CLAUDE.md) return 0 ;; esac
+  case "$base" in CONTEXT.md|CLAUDE.md|AGENTS.md) return 0 ;; esac
 
-  # Vendored: refreshed from upstream via the skills tool, never authored here
+  # First-party discovery aliases are measured at their physical .claude/skills owners.
   case "$p" in .agents/*|code/docs/cloudinary/*) return 1 ;; esac
   # Generated: PM export artefacts
   case "$p" in project-management/export/*) return 1 ;; esac
@@ -377,7 +414,7 @@ is_instructional() {
   # a template whose generated projects fill code/src/django/, so a guide filed at
   # code/src/django/apps/billing/docs/GUIDE.md is rule-bound. Exempting src/ first would blind
   # the gate to exactly the tree a real project grows into.
-  case "$p" in */docs/*|*/workflows/*|.claude/*) return 0 ;; esac
+  case "$p" in */docs/*|*/workflows/*|.claude/*|.ai/*|.codex/*) return 0 ;; esac
 
   # Everything else — every **/src/*.md operator guide and PM artefact among them — is written
   # for a human, in full, and carries no docs/ or workflows/ segment to claim it back.
@@ -422,7 +459,8 @@ if [[ -n "$COMMA_PATHS" ]]; then
 fi
 
 if [[ "$TOTAL" -gt 0 ]]; then
-  cloc --include-lang=Markdown --by-file --csv --quiet --list-file="$TMP_LIST" > "$TMP_CSV" 2>/dev/null \
+  # Every alias needs a result; cloc otherwise drops paths with identical contents.
+  cloc --skip-uniqueness --include-lang=Markdown --by-file --csv --quiet --list-file="$TMP_LIST" > "$TMP_CSV" 2>/dev/null \
     || die "cloc failed to read the file list"
 
   # cloc --by-file --csv emits: language,filename,blank,comment,code — and it does NOT quote
@@ -512,7 +550,12 @@ if [[ -n "$SINCE_REF" ]]; then
       # written to a bare mktemp path therefore measures zero, compares clean, and reports no
       # growth — this script's own founding defect reproduced one layer down. Rebuilding the
       # path under $BASE_DIR preserves the suffix, which is the whole reason it is a directory.
-      git show "${SINCE_REF}:${name}" > "$BASE_DIR/$name"
+      # Git resolves historical links within the tree, rejecting loops and external targets.
+      baseline_object=$(git cat-file --batch-check='%(objectname) %(objecttype)' --follow-symlinks \
+        <<< "${SINCE_REF}:${name}") || die "could not resolve '$name' at $SINCE_REF"
+      [[ "$baseline_object" =~ ^[[:xdigit:]]+[[:space:]]blob$ ]] || die \
+        "'$name' at $SINCE_REF does not resolve to an in-repository file; baseline is unmeasured"
+      git cat-file blob "${baseline_object% blob}" > "$BASE_DIR/$name"
       base=$(cloc --include-lang=Markdown --by-file --csv --quiet "$BASE_DIR/$name" 2>/dev/null \
         | awk -F',' '$1 != "language" && $1 != "SUM" && NF >= 5 && $NF ~ /^[0-9]+$/ { print $NF; exit }')
       [[ "$base" =~ ^[0-9]+$ ]] || die \

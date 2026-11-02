@@ -32,13 +32,22 @@ scenario against the running build.
 - Accessibility (WCAG 2.2 AA) and GDPR / security observations against the running build
 - A sign-off checklist that blocks the merge until complete
 
+## The three-record boundary
+
+**This folder answers one question: were the story's specified scenarios met?** Every `HP` / `ES` /
+`EC` / `PA` scenario from `../PLANNING/`, marked against the running build. Two records next to it
+look alike and answer different questions — `../../05-USER-FLOW/IMPLEMENTATION/` asks whether the
+**flow exists** as it was designed, and `../../18-TESTS/` asks whether **executing the tests**
+passed. Each owns its own rules; read them there rather than inferring them from here.
+
 ## Cross-references
 
 - `QA-IMPL-US000-TEMPLATE.md` — the per-story review template
 - `../PLANNING/` — the pre-development QA plans these reviews verify
 - `../CONTEXT.md` — the QA folder overview and the per-story PLANNING/IMPLEMENTATION split
 - `../../02-STORIES/` — the user stories under review
-- `../../18-TESTS/` · `../../19-REVIEWS/` — downstream test status and code-review notes
+- `../../18-TESTS/MANUAL/` · `../../18-TESTS/AUTOMATED/` · `../../19-REVIEWS/` — the walked manual
+  testing guide, the automated test record and code-review notes
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `project-management/workflows/22-implementation-documentation/` — where these reviews are written
 

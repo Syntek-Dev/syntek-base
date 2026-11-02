@@ -16,13 +16,15 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
 ## How to work here
 
 - **Routing:** never write here free-hand — start from the matching
-  `project-management/workflows/NN-…/` procedure (`STEPS.md` + `CHECKLIST.md`), which
-  names the folder, the naming pattern, and the governing `docs/` guide. Heavier
+  `project-management/workflows/NN-…/` procedure (`STEPS.md` + `CHECKLIST.md`), which names the
+  folder and the governing `docs/` guide. **It does not name the filename**, and a procedure that
+  does is stating a rule it does not own: each artefact folder's own `CLAUDE.md` carries the
+  pattern under `## Output & naming`, authoritative for that tree (`.claude/CLAUDE.md` Section 5). Heavier
   artefacts go through the matching skills (`story`, `sprint`, `planner`,
   `gdpr-mechanics`, `security`, `qa-tester`, `seo`).
-- **Model:** Fable for substantive artefacts (stories, decisions/ADRs, sprint & story
-  plans, GDPR / security / QA / SEO / API specs); Opus for mechanical touches — status
-  flips, version-header bumps, moving or renaming a file.
+- **Model:** Opus throughout — stories, decisions/ADRs, sprint & story plans and the GDPR /
+  security / QA / SEO / API specs are substantive judgement; status flips, version-header
+  bumps and moving or renaming a file are mechanical touches.
 - **Concrete steps:** read the workflow `STEPS.md` → copy the target folder's per-story
   template — the stage folder for 04–08, `PLANNING/` vs `IMPLEMENTATION/` for 09–13 — using its fixed
   naming pattern → cross-link the `US###` (and, for a story plan, its sprint plan and the
@@ -37,7 +39,9 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   `code/`; keep them consistent with `code/docs/SECURITY.md`.
 - **Respect the tiers** — `00-ASSETS` is pre-workflow reference; `02–14` specify; `15–17`
   decide (ADRs) then plan sprints then plan stories, all before code; `18–22` record
-  tests, reviews, findings, bugs, and refactoring after code. The **story plan (17) is the master
+  tests, reviews, findings, bugs, and refactoring after code — bar the manual testing guide in
+  `18-TESTS/MANUAL/`, authored at `17` before code and walked after it
+  (`18-TESTS/CLAUDE.md` → _The record lifecycle_). The **story plan (17) is the master
   the developer codes from**; it references its sprint plan (16) and the decisions (15).
   Do not invent a new top-level folder without a matching workflow — **with one shipped
   exception, `23-INCIDENTS`, and the reason generalises**: an incident is _unplanned_, so it has
@@ -57,6 +61,14 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   renumber if it ships a migration in the same commit that moves the developer's files
   (`.copier/migrations/`) — exercised at v2.0.0 and v7.0.0, and never because one merely could <!-- doc-references: template-only -->
   be written. Enforced by `code/src/scripts/audits/template-orphans.sh`.
+- **`*/archive/` is frozen.** In `01`, `02`, `03`, `16` and `17`, a `Closed` item is moved into
+  the folder's `archive/` by `00-ASSETS/scripts/pm-archive.sh` and never edited again —
+  `pm-board.sh --check` fails on any change there other than the archive rename and the
+  reference-path rewrites `pm-archive.sh` makes.
+- **Look a file up by ID across the folder and its `archive/`.** Any reader, script or
+  numbering step that globs only the live folder breaks the day an item is archived.
+- **`*-BOARD.md` is generated — never hand-edit it.** Run `pm-board.sh --write` after any status
+  edit; the status vocabulary is `.claude/skills/completion/SKILL.md`'s.
 - **Every new directory needs a `CONTEXT.md` and a `CLAUDE.md`.**
 - Instructional `.md` under `src/` (the `CONTEXT.md`/`CLAUDE.md` files) stay ≤ 300 code
   lines; the artefacts and templates themselves are exempt.
@@ -66,9 +78,28 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
 ## Output & naming
 
 - **Hand-written:** all artefacts under every numbered folder, from the per-story templates.
-- **Generated:** none here — client-facing PDFs and zips live one level up in
-  `project-management/export/` and are regenerated from these sources, never hand-edited.
+- **Generated:** the five `*-BOARD.md` (committed) and their `*-board.json` / `*-board.html`
+  siblings (gitignored), by `pm-board.sh --write`; client-facing PDFs and zips live one level up
+  in `project-management/export/`. All are regenerated from these sources, never hand-edited.
 - Numbered folders `NN-SCREAMING-SNAKE-CASE/`; artefacts follow their fixed patterns —
   `US###.md`, `SPRINT-##.md`, `ADR-###-<TITLE>.md`, `##-SPRINT-PLAN-##.md`,
-  `STORY-PLAN-US###-*.md`, `<TYPE>-PLAN-US###-*.md` / `<TYPE>-IMPL-US###-*.md`,
-  `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`; dates DD/MM/YYYY.
+  `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, `<TYPE>-PLAN-US###-*.md` /
+  `<TYPE>-IMPL-US###-*.md`, `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`; dates DD/MM/YYYY.
+- **Both plan folders prefix a filename with an execution order, and the two rules are
+  opposites.** `16-SPRINT-PLANS/` names a plan `<exec-order>-SPRINT-PLAN-<sprint-number>.md` —
+  **two** numbers, build sequence against sprint identity, and a mismatch between them is
+  deliberate information that must never be "corrected". `17-STORY-PLANS/` names a plan with
+  **one**: the prefix is the story's position in the settled build order across the **whole
+  backlog**, not its sprint and not a per-sprint counter, and it is **renumbered whenever build
+  order changes** — with nothing to disagree with, a drifted prefix says nothing, so there it is
+  a defect. `00-` is the template in both. Each folder's own `CLAUDE.md` owns its rule; do not
+  read either across into the other.
+
+<!-- RENAMED 08/09/2026. The _Output & naming_ pattern for a story plan gained its
+     `<exec-order>-` prefix, and the guardrail stating the contrast with the sprint-plan rule
+     was added beside it. The previous pattern read "STORY-PLAN-US###-*.md", unprefixed. This
+     list is authoritative for every artefact under `src/` that has no folder of its own; where
+     a folder does have one, that folder's `CLAUDE.md` wins (`.claude/CLAUDE.md` Section 5), and
+     both plan folders do. The contrast is stated here rather than left to the two folders
+     because this is the only list where the two patterns sit one line apart, which is exactly
+     where a reader would take them for the same rule. -->
