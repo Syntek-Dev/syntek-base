@@ -1015,6 +1015,15 @@ _migrations:
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v7.7.0-pm-boards.sh"
     when: "<% _stage == 'after' %>"
 
+  # 7.7.0 shipped one syntek-base ADR by accident: the `*TEMPLATE*` re-include matched a title
+  # containing TEMPLATES. Narrowing it stops new projects receiving the file, but Copier never
+  # touches an excluded path, so an existing project keeps it. This deletes it only when it is
+  # byte-identical to what 7.7.0 shipped (its one rendered token put back first), and otherwise
+  # leaves it with a warning. Always exits 0.
+  - version: v7.8.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v7.8.0-leaked-adr.sh"
+    when: "<% _stage == 'after' %>"
+
   # .copier/ is a staging directory, not project content. The _task that empties it and
   # removes it is gated to `copy`, so on an `update` the staged seeds land in the project
   # and simply sit there, looking like version files a developer might edit.
