@@ -1,8 +1,8 @@
 diff --git a/index.js b/index.js
-index 24e7db0cc55aa22d0f98358b73298067deb33b52..58a1c85124cab375f4791fcd13c8eb39cc6febbd 100644
+index 24e7db0cc55aa22d0f98358b73298067deb33b52..aeaba824323b1f74dbdf4117ba138964304d9b1b 100644
 --- a/index.js
 +++ b/index.js
-@@ -1,80 +1,165 @@
+@@ -1,80 +1,166 @@
  'use strict';
 +//
 +// PATCHED — syntek-base, 01/09/2026; extended 02/11/2026. Backport of the
@@ -23,7 +23,8 @@ index 24e7db0cc55aa22d0f98358b73298067deb33b52..58a1c85124cab375f4791fcd13c8eb39
 +//   distinct percent-encoded run, O(K*L). It is now one `input.replace()` pass, and
 +//   the BOM-pair and truncated-`%C2` handling moved into `decode()`, as in 0.5.1.
 +// Everything else is 0.2.2 unchanged, including the `+` to space replacement that
-+// 0.3.0 dropped, so the observable contract is identical.
++// 0.3.0 dropped, so output on well-formed input is identical to 0.2.2. Malformed
++// input decodes as 0.5.1 decodes it.
 +//
 +// Delete this patch the moment a CommonJS-consumable fixed release exists, or
 +// the moment expo-router stops depending on query-string@7.
