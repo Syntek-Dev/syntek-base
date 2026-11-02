@@ -42,6 +42,16 @@ _No entries yet._
 
 ## Project State
 
+### Never write the retired health-test name anywhere — 02/11/2026
+
+TruffleHog 3.96.0's Lob detector "verifies" any `test_` + 35 word characters as a Lob key, and
+the health suite's old test name was exactly that (renamed `test_status_equals_its_string`). The
+scan reads **file contents and commit messages, across every commit in a PR's range**, so quoting
+the old name in a changelog, a commit message or a PR body re-arms it, and a later fixing commit
+cannot clear the PR. Describe it ("a 41-character `test_` name") instead. If a branch commit
+already carries it, **squash-merge** so the literal never reaches `main`. A full-history scan
+(`workflow_dispatch`) still fails on `47e84cf`, by design.
+
 ### The Playwright pin's value comes from this machine's Nix config — 18/09/2026
 
 `audits/playwright-pin.sh` holds the eight in-repo declarations of the Playwright release in
