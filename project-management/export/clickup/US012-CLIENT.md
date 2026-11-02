@@ -2,7 +2,7 @@
 
 | Status | MoSCoW | Story Points |
 | --- | --- | --- |
-| Open | Must Have | 2 |
+| Pending | Must Have | 2 |
 
 ## Client Summary
 

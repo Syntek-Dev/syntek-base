@@ -2,7 +2,7 @@
 
 | Status | MoSCoW | Story Points |
 | --- | --- | --- |
-| Open | Should Have | 8 |
+| Blocked | Should Have | 8 |
 
 ## Client Summary
 
