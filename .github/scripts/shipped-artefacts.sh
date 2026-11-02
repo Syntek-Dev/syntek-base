@@ -102,11 +102,13 @@ NAMED_SHIPPED=(
 
 # Seeded by the copy-gated _task, so each is legitimately present in a generated project
 # despite not being template content under project-management/src/: the scale-planning map,
-# and the five PM boards (.github/scripts/shipped-boards.sh proves those seeds empty).
+# the five PM boards (.github/scripts/shipped-boards.sh proves those seeds empty), and the
+# blank CUT-PLAN.md the same _task moves from .copier/ since 7.7.0.
 SEEDED=(
   "01-FEATURE-MAPS/MAP-SCALE-PLANNING.md"
   "01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md"
   "02-STORIES/STORIES-BOARD.md"
+  "02-STORIES/CUT-PLAN.md"
   "03-SPRINTS/SPRINTS-BOARD.md"
   "16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md"
   "17-STORY-PLANS/STORY-PLANS-BOARD.md"
