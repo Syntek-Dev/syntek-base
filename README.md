@@ -3,7 +3,7 @@
 **A Django-monolith project template that ships with its own documentation system and a Claude
 Code skill suite.**
 
-[![Version](https://img.shields.io/badge/version-7.7.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-7.8.0-blue.svg)](CHANGELOG.md)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 [![Template: Copier](https://img.shields.io/badge/template-copier-blue.svg)](https://copier.readthedocs.io/)
 [![Status: active](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/Syntek-Dev/syntek-base)
@@ -90,7 +90,7 @@ specification skills. That split was retired on cost grounds; the `model:` front
 remains as the carrier, so reintroducing a tier is an edit to those declarations rather than a
 structural change.
 
-Sessions still run Opus at `effortLevel: xhigh` with ultracode on, so this template is designed
+Sessions still run Opus at `effortLevel: medium` with ultracode on, so this template is designed
 for **Claude Max 20× or above, or the Anthropic API**. On a smaller plan it will run, but expect
 to hit usage limits during a long implementation or review pass.
 
@@ -272,4 +272,4 @@ see [SECURITY.md](SECURITY.md).
 
 ---
 
-_Maintained by Syntek Studio · v7.7.0 · British English (en_GB) throughout_
+_Maintained by Syntek Studio · v7.8.0 · British English (en_GB) throughout_

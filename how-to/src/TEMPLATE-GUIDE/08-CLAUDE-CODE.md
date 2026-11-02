@@ -71,7 +71,7 @@ One tier only. `sonnet` and `haiku` are never used.
 | ------ | -------------------------------------------------------------------------------------------------------------------- |
 | `opus` | **Everything** — planning, specification and design as well as code, tests, migrations, review, PR, release and docs |
 
-Sessions run on Opus at `effortLevel: xhigh`. Every skill, workflow and docs-guide still declares
+Sessions run on Opus at `effortLevel: medium`. Every skill, workflow and docs-guide still declares
 `model:` in its frontmatter — the value is uniform, and the key stays because it is the carrier
 any future tier split would use.
 
@@ -224,7 +224,7 @@ One hook is a bare command rather than a script: `code-review-graph status` at `
 
 ## Ultracode and dynamic workflows
 
-`settings.json` also ships `ultracode: true`, `effortLevel: xhigh` and `enableWorkflows: true`, so
+`settings.json` also ships `ultracode: true`, `effortLevel: medium` and `enableWorkflows: true`, so
 substantial work is orchestrated with the **Workflow tool**. That supplies the fan-out, the
 adversarial verification and the synthesis — **not the procedure**. The steps, gates and order come
 from the numbered `**/workflows/NN-…/` folder that matches the task, and a phase invented where an

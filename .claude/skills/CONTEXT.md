@@ -49,7 +49,8 @@ tooling; plugin references were rewritten to internal paths.
 ├── data-analysis/          ← answer a question from the data — quality first, numbers, never the decision
 ├── pm-tool-sync/           ← the external PM-tool integration: mapping, credentials, CI sync
 ├── stack-django/           ← Django 6 + Django Ninja + PostgreSQL backend idioms (also server-rendered templates)
-│   └── SKILL.md
+│   ├── SKILL.md            ← the index: stack, commands, types, layout, testing
+│   └── CODING-STANDARDS.md ← service layer, Ninja, RLS and PII, search, off the request cycle
 ├── stack-htmx-templates/   ← Django templates + django-components + HTMX + Alpine + token CSS
 │   └── SKILL.md
 ├── stack-react-native/     ← MOBILE-ONLY — build the Expo/RN screens and own the store listing (task, forked)

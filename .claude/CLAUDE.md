@@ -233,7 +233,7 @@ never run dev operations. Registry: `.claude/plugins/CONTEXT.md`. The `<%ORG_SLU
 
 ## 4. Claude Models
 
-Every session runs on **Opus** with **ultracode** on (`effortLevel: xhigh`, dynamic workflows) — baked into `.claude/settings.json` (`model: opus`, `effortLevel: xhigh`, `ultracode: true`, `enableWorkflows: true`). Opus is the default main-loop model. Use the latest in each family — never hardcode version strings.
+Every session runs on **Opus** at `effortLevel: medium` with **ultracode** on (dynamic workflows) — baked into `.claude/settings.json` (`model: opus`, `effortLevel: medium`, `ultracode: true`, `enableWorkflows: true`). Opus is the default main-loop model. Use the latest in each family — never hardcode version strings.
 
 **This project runs a single tier.** Sub-agents, workflows and docs-guides all declare `model: opus` in their routing frontmatter (Section 2.5) — the value is uniform across every declaration, and the key stays because it is the carrier any future tier split would use. **Never use `fable`, `sonnet` or `haiku`.**
 
