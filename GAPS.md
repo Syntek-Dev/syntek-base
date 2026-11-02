@@ -39,9 +39,10 @@ git show e16b499:how-to/src/TEMPLATE-GUIDE/TEMPLATE-GAPS.md
 > **A feature map is committed but never ships.** Since 17/08/2026 the feature maps are tracked,
 > so they sync across devices; none of them reaches a generated project, because `copier.yml` <!-- doc-references: template-only -->
 > `_exclude` empties every artefact tree at generation, gated by
-> `.github/scripts/shipped-artefacts.sh`. The name is load-bearing: a map called <!-- doc-references: template-only -->
-> `MAP-TEMPLATE-*.md` matches the allowlist's `!*TEMPLATE*` negation, becomes tracked, and ships
-> into every generated project — which is the defect this file exists to prevent.
+> `.github/scripts/shipped-artefacts.sh`. The name is load-bearing: a map whose name ends <!-- doc-references: template-only -->
+> `-TEMPLATE.md` matches the allowlist's `!*-TEMPLATE.*` negation and ships into every generated
+> project — which is the defect this file exists to prevent. Until 7.8.0 the negation was a bare
+> `*TEMPLATE*`, which matched the word anywhere and shipped one ADR that way.
 
 The five batches were named as reusable **defect classes**, so a later map inherits the taxonomy
 rather than inventing a grouping: **A** token blast radius · **B** false green · **C**

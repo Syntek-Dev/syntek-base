@@ -31,8 +31,10 @@
 #                          1. copier.yml carries the recursive exclusion for each tree.
 #                          2. research/, handoffs/, learning/, questionnaires/ ship the
 #                             documentation pair and NOTHING else.
-#                          3. project-management/src/ ships only pairs, *TEMPLATE* files,
-#                             and the named shipped content below.
+#                          3. project-management/src/ ships only pairs, *-TEMPLATE.* files,
+#                             and the named shipped content below. The suffix, not a bare
+#                             *TEMPLATE*: an instance whose title holds the word is not a
+#                             template, and the bare form let one ADR ship until 7.8.0.
 #                          4. Every named shipped file is PRESENT — an allowlist fails by
 #                             not shipping a new template file, and this is the reveal.
 #                          5. No artefact-tree .gitignore leaked.
@@ -202,7 +204,7 @@ run_checks() {
       base="$(basename "$rel")"
       # The documentation pair every directory ships, and every per-story template.
       [[ "$base" == "CONTEXT.md" || "$base" == "CLAUDE.md" ]] && continue
-      case "$base" in *TEMPLATE*) continue ;; esac
+      case "$base" in *-TEMPLATE.*) continue ;; esac
       allowed=false
       for n in "${NAMED_SHIPPED[@]}" "${SEEDED[@]}"; do
         [[ "$rel" == "$n" ]] && { allowed=true; break; }
@@ -283,6 +285,12 @@ self_test() {
   printf '# A map of the template\n' > "$GEN/$SRC_TREE/01-FEATURE-MAPS/MAP-SOMETHING.md"
   probe "check 3 fires when a feature map leaks" "01-FEATURE-MAPS/MAP-SOMETHING.md leaked"
   rm -f "$GEN/$SRC_TREE/01-FEATURE-MAPS/MAP-SOMETHING.md"
+
+  # ── 3b. An instance whose title holds the word TEMPLATE leaks ───────────────
+  local named_leak="15-DECISIONS/ADR-US999-SHIPPED-TEMPLATES-STAY-HOME-01-01-2027.md"
+  printf '# An ADR that is not a template\n' > "$GEN/$SRC_TREE/$named_leak"
+  probe "check 3 fires when an instance named for templates leaks" "$named_leak leaked"
+  rm -f "$GEN/$SRC_TREE/$named_leak"
 
   # ── 4. A named template file is missing ─────────────────────────────────────
   mv "$GEN/$SRC_TREE/${NAMED_SHIPPED[0]}" "$tmpdir/held"

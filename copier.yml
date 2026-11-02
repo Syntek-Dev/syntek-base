@@ -161,7 +161,10 @@ _exclude:
   - "!/project-management/src/**/CLAUDE.md"
   # Every per-story template — the shape a real artefact is written from. Matches at any depth,
   # which covers the three-stage folders (04–08) and the PLANNING/IMPLEMENTATION pairs (09–13).
-  - "!/project-management/src/**/*TEMPLATE*"
+  # Anchored on the `-TEMPLATE.` suffix every template carries, never a bare `*TEMPLATE*`:
+  # that matched an ADR whose title happened to contain TEMPLATES, and shipped it into every
+  # generated project until 7.8.0 (shipped-artefacts.sh now probes the case).
+  - "!/project-management/src/**/*-TEMPLATE.*"
   # Named shipped content: real template files that carry no TEMPLATE in the name.
   - "!/project-management/src/00-ASSETS/scripts/*.sh"
   # The brand-guide and component-guide build sources (Python → LaTeX). The rendered PDFs are

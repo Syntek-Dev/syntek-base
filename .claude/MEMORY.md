@@ -32,7 +32,7 @@ _No entries yet._
   reversing the 16/08/2026 decline whose stated reason — that `15-DECISIONS/` ships into every
   generated project — was measured false. **The exclusion is the permission**: `copier.yml` <!-- doc-references: template-only -->
   excludes `/project-management/src/**` and re-includes only `**/CONTEXT.md`, `**/CLAUDE.md` and
-  `**/*TEMPLATE*`, so an ADR written here is tracked, syncs across devices, and was proved by
+  `**/*-TEMPLATE.*`, so an ADR written here is tracked, syncs across devices, and was proved by
   probe not to travel. Only this repo-specific permission stays here: the doctrine it rests on —
   an ADR needs a driving `US###`, and a map reaches one only through the slice that becomes a
   story — is in `project-management/src/15-DECISIONS/CLAUDE.md` and the wayfinder graduation
