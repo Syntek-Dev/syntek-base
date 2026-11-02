@@ -747,7 +747,7 @@ bash code/src/scripts/development/install-frontend.sh --check
 bash code/src/scripts/tests/all.sh --coverage
 
 # Status propagation → (clickup-only) regenerate the ClickUp export from the updated story
-[ -f project-management/src/00-ASSETS/scripts/export-clickup-stories.sh ] && bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US###
+if [ -f project-management/src/00-ASSETS/scripts/export-clickup-stories.sh ]; then bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US###; fi
 ```
 
 - [ ] All 8 quality gates pass locally **and** in Docker (no mismatch)

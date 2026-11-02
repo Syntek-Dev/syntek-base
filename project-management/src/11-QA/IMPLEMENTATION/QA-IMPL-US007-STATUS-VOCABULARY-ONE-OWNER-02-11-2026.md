@@ -6,7 +6,7 @@
 | **Date**     | 02/11/2026                                                                                                             |
 | **Sprint**   | SPRINT-01                                                                                                              |
 | **Reviewer** | Claude (a `22-implementation-documentation` subagent that made none of the edits), on Sam's behalf                     |
-| **Branch**   | `us007/status-vocabulary-one-owner`, base `777595f`, uncommitted at review                                             |
+| **Branch**   | `us007/status-vocabulary-one-owner`, base `a9378ec`: cut at `777595f`, rebased onto PR #19 before its first commit     |
 | **Plan doc** | `../PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md`                                                             |
 | **Outcome**  | Pass with deviations                                                                                                   |
 
@@ -50,56 +50,57 @@ what three of them protect.
 All evidence is manual: the story has no suite (`../../18-TESTS/AUTOMATED/US007-TEST-STATUS.md`).
 Each row ID refers to `../../18-TESTS/MANUAL/US007-MANUAL-TESTING.md`, walked 02/11/2026.
 `Deviation` means the scenario was walked in its re-cut form (Section 4). `N/A` means the re-cut
-superseded it and its guide row is retired.
+superseded it and its guide row is retired. Every row citing a `DOCREF` or `CAPTURE-02` guide row
+reflects that row's re-walk of 02/11/2026 at the `23-pr-and-review` final pass.
 
 ### Happy Path
 
-| ID    | Scenario (from plan)                                                  | Result    | Evidence                                                                                                                                             |
-| ----- | --------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| HP-01 | Pre-edit SHA recorded; gate finding sets captured by identity; hashes | Deviation | CAPTURE-01, CAPTURE-02, DOCREF-01 — Pass. Identity diff empty. The hashes and three of the four identity sets were dropped by Q4                     |
-| HP-02 | `skill-conformance.sh` baseline empty at capture                      | Pass      | CONFORM-01 — exit 0 before and after                                                                                                                 |
-| HP-03 | `docs-length.sh --limit 1` read the three files before the first edit | Deviation | GATES-07 — Pass on the tree-wide run. The per-file readings were dropped by Q4, and the re-cut edits none of the three files                         |
-| HP-04 | `docs-pairing.sh` 0 findings at capture                               | Pass      | GATES-01                                                                                                                                             |
-| HP-05 | `doctrine-drift.sh` 3 claims, one home each                           | Pass      | GATES-02                                                                                                                                             |
-| HP-06 | The story's routes are written                                        | N/A       | Superseded: the routes were measured as already true at `777595f` (ROUTE-01 to ROUTE-09 retired)                                                     |
-| HP-07 | The rewritten `completion/SKILL.md`                                   | N/A       | Superseded: the skill is not edited, because of Q2 (no writer table)                                                                                 |
-| HP-08 | `copier.yml` `INCLUDE_CLICKUP: false` exclusion list, re-resolved     | Pass      | TRACE-01, plus RECUT-01 and TEMPLATE-04 for RC-5                                                                                                     |
-| HP-09 | Seventeen source `**Status:**` fields re-counted                      | N/A       | Superseded (SOURCE-01 to SOURCE-03 retired)                                                                                                          |
-| HP-10 | Three `In progress` sites corrected                                   | Deviation | CASING-03 — Pass. Narrowed by RC-4 to the template's line. The skill site was already fixed at 7.7.0, and the map's text is left in place under RC-3 |
-| HP-11 | Named-site inventory with a role column                               | N/A       | Superseded (INVENTORY-01 retired)                                                                                                                    |
-| HP-12 | Build-start steps and checklist amended                               | N/A       | Superseded: measured as already true at `777595f` (START-01 retired)                                                                                 |
+| ID    | Scenario (from plan)                                                  | Result    | Evidence                                                                                                                                                                      |
+| ----- | --------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HP-01 | Pre-edit SHA recorded; gate finding sets captured by identity; hashes | Deviation | CAPTURE-01, CAPTURE-02 — Pass. DOCREF-01 — Fail: the identity diff gains one generated line (F-012, F-014). The hashes and three of the four identity sets were dropped by Q4 |
+| HP-02 | `skill-conformance.sh` baseline empty at capture                      | Pass      | CONFORM-01 — exit 0 before and after                                                                                                                                          |
+| HP-03 | `docs-length.sh --limit 1` read the three files before the first edit | Deviation | GATES-07 — Pass on the tree-wide run. The per-file readings were dropped by Q4, and the re-cut edits none of the three files                                                  |
+| HP-04 | `docs-pairing.sh` 0 findings at capture                               | Pass      | GATES-01                                                                                                                                                                      |
+| HP-05 | `doctrine-drift.sh` 3 claims, one home each                           | Pass      | GATES-02                                                                                                                                                                      |
+| HP-06 | The story's routes are written                                        | N/A       | Superseded: the routes were measured as already true at `777595f` (ROUTE-01 to ROUTE-09 retired)                                                                              |
+| HP-07 | The rewritten `completion/SKILL.md`                                   | N/A       | Superseded: the skill is not edited, because of Q2 (no writer table)                                                                                                          |
+| HP-08 | `copier.yml` `INCLUDE_CLICKUP: false` exclusion list, re-resolved     | Pass      | TRACE-01, plus RECUT-01 and TEMPLATE-04 for RC-5                                                                                                                              |
+| HP-09 | Seventeen source `**Status:**` fields re-counted                      | N/A       | Superseded (SOURCE-01 to SOURCE-03 retired)                                                                                                                                   |
+| HP-10 | Three `In progress` sites corrected                                   | Deviation | CASING-03 — Pass. Narrowed by RC-4 to the template's line. The skill site was already fixed at 7.7.0, and the map's text is left in place under RC-3                          |
+| HP-11 | Named-site inventory with a role column                               | N/A       | Superseded (INVENTORY-01 retired)                                                                                                                                             |
+| HP-12 | Build-start steps and checklist amended                               | N/A       | Superseded: measured as already true at `777595f` (START-01 retired)                                                                                                          |
 
 ### Error States
 
-| ID    | Scenario (from plan)                          | Result | Evidence                                                                    |
-| ----- | --------------------------------------------- | ------ | --------------------------------------------------------------------------- |
-| ES-01 | An edit made with no baseline captured        | Pass   | CAPTURE-01: the baseline exists and reproduces at `777595f`                 |
-| ES-02 | A `>` line in a file the story edits          | Pass   | DOCREF-02: none occurred                                                    |
-| ES-03 | A `>` line in a file the story does not edit  | Pass   | DOCREF-03: none occurred                                                    |
-| ES-04 | Detector blob differs at close                | N/A    | Superseded: no hashes, because of Q4 (DETECTOR-01 and -02 retired)          |
-| ES-05 | `skill-conformance.sh` red on another skill   | N/A    | Superseded: Q4 dropped attribution (CONFORM-02 retired). Exit 0 in any case |
-| ES-06 | `[house 14]` on `completion/SKILL.md`         | N/A    | Superseded: the skill is not edited (CONFORM-03 and -04 retired)            |
-| ES-07 | `STORIES.md` or `SPRINTS.md` crosses 270      | N/A    | Superseded: neither file is edited (GATES-04 retired)                       |
-| ES-08 | `doctrine-drift.sh` two homes at close        | N/A    | Superseded: Q4 (GATES-03 retired). One home each in any case (GATES-02)     |
-| ES-09 | A repointed route's target heading mistyped   | N/A    | Superseded: no route is repointed                                           |
-| ES-10 | The closing `git grep` non-zero               | N/A    | Superseded (CASING-01 and -02 retired)                                      |
-| ES-11 | A `[plan prefix]` finding from an edited file | Pass   | DOCREF-07: none                                                             |
+| ID    | Scenario (from plan)                          | Result | Evidence                                                                                                                        |
+| ----- | --------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| ES-01 | An edit made with no baseline captured        | Pass   | CAPTURE-01: the baseline exists and reproduces at `777595f`                                                                     |
+| ES-02 | A `>` line in a file the story edits          | Fail   | DOCREF-02: one, in the generated block of the story's own automated record; neither fixable by hand nor markable (F-012, F-014) |
+| ES-03 | A `>` line in a file the story does not edit  | Pass   | DOCREF-03: none occurred                                                                                                        |
+| ES-04 | Detector blob differs at close                | N/A    | Superseded: no hashes, because of Q4 (DETECTOR-01 and -02 retired)                                                              |
+| ES-05 | `skill-conformance.sh` red on another skill   | N/A    | Superseded: Q4 dropped attribution (CONFORM-02 retired). Exit 0 in any case                                                     |
+| ES-06 | `[house 14]` on `completion/SKILL.md`         | N/A    | Superseded: the skill is not edited (CONFORM-03 and -04 retired)                                                                |
+| ES-07 | `STORIES.md` or `SPRINTS.md` crosses 270      | N/A    | Superseded: neither file is edited (GATES-04 retired)                                                                           |
+| ES-08 | `doctrine-drift.sh` two homes at close        | N/A    | Superseded: Q4 (GATES-03 retired). One home each in any case (GATES-02)                                                         |
+| ES-09 | A repointed route's target heading mistyped   | N/A    | Superseded: no route is repointed                                                                                               |
+| ES-10 | The closing `git grep` non-zero               | N/A    | Superseded (CASING-01 and -02 retired)                                                                                          |
+| ES-11 | A `[plan prefix]` finding from an edited file | Pass   | DOCREF-07: none                                                                                                                 |
 
 ### Edge Cases
 
-| ID    | Scenario (from plan)                                                | Result | Evidence                                                                            |
-| ----- | ------------------------------------------------------------------- | ------ | ----------------------------------------------------------------------------------- |
-| EC-01 | The pre-edit tree is dirty with another session's files             | Pass   | CAPTURE-02: the tree was clean (porcelain 0), so the stash branch was not needed    |
-| EC-02 | Another story lands between capture and close                       | Pass   | DOCREF-04: HEAD is unchanged at `777595f`                                           |
-| EC-03 | A `(file, kind, token)` changes multiplicity                        | Pass   | DOCREF-05: the counts are identical                                                 |
-| EC-04 | An edit above a pre-existing finding shifts its line                | Pass   | DOCREF-06                                                                           |
-| EC-05 | The conformance baseline is empty and the close is red on the skill | N/A    | Superseded: the skill is not edited                                                 |
-| EC-06 | Step 3 of `23` writes `In Review` into the story header             | N/A    | Superseded. RC-1's checklist box now records it through `completion` (CHECKLIST-01) |
-| EC-07 | An artefact is created between today and the first edit             | N/A    | Superseded (SOURCE rows retired)                                                    |
-| EC-08 | `STORIES.md` and `SPRINTS.md` read different counts                 | N/A    | Superseded: neither file is edited                                                  |
-| EC-09 | `docs-length.sh --limit 1` always non-zero                          | N/A    | Superseded: Q4 dropped the per-file readings                                        |
-| EC-10 | Pre-existing findings inside `../../02-STORIES/US007.md`            | Pass   | DOCREF-08: four stand unchanged                                                     |
-| EC-11 | The `template-only` marker used to clear a `>` line                 | Pass   | DOCREF-09: no marker added                                                          |
+| ID    | Scenario (from plan)                                                | Result | Evidence                                                                                                |
+| ----- | ------------------------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------- |
+| EC-01 | The pre-edit tree is dirty with another session's files             | Pass   | CAPTURE-02: the tree was clean (porcelain 0), so the stash branch was not needed                        |
+| EC-02 | Another story lands between capture and close                       | Pass   | DOCREF-04: PR #19 (`a9378ec`, no story) landed, and the branch was rebased onto it; it moved no finding |
+| EC-03 | A `(file, kind, token)` changes multiplicity                        | Pass   | DOCREF-05: the counts are identical                                                                     |
+| EC-04 | An edit above a pre-existing finding shifts its line                | Pass   | DOCREF-06                                                                                               |
+| EC-05 | The conformance baseline is empty and the close is red on the skill | N/A    | Superseded: the skill is not edited                                                                     |
+| EC-06 | Step 3 of `23` writes `In Review` into the story header             | N/A    | Superseded. RC-1's checklist box now records it through `completion` (CHECKLIST-01)                     |
+| EC-07 | An artefact is created between today and the first edit             | N/A    | Superseded (SOURCE rows retired)                                                                        |
+| EC-08 | `STORIES.md` and `SPRINTS.md` read different counts                 | N/A    | Superseded: neither file is edited                                                                      |
+| EC-09 | `docs-length.sh --limit 1` always non-zero                          | N/A    | Superseded: Q4 dropped the per-file readings                                                            |
+| EC-10 | Pre-existing findings inside `../../02-STORIES/US007.md`            | Pass   | DOCREF-08: four stand unchanged                                                                         |
+| EC-11 | The `template-only` marker used to clear a `>` line                 | Pass   | DOCREF-09: no marker added                                                                              |
 
 ### Permission and Access
 
@@ -109,21 +110,23 @@ ownable identifier (plan Section 2). The travel rule is walked from the reader's
 
 ## 4. Deviations from plan
 
-| Deviation                                                                                                                          | Justification                                                                                                                                                                                                        |
-| ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The scenario set was cut to RC-1 to RC-6; 17 plan scenarios are N/A and 3 were walked as Deviation; the plan itself was not re-cut | The 7.7.0 PM-boards change landed most of the story's subject first. The grilling pass of 02/11/2026 (Q1 to Q5, Sam) re-cut the criteria and named only the story plan and manual guide for amendment. Finding F-011 |
-| Gate capture is proportionate (Q4): the detector hashes and three of the four identity sets were dropped                           | Same pass, Q4. ADR-US003's identity diff is kept for `doc-references.sh`. The other four gates are compared by exit and output                                                                                       |
-| The baseline lives in `/tmp/us007-baseline/`, not pasted into the guide                                                            | Q4. The baseline is reproducible from `777595f`, as this walk showed byte-for-byte, but it is not durable. Finding F-009                                                                                             |
-| Manual row MAP-01 amended at the walk                                                                                              | RC-3, as corrected after review, names two edits to the map (the pointer and the end note). The row said "the one edit". Finding F-001                                                                               |
+| Deviation                                                                                                                                                                                          | Justification                                                                                                                                                                                                        |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The scenario set was cut to RC-1 to RC-6; 17 plan scenarios are N/A, 3 were walked as Deviation and 1 failed (ES-02, below); the plan itself was not re-cut                                        | The 7.7.0 PM-boards change landed most of the story's subject first. The grilling pass of 02/11/2026 (Q1 to Q5, Sam) re-cut the criteria and named only the story plan and manual guide for amendment. Finding F-011 |
+| Gate capture is proportionate (Q4): the detector hashes and three of the four identity sets were dropped                                                                                           | Same pass, Q4. ADR-US003's identity diff is kept for `doc-references.sh`. The other four gates are compared by exit and output                                                                                       |
+| The baseline lives in `/tmp/us007-baseline/`, not pasted into the guide                                                                                                                            | Q4. The baseline is reproducible from `777595f`, as this walk showed byte-for-byte, but it is not durable. Finding F-009                                                                                             |
+| Manual row MAP-01 amended at the walk                                                                                                                                                              | RC-3, as corrected after review, names two edits to the map (the pointer and the end note). The row said "the one edit". Finding F-001                                                                               |
+| RC-6 not met in full: the `doc-references.sh` identity diff gains one line, `project-management/src/18-TESTS/AUTOMATED/US007-TEST-STATUS.md [instance citation] US007` (DOCREF-01, DOCREF-02 Fail) | The line is in `test-record.sh`'s generated block, which no hand edit may clear; the story's own edits add no finding. Accepted until the filed bug is fixed and the record regenerated. Findings F-012, F-014       |
+| RC-2 widened at the `23-pr-and-review` final pass to cover `SPRINT-00-TEMPLATE.md`'s two Definition of Done lines (new guide row TEMPLATE-06)                                                      | The re-cut had dropped the two lines original Scenario 7 targeted. Both were fixed and walked. Finding F-019                                                                                                         |
 
 ## 5. New edge cases discovered
 
-| ID                                                                      | Scenario                                                                                                       | Result | Evidence                        | Fold back?                        |
-| ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------- | --------------------------------- |
-| GATES-09                                                                | `lint.sh --file-type markdown` lints a gitignored local file (`graphify-out/`), so its exit is not the story's | Fail   | Manual row GATES-09; F-002      | Yes: the row, or the lint ignores |
-| GATES-10                                                                | `format.sh --file-type markdown` dry run                                                                       | Pass   | Manual row GATES-10             | No                                |
-| RECUT-02                                                                | `pm-board.sh --check` passes (RC-6)                                                                            | Pass   | Manual row RECUT-02             | No                                |
-| CHECKLIST-01 to -03, TEMPLATE-02, TEMPLATE-04, MAP-01, MAP-02, RECUT-01 | The RC-1, RC-2, RC-3 and RC-5 read-acrosses, which have no QA-plan ID                                          | Pass   | The manual rows of the same IDs | No: the re-cut owns them          |
+| ID                                                                                   | Scenario                                                                                                       | Result | Evidence                        | Fold back?                        |
+| ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- | ------ | ------------------------------- | --------------------------------- |
+| GATES-09                                                                             | `lint.sh --file-type markdown` lints a gitignored local file (`graphify-out/`), so its exit is not the story's | Fail   | Manual row GATES-09; F-002      | Yes: the row, or the lint ignores |
+| GATES-10                                                                             | `format.sh --file-type markdown` dry run                                                                       | Pass   | Manual row GATES-10             | No                                |
+| RECUT-02                                                                             | `pm-board.sh --check` passes (RC-6)                                                                            | Pass   | Manual row RECUT-02             | No                                |
+| CHECKLIST-01 to -03, TEMPLATE-02, TEMPLATE-04, TEMPLATE-06, MAP-01, MAP-02, RECUT-01 | The RC-1, RC-2, RC-3 and RC-5 read-acrosses, which have no QA-plan ID                                          | Pass   | The manual rows of the same IDs | No: the re-cut owns them          |
 
 ## 6. Deferred scenarios
 
@@ -155,7 +158,8 @@ for each.
 - [x] GDPR & security observations confirmed (or N/A recorded)
 - [x] Coverage floors met for all modules in scope (no module in scope)
 - [x] Manual testing sign-off (see `../../18-TESTS/MANUAL/US007-MANUAL-TESTING.md`). Outcome
-      Failed on GATES-09 alone, which does not block the story
+      Failed: 27 Pass, 3 Fail — GATES-09 (F-002), DOCREF-01 and DOCREF-02 (F-012, F-014). None
+      blocks the story by its finding's disposition; Sam to confirm at `23-pr-and-review`
 - [ ] Reviewer approval — **blocks merge until complete**. Pending Sam, verified at `23-pr-and-review`
 
 ---
