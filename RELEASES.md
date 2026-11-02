@@ -1,6 +1,6 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: 31/10/2026 **Version**: 7.7.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 02/11/2026 **Version**: 7.8.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
@@ -8,6 +8,75 @@ User-facing release notes for each published version.
 ---
 
 ## Unreleased
+
+## v7.8.0 — 02/11/2026
+
+**Status:** Minor — saving a planning change now takes one step instead of two, three planning
+rules finished just after 7.7.0 arrive, every known security warning against the project's
+building blocks is dealt with again, and the automatic check for leaked passwords can pass again.
+Updating also puts right two things 7.7.0 delivered wrongly. A long stretch of planning work is
+finished too, so building can start.
+
+### Saving a planning change takes one step
+
+Since 7.7.0, changing a story's status also changes the board that lists it, and saving the change
+stopped once to ask you to include the updated board. You can now include both in the same step,
+so the save goes through first time. The stop is still there as a safety net if you forget.
+
+### Three planning rules that arrived just after 7.7.0
+
+The 7.7.0 notes described these, but they were finished just after 7.7.0 was cut, so this is the
+first version that contains them. The 7.7.0 notes are corrected.
+
+- A gap or deferred item now leaves the gaps and deferred lists as soon as a feature map or a
+  story takes it on, so it is tracked in one place rather than two; only items nothing has picked
+  up are closed off there after the work ships.
+- Loose ends on a feature map are now numbered and must each go somewhere: become a decision,
+  be ruled out, travel with the story that will deal with them, or be logged as a known gap
+  waiting for a named event. A map is only marked complete once none are left, and the board
+  check warns when one is.
+- Updating a project writes a blank cut plan — the page recording which feature-map slice
+  becomes which story — if it does not have one. This includes a project already updated to
+  7.7.0, which got its boards but no cut plan. An existing cut plan is never touched.
+
+### A decision record that was never yours
+
+7.7.0 copied one of the template's own decision records into every new or updated project by
+mistake, in `project-management/src/15-DECISIONS/`. New projects no longer get it, and updating
+removes it if it is exactly as it arrived. If you have edited it, the update leaves it alone and
+prints a warning: delete it yourself unless your project has adopted that decision as its own.
+Either way, include the change in the same commit as the update.
+
+### Security warnings cleared
+
+Fifty-seven security warnings had been published since the last clean-up against packages this
+project is built on. All of them are dealt with. Most were fixed by moving to a corrected version.
+One, in a package the mobile app uses to read links, has no corrected version the app can use, so
+the fix itself was applied to the version in use — the same approach 7.5.0 took with a similar
+flaw in the same package. The few with no fix anyone can install yet are written down with why
+they cannot be reached and when to look again. Projects without a mobile app are not affected by
+the mobile fix. Seventeen of the warnings were in the template's own Python lock file, which never
+reaches your project; a new project resolves its own, already on the fixed versions.
+
+### The leaked-password check works again
+
+The automatic check that looks for passwords and keys accidentally saved into the project had
+mistaken the name of one test for a real key. Because it re-read the whole history every time, it
+could never pass again. The test is renamed, and the check now reads only what each change adds.
+A deliberate full re-check of the whole history still trips over the old name, and is expected
+to. Two other automatic checks that had started failing after 7.7.0 are fixed as well.
+
+### Also in this release
+
+- The guides now give the AI effort setting the project actually uses, medium, which it has used
+  since 7.7.0.
+
+### Planning finished for the next stretch of work
+
+The template's own plans — which never reach your project — now take fourteen pieces of work all
+the way to how each will be built and checked. The newest gives every log line a consistent shape
+and a reference number that ties together everything one request did. Further planning now pauses
+until those fourteen are built, so the plans do not go stale while they wait.
 
 ## v7.7.0 — 31/10/2026
 
@@ -46,8 +115,8 @@ every tool.
 New projects are asked how many weeks a customer has to review a story (two by default) and how
 long the period after acceptance runs before further changes become chargeable (four by default).
 Press Enter to accept both, or update with `--defaults` to take them without being asked. Updating
-an existing project also writes its boards and, if it has none, a blank cut plan, and renames the
-few statuses whose new spelling is obvious; anything else is listed for you to correct.
+an existing project also writes its boards and renames the few statuses whose new spelling is
+obvious; anything else is listed for you to correct.
 
 ### Also in this release
 
@@ -56,15 +125,46 @@ few statuses whose new spelling is obvious; anything else is listed for you to c
   folders. Existing projects have their records moved across automatically on update.
 - New projects start with an empty cut plan — the page recording which feature-map slice
   becomes which story — ready for the first map to be cut into stories.
-- A gap or deferred item now leaves the gaps and deferred lists as soon as a feature map or a
-  story takes it on, so it is tracked in one place rather than two; only items nothing has picked
-  up are closed off there after the work ships.
-- Loose ends on a feature map are now numbered and must each go somewhere: become a decision,
-  be ruled out, travel with the story that will deal with them, or be logged as a known gap
-  waiting for a named event. A map is only marked complete once none are left, and the board
-  check warns when one is.
 - A web-search assistant is available to the AI tools for quick, cited answers, with a clear rule
   that anything written down permanently must cite the original source.
+
+### Recorded on 02/11/2026
+
+These shipped in 7.7.0 but were missing from its notes when it was published. Three things the
+notes first listed here — gaps and deferred items leaving their lists once claimed, numbered loose
+ends on feature maps, and updates writing a missing cut plan — were in fact finished just after
+7.7.0 was cut, so they are described under 7.8.0 instead.
+
+- **A reader for original sources.** Alongside the web-search assistant, the AI tools get a page
+  reader that brings back a page's own text rather than a summary of it, so a claim can be checked
+  against what the source actually says. Its browser-based modes work only where the computer
+  provides the exact browser version they expect; elsewhere they report themselves unavailable.
+  A new check keeps the two AI tools' lists of these services in agreement.
+- **One browser version, held in place.** The project now pins the exact version of the
+  browser-automation tool its tests and checks use, and a new check keeps every place that names
+  that version in agreement, because a mismatch fails with a confusing missing-browser error.
+- **Every known security warning cleared.** All 85 published security warnings against the
+  packages this project builds on were dealt with. The few that cannot be fixed yet are written
+  down with when to look again, and the automatic security checks now read every group of
+  packages and can no longer pass by mistake when one of their steps fails.
+- **Every automated build step is pinned.** Each third-party step the project's automated checks
+  use is now fixed to one exact version rather than a label that can be moved, and the check run
+  before an update understands the new form, so it does not report them as a problem.
+- **AI sessions can message each other.** AI sessions open on the same machine can now send each
+  other messages. A message from another session never counts as your approval. A project that
+  prefers the old behaviour can turn it off again in its own settings.
+- **The assistant reads what is already decided before asking you.** When it interviews you about
+  a piece of work, it first looks up the answers already written down in the plans and asks only
+  what is left.
+- **The AI effort setting is lowered.** Claude sessions now run at medium effort rather than the
+  highest setting. The guides that still named the highest setting are corrected in 7.8.0.
+- **Smaller fixes.** Updating a single package now also moves one that is pulled in indirectly,
+  and says what actually changed. The set-up script's clean-reinstall option no longer tries to
+  delete unrelated files with administrator rights. The formatting check no longer fails on the
+  mobile app's build output, and the check that runs when you commit looks only at the documents
+  you are committing.
+- **A decision record that was never yours.** 7.7.0 also copied one of the template's own decision
+  records into every project by mistake. 7.8.0 stops that and removes it when you update.
 
 ## v7.6.0 — 14/09/2026
 
@@ -176,6 +276,20 @@ insisting would immediately fail every shared helper and every test written befo
 existed. The trade-off is worth knowing, and it is written on the record itself: a test that names
 no story simply does not appear, so a suspiciously short list is a reason to run that check before
 believing it.
+
+### Recorded on 02/11/2026
+
+These shipped in 7.6.0 but were missing from its notes when it was published:
+
+- **An optional content-management system.** New projects are asked whether people who are not
+  developers will publish pages through an editing screen; the answer defaults to no. Answer yes
+  and the project gets guides for adding Wagtail, a content-management system, plus notes at each
+  step of the build process that it changes. Nothing is installed for you, and the guides set out
+  what it costs first: a second admin login, a second set of permissions, and forms whose answers
+  are personal data.
+- **Story plans are named in build order.** Each story plan's file name now starts with its place
+  in the order the work will be built, so the folder lists them in the order you will build them.
+  The blank template is renamed to match, `00-STORY-PLAN-US000-TEMPLATE.md`.
 
 ---
 
