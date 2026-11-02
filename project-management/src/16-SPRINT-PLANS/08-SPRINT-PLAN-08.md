@@ -57,8 +57,9 @@
 > are the argued record of each story and are not re-opened here.
 >
 > **This sprint has one hard upstream edge that no member owns.** US014 rewrites all five settings
-> modules and must merge after US008, which sits in the closed `SPRINT-05` and still reads `Open`.
-> See _Build order_ below; the edge is a Definition of Done row, never a cleared dependency.
+> modules and must merge after US008, which sits in the closed
+> `project-management/src/03-SPRINTS/SPRINT-05.md` and still reads `Open`. See _Build order_
+> below; the edge is a Definition of Done row, never a cleared dependency.
 
 ## Sprint Reference Documents
 
