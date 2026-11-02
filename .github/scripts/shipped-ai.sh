@@ -16,7 +16,8 @@ skills stay excluded, and project memory is seeded empty and preserved on update
   --python PATH  Use an existing Python environment containing Copier (no uv needed).
   --self-test    Also prove the detector rejects broken alias configurations.
 
-By default, uvx reuses a cached Copier environment with network access disabled.
+By default, uvx reuses a cached Copier environment on Python 3.11+ with network
+access disabled.
 EOF
   exit 0
 fi
@@ -28,4 +29,7 @@ if [[ "${1:-}" == "--python" ]]; then
   exec "$copier_python" "$SCRIPT_DIR/shipped-ai.py" "$@"
 fi
 
-exec uvx --offline --from copier python "$SCRIPT_DIR/shipped-ai.py" "$@"
+# shipped-ai.py imports tomllib, which is Python 3.11+. Without the floor uvx reuses
+# whatever Copier environment it cached first, and a host whose cache was built on
+# 3.10 failed with ModuleNotFoundError rather than a finding (02/11/2026).
+exec uvx --offline --python '>=3.11' --from copier python "$SCRIPT_DIR/shipped-ai.py" "$@"

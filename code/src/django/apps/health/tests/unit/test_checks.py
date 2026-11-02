@@ -74,7 +74,7 @@ class TestPublishedVocabulary:
         assert HealthStatus.DEGRADED.value == "degraded"
         assert HealthStatus.DOWN.value == "down"
 
-    def test_status_compares_equal_to_its_string(self) -> None:
+    def test_status_equals_its_string(self) -> None:
         """StrEnum, so a serialised memo round-trips without a bespoke decoder."""
         assert HealthStatus.OPERATIONAL == "operational"
 
