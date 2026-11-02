@@ -252,7 +252,7 @@ all three build rows name the same pass — entered at `18`, closed at `20`, nev
 | Rust (rust-only)       | 1.92+   | https://doc.rust-lang.org/stable/book/                  |
 | PyO3 (rust-only)       | 0.29    | https://pyo3.rs/                                        |
 | maturin (rust-only)    | 1.x     | https://www.maturin.rs/                                 |
-| Slint (desktop-only)   | 1.17    | https://slint.dev/docs                                  |
+| Slint (desktop-only)   | 1.18    | https://slint.dev/docs                                  |
 | Django Ninja           | 1.x     | https://django-ninja.dev/                               |
 | FastMCP                | 3.x     | https://gofastmcp.com/                                  |
 | Model Context Protocol | latest  | https://modelcontextprotocol.io/                        |
