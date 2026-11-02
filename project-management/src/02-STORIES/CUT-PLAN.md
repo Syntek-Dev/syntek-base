@@ -380,7 +380,7 @@ N-026 overturned on 31/08/2026. Carried to S-01's story: the fog trigger at `10-
 
 ## MAP-RETRY-AND-IDEMPOTENCY
 
-Fully charted, cutting (MAP-RETRY-AND-IDEMPOTENCY.md:5-6). S-09 was split from S-02 at US005's cut
+`Complete`, cutting (MAP-RETRY-AND-IDEMPOTENCY.md:5-6). S-09 was split from S-02 at US005's cut
 (:388-390). No slice carries a stated MoSCoW. Map fixes at the first cut: a blank line at :372
 cuts the S-07 to S-09 rows off the table header; :430 "cuts the six slice rows", where there are
 nine; :40 "Cross-map: None", though MAP-CAP-POSTURE names this map (MAP-CAP-POSTURE.md:60); and :38
@@ -402,7 +402,7 @@ nine; :40 "Cross-map: None", though MAP-CAP-POSTURE names this map (MAP-CAP-POST
 
 ## MAP-ABSENCE
 
-Fully charted (MAP-ABSENCE.md:4-7); "S-01 ships first, because every per-surface clause cites the
+`Complete` (MAP-ABSENCE.md:4-7); "S-01 ships first, because every per-surface clause cites the
 guide it lands beside" (:746) — that is US003, `Should`, SPRINT-02. All thirteen flags read `N/A`
 by construction (:619-621). Owed at each cut from S-02 to S-04: the crib back-link US003 settled
 (US003.md:130-134). S-04's Rust and desktop legs (the `clippy.toml` line and the two
@@ -530,7 +530,7 @@ states none (:112-113). N-007 cites this section by line (see **Owed**).
 
 ## MAP-NATIVE-MOBILE-SURFACE — blocked (P5, first)
 
-Charting (MAP-NATIVE-MOBILE-SURFACE.md:4-6). **The blocking count disagrees with itself:** 9 in
+`Resolving`, chart drawn and no node resolved (MAP-NATIVE-MOBILE-SURFACE.md:4-6). **The blocking count disagrees with itself:** 9 in
 the header and gate (:6, :246), 11 `yes` in the frontier, 13 nodes marked `⛔` in the slice table.
 Settle it at the map's next sitting. S-03 before S-04, deliberately (:133-135). S-01 also carries
 N-005, `○` in its row but `yes` in the frontier (:122, :147). Edges since charting: N-004 takes the
@@ -591,7 +591,7 @@ deletes (:153, :156-157; MAP-NATIVE-MOBILE-SURFACE.md:122), and neither map reco
 
 ## MAP-BUN-TOPOLOGY — blocked (P5, second)
 
-Charting complete, frontier unresolved; 29 open, 21 blocking (MAP-BUN-TOPOLOGY.md:4-6). The
+`Resolving`; 29 open, 21 blocking (MAP-BUN-TOPOLOGY.md:4-6). The
 runtime tracers have no Bun to run on (MAP-BUN-TOPOLOGY's N-006 to N-013 provisioning note, from
 `GAPS.md` 11/09/2026); Bun 1.4.2 is now installed on the development host, which meets that note's
 first precondition, and it stays unretired. **S-01 is the
@@ -747,7 +747,7 @@ feed N-031 on MAP-FRAMEWORK-NEUTRAL-FOUNDATION (:53), an edge that map does not 
 
 ## MAP-FRAMEWORK-NEUTRAL-FOUNDATION — blocked
 
-Charting: 32 open, 20 blocking, 9 slices, nothing resolved (MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md:4-6,
+`Resolving`, no RESOLVE sitting yet: 32 open, 20 blocking, 9 slices, nothing resolved (MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md:4-6,
 :125-132). "Slice order is an index, not a promised implementation sequence" (:198), so the Order
 column below is the slice index. A slice is cuttable only once every node it carries has resolved
 (:140). The suggested first RESOLVE batch is N-003, N-004 and N-007 (:77-80). It states no SP or

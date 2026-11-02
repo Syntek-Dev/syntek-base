@@ -429,7 +429,7 @@ Four further constraints are carried by other instruments and are **not** `ST` c
       table row, `project-management/src/21-BUGS/BUG-US000-TEMPLATE.md:17`) — recorded as its own
       ADR under US010 (settled 21/09/2026, grilling round 1 Q5). US010's Index Tasks omit the last
       two carriers today and gain them (A08, TM-11)
-- [ ] **7.10** The map `Status` header takes the settled form, with `Not started` the fifth value
+- [ ] **7.10** **Superseded 31/10/2026 by 7.7.0** (map vocabulary owned by `.claude/skills/completion/SKILL.md`; re-cut at the build's first step). Was: the map `Status` header takes the settled form, with `Not started` the fifth value
       and `project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md:4` carrying that value and the
       format instruction; every value derived by measurement (settled 21/09/2026, grilling round 2
       Q11 and grilling round 1 Q4), never asserted, against each value's test from the map's own

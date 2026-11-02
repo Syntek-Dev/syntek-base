@@ -523,7 +523,8 @@ template line is re-pointed in the same change.
 **One commit, holding every map edit and the map index that mirrors them** (settled 03/10/2026,
 17-story-plans grilling round 1 Q1). In it:
 
-1. **`../01-FEATURE-MAPS/MAP-000-TEMPLATE.md:4`** gains the fifth value, a one-line statement of
+1. **Superseded 31/10/2026 by 7.7.0** (map vocabulary owned by `.claude/skills/completion/SKILL.md`;
+   re-cut at the build's first step). Was: **`../01-FEATURE-MAPS/MAP-000-TEMPLATE.md:4`** gains the fifth value, a one-line statement of
    the `<enum> · <prose>` format with the value plain, and each value's test from the map's own
    counts, `Blockers clear` winning the one overlap (settled 27/09/2026, grilling round 3 Q18 and
    round 6 Q31). `:8` and its checklist line `:159` name the map index.

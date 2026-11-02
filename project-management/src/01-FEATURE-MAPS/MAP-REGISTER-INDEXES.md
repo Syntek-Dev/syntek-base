@@ -697,7 +697,8 @@ Sam's standing preference, **not until the frontier is empty**.
      the Nodes and Acceptance columns, and Q30 named three items. The cell's `ST01`-`ST05` stands.
      (2) S-02 ACCEPTANCE (`:351`). "four-value enum" became five-value, and "one value in four"
      became one in five; the fifth value is `Not started`, which US010 writes into
-     `MAP-000-TEMPLATE.md:4` (settled 21/09/2026, grilling round 1 Q4; the same record, item 4).
+     `MAP-000-TEMPLATE.md:4` (settled 21/09/2026, grilling round 1 Q4; the same record, item 4;
+     superseded 31/10/2026 by 7.7.0: the map vocabulary is now `Charting | Resolving | Blockers Clear | Complete | Closed` plus a `**Status note:**` line, owned by `.claude/skills/completion/SKILL.md` (_Feature maps_), and the template's line 4 carries only the starting value).
      (3) N-003's INSTANCE TEST (`:232-237`). Was: "A file in one of the seven is an instance iff it
      is a tracked `.md` that is not `CONTEXT.md`, not `CLAUDE.md`, not `*TEMPLATE*`, and not the
      index itself." Now a positive filename pattern per register, still excluding `*TEMPLATE*` and

@@ -399,8 +399,8 @@ started`, string-equal under the read rule to that map's own header; Instance a 
   values, `Charting`, `Resolving`, `Blockers clear — stories may start`, `Complete` and `Not
 started`. "Begins with one of" (:326) admits a bold value, which ten of the twelve headers being
   rewritten carry today. **No task edits the definition site**:
-  `project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md:4` still reads four values and states
-  no format, and the story repoints that file's :8 and :159 only. **A flagged contradiction of the
+  `project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md:4` still read four values and stated
+  no format (as of 21/09/2026; superseded 31/10/2026 by 7.7.0: the map vocabulary is now `Charting | Resolving | Blockers Clear | Complete | Closed` plus a `**Status note:**` line, owned by `.claude/skills/completion/SKILL.md` (_Feature maps_), and the template's line 4 carries only the starting value), and the story repoints that file's :8 and :159 only. **A flagged contradiction of the
   settled figure's wording, not of the decision.** Grilling round 2 Q11 settled that "12 of the 15
   live maps are rewritten". Measured 21/09/2026, at least thirteen headers change.
   `project-management/src/01-FEATURE-MAPS/MAP-PROGRESSIVE-ENHANCEMENT.md:4` parses as `Charting`,
@@ -423,8 +423,8 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   node resolved and `Blocking open` 0 met both `Charting` and `Blockers clear`. Q31 resolves the
   overlap, and Blockers clear wins, so that map is `Blockers clear — stories may start`; the
   `Blocking open` clause on `Charting` is Q31's. The criteria go into the enum ADR's Decision
-  item 3 now. US010 writes them into `project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md:4` when
-  it is built, beside the fifth value and the format statement; the template is not edited before
+  item 3 now. US010 was to write them into `project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md:4` when
+  it is built (superseded 31/10/2026 by 7.7.0: the map vocabulary is now `Charting | Resolving | Blockers Clear | Complete | Closed` plus a `**Status note:**` line, owned by `.claude/skills/completion/SKILL.md` (_Feature maps_), and the template's line 4 carries only the starting value), beside the fifth value and the format statement; the template is not edited before
   then. **Settled 27/09/2026, grilling round 3 Q24:** wayfinder's chart step is what moves a map
   out of `Not started`, when it writes the map's first node. **Reconciled with round 6 Q31 by the
   call recorded 27/09/2026:** Q24 settled who moves the map and Q31 the value, by counts, so the
