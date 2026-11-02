@@ -602,3 +602,21 @@ count of one would be a decision made on nothing.
 HA inside the sized envelope**. The posture then lands as a row in the dependency-posture
 register MAP-CAP-POSTURE `S-01` creates. No map claims this entry, because a claim would remove
 it before the trigger fires.
+
+---
+
+## 02/11/2026 — shipped prose outside the three RC-5 files still names ClickUp as if every project had it
+
+**Type:** Active gap
+**Summary:** US007's re-cut (RC-5) marked every ClickUp **order** clickup-only in the two PR and
+release `STEPS.md` files and the story-plan template, which is all it was scoped to. Its closeout
+found the same assumption in prose it did not touch. The README seed's _ClickUp story sync_ section
+opens "Until the site is deployed, scrum boards are tracked in ClickUp" with no clickup-only
+marking (`.copier/README.md:600-603`). <!-- doc-references: template-only -->
+`.claude/skills/wayfinder/SKILL.md` (`:30-31`, `:241`, `:275`, `:303`) and
+`.claude/skills/scale-planning/SKILL.md:176` say stories sync through the `clickup-sync`
+workflow. Those six lines describe rather than order a step, but a project generated with
+`INCLUDE_CLICKUP: false` holds neither the workflow nor the scripts (`copier.yml:308-312`). <!-- doc-references: template-only -->
+Findings F-003 and F-004 in "project-management/src/20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. A docs pass marks each site clickup-only, or rewords it
+to hold without ClickUp, in one change. No map or story claims this entry.

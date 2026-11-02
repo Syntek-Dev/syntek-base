@@ -10,9 +10,9 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 10    |
+| Pending           | 9     |
 | In Progress       | 0     |
-| In Review         | 0     |
+| In Review         | 1     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -34,7 +34,6 @@ _None._
 | US003 | Absence gets an owning guide, born under 270 with every clause's tier stated                                               | Pending | [US003.md](US003.md) |
 | US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable                                      | Pending | [US004.md](US004.md) |
 | US006 | The destructive dev scripts read the deployment posture, and refuse to run above development                               | Pending | [US006.md](US006.md) |
-| US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits             | Pending | [US007.md](US007.md) |
 | US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                     | Pending | [US008.md](US008.md) |
 | US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true                            | Pending | [US009.md](US009.md) |
 | US010 | The seven register indexes are born seeded, and the map index leaves the file that ships                                   | Pending | [US010.md](US010.md) |
@@ -47,7 +46,9 @@ _None._
 
 ## In Review
 
-_None._
+| ID    | Title                                                                                                          | Status    | File                 |
+| ----- | -------------------------------------------------------------------------------------------------------------- | --------- | -------------------- |
+| US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | In Review | [US007.md](US007.md) |
 
 ## Accepted
 
