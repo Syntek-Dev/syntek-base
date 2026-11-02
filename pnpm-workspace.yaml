@@ -52,6 +52,10 @@ allowBuilds:
 # Re-proven 14/10/2026 after the sweep below added five and deleted three:
 #   audit.ignore  →  1 low (1 ignored) | 2 moderate (2 ignored) | 3 high (3 ignored)   clean
 #   neither key   →  1 low | 2 moderate | 3 high                                     VULNERABLE
+# Re-proven 02/11/2026 after the second sweep added five, deleted two and kept the
+# patched pair:
+#   audit.ignore  →  2 low (2 ignored) | 4 moderate (4 ignored) | 3 high (3 ignored)   clean
+#   neither key   →  2 low | 4 moderate | 3 high                                     VULNERABLE
 # Every entry now resolves, so the `(N ignored)` total equals the list length.
 #
 # Two @grpc/grpc-js entries — GHSA-5375-pq7m-f5r2 and GHSA-99f4-grh7-6pcq —
@@ -79,9 +83,18 @@ allowBuilds:
 #   retired once dependencies/update.sh could refresh a transitive dependency
 #   itself; the lockfile holds the result.
 #
+# One more was DELETED on 02/11/2026 under the same rule, because its named trigger
+# fired: GHSA-86w9-cpqp-85rv (node-forge, "delete when a release above 1.4.0
+# ships"). 1.4.1 shipped 27/10/2026 with the fix and 1.4.2 is latest; both
+# consumers, @expo/cli and @expo/code-signing-certificates, declare ^1.3.3, so a
+# lockfile refresh took it — and eleven further node-forge advisories with it.
+# And GHSA-vfj7-8cjw-p6xm (braces <=3.0.3): GitHub WITHDREW the advisory on
+# 23/10/2026, so it matched nothing — braces is still 3.0.3 and unchanged. An ignore
+# for a withdrawn advisory is the same suppression waiting to re-arm.
+#
 # Read the entries as two kinds, because they are not the same decision. Every
-# entry under the LEFT VULNERABLE heading is exactly that, and says so. The
-# decode-uri-component entry is not: the code is fixed, and the line exists only
+# entry under the LEFT VULNERABLE heading is exactly that, and says so. The two
+# decode-uri-component entries are not: the code is fixed, and the lines exist only
 # because `pnpm audit` cannot see a patch. Never collapse the two under one heading.
 # Source: https://pnpm.io/cli/audit
 audit:
@@ -89,19 +102,6 @@ audit:
     # LEFT VULNERABLE, each on availability. Added 14/10/2026; re-check every one
     # when its named trigger fires and delete the line, never on a calendar.
     #
-    # node-forge — NO PATCHED RELEASE EXISTS. 1.4.0 is both latest and
-    # last_affected; the fix (digitalbazaar/forge PR #1152) is unreleased. Reached
-    # only through @expo/cli and @expo/code-signing-certificates: the Node-side
-    # Expo CLI, absent from every deployed artefact and from a web-only project.
-    # Delete when a release above 1.4.0 ships.
-    - GHSA-86w9-cpqp-85rv
-    # braces — NO PATCHED RELEASE EXISTS. 3.0.3 is both latest and last_affected,
-    # and its sole consumer, micromatch@4.0.8, is itself the newest micromatch.
-    # Build-time on mobile (the metro / @expo/metro-file-map crawl) and dev-only
-    # everywhere else (markdownlint-cli2, jest); the glob patterns come from repo
-    # config, never from a request. Delete when braces >3.0.3 or a micromatch that
-    # drops it ships.
-    - GHSA-vfj7-8cjw-p6xm
     # katex — NO FIX THIS GRAPH CAN CONSUME. Fixed only in 0.18.2; the sole
     # consumer, micromark-extension-math@3.1.0 (newest, pinned by markdownlint
     # 0.41.1, newest), declares ^0.16.0 and 0.16.47 is the last 0.16. An override
@@ -125,18 +125,73 @@ audit:
     # to csv-parse ^7.
     - GHSA-8cw4-87c7-c6xx
     #
+    # Added 02/11/2026, on the same terms.
+    #
+    # minimatch — NO FIX THIS GRAPH CAN CONSUME. Fixed only in >=11.0.1 (11.0.0 first
+    # shipped 27/10/2026); the advisory range is a blanket <11.0.1, and every locked line
+    # is already the newest of its major: 3.1.5 (legacy-v3), 8.0.7 (legacy-v8), 10.2.6
+    # (newest 10; 10.2.5 also locked). 11 is a breaking rewrite, not a floor: it drops
+    # makeRe, AST and MMRegExp, and `set` now holds Matcher objects where glob 9/13's
+    # processor tests `instanceof RegExp` — glob itself took 11 only in its own 14.0.0
+    # major. Every consumer declares ^3 / ^8 / ^10 and none has a release on ^11 bar glob
+    # 14, so an override would cross a major for each one.
+    # What is actually exposed: the amplification is in firstPhasePreProcess(), run only
+    # at optimizationLevel >= 2. 3.1.5 does not contain that code at all. eslint 9/10,
+    # @eslint/config-array, @eslint/eslintrc, eslint-plugin-import/react,
+    # @typescript-eslint/typescript-estree, @expo/fingerprint and test-exclude use the
+    # default level 1 and never reach it. glob 9.3.5 (jest 29) and glob 13.0.6 (expo
+    # CLI/config/metro-config) pass optimizationLevel: 2, so the path runs on MOBILE
+    # dev/build tooling only — over glob patterns from repo config, never from a
+    # request. Absent from every deployed artefact; a web-only project reaches it only
+    # through root eslint 10, at level 1, where the vulnerable function never runs.
+    # Re-check when glob ships a 13.x or 9.x on minimatch ^11, when expo/jest-expo move
+    # to glob ^14, or when minimatch backports the fix to 10.x / 8.x.
+    - GHSA-g3hv-75wg-m249
+    # glob — NO FIX IN THE CONSUMERS' MAJOR. Affects 9.0.0-14.0.1, fixed only in
+    # >=14.0.2. 13.0.6 is the newest 13.x and every @expo/* consumer declares ^13.0.0,
+    # at the locked release and at latest alike (cli, config, config-plugins and
+    # metro-config 57.x/58.x; fingerprint 0.20/0.21), so an override would cross a
+    # major. The flaw: traversal continues after an AbortSignal fires. Only @expo/cli's
+    # anyMatchAsync passes a signal (it aborts after the first match, in the
+    # TypeScript doctor check), so the cost is wasted local fs traversal over
+    # repo-defined patterns. The same line covers the jest copies at 9.3.5 (the
+    # `glob@<9` selector below): jest passes no signal, and no 9.x fix exists.
+    # Build-time / dev-only, absent from every deployed artefact. Re-check when
+    # @expo/* declares glob ^14, or a 13.x/9.x backport ships.
+    - GHSA-3g3m-2fjr-6pw4
+    # zod — NO FIX IN THE CONSUMER'S MAJOR. Fixed only in >=4.6.6; the advisory range
+    # covers every 3.x, 3.25.76 is the newest of them, and @expo/cli@57 declares
+    # ^3.25.76, so an override would cross a major. v3's array parse accumulates
+    # per-element issues the same way, so the defence is not the API version: it is
+    # input provenance. @expo/cli parses only Expo dev-tools plugin manifests read from
+    # local node_modules (DevToolsPlugin.schema.js, createMCPDevToolsExtensionSchema.js),
+    # never a request. Build-time (Node-side Expo CLI), absent from every deployed
+    # artefact and from a web-only project. The 4.x copy was cleared by refresh.
+    # Re-check when expo moves to SDK 58 (@expo/cli@58 drops zod entirely) or a zod
+    # 3.x above 3.25.76 ships.
+    - GHSA-mrhx-c7xc-m3w5
+    # deepmerge — NO PATCHED RELEASE EXISTS. Affects 4.2.0-4.3.1, and 4.3.1 is
+    # latest (unchanged since 03/2023). Consumers: @expo/config@57 (^4.3.1) and
+    # jest-config@29 (^4.2.2). Both merge only repo-authored config (app.json /
+    # app.config, jest config), never a request body, so an attacker-shaped source
+    # object needs write access to the repo. Build-time on mobile (Expo CLI
+    # config resolution) and dev-only (jest). Absent from every deployed artefact
+    # and from a web-only project. Delete when deepmerge >4.3.1 ships, or once
+    # expo SDK 58 (@expo/config@58 drops it) and a jest without it are both in.
+    - GHSA-gcqx-w48m-w2h4
+    #
     # PATCHED IN PLACE
     #
     # decode-uri-component — PATCHED IN PLACE, NOT SUPPRESSED. The one entry here
     # that does not mean "left vulnerable": patches/decode-uri-component@0.2.2.patch
-    # carries 0.5.0's fix and pnpm applies it on every install. `pnpm audit` keys on
+    # carries 0.5.0's fix for this advisory and pnpm applies it on every install. `pnpm audit` keys on
     # the version the lockfile resolved and a patch does not move it, so the advisory
     # is reported against code that no longer contains the flaw. Deleting the patch
     # without deleting this line is the failure mode to guard against — they are one
     # change, in both directions.
     #
-    # Why a patch and not an override. The fix ships in 0.5.0 ONLY, and 0.5.0 is
-    # ESM-only. The sole consumer — query-string@7.1.3, reached through expo-router —
+    # Why a patch and not an override. This advisory's fix ships in 0.5.0 and later
+    # ONLY, all ESM-only. The sole consumer — query-string@7.1.3, reached through expo-router —
     # is CommonJS. Measured 01/09/2026 on Node 24: `require('decode-uri-component')`
     # against 0.5.0 returns `{__esModule, default}`, and calling it throws
     # `TypeError: d is not a function`. 0.2.2 is the newest CommonJS release and every
@@ -152,14 +207,28 @@ audit:
     # device, so this sat in the MOBILE DELIVERY PATH, not in dev-time tooling like
     # the entries above.
     - GHSA-vcc3-ghjq-m6fr
+    #
+    # decode-uri-component, second advisory — PATCHED IN PLACE, NOT SUPPRESSED.
+    # GHSA-qr28-fpjm-wq7f (CVE-2026-118664, high, published 29/10/2026): the
+    # fallback customDecodeURIComponent() ran one full-string RegExp replace per
+    # distinct percent-encoded run, O(K*L). 0.5.0's linear decode() did not touch
+    # that loop, so the first patch left it in place. Fixed upstream in 0.5.1 ONLY,
+    # still ESM-only, so query-string@7.1.3 (CommonJS, declares ^0.2.2) still cannot
+    # take it and an override is not an option. The patch now also carries 0.5.1's
+    # single-pass input.replace(multiMatcher, decode) and the BOM-pair and
+    # truncated-%C2 handling it moved into decode().
+    # Measured 02/11/2026 on Node 24 over distinct malformed runs: the previous patch
+    # took 109 / 162 / 386 ms on 14 / 28 / 56 KB, the extended one 35 / 62 / 91 ms.
+    # Output identical to 0.5.1 over 20,000 randomised inputs plus the BOM, truncated
+    # %C2 and truncated-sequence cases, and identical to the previous patch on every
+    # well-formed input. MOBILE DELIVERY PATH (expo-router deep-link parsing on
+    # device). Same rule as the line above: this line, that line and the patch are one
+    # change. Delete all three when a CommonJS-consumable fixed release exists or
+    # expo-router stops depending on query-string@7.
+    - GHSA-qr28-fpjm-wq7f
 minimumReleaseAgeExclude:
   - js-yaml@4.1.2
-  - markdown-it@14.1.2
-  - axios@1.15.0
   - postcss@8.5.10
-  - axios@1.15.1
-  - axios@1.15.2
-  - fast-uri@3.1.2
   - esbuild@0.28.1
   - form-data@4.0.6
   - "@babel/core@7.29.1"
@@ -195,7 +264,7 @@ overrides:
   # release exists and this graph can consume it: 4.28.8 is the newest 4.x and the
   # `<5` bound keeps it there, per the forced-resolution rule this block opens with.
   browserslist: ">=4.28.7 <5"
-  fast-uri: ">=3.1.8 <4"
+  fast-uri: ">=3.1.9 <4"
   # js-yaml is split per major, because the blanket ">=4.3.1 <5" it replaces forced
   # two consumers across a major: markdownlint-cli2 (pins 5.2.2) DOWN to 4, and
   # @istanbuljs/load-nyc-config (^3.13.1) UP to 4. The 5.x selector returns
@@ -210,7 +279,7 @@ overrides:
   "@istanbuljs/load-nyc-config>js-yaml": ^4.3.2
   js-yaml@>=4.0.0 <4.3.2: ^4.3.2
   js-yaml@>=5.0.0 <5.4.1: ^5.4.1
-  undici: ">=7.29.1 <8"
+  undici: ">=7.30.1 <8"
   ip-address: ">=10.7.1 <11"
   linkify-it: ">=5.0.2 <6"
   nanoid: ">=3.3.18 <4"
@@ -218,7 +287,15 @@ overrides:
   # 14.1.1 pin, then stopped matching once 0.23 pinned 14.3.0 — pnpm applies a
   # selector only where it intersects the declared spec. The lower bound now starts
   # at 14 so a future ^13 consumer is never forced across a major.
-  markdown-it@>=14.0.0 <14.3.1: ^14.3.1
+  #
+  # Re-floored 02/11/2026: GHSA-gfr2-rv44-r23c (high, quadratic link-reference parse,
+  # default options) and GHSA-vfgh-jcmw-g37q (low, quadratic inline HTML with
+  # html:true) fix in 14.3.3 and 15.0.3. The locked markdownlint-cli2 0.23.2 pins
+  # 14.3.0; 0.23.3, already inside the root's ^0.23.2, pins 15.0.1, which is affected;
+  # 0.24.0 pins 15.0.3. So the 15.x selector ships now, with the 14.x one, rather than
+  # waiting for a refresh to float onto an unpatched 15.
+  markdown-it@>=14.0.0 <14.3.3: ^14.3.3
+  markdown-it@>=15.0.0 <15.0.3: ^15.0.3
   # markdownlint-cli2 pins smol-toml exactly, and its newest release (0.23.3) pins
   # 1.8.0, still inside GHSA-r4xh-jqrq-34v2 — so no upstream bump clears it.
   smol-toml: ">=1.9.0 <2"
@@ -259,6 +336,13 @@ overrides:
   # calls nothing but `shouldInstrument`, which uses minimatch, never glob; re-check if a
   # test-exclude consumer ever calls `glob()`. glob 9 is npm-deprecated ("old versions"),
   # unlike lodash 4.18.0's "bad release": kept for the interop shape, which no newer line has.
+  #
+  # Since 30/10/2026 glob 9.3.5 is itself inside GHSA-3g3m-2fjr-6pw4 (9.0.0-14.0.1, no
+  # 9.x fix), while the ^7 these consumers declare is not. Kept anyway (02/11/2026): the
+  # flaw needs an AbortSignal and no jest caller passes one, and the audit.ignore line
+  # it shares with expo's glob 13 is needed either way. Deleting this selector would
+  # clear the 9.3.5 finding but bring back inflight@1.0.6, the leak it exists to evict.
+  # Revisit if that ignore is ever deleted.
   glob@<9: ^9.3.5
   glob@>=10.0.0 <10.5.0: ^10.5.0
   glob@>=11.0.0 <11.1.0: ^11.1.0
@@ -275,7 +359,7 @@ overrides:
   brace-expansion@<2: ^1.1.21
   brace-expansion@>=2.0.0 <3: ^2.1.7
   brace-expansion@>=5.0.0 <6: ^5.0.12
-  qs: ">=6.16.0 <7"
+  qs: ">=6.16.1 <7"
   shell-quote: ">=1.11.0 <2"
   # protobufjs keeps its two-major split rather than taking a single floor: the
   # 7.x and 8.x lines have separate advisories and separate consumers, and a
@@ -308,9 +392,10 @@ allowedDeprecatedVersions:
 # throws on a failed patch, so without this the install would break there.
 # Source: https://pnpm.io/cli/patch
 patchedDependencies:
-  # GHSA-vcc3-ghjq-m6fr. Backports 0.5.0's single-pass O(n) decoder into 0.2.2's
-  # CommonJS shape, keeping the `+` to space step 0.3.0 dropped. Output verified
-  # identical to 0.5.0 over 20,000 randomised inputs plus a curated malformed
-  # corpus, and identical to 0.2.2 on every well-formed input.
+  # GHSA-vcc3-ghjq-m6fr and GHSA-qr28-fpjm-wq7f. Backports 0.5.1's single-pass O(n)
+  # decoder and single-pass run replacement into 0.2.2's CommonJS shape, keeping the
+  # `+` to space step 0.3.0 dropped. Output verified identical to 0.5.1 over 20,000
+  # randomised inputs plus the malformed edge cases, and identical to 0.2.2 on every
+  # well-formed input.
   decode-uri-component@0.2.2: patches/decode-uri-component@0.2.2.patch
 allowUnusedPatches: true
