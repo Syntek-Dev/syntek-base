@@ -12,6 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Slint moves to 1.18 for the desktop surface.** `crates/desktop/Cargo.toml` raises `slint` and `slint-build` from `"1.17"` to `"1.18"`, matching the 1.18.1 the lockfile now resolves, and `REFERENCES.md` and `code/docs/visual-design/DESKTOP.md` state the new pin. The old requirement already admitted 1.18, so the floor is raised to keep the manifest, the lockfile and the version table in agreement rather than to unlock anything.
+
+### Fixed
+
+- **The scheduled dependency audit is green on Rust again (issue #14).** `cargo-deny` had failed on `main` since 23/10/2026 on three findings, all reached only through Slint: `pulldown-cmark` 0.13.4 carried **RUSTSEC-2026-0414** (fixed in 0.13.5) and **RUSTSEC-2026-0433** (quadratic parsing of nested image wikilinks under `ENABLE_WIKILINKS`, fixed in 0.13.6), and `clipboard-win` 5.4.1 was yanked. `dependencies/update.sh --apply --ecosystem rust` re-resolved the whole of `code/src/rust/Cargo.lock` to the newest semver-compatible versions — `pulldown-cmark` 0.13.6, `clipboard-win` 5.4.3, Slint 1.18.1, PyO3 0.29.3 — with no new `deny.toml` ignores. PyO3 0.30 is available but breaking, and is left for its own change. `rust/audit.sh`, `lint.sh`, `test.sh` and `build.sh` pass on the new lock. The JS and Python legs of the same issue were already clean after 7.8.0.
+
 ## [7.8.0] - 02/11/2026
 
 ### Added
