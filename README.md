@@ -90,7 +90,7 @@ specification skills. That split was retired on cost grounds; the `model:` front
 remains as the carrier, so reintroducing a tier is an edit to those declarations rather than a
 structural change.
 
-Sessions still run Opus at `effortLevel: xhigh` with ultracode on, so this template is designed
+Sessions still run Opus at `effortLevel: medium` with ultracode on, so this template is designed
 for **Claude Max 20× or above, or the Anthropic API**. On a smaller plan it will run, but expect
 to hit usage limits during a long implementation or review pass.
 
