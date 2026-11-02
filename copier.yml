@@ -1001,8 +1001,17 @@ _migrations:
   # .copier/CUT-PLAN.md when the project has none — rendering <%DATE%> and <%DEVELOPER_NAME%>
   # itself (from .copier-answers.yml), because the seed is unrendered in src_path — and never
   # overwrites an existing one. Always exits 0. Keyed v7.7.0 because that is the release the
-  # boards and the cut plan ship in.
+  # boards ship in.
   - version: v7.7.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v7.7.0-pm-boards.sh"
+    when: "<% _stage == 'after' %>"
+
+  # The same script again, keyed v7.8.0, because the cut-plan seeding was added to it AFTER the
+  # v7.7.0 tag: a project that updated to that tag ran the script without it and would never be
+  # offered a cut plan by a migration that has already run. Every step is idempotent (the
+  # renames find nothing left, an existing cut plan is never touched, the boards regenerate),
+  # so re-running it costs a board write and fills the gap.
+  - version: v7.8.0
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v7.7.0-pm-boards.sh"
     when: "<% _stage == 'after' %>"
 

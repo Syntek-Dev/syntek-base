@@ -370,6 +370,11 @@ Anything else outside the vocabulary — a map still reading `Not started`, say 
 you to correct, and sits in the board's `Unrecognised` column until you do. Commit the boards,
 and the cut plan if one was written, with the update.
 
+**Updating across 7.8.0 runs the same migration again.** The cut-plan step reached the script
+after the `v7.7.0` tag, so a project that updated to exactly that tag received its boards but no
+cut plan. The second run writes the cut plan if you still have none, regenerates the boards and
+changes nothing else — the renames have already happened.
+
 **Your generation predates `.copier-answers.yml`.** Projects created with the old `setup.sh` flow
 have no answers file and cannot be updated. Recreate one by hand — copy the format from a fresh
 generation, fill in your values, set `_src_path` to the template URL and `_commit` to the tag you
