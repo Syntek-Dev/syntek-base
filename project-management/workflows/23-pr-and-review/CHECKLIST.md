@@ -25,6 +25,19 @@ model: opus
 - [ ] CI passes on `testing`
 - [ ] QA sign-off received
 
+### Story status — every transition through `completion`
+
+Every transition these boxes order is recorded by the `completion` skill: the `**Status:**` line set,
+a `## Status history` row appended, and `pm-board.sh --write` run. Vocabulary owner:
+`.claude/skills/completion/SKILL.md`.
+
+- [ ] Story set to `In Review` when the PR is raised (Step 3)
+- [ ] Review and QA passed → `Accepted`; either failed → `Rejected`, then back to `Pending` (Step 5)
+- [ ] Handed to the customer on staging → `Customer Review`; their answer recorded as
+      `Customer Accepted`, or `Customer Rejected` then back to `Pending` — skipped where the
+      story's `Customer review` flag is `N/A` (Step 5)
+- [ ] `Completed` **not** set at merge — it comes from the `completion` window, and `Closed` only from `pm-archive.sh US###` (Step 5)
+
 ---
 
 ## Implementation records

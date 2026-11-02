@@ -2,7 +2,7 @@
 
 _Template — copy to `US###-MANUAL-TESTING.md` at `17-story-plans` Step 7.2, replace every `{PLACEHOLDER}`, delete the `[EXAMPLE]` rows. The manual testing guide for a single user story (US###): the journey a tester or Claude Chrome follows step by step, and — once walked — whether each step passed._
 
-**Last Updated**: {DD/MM/YYYY} · **Story**: US### · **Status**: {Authored — not yet walked / In progress / Passed / Failed / Blocked}
+**Last Updated**: {DD/MM/YYYY} · **Story**: US### · **Status**: {Authored — not yet walked / In Progress / Passed / Failed / Blocked}
 
 - **Story:** `../../02-STORIES/US###.md` — {short title}
 - **Story plan:** `../../17-STORY-PLANS/{XX}-STORY-PLAN-US###-{DESCRIPTOR}.md` — the code master this guide was authored beside
