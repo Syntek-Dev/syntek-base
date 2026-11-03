@@ -1,15 +1,13 @@
 # Code Review — US001 Reliability doctrine gets an owning guide
 
-**Last Updated**: 03/11/2026 · **Story**: US001 · **Status**: In Progress
-
-| Field        | Value                                                                                                    |
+**Last Updated**: 03/11/2026 · **Story**: US001 · **Status**: In Review | Field | Value |
 | ------------ | -------------------------------------------------------------------------------------------------------- |
-| **Story**    | US001 — reliability doctrine gets an owning guide, and every pointer reaches it                          |
-| **Branch**   | `us001/reliability-doctrine-home` (cut at `e1ab25a`, uncommitted at this record)                         |
-| **PR**       | Not yet raised · target `testing`                                                                        |
+| **Story** | US001 — reliability doctrine gets an owning guide, and every pointer reaches it |
+| **Branch** | `us001/reliability-doctrine-home` (cut at `e1ab25a`; build commit `6d35e94`, final-pass fixes on top) |
+| **PR** | Raised at `23-pr-and-review` Step 3 · target `testing` |
 | **Reviewer** | Claude — separate `code-reviewer` and `qa-tester` dispatches during the build, neither of which wrote it |
-| **Date**     | 03/11/2026                                                                                               |
-| **Verdict**  | Approve-with-fixes (code review) · Pass-with-fixes (QA breaker pass) — every fix landed in the build     |
+| **Date** | 03/11/2026 |
+| **Verdict** | Approve-with-fixes (code review) · Pass-with-fixes (QA breaker pass) — every fix landed in the build |
 
 **Codes from:** `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`
 → _The one lane — documentation_ and _Key Decisions_ (Q1 to Q3, settled 03/11/2026).
@@ -133,6 +131,33 @@ story already claims. The known red is listed in Section 6 for the PR body.
   reduced, in the hub itself, and are scheduled successors' work.
 - **Status transition:** none recorded here. `In Progress` → `In Review` and onward are recorded
   through the `completion` skill at `23-pr-and-review`.
+
+### The `23-pr-and-review` final pass — 03/11/2026, on `6d35e94`
+
+Two fresh dispatches over the committed whole, neither of which wrote any of it: Step 1 final QA
+(`qa-tester`, pass with fixes) and Step 2 review (`review`, approve with fixes). No blocker, no
+major. Gates on HEAD: `docs-length.sh`, `docs-pairing.sh`, `doctrine-drift.sh`,
+`skill-conformance.sh` and `pm-board.sh --check` all exit 0; `lint.sh` red only on the gitignored
+`graphify-out/GRAPH_REPORT.md` — an environment red, not a clean pass and not this story's.
+
+| ID    | Sev   | Where                                                                   | Finding                                                                          | Disposition                                      |
+| ----- | ----- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------ |
+| FR-1  | Minor | `DEFERRED.md` F-010 row                                                 | US005's AM:69 citation (the deleted A-09 rule) missing from the list             | Fixed — row and F-010 widened                    |
+| FR-2  | Minor | Commit `6d35e94`                                                        | No `Files Changed:` block (`project-management/docs/git/COMMITS.md`)             | Fixed — carried by the fix commit and PR body    |
+| FR-3  | Minor | `code/docs/performance/API-AND-MONITORING.md`, `reliability/RETRIES.md` | R-06's split left "a failed task is an error in the error tracker" only implied  | Fixed — the mandate restored in AM's residue     |
+| FR-4  | Minor | `../18-TESTS/AUTOMATED/US001-TEST-STATUS.md` generated block            | 100% "Met" for a story with no tests                                             | Already F-009; the PR body quotes no coverage    |
+| FR-5  | Nit   | `code/docs/RELIABILITY.md`                                              | "The task surface states only that today" ambiguous                              | Fixed — reworded                                 |
+| FR-6  | Nit   | `code/docs/performance/API-AND-MONITORING.md`                           | "monitoring residue" sentence describes the build, not the guide                 | Fixed — sentence removed                         |
+| FR-7  | Nit   | `code/docs/reliability/CLAUDE.md`                                       | Garbled model bullet; a length rule stricter than its owner, unrouted            | Fixed — Model bullet split; length routed        |
+| FR-8  | Nit   | This record's header                                                    | Stale status and branch                                                          | Fixed                                            |
+| QA-F1 | Minor | US005 story and plan                                                    | Quoted "TASK-AUTHORING.md's proof ladder" now names a route                      | Deferred — folded into F-010's `DEFERRED.md` row |
+| QA-F2 | Minor | `project-management/docs/gdpr/COMPLIANCE.md:27-48`, `:77`               | A shipped sample retries every exception; idempotency restated without a route   | Deferred — F-012, US005                          |
+| QA-F3 | Minor | `code/src/django/apps/core/management/CONTEXT.md:42-43`                 | Still "expressed as retry classification" where MANAGEMENT-COMMANDS was reworded | Fixed                                            |
+| QA-F4 | Minor | This record's header                                                    | Status `In Progress`                                                             | Fixed (as FR-8)                                  |
+
+**Note for the record:** the forked `qa-tester` skill ran `doc-references.sh` against its brief.
+Its 579 findings match the staged closing run exactly (578 pre-existing + F-009), and no baseline
+file was overwritten.
 
 ---
 

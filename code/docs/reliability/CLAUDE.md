@@ -12,8 +12,8 @@ stated once for every surface that can fail or repeat.
 
 ## How to work here
 
-- **Routing:** documentation, not code — `doc-writer` or `backend` (Opus). Opus for mechanical
-  touches.
+- **Routing:** documentation, not code — `doc-writer` or `backend`.
+- **Model:** Opus for a rule's substance and for mechanical touches alike.
 - **Concrete steps:** edit the sub-doc that owns the rule → keep `code/docs/RELIABILITY.md` a thin
   index plus the one rule that binds both halves → where a surface guide gains its own expression
   of a rule, add its row to the sub-doc's _Per-surface expression_ table and leave the rule here.
@@ -28,8 +28,8 @@ stated once for every surface that can fail or repeat.
 - **One rule, one home.** Before adding a rule here, remove it from wherever else it is stated,
   and replace that statement with a route. `doctrine-drift.sh` reads fenced code only, so it
   cannot catch a prose rule stated twice — a reader has to.
-- **300-line instructional limit** — these are `**/docs/*.md`; split before 270, never take an
-  allowance for a new rule.
+- **300-line instructional limit** — these are `**/docs/*.md`; the warn tier, the dated allowance
+  and when to split are `code/docs/DOCUMENTATION-LENGTH.md`'s.
 
 ## Output & naming
 

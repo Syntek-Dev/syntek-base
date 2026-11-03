@@ -40,12 +40,11 @@ Django views that return HTML. Ninja auto-generates OpenAPI docs at `/api/docs`.
 
 ## Background Jobs and Queues (Celery)
 
-**Failed jobs must be logged and monitored.** A failed job that nobody notices is worse than no
-job: the request that queued it already returned success, so the queue is the only place the
+**A failed job is an error in the error tracker, and is logged and monitored.** A failed job
+that nobody notices is worse than no job: the request that queued it already returned success, so the queue is the only place the
 failure exists. Error tracking and alert routing are [`../LOGGING.md`](../LOGGING.md).
 
-This section is the monitoring residue of the background-job doctrine. Whether work belongs on a queue, and how a
-task is written, is [`../TASK-AUTHORING.md`](../TASK-AUTHORING.md); whether a retry is safe and
+Whether work belongs on a queue, and how a task is written, is [`../TASK-AUTHORING.md`](../TASK-AUTHORING.md); whether a retry is safe and
 how it backs off is [`../RELIABILITY.md`](../RELIABILITY.md).
 
 ---

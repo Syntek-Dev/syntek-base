@@ -15,8 +15,8 @@ has to answer: when a call fails, is it retried and how; and when an operation r
 second run safe. The questions are the same on every surface that can fail or repeat — an outbound
 HTTP client, a database transaction, a queue consumer, an inbound webhook, an MCP tool, a
 management command — so the rules live here once, and each surface's own guide is to state only
-how that surface expresses them. The task surface states only that today; the outbound-webhook
-policy in [`api-design/WEBHOOKS.md`](api-design/WEBHOOKS.md) and the _Retry_ column of the job
+how that surface expresses them. Today only the task surface has been reduced to that; the
+outbound-webhook policy in [`api-design/WEBHOOKS.md`](api-design/WEBHOOKS.md) and the _Retry_ column of the job
 classification in [`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md)
 still state retry rules of their own, and are not yet reduced to routes here.
 
