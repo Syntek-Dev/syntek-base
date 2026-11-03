@@ -102,7 +102,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 ## Cross-references
 
 - `code/docs/NOTIFICATIONS.md` — the owning guide: send boundary, template foundation, PII
-- `code/docs/TASK-AUTHORING.md` — the enqueue boundary, idempotency, retries
+- `code/docs/TASK-AUTHORING.md` — the enqueue boundary and the delivery guarantee
+- `code/docs/RELIABILITY.md` — retries and idempotency
 - `code/docs/ENCRYPTION-GUIDE.md` — how recipient PII is stored at rest
 - `code/docs/LOGGING.md` — what a send event may record
 - `how-to/src/BRAND-VOICE.md` — the microcopy register the wording follows

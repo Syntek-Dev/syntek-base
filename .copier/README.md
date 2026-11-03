@@ -215,11 +215,12 @@ Two things to do on a freshly generated project:
 │   │   ├── OBJECT-STORAGE.md            ← private documents over the S3 API (declared, not wired)
 │   │   ├── PERFORMANCE.md               (+ performance/ — FRONTEND-PERFORMANCE, DATABASE-PERFORMANCE, API-AND-MONITORING)
 │   │   ├── PROCESS-MODEL.md             ← worker class, event loop, and the ORM's sync boundary
+│   │   ├── RELIABILITY.md               (+ reliability/ — IDEMPOTENCY, RETRIES)
 │   │   ├── RENDERING.md                 (+ rendering/ — TEMPLATES-AND-INTERACTIVITY, PITFALLS-AND-EXAMPLES)
 │   │   ├── RESPONSIVE-DESIGN.md         (+ responsive/ — BREAKPOINTS, MEDIA-QUERIES, CONTAINER-QUERIES, …)
 │   │   ├── RLS-GUIDE.md                 (+ rls/ — FUNDAMENTALS, POLICY-TEMPLATES, MIDDLEWARE-AND-NINJA, …)
 │   │   ├── SECURITY.md                  (+ security/ — AUTH-AND-AUTHZ, OWASP-AND-CHECKLIST, AUDIT-TRAIL, …)
-│   │   ├── TASK-AUTHORING.md            ← background tasks: enqueue boundary, idempotency, retries (declared, not wired)
+│   │   ├── TASK-AUTHORING.md            ← background tasks: enqueue boundary, delivery guarantee, limits (declared, not wired)
 │   │   ├── TESTING.md                   (+ testing/ — BACKEND-TESTING, FRONTEND-TESTING, API-TESTING, COVERAGE, …)
 │   │   ├── URL-STRATEGY.md
 │   │   ├── VISUAL-DESIGN.md             (+ visual-design/ — WEB)

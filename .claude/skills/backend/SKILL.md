@@ -164,6 +164,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/BACKEND-CODING-PRINCIPLES.md` — the Django/Python/Celery specifics this builds to
 - `code/docs/URL-STRATEGY.md` — the route, slug and endpoint naming a new surface takes
 - `code/docs/PROCESS-MODEL.md` — worker class, event loop, and the ORM's sync boundary
-- `code/docs/TASK-AUTHORING.md` — the enqueue boundary, idempotency and retries for background work
+- `code/docs/TASK-AUTHORING.md` — the enqueue boundary and the delivery guarantee for background work
+- `code/docs/RELIABILITY.md` — retries and idempotency, on every surface
 - `code/docs/MANAGEMENT-COMMANDS.md` — arguments as untrusted input, blast radius, exit codes
 - `code/docs/OBJECT-STORAGE.md` — the S3-API adapter contract and presigned-URL rules

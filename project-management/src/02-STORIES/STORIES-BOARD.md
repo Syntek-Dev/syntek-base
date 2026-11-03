@@ -10,9 +10,9 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 9     |
+| Pending           | 8     |
 | In Progress       | 0     |
-| In Review         | 0     |
+| In Review         | 1     |
 | Accepted          | 1     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -30,7 +30,6 @@ _None._
 
 | ID    | Title                                                                                                                      | Status  | File                 |
 | ----- | -------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
-| US001 | Reliability doctrine gets an owning guide, and every pointer reaches it                                                    | Pending | [US001.md](US001.md) |
 | US003 | Absence gets an owning guide, born under 270 with every clause's tier stated                                               | Pending | [US003.md](US003.md) |
 | US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable                                      | Pending | [US004.md](US004.md) |
 | US006 | The destructive dev scripts read the deployment posture, and refuse to run above development                               | Pending | [US006.md](US006.md) |
@@ -46,7 +45,9 @@ _None._
 
 ## In Review
 
-_None._
+| ID    | Title                                                                   | Status    | File                 |
+| ----- | ----------------------------------------------------------------------- | --------- | -------------------- |
+| US001 | Reliability doctrine gets an owning guide, and every pointer reaches it | In Review | [US001.md](US001.md) |
 
 ## Accepted
 
