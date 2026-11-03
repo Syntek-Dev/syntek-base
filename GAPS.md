@@ -663,10 +663,11 @@ half-remove the pin and redden the gate. No recorded decision licenses the keep,
 failed row OPS-01. Finding F-001 in
 "project-management/src/20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md"; review
 L5b raised it first.
-**Blocked by / Action:** Sam's decision. Either re-class the command as a _Dependencies_ fact,
-recorded as a decision; or move it to `code/src/scripts/audits/CLAUDE.md` and, in the same change,
-repoint `playwright-pin.sh`'s site, its header and its `--self-test` fixtures so the eight-site
-parity holds. No map or story claims this entry.
+**Blocked by / Action:** Decided for US002: Sam kept the instruction where it stands and accepted
+OPS-01 as a known Fail for merge, 03/11/2026 in session. The move remains open work — move it to
+`code/src/scripts/audits/CLAUDE.md` and, in the same change, repoint `playwright-pin.sh`'s site,
+its header and its `--self-test` fixtures so the eight-site parity holds. No map or story claims
+this entry.
 
 ---
 
@@ -684,3 +685,20 @@ already states the code's behaviour. Finding F-011 in
 "project-management/src/20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. Reword both to "a file-scoped annotation naming the
 clause". No map or story claims this entry.
+
+---
+
+## 03/11/2026 — workflow 23 requires GDPR and Security implementation records that workflow 22 makes conditional
+
+**Type:** Active gap
+**Summary:** `project-management/workflows/23-pr-and-review/STEPS.md` Step 6's verify table marks
+the GDPR review and the Security record **Always**, and its `CHECKLIST.md` lists both as
+unconditional items. `project-management/workflows/22-implementation-documentation/STEPS.md`
+Step 1, which writes those records, makes each conditional — GDPR when the story processes
+personal data, Security when it ships a security surface. A story with neither flag, such as
+US002, owes neither record under 22 yet fails 23's verify as written. Finding F-017 in
+"project-management/src/20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md"
+(workflow 23 final passes, S6-02).
+**Blocked by / Action:** Nothing blocks it. A template-maintenance fix: restate 23's two rows and
+two checklist items as conditional, routing to 22 Step 1's _Applies when_ column rather than
+restating it. No map or story claims this entry.

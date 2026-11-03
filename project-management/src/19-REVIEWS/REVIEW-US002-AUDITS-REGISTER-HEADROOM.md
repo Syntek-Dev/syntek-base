@@ -136,7 +136,7 @@ The known red is in Section 6.
   in the build and walked; one manual row failed on a pre-existing passage.
 - **Reasoning:** the register lands at 226 with every register intact and the Dependencies table
   complete (27 rows for 27 scripts); the three rationale arguments moved whole to a measured path;
-  the citation gate gains no identity the story wrote and loses 16; the 33-row dry run reaches 259.
+  the citation gate gains no identity the story wrote and loses 12 identities (16 findings); the 33-row dry run reaches 259.
   What is not met is HP-04's literal clause, for one install instruction the story kept because a
   gate reads it where it stands.
 - **Status transition:** none recorded here. `In Progress` → `In Review` and onward are recorded
@@ -156,13 +156,13 @@ The known red is in Section 6.
 
 ### Gate evidence
 
-| Gate                                                                                                                                 | Before (`357db65`) | At the walk (`9da4e30`) | Reading                                                                                                            |
-| ------------------------------------------------------------------------------------------------------------------------------------ | ------------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `code/src/scripts/audits/doc-references.sh`                                                                                          | exit 1, 579 / 280  | exit 1, 563 / 268       | Identity diff: 0 new; 16 identities gone — 8 `slop-family/`, 7 "SLOP-FAMILY.md", 1 GAPS anchor. A diff, not a pass |
-| `code/src/scripts/audits/docs-length.sh --path … --limit 1`                                                                          | 299 · 178          | 226 · 183 · 84 · 34     | Register under target; both ceilings held at review                                                                |
-| `code/src/scripts/audits/docs-pairing.sh`                                                                                            | exit 0             | exit 0                  | Pairs intact; decides nothing about the move                                                                       |
-| `code/src/scripts/audits/doctrine-drift.sh`                                                                                          | —                  | —                       | **N/A** — blind to `code/src/scripts/**` (`../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md`)    |
-| `routing-skills.sh` · `playwright-pin.sh` · `skill-conformance.sh` · `mcp-parity.sh` · `template-orphans.sh` · `pm-board.sh --check` | —                  | exit 0 / pass           | Run by the two passes                                                                                              |
+| Gate                                                                                                                                 | Before (`357db65`) | At the walk (`9da4e30`) | Reading                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------------------ | ------------------ | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `code/src/scripts/audits/doc-references.sh`                                                                                          | exit 1, 579 / 280  | exit 1, 563 / 268       | Identity diff: 0 new identities; 12 identities (16 findings) gone: 5 identities / 8 findings on `slop-family/`, 6 / 7 on "SLOP-FAMILY.md", 1 / 1 GAPS anchor. A diff, not a pass |
+| `code/src/scripts/audits/docs-length.sh --path … --limit 1`                                                                          | 299 · 178          | 226 · 183 · 84 · 34     | Register under target; both ceilings held at review                                                                                                                              |
+| `code/src/scripts/audits/docs-pairing.sh`                                                                                            | exit 0             | exit 0                  | Pairs intact; decides nothing about the move                                                                                                                                     |
+| `code/src/scripts/audits/doctrine-drift.sh`                                                                                          | —                  | —                       | **N/A** — blind to `code/src/scripts/**` (`../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md`)                                                                  |
+| `routing-skills.sh` · `playwright-pin.sh` · `skill-conformance.sh` · `mcp-parity.sh` · `template-orphans.sh` · `pm-board.sh --check` | —                  | exit 0 / pass           | Run by the two passes                                                                                                                                                            |
 
 Findings over identities, compared as a multiset with line numbers stripped, per
 `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`. The walk
@@ -173,6 +173,37 @@ one identity of its own (finding F-015).
 
 - `Audit — Doc References` / `Citations resolve` — 563 pre-existing findings owned outside this
   story, plus the line the generated test record adds (F-015).
+
+---
+
+## Workflow 23 final passes, 03/11/2026
+
+Run at `8f8c830` by `23-pr-and-review` before the PR, each by a dispatch that wrote none of the
+work.
+
+| Pass           | Result                                                                                                              |
+| -------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Final QA       | No Critical, High or Medium                                                                                         |
+| Code review    | Standards: **Approve**. Spec: **Met**, bar OPS-01 (F-001)                                                           |
+| Records verify | Complete. One High refuted: the story's `Accepted` status is a Step 5 item, recorded after merge, not a records gap |
+
+**Low and Nit findings, all dispositioned in the records correction that follows these passes:**
+
+| ID             | Finding                                                                                     | Disposition                                                                            |
+| -------------- | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| CR-01 · QA3-01 | The citation diff reported as "16 identities gone"; it is 12 identities, 16 findings        | Corrected here, in the QA review, the automated record and the findings record         |
+| CR-02          | US002's doc-references Verification Check claimed no new finding without qualifying it      | Qualified: no new finding at the walk (`9da4e30`); one generated identity since, F-015 |
+| CR-03          | Five map nodes still claim US002 as a blocker with no discharge note                        | Finding F-016, routed to `01-feature-map`'s next resolve pass                          |
+| CR-04 · S6-03  | QA review header cited records at `43fe621` + staged                                        | Repointed to `cd09348`                                                                 |
+| QA3-02         | Ten Script Tasks cells in US002 read `[[x]`                                                 | Corrected to `[x]`                                                                     |
+| QA3-03 · S6-01 | Manual-testing sign-off and reviewer approval unticked                                      | Ticked on Sam's sign-off below                                                         |
+| QA3-04         | "Three YAML comment lines" understated the CI change                                        | Reworded: the header comments of three CI workflow files (comments only)               |
+| S6-02          | Workflow 23 marks GDPR and Security implementation records "Always"; workflow 22 gates them | Finding F-017 and a dated `GAPS.md` entry — a template-maintenance fix                 |
+
+**Sign-off.** Sam signed the story off on 03/11/2026 in session, accepting **OPS-01 / F-001 as a
+known Fail** — the Playwright install instruction kept in `code/src/scripts/audits/CONTEXT.md` as a
+`playwright-pin.sh` pin site, routed to the `GAPS.md` entry — and the review-held ceilings (F-008).
+Section 4's one decision is therefore taken.
 
 ---
 

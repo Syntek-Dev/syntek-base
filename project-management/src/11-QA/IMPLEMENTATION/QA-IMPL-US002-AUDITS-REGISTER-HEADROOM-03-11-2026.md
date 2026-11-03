@@ -1,20 +1,20 @@
 # QA Implementation Review — US002 The audits register regains the headroom nine new gates need
 
-| Field        | Value                                                                                                                 |
-| ------------ | --------------------------------------------------------------------------------------------------------------------- |
-| **Story**    | US002 — the audits register regains the headroom nine new gates need                                                  |
-| **Date**     | 03/11/2026                                                                                                            |
-| **Sprint**   | SPRINT-02                                                                                                             |
-| **Reviewer** | Claude (a `22-implementation-documentation` subagent that made none of the edits), on Sam's behalf                    |
-| **Branch**   | `us002/audits-register-headroom`, cut from `testing` at `81a80a2`; walked at `9da4e30`, records at `43fe621` + staged |
-| **Plan doc** | `../PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md`                                                               |
-| **Outcome**  | Pass with deviations — one scenario failed (HP-04, manual row OPS-01)                                                 |
+| Field        | Value                                                                                                        |
+| ------------ | ------------------------------------------------------------------------------------------------------------ |
+| **Story**    | US002 — the audits register regains the headroom nine new gates need                                         |
+| **Date**     | 03/11/2026                                                                                                   |
+| **Sprint**   | SPRINT-02                                                                                                    |
+| **Reviewer** | Claude (a `22-implementation-documentation` subagent that made none of the edits), on Sam's behalf           |
+| **Branch**   | `us002/audits-register-headroom`, cut from `testing` at `81a80a2`; walked at `9da4e30`, records at `cd09348` |
+| **Plan doc** | `../PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md`                                                      |
+| **Outcome**  | Pass with deviations — one scenario failed (HP-04, manual row OPS-01)                                        |
 
 ---
 
 ## 1. Scope
 
-**What shipped:** Markdown only, plus three YAML comment lines. `code/src/scripts/audits/CONTEXT.md`
+**What shipped:** Markdown only, plus the header comments of three CI workflow files (comments only). `code/src/scripts/audits/CONTEXT.md`
 shrank from 299 to 226 counted lines by routing restatements to their owners; the AI-slop split
 rationale moved whole into a new `code/src/scripts/audits/slop-family/` pair; the Dependencies
 register gained its five owed rows; the `docs-length-allow` comment was retired; and every line
@@ -41,7 +41,7 @@ against what shipped.
 | Gap       | Status   | Evidence                                                                                                                                                                                               |
 | --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | AC-GAP-1  | Resolved | `code/src/scripts/audits/doctrine-drift.sh` recorded N/A with its cause, never run as evidence (manual guide _Preconditions_; `../../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md`) |
-| AC-GAP-2  | Resolved | `code/src/scripts/audits/doc-references.sh` read as an identity diff against a baseline captured before the first edit: 0 new, 16 gone (DOCREF-01)                                                     |
+| AC-GAP-2  | Resolved | `code/src/scripts/audits/doc-references.sh` read as an identity diff against a baseline captured before the first edit: 0 new identities; 12 identities (16 findings) gone (DOCREF-01)                 |
 | AC-GAP-3  | Resolved | (a), (b) and (c) named individually and each found whole in `code/src/scripts/audits/slop-family/CONTEXT.md` (RATIONALE-01 to RATIONALE-04)                                                            |
 | AC-GAP-4  | Resolved | Every section-name citation and line anchor re-resolved by hand and listed with its target; never reported as gate-verified (CITE-01 to CITE-04)                                                       |
 | AC-GAP-5  | Resolved | The figure read from `docs-length.sh --path code/src/scripts/audits --limit 1` (LENGTH-01)                                                                                                             |
@@ -75,8 +75,8 @@ four amended. The QA breaker pass's own scenario verdicts (at `6745d12`) are cit
 exits 1 at both ends and is reported per
 `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`. Baseline
 at `357db65`, tree clean: 579 findings, 280 identities. Walk run at `9da4e30`, same index state,
-detector sha256 matching: 563 findings, 268 identities. **0 new**; 16 gone — the 8 planned
-`slop-family/` identities, the 7 superseded "SLOP-FAMILY.md" (Q1c), and one GAPS anchor. This is not
+detector sha256 matching: 563 findings, 268 identities. **0 new identities**; 12 identities (16 findings) gone — 5 identities / 8 findings on
+`slop-family/` (planned), 6 / 7 on the superseded "SLOP-FAMILY.md" (Q1c), and 1 / 1 GAPS anchor. This is not
 a pass: the gate is red, and the story neither caused nor owns the survivors. The automated record's
 generated block is expected to add one identity (F-015).
 
@@ -155,9 +155,13 @@ walked.
 - [x] Accessibility observations confirmed against the build (N/A, no rendered surface)
 - [x] GDPR & security observations confirmed (or N/A recorded)
 - [x] Coverage floors met for all modules in scope (no module in scope)
-- [ ] Manual testing sign-off (see `../../18-TESTS/MANUAL/US002-MANUAL-TESTING.md`).
-      **Failed**: 35 Pass, 1 Fail (OPS-01), 4 amended (F-002 to F-005). Held on Sam's decision for F-001
-- [ ] Reviewer approval — **blocks merge until complete**. Pending Sam, verified at `23-pr-and-review`
+- [x] Manual testing sign-off (see `../../18-TESTS/MANUAL/US002-MANUAL-TESTING.md`).
+      **The walk failed one row**: 35 Pass, 1 Fail (OPS-01), 4 amended (F-002 to F-005). Signed off by
+      Sam on 03/11/2026 in session, **accepting OPS-01 / F-001 as a known Fail** — the Playwright
+      install instruction stays in `code/src/scripts/audits/CONTEXT.md` as a `playwright-pin.sh` pin
+      site, routed to the `GAPS.md` entry. The tick records that acceptance, not a pass
+- [x] Reviewer approval — Sam, 03/11/2026 in session, at `23-pr-and-review`, accepting OPS-01 / F-001
+      as above and the review-held ceilings (F-008)
 
 ---
 
