@@ -82,7 +82,7 @@ guide that every pointer reaches.
 | ID      | Title                                                                                                          | MoSCoW    | SP  |
 | ------- | -------------------------------------------------------------------------------------------------------------- | --------- | --- |
 | US007 ✓ | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Must Have | 5   |
-| US001   | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Must Have | 5   |
+| US001 ✓ | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Must Have | 5   |
 
 **Total:** 10 SP — all committed, no stretch tier; rows listed in build order. **The all-`Must`
 shape is this sprint's known weakness**; see Notes.

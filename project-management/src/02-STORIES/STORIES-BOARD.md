@@ -12,8 +12,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Open              | 0     |
 | Pending           | 8     |
 | In Progress       | 0     |
-| In Review         | 1     |
-| Accepted          | 1     |
+| In Review         | 0     |
+| Accepted          | 2     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
 | Rejected          | 0     |
@@ -45,14 +45,13 @@ _None._
 
 ## In Review
 
-| ID    | Title                                                                   | Status    | File                 |
-| ----- | ----------------------------------------------------------------------- | --------- | -------------------- |
-| US001 | Reliability doctrine gets an owning guide, and every pointer reaches it | In Review | [US001.md](US001.md) |
+_None._
 
 ## Accepted
 
 | ID    | Title                                                                                                          | Status   | File                 |
 | ----- | -------------------------------------------------------------------------------------------------------------- | -------- | -------------------- |
+| US001 | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Accepted | [US001.md](US001.md) |
 | US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Accepted | [US007.md](US007.md) |
 
 ## Customer Review
