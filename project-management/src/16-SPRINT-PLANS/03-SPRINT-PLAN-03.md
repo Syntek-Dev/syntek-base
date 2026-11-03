@@ -303,8 +303,8 @@ re-measured rather than inherited, which US004's own acceptance already requires
 
 **Two touch-points are ordered rather than blocked, and both now run SPRINT-02 → SPRINT-03.**
 
-- **US002's headroom.** US002 shrinks `code/src/scripts/audits/CONTEXT.md` from **298 to 230
-  counted lines**, and US004 replaces text **within** that file's `doc-references.sh` row against a
+- **US002's headroom.** US002 shrinks `code/src/scripts/audits/CONTEXT.md` to **230 counted
+  lines**, and US004 replaces text **within** that file's `doc-references.sh` row against a
   300-line hard limit — `AC-GAP-9` of `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md`.
   `02-SPRINT-PLAN-02.md` argued this on 05/09/2026 as "SPRINT-01 before SPRINT-02"; it is now
   "SPRINT-02 before SPRINT-03", the same direction one sprint later on each side. If US002 has
@@ -701,7 +701,7 @@ apply throughout, from `code/docs/GATE-REPORTING.md`:
 - **`doc-references.sh` never reports a plain pass here.** Findings survive US004 whatever it
   does, and **which survivors stand is a fact about the build order, which has changed under this
   plan.** The six known at US004's cutting — three citations of `code/docs/ABSENCE.md` owned by
-  US003, three of `code/src/scripts/audits/SLOP-FAMILY.md` owned by US002 — belong to stories now
+  US003, three of "code/src/scripts/audits/SLOP-FAMILY.md" owned by US002 — belong to stories now <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. -->
   scheduled **ahead** of this sprint in SPRINT-02, so if SPRINT-02 completed in full they have
   cleared before US004 is worked, and if US003 slipped here its three stand until it lands. Two
   classes this order cannot clear: US006's forward references to
@@ -750,8 +750,8 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       every new fixture case shown to fail against the pre-change script
 - [ ] `docs-length.sh` — `how-to/src/PROJECT-PATHS.md` and `code/docs/FORWARD-VOICE.md`, the files
       US004 grows, do not enter the warn tier without a dated allowance;
-      `code/src/scripts/audits/CONTEXT.md` is not grown while at 298 unless US002 has landed and
-      built the headroom
+      `code/src/scripts/audits/CONTEXT.md` is not grown, as the gate measures it, unless US002 has
+      landed and built the headroom <!-- UPDATED 03/11/2026 (US002 Step H): this check read "is not grown while at 298", and Dependencies "from **298 to 230 counted lines**", until then. A standing guard on that file cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. -->
 - [ ] `doctrine-drift.sh` — regression only; US004 adds no claims row
 - [ ] `docs-pairing.sh` — regression only; US004 creates no directory
 - [ ] `routing-skills.sh` and `skill-conformance.sh` — **N/A since 07/09/2026**; they entered this

@@ -101,10 +101,11 @@ because it was what was decided that day.
 **S-01's refusal code moved from 2 to 4 at `02-story-creation`, 05/09/2026.** The cell as
 charted said an unreadable carrier "dies at exit 2". Two things changed at grilling. The failure
 set widened — fail-closed means an absent carrier, an absent key and an unrecognised value refuse
-too, not only an unreadable one — and the code moved, because `audits/CONTEXT.md:275` defines 2 as
+too, not only an unreadable one — and the code moved, because `audits/CONTEXT.md` → _Exit Codes_ defines 2 as
 _bad arguments_ and a correct command refused on policy is not a bad argument. 4 is declared in
 each guarded script's own header, on the precedent of the syntax family's 3. This is a divergence
 settled at grilling, not a measurement error.
+<!-- UPDATED 03/11/2026 (US002 Step H): cited "`audits/CONTEXT.md:275`" until then; a section name survives the next registering story, a line anchor does not. -->
 
 **S-01 widened by one caller, same session.** `.github/workflows/test-e2e.yml:133` runs
 `development/server.sh down --volumes || true`. It is a shipped caller of a guarded script,

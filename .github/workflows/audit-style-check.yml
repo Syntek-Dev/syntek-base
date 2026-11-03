@@ -1,7 +1,7 @@
 # DESKTOP-ONLY. AI-slop audit — the Slint leg, and the fourth member of the family split
-# by input language (code/src/scripts/audits/CONTEXT.md → The AI-slop family). Its input
-# is neither CSS, markup nor prose but BUILD CONFIGURATION, which is why it is the one leg
-# living outside audits/, in code/src/scripts/desktop/.
+# by input language (code/src/scripts/audits/slop-family/CONTEXT.md → Why four scripts
+# and not one). Its input is neither CSS, markup nor prose but BUILD CONFIGURATION, which
+# is why it is the one leg living outside audits/, in code/src/scripts/desktop/.
 #
 # This workflow is copier-excluded when INCLUDE_DESKTOP is false, alongside the script it
 # runs — a workflow that ships without its script is a permanently-red job on every

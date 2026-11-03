@@ -288,7 +288,7 @@ found: $ENV_FILE"` at `development/server.sh:100` and `tests/server.sh:91`, byte
   clause, the fifth refuse state and the exit code; the third ADR joins the Decisions block. Added
   on 05/09/2026.
 - **AC-GAP-18** `[RESOLVED]` — **"298 lines" is true only under one tool, and the story names
-  none.** `code/src/scripts/audits/CONTEXT.md` is 298 lines under `docs-length.sh`, which measures
+  none.** `code/src/scripts/audits/CONTEXT.md` was 298 lines on 05/09/2026 under `docs-length.sh`, which measures
   `cloc` **code** lines with blanks and HTML comments excluded; `wc -l` on the same file returns
   **357**. The story states the bare number in two places, and the Dependencies one is standalone
   with no tool named — a 59-line discrepancy against the obvious tool, on a file US006 commits not
@@ -498,8 +498,8 @@ zero is never reported as the gate passing.
   five refusing paths) and the proof-case list (twenty-one) are each stated once and cited everywhere
   else. If a later gate binds a seventh script, change the table and the list — not the fifteen
   places that used to carry the number, which is how AC-GAP-2 happened.
-- **`wc -l` is not the length gate's measure.** `code/src/scripts/audits/CONTEXT.md` is 298 code
-  lines and 357 file lines. Run `docs-length.sh` and read its number (AC-GAP-18).
+- **`wc -l` is not the length gate's measure.** `code/src/scripts/audits/CONTEXT.md` read 298 code
+  lines and 357 file lines on 05/09/2026. Run `docs-length.sh` and read its number (AC-GAP-18). <!-- UPDATED 03/11/2026 (US002 Step H): this bullet read "is 298 code lines and 357 file lines", and AC-GAP-18 "is 298 lines under docs-length.sh", undated, until then. A standing guard on code/src/scripts/audits/CONTEXT.md cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. -->
 - **No pytest, no coverage figure, no migration check.** The story's Verification Checks mark each
   `N/A` with its reason and the test record must do the same rather than leave them blank.
 

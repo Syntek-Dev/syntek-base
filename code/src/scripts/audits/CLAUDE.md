@@ -119,9 +119,9 @@ audit. Full inventory: `CONTEXT.md`.
   any of them. A new clause joins the script matching its input, or gets a new sibling; the
   desktop leg stays at `../desktop/style-check.sh`. **`render-slop.sh` is the one member that
   input language does not place** — it reads the same HTML as the markup leg — and the second axis
-  is stated in `CONTEXT.md` rather than left as a silent exception: its clause does not exist until
-  the input is **rendered**. Keep the browser dependency in that script alone; folding it into
-  `template-slop.sh` would put a Chromium download on every template change.
+  is stated in `slop-family/CONTEXT.md` rather than left as a silent exception: its clause does
+  not exist until the input is **rendered**. Keep the browser dependency in that script alone;
+  folding it into `template-slop.sh` would put a Chromium download on every template change.
 - **A gate you have never watched fail is not a gate.** `render-slop.sh --self-test` renders a
   known-positive and a known-negative screen and asserts it separates them, because this template
   ships no consolidated wireframes and its ordinary run would otherwise be green for the whole
@@ -171,7 +171,7 @@ audit. Full inventory: `CONTEXT.md`.
   metrics, two scripts: `cloc.sh` counts total `wc -l` against 750/800 on source,
   `docs-length.sh` counts cloc code lines against 300 on instruction. Route a length question
   by which of those it is, and never answer it with the wrong script — that is the exact defect
-  `docs-length.sh` was written to close (`CONTEXT.md` → _Markdown: two limits, two scripts_).
+  `docs-length.sh` was written to close (`code/docs/DOCUMENTATION-LENGTH.md` Section 7).
 
 ## Output & naming
 
