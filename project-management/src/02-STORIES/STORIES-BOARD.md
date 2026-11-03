@@ -12,8 +12,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Open              | 0     |
 | Pending           | 9     |
 | In Progress       | 0     |
-| In Review         | 1     |
-| Accepted          | 0     |
+| In Review         | 0     |
+| Accepted          | 1     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
 | Rejected          | 0     |
@@ -46,13 +46,13 @@ _None._
 
 ## In Review
 
-| ID    | Title                                                                                                          | Status    | File                 |
-| ----- | -------------------------------------------------------------------------------------------------------------- | --------- | -------------------- |
-| US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | In Review | [US007.md](US007.md) |
+_None._
 
 ## Accepted
 
-_None._
+| ID    | Title                                                                                                          | Status   | File                 |
+| ----- | -------------------------------------------------------------------------------------------------------------- | -------- | -------------------- |
+| US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Accepted | [US007.md](US007.md) |
 
 ## Customer Review
 

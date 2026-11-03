@@ -1,6 +1,6 @@
 # SPRINT-01
 
-**Last Updated**: 02/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 03/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -79,10 +79,10 @@ guide that every pointer reaches.
 
 ## Story Summary
 
-| ID    | Title                                                                                                          | MoSCoW    | SP  |
-| ----- | -------------------------------------------------------------------------------------------------------------- | --------- | --- |
-| US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Must Have | 5   |
-| US001 | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Must Have | 5   |
+| ID      | Title                                                                                                          | MoSCoW    | SP  |
+| ------- | -------------------------------------------------------------------------------------------------------------- | --------- | --- |
+| US007 ✓ | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Must Have | 5   |
+| US001   | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Must Have | 5   |
 
 **Total:** 10 SP — all committed, no stretch tier; rows listed in build order. **The all-`Must`
 shape is this sprint's known weakness**; see Notes.

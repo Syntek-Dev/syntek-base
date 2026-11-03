@@ -12,8 +12,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Open              | 0     |
 | Pending           | 9     |
 | In Progress       | 0     |
-| In Review         | 1     |
-| Accepted          | 0     |
+| In Review         | 0     |
+| Accepted          | 1     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
 | Rejected          | 0     |
@@ -46,13 +46,13 @@ _None._
 
 ## In Review
 
-| Plan                | Story                           | Title                                                                                                          | Status    | File                                                                                                     |
-| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------- |
-| 01-STORY-PLAN-US007 | [US007](../02-STORIES/US007.md) | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | In Review | [01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md](01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md) |
+_None._
 
 ## Accepted
 
-_None._
+| Plan                | Story                           | Title                                                                                                          | Status   | File                                                                                                     |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------- |
+| 01-STORY-PLAN-US007 | [US007](../02-STORIES/US007.md) | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Accepted | [01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md](01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md) |
 
 ## Customer Review
 
