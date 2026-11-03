@@ -24,7 +24,8 @@ audit. Full inventory: `CONTEXT.md`.
   and to run an audit.
 - **Concrete steps:** invoke the audit → fix real findings in source, **never** by
   loosening a threshold to pass → re-run until clean → keep `security.sh` at
-  `pip-audit` for CI parity (`uv audit` is a different, experimental tool).
+  `pip-audit` for CI parity (`uv audit` is a different, experimental tool). Run
+  `template-orphans.sh` after every template update.
 - **Adding an audit:** derive it from a stated rule in a `docs/` guide, never from taste →
   decide its **input language** first, because that decides which script it joins and which CI
   path filter fires → give every clause a tier the guide also carries → add the row to
