@@ -40,35 +40,13 @@ Django views that return HTML. Ninja auto-generates OpenAPI docs at `/api/docs`.
 
 ## Background Jobs and Queues (Celery)
 
-Move slow or unreliable work out of the request/response cycle:
+**Failed jobs must be logged and monitored.** A failed job that nobody notices is worse than no
+job: the request that queued it already returned success, so the queue is the only place the
+failure exists. Error tracking and alert routing are [`../LOGGING.md`](../LOGGING.md).
 
-- **Email sending** — queue it. A failed email send should not fail the user's request.
-- **Webhook delivery** — queue with retries and exponential back-off.
-- **Report generation** — queue and notify the user when complete.
-- **Image processing** — hand to Cloudinary, or queue and serve a placeholder until ready.
-- **Third-party API calls** — queue if the response is not needed immediately.
-
-**Django (Celery):**
-
-```python
-from celery import shared_task
-
-
-@shared_task(bind=True, max_retries=3, default_retry_delay=60)
-def send_order_confirmation(self, order_id: int) -> None:
-    try:
-        order = Order.objects.select_related("customer").get(id=order_id)
-        send_mail(...)
-    except Exception as exc:
-        self.retry(exc=exc)
-```
-
-**Rules:**
-
-- Every queued job must be idempotent. If it runs twice, the result is the same as running once.
-- Every queued job must have a `max_retries` and a `backoff` strategy.
-- Failed jobs must be logged and monitored. A failed job that nobody notices is worse than no job.
-- Do not pass large objects to queued jobs. Pass IDs and let the job fetch the data.
+This section is the monitoring residue of the background-job doctrine. Whether work belongs on a queue, and how a
+task is written, is [`../TASK-AUTHORING.md`](../TASK-AUTHORING.md); whether a retry is safe and
+how it backs off is [`../RELIABILITY.md`](../RELIABILITY.md).
 
 ---
 
@@ -139,7 +117,7 @@ Before deploying performance-sensitive changes:
 - [ ] Images are delivered via Cloudinary (`f_auto`/`q_auto`), responsive sizes, `loading="lazy"`
       below the fold
 - [ ] HTMX responses return the smallest partial; chatty triggers are debounced
-- [ ] Background jobs are idempotent with retries and back-off
+- [ ] Background jobs are idempotent with retries and back-off ([`../RELIABILITY.md`](../RELIABILITY.md))
 - [ ] Database connection pooling is configured
 - [ ] API responses are compressed (gzip/Brotli)
 - [ ] Core Web Vitals targets are met (LCP < 2.5s, INP < 200ms, CLS < 0.1)

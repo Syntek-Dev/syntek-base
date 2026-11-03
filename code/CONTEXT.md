@@ -31,6 +31,7 @@ code/
 │   ├── MCP-SERVER.md                (sub-docs: mcp-server/) ← FastMCP tools at /mcp/
 │   ├── NEGATIVE-SPACE.md            ← invariant classes, one enforcement point, the error taxonomy, the guard clause
 │   ├── PERFORMANCE.md               (sub-docs: performance/)
+│   ├── RELIABILITY.md               (sub-docs: reliability/) ← retries and idempotency, every surface
 │   ├── RENDERING.md                 (sub-docs: rendering/)
 │   ├── RESPONSIVE-DESIGN.md         (sub-docs: responsive/)
 │   ├── RLS-GUIDE.md                 (sub-docs: rls/)
@@ -124,6 +125,7 @@ Each workflow folder holds CONTEXT.md · STEPS.md · CHECKLIST.md · CLAUDE.md.
 | `docs/MCP-SERVER.md`            | Before exposing anything to an LLM agent (the FastMCP `/mcp/` surface)                                                         |
 | `docs/NEGATIVE-SPACE.md`        | Before adding a constraint or a guard — where an invariant is enforced, and how it fails. **`assert` is banned outside tests** |
 | `docs/TASK-AUTHORING.md`        | Before moving any work off the request cycle into a background task                                                            |
+| `docs/RELIABILITY.md`           | Before retrying a failed call, or writing anything that may run twice — a task, a webhook, a client, a command                 |
 | `docs/MANAGEMENT-COMMANDS.md`   | Before writing any `manage.py` command — arguments are untrusted, and the exit code is the taxonomy                            |
 | `docs/PROCESS-MODEL.md`         | Before choosing sync vs async, or adding any process beyond the web one                                                        |
 | `docs/OBJECT-STORAGE.md`        | Before storing a private document or issuing a presigned URL                                                                   |

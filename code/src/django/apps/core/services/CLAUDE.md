@@ -33,8 +33,8 @@ decide how every failure in this codebase is classified.
 - **`DependencyUnavailable` is raised in the adapter, never in a service method.** Only the
   adapter knows which of a provider SDK's exceptions mean "the network"
   (`code/docs/architecture/PROVIDER-NEUTRALITY.md`).
-- Retry, backoff and circuit-breaker behaviour is **not** decided here — that is
-  `code/docs/TASK-AUTHORING.md` and `architecture/SERVICE-AND-MIDDLEWARE.md`.
+- Retry, backoff and circuit-breaker behaviour is **not** decided here — retries and backoff are
+  `code/docs/RELIABILITY.md`, circuit breakers `architecture/SERVICE-AND-MIDDLEWARE.md`.
 - Files ≤ 750 lines (800 grace).
 
 ## Output & naming

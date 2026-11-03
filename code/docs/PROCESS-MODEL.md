@@ -163,10 +163,10 @@ When the first feature needs one, it is a **separate process family**, not anoth
   other synchronous I/O, and it can fail: a broker outage must not become a 500 on a request that
   had otherwise succeeded.
 
-Task content rules (idempotency, retries and back-off, passing IDs rather than objects) belong to
-[`performance/API-AND-MONITORING.md`](performance/API-AND-MONITORING.md) → _Background Jobs and
-Queues_. The first-start review, which is the gate that actually matters because a dormant
-schedule fires against the whole historical backlog, is
+Task content rules — passing IDs rather than objects among them — belong to
+[`TASK-AUTHORING.md`](TASK-AUTHORING.md); whether a retry is safe and how it backs off belongs to
+[`RELIABILITY.md`](RELIABILITY.md). The first-start review, which is the gate that actually
+matters because a dormant schedule fires against the whole historical backlog, is
 [`../../how-to/docs/CELERY-FIRST-RUN.md`](../../how-to/docs/CELERY-FIRST-RUN.md).
 
 ## Choosing where work runs
@@ -212,8 +212,10 @@ from spare capacity.
 - [`DATABASE.md`](DATABASE.md): connection arithmetic, the pooler trigger, backfills as jobs
 - [`BACKEND-CODING-PRINCIPLES.md`](BACKEND-CODING-PRINCIPLES.md): Django, Python and Celery
   authoring style
-- [`performance/API-AND-MONITORING.md`](performance/API-AND-MONITORING.md): queued-job content
-  rules and monitoring
+- [`TASK-AUTHORING.md`](TASK-AUTHORING.md): queued-job content rules
+- [`RELIABILITY.md`](RELIABILITY.md): retry and idempotency doctrine, across every surface
+- [`performance/API-AND-MONITORING.md`](performance/API-AND-MONITORING.md): failed-job
+  monitoring
 - [`architecture/CORE-AND-SCALING.md`](architecture/CORE-AND-SCALING.md): the scaling
   phase-gates these process decisions are sized against
 - [`logging/OBSERVABILITY.md`](logging/OBSERVABILITY.md): the log legs per container, including

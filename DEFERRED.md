@@ -17,6 +17,19 @@ unrelated). **A row a map claims, or a story is cut carrying, leaves this file i
 
 ---
 
+## US001 — Reliability doctrine gets an owning guide
+
+Deferred 03/11/2026 at `22-implementation-documentation`, from
+"project-management/src/20-FINDINGS/FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md".
+
+| Item                                                                                                                                                                                                                                                                                                      | Finding | Target |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------ |
+| `code/docs/TASK-AUTHORING.md` → _Retries and backoff_ is now a route that lists the retry doctrine's topics. Once `code/docs/reliability/RETRIES.md` has grown, accept the list as written or trim it to a bare route                                                                                     | F-004   | US005  |
+| `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` → _Background Job Patterns_ → _Rules_ states "Failed jobs must be monitored", duplicating the failed-job visibility `code/docs/performance/API-AND-MONITORING.md` keeps. Reduce the line to a route there; no map slice schedules it                   | F-005   | US005  |
+| `code/docs/TASK-AUTHORING.md` → _Testing without a broker_ states "Retry behaviour is tested by classification, not by waiting", a cross-surface retry rule outside US001's inventoried sections. Inventory it and decide its home                                                                        | F-006   | US005  |
+| Find the pointers to a doctrine's old home by a whole-tree grep for its path and section names at the first build step, and record the hit list beside the inventory — US001's enumerated three missed five                                                                                               | F-008   | US005  |
+| US005's line citations into `code/docs/TASK-AUTHORING.md` and `code/docs/performance/API-AND-MONITORING.md` (TA:204, AM:46, AM:57, AM:142) predate US001's edits to both. Re-resolve each by its quoted text before any edit; AM:57 was the `max_retries=3` sample US001 deleted (its inventory row A-07) | F-010   | US005  |
+
 ## US007 — The story status vocabulary gets one owner
 
 Deferred 02/11/2026 at the `23-pr-and-review` final pass, from
@@ -26,4 +39,3 @@ Deferred 02/11/2026 at the `23-pr-and-review` final pass, from
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------ |
 | Line citations into US007's story file past its line 306 were already stale at `777595f` and land in its superseded criteria (US008's at its line 230). Re-resolve each by its quoted text at the build's first step, and repoint it to a heading or to the re-cut | F-007   | US008  |
 | Line citations into US007's story file past its line 306 were already stale at `777595f` (US011's QA plan, at its lines 481, 573 and 578). Re-resolve each by its quoted text at the build's first step, and repoint it to a heading or to the re-cut              | F-007   | US011  |
-| A release that changes a planned story's subject leaves the story's criteria stale until its build. At the build's first step, check whether a release since the plan was written changed the story's subject; if it did, re-cut the story before any edit         | F-013   | US001  |
