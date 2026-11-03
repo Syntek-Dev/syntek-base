@@ -9,8 +9,8 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 
 | Column      | Items |
 | ----------- | ----- |
-| Planned     | 7     |
-| In Progress | 1     |
+| Planned     | 6     |
+| In Progress | 2     |
 | Done        | 0     |
 | Closed      | 0     |
 
@@ -18,7 +18,6 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 
 | ID        | Title                                                                                                                                                                                       | Status  | File                         |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------- |
-| SPRINT-02 | The audits register regains the headroom nine new gates need, and the absence guide is born behind it                                                                                       | Planned | [SPRINT-02.md](SPRINT-02.md) |
 | SPRINT-03 | The citation gate gives one verdict on one sentence whichever side of the git index its file sits, and the project-management tree it could never read becomes checkable                    | Planned | [SPRINT-03.md](SPRINT-03.md) |
 | SPRINT-04 | Retry doctrine gets its single owner, and the posture rule gets a guard                                                                                                                     | Planned | [SPRINT-04.md](SPRINT-04.md) |
 | SPRINT-05 | The cookie doctrine lands and the git hooks arm on purpose                                                                                                                                  | Planned | [SPRINT-05.md](SPRINT-05.md) |
@@ -28,9 +27,10 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 
 ## In Progress
 
-| ID        | Title                                                                               | Status      | File                         |
-| --------- | ----------------------------------------------------------------------------------- | ----------- | ---------------------------- |
-| SPRINT-01 | Two rules get exactly one owner each before anything downstream writes against them | In Progress | [SPRINT-01.md](SPRINT-01.md) |
+| ID        | Title                                                                                                 | Status      | File                         |
+| --------- | ----------------------------------------------------------------------------------------------------- | ----------- | ---------------------------- |
+| SPRINT-01 | Two rules get exactly one owner each before anything downstream writes against them                   | In Progress | [SPRINT-01.md](SPRINT-01.md) |
+| SPRINT-02 | The audits register regains the headroom nine new gates need, and the absence guide is born behind it | In Progress | [SPRINT-02.md](SPRINT-02.md) |
 
 ## Done
 

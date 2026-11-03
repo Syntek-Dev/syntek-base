@@ -1,6 +1,6 @@
 # SPRINT-02
 
-**Last Updated**: 31/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 03/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -19,7 +19,7 @@ born behind it.
      to SPRINT-03. A goal naming a deliverable no member carries is the drift the Story Summary
      exists to prevent. -->
 
-**Status:** Planned
+**Status:** In Progress
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->

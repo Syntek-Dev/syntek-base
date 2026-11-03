@@ -9,8 +9,8 @@ One row per sprint plan in `16-SPRINT-PLANS/` and `16-SPRINT-PLANS/archive/`, fi
 
 | Column      | Items |
 | ----------- | ----- |
-| Planned     | 7     |
-| In Progress | 1     |
+| Planned     | 6     |
+| In Progress | 2     |
 | Done        | 0     |
 | Closed      | 0     |
 
@@ -18,7 +18,6 @@ One row per sprint plan in `16-SPRINT-PLANS/` and `16-SPRINT-PLANS/archive/`, fi
 
 | Plan              | Sprint                                  | Title                                                                                                        | Status  | File                                         |
 | ----------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------- | -------------------------------------------- |
-| 02-SPRINT-PLAN-02 | [SPRINT-02](../03-SPRINTS/SPRINT-02.md) | The audits register regains its headroom, and the absence guide is born behind it                            | Planned | [02-SPRINT-PLAN-02.md](02-SPRINT-PLAN-02.md) |
 | 03-SPRINT-PLAN-03 | [SPRINT-03](../03-SPRINTS/SPRINT-03.md) | The citation gate stops depending on the git index, and the PM tree becomes checkable                        | Planned | [03-SPRINT-PLAN-03.md](03-SPRINT-PLAN-03.md) |
 | 04-SPRINT-PLAN-04 | [SPRINT-04](../03-SPRINTS/SPRINT-04.md) | Retry doctrine gets its single owner, and the posture rule gets a guard                                      | Planned | [04-SPRINT-PLAN-04.md](04-SPRINT-PLAN-04.md) |
 | 05-SPRINT-PLAN-05 | [SPRINT-05](../03-SPRINTS/SPRINT-05.md) | The cookie doctrine lands with its advisory reaching a real operator, and the git hooks arm on purpose       | Planned | [05-SPRINT-PLAN-05.md](05-SPRINT-PLAN-05.md) |
@@ -28,9 +27,10 @@ One row per sprint plan in `16-SPRINT-PLANS/` and `16-SPRINT-PLANS/archive/`, fi
 
 ## In Progress
 
-| Plan              | Sprint                                  | Title                                                            | Status      | File                                         |
-| ----------------- | --------------------------------------- | ---------------------------------------------------------------- | ----------- | -------------------------------------------- |
-| 01-SPRINT-PLAN-01 | [SPRINT-01](../03-SPRINTS/SPRINT-01.md) | Two rules get one owner each before anything writes against them | In Progress | [01-SPRINT-PLAN-01.md](01-SPRINT-PLAN-01.md) |
+| Plan              | Sprint                                  | Title                                                                             | Status      | File                                         |
+| ----------------- | --------------------------------------- | --------------------------------------------------------------------------------- | ----------- | -------------------------------------------- |
+| 01-SPRINT-PLAN-01 | [SPRINT-01](../03-SPRINTS/SPRINT-01.md) | Two rules get one owner each before anything writes against them                  | In Progress | [01-SPRINT-PLAN-01.md](01-SPRINT-PLAN-01.md) |
+| 02-SPRINT-PLAN-02 | [SPRINT-02](../03-SPRINTS/SPRINT-02.md) | The audits register regains its headroom, and the absence guide is born behind it | In Progress | [02-SPRINT-PLAN-02.md](02-SPRINT-PLAN-02.md) |
 
 ## Done
 

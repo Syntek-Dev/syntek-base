@@ -10,8 +10,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 9     |
-| In Progress       | 0     |
+| Pending           | 8     |
+| In Progress       | 1     |
 | In Review         | 0     |
 | Accepted          | 2     |
 | Customer Review   | 0     |
@@ -30,7 +30,6 @@ _None._
 
 | ID    | Title                                                                                                                      | Status  | File                 |
 | ----- | -------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
-| US002 | The audits register regains the headroom nine new gates need                                                               | Pending | [US002.md](US002.md) |
 | US003 | Absence gets an owning guide, born under 270 with every clause's tier stated                                               | Pending | [US003.md](US003.md) |
 | US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable                                      | Pending | [US004.md](US004.md) |
 | US006 | The destructive dev scripts read the deployment posture, and refuse to run above development                               | Pending | [US006.md](US006.md) |
@@ -42,7 +41,9 @@ _None._
 
 ## In Progress
 
-_None._
+| ID    | Title                                                        | Status      | File                 |
+| ----- | ------------------------------------------------------------ | ----------- | -------------------- |
+| US002 | The audits register regains the headroom nine new gates need | In Progress | [US002.md](US002.md) |
 
 ## In Review
 
