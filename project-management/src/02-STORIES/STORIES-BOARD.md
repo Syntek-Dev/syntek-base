@@ -10,7 +10,7 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 8     |
+| Pending           | 9     |
 | In Progress       | 0     |
 | In Review         | 0     |
 | Accepted          | 2     |
@@ -18,7 +18,7 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Customer Accepted | 0     |
 | Rejected          | 0     |
 | Customer Rejected | 0     |
-| Blocked           | 4     |
+| Blocked           | 3     |
 | Completed         | 0     |
 | Closed            | 0     |
 
@@ -30,6 +30,7 @@ _None._
 
 | ID    | Title                                                                                                                      | Status  | File                 |
 | ----- | -------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
+| US002 | The audits register regains the headroom nine new gates need                                                               | Pending | [US002.md](US002.md) |
 | US003 | Absence gets an owning guide, born under 270 with every clause's tier stated                                               | Pending | [US003.md](US003.md) |
 | US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable                                      | Pending | [US004.md](US004.md) |
 | US006 | The destructive dev scripts read the deployment posture, and refuse to run above development                               | Pending | [US006.md](US006.md) |
@@ -74,7 +75,6 @@ _None._
 
 | ID    | Title                                                                                                    | Status  | File                 |
 | ----- | -------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
-| US002 | The audits register regains the headroom nine new gates need                                             | Blocked | [US002.md](US002.md) |
 | US005 | Exactly one layer decides to retry, and every budget says how long it may take                           | Blocked | [US005.md](US005.md) |
 | US011 | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Blocked | [US011.md](US011.md) |
 | US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label             | Blocked | [US014.md](US014.md) |
