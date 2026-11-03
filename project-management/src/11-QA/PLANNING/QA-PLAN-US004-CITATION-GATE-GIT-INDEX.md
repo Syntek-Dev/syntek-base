@@ -41,7 +41,7 @@ before the sprint plan locks scope. Sign-off is <%DEVELOPER_NAME%>'s.
 - **AC-GAP-3** `[RESOLVED]` — **"the run exits 0" cannot be satisfied by a correct
   implementation.** Six findings survive US004 whatever it does: three citations of
   `code/docs/ABSENCE.md` belonging to US003, and three of
-  "code/src/scripts/audits/SLOP-FAMILY.md" belonging to the parallel session's US002 ADRs. This <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. -->
+  "code/src/scripts/audits/SLOP-FAMILY.md" belonging to the parallel session's US002 ADRs. This <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
   is `project-management/src/11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` AC-GAP-2
   recurring one story later. **The criterion is restated as a class delta** — no finding of the
   classes this story owns remains, and every survivor is named with the story that owns it, per

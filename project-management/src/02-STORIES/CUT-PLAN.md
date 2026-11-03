@@ -339,11 +339,11 @@ rung-record item is a `GAPS.md` entry). The gate is `## Gate to authoring` (:574
 box (:593-600). Its links box is unticked too (:606-607); it does not gate the map either, because
 S-03's story writes the pending links (17/10/2026). US002 was cut from S-04's Flags precondition;
 S-04 itself is uncut. **Map fixes owed at the first cut:** S-04's literal "298/300" (:366), which
-the 17/09/2026 headroom finding names (carried by US002 since 01/11/2026; dated 03/11/2026 by US002 Step H); "seven slices" where the
-map cuts eight (:355, :416, :587, :607); and :75's "no story has been cut from this map". S-05's e2e
-engine matrix runs on the Playwright pin whose Chromium this host no longer roots
-(MAP-NATIVE-DESIGN-TIER's N-013 note, from `GAPS.md` 09/10/2026), which constrains its build, not
-its status.
+the 17/09/2026 headroom finding names — carried by US002 since 01/11/2026, and given its
+measurement date there on 03/11/2026 (US002 Step H); "seven slices" where the map cuts eight
+(:355, :416, :587, :607); and :75's "no story has been cut from this map". S-05's e2e engine matrix
+runs on the Playwright pin whose Chromium this host no longer roots (MAP-NATIVE-DESIGN-TIER's
+N-013 note, from `GAPS.md` 09/10/2026), which constrains its build, not its status.
 
 | Order | Slice(s)                      | Working title                                                | SP  | MoSCoW        | Depends on                                                                                                                                 | Status                                          | Story            |
 | ----- | ----------------------------- | ------------------------------------------------------------ | --- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------- | ---------------- |

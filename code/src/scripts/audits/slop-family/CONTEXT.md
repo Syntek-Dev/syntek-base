@@ -41,7 +41,7 @@ clean. So the axis is: split by input language, **plus one member split by wheth
 be rendered before the clause exists**.
 
 That is also why it is a separate script rather than a leg inside the markup half. It needs a
-browser and a downloaded Chromium — a dependency class nothing else in this folder carries — and
+browser and a downloaded Chromium — a dependency class nothing else in the family carries — and
 folding it in would put that cost on every template change and take `template-slop.sh` from
 `find` + `awk` with no dependencies to something that can fail on a missing binary. It stays
 **self-guarding** instead: no browser, no consolidated wireframes, exit 0 with a note.
@@ -71,27 +71,28 @@ per story and is frozen once workflow `18` runs, while the clauses that matter m
 4.1's repetition tell and Section 4.2's rhythm clause — are properties of a page **set**. The
 consolidated folder is the only place the whole set exists at once, and it exists there before any
 code, which is the one point where a page-set judgement is cheap. That closes the gap
-`code-reviewer.md` names and cannot reach from a diff — the rhythm half statically, in
-`css-slop.sh`, and the repetition half only once rendered, in `render-slop.sh`.
+`.claude/skills/code-reviewer/SKILL.md` names and cannot reach from a diff — the rhythm half
+statically, in `css-slop.sh`, and the repetition half only once rendered, in `render-slop.sh`.
 
 `06-BRAND-GUIDE` and `07-COMPONENTS` get no scope for the same input-language reason: they hold
 `.tex`, `.py` and `.pdf`, which none of these scripts reads.
 
 ## The `slop-allow` annotation, by member
 
-Every script in the family reads the same annotation. The tiers each clause carries, the qualified
-form and why a warning is annotatable at all are `code/docs/VISUAL-DESIGN.md` Section 6's; what
-this family adds is which member each scope row serves:
+Every script in the family reads the same annotation. Its three scopes — a line, a file naming the
+clause, the screen set — and the tiers, the qualified form and why a warning is annotatable at all
+are `code/docs/VISUAL-DESIGN.md` Section 6's, and are not repeated here. What this family adds is
+which member takes which scope, for which clauses:
 
-| Finding                                     | Where the annotation goes                    | Member                         |
-| ------------------------------------------- | -------------------------------------------- | ------------------------------ |
-| Has a line — either tier                    | that line, or the line above                 | the CSS, markup and prose legs |
-| A ratio or a count, decided across a file   | anywhere in that file, **naming the clause** | the CSS and markup legs        |
-| Geometry, decided across the **screen set** | anywhere in **any one member screen**        | `render-slop.sh` alone         |
+| Member             | A line            | A file, naming the clause                        | The screen set       |
+| ------------------ | ----------------- | ------------------------------------------------ | -------------------- |
+| `css-slop.sh`      | every line clause | the four ratios                                  | —                    |
+| `template-slop.sh` | every line clause | `pill-above-heading`, `undifferentiated-buttons` | —                    |
+| `copy-slop.sh`     | every line clause | `exclamation-count`                              | —                    |
+| `render-slop.sh`   | —                 | `repeated-device`, in the screen that carries it | `repeated-signature` |
 
-Both of `render-slop.sh`'s clauses take the third row: `repeated-device` has no line, and
-`repeated-signature` has no single file either. The desktop leg uses `style-allow`, its own name,
-because it has exactly one clause (`../../desktop/CONTEXT.md`).
+`render-slop.sh` takes no line scope — a rendered finding has no line. The desktop leg uses
+`style-allow`, its own name, because it has exactly one clause (`../../desktop/CONTEXT.md`).
 
 ## Cross-references
 

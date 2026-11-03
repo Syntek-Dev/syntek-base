@@ -581,7 +581,7 @@ repair the third is a sprint away.** Three rules apply throughout, from `code/do
   member captures before its first edit. The survivors are named with their owners, and **both
   classes are this sprint's**: the forward references to `code/docs/ABSENCE.md` — three in US003's
   own artefact, and more in every record that has since named the guide — clear the moment US003's
-  guide lands; the citations of "code/src/scripts/audits/SLOP-FAMILY.md" are US002's to disposition <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. -->
+  guide lands; the citations of "code/src/scripts/audits/SLOP-FAMILY.md" are US002's to disposition <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
   when it ships, and they will never resolve on their own, because the superseding ADR moved the
   target to `slop-family/CONTEXT.md`. **No tree-wide count is quoted in this plan.** The
   05/09/2026 figure in `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` predates this re-plan's edits to

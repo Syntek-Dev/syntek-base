@@ -207,12 +207,13 @@ believed. Its expectation is read out of `rules/*.yml`, so a rule added without 
 ## Reports
 
 Generated reports are written to `reports/` and gitignored, one per script. **26 of the 27 write
-one** — `security.sh` rejects `--output` at exit 2. **The filename is not uniform**: 21 are `<script>-report.<FORMAT>`; `dependency-drift`, `doctrine-drift`
-and `template-orphans` write `<script>.<FORMAT>`; `doc-references` and `routing-skills` write
-`<script>.md` whatever `--output` names. Measured 22/08/2026 by running each with `--output` and
-reading back the file it touched — the asserted pattern was wrong for five of the 24. Three take
-the majority form, each measured the same way: `story-markers` 09/09/2026, `mcp-parity`
-16/09/2026, `playwright-pin` 18/09/2026 — the last two also write on their clean and no-op paths.
+one** — `security.sh` rejects `--output` at exit 2. **The filename is not uniform**: 21 are
+`<script>-report.<FORMAT>`; `dependency-drift`, `doctrine-drift` and `template-orphans` write
+`<script>.<FORMAT>`; `doc-references` and `routing-skills` write `<script>.md` whatever `--output`
+names. Measured 22/08/2026 by running each with `--output` and reading back the file it touched —
+the asserted pattern was wrong for five of the 24. Three take the majority form, each measured the
+same way: `story-markers` 09/09/2026, `mcp-parity` 16/09/2026, `playwright-pin` 18/09/2026 — the
+last two also write on their clean and no-op paths.
 
 ## Dependencies
 

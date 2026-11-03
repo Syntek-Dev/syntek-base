@@ -1,4 +1,4 @@
-# DESKTOP-ONLY. AI-slop audit — the Slint leg, and the fourth member of the family split
+# DESKTOP-ONLY. AI-slop audit — the Slint leg: the family's fifth leg, and its fourth split
 # by input language (code/src/scripts/audits/slop-family/CONTEXT.md → Why four scripts
 # and not one). Its input is neither CSS, markup nor prose but BUILD CONFIGURATION, which
 # is why it is the one leg living outside audits/, in code/src/scripts/desktop/.

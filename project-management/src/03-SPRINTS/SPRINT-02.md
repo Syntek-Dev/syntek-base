@@ -175,7 +175,7 @@ born behind it.
   because the gate's own repair — US004 — now lands **after** this sprint. Every survivor US004's
   Verification Checks name at cutting belongs to a member of this sprint: the three
   `code/docs/ABSENCE.md` forward references are US003's and clear when the guide lands; the three
-  "code/src/scripts/audits/SLOP-FAMILY.md" citations are US002's <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. -->
+  "code/src/scripts/audits/SLOP-FAMILY.md" citations are US002's <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
   (`project-management/src/02-STORIES/US004.md` -> Acceptance Criteria, the scenario _The classes
   this story owns are cleared, and the baseline regime retires_) and are US002's to disposition
   when it ships.
@@ -672,7 +672,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       writes or edits adds an unresolved citation of any class; every survivor is named with the
       story that owns it. The three `code/docs/ABSENCE.md` forward references clear when US003's
       guide lands; the three "code/src/scripts/audits/SLOP-FAMILY.md" citations are US002's to
-      disposition. A bare pass is unavailable to this sprint <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. -->
+      disposition. A bare pass is unavailable to this sprint <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
       <!-- UPDATED 30/09/2026: successor added beside the superseded record, which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - [ ] `bash code/src/scripts/audits/docs-length.sh` — with `--path code/src/scripts/audits --limit 1`,
       `code/src/scripts/audits/CONTEXT.md` at or under **230** counted lines and

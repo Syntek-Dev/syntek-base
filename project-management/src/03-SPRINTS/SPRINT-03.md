@@ -559,7 +559,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       `project-management/src/18-TESTS/AUTOMATED/US004-TEST-STATUS.md`. **Which survivors stand is a fact
       about the build order, and the order has changed under this check since it was written for
       SPRINT-02.** The six known at US004's cutting — three citations of `code/docs/ABSENCE.md`
-      owned by US003, three of "code/src/scripts/audits/SLOP-FAMILY.md" owned by US002 — belong to <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. -->
+      owned by US003, three of "code/src/scripts/audits/SLOP-FAMILY.md" owned by US002 — belong to <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
       stories now scheduled **ahead** of this sprint in SPRINT-02, so if SPRINT-02 completed in
       full they have cleared before US004 is worked; if US003 slipped here, its three stand until it
       lands. Two classes this order cannot clear: US006's forward references to

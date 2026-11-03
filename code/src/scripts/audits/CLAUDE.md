@@ -3,8 +3,9 @@
 # CLAUDE.md — scripts/audits/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(script inventory, the slop-family split, flags, exit codes — imported above) → this file →
-`rules/CLAUDE.md` when touching a static-analysis rule → `reports/`.
+(script inventory, the route to the slop-family split, flags, exit codes — imported above) →
+this file → `slop-family/CLAUDE.md` when touching the split → `rules/CLAUDE.md` when touching a
+static-analysis rule → `reports/`.
 
 ## Purpose (one line)
 

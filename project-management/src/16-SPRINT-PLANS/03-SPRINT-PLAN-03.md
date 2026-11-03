@@ -701,7 +701,7 @@ apply throughout, from `code/docs/GATE-REPORTING.md`:
 - **`doc-references.sh` never reports a plain pass here.** Findings survive US004 whatever it
   does, and **which survivors stand is a fact about the build order, which has changed under this
   plan.** The six known at US004's cutting — three citations of `code/docs/ABSENCE.md` owned by
-  US003, three of "code/src/scripts/audits/SLOP-FAMILY.md" owned by US002 — belong to stories now <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. -->
+  US003, three of "code/src/scripts/audits/SLOP-FAMILY.md" owned by US002 — belong to stories now <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
   scheduled **ahead** of this sprint in SPRINT-02, so if SPRINT-02 completed in full they have
   cleared before US004 is worked, and if US003 slipped here its three stand until it lands. Two
   classes this order cannot clear: US006's forward references to
