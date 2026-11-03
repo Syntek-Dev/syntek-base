@@ -387,11 +387,11 @@ under `code/docs/security/`.
 **Summary:** Map prose was not re-measured when the slice tables beneath it changed, and the prose
 then stated something falsifiable by the same file:
 `MAP-UPSTREAM-TRACKING.md:541` reads "**This is a template-development map, so there are no
-stories to cut.**" It carries four slice rows, `US002.md:112` names its `S-01` among the slices it
-unblocks, and four other template-development maps have already produced `US001`, `US004`, `US006`
-and `US008`. Its `:544` also says "the remaining open nodes refine them without gating them" while
-`:6` records zero open nodes. Surfaced 17/09/2026 during `02-story-creation`'s Step 0 sweep across
-all thirteen maps.
+stories to cut.**" It carries four slice rows, US002's _Dependencies_ (the slice-row table) names
+its `S-01` among the slices it unblocks, and four other template-development maps have already
+produced `US001`, `US004`, `US006` and `US008`. Its `:544` also says "the remaining open nodes
+refine them without gating them" while `:6` records zero open nodes. Surfaced 17/09/2026 during
+`02-story-creation`'s Step 0 sweep across all thirteen maps. <!-- UPDATED 03/11/2026 (US002): citation repoint only; read "US002.md:112" until then, a line anchor the story's growth had moved. -->
 **Blocked by / Action:** Nothing blocks it, and none of it is a node — this is prose maintenance,
 not a decision. `MAP-UPSTREAM-TRACKING.md`'s next RESOLVE sitting should re-read its own Slices
 preamble against its table and either delete the claim or make it true. Retires when a re-measure

@@ -134,6 +134,9 @@ audit. Full inventory: `CONTEXT.md`.
   34 issues on its first draft, 33 of them false, and the fix was scope, not severity.
 - **Line limit is a hard gate:** ≥ 800 lines fails — split the file, do not raise the
   ceiling.
+- **This file ends at or under 200 counted lines** — the receiving-file ceiling
+  `code/docs/DOCUMENTATION-LENGTH.md` Section 6 requires, set 03/11/2026 (US002). It is held at
+  review: no gate enforces it, and `docs-length.sh` passes this file anywhere under 270.
 - TDD/BDD red phase is the _only_ sanctioned stub bypass, via `STUBS_TDD_RED=1`;
   never disable `stubs.sh` any other way. **It does not reach `cargo clippy`**, and no
   environment variable does — a red-phase Rust stub carries `#[allow(clippy::todo)]` on

@@ -309,6 +309,18 @@ Measured 03/11/2026 on `testing` at `0d32a1d`, against the figures above:
 | Q1b — line anchors beyond the eight                     | Replace every live anchor into this file with section and row name                                                                                                    | Scope to the eight; record US008's anchors as a finding                                          | Q4's reason holds for every anchor: a re-pinned line goes stale with the next registering story                                     |
 | Q1c — the superseded bare-file citations                | Repoint the seven `SLOP-FAMILY.md` findings to the pair                                                                                                               | Leave them red as pre-existing                                                                   | This story owns the design change that orphaned them; they clear from the baseline                                                  |
 
+### Verification corrections, 03/11/2026 (QA triage)
+
+The independent QA pass of 03/11/2026 found three manual-guide checks that cannot pass, or prove
+nothing, as written. Each row below is the recorded decision the walker cites when amending that
+check; the journey rows themselves are not edited by the build.
+
+| Check     | As written                                   | Corrected to                                                                                                                       | Why                                                                                                                                                                                        | QA finding |
+| --------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- |
+| DRYRUN-01 | 27 rows, nine each, boundary 243             | **33 rows, eleven each, boundary 236** — a landing above 236 would have reached 270                                                | The forward demand was re-cut to 33 at Q1a; a dry run of 27 understates it, and 236 is the highest landing from which 33 rows stay under 270                                               | M-2        |
+| BITE-01   | Move `slop-family/CLAUDE.md` aside, unstaged | **Stage the deletion** (`git rm --cached`), then run `docs-pairing.sh`; expect exit 1 naming the missing `CLAUDE.md`, then restore | `docs-pairing.sh` reads the git index, so an unstaged move exits 2 with no finding naming the folder. That unstaged behaviour is filed as a bug at `22`, not fixed in this docs-only story | M-3        |
+| BITE-03   | The bare `docs-length.sh` at 270/271         | **`docs-length.sh --since HEAD`**; expect exit 1, the file grown into the warn tier with no dated allowance                        | The bare form only warns ("approaching") and exits 0; the block is the ratchet, and `--since` is the form lefthook and CI run                                                              | L-4        |
+
 ## Dependencies
 
 | Story | Relationship               | Detail                                                                                                                                                                                                                          |

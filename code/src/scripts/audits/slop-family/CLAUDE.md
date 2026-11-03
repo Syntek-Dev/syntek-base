@@ -36,6 +36,8 @@ The rationale behind the AI-slop family's split — `css-slop.sh`, `template-slo
   ceiling `code/docs/DOCUMENTATION-LENGTH.md` Section 6 gives a receiving file. Set 03/11/2026,
   when the rationale was relocated here from `../CONTEXT.md` and the file measured 82. Text that
   would push it past is the register being absorbed again; route it back, never raise the figure.
+  The ceiling is held at review — no gate enforces it, and `docs-length.sh` passes the file far
+  above it.
 
 ## Output & naming
 

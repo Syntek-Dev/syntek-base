@@ -26,8 +26,8 @@ code/src/scripts/audits/slop-family/
 are split by **input language**, not by topic. Of the clauses those guides mark machine-checkable,
 roughly ten read CSS, three read templates, one reads Slint build config and the rest read prose —
 and a CI path filter is a file glob, so one script spanning three languages would fire on every
-CSS, HTML and Rust change alike. The desktop leg lives in `../../desktop/style-check.sh` for the
-same reason.
+CSS, HTML and Rust change alike. The desktop leg — desktop-only, absent from a project without
+that surface — lives in `../../desktop/style-check.sh` for the same reason.
 
 ### The fourth member splits on a second axis, and saying so is the honest version
 
@@ -92,7 +92,8 @@ which member takes which scope, for which clauses:
 | `render-slop.sh`   | —                 | `repeated-device`, in the screen that carries it | `repeated-signature` |
 
 `render-slop.sh` takes no line scope — a rendered finding has no line. The desktop leg uses
-`style-allow`, its own name, because it has exactly one clause (`../../desktop/CONTEXT.md`).
+`style-allow`, its own name, because it has exactly one clause (desktop-only:
+`../../desktop/CONTEXT.md`).
 
 ## Cross-references
 
@@ -100,4 +101,5 @@ which member takes which scope, for which clauses:
 - `code/docs/VISUAL-DESIGN.md` Section 4–Section 6 — the doctrine, and the tier each clause carries
 - `how-to/src/BRAND-VOICE.md` Section 4 — the prose half's doctrine
 - `../fixtures/render-slop/CONTEXT.md` — the pair `render-slop.sh --self-test` proves itself on
-- `../../desktop/CONTEXT.md` — the fifth leg, Slint build config, and why it lives there
+- `../../desktop/CONTEXT.md` — **desktop-only**; the fifth leg, Slint build config, and why it
+  lives there
