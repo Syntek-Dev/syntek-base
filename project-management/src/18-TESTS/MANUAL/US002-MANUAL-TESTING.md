@@ -63,31 +63,44 @@ them at the walk. Not a journey: nothing here carries a `Result`.
 
 ### Before the first edit
 
-| Measurement                                                                                                                         | Value |
-| ----------------------------------------------------------------------------------------------------------------------------------- | ----- |
-| Date, commit and git-index state of the capture — a baseline is comparable only against a run in the same index state               |       |
-| `code/src/scripts/audits/CONTEXT.md`, counted lines by `docs-length.sh --path code/src/scripts/audits --limit 1` — 298 in the story |       |
-| `code/src/scripts/audits/CLAUDE.md`, counted lines, same run — 165 in the story                                                     |       |
-| Scripts · Directory Tree rows · inventory rows · Dependencies rows — 24 · 26 · 24 · 20 in the story                                 |       |
+| Measurement                                                                                                                         | Value                                                                                                                                                                                                                             |
+| ----------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Date, commit and git-index state of the capture — a baseline is comparable only against a run in the same index state               | 03/11/2026 at `357db65` on `us002/audits-register-headroom`, working tree clean (porcelain count 0), index unstaged — before the first edit to `code/src/scripts/audits/`                                                         |
+| `code/src/scripts/audits/CONTEXT.md`, counted lines by `docs-length.sh --path code/src/scripts/audits --limit 1` — 298 in the story | **299** (run 03/11/2026 15:39 UTC; exit 1 is the `--limit 1` probe)                                                                                                                                                               |
+| `code/src/scripts/audits/CLAUDE.md`, counted lines, same run — 165 in the story                                                     | **178**, against the 200 ceiling                                                                                                                                                                                                  |
+| Scripts · Directory Tree rows · inventory rows · Dependencies rows — 24 · 26 · 24 · 20 in the story                                 | **27 · 29 · 27 · 22** — tree rows are the 27 scripts plus the pair, as the story counts them; 5 Dependencies rows owed: `dependency-drift.sh`, `dict-discipline.sh`, `doc-references.sh`, `doctrine-drift.sh`, `story-markers.sh` |
 
-**The `doc-references.sh` baseline.** Not yet captured. Every finding by stable identity — `(file, kind, token)` with multiplicity,
-excluding line numbers from the comparison — or `None.`
+**The `doc-references.sh` baseline.** Captured 03/11/2026 at `357db65`, working tree clean, index
+unstaged. Detector `code/src/scripts/audits/doc-references.sh` sha256
+`2a0f2442532eecd762a83df4a3d37a4d2163f042f2e485982d77194364801897`. Exit 1: **579 findings, 280
+distinct `(file, kind, token)` identities.** The raw output and the identity multiset are kept
+outside the tree, in /tmp/us002-baseline/ (doc-references.before.txt, doc-references.before.ids) —
+579 rows are not reproduced here; the close diffs against that file.
+
+**Expected to change by this story:** 5 identities, 8 findings, all `dangling path` on the planned
+"slop-family/" folder or its pair — in SPRINT-02, the SPRINT-02 sprint plan and this guide — each
+resolving once Step B creates it. **Not expected to change:** 6 identities, 7 findings, of
+`dangling path` on a bare "SLOP-FAMILY.md" — the file design the split-target ADR superseded,
+still cited by US004, SPRINT-02, SPRINT-03, the US004 QA plan and the SPRINT-02 and SPRINT-03
+sprint plans. Step B does not create that path, so they stand; whether the story repoints them is
+a scope question for the build, not a capture. Every other identity is pre-existing and owned
+outside this story.
 
 ### After the build
 
-| Measurement                                                                                               | Value |
-| --------------------------------------------------------------------------------------------------------- | ----- |
-| `code/src/scripts/audits/CONTEXT.md`, counted lines, with the date of the run                             |       |
-| If it landed between 231 and 269: the reason, and a statement of what the next registering story inherits |       |
-| `code/src/scripts/audits/CLAUDE.md`, counted lines                                                        |       |
-| `code/src/scripts/audits/slop-family/CONTEXT.md`, counted lines                                           |       |
-| Scripts · Directory Tree rows · inventory rows · Dependencies rows                                        |       |
-| The file each argument of the split rationale landed in — (a), (b) and (c) of Scenario 3                  |       |
-| The operating rules moved from `CONTEXT.md` to `CLAUDE.md`                                                |       |
-| The reduction paid by deletion, and the reduction paid by relocation — recorded separately                |       |
-| The `docs-length-allow` comment — deleted, or the figure, date and run it was rewritten to                |       |
-| The eight inbound citations Scenario 7 names — each with the target it now reaches                        |       |
-| The 27-row dry run — the counted figure the file reached                                                  |       |
+| Measurement                                                                                                            | Value |
+| ---------------------------------------------------------------------------------------------------------------------- | ----- |
+| `code/src/scripts/audits/CONTEXT.md`, counted lines, with the date of the run                                          |       |
+| If it landed between 231 and 269: the reason, and a statement of what the next registering story inherits              |       |
+| `code/src/scripts/audits/CLAUDE.md`, counted lines                                                                     |       |
+| `code/src/scripts/audits/slop-family/CONTEXT.md`, counted lines                                                        |       |
+| Scripts · Directory Tree rows · inventory rows · Dependencies rows                                                     |       |
+| The file each argument of the split rationale landed in — (a), (b) and (c) of Scenario 3                               |       |
+| The operating rules moved from `CONTEXT.md` to `CLAUDE.md`                                                             |       |
+| The reduction paid by deletion, and the reduction paid by relocation — recorded separately                             |       |
+| The `docs-length-allow` comment — deleted, or the figure, date and run it was rewritten to                             |       |
+| The eight inbound citations Scenario 7 names — each with the target it now reaches                                     |       |
+| The 33-row dry run — the counted figure the file reached (27 rows as authored; re-cut 03/11/2026, plan → _The re-cut_) |       |
 
 ### What was cut, kept, routed or relocated
 
