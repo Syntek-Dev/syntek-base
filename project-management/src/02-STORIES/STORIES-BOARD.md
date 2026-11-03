@@ -11,8 +11,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 8     |
-| In Progress       | 1     |
-| In Review         | 0     |
+| In Progress       | 0     |
+| In Review         | 1     |
 | Accepted          | 2     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -41,13 +41,13 @@ _None._
 
 ## In Progress
 
-| ID    | Title                                                        | Status      | File                 |
-| ----- | ------------------------------------------------------------ | ----------- | -------------------- |
-| US002 | The audits register regains the headroom nine new gates need | In Progress | [US002.md](US002.md) |
+_None._
 
 ## In Review
 
-_None._
+| ID    | Title                                                        | Status    | File                 |
+| ----- | ------------------------------------------------------------ | --------- | -------------------- |
+| US002 | The audits register regains the headroom nine new gates need | In Review | [US002.md](US002.md) |
 
 ## Accepted
 

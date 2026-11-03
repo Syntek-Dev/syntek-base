@@ -11,8 +11,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 8     |
-| In Progress       | 1     |
-| In Review         | 0     |
+| In Progress       | 0     |
+| In Review         | 1     |
 | Accepted          | 2     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -41,13 +41,13 @@ _None._
 
 ## In Progress
 
-| Plan                | Story                           | Title                                                        | Status      | File                                                                                               |
-| ------------------- | ------------------------------- | ------------------------------------------------------------ | ----------- | -------------------------------------------------------------------------------------------------- |
-| 03-STORY-PLAN-US002 | [US002](../02-STORIES/US002.md) | The audits register regains the headroom nine new gates need | In Progress | [03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md](03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md) |
+_None._
 
 ## In Review
 
-_None._
+| Plan                | Story                           | Title                                                        | Status    | File                                                                                               |
+| ------------------- | ------------------------------- | ------------------------------------------------------------ | --------- | -------------------------------------------------------------------------------------------------- |
+| 03-STORY-PLAN-US002 | [US002](../02-STORIES/US002.md) | The audits register regains the headroom nine new gates need | In Review | [03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md](03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md) |
 
 ## Accepted
 
