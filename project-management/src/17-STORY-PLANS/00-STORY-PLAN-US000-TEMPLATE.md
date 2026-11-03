@@ -636,7 +636,7 @@ fixtures; parametrise; no stubs / `NotImplementedError` in green code.
 <!-- ★ Always. The story's `**Status:**` line is the ONLY status — this plan, its sprint plan and
      the sprint record carry none (the PM boards mirror the story). On every transition the
      `completion` skill edits the story, appends its `## Status history` row, ticks the sprint's
-     Story Summary and regenerates the boards; then regenerate the ClickUp export below. -->
+     Story Summary and regenerates the boards; then (clickup-only) regenerate the ClickUp export. -->
 
 On every status transition, edit the story first, then refresh everything derived from it:
 
@@ -647,9 +647,9 @@ On every status transition, edit the story first, then refresh everything derive
 | 3   | **Sprint record**               | `…/src/03-SPRINTS/SPRINT-##.md` → Story Summary tick                | If the story is listed in a sprint — a tick, not a status           |
 | 4   | **Boards (generated)**          | `…/src/{01,02,03,16,17}-*/*-BOARD.md`                               | `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` |
 | 5   | **This plan · the sprint plan** | —                                                                   | No status: the boards show them under the parent's                  |
-| 6   | **ClickUp export (generated)**  | `…/export/clickup/US###-CLIENT.md`                                  | **Do not hand-edit** — read-only (0444); regenerate (below)         |
+| 6   | **ClickUp export (generated)**  | `…/export/clickup/US###-CLIENT.md`                                  | **clickup-only.** Do not hand-edit — read-only (0444); regenerate   |
 
-Then regenerate the ClickUp-ready export from the (updated) source story:
+**clickup-only** (absent without `INCLUDE_CLICKUP`) — regenerate the ClickUp-ready export from the story:
 
 ```bash
 # Single story (preferred while iterating):
@@ -660,10 +660,10 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh
 
 This rewrites `project-management/export/clickup/US###-CLIENT.md` with only the client-facing fields
 (title, `Status`, MoSCoW, Story Points, Client Summary, User Story — internal fields stripped). The
-`precommit-clickup.sh` lefthook also regenerates and re-stages these on commit whenever a source story
+`precommit-clickup.sh` lefthook (clickup-only) also regenerates and re-stages these on commit whenever a source story
 or a generated client file is staged, so the export can never drift from the source story.
 
-> **Push to ClickUp** is performed by `project-management/src/00-ASSETS/scripts/sync-clickup.sh`
+> **Push to ClickUp — clickup-only** — performed by `project-management/src/00-ASSETS/scripts/sync-clickup.sh`
 > (idempotent upsert via `export/clickup-task-map.json`), run automatically by the `clickup-sync`
 > GitHub workflow on push/PR. You normally only run the **export** script and let CI sync; to preview
 > the push locally use `bash project-management/src/00-ASSETS/scripts/sync-clickup.sh US### --dry-run`
@@ -746,8 +746,8 @@ bash code/src/scripts/development/install-backend.sh --check
 bash code/src/scripts/development/install-frontend.sh --check
 bash code/src/scripts/tests/all.sh --coverage
 
-# Status propagation → regenerate the ClickUp export from the updated source story
-bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US###
+# Status propagation → (clickup-only) regenerate the ClickUp export from the updated story
+if [ -f project-management/src/00-ASSETS/scripts/export-clickup-stories.sh ]; then bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US###; fi
 ```
 
 - [ ] All 8 quality gates pass locally **and** in Docker (no mismatch)
@@ -757,7 +757,7 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US###
 - [ ] No PII in logs/errors; secrets via env only; `DEBUG=False` off-local
 - [ ] All implementation records written to correct folders (Section Documentation Write-Ups)
 - [ ] `CONTEXT.md` / index / `GAPS.md` / `DEFERRED.md` updated
-- [ ] Story status advanced with a Status history row; boards regenerated (`pm-board.sh --write`); ClickUp export regenerated (see _Status Propagation & ClickUp Sync_)
+- [ ] Story status advanced with a Status history row; boards regenerated (`pm-board.sh --write`); clickup-only: ClickUp export regenerated (see _Status Propagation & ClickUp Sync_)
 
 ---
 
@@ -771,7 +771,7 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US###
 - [ ] All quality gates green locally and in Docker; coverage floors met
 - [ ] Documentation hard gate satisfied — all records + `CONTEXT.md` updates complete **before** commit
 - [ ] PR raised and promoted via PM `23-pr-and-review/`; review record in `19-REVIEWS/`
-- [ ] Story status advanced by the `completion` skill (history row appended, boards regenerated — the plans carry no status); ClickUp export regenerated (`export-clickup-stories.sh US###`)
+- [ ] Story status advanced by the `completion` skill (history row appended, boards regenerated — the plans carry no status); clickup-only: ClickUp export regenerated (`export-clickup-stories.sh US###`)
 - [ ] (If releasing) version bumped + changelog per PM `24-release/` and `VERSIONING-GUIDE.md`
 
 <!-- RENAMED 08/09/2026, by `git mv`: this template took its `00-` prefix that day and carried the

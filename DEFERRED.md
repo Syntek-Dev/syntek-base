@@ -16,3 +16,14 @@ unrelated). **A row a map claims, or a story is cut carrying, leaves this file i
 (rule: `.claude/CLAUDE.md` Section 9).
 
 ---
+
+## US007 — The story status vocabulary gets one owner
+
+Deferred 02/11/2026 at the `23-pr-and-review` final pass, from
+"project-management/src/20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md".
+
+| Item                                                                                                                                                                                                                                                               | Finding | Target |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------ |
+| Line citations into US007's story file past its line 306 were already stale at `777595f` and land in its superseded criteria (US008's at its line 230). Re-resolve each by its quoted text at the build's first step, and repoint it to a heading or to the re-cut | F-007   | US008  |
+| Line citations into US007's story file past its line 306 were already stale at `777595f` (US011's QA plan, at its lines 481, 573 and 578). Re-resolve each by its quoted text at the build's first step, and repoint it to a heading or to the re-cut              | F-007   | US011  |
+| A release that changes a planned story's subject leaves the story's criteria stale until its build. At the build's first step, check whether a release since the plan was written changed the story's subject; if it did, re-cut the story before any edit         | F-013   | US001  |

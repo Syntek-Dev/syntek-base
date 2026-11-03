@@ -10,9 +10,9 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 10    |
+| Pending           | 9     |
 | In Progress       | 0     |
-| In Review         | 0     |
+| In Review         | 1     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -28,18 +28,17 @@ _None._
 
 ## Pending
 
-| Plan                | Story                           | Title                                                                                                                      | Status  | File                                                                                                     |
-| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------- |
-| 01-STORY-PLAN-US007 | [US007](../02-STORIES/US007.md) | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits             | Pending | [01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md](01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md) |
-| 02-STORY-PLAN-US001 | [US001](../02-STORIES/US001.md) | Reliability doctrine gets an owning guide, and every pointer reaches it                                                    | Pending | [02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md](02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md)     |
-| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270                                                                               | Pending | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md)                             |
-| 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index                                                                         | Pending | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md)         |
-| 07-STORY-PLAN-US006 | [US006](../02-STORIES/US006.md) | The destructive dev scripts read the deployment posture, and refuse to run above development                               | Pending | [07-STORY-PLAN-US006-POSTURE-GUARD.md](07-STORY-PLAN-US006-POSTURE-GUARD.md)                             |
-| 08-STORY-PLAN-US008 | [US008](../02-STORIES/US008.md) | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                     | Pending | [08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md](08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md)                     |
-| 09-STORY-PLAN-US009 | [US009](../02-STORIES/US009.md) | The git hooks arm on purpose at install, and the README claim that they already do becomes true                            | Pending | [09-STORY-PLAN-US009-HOOK-ARMING.md](09-STORY-PLAN-US009-HOOK-ARMING.md)                                 |
-| 10-STORY-PLAN-US010 | [US010](../02-STORIES/US010.md) | The seven register indexes are born seeded, and the map index leaves the file that ships                                   | Pending | [10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md](10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md)         |
-| 11-STORY-PLAN-US012 | [US012](../02-STORIES/US012.md) | A seeded file that never lands is reported, and the gate's header claim becomes true                                       | Pending | [11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md](11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md)                   |
-| 13-STORY-PLAN-US013 | [US013](../02-STORIES/US013.md) | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Pending | [13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md](13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md)         |
+| Plan                | Story                           | Title                                                                                                                      | Status  | File                                                                                                 |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------- |
+| 02-STORY-PLAN-US001 | [US001](../02-STORIES/US001.md) | Reliability doctrine gets an owning guide, and every pointer reaches it                                                    | Pending | [02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md](02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md) |
+| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270                                                                               | Pending | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md)                         |
+| 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index                                                                         | Pending | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md)     |
+| 07-STORY-PLAN-US006 | [US006](../02-STORIES/US006.md) | The destructive dev scripts read the deployment posture, and refuse to run above development                               | Pending | [07-STORY-PLAN-US006-POSTURE-GUARD.md](07-STORY-PLAN-US006-POSTURE-GUARD.md)                         |
+| 08-STORY-PLAN-US008 | [US008](../02-STORIES/US008.md) | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                     | Pending | [08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md](08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md)                 |
+| 09-STORY-PLAN-US009 | [US009](../02-STORIES/US009.md) | The git hooks arm on purpose at install, and the README claim that they already do becomes true                            | Pending | [09-STORY-PLAN-US009-HOOK-ARMING.md](09-STORY-PLAN-US009-HOOK-ARMING.md)                             |
+| 10-STORY-PLAN-US010 | [US010](../02-STORIES/US010.md) | The seven register indexes are born seeded, and the map index leaves the file that ships                                   | Pending | [10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md](10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md)     |
+| 11-STORY-PLAN-US012 | [US012](../02-STORIES/US012.md) | A seeded file that never lands is reported, and the gate's header claim becomes true                                       | Pending | [11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md](11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md)               |
+| 13-STORY-PLAN-US013 | [US013](../02-STORIES/US013.md) | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Pending | [13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md](13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md)     |
 
 ## In Progress
 
@@ -47,7 +46,9 @@ _None._
 
 ## In Review
 
-_None._
+| Plan                | Story                           | Title                                                                                                          | Status    | File                                                                                                     |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------- |
+| 01-STORY-PLAN-US007 | [US007](../02-STORIES/US007.md) | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | In Review | [01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md](01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md) |
 
 ## Accepted
 

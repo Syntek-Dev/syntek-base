@@ -54,11 +54,11 @@ PR description must include:
 - User story reference (US###)
 - Test plan (how to verify)
 
-Set the story `**Status:**` to `In Review` in `src/02-STORIES/US###.md`, append its
+Through the `completion` skill, set the story `**Status:**` to `In Review` in `src/02-STORIES/US###.md`, append its
 `## Status history` row, run `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`,
-and commit — the lefthook regenerates the ClickUp export and the `clickup-sync` workflow pushes
-it to the board. Lifecycle: `project-management/docs/planning/STORIES.md` → _Story statuses_;
-vocabulary owner: `.claude/skills/completion/SKILL.md`.
+and commit. **clickup-only:** the lefthook then regenerates the ClickUp export and the
+`clickup-sync` workflow pushes it to the board. Lifecycle:
+`project-management/docs/planning/STORIES.md` → _Story statuses_; vocabulary owner: `.claude/skills/completion/SKILL.md`.
 
 ### Step 4 — Await CI and QA Sign-off
 
@@ -83,7 +83,7 @@ regeneration every time:
   (`pm-board.sh --warn` names the stories that have reached it); `pm-archive.sh US###` then
   closes and archives the story.
 
-Commit each change so the ClickUp board updates.
+Commit each change. **clickup-only:** the commit is what updates the ClickUp board.
 
 ---
 

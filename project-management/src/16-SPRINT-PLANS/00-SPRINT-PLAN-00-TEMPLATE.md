@@ -180,7 +180,7 @@ bash code/src/scripts/syntax/check.sh
 - [ ] GDPR constraints implemented and verified per `../09-GDPR/`
 - [ ] All QA scenarios passing (automated and manual) per `../11-QA/`
 - [ ] All code merged to the integration branch; CI passing
-- [ ] Sprint closed on the board; version bumped if this sprint produces a release
+- [ ] Sprint record `**Status:**` set to `Done` by the `completion` skill; version bumped if this sprint produces a release
 - [ ] Gaps found during the sprint recorded in `../09-GDPR/` / `../10-SECURITY/` as applicable
 - [ ] Retrospective notes captured in the matching `../03-SPRINTS/SPRINT-{##}.md` (optional)
 

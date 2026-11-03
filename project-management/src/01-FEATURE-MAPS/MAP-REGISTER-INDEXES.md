@@ -225,7 +225,7 @@ nothing.
 `Rejected Customer`, which no `US###.md` can hold — yet the plan template requires the status to
 agree _"across story + plan + Plans Index + sprint"_. Two vocabularies that must agree and cannot
 is a real defect, and it is **not this map's**: it belongs to whoever owns the story lifecycle.
-Recorded in Fog of war rather than charted here.
+Recorded in Fog of war rather than charted here. **Both paragraphs superseded 02/11/2026 — the US007 end note.**
 
 ### Batch C — N-003 and N-004 settled 31/08/2026
 
@@ -711,3 +711,12 @@ Sam's standing preference, **not until the frontier is empty**.
      LEFT FOR S-03's OWN `02-story-creation`: its Acceptance back-fill at `:351` and the `:420-421`
      ordering text. `project-management/src/02-STORIES/CUT-PLAN.md` P8 gives S-03 no sprint; it
      stays Proposed at map-order row 10. -->
+
+<!-- US007 END NOTE, 02/11/2026 — RC-3 (`../02-STORIES/US007.md` -> Re-cut criteria). The two paragraphs
+     at `:217-228` ("One Round 1 finding corrected" and "Left open, deliberately") are superseded:
+     the 7.7.0 PM-boards change made `.claude/skills/completion/SKILL.md` -> The status vocabulary
+     the single owner of the twelve story, four sprint and five map statuses, and plans carry no
+     status, so the story/plan agreement defect is gone. The vocabularies quoted there are what
+     stood when Round 1 ran. Written as an end note so no line-number citation of this map moves;
+     the `:228` pointer and this note are the only edits US007 makes here; the map's status, nodes
+     and slices are untouched. -->

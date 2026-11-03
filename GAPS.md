@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 01/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 02/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -602,3 +602,49 @@ count of one would be a decision made on nothing.
 HA inside the sized envelope**. The posture then lands as a row in the dependency-posture
 register MAP-CAP-POSTURE `S-01` creates. No map claims this entry, because a claim would remove
 it before the trigger fires.
+
+---
+
+## 02/11/2026 — shipped prose outside the three RC-5 files still names ClickUp as if every project had it
+
+**Type:** Active gap
+**Summary:** US007's re-cut (RC-5) marked every ClickUp **order** clickup-only in the two PR and
+release `STEPS.md` files and the story-plan template, which is all it was scoped to. Its closeout
+found the same assumption in prose it did not touch. The README seed's _ClickUp story sync_ section
+opens "Until the site is deployed, scrum boards are tracked in ClickUp" with no clickup-only
+marking (`.copier/README.md:600-603`). <!-- doc-references: template-only -->
+`.claude/skills/wayfinder/SKILL.md` (`:30-31`, `:241`, `:275`, `:303`) and
+`.claude/skills/scale-planning/SKILL.md:176` say stories sync through the `clickup-sync`
+workflow. Those six lines describe rather than order a step, but a project generated with
+`INCLUDE_CLICKUP: false` holds neither the workflow nor the scripts (`copier.yml:308-312`). <!-- doc-references: template-only -->
+Findings F-003 and F-004 in "project-management/src/20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. A docs pass marks each site clickup-only, or rewords it
+to hold without ClickUp, in one change. No map or story claims this entry.
+
+---
+
+## 02/11/2026 — the PR and release steps order the status lifecycle out of step with its owner
+
+**Type:** Active gap
+**Summary:** US007's `23-pr-and-review` final pass found four places where the workflows that
+order status moves disagree with `.claude/skills/completion/SKILL.md`, the vocabulary's owner:
+
+- **No step orders a sprint's `Done` move (F-015).** The skill names
+  `project-management/workflows/24-release/` as the procedure of record for sprint completion
+  (`:178-179`), but no file in that workflow mentions a sprint. The build-start move `Planned` →
+  `In Progress` is on `code/workflows/01-implement-story/CHECKLIST.md:28`, while
+  `code/workflows/01-implement-story/STEPS.md:31` names only the story's move.
+- **`In Review` is set after the work it names (F-016).** The skill's meaning (`:55`) is "Code
+  review and QA running"; workflow 23 runs QA and review at Steps 1 and 2 and sets `In Review`
+  at Step 3, when the PR opens.
+- **The release step assumes customer review (F-017).** `project-management/workflows/24-release/STEPS.md:90-91` says each
+  released story went through `Customer Review`; a story whose `Customer review` flag is `N/A`
+  skips it.
+- **Step 3 of workflow 23 reads as though `completion` commits (F-018)**
+  (`project-management/workflows/23-pr-and-review/STEPS.md:57-59`); it never
+  does, and Step 3 lacks the `↳ New dispatch` line Steps 1 and 2 carry.
+
+Findings F-015 to F-018 in "project-management/src/20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md".
+**Blocked by / Action:** F-016 needs a decision first: whether `In Review` moves earlier in
+workflow 23 or the skill's meaning is reworded. The other three are a docs pass over the two
+workflows and `code/workflows/01-implement-story/STEPS.md`, in one change. No map or story claims this entry.
