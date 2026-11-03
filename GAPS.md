@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 02/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 03/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -648,3 +648,39 @@ Findings F-015 to F-018 in "project-management/src/20-FINDINGS/FINDING-US007-STA
 **Blocked by / Action:** F-016 needs a decision first: whether `In Review` moves earlier in
 workflow 23 or the skill's meaning is reworded. The other three are a docs pass over the two
 workflows and `code/workflows/01-implement-story/STEPS.md`, in one change. No map or story claims this entry.
+
+---
+
+## 03/11/2026 — the Playwright install instruction is an operating rule held in the audits register by a pin gate
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/CONTEXT.md` → _Dependencies_ still tells the reader to run
+the Playwright Chromium install command — an operating rule in the orientation half, which
+US002's HP-04 requires moved to `code/src/scripts/audits/CLAUDE.md`. US002 kept it because
+`code/src/scripts/audits/playwright-pin.sh` reads that file as one of its eight pin sites (its
+`SITES` list names "audits/CONTEXT.md install instruction"): moving the text alone would
+half-remove the pin and redden the gate. No recorded decision licenses the keep, so the walk
+failed row OPS-01. Finding F-001 in
+"project-management/src/20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md"; review
+L5b raised it first.
+**Blocked by / Action:** Sam's decision. Either re-class the command as a _Dependencies_ fact,
+recorded as a decision; or move it to `code/src/scripts/audits/CLAUDE.md` and, in the same change,
+repoint `playwright-pin.sh`'s site, its header and its `--self-test` fixtures so the eight-site
+parity holds. No map or story claims this entry.
+
+---
+
+## 03/11/2026 — `copy-slop.sh` says `exclamation-count` cannot be annotated, and its code annotates it
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/copy-slop.sh`'s header comment (`:130`) and its `--help`
+text (`:217`) both say `exclamation-count` is the one clause that cannot be annotated. Its code
+(`:725-733`) implements a file-scoped annotation for exactly that clause:
+`slop-allow: exclamation-count` anywhere in the file silences it (proven by US002's QA pass: 14
+marks warn, a file-level annotation clears). A reader who trusts the header or `--help` concludes a
+warning has no answer, against `code/src/scripts/audits/CLAUDE.md`'s rule to answer each warning
+with an annotation. `code/src/scripts/audits/slop-family/CONTEXT.md`'s member-to-scope mapping
+already states the code's behaviour. Finding F-011 in
+"project-management/src/20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Reword both to "a file-scoped annotation naming the
+clause". No map or story claims this entry.

@@ -275,9 +275,9 @@ Filled at the walk.
 - [x] Every _Recorded during the build_ slot filled at its moment, or recorded as missed — never reconstructed
 - [x] Every `Fail` has a reason in `Notes` and a row in _Failures_ with somewhere to go
 - [x] Every journey area the story touches has a section, and every `Flow` cell cites a consolidated step or `—`
-- [ ] Every amended row carries its trail in `Notes` and a finding in `../../20-FINDINGS/` — no row silently rewritten. **Trails done; findings pending:** F-002 to F-005 are numbered here, and Step 5 writes the `FINDING-US002-…` record
+- [x] Every amended row carries its trail in `Notes` and a finding in `../../20-FINDINGS/` — no row silently rewritten. Trails done at the walk; F-002 to F-005 recorded 03/11/2026 in `../../20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md`
 - [x] No secrets, real credentials, or personal data used or exposed during the walk
-- [ ] Cross-checked against `../AUTOMATED/US002-TEST-STATUS.md` — a manual `Fail` and a green suite means a missing test. **Not done at the walk:** the record had not been written yet (Step 4's automated half). The story has no automated suite, so there is no test to pair with OPS-01
+- [x] Cross-checked against `../AUTOMATED/US002-TEST-STATUS.md` — a manual `Fail` and a green suite means a missing test. Done 03/11/2026 at `22-implementation-documentation`, once the record existed (not at the walk): it records no suite and no test, so OPS-01 has no green test beside it and is not a missing test — no automated check could decide whether a passage is an operating rule (the record's Section 3)
 - [x] The tester is not the story's author — the story's _QA Acceptance Criteria — Manual_
 
 ---
