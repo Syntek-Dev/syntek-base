@@ -116,8 +116,9 @@ shape is this sprint's known weakness**; see Notes.
   SPRINT-03 until 07/09/2026; the blocker is unchanged, the sprint it waits in is not.
 - **US002's own unblocking table travelled with it** to SPRINT-02 — the nine audit registrations
   across eight slices and seven maps that each need **three counted lines** — a Directory Tree
-  row, an inventory row and a Dependencies row, **27 in all** — in a register with two lines of
-  headroom. Its full table is in `project-management/src/02-STORIES/US002.md`.
+  row, an inventory row and a Dependencies row, **27 in all** — in a register `docs-length.sh`
+  measured at 299 of 300 on 17/09/2026. Its full table is in
+  `project-management/src/02-STORIES/US002.md`. <!-- UPDATED 03/11/2026 (US002 Step H): read "in a register with two lines of headroom" until then. A standing guard on that file cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. -->
 - None of the downstream slices above is yet cut into a story, so none could be admitted here even
   were the record open — and per the Notes below, it is not.
 

@@ -1,8 +1,9 @@
 # AI-slop audit — the RENDERED leg. The fourth member of a family otherwise split by
-# input language (code/src/scripts/audits/CONTEXT.md → The AI-slop family). This one
-# reads the same HTML the markup leg reads; what separates it is that the input has to
-# be RENDERED before the clause can be decided at all — the same .wf-grid markup is a
-# one-, two- or three-column device depending on width, and CSS text has no viewport.
+# input language (code/src/scripts/audits/slop-family/CONTEXT.md → The fourth member
+# splits on a second axis). This one reads the same HTML the markup leg reads; what
+# separates it is that the input has to be RENDERED before the clause can be decided at
+# all — the same .wf-grid markup is a one-, two- or three-column device depending on
+# width, and CSS text has no viewport.
 #
 # It is therefore the one job here that needs a browser. That cost is why it is a
 # separate workflow rather than a step inside audit-template-slop.yml: a Chromium

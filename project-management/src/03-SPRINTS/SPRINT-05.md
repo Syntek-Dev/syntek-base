@@ -210,8 +210,8 @@ this record opened with on 09/09/2026 is repaired rather than inherited; see Not
   the seven placed stories' files under `project-management/src/02-STORIES/` names any of
   those five guides, `negative-space.sh` or `config/settings`. One touch-point is ordered rather
   than blocked: the story's own text names `code/src/scripts/audits/CONTEXT.md` — US002's file,
-  at 298 of 300 code lines as `audits/docs-length.sh` measures them, US002 being a SPRINT-02
-  member built ahead of this sprint — and what it does there is the story's to state. This
+  its headroom measured by `audits/docs-length.sh`, US002 being a SPRINT-02 member built ahead
+  of this sprint — and what it does there is the story's to state. <!-- UPDATED 03/11/2026 (US002 Step H): read "at 298 of 300 code lines as audits/docs-length.sh measures them" until then. A standing guard on that file cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. --> This
   record's constraint is SPRINT-03's and SPRINT-04's: nothing here grows that file while US002
   owns its headroom; if US002 has landed, the ordinary ratchet applies.
 - **US008 unblocks the deferral `S-01` makes.** `S-01` on the same map — the host register and

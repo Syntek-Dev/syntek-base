@@ -537,12 +537,13 @@ capture has not happened because no edit has.
      `clean/tests/test_guard.py` sits one level down. Re-measured 30/09/2026; every other row is
      unchanged as a reading of that day. -->
 
-**One figure the next reader should not re-measure.** `code/src/scripts/audits/CONTEXT.md` is at
-**299** of 300 as the gate counts, not 298, and the `GAPS.md` entry of 17/09/2026 holds it. The
-story's criterion says "unchanged at 298"; that number is wrong in the story and correct nowhere.
+**One figure the next reader should not inherit.** `code/src/scripts/audits/CONTEXT.md` was at
+**299** of 300 as the gate counted it on 17/09/2026, not 298, as the `GAPS.md` entry of that date
+recorded. The
+story's criterion said "unchanged at 298" until 03/11/2026; that number was wrong in the story and correct nowhere.
 It is not raised as an AC gap because the story's actual requirement — **do not touch that file**
-(Q3) — is unaffected by which side of the line it sits on. Record the real figure in the test
-record.
+(Q3) — is unaffected by which side of the line it sits on. Record the gate's figure on the day in
+the test record. <!-- UPDATED 03/11/2026 (US002 Step H): this paragraph was headed "One figure the next reader should not re-measure" and read "is at **299** of 300 as the gate counts ... and the GAPS.md entry of 17/09/2026 holds it"; US002 shrank the file and that entry left GAPS.md on 01/11/2026, until then. A standing guard on code/src/scripts/audits/CONTEXT.md cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. -->
 
 ## 8. Two candidates refuted, and why they are recorded
 

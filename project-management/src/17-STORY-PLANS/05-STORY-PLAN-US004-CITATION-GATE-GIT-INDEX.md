@@ -39,7 +39,7 @@
 > of this story, so its three `code/docs/ABSENCE.md` forward references clear before this story is
 > worked — the order `../02-STORIES/US004.md` → _Dependencies_ provided for at cutting, "whichever
 > lands second reads the other's disposition". And US002, which shrinks
-> `code/src/scripts/audits/CONTEXT.md` 298 → 230, now lands in SPRINT-02 rather than SPRINT-01 —
+> `code/src/scripts/audits/CONTEXT.md` to 230 counted lines, now lands in SPRINT-02 rather than SPRINT-01 —
 > still before this sprint, so P5's never-add-a-line constraint stands only if US002 has not
 > landed. The "six survivors known at cutting" are re-measured at implementation, never inherited
 > (AC-GAP-3). The Dependencies rows for US002 and US003 are corrected in place below. The
@@ -140,7 +140,7 @@ tests.
 | Reporting a gate's result      | `code/docs/GATE-REPORTING.md`                                | Six findings survive this story; none may be reported as a pass                                                                                                                                                                                                                     |
 | What a document may promise    | `code/docs/FORWARD-VOICE.md`                                 | Section 3 owns the register this story makes pattern-aware                                                                                                                                                                                                                          |
 | The register itself            | `how-to/src/PROJECT-PATHS.md`                                | Two new rows; its rule against answering a question in passing                                                                                                                                                                                                                      |
-| Length limit and the ratchet   | `code/docs/DOCUMENTATION-LENGTH.md`                          | `audits/CONTEXT.md` sits at 298/300; this story may not grow it                                                                                                                                                                                                                     |
+| Length limit and the ratchet   | `code/docs/DOCUMENTATION-LENGTH.md`                          | `audits/CONTEXT.md` is not grown, as `docs-length.sh` measures it                                                                                                                                                                                                                   |
 | The audit register's own rules | `code/src/scripts/audits/CLAUDE.md`                          | Row conventions for the file whose `doc-references.sh` entry is refreshed                                                                                                                                                                                                           |
 | Story                          | `../02-STORIES/US004.md`                                     | Eight scenarios, the acceptance this plan implements                                                                                                                                                                                                                                |
 | QA                             | `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | Nine resolved AC-gaps, the scenario tables, and the measurement method                                                                                                                                                                                                              |
@@ -302,7 +302,8 @@ left `GAPS.md` on 01/11/2026, carried by US004, so nothing is closed or correcte
 - **`GAPS.md` 02/09/2026** — the "blocked on that map's RESOLVE sitting" sentence was true when
   written and false since 28/08/2026. Corrected, not deleted.
 - **`code/src/scripts/audits/CONTEXT.md`** — the `doc-references.sh` row's text is replaced
-  **within** the row. Never a new line: the file is at 298 of 300 and US002 owns its shape.
+  **within** the row. Never a new line: US002 owns the file's shape, as `docs-length.sh` measures
+  it. <!-- UPDATED 03/11/2026 (US002 Step H): this bullet read "the file is at 298 of 300", the conventions row "sits at 298/300", the re-plan note and the US002 dependency row "298 → 230" until then. A standing guard on code/src/scripts/audits/CONTEXT.md cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. -->
 
 ## Key Decisions
 
@@ -320,7 +321,7 @@ left `GAPS.md` on 01/11/2026, carried by US004, so nothing is closed or correcte
 
 | Story | Relationship                                                                                                                                                                                                                                                                                         |
 | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| US002 | **Softly blocking.** It shrinks `code/src/scripts/audits/CONTEXT.md` 298 → 230. Building SPRINT-02 first — where US002 sits since 07/09/2026 — removes a constraint P5 otherwise works around                                                                                                        |
+| US002 | **Softly blocking.** It shrinks `code/src/scripts/audits/CONTEXT.md` to 230 counted lines. Building SPRINT-02 first — where US002 sits since 07/09/2026 — removes a constraint P5 otherwise works around                                                                                             |
 | US003 | **Lands before this story since 07/09/2026** — SPRINT-02's `Should` stretch. Its baseline-diff scenario, QA task and ADR are written against the defect P1–P4 remove, and it is worked under that regime rather than after the repair; blocked by this story again only if it carries into SPRINT-03 |
 | US001 | Independent. Its two ADRs disposed of the same defect and are unaffected                                                                                                                                                                                                                             |
 

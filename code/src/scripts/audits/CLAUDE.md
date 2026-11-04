@@ -3,8 +3,9 @@
 # CLAUDE.md — scripts/audits/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(script inventory, the slop-family split, flags, exit codes — imported above) → this file →
-`rules/CLAUDE.md` when touching a static-analysis rule → `reports/`.
+(script inventory, the route to the slop-family split, flags, exit codes — imported above) →
+this file → `slop-family/CLAUDE.md` when touching the split → `rules/CLAUDE.md` when touching a
+static-analysis rule → `reports/`.
 
 ## Purpose (one line)
 
@@ -24,7 +25,8 @@ audit. Full inventory: `CONTEXT.md`.
   and to run an audit.
 - **Concrete steps:** invoke the audit → fix real findings in source, **never** by
   loosening a threshold to pass → re-run until clean → keep `security.sh` at
-  `pip-audit` for CI parity (`uv audit` is a different, experimental tool).
+  `pip-audit` for CI parity (`uv audit` is a different, experimental tool). Run
+  `template-orphans.sh` after every template update.
 - **Adding an audit:** derive it from a stated rule in a `docs/` guide, never from taste →
   decide its **input language** first, because that decides which script it joins and which CI
   path filter fires → give every clause a tier the guide also carries → add the row to
@@ -118,9 +120,9 @@ audit. Full inventory: `CONTEXT.md`.
   any of them. A new clause joins the script matching its input, or gets a new sibling; the
   desktop leg stays at `../desktop/style-check.sh`. **`render-slop.sh` is the one member that
   input language does not place** — it reads the same HTML as the markup leg — and the second axis
-  is stated in `CONTEXT.md` rather than left as a silent exception: its clause does not exist until
-  the input is **rendered**. Keep the browser dependency in that script alone; folding it into
-  `template-slop.sh` would put a Chromium download on every template change.
+  is stated in `slop-family/CONTEXT.md` rather than left as a silent exception: its clause does
+  not exist until the input is **rendered**. Keep the browser dependency in that script alone;
+  folding it into `template-slop.sh` would put a Chromium download on every template change.
 - **A gate you have never watched fail is not a gate.** `render-slop.sh --self-test` renders a
   known-positive and a known-negative screen and asserts it separates them, because this template
   ships no consolidated wireframes and its ordinary run would otherwise be green for the whole
@@ -132,6 +134,9 @@ audit. Full inventory: `CONTEXT.md`.
   34 issues on its first draft, 33 of them false, and the fix was scope, not severity.
 - **Line limit is a hard gate:** ≥ 800 lines fails — split the file, do not raise the
   ceiling.
+- **This file ends at or under 200 counted lines** — the receiving-file ceiling
+  `code/docs/DOCUMENTATION-LENGTH.md` Section 6 requires, set 03/11/2026 (US002). It is held at
+  review: no gate enforces it, and `docs-length.sh` passes this file anywhere under 270.
 - TDD/BDD red phase is the _only_ sanctioned stub bypass, via `STUBS_TDD_RED=1`;
   never disable `stubs.sh` any other way. **It does not reach `cargo clippy`**, and no
   environment variable does — a red-phase Rust stub carries `#[allow(clippy::todo)]` on
@@ -170,7 +175,7 @@ audit. Full inventory: `CONTEXT.md`.
   metrics, two scripts: `cloc.sh` counts total `wc -l` against 750/800 on source,
   `docs-length.sh` counts cloc code lines against 300 on instruction. Route a length question
   by which of those it is, and never answer it with the wrong script — that is the exact defect
-  `docs-length.sh` was written to close (`CONTEXT.md` → _Markdown: two limits, two scripts_).
+  `docs-length.sh` was written to close (`code/docs/DOCUMENTATION-LENGTH.md` Section 7).
 
 ## Output & naming
 

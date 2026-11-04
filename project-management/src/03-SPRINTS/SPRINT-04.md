@@ -124,9 +124,8 @@ weakness, and it is worse than when the record opened**; see Notes.
 - **US006 collides with no other story's files, and every owner it names has moved sprint.** It
   writes into none of `code/docs/ABSENCE.md` (US003 creates it — SPRINT-02's stretch tier since
   07/09/2026, with its 5 SP carry reserved into SPRINT-03), `code/docs/reliability/` (US001
-  creates it — SPRINT-01), or `code/src/scripts/audits/CONTEXT.md` (US002 owns its headroom, at
-  298 of 300 **code** lines as `audits/docs-length.sh` measures them — SPRINT-02 since
-  07/09/2026). The last was a live risk at slice selection: hosting the guard's proof in a new
+  creates it — SPRINT-01), or `code/src/scripts/audits/CONTEXT.md` (US002 owns its headroom, in
+  **code** lines as `audits/docs-length.sh` measures them — SPRINT-02 since 07/09/2026). The last was a live risk at slice selection: hosting the guard's proof in a new
   `audits/` gate would have cost rows in that file — two by the count used at slice selection,
   three counted lines by US002's corrected arithmetic — and the proof went to
   `database/migrate.sh --self-test` instead.
@@ -757,8 +756,8 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] `bash code/src/scripts/audits/docs-length.sh` — no file created or edited this sprint enters
       the warn tier without a dated allowance. Two files to watch: `code/docs/TASK-AUTHORING.md` at
       266, which US005 edits; and `code/src/scripts/audits/CONTEXT.md`, which US006 leaves unchanged
-      at **298 code lines as that gate measures them**, not the 357 `wc -l` reports — US002 in
-      SPRINT-02 owns its headroom
+      from the figure **that gate reports**, in code lines and never `wc -l` — US002 in SPRINT-02
+      owns its headroom <!-- UPDATED 03/11/2026 (US002 Step H): this check read "unchanged at 298 code lines as that gate measures them, not the 357 wc -l reports", and Dependencies "at 298 of 300 code lines", until then. A standing guard on that file cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. -->
 - [ ] `bash code/src/scripts/audits/docs-pairing.sh` passes — US006 edits both halves of the
       `code/src/scripts/_lib/` pair, adding the helper to `CONTEXT.md` and the caller contract to
       `CLAUDE.md`; US005 creates no directory, the reliability family's pair being US001's

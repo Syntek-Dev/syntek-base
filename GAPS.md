@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 02/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 03/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -387,11 +387,11 @@ under `code/docs/security/`.
 **Summary:** Map prose was not re-measured when the slice tables beneath it changed, and the prose
 then stated something falsifiable by the same file:
 `MAP-UPSTREAM-TRACKING.md:541` reads "**This is a template-development map, so there are no
-stories to cut.**" It carries four slice rows, `US002.md:112` names its `S-01` among the slices it
-unblocks, and four other template-development maps have already produced `US001`, `US004`, `US006`
-and `US008`. Its `:544` also says "the remaining open nodes refine them without gating them" while
-`:6` records zero open nodes. Surfaced 17/09/2026 during `02-story-creation`'s Step 0 sweep across
-all thirteen maps.
+stories to cut.**" It carries four slice rows, US002's _Dependencies_ (the slice-row table) names
+its `S-01` among the slices it unblocks, and four other template-development maps have already
+produced `US001`, `US004`, `US006` and `US008`. Its `:544` also says "the remaining open nodes
+refine them without gating them" while `:6` records zero open nodes. Surfaced 17/09/2026 during
+`02-story-creation`'s Step 0 sweep across all thirteen maps. <!-- UPDATED 03/11/2026 (US002): citation repoint only; read "US002.md:112" until then, a line anchor the story's growth had moved. -->
 **Blocked by / Action:** Nothing blocks it, and none of it is a node — this is prose maintenance,
 not a decision. `MAP-UPSTREAM-TRACKING.md`'s next RESOLVE sitting should re-read its own Slices
 preamble against its table and either delete the claim or make it true. Retires when a re-measure
@@ -648,3 +648,57 @@ Findings F-015 to F-018 in "project-management/src/20-FINDINGS/FINDING-US007-STA
 **Blocked by / Action:** F-016 needs a decision first: whether `In Review` moves earlier in
 workflow 23 or the skill's meaning is reworded. The other three are a docs pass over the two
 workflows and `code/workflows/01-implement-story/STEPS.md`, in one change. No map or story claims this entry.
+
+---
+
+## 03/11/2026 — the Playwright install instruction is an operating rule held in the audits register by a pin gate
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/CONTEXT.md` → _Dependencies_ still tells the reader to run
+the Playwright Chromium install command — an operating rule in the orientation half, which
+US002's HP-04 requires moved to `code/src/scripts/audits/CLAUDE.md`. US002 kept it because
+`code/src/scripts/audits/playwright-pin.sh` reads that file as one of its eight pin sites (its
+`SITES` list names "audits/CONTEXT.md install instruction"): moving the text alone would
+half-remove the pin and redden the gate. No recorded decision licenses the keep, so the walk
+failed row OPS-01. Finding F-001 in
+"project-management/src/20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md"; review
+L5b raised it first.
+**Blocked by / Action:** Decided for US002: Sam kept the instruction where it stands and accepted
+OPS-01 as a known Fail for merge, 03/11/2026 in session. The move remains open work — move it to
+`code/src/scripts/audits/CLAUDE.md` and, in the same change, repoint `playwright-pin.sh`'s site,
+its header and its `--self-test` fixtures so the eight-site parity holds. No map or story claims
+this entry.
+
+---
+
+## 03/11/2026 — `copy-slop.sh` says `exclamation-count` cannot be annotated, and its code annotates it
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/copy-slop.sh`'s header comment (`:130`) and its `--help`
+text (`:217`) both say `exclamation-count` is the one clause that cannot be annotated. Its code
+(`:725-733`) implements a file-scoped annotation for exactly that clause:
+`slop-allow: exclamation-count` anywhere in the file silences it (proven by US002's QA pass: 14
+marks warn, a file-level annotation clears). A reader who trusts the header or `--help` concludes a
+warning has no answer, against `code/src/scripts/audits/CLAUDE.md`'s rule to answer each warning
+with an annotation. `code/src/scripts/audits/slop-family/CONTEXT.md`'s member-to-scope mapping
+already states the code's behaviour. Finding F-011 in
+"project-management/src/20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Reword both to "a file-scoped annotation naming the
+clause". No map or story claims this entry.
+
+---
+
+## 03/11/2026 — workflow 23 requires GDPR and Security implementation records that workflow 22 makes conditional
+
+**Type:** Active gap
+**Summary:** `project-management/workflows/23-pr-and-review/STEPS.md` Step 6's verify table marks
+the GDPR review and the Security record **Always**, and its `CHECKLIST.md` lists both as
+unconditional items. `project-management/workflows/22-implementation-documentation/STEPS.md`
+Step 1, which writes those records, makes each conditional — GDPR when the story processes
+personal data, Security when it ships a security surface. A story with neither flag, such as
+US002, owes neither record under 22 yet fails 23's verify as written. Finding F-017 in
+"project-management/src/20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md"
+(workflow 23 final passes, S6-02).
+**Blocked by / Action:** Nothing blocks it. A template-maintenance fix: restate 23's two rows and
+two checklist items as conditional, routing to 22 Step 1's _Applies when_ column rather than
+restating it. No map or story claims this entry.

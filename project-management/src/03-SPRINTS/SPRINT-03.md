@@ -122,7 +122,7 @@ stretch. It is not counted until it does.
   `how-to/src/PROJECT-PATHS.md`, `code/docs/FORWARD-VOICE.md`, and the shipped files its widened
   gate exposes. One touch-point is ordered rather than blocked: it replaces text **within** the
   `doc-references.sh` row of `code/src/scripts/audits/CONTEXT.md` and never adds a line, because
-  US002 owns that file's headroom at 298 of 300 code lines. US002 now builds ahead of this sprint,
+  US002 owns that file's headroom, as `docs-length.sh` measures it. US002 now builds ahead of this sprint,
   in SPRINT-02; if it has landed, the register carries the headroom US002 built and the ordinary
   ratchet applies, and if it has not, the never-add-a-line constraint stands as written.
 - **US004 unblocks** slice `S-01` on `project-management/src/01-FEATURE-MAPS/MAP-NAVIGATION.md`,
@@ -559,7 +559,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       `project-management/src/18-TESTS/AUTOMATED/US004-TEST-STATUS.md`. **Which survivors stand is a fact
       about the build order, and the order has changed under this check since it was written for
       SPRINT-02.** The six known at US004's cutting — three citations of `code/docs/ABSENCE.md`
-      owned by US003, three of `code/src/scripts/audits/SLOP-FAMILY.md` owned by US002 — belong to
+      owned by US003, three of "code/src/scripts/audits/SLOP-FAMILY.md" owned by US002 — belong to <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
       stories now scheduled **ahead** of this sprint in SPRINT-02, so if SPRINT-02 completed in
       full they have cleared before US004 is worked; if US003 slipped here, its three stand until it
       lands. Two classes this order cannot clear: US006's forward references to
@@ -572,9 +572,9 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] `bash code/src/scripts/audits/docs-length.sh` — no file created or edited this sprint enters
       the warn tier without a dated allowance; `how-to/src/PROJECT-PATHS.md` and
       `code/docs/FORWARD-VOICE.md` are the files US004 grows. `code/src/scripts/audits/CONTEXT.md`
-      is not grown while at 298 code lines as that gate measures them — unless US002, now ahead of
-      this sprint in SPRINT-02, has landed and built the headroom, in which case the ordinary ratchet
-      applies. See Dependencies
+      is not grown from the figure that gate reports — unless US002, now ahead of this sprint in
+      SPRINT-02, has landed and built the headroom, in which case the ordinary ratchet applies. See
+      Dependencies <!-- UPDATED 03/11/2026 (US002 Step H): this check read "is not grown while at 298 code lines as that gate measures them", and Dependencies "owns that file's headroom at 298 of 300 code lines", until then. A standing guard on that file cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. -->
 - [ ] `bash code/src/scripts/audits/doctrine-drift.sh` — **regression only**; US004 adds no claims
       row. US003's new `owned` row, which this check named from 05/09/2026 to 07/09/2026, moved to
       SPRINT-02 with the story

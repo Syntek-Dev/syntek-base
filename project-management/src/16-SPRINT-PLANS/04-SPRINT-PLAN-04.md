@@ -223,8 +223,8 @@ earlier sprint into this one.**
   tree once it has, a diff against each member's own recorded baseline until then. SPRINT-03 is
   built before this sprint, so the plain-pass branch is the expected one; neither member blocks on
   it, and the record names both branches for both. See _Gate honesty_.
-- **US002's headroom (SPRINT-02).** US002 shrinks `code/src/scripts/audits/CONTEXT.md` from 298 to
-  230 counted lines. US006 leaves that file unchanged — hosting the guard's proof in a new
+- **US002's headroom (SPRINT-02).** US002 shrinks `code/src/scripts/audits/CONTEXT.md` to 230
+  counted lines. US006 leaves that file unchanged — hosting the guard's proof in a new
   `audits/` gate would have cost three counted lines in it, and the proof went to
   `database/migrate.sh --self-test` instead — so the edge is a fact worth knowing, not a constraint
   on this sprint.
@@ -554,8 +554,8 @@ directions of `code/docs/GATE-REPORTING.md` apply. Six rules hold throughout:
   outside a temporary directory nowhere.
 - **`docs-length.sh` — two files to watch, and measured with the gate, never `wc -l`.**
   `code/docs/TASK-AUTHORING.md` sits at 266 and US005 edits it; `code/src/scripts/audits/CONTEXT.md`
-  sits at 298 code lines as that gate measures them and US006 leaves it unchanged — US002 owns its
-  headroom in SPRINT-02. No file created or edited this sprint enters the warn tier without a dated
+  is measured by that gate in code lines and US006 leaves it unchanged — US002 owns its headroom
+  in SPRINT-02. <!-- UPDATED 03/11/2026 (US002 Step H): this bullet read "sits at 298 code lines as that gate measures them", and Dependencies "from 298 to 230 counted lines", until then. A standing guard on that file cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. --> No file created or edited this sprint enters the warn tier without a dated
   allowance.
 
 ---
