@@ -195,7 +195,7 @@ carries are dropped because the story touches none of them, not to dodge a gate.
 | P1    | `code/docs/ABSENCE.md` — six kinds, crib, tier markers | —          |
 | P2    | Registration on every surface it owes                  | P1         |
 | P3    | Reciprocity, and the `codebase-design` scoping         | P2         |
-| P4    | The drift row and the attribution rows                 | P1         |
+| P4    | The drift row and the attribution row                  | P1         |
 
 **P1 — the guide.** Six kinds — expected miss, not-yet, empty, failure, not-supplied,
 not-applicable — each named and distinguished from the other five, **exhaustive and mutually
@@ -239,14 +239,14 @@ breaks it has not been fixed.** The 33 are inventoried as architectural — rewo
      against the new scope and reworded if it still violates". -->
 
 **P4 — the drift row and the attributions.** One `doctrine-drift.sh` `owned` row pinning the
-absence-enum rule to `code/docs/ABSENCE.md`, green on the baseline. Two `README.md` _Influences_
-rows, each with its licence, each in the same commit as the rule it credits: E. F. Codd's
-applicable/inapplicable null marks for the not-supplied and not-applicable kinds, and Robert
-Harper's Boolean Blindness for the absence-enum rule. **The Codd row is written only after the
-primary source is checked** to confirm derivation rather than convergence — and if the check
-returns convergence, **no row is written** and the guide instead states that the split parallels
-Codd's marks, claiming no derivation. _(Checked 04/11/2026: convergence — no Codd row; the guide
-carries the parallel sentence. Key Decisions Q3.)_
+absence-enum rule to `code/docs/ABSENCE.md`, green on the baseline. One `README.md` _Influences_
+row, with its licence, in the same commit as the rule it credits: Robert Harper's Boolean
+Blindness for the absence-enum rule. For E. F. Codd's applicable/inapplicable null marks the
+primary source was checked first, found convergence rather than derivation, so **no row is
+written** and the guide states instead that the not-supplied / not-applicable split parallels
+Codd's marks, claiming no derivation (Key Decisions Q3).
+
+<!-- RE-CUT 04/11/2026 at the close of the build (Key Decisions Q3; landed in 99187e7). The phase table's P4 row read "The drift row and the attribution rows", and this paragraph read "Two README.md Influences rows, each with its licence, each in the same commit as the rule it credits: E. F. Codd's applicable/inapplicable null marks for the not-supplied and not-applicable kinds, and Robert Harper's Boolean Blindness for the absence-enum rule", with the Codd row conditional on the check and a parenthetical recording the convergence verdict. -->
 
 ### The citation gate, corrected
 
@@ -439,8 +439,10 @@ which was authored before code from this plan (backfilled 30/09/2026).
 | `code/REFERENCES.md`                      | Index row                                                                                                                                                                           |
 | `code/docs/CONTEXT.md`                    | Index row and directory-tree entry                                                                                                                                                  |
 | `code/CONTEXT.md`                         | **No row** — deliberate, recorded in P2                                                                                                                                             |
-| `README.md`                               | Two _Influences_ rows, licence-checked, same commit                                                                                                                                 |
+| `README.md`                               | One _Influences_ row (Harper), licence-checked, same commit; no Codd row — convergence, the guide's parallels sentence instead (Q3)                                                 |
 | `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` | This plan's row in _Story Plans — the code master_ — Status cell kept in step with this plan's header; the reserved-carry row in `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` likewise |
+
+<!-- RE-CUT 04/11/2026 at the close of the build (Key Decisions Q3): the README.md row above read "Two _Influences_ rows, licence-checked, same commit". -->
 
 ## Deferred Items
 
@@ -480,10 +482,13 @@ which was authored before code from this plan (backfilled 30/09/2026).
 - [ ] All five gates pass; the human read-across and the cold-read walk both done and recorded
 - [ ] The `codebase-design` ban scoped, and its own five uses checked against the new scope (four
       when written; re-cut 04/11/2026), the 33 heading lines inventoried
-- [ ] Attribution rows land in the same commit as the rules they credit, licences checked first
+- [ ] The attribution row (Harper) lands in the same commit as the rule it credits, licence
+      checked first; the Codd parallels sentence stands in for a row (Q3)
 - [ ] This plan's row in `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` → _Story Plans — the code
       master_ mirrors the final status; story cross-references this plan
 - [ ] Reviewed and approved; merged; `../02-STORIES/US003.md` status set to **Completed**
+
+<!-- RE-CUT 04/11/2026 at the close of the build (Key Decisions Q3): the attribution item above read "Attribution rows land in the same commit as the rules they credit, licences checked first". -->
 
 <!-- 08/09/2026, later the same day: the two "Plans Index" sites in this plan were rewritten to
      describe what exists. Superseded text, preserved rather than deleted — the CONTEXT.md & Index
