@@ -1,6 +1,6 @@
 # SPRINT-02
 
-**Last Updated**: 03/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 04/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -103,10 +103,10 @@ born behind it.
 
 ## Story Summary
 
-| ID    | Title                                                                        | MoSCoW      | SP  |
-| ----- | ---------------------------------------------------------------------------- | ----------- | --- |
-| US002 | The audits register regains the headroom nine new gates need                 | Must Have   | 3   |
-| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated | Should Have | 5   |
+| ID      | Title                                                                        | MoSCoW      | SP  |
+| ------- | ---------------------------------------------------------------------------- | ----------- | --- |
+| US002 ✓ | The audits register regains the headroom nine new gates need                 | Must Have   | 3   |
+| US003   | Absence gets an owning guide, born under 270 with every clause's tier stated | Should Have | 5   |
 
 **Total:** 8 SP — **3 committed, 5 stretch**
 
