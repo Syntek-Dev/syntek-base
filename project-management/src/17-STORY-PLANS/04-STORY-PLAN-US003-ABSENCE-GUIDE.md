@@ -135,7 +135,7 @@ the HTMX contract, `S-04` the optional-surface remainders, `S-05` tiers and mech
 | Forward-looking claims         | `code/docs/FORWARD-VOICE.md`                               | Named a sibling; governs what the crib may promise about clauses not yet written                                                                                                                                                                                        |
 | The RLS middleware instance    | `code/docs/rls/MIDDLEWARE-AND-NINJA.md`                    | _Row locking_, the guard paragraph, is the never-overload rule's one shipped instance                                                                                                                                                                                   |
 | Attribution                    | `README.md` → _Influences_ · `.claude/CLAUDE.md` Section 6 | Licence checked **before** deriving; the row lands in the same commit                                                                                                                                                                                                   |
-| Story                          | `../02-STORIES/US003.md`                                   | Nine scenarios, the acceptance this plan implements                                                                                                                                                                                                                     |
+| Story                          | `../02-STORIES/US003.md`                                   | Eleven scenarios (nine when written; recounted 04/11/2026), the acceptance this plan implements                                                                                                                                                                         |
 | QA                             | `../11-QA/PLANNING/QA-PLAN-US003-ABSENCE-GUIDE.md`         | Seven resolved AC-gaps and the scenario tables                                                                                                                                                                                                                          |
 | Sprint plan                    | `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md`                  | Build order, `Should` tier, the carry reservation, gate-honesty constraint. Rewritten 07/09/2026 to {US002, US003} as the mirror of `../03-SPRINTS/SPRINT-02.md`; a full `16-sprint-plans` pass is still owed, and the record wins where the two disagree until it runs |
 | Feature map                    | `../01-FEATURE-MAPS/MAP-ABSENCE.md`                        | Slice `S-01`, nodes `N-008`, `N-009`, `N-018`                                                                                                                                                                                                                           |
@@ -221,15 +221,22 @@ the wrapped-array form Prettier forces at `printWidth: 100`.
 
 **P3 — reciprocity, and one scoping fix.** `skill-conformance.sh` clause 14 obliges every skill
 named in a guide's routing frontmatter to cite that guide back. The four named — `backend`,
-`frontend`, `code-reviewer`, `refactor` — measure **169, 155, 220 and 148** counted lines, all
-clear of the 270 band, which is part of why they were chosen over the surface-complete set. **No
+`frontend`, `code-reviewer`, `refactor` — measure **137, 130, 169 and 118** counted lines
+(re-measured 04/11/2026; 169, 155, 220 and 148 when written), all clear of the 270 band, which is part of why they were chosen over the surface-complete set. **No
 file edited to discharge this may grow while at or above 270.**
 
 In the same phase, `.claude/skills/codebase-design/SKILL.md`'s ban on substituting "boundary" for
-"seam" is **scoped to architectural contexts** — it is currently broken four times in its own file
-and by 20 headings across 16 files. Each of those four uses is checked against the new scope and
-reworded if it still violates: **a rule whose own defining file breaks it has not been fixed.**
-This lands in the same commit as the guide, not as a follow-up.
+"seam" is **scoped to architectural contexts** — that file uses "boundary" on **five** lines, the
+ban's own among them, and **33** heading lines across **27** files match it (re-measured
+04/11/2026; four uses, and 20 headings across 16 files, when written). Each of those five uses is
+checked against the new scope and reworded if it still violates: **a rule whose own defining file
+breaks it has not been fixed.** The 33 are inventoried as architectural — reworded — or not — left
+(Key Decisions Q2). This lands in the same commit as the guide, not as a follow-up.
+
+<!-- RE-CUT 04/11/2026 at the build's first step (Key Decisions Q1, Q2). The two paragraphs above
+     read "measure **169, 155, 220 and 148** counted lines" and "it is currently broken four times
+     in its own file and by 20 headings across 16 files. Each of those four uses is checked
+     against the new scope and reworded if it still violates". -->
 
 **P4 — the drift row and the attributions.** One `doctrine-drift.sh` `owned` row pinning the
 absence-enum rule to `code/docs/ABSENCE.md`, green on the baseline. Two `README.md` _Influences_
@@ -238,7 +245,8 @@ applicable/inapplicable null marks for the not-supplied and not-applicable kinds
 Harper's Boolean Blindness for the absence-enum rule. **The Codd row is written only after the
 primary source is checked** to confirm derivation rather than convergence — and if the check
 returns convergence, **no row is written** and the guide instead states that the split parallels
-Codd's marks, claiming no derivation.
+Codd's marks, claiming no derivation. _(Checked 04/11/2026: convergence — no Codd row; the guide
+carries the parallel sentence. Key Decisions Q3.)_
 
 ### The citation gate, corrected
 
@@ -252,8 +260,10 @@ diff against it, never as a pass while the baseline stands
 which restates it unchanged and is the record that names that path;
 `../03-SPRINTS/SPRINT-02.md` → _Verification Checks_). <!-- UPDATED 30/09/2026: successor added beside the superseded record,
 which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
-16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). --> The three `code/docs/ABSENCE.md` forward
-references are still this story's own targets and still resolve the moment P1 lands. What follows
+16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
+The `code/docs/ABSENCE.md` forward references — 18 identities, 65 findings at the 04/11/2026
+baseline (three when written) — are still this story's own targets and still resolve the moment
+P1 lands. What follows
 stood as the main path from 05/09/2026 to 07/09/2026 and applies again **only if this story
 carries into SPRINT-03 and is worked there after US004**:
 
@@ -263,7 +273,12 @@ is proven green and the accepted baseline ADR's retirement is recorded before so
 The closing plain-pass check still requires actual exit 0. Otherwise retain the same pre-edit
 stable-identity multiset procedure, detector hash and index-state comparison used in SPRINT-02.
 A detector change is reported as confounded; no baseline is reconstructed after source edits.
-The three absence-guide forward references still clear when P1 lands.
+The absence-guide forward references (18 identities at the 04/11/2026 baseline; three when
+written) still clear when P1 lands.
+
+<!-- RE-CUT 04/11/2026 at the build's first step (Key Decisions Q1). This section read "The three
+     `code/docs/ABSENCE.md` forward references are still this story's own targets" and "The three
+     absence-guide forward references still clear when P1 lands." -->
 
 <!-- The last bullet read "**If US003 is somehow worked ahead of US004**, the story's original
      baseline procedure applies unchanged — but the sprint has ruled that order out." from
@@ -291,6 +306,30 @@ The three absence-guide forward references still clear when P1 lands.
      locking_ in `code/docs/rls/MIDDLEWARE-AND-NINJA.md`. A section name survives an edit above
      it; a line number does not. `../02-STORIES/US003.md` took the same de-numbering the same
      day. -->
+
+**Settled at a pre-build grilling, 04/11/2026** (Sam, at the start of the build). Recorded here
+because the measurements this plan was written against have moved, and the build reads its scope
+from this table before the re-cut runs.
+
+Measured 04/11/2026 on `us003/absence-guide` at `5baaac2`, working tree clean, against the figures
+above (captures: `../18-TESTS/MANUAL/US003-MANUAL-TESTING.md` → _Recorded during the build_):
+
+| Fact                                                                                                | Plan / story says                              | Measured                                                                                  |
+| --------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| The four named skills, counted lines (`docs-length.sh --limit 1`)                                   | 169 · 155 · 220 · 148                          | 137 · 130 · 169 · 118 — all still clear of 270                                            |
+| `codebase-design/SKILL.md` uses of "boundary"                                                       | four                                           | five lines (`grep -n -i boundar`), the ban's own among them; the file at 96 counted lines |
+| Heading lines matching "boundary" across `code`, `.claude`, `how-to`, the PM `docs` and `workflows` | 20 across 16 files                             | 33 across 27 files — 31 headings and 2 comment lines in fenced code                       |
+| `doc-references.sh` before the first edit                                                           | seven findings, every one template-only        | exit 1: 564 findings, 269 identities — 461 instance, 94 dangling path, 9 template-only    |
+| Forward references to `code/docs/ABSENCE.md`                                                        | three, among eight this story's artefact added | 18 identities, 65 findings, across 18 PM files                                            |
+| The rule-ownership map's slice `S-06`                                                               | blocked on a RESOLVE sitting                   | cut as US004, built after this story; no RESOLVE sitting remains                          |
+| The story's scenarios                                                                               | nine                                           | eleven                                                                                    |
+
+| Decision                                 | Chosen                                                                                                                                                                                                                                                      | Rejected                                                                                                                      | Why                                                                                                                                                                                                 |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q1 — the stale figures                   | Re-cut the story's criteria and this plan at the build's first step, with dated trails, against the table above                                                                                                                                             | Build against the figures as written and amend at the walk                                                                    | The scenarios assert "169, 155, 220 and 148", "four times" and "three forward references" literally; the US002 precedent re-cuts at the build's first step                                          |
+| Q2 — how far the scoped seam ban reaches | Every use in `codebase-design/SKILL.md` itself reviewed against the scoped ban; the 33 heading lines inventoried as architectural (reworded) or not (left), the inventory recorded in the manual testing guide's build captures                             | Scope the rule, fix its own file's uses, and leave the wider sweep to another story — this plan's _Deferred Items_ as written | A scope that is never applied to the headings already breaking it cannot be shown to hold; the inventory is what makes "architectural" decidable                                                    |
+| Q3 — Codd                                | Openly available primary text read — Codd 1986, SIGMOD Record 15(4) p. 57, the A-mark and I-mark; Codd 1979, TODS 4(4) p. 408. Verdict **convergence**: no README row, and the guide states that the split "parallels" Codd's marks, claiming no derivation | A README row crediting Codd for the two kinds                                                                                 | The kinds were charted on the absence map without Codd, and his A-mark spans both not-yet and not-supplied — only not-applicable aligns with the I-mark. The story's own convergence branch applies |
+| Q4 — Harper                              | A README _Influences_ row for _Boolean Blindness_, licence column "all rights reserved — idea cited, no text derived"; the rule stated in this project's own words                                                                                          | Quoting or adapting the post's text into the rule                                                                             | The post states no licence, so all rights are reserved: the idea may be cited and credited, its text not derived (`.claude/CLAUDE.md` Section 6)                                                    |
 
 ## Dependencies
 
@@ -409,8 +448,13 @@ which was authored before code from this plan (backfilled 30/09/2026).
   deferred work in the `DEFERRED.md` sense: it is scheduled on a map, and the acceptance clause
   that binds those slices is a map edit **this story does not make**.
 - **The two `NEGATIVE-SPACE.md` rows** (Rust, desktop) — `S-04`'s.
-- **The 20 boundary/seam headings across 16 files** — P3 scopes the rule and fixes its own file's
-  four uses; the wider sweep is not this story's.
+- **The rewording of any heading beyond the architectural ones** — P3 scopes the rule, reviews its
+  own file's five uses, and inventories the 33 heading lines across 27 files as architectural
+  (reworded) or not (left), per Key Decisions Q2; the headings read as not architectural stay.
+
+<!-- RE-CUT 04/11/2026 (Key Decisions Q1, Q2). The bullet read "**The 20 boundary/seam headings
+     across 16 files** — P3 scopes the rule and fixes its own file's four uses; the wider sweep is
+     not this story's." Q2 brought the inventory into this story. -->
 
 ## Risks
 
@@ -434,7 +478,8 @@ which was authored before code from this plan (backfilled 30/09/2026).
 - [ ] Every clause carries a tier marker; every `[gate: fail]` names its gate; none reads `warn`
 - [ ] Registered on all four surfaces it owes, and deliberately not on `code/CONTEXT.md`
 - [ ] All five gates pass; the human read-across and the cold-read walk both done and recorded
-- [ ] The `codebase-design` ban scoped, and its own four uses checked against the new scope
+- [ ] The `codebase-design` ban scoped, and its own five uses checked against the new scope (four
+      when written; re-cut 04/11/2026), the 33 heading lines inventoried
 - [ ] Attribution rows land in the same commit as the rules they credit, licences checked first
 - [ ] This plan's row in `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` → _Story Plans — the code
       master_ mirrors the final status; story cross-references this plan
