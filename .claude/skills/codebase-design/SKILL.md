@@ -33,7 +33,7 @@ agents load; the doc is the authority — keep them in step.
   substantial is the opposite of depth.
 - **deep** / **shallow** — deep = small interface over large implementation. **Shallow** = interface
   nearly as complex as the implementation (a pass-through that forwards to the ORM adds no depth).
-- **seam** — the boundary a module hides behaviour behind. A good seam is where the domain already
+- **seam** — the place a module hides behaviour behind. A good seam is where the domain already
   has a name (read `CONTEXT.md` for the name before you invent one).
 - **adapter** — one concrete implementation behind a seam (e.g. `StaffChatPolicy` behind the
   `ChatAccessPolicy` seam).
@@ -47,13 +47,20 @@ agents load; the doc is the authority — keep them in step.
 signature (for interface) · boundary (for seam) · layer, wrapper (for a shallow module). "Service"
 is a real project layer — keep it for the concrete artefact, not as a loose synonym for module.
 
+**The ban is scoped to architectural contexts** — wherever the word would name the place a module
+hides behaviour behind, while reasoning about depth in architecture, refactor or review. There,
+say seam. It does not bind an edge that is not a seam: a trust or parse boundary ("parse at the
+boundary"), a runtime or language one (the PyO3 boundary, the ORM's sync boundary), a transaction
+or delivery one (the enqueue boundary), a DDD aggregate's consistency boundary, a framework's own
+name (`ErrorBoundary`), or the limit of a scope. Those keep "boundary".
+
 ## Principles — apply exactly
 
 - **The deletion test.** Delete the module and inline it. If the same complexity reappears across N
   callers, it earned its keep. If nothing reappears, it was padding a seam that did not exist. A
   "yes, concentrates complexity" is the signal that a deepening is real.
 - **The interface is the test surface.** Test a module through its public methods, never its
-  internals. A test that must reach past the interface is telling you the boundary is wrong.
+  internals. A test that must reach past the interface is telling you the seam is in the wrong place.
 - **One adapter is a hypothetical seam; two adapters are a real seam.** Do not introduce an
   abstraction (base class, Protocol, strategy) until a second implementation actually varies — YAGNI
   (`code/docs/CODING-PRINCIPLES.md`). The `ChatAccessPolicy` Protocol earns its seam: `StaffChatPolicy`
@@ -67,7 +74,7 @@ is a real project layer — keep it for the concrete artefact, not as a loose sy
 - **Service layer over thin endpoints** — business logic in `apps/*/services/`; the endpoint is a
   shallow adapter. The deletion test passes: inline a service and its transaction + audit + side
   effects reappear at every caller (`code/docs/architecture/SERVICE-AND-MIDDLEWARE.md`).
-- **`presentation.serialize_message` — the single decrypt boundary** in `apps/chat`: one seam owns
+- **`presentation.serialize_message` — the single decrypt seam** in `apps/chat`: one seam owns
   decrypt + `public_id` mapping; nothing else decrypts.
 - **The RLS `set_config('app.current_user_id', …)` context** — membership isolation hidden behind a
   per-transaction seam, not re-derived in every query (`code/docs/RLS-GUIDE.md`).
@@ -104,7 +111,7 @@ code-review-graph after the doc change so structure and docs stay in lockstep
 Route to the one that matches the task and follow its `STEPS.md` against its `CHECKLIST.md`. These are the procedure of record — do not restate them at length here.
 
 - `code/workflows/11-refactor/` — reasoning about module depth before restructuring
-- `code/workflows/07-review/` — the review lens on seams and boundaries
+- `code/workflows/07-review/` — the review lens on seams and module depth
 - `project-management/workflows/15-decisions/` — the vocabulary an ADR's options are argued in
 
 ## Cross-references

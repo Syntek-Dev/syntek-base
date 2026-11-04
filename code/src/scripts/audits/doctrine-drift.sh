@@ -91,6 +91,7 @@ CLAIMS=$(
 owned	api-error-envelope	api-design/AUTH-AND-ERRORS.md	"error"[[:space:]]*:[[:space:]]*\{
 banned	api-detail-envelope	-	"detail"[[:space:]]*:
 banned	api-success-data-wrap	-	:[0-9]+:[[:space:]]*"data"[[:space:]]*:
+owned	absence-enum	ABSENCE.md	class[[:space:]]+[A-Za-z0-9_]+Absence\((Str)?Enum\)
 EOF
 )
 
