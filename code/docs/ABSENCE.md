@@ -17,10 +17,9 @@ how to tell them apart, and how each is written on the five runtime surfaces thi
 it rather than restating it (_What this is not_, below).
 
 **How to read the markers.** Every rule carries its enforcement tier inline: `[gate: fail]`
-names the gate that fails the run, `[judgement]` is a reviewer's call that no script can make,
-and `[gate: prose]` is a rule stated ahead of the code it governs, so nothing can execute against
-it yet. The marker vocabulary is `code/src/scripts/audits/CONTEXT.md`'s. No rule here takes a
-warn tier.
+names the gate that fails the run, and `[judgement]` is a reviewer's call that no script can
+make. The vocabulary and its meanings are [`VISUAL-DESIGN.md`](VISUAL-DESIGN.md) -> _6. What a
+script can decide (portable)_; this guide uses those two tiers and no other.
 
 ---
 
@@ -31,7 +30,7 @@ warn tier.
 | **Failure**        | The attempt to produce the value went wrong                                    | Did the operation fail to complete?                                |
 | **Not-applicable** | The value does not exist for this kind of thing, in any state it can be in     | Could this thing ever have a value here?                           |
 | **Empty**          | A collection was produced, and it holds nothing                                | Was a collection produced?                                         |
-| **Not-supplied**   | An input someone could have given was not given                                | Was it someone's to supply, on this request or record?             |
+| **Not-supplied**   | An input a person could have given was not given                               | Was it a person's to supply, on this request or record?            |
 | **Not-yet**        | The value will exist, produced by work already under way                       | Is something in flight that will produce it without anyone acting? |
 | **Expected miss**  | A lookup for one specific thing found nothing, and that is an ordinary outcome | None of the above: a single thing was looked for and is not there  |
 
@@ -81,16 +80,21 @@ One column per surface. Every cell names the expression, or says why that kind c
 there. **Rust** is present only in a project generated with `INCLUDE_RUST`, and **mobile
 TypeScript** only with `INCLUDE_MOBILE`; the other three ship everywhere.
 
-| Kind               | Python (Django)                                                                                            | Rust                                                                  | Alpine                                                                                                | HTMX                                                                                           | Mobile TypeScript                                                        |
-| ------------------ | ---------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| **Expected miss**  | `T \| None` from an internal lookup; a single-object read raises `ServiceNotFoundError`, which becomes 404 | `Option<T>`, `None`                                                   | Cannot arise as data: a component holds presentational state and looks nothing up; the server decides | A 404 at its real status, never a 200 carrying a blank fragment                                | `T \| undefined` from an index read or `Array.find`, narrowed before use |
-| **Not-yet**        | A `StrEnum` state member on the owning record (`PENDING`), never `None`                                    | An enum variant (`Pending`), never `None`                             | A state property declared at init from a frozen constant (`"loading"`), never an undeclared key       | A 200 placeholder fragment that re-requests itself through `hx-trigger`                        | A union member such as `{ status: "loading" }`                           |
-| **Empty**          | `[]`, an empty `QuerySet` or `()` — never `None`                                                           | `Vec::new()` or an empty slice, returned only when the call succeeded | Cannot arise as data: lists are rendered by the server and arrive as the HTMX empty-state partial     | 200 with the empty-state partial — never a blank body                                          | `[]` — never `null`                                                      |
-| **Failure**        | `raise` — a `ServiceError` subclass for a user error, `InvariantViolation` for a programmer error          | `Err(E)` in a `Result`, propagated with `?`                           | An `error` property declared at init as `null`, set to the message the alert region announces         | 5xx for an environment or programmer error; a form's user error is the re-rendered form at 200 | A thrown `Error`, or a `{ status: "error" }` union member                |
-| **Not-supplied**   | A Ninja `Schema` field `T \| None = None` or a declared default; an absent form key read as its default    | `Option<T>` on an input struct, or the field's `Default`              | A property declared at init with its empty default (`""`, `false`)                                    | Request side: the key is absent from the payload — an unchecked checkbox sends nothing         | An optional property `name?: T`, left absent rather than set             |
-| **Not-applicable** | A record type or variant with no such field, never a nullable attribute                                    | An enum variant that carries no such field                            | The control is not rendered, so no property exists to be empty                                        | The element is not rendered, so no request is ever made                                        | A union member that has no such property                                 |
+| Kind               | Python (Django)                                                                                                                                                                     | Rust                                                                  | Alpine                                                                                                                 | HTMX                                                                                                                          | Mobile TypeScript                                                        |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| **Expected miss**  | `T \| None` from an internal lookup; a single-object read raises `ServiceNotFoundError` — a miss carried on the error channel to its 404, not a failure                             | `Option<T>`, `None`                                                   | The component's own `fetch` sets its declared state property to a frozen constant (`"not-found"`), never a bare `null` | 200 with the not-found partial — never a 4xx, which swaps nothing, nor a blank body                                           | `T \| undefined` from an index read or `Array.find`, narrowed before use |
+| **Not-yet**        | A `TextChoices` status member on the owning model (`PENDING`), or a `StrEnum` where the state is serialised off it — never `None`                                                   | An enum variant (`Pending`), never `None`                             | A state property declared at init from a frozen constant (`"loading"`), never an undeclared key                        | A 200 placeholder fragment that re-requests itself through `hx-trigger`                                                       | A union member such as `{ status: "loading" }`                           |
+| **Empty**          | `[]`, an empty `QuerySet` or `()` — never `None`                                                                                                                                    | `Vec::new()` or an empty slice, returned only when the call succeeded | `results: []` declared at init and rendered through an `x-if` empty-state template — never `null`                      | 200 with the empty-state partial — never a blank body                                                                         | `[]` — never `null`                                                      |
+| **Failure**        | `raise` — a `ServiceError` subclass for a user error (bar `ServiceNotFoundError`, the miss above), `InvariantViolation` for a programmer error                                      | `Err(E)` in a `Result`, propagated with `?`                           | An `error` property declared at init as `null`, set to the message the alert region announces                          | 5xx for an environment or programmer error, swapped into the error region; a form's user error is the re-rendered form at 200 | A thrown `Error`, or a `{ status: "error" }` union member                |
+| **Not-supplied**   | A Ninja `Schema` field `T \| None = None` or a declared default — read through `model_fields_set` where omitted and `null` differ (a PATCH); an absent form key read as its default | `Option<T>` on an input struct, or the field's `Default`              | A property declared at init with its empty default (`""`, `false`)                                                     | Request side: the key is absent from the payload — an unchecked checkbox sends nothing                                        | An optional property `name?: T`, left absent rather than set             |
+| **Not-applicable** | A record type or variant with no such field, never a nullable attribute                                                                                                             | An enum variant that carries no such field                            | The control is not rendered — an `x-if`, never `x-show`, which leaves it in the submitted form                         | The element is not rendered — a server `{% if %}` — so no request is ever made                                                | A union member that has no such property                                 |
 
-The Rust column expresses
+The HTMX column is written against
+[`rendering/PITFALLS-AND-EXAMPLES.md`](rendering/PITFALLS-AND-EXAMPLES.md) -> _An error the user
+never sees_: htmx swaps no 4xx or 5xx by default, and the shipped global handler retargets a 5xx
+alone, so a 4xx reaches the user as no change at all.
+
+**Rust-only.** The Rust column expresses
 [`data-structures/TYPES-RUST.md`](data-structures/TYPES-RUST.md) -> _Option and Result, never
 sentinels_, which owns the shape rule behind it: this column adds only which kind each `Option`
 or `Result` carries.
@@ -102,10 +106,9 @@ or `Result` carries.
 - **An absence with more than one meaning is an enum, never a null.** **[judgement]** Where one
   field or return value can be absent for two or more of the six reasons, each reason is a named
   member the reader matches on. A bare `None`, `null` or `undefined` says only "nothing", and
-  the reader rebuilds which nothing from context — the provenance problem Robert Harper names
-  for Booleans in
-  [_Boolean Blindness_](https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/),
-  one level down.
+  the reader rebuilds which nothing from context — the provenance problem Robert Harper's
+  [_Boolean Blindness_](https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/)
+  describes for Booleans, one level down.
 - **Two spellings of one meaning are still one meaning.** **[judgement]** Normalising `null`
   and `undefined` into a single "no value" where both mean the same kind is parsing at the
   boundary, not overloading; the rule bites only when the meanings differ.
@@ -125,10 +128,12 @@ def vat_number(account: Account) -> str | VatNumberAbsence: ...
 ```
 
 - **This rule is stated here and in no other guide.** **[gate: fail]** `doctrine-drift.sh`,
-  claim `absence-enum`: a second fenced statement fails `doctrine-restated`, and this one going
-  missing fails `doctrine-unowned`. It reads fenced code only, so a restatement in prose is a
-  reviewer's catch, and its CI workflow is path-filtered to `code/docs/**`, `.claude/skills/**`
-  and the workflow trees.
+  claim `absence-enum`: a second fenced Python class named `…Absence` whose base is written
+  exactly `(StrEnum)` or `(Enum)` fails `doctrine-restated`, and this one going missing fails
+  `doctrine-unowned`. It scans fenced code under `code/docs`, `.claude/skills` and the three
+  workflow trees, and its CI workflow is path-filtered to the same trees.
+- **Every other restatement is a reviewer's catch.** **[judgement]** Prose, another class name,
+  `enum.StrEnum` or `TextChoices`, and the Rust or TypeScript spelling all pass the gate green.
 
 ---
 
@@ -149,7 +154,7 @@ def vat_number(account: Account) -> str | VatNumberAbsence: ...
 ## What is not an absence
 
 - **A response or call that completes with nothing to return is not one of the six.**
-  **[gate: prose]** A 204, or a deliberate `hx-swap="none"`, reports a finished action with
+  **[judgement]** A 204, or a deliberate `hx-swap="none"`, reports a finished action with
   nothing to redraw; a function annotated `-> None` is called for its effect. None of them is a
   value someone asked for, so none of them is classified here — and none of them may stand in
   for an absence that is one of the six.
@@ -158,13 +163,13 @@ def vat_number(account: Account) -> str | VatNumberAbsence: ...
 
 ## What this is not
 
-| Concern                                                                | Owner                                                                                                            |
-| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| What shape a value has — records, enums, unions, the parse boundary    | [`data-structures/TYPES-OVER-DICTIONARIES.md`](data-structures/TYPES-OVER-DICTIONARIES.md) and its five siblings |
-| `Option` and `Result` over sentinels, and the lints that force them    | [`data-structures/TYPES-RUST.md`](data-structures/TYPES-RUST.md) -> _Option and Result, never sentinels_         |
-| Which error class a failure is, and how each surfaces                  | [`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) -> _The error taxonomy_ — a sibling discipline                          |
-| A gate that could not look, against a surface that is genuinely absent | [`GATE-REPORTING.md`](GATE-REPORTING.md) — a sibling                                                             |
-| A path absent here and present in a generated project, or the reverse  | [`FORWARD-VOICE.md`](FORWARD-VOICE.md) — a sibling                                                               |
+| Concern                                                                | Owner                                                                                                                       |
+| ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| What shape a value has — records, enums, unions, the parse boundary    | [`data-structures/TYPES-OVER-DICTIONARIES.md`](data-structures/TYPES-OVER-DICTIONARIES.md) and its sibling `TYPES-*` guides |
+| `Option` and `Result` over sentinels, and the lints that force them    | **Rust-only.** [`data-structures/TYPES-RUST.md`](data-structures/TYPES-RUST.md) -> _Option and Result, never sentinels_     |
+| Which error class a failure is, and how each surfaces                  | [`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) -> _The error taxonomy_ — a sibling discipline                                     |
+| A gate that could not look, against a surface that is genuinely absent | [`GATE-REPORTING.md`](GATE-REPORTING.md) — a sibling                                                                        |
+| A path absent here and present in a generated project, or the reverse  | [`FORWARD-VOICE.md`](FORWARD-VOICE.md) — a sibling                                                                          |
 
 `NEGATIVE-SPACE.md` asks what must never be true; this guide asks what an absence means. They
 touch at one row of the crib — failure — and that row names the expression while the error

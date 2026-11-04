@@ -186,7 +186,8 @@ opposite of depth.
 - **The deletion test.** Delete the module and inline it: if the same complexity reappears across
   N callers, it earned its keep; if nothing reappears, it was padding a seam that did not exist.
 - **The interface is the test surface.** Test a service through its public methods, never its
-  internals — a test that must reach past the interface is telling you the boundary is wrong.
+  internals — a test that must reach past the interface is telling you the seam is in the wrong
+  place.
 - **One adapter is a hypothetical seam; two adapters are a real seam.** Do not introduce an
   abstraction (base class, protocol, strategy) until a second implementation actually varies —
   see YAGNI in [`../CODING-PRINCIPLES.md`](../CODING-PRINCIPLES.md).
