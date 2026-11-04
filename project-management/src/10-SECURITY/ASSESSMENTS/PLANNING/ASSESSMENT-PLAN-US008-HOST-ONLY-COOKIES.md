@@ -312,9 +312,8 @@ Each becomes a US008 acceptance criterion; the implementation assessment closes 
 - [ ] **7.10** The three clauses carry **no silencing annotation**
       (`code/src/scripts/audits/CONTEXT.md` → _Scripts_, the `negative-space.sh` row), and the
       register's under-count is recorded as the named cost of Q3 rather than left to be found
-      (A02, TM-09) <!-- UPDATED 03/11/2026 (US002 Step H): 7.10 and TM-09's row in Section 6
-          cited "`code/src/scripts/audits/CONTEXT.md:174`" until then; US002 shrank that file, so the
-          row is named rather than re-pinned. The :170 and :174 records above and below are history. -->
+      (A02, TM-09)
+      <!-- UPDATED 03/11/2026 (US002 Step H): 7.10 and TM-09's row in Section 6 cited "`code/src/scripts/audits/CONTEXT.md:174`" until then; US002 shrank that file, so the row is named rather than re-pinned. The :170 and :174 records above and below are history. -->
 - [ ] **7.11** **The advisory reaches its operator.** TM-03's only mitigation is an advisory the
       story's own Q11 row records as invisible in `template-update.sh`'s successful preview. The
       blindness is repaired inside US008, and a successful preview is proved to show the advisory.

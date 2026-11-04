@@ -555,10 +555,8 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       the whole-tree figure recorded as a per-citer diff with its index state beside it
 - [ ] `docs-length.sh` — the five guides stay clear of the 270 ratchet;
       `code/src/scripts/audits/CONTEXT.md` is **not grown**, read against the figure
-      `docs-length.sh` reports on the day, never a figure quoted here <!-- UPDATED 03/11/2026
-          (US002): read "measured at **299 of 300** on 17/09/2026 and not 298, which nineteen
-          artefacts under `../` still assert" until then; US002 shrank the file and retired the
-          standing figures those artefacts carried, so a guard cites the gate, not a number. -->
+      `docs-length.sh` reports on the day, never a figure quoted here
+      <!-- UPDATED 03/11/2026 (US002): read "measured at **299 of 300** on 17/09/2026 and not 298, which nineteen artefacts under `../` still assert" until then; US002 shrank the file and retired the standing figures those artefacts carried, so a guard cites the gate, not a number. -->
 - [ ] `docs-pairing.sh` passes — US008 edits both halves of the settings pair; neither member
       creates a directory, so no new pair is owed
 - [ ] ShellCheck over `negative-space.sh`, both migration scripts, `template-update.sh` and
