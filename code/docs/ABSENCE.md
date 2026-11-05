@@ -19,20 +19,21 @@ it rather than restating it (_What this is not_, below).
 **How to read the markers.** Every rule carries its enforcement tier inline: `[gate: fail]`
 names the gate that fails the run, and `[judgement]` is a reviewer's call that no script can
 make. The vocabulary and its meanings are [`VISUAL-DESIGN.md`](VISUAL-DESIGN.md) -> _6. What a
-script can decide (portable)_; this guide uses those two tiers and no other.
+script can decide (portable)_ — here no audit lists the `[judgement]` clauses; this guide uses
+those two tiers and no other.
 
 ---
 
 ## The six kinds
 
-| Kind               | It means                                                                       | The question that singles it out                                   |
-| ------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
-| **Failure**        | The attempt to produce the value went wrong                                    | Did the operation fail to complete?                                |
-| **Not-applicable** | The value does not exist for this kind of thing, in any state it can be in     | Could this thing ever have a value here?                           |
-| **Empty**          | A collection was produced, and it holds nothing                                | Was a collection produced?                                         |
-| **Not-supplied**   | An input a person could have given was not given                               | Was it a person's to supply, on this request or record?            |
-| **Not-yet**        | The value will exist, produced by work already under way                       | Is something in flight that will produce it without anyone acting? |
-| **Expected miss**  | A lookup for one specific thing found nothing, and that is an ordinary outcome | None of the above: a single thing was looked for and is not there  |
+| Kind               | It means                                                                       | The question that singles it out                                                              |
+| ------------------ | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| **Failure**        | The attempt to produce the value went wrong                                    | Did the operation fail to complete?                                                           |
+| **Not-applicable** | The value does not exist for this kind of thing, in any state it can be in     | Could this thing ever have a value here?                                                      |
+| **Empty**          | A collection was produced, and it holds nothing                                | Was a collection produced?                                                                    |
+| **Not-supplied**   | An input the caller could have given was not given                             | Was it the caller's to supply, on this request or record, rather than a process's to produce? |
+| **Not-yet**        | The value will exist, produced by work already under way                       | Is something in flight that will produce it without anyone acting?                            |
+| **Expected miss**  | A lookup for one specific thing found nothing, and that is an ordinary outcome | None of the above: a single thing was looked for and is not there                             |
 
 The not-supplied / not-applicable split parallels E. F. Codd's "missing-but-applicable" A-marks
 and "inapplicable" I-marks
@@ -65,9 +66,9 @@ The table's rows are also its procedure, and the order is the tie-break.
 - **An omitted list is not-supplied; a list sent empty is empty.** **[judgement]** A payload
   that leaves out its `tags` field produced no collection, so the empty question does not apply;
   one that sends `tags: []` supplied a collection that holds nothing.
-- **Not-yet requires work in flight; waiting on a person is not-supplied.** **[judgement]** A
+- **Not-yet requires work in flight; waiting on the caller is not-supplied.** **[judgement]** A
   thumbnail a queued task is rendering is not-yet. A profile photo the user has not uploaded is
-  not-supplied, however likely it is to arrive.
+  not-supplied, however likely it is to arrive — and so is a field an integration left out.
 - **Not-yet beats expected miss when the producer is known.** **[judgement]** A payment record
   the provider's webhook will create is not-yet while that payment is pending; the same lookup
   with no payment initiated is a miss.
@@ -80,24 +81,56 @@ One column per surface. Every cell names the expression, or says why that kind c
 there. **Rust** is present only in a project generated with `INCLUDE_RUST`, and **mobile
 TypeScript** only with `INCLUDE_MOBILE`; the other three ship everywhere.
 
-| Kind               | Python (Django)                                                                                                                                                                     | Rust                                                                  | Alpine                                                                                                                 | HTMX                                                                                                                          | Mobile TypeScript                                                        |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| **Expected miss**  | `T \| None` from an internal lookup; a single-object read raises `ServiceNotFoundError` — a miss carried on the error channel to its 404, not a failure                             | `Option<T>`, `None`                                                   | The component's own `fetch` sets its declared state property to a frozen constant (`"not-found"`), never a bare `null` | 200 with the not-found partial — never a 4xx, which swaps nothing, nor a blank body                                           | `T \| undefined` from an index read or `Array.find`, narrowed before use |
-| **Not-yet**        | A `TextChoices` status member on the owning model (`PENDING`), or a `StrEnum` where the state is serialised off it — never `None`                                                   | An enum variant (`Pending`), never `None`                             | A state property declared at init from a frozen constant (`"loading"`), never an undeclared key                        | A 200 placeholder fragment that re-requests itself through `hx-trigger`                                                       | A union member such as `{ status: "loading" }`                           |
-| **Empty**          | `[]`, an empty `QuerySet` or `()` — never `None`                                                                                                                                    | `Vec::new()` or an empty slice, returned only when the call succeeded | `results: []` declared at init and rendered through an `x-if` empty-state template — never `null`                      | 200 with the empty-state partial — never a blank body                                                                         | `[]` — never `null`                                                      |
-| **Failure**        | `raise` — a `ServiceError` subclass for a user error (bar `ServiceNotFoundError`, the miss above), `InvariantViolation` for a programmer error                                      | `Err(E)` in a `Result`, propagated with `?`                           | An `error` property declared at init as `null`, set to the message the alert region announces                          | 5xx for an environment or programmer error, swapped into the error region; a form's user error is the re-rendered form at 200 | A thrown `Error`, or a `{ status: "error" }` union member                |
-| **Not-supplied**   | A Ninja `Schema` field `T \| None = None` or a declared default — read through `model_fields_set` where omitted and `null` differ (a PATCH); an absent form key read as its default | `Option<T>` on an input struct, or the field's `Default`              | A property declared at init with its empty default (`""`, `false`)                                                     | Request side: the key is absent from the payload — an unchecked checkbox sends nothing                                        | An optional property `name?: T`, left absent rather than set             |
-| **Not-applicable** | A record type or variant with no such field, never a nullable attribute                                                                                                             | An enum variant that carries no such field                            | The control is not rendered — an `x-if`, never `x-show`, which leaves it in the submitted form                         | The element is not rendered — a server `{% if %}` — so no request is ever made                                                | A union member that has no such property                                 |
+| Kind               | Python (Django)                                                                                                                                                                                                                                                                         | Rust                                                                                                                                                                                                                                            | Alpine                                                                                                                                                                                                                                                      | HTMX                                                                                                                                                                   | Mobile TypeScript                                                                                                                                                                    |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Expected miss**  | `T \| None` from an internal lookup; a single-object read raises `ServiceNotFoundError` — a miss on the error channel, not a failure: 404 on the JSON API, caught by an HTMX-facing view                                                                                                | `Option<T>`, `None`                                                                                                                                                                                                                             | The server's not-found partial carries it; Alpine does not fetch, so it only displays the swap                                                                                                                                                              | 200 with the not-found partial while the global handler retargets 5xx only — a 4xx swaps nothing — never a blank body                                                  | `T \| undefined` from an array index, `Map.get` or `Array.find`, narrowed before use                                                                                                 |
+| **Not-yet**        | A `TextChoices` status member on the owning model (`PENDING`), or a `StrEnum` where the state is serialised off it — never `None`                                                                                                                                                       | An enum variant (`Pending`), never `None`                                                                                                                                                                                                       | `STATUS.LOADING`, a member of one `Object.freeze` status set declared at init — never a bare string or an undeclared key                                                                                                                                    | A 200 placeholder fragment that re-requests itself through `hx-trigger`                                                                                                | A union member such as `{ kind: "loading" }`                                                                                                                                         |
+| **Empty**          | `[]`, an empty `QuerySet` or `()` — never `None`                                                                                                                                                                                                                                        | `Vec::new()` or an empty slice, returned only when the call succeeded                                                                                                                                                                           | A client-side live filter's `results: []`, its empty state shown only at `STATUS.DONE` with `results.length === 0` — never on `results` alone — and its count written to the persistent `role="status"` region                                              | 200 with the empty-state partial — never a blank body                                                                                                                  | `[]` — never `null`                                                                                                                                                                  |
+| **Failure**        | `raise` — a `ServiceError` subclass for a user error (bar `ServiceNotFoundError`, the miss above), `InvariantViolation` for a programmer error, `DependencyUnavailable` from the outbound adapter for an environment error (503)                                                        | `Err(E)` in a `Result`, propagated with `?`                                                                                                                                                                                                     | The server's error partial carries it; Alpine only displays the swap, never as an empty state                                                                                                                                                               | 5xx for an environment or programmer error, swapped into the error region; a form's user error is the re-rendered form at 200; a non-form 4xx shows nothing until S-03 | A throw routed through `classify()` — `InvariantViolation` for a programmer error, the HTTP `Response` for a status failure — or a `{ kind: "failed"; reason }` member held as state |
+| **Not-supplied**   | An `apps.core.schemas.Schema` field (`QuerySchema` for a query) `T \| None = None` or a declared default — read through `model_fields_set` where omitted and `null` differ (a PATCH); an absent form key cleans to the field's empty value (`""`, `None`, `False`), never its `initial` | `Option<T>` on an input struct, or a `#[serde(default)]` field — without it a missing key fails to deserialise; `Option<Option<T>>` where omitted and `null` differ (a PATCH), behind a deserialiser that maps a present `null` to `Some(None)` | A property declared at init with its empty default (`""`, `false`)                                                                                                                                                                                          | Request side: the key is absent from the payload — an unchecked checkbox sends nothing                                                                                 | An optional property `name?: T`, left absent rather than set — the parse function maps the API's `null` to an absent key                                                             |
+| **Not-applicable** | In the domain type, a record or variant with no such field, never a nullable attribute; on the model, a nullable column only where a `CheckConstraint` ties its NULL to the discriminating kind, parsed into the variant at `from_row`                                                  | An enum variant that carries no such field                                                                                                                                                                                                      | Where applicability turns on another field's client-side value: out of the submitted form — an `x-if` on a `<template>` or a `:disabled` binding, never a bare `x-show` — and out of any payload the component builds itself; otherwise the server omits it | The element is not rendered — a server `{% if %}` — so no request is ever made                                                                                         | A union member that has no such property                                                                                                                                             |
 
-The HTMX column is written against
+**The HTMX column governs Django views answering HTMX requests**, and is written against
 [`rendering/PITFALLS-AND-EXAMPLES.md`](rendering/PITFALLS-AND-EXAMPLES.md) -> _An error the user
-never sees_: htmx swaps no 4xx or 5xx by default, and the shipped global handler retargets a 5xx
-alone, so a 4xx reaches the user as no change at all.
+never sees_: htmx swaps no 4xx or 5xx by default, and the global handler shipped for the first page
+that loads htmx (`observability.js`) retargets a 5xx alone, so a 4xx reaches the user as no change
+at all. That is why a miss answers 200 today; slice `S-03` of the absence map (decision `N-011`)
+moves it to a 404 partial through that listener, and until then a non-form user error — a request
+DTO that fails to parse
+([`data-structures/TYPES-BROWSER.md`](data-structures/TYPES-BROWSER.md) -> _The request — named
+fields, never an opaque blob_) — is invisible. **An HTMX-facing view catches `ServiceNotFoundError`
+and renders the not-found partial.** **[judgement]** A Django view has no Ninja exception handler,
+so an uncaught one becomes a 500 and reads as a failure.
+
+**The JSON API is not the HTMX column.** `/api/` answers a miss with 404 and the error envelope —
+[`api-design/REST-CONVENTIONS.md`](api-design/REST-CONVENTIONS.md) -> _Status Codes_ and
+[`api-design/AUTH-AND-ERRORS.md`](api-design/AUTH-AND-ERRORS.md) -> _The error envelope_.
+
+- **A lookup scoped to the caller answers absent and not-owned identically**, on every surface.
+  **[judgement]** Owned by [`security/AUTH-AND-AUTHZ.md`](security/AUTH-AND-AUTHZ.md) ->
+  _Anti-Enumeration_; the not-found partial is never the oracle that tells the two apart.
+
+**Alpine does not fetch.** **[judgement]** [`RENDERING.md`](RENDERING.md) -> _The doctrine (the
+decision rule)_ keeps it local with no round-trip, so a miss or a failure arrives in the server's
+partial and Alpine only displays it. Empty arises in a client-side live filter
+([`FRONTEND-CODING-PRINCIPLES.md`](FRONTEND-CODING-PRINCIPLES.md) -> _HTMX & Alpine_), and its
+empty state reads differently from not-yet-loaded and from failed; the announcement is
+[`accessibility/TESTING-AND-COMPONENTS.md`](accessibility/TESTING-AND-COMPONENTS.md) ->
+_Announcing dynamic updates_. The Python not-applicable cell's model half is
+[`data-structures/SCHEMA-DESIGN.md`](data-structures/SCHEMA-DESIGN.md) -> _Polymorphic
+Relationships_.
 
 **Rust-only.** The Rust column expresses
 [`data-structures/TYPES-RUST.md`](data-structures/TYPES-RUST.md) -> _Option and Result, never
 sentinels_, which owns the shape rule behind it: this column adds only which kind each `Option`
 or `Result` carries.
+
+**Mobile-only.** The mobile column's shapes are
+[`data-structures/TYPES-TYPESCRIPT.md`](data-structures/TYPES-TYPESCRIPT.md)'s. Its failure path
+is [`MOBILE-CODING-PRINCIPLES.md`](MOBILE-CODING-PRINCIPLES.md) -> _4. How this surface expresses
+the error taxonomy_: the shipped `classify()` files every 4xx as a user error, so an API 404 on a
+single-object read lands on the failure channel until the API client maps it to a not-found member
+at the parse boundary.
 
 ---
 
@@ -118,18 +151,36 @@ or `Result` carries.
 def vat_number(account: Account) -> str | None: ...
 
 
-# Good — each meaning is named, so a match over the result is exhaustive.
-class VatNumberAbsence(StrEnum):
-    NOT_SUPPLIED = "not-supplied"  # a VAT-registered company that left it blank
-    NOT_APPLICABLE = "not-applicable"  # a private individual: no VAT number exists
+# Good — each meaning is a named member, and no member is also a str.
+class VatNumberAbsence(Enum):
+    NOT_SUPPLIED = auto()  # a VAT-registered company that left it blank
+    NOT_APPLICABLE = auto()  # a private individual: no VAT number exists
 
 
 def vat_number(account: Account) -> str | VatNumberAbsence: ...
+
+
+def vat_label(account: Account) -> str:
+    match vat_number(account):
+        case VatNumberAbsence.NOT_SUPPLIED:
+            return "Not given yet"
+        case VatNumberAbsence.NOT_APPLICABLE:
+            return "Not VAT-registered"
+        case str() as number:
+            return number
+        case _:
+            raise InvariantViolation("account.vat_number_handled", f"account={account.pk}")
 ```
 
+The base is plain `Enum` because the value never leaves the process; a `StrEnum` member is itself
+a `str`, so a `case str():` arm would swallow it. **The `case _:` arm is mandatory.**
+**[judgement]** Both are owned by
+[`data-structures/TYPES-PYTHON.md`](data-structures/TYPES-PYTHON.md) -> _Enums_ and _Exhaustive
+match_.
+
 - **This rule is stated here and in no other guide.** **[gate: fail]** `doctrine-drift.sh`,
-  claim `absence-enum`: a second fenced Python class named `…Absence` whose base is written
-  exactly `(StrEnum)` or `(Enum)` fails `doctrine-restated`, and this one going missing fails
+  claim `absence-enum`: a fenced `class …Absence(StrEnum)` or `(Enum)` line outside this guide
+  fails `doctrine-restated`, whatever the fence's language, and this one going missing fails
   `doctrine-unowned`. It scans fenced code under `code/docs`, `.claude/skills` and the three
   workflow trees, and its CI workflow is path-filtered to the same trees.
 - **Every other restatement is a reviewer's catch.** **[judgement]** Prose, another class name,

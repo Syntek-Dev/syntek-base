@@ -144,7 +144,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
   registration threshold — past one property or any method, the component leaves `x-data`. It
   **supersedes** the inline `x-data` and bare `"itemSaved"` examples in `code/docs/rendering/`
 - `code/docs/ABSENCE.md` — the HTMX and Alpine columns of the absence crib: an empty-state partial,
-  a 404 and a not-rendered control are three different kinds, never one blank fragment
+  a not-found partial and a not-rendered control are three different kinds, never one blank fragment
 - `code/docs/DESIGN-TOKENS.md` — the token catalogue and the `var(--token)`-only contract
 - `code/docs/FRONTEND-CODING-PRINCIPLES.md` — component placement, grounding in the live code,
   the legal footer as data, and the single-component-system rule
