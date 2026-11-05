@@ -73,6 +73,12 @@ exist and the gate reddens on the register itself. No second clause was written 
 sites this rule was written against name `code/src/django/components/`. If two documents disagree
 about what a path is for, that is a documentation defect to fix, not two rows.
 
+**A row may be patterned.** Where every story creates its own copy of a record, one row binds the
+class: `###` means exactly three digits, the rest matches literally and whole. The duty is the
+same — a newly promised record class takes its row in the same change. **No row covers a shipped
+template**: a zero-index or `-TEMPLATE.` file must exist here, and the gate tests its presence
+before it consults the register.
+
 ## 4. Direction B — the `template-only` token
 
 A citation of a path this repository **holds** but copier **excludes** resolves here and dangles

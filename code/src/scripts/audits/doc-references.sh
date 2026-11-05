@@ -91,11 +91,13 @@
 #
 #                 A CITING FILE THAT DOES NOT SHIP IS SKIPPED for this check alone, because
 #                 Direction B is a rule about what a SHIPPED document claims. That predicate is
-#                 derived here from `copier.yml`; `is_exempt()` below still hardcodes its own,  # doc-references: template-only
-#                 and three of its arms say "none of these ship" while nine files inside them do
-#                 (MAP-RULE-OWNERSHIP N-009/N-011). The two are not reconciled here — that node
-#                 is open on its own map, and settling it in passing is what this repository
-#                 calls half-fixing another node's half.
+#                 derived here from `copier.yml`; `is_exempt()` below hardcodes its own tree  # doc-references: template-only
+#                 arms. RECONCILED 05/11/2026 (US004 P1): those arms said "none of these ship"
+#                 while the pair files and templates copier re-includes out of them did, so a
+#                 fall-through arm above them now mirrors copier's three negation spellings and
+#                 lets those files back into the scan. And both predicates read ONE population
+#                 (US004 P2, repo_files() below), so an untracked file's verdict no longer
+#                 depends on whether it has been staged.
 #
 #                 ACCEPTED COST, stated rather than found later: `GAPS.md`, `DEFERRED.md`,
 #                 `README.md` and `.claude/MEMORY.md` are excluded AND seeded, so THIS
@@ -138,7 +140,8 @@
 #                 the one most needing the check, and it is not tracked yet.
 #
 # Exempt:         history (CHANGELOG/RELEASES/VERSION-HISTORY) records what was true then;
-#                 handoffs/ and .copier/ are staging.
+#                 handoffs/ and .copier/ are staging. Never a CONTEXT.md, a CLAUDE.md or a
+#                 `-TEMPLATE.` file inside an exempt tree, which ship (US004 P1).
 #
 #                 NOT exempt, deliberately: the root GAPS.md and DEFERRED.md. They are
 #                 copier-excluded as of 22/08/2026, so this repository's copies hold real
@@ -180,7 +183,8 @@
 #
 # Self-test:      --self-test runs the ordinary scan over fixtures/doc-references/{broken,clean}
 #                 and asserts it separates them: broken/ must fire on every clause, clean/ on
-#                 none. It covers the three clauses above and nothing else, because a green run
+#                 none. It covers the clauses added since 20/08/2026 and the four US004
+#                 repairs (05/11/2026) and nothing else, because a green run
 #                 that measured nothing is believed. The fixtures hold deliberate dangling
 #                 paths, so an ordinary run must not read them -- is_exempt() keeps that tree
 #                 out and --self-test is the only way in.
@@ -315,9 +319,19 @@ READ_AS=""
 # Tracked plus untracked-but-not-ignored, deduplicated. Ignored files are absent by
 # construction — but nothing this check cares about relies on that any more: the
 # artefact trees are committed as of 17/08/2026 and are named in is_exempt() below.
-candidates() {
+#
+# ONE POPULATION, TWO READERS (US004 P2, 05/11/2026). `repo_files` is every file of any type;
+# `candidates` narrows it to what this check reads, and `build_template_only` below reads it
+# whole. Until US004 that builder read `git ls-files` alone, so an UNTRACKED file under an
+# excluded tree was scanned here and missing from the derived set: the same bytes shipped or
+# did not depending on whether anyone had run `git add`, and Check 3 fired on every citation
+# such a file made to a committed, excluded sibling. Both now read the one function.
+repo_files() {
   { git ls-files -z; git ls-files -z --others --exclude-standard; } \
-    | tr '\0' '\n' | sort -u | grep -E '\.(md|sh)$' || true
+    | tr '\0' '\n' | sort -u || true
+}
+candidates() {
+  repo_files | grep -E '\.(md|sh)$' || true
 }
 
 is_exempt() {
@@ -331,9 +345,32 @@ is_exempt() {
     # the identical one in DEFERRED.md was caught. The cost is real and is accepted here: the
     # register can no longer quote a broken citation in order to log one, and must describe it
     # instead of reproducing it.
+    #
+    # MOVED 05/11/2026 (US004 P1): the vendored and fixture arms now sit ABOVE the pair-and-
+    # template fall-through below, so each stays exempt for its own reason — a vendored
+    # `CONTEXT.md` is upstream's text, and a `-TEMPLATE.` fixture is reached by --self-test alone.
+    code/docs/cloudinary/*)                       return 0 ;;  # vendored SDK docs
+    .agents/*)                                    return 0 ;;  # vendored third-party skills
+    # This audit's own fixtures, exempted as docs-pairing.sh exempts the same tree and for
+    # the same reason: the audits run against these files, so a fixture that deliberately
+    # carries a dangling path would redden the ordinary run rather than prove anything. They
+    # are reached only through --self-test, which points the identical scan at them on
+    # purpose -- so the exemption lifts there and nowhere else.
+    code/src/scripts/audits/fixtures/*)
+      if ! $SELF_TEST; then return 0; fi ;;
+    # ADDED 05/11/2026 (US004 P1): the files copier lifts back OUT of the exempt trees below.
+    # `copier.yml`'s allowlist block — _The artefact trees: tracked HERE, never shipped_ —  # doc-references: template-only
+    # re-includes every CONTEXT.md and CLAUDE.md inside them and every `-TEMPLATE.` file, so
+    # those ship and are policed like any other shipped file. The arm mirrors copier's three
+    # negation spellings rather than listing folders, so a new exempt tree needs no edit here.
+    # `-TEMPLATE.` and not the bare word: copier re-includes `*-TEMPLATE.*`, and the bare form
+    # would read a research note or an ADR whose title merely contains the word as shipped.
+    */CONTEXT.md|*/CLAUDE.md|*-TEMPLATE.*)        return 1 ;;
     handoffs/*|.copier/*)                         return 0 ;;
-    # The artefact trees. This rule polices what a SHIPPED file may cite, and none of
-    # these ship — copier.yml `_exclude` empties every one of them at generation. A map
+    # The artefact trees. This rule polices what a SHIPPED file may cite, and these FOLDERS
+    # do not ship — copier.yml `_exclude` empties every one of them at generation, bar the
+    # pair files and templates the arm above has already let through. CORRECTED 05/11/2026:
+    # this read "none of these ship" until US004, while eleven files inside them did. A map
     # cites sibling maps and paths that do not exist yet BY DESIGN: charting future work
     # is what it is for, and the citation resolves when the work lands.
     #
@@ -355,15 +392,6 @@ is_exempt() {
     # Scoped to WALK-* deliberately. The folder's own CONTEXT.md and CLAUDE.md DO ship and stay
     # policed -- the exemption covers the evidence, never the documentation over it.
     project-management/src/00-ASSETS/WALK-TESTS/WALK-*) return 0 ;;
-    code/docs/cloudinary/*)                       return 0 ;;  # vendored SDK docs
-    .agents/*)                                    return 0 ;;  # vendored third-party skills
-    # This audit's own fixtures, exempted as docs-pairing.sh exempts the same tree and for
-    # the same reason: the audits run against these files, so a fixture that deliberately
-    # carries a dangling path would redden the ordinary run rather than prove anything. They
-    # are reached only through --self-test, which points the identical scan at them on
-    # purpose -- so the exemption lifts there and nowhere else.
-    code/src/scripts/audits/fixtures/*)
-      if ! $SELF_TEST; then return 0; fi ;;
   esac
   return 1
 }
@@ -386,8 +414,29 @@ REGISTER_FILE="how-to/src/PROJECT-PATHS.md"
 REGISTERED="$(awk '/^## Registered paths/{on=1; next} /^## /{on=0} on' "$REGISTER_FILE" 2>/dev/null \
   | grep -oE '^\| `[^`]+`' | tr -d '|` ' | sed 's:/$::' || true)"
 
+# PATTERNED ROWS (US004 P4, 05/11/2026). A row may bind a CLASS of per-story records: `###` in
+# it means exactly three digits, everything else is literal, and the whole path must match —
+# so one row covers every story's record, while four digits or letters are never members. A
+# zero-index or `-TEMPLATE.` target is never registered, by any row: a shipped template is a
+# literal presence obligation, checked before this is consulted, and a class row that covered
+# it would hide the template's absence (ADR-US004-PATTERNED-REGISTRATION-PRESERVES-SHIPPED-
+# TEMPLATES-09-10-2026). Reads `$REGISTERED` at call time, so --self-test can stand a
+# fixture-local row in for the real ones.
 is_registered() {
-  [ -n "$REGISTERED" ] && printf '%s\n' "$REGISTERED" | grep -qxF "$1"
+  [ -n "$REGISTERED" ] || return 1
+  case "${1##*/}" in *US000*|*-TEMPLATE.*) return 1 ;; esac
+  local row re
+  while IFS= read -r row; do
+    [ -n "$row" ] || continue
+    case "$row" in
+      *'###'*)
+        re="$(printf '%s' "$row" | sed -e 's/[].[^$*+?(){}|\\]/\\&/g' -e 's/###/[0-9]{3}/g')"
+        [[ "$1" =~ ^${re}$ ]] && return 0 ;;
+      *)
+        [ "$row" = "$1" ] && return 0 ;;
+    esac
+  done <<< "$REGISTERED"
+  return 1
 }
 
 # Copier renders this file into every generated project, so the two delimiter pairs must
@@ -440,10 +489,10 @@ build_template_only() {
   done <<< "$raw"
   [ "${#anchored[@]}" -gt 0 ] || return 0
 
-  local -a tracked
-  mapfile -t tracked < <(git ls-files 2>/dev/null || true)
+  local -a population
+  mapfile -t population < <(repo_files 2>/dev/null)
   local g keep
-  for f in "${tracked[@]}"; do
+  for f in "${population[@]}"; do
     keep=false
     for g in "${anchored[@]}"; do path_matches "$f" "$g" && { keep=true; break; }; done
     $keep || continue
@@ -457,10 +506,10 @@ build_template_only() {
     template_only_paths=$((template_only_paths + 1))
   done
 
-  # A cited DIRECTORY is template-only when every tracked file under it is. `.github/scripts`  # doc-references: template-only
+  # A cited DIRECTORY is template-only when every file under it is. `.github/scripts`  # doc-references: template-only
   # qualifies; `handoffs` does not, because its documentation pair is re-included and ships.
   local -A dir_total=() dir_absent=()
-  for f in "${tracked[@]}"; do
+  for f in "${population[@]}"; do
     d="$f"
     while [ "${d%/*}" != "$d" ]; do
       d="${d%/*}"
@@ -526,11 +575,51 @@ peel_anchor() { # $1 = token -> sets `peeled`
 }
 
 # A token with a template placeholder, a numeric pattern, or a glob is not a citation.
-is_pattern() {
+# Split out of is_pattern() on 05/11/2026 so the template-presence test below can ask the
+# placeholder question alone.
+is_placeholder() {
   case "$1" in
     *"$TOK_OPEN"*|*"$BLK_OPEN"*)                                     return 0 ;;
     *'{'*|*'###'*|*'##'*|*'<'*'>'*|*'*'*|*'…'*|*'NN'*)               return 0 ;;
     *'–'*|*'—'*)                                                     return 0 ;;  # en/em-dash range
+  esac
+  return 1
+}
+
+# A SHIPPED TEMPLATE NAMED BY PATH IS A CITATION, NOT A PATTERN (US004, 05/11/2026). The
+# zero-index and `-TEMPLATE.` files are the convention, so a BARE name or a placeholder spelling
+# of one stays a pattern below. A path-form token naming one points at a file the template
+# must ship, and is_pattern() used to drop it before any check ran, so a deleted template went
+# unreported wherever it was cited. Such a token skips is_pattern() and reaches Check 1, which
+# tests its existence before any seeded, registered or naming-row suppression.
+is_template_target() {
+  case "$1" in */*) ;; *) return 1 ;; esac
+  is_placeholder "$1" && return 1
+  case "${1##*/}" in *US000*|*-TEMPLATE.*) return 0 ;; esac
+  return 1
+}
+
+# ── The instance forms, the cited side and the citing side ──────────────────
+# Check 2's alternation: a token matching it names a per-project instance. CORRECTED
+# 05/11/2026 (US004 P3): `ADR-US[0-9]{3}` replaces the bare-number decision form retired
+# 31/08/2026, and `QA-PLAN-US[0-9]{3}` replaces a QA form no artefact was ever named with.
+INSTANCE_CITED_RE='^(ADR-US[0-9]{3}|US[0-9]{3}|SPRINT-[0-9]{2}|([0-9]{2}-)?SPRINT-PLAN-[0-9]{2}|MAP-[A-Z][A-Z0-9-]+|PLAN-US[0-9]{3}|([0-9]{2}-)?STORY-PLAN-US[0-9]{3}|BUG-[A-Z]|QA-PLAN-US[0-9]{3}|API-US[0-9]{3})'
+# The citing side (US004 P3): the per-story artefact forms whose FILE never ships, so what it
+# cites is no claim a generated project reads. A separate list because the two sides are not
+# the same set — a review record cites and is never cited, a map is cited and lives in an
+# exempt tree — and each list is pinned by its own fixture pair. The zero-index and
+# `-TEMPLATE.` files match these shapes and DO ship, so they are excluded and stay policed.
+INSTANCE_CITER_RE='^(US[0-9]{3}|SPRINT-[0-9]{2}|ADR-US[0-9]{3}|QA-PLAN-US[0-9]{3}|([0-9]{2}-)?STORY-PLAN-US[0-9]{3}|([0-9]{2}-)?SPRINT-PLAN-[0-9]{2}|REVIEW-US[0-9]{3}|BUG-)'
+
+is_instance_citer() { # $1 = citing file path
+  local name="${1##*/}"
+  case "$name" in *US000*|*-TEMPLATE.*) return 1 ;; esac
+  [[ "$name" =~ $INSTANCE_CITER_RE ]]
+}
+
+is_pattern() {
+  is_placeholder "$1" && return 0
+  case "$1" in
     *-TEMPLATE.md|*-TEMPLATE)                                        return 0 ;;
     # The zero-index artefacts ARE the naming convention, not an instance of it.
     US000*|ADR-000*|MAP-000*|SPRINT-00*|SPRINT-PLAN-00*|*US000*)     return 0 ;;
@@ -577,7 +666,7 @@ scan_files() { # $1 = newline-separated file list
   checked_tokens=0
   path_tests=0
   local file lineno token line prev is_naming_row stripped resolved sibling base
-  local is_marked file_ships file_dir tmpl tmpl_base peeled plan
+  local is_marked file_ships file_dir tmpl tmpl_base peeled plan citer_instance template_target
   local resolved_skip=false
 
   while IFS= read -r file; do
@@ -595,6 +684,12 @@ scan_files() { # $1 = newline-separated file list
     if is_template_only "$file"; then file_ships=false; fi
     file_dir="${file%/*}"
     [ "$file_dir" = "$file" ] && file_dir="."
+    # Check 2 alone asks whether the CITING file is itself a per-project instance, read from its
+    # filename (US004 P3). Never from is_template_only(): copier.yml excludes itself, so in a
+    # generated project that set is empty and the exemption would silently never apply
+    # (ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026).
+    citer_instance=false
+    if is_instance_citer "$file"; then citer_instance=true; fi
 
     # Every backticked token in the file, with its line number.
     while IFS=: read -r lineno token; do
@@ -602,7 +697,13 @@ scan_files() { # $1 = newline-separated file list
       # Counted below the pattern filter, not above it: a token carrying a placeholder, a glob
       # or a `###` is a naming convention being shown rather than a citation, so it is not part
       # of the population either check could have fired on.
-      is_pattern "$token" && continue
+      # A path-form shipped template is the one exception: is_template_target() above.
+      template_target=false
+      if is_template_target "$token"; then
+        template_target=true
+      elif is_pattern "$token"; then
+        continue
+      fi
       checked_tokens=$((checked_tokens + 1))
 
       # An example marked as an example is not a citation. A naming table shows the pattern
@@ -691,10 +792,11 @@ scan_files() { # $1 = newline-separated file list
       # NOTHING ELSE COULD CARRY IT, and the two reasons are worth stating because both look
       # like bugs and neither is. Check 2 is anchored with `^` against the RAW token, so it
       # sees a bare basename and never a path-form one. Check 1 does see path form, but its
-      # checkable-tree case drops `project-management/src/` to the catch-all deliberately --
+      # checkable-tree case dropped `project-management/src/` to the catch-all until US004 --
       # a project's own artefacts are absent here and different downstream, so their existence
-      # is unprovable from this side -- and that reasoning is sound and stays. Between them a
-      # plan cited by its full path was tested by NOTHING, prefix or no prefix. Widening an
+      # is unprovable from this side. Between them a plan cited by its full path was tested by
+      # NOTHING, prefix or no prefix. (CHANGED 05/11/2026: Check 1 now tests that tree too, and
+      # this clause still runs first, because existence still cannot decide a spelling.) Widening an
       # existence test would have been the wrong repair anyway: the file a CORRECT citation
       # names is absent here and present downstream, and the file an INCORRECT one names is
       # absent in both, so existence cannot separate them. The defect lives in the string, so
@@ -735,7 +837,9 @@ scan_files() { # $1 = newline-separated file list
       # sat in six non-exempt files on 08/09/2026, every one of them inside a dated history
       # comment beside correct live text. Reusing the existing filter was chosen over a second,
       # narrower one that only this clause reads: two filters disagreeing about what counts as
-      # a pattern is a worse defect than one blind spot that can be named.
+      # a pattern is a worse defect than one blind spot that can be named. NARROWED 05/11/2026:
+      # a PATH-FORM template now skips is_pattern() (is_template_target(), US004), so the blind
+      # spot is the bare name alone; a path-form one written without its prefix is reported here.
       #
       # The anchor is peeled first, on the same argument the other two peels make: an anchored
       # citation names a location inside a file, and the filename it names is what the
@@ -767,8 +871,12 @@ scan_files() { # $1 = newline-separated file list
       # The two forms above are written as PATTERNS, not as the plans that prompted this: a real
       # basename in a shipped file is the instance citation this very check exists to catch, and
       # naming one here would have made the fix fire on its own explanation.
-      if [ "$is_naming_row" = false ] && printf '%s' "$token" \
-         | grep -qE '^(ADR-[0-9]{3}|US[0-9]{3}|SPRINT-[0-9]{2}|([0-9]{2}-)?SPRINT-PLAN-[0-9]{2}|MAP-[A-Z][A-Z0-9-]+|PLAN-US[0-9]{3}|([0-9]{2}-)?STORY-PLAN-US[0-9]{3}|BUG-[A-Z]|QA-US[0-9]{3}|API-US[0-9]{3})'; then
+      #
+      # ADDED 05/11/2026 (US004 P3): a citer that is itself a per-project instance is exempt from
+      # this check alone — `citer_instance`, decided once per file above. Check 1 still runs on
+      # it, so a missing path such a file names is reported as a dangling path.
+      if [ "$is_naming_row" = false ] && [ "$citer_instance" = false ] \
+         && [[ "$token" =~ $INSTANCE_CITED_RE ]]; then
         base="${token##*/}"
         # The archive arm (31/10/2026): a Closed map is moved into 01-FEATURE-MAPS/archive/ by
         # pm-archive.sh, and a bare citation of it is still a citation of a map that exists —
@@ -838,9 +946,13 @@ scan_files() { # $1 = newline-separated file list
           resolved_skip=false ;;
       esac
 
-      # Which trees are checkable. A path under `project-management/src/` is where a
-      # project's own artefacts land — absent here by design, different at every number
-      # downstream — so it falls to the catch-all and is never tested.
+      # Which trees are checkable. CHANGED 05/11/2026 (US004 P4): `project-management/src/` is
+      # checked. It used to fall to the catch-all, on the argument that a project's own
+      # artefacts are absent here by design and different at every number downstream — true
+      # of the artefacts, and it hid every dead citation INTO the tree as well, including a
+      # shipped template that had gone missing. The artefacts a shipped file may promise are
+      # now registered as a CLASS (is_registered() above), so a promised per-story record is a
+      # checked promise and anything else under the tree is tested like any other path.
       #
       # CHANGED 20/08/2026: `code/src/django/` no longer falls with it. This comment used
       # to argue the opposite, naming `code/src/django/components/` alongside the artefact
@@ -876,6 +988,7 @@ scan_files() { # $1 = newline-separated file list
         code/src/django/*) ;;
         how-to/docs/*|how-to/workflows/*|how-to/src/*) ;;
         project-management/docs/*|project-management/workflows/*) ;;
+        project-management/src/*) ;;
         .claude/*|.github/*) ;;
         *) continue ;;
       esac
@@ -886,6 +999,20 @@ scan_files() { # $1 = newline-separated file list
       # dangling-path finding could have come from.
       path_tests=$((path_tests + 1))
       [ -e "$resolved" ] && continue
+      # A shipped template is a literal presence obligation (US004, ADR 09/10/2026): absent is
+      # a finding, and nothing below — a seed, a register row, a naming row — may quieten it.
+      if [ "$template_target" = true ]; then
+        record "$file" "$lineno" "dangling path" "$token"
+        continue
+      fi
+      # The relative arm above keeps `..` in `$resolved` — `[ -e ]` reads through it, a register
+      # row cannot. Normalised here, on the miss path alone, so a sibling-relative citation of a
+      # registered class member (US004 P4) matches its row as the repo-relative spelling does.
+      case "$resolved" in
+        */../*|*/./*)
+          resolved="$(realpath -m --relative-to="$PROJECT_ROOT" "$PROJECT_ROOT/$resolved" 2>/dev/null \
+            || printf '%s' "$resolved")" ;;
+      esac
       is_seeded "$resolved" && continue
       is_registered "$resolved" && continue
       [ "$is_naming_row" = true ] && continue
@@ -903,6 +1030,11 @@ scan_files() { # $1 = newline-separated file list
 # clauses are proven in BOTH directions against fixtures instead -- fires on known-bad, silent
 # on known-good. Only those three are covered; the checks that shipped before them are
 # unchanged and are not re-proven here.
+#
+# EXTENDED 05/11/2026 to the four US004 repairs — the exemption fall-through, the shared
+# population, the Check 2 citer test and alternation, the checkable artefact tree with its
+# patterned register rows — plus the shipped-template presence test. Each probe is tagged RED
+# or GUARD at its site below.
 #
 # EXTENDED 08/09/2026 to Check 4, which needs the fixture pair more than any clause above it. It
 # fires on a STRING rather than on a missing file, so its two failure modes are symmetrical and
@@ -1223,7 +1355,8 @@ $st_class/US###-FIXTURE-ONLY-TEMPLATE.md"
 
   log ""
   if [ "$st_fails" -eq 0 ]; then
-    bold "✓ Self-test passed — $st_probes probes over the five clauses added 20/08–08/09/2026."
+    bold "✓ Self-test passed — $st_probes probes over the five clauses added 20/08–08/09/2026"
+    log "  and the US004 repairs of 05/11/2026 (exemption, population, citer, artefact tree)."
     log "  Not covered: Checks 1 and 2 as they shipped before 20/08, and the SURFACE-GATED"
     log "  half of Direction B, which is a prose convention rather than a clause"
     log "  (code/docs/FORWARD-VOICE.md Section 5)."
