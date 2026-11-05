@@ -1007,6 +1007,199 @@ self_test() {
   st_set_probe "excluded-and-seeded entry is NOT      " "CHANGELOG.md"                         no
   st_set_probe "re-included pair file is NOT          " "project-management/src/CONTEXT.md"    no
 
+  # ── US004 — failing proofs written at the Red phase, one per repair ─────────
+  # Story plan: project-management/src/17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md
+  # QA plan:    project-management/src/11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md
+  # Each probe below is tagged RED (fails against the pre-US004 detector, and must) or GUARD
+  # (passes against it by construction: it pins the direction a repair could over-reach in,
+  # which no pre-change detector can fail). Fix the detector, never these.
+
+  # P1 — is_exempt() must let the nine shipped files out of the exempt trees. copier.yml's
+  # allowlist block re-includes each tree's CONTEXT.md/CLAUDE.md pair and every template, so
+  # they ship and must be policed. A predicate is asserted directly: no fixture can reach it.
+  st_exempt_probe() { # label path expect(yes|no)
+    st_probes=$((st_probes + 1))
+    if is_exempt "$2"; then [ "$3" = yes ] && { log "  ✓ $1"; return; }
+    else [ "$3" = no ] && { log "  ✓ $1"; return; }; fi
+    st_fail "$1: is_exempt $2 answered the wrong way"
+  }
+  log ""
+  log "  US004 P1 — the shipped pair files and templates inside the exempt trees:"
+  # RED — P1, QA HP-01, manual EXEMPT-01.
+  st_exempt_probe "P1 HP-01 research/CONTEXT.md is NOT exempt          " "research/CONTEXT.md" no
+  # RED — P1, QA HP-01 (the remaining eight of the nine shipped files the plan names).
+  st_exempt_probe "P1 HP-01 research/CLAUDE.md is NOT exempt           " "research/CLAUDE.md" no
+  st_exempt_probe "P1 HP-01 handoffs/CONTEXT.md is NOT exempt          " "handoffs/CONTEXT.md" no
+  st_exempt_probe "P1 HP-01 handoffs/CLAUDE.md is NOT exempt           " "handoffs/CLAUDE.md" no
+  st_exempt_probe "P1 HP-01 learning/CONTEXT.md is NOT exempt          " "learning/CONTEXT.md" no
+  st_exempt_probe "P1 HP-01 learning/CLAUDE.md is NOT exempt           " "learning/CLAUDE.md" no
+  st_exempt_probe "P1 HP-01 01-FEATURE-MAPS/CONTEXT.md is NOT exempt   " \
+    "project-management/src/01-FEATURE-MAPS/CONTEXT.md" no
+  st_exempt_probe "P1 HP-01 01-FEATURE-MAPS/CLAUDE.md is NOT exempt    " \
+    "project-management/src/01-FEATURE-MAPS/CLAUDE.md" no
+  # RED — P1, QA EC-02, manual EXEMPT-03: a template inside an exempt tree.
+  st_exempt_probe "P1 EC-02 MAP-000-TEMPLATE.md is NOT exempt          " \
+    "project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md" no
+  # GUARD — P1, QA HP-01 second half, manual EXEMPT-02: the tree arms still hold for a file
+  # copier does not lift back out.
+  st_exempt_probe "P1 HP-01 a research note stays exempt (GUARD)       " "research/HTTP-QUERY-METHOD.md" yes
+  st_exempt_probe "P1 HP-01 a feature map stays exempt (GUARD)         " \
+    "project-management/src/01-FEATURE-MAPS/MAP-ABSENCE.md" yes
+
+  # P2 — build_template_only() must read the population candidates() reads: tracked PLUS
+  # untracked-but-not-ignored. A probe file is created under research/ (excluded by copier,
+  # not ignored by git), under an unpredictable mktemp name inside the repository — never in
+  # /tmp. BOTH builders are re-run after it exists (QA AC-GAP-8): they ran once at load, so a
+  # probe without the re-run asserts against a set built before the file existed. The re-run
+  # happens in a subshell, so the set the rest of this self-test reads is left as loaded. The
+  # trap removes the file on every exit path, a failed assertion and an interrupt included
+  # (QA ES-03, manual SELFTEST-01).
+  log ""
+  log "  US004 P2 — an untracked file under an excluded tree is in the derived set:"
+  st_probes=$((st_probes + 1))
+  ST_P2_PROBE="$(mktemp "research/us004-p2-probe.XXXXXXXX")" \
+    || die "P2 probe: could not create a temporary file under research/"
+  trap 'rm -f -- "$ST_P2_PROBE"' EXIT
+  trap 'exit 130' INT
+  trap 'exit 143' TERM
+  # RED — P2, QA AC-GAP-8 / ES-03, story plan P2.
+  if ( build_template_only; build_template_only_index; is_template_only "$ST_P2_PROBE" ); then
+    log "  ✓ P2 AC-GAP-8 an untracked excluded file is template-only after a rebuild"
+  else
+    st_fail "P2 AC-GAP-8: is_template_only $ST_P2_PROBE answered no after both builders re-ran" \
+      "— the derived set still reads the git index alone"
+  fi
+  rm -f -- "$ST_P2_PROBE"
+  trap - EXIT INT TERM
+  # GUARD — P2, QA ES-03: the probe leaves nothing behind in the working tree.
+  st_probes=$((st_probes + 1))
+  if [ -e "$ST_P2_PROBE" ]; then
+    st_fail "P2 ES-03: the probe file $ST_P2_PROBE survived the self-test"
+  else
+    log "  ✓ P2 ES-03 the probe file is gone (GUARD)"
+  fi
+
+  # P3 — Check 2 asks whether the CITING FILE is an instance artefact, read from its name, and
+  # never consults is_template_only() (ADR-US004-INSTANCE-ARTEFACT-CITER-TEST, AC-GAP-4/5). The
+  # clean/ citers are named as each instance form the plan lists, and each cites an instance.
+  log ""
+  log "  US004 P3 — the Check 2 citer test, and the alternation's spellings:"
+  # A finding row reads `| file | line | class | token |`, the token in backticks. The backtick
+  # is assembled rather than written, because this script ships and the gate reads its own
+  # text: a literal pair around an instance name below would be a finding in an ordinary run.
+  local BT=$'\x60'
+  # RED — P3, QA AC-GAP-5, one probe per instance form the citer test must recognise.
+  st_probe "P3 AC-GAP-5 clean/US123.md citer is exempt from Check 2" \
+    "$FIXTURES_DIR/clean/US123.md" 0
+  st_probe "P3 AC-GAP-5 clean/SPRINT-07.md citer is exempt" \
+    "$FIXTURES_DIR/clean/SPRINT-07.md" 0
+  st_probe "P3 AC-GAP-5 clean/ADR-US123-… citer is exempt" \
+    "$FIXTURES_DIR/clean/ADR-US123-FIXTURE-ONLY-01-01-2026.md" 0
+  st_probe "P3 AC-GAP-5 clean/QA-PLAN-US123-… citer is exempt" \
+    "$FIXTURES_DIR/clean/QA-PLAN-US123-FIXTURE-ONLY.md" 0
+  st_probe "P3 AC-GAP-5 clean/07-STORY-PLAN-US123-… citer is exempt" \
+    "$FIXTURES_DIR/clean/07-STORY-PLAN-US123-FIXTURE-ONLY.md" 0
+  st_probe "P3 AC-GAP-5 clean/07-SPRINT-PLAN-07.md citer is exempt" \
+    "$FIXTURES_DIR/clean/07-SPRINT-PLAN-07.md" 0
+  st_probe "P3 AC-GAP-5 clean/REVIEW-US123-… citer is exempt" \
+    "$FIXTURES_DIR/clean/REVIEW-US123-FIXTURE-ONLY.md" 0
+  st_probe "P3 AC-GAP-5 clean/BUG-US123-… citer is exempt" \
+    "$FIXTURES_DIR/clean/BUG-US123-FIXTURE-ONLY-01-01-2026.md" 0
+  # GUARD — P3, QA AC-GAP-5 / EC-01(a), manual CITER-01: a zero-index file ships, so it is
+  # excluded from the citer test and its instance citation is still reported.
+  st_probe "P3 EC-01a broken/US000-… citer is still reported (GUARD)" \
+    "$FIXTURES_DIR/broken/US000-FIXTURE-ONLY.md" 1 "instance citation | ${BT}US042.md${BT}"
+  # GUARD — P3, QA EC-02, manual CITER-02: a template ships, so it is excluded likewise.
+  st_probe "P3 EC-02 broken/…-TEMPLATE.md citer is still reported (GUARD)" \
+    "$FIXTURES_DIR/broken/REVIEW-US123-FIXTURE-ONLY-TEMPLATE.md" 1 "instance citation | ${BT}US042.md${BT}"
+  # RED — P3 alternation: ADR-US### and QA-PLAN-US### are the live spellings and must fire.
+  st_probe "P3 alternation broken/alternation.md fires on ADR-US### and QA-PLAN-US###" \
+    "$FIXTURES_DIR/broken/alternation.md" 2 "instance citation | ${BT}QA-PLAN-US123-FIXTURE-ONLY.md${BT}"
+  # RED — P3 alternation: ADR-### (retired 31/08/2026) and QA-US### (never a live name) no
+  # longer match.
+  st_probe "P3 alternation clean/alternation.md silent on ADR-### and QA-US###" \
+    "$FIXTURES_DIR/clean/alternation.md" 0
+
+  # P4 — the artefact tree becomes checkable by Check 1, and is_registered() reads a `###` in a
+  # register row as exactly three digits (ADR-US004-PATTERNED-REGISTRATION-PRESERVES-SHIPPED-
+  # TEMPLATES). The real register is read for the two rows the plan names; a fixture-local class
+  # row stands in where the real template cannot be removed (the missing-template pair below).
+  # Contract this relies on: REGISTERED holds the parsed rows, one per line, as loaded above.
+  log ""
+  log "  US004 P4 — the artefact tree is checkable, and register rows may bind a class:"
+  # RED — P4, QA HP-04, manual DEADPATH-01: a dead PM path is reported at all.
+  st_probe "P4 HP-04 broken/pm-arm.md fires on a dead project-management/src path" \
+    "$FIXTURES_DIR/broken/pm-arm.md" 1 \
+    "dangling path | ${BT}project-management/src/15-DECISIONS/NO-SUCH-FIXTURE-ONLY-DECISION.md${BT}"
+  # RED — P3/P4, QA EC-05, manual DEADPATH-01/02: an instance citer is exempt from Check 2 for
+  # its bare citation and is NOT exempt from Check 1 for a missing path. Exactly one finding,
+  # and it is the dangling path, never an instance citation.
+  st_probe "P4 EC-05 broken/US999.md: Check 2 exempts the citer, Check 1 still fires" \
+    "$FIXTURES_DIR/broken/US999.md" 1 "dangling path | ${BT}project-management/src/02-STORIES/US997.md${BT}"
+  # RED — P4, QA EC-03, manual REGISTER-04: four digits and letters are not members of a class.
+  st_probe "P4 EC-03 broken/pm-overmatch.md fires on US1234, USxyz and USabc" \
+    "$FIXTURES_DIR/broken/pm-overmatch.md" 4 \
+    "dangling path | ${BT}project-management/src/18-TESTS/MANUAL/US1234-MANUAL-TESTING.md${BT}"
+  # GUARD — P4, QA HP-03 / AC-GAP-6, manual REGISTER-03: once the tree is checkable, the two
+  # class rows make an absent manual guide and an absent automated record pass. Green before
+  # the change only because the tree is unchecked; red if the arm lands without the rows.
+  st_probe "P4 HP-03 clean/pm-registered.md silent on registered US997 records (GUARD)" \
+    "$FIXTURES_DIR/clean/pm-registered.md" 0
+  # GUARD — P4, QA EC-01(b)/EC-06 restored, manual TARGET-01/02 restore step: both shipped test
+  # templates exist, and the template exception must never report a present one.
+  st_probe "P4 EC-01b/EC-06 clean/template-targets.md silent on present templates (GUARD)" \
+    "$FIXTURES_DIR/clean/template-targets.md" 0
+
+  st_reg_probe() { # label path expect(yes|no)
+    st_probes=$((st_probes + 1))
+    if is_registered "$2"; then [ "$3" = yes ] && { log "  ✓ $1"; return; }
+    else [ "$3" = no ] && { log "  ✓ $1"; return; }; fi
+    st_fail "$1: is_registered $2 answered the wrong way"
+  }
+  # RED — P4, QA AC-GAP-2 / AC-GAP-6 / HP-03, manual REGISTER-01/03: the real register carries
+  # the two class rows, and a concrete three-digit member of each is registered.
+  st_reg_probe "P4 HP-03 real register admits MANUAL/US123-MANUAL-TESTING.md" \
+    "project-management/src/18-TESTS/MANUAL/US123-MANUAL-TESTING.md" yes
+  st_reg_probe "P4 HP-03 real register admits AUTOMATED/US123-TEST-STATUS.md" \
+    "project-management/src/18-TESTS/AUTOMATED/US123-TEST-STATUS.md" yes
+  # GUARD — P4, ADR 09/10/2026: the real class rows never admit a shipped template target.
+  st_reg_probe "P4 EC-01 real register rejects MANUAL/US000 (GUARD)" \
+    "project-management/src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md" no
+  st_reg_probe "P4 EC-06 real register rejects AUTOMATED/US000 (GUARD)" \
+    "project-management/src/18-TESTS/AUTOMATED/US000-TEST-STATUS.md" no
+
+  # The class semantics, isolated from the real register's contents: one fixture-local row.
+  local st_saved_registered="$REGISTERED"
+  local st_class="$FIXTURES_DIR/missing"
+  REGISTERED="$st_class/MANUAL/US###-MANUAL-TESTING.md
+$st_class/AUTOMATED/US###-TEST-STATUS.md
+$st_class/US###-FIXTURE-ONLY-TEMPLATE.md"
+  # RED — P4, QA AC-GAP-2: `###` binds three digits, so a concrete member matches the row.
+  st_reg_probe "P4 AC-GAP-2 a class row admits US123" \
+    "$st_class/MANUAL/US123-MANUAL-TESTING.md" yes
+  # GUARD — P4, QA EC-03: exactly three digits, never four, never letters.
+  st_reg_probe "P4 EC-03 a class row rejects US1234 (GUARD)" \
+    "$st_class/MANUAL/US1234-MANUAL-TESTING.md" no
+  st_reg_probe "P4 EC-03 a class row rejects USabc (GUARD)" \
+    "$st_class/MANUAL/USabc-MANUAL-TESTING.md" no
+  # GUARD — P4, QA AC-GAP-10 / EC-01 / EC-06: `000` is three digits and is still never a member.
+  st_reg_probe "P4 AC-GAP-10 a class row rejects US000 (GUARD)" \
+    "$st_class/MANUAL/US000-MANUAL-TESTING.md" no
+  # GUARD — P4, QA AC-GAP-10: a *TEMPLATE* target is never a member, even of a row that spells it.
+  st_reg_probe "P4 AC-GAP-10 a class row rejects a *TEMPLATE* target (GUARD)" \
+    "$st_class/US123-FIXTURE-ONLY-TEMPLATE.md" no
+  # RED — P4, QA AC-GAP-10 / EC-01, manual TARGET-01: a missing shipped manual template under a
+  # present class row is a dangling path. The real template cannot be removed from a working
+  # tree, so the fixture cites an absent zero-index path under the fixture-local row above.
+  st_probe "P4 EC-01 broken/missing-template-manual.md fires despite the class row" \
+    "$FIXTURES_DIR/broken/missing-template-manual.md" 1 \
+    "dangling path | ${BT}$st_class/MANUAL/US000-MANUAL-TESTING.md${BT}"
+  # RED — P4, QA AC-GAP-10 / EC-06, manual TARGET-02: the same for the automated template.
+  st_probe "P4 EC-06 broken/missing-template-automated.md fires despite the class row" \
+    "$FIXTURES_DIR/broken/missing-template-automated.md" 1 \
+    "dangling path | ${BT}$st_class/AUTOMATED/US000-TEST-STATUS.md${BT}"
+  REGISTERED="$st_saved_registered"
+
   log ""
   # The fixtures must stay invisible to an ordinary run, or this proof reddens the gate it
   # exists to prove. Asserted directly, with the flag put back the way a normal run sees it.
@@ -1016,6 +1209,15 @@ self_test() {
     log "  ✓ the fixture tree is exempt from an ordinary run"
   else
     st_fail "the fixture tree is NOT exempt — an ordinary run would report its dangling paths"
+  fi
+  # GUARD — US004 P1: the fall-through arm admits `*TEMPLATE*`, and this fixture carries the
+  # suffix. It must stay exempt from an ordinary run all the same, or P3's own fixture reddens
+  # the gate — so the fall-through cannot sit above the fixture arm.
+  st_probes=$((st_probes + 1))
+  if is_exempt "$FIXTURES_DIR/broken/REVIEW-US123-FIXTURE-ONLY-TEMPLATE.md"; then
+    log "  ✓ US004 P1 a *TEMPLATE* fixture is exempt from an ordinary run too (GUARD)"
+  else
+    st_fail "US004 P1: a *TEMPLATE* fixture is NOT exempt — an ordinary run would read it"
   fi
   SELF_TEST=true
 
