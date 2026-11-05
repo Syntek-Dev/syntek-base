@@ -8,14 +8,14 @@ model: opus
 
 **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
 British English (en_GB) **Timezone:** <%TIMEZONE%>
-**Claude Model:** opus — Service layer boundaries, business logic placement, middleware patterns
+**Claude Model:** opus — Service-layer seams, business logic placement, middleware patterns
 
 ---
 
 ## Service Layer
 
 Business logic lives in service classes or modules, not in views, Ninja endpoints, schemas,
-models, or templates. This is the most important architectural boundary in the application.
+models, or templates. This is the most important seam in the application.
 
 ### The rule
 
