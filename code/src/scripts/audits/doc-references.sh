@@ -420,7 +420,7 @@ is_seeded() {
 # own. Rule: `code/docs/FORWARD-VOICE.md` Section 3.
 REGISTER_FILE="how-to/src/PROJECT-PATHS.md"
 REGISTERED="$(awk '/^## Registered paths/{on=1; next} /^## /{on=0} on' "$REGISTER_FILE" 2>/dev/null \
-  | grep -oE '^\| `[^`]+`' | tr -d '|` ' | sed 's:/$::' || true)"
+  | grep -oE "^\\| \`[^\`]+\`" | tr -d '|` ' | sed 's:/$::' || true)"
 
 # PATTERNED ROWS (US004 P4, 05/11/2026). A row may bind a CLASS of per-story records: `###` in
 # it means exactly three digits, everything else is literal, and the whole path must match —
@@ -825,7 +825,7 @@ scan_files() { # $1 = newline-separated file list
         *'doc-references: template-only'*)       is_naming_row=true ;;
         *'e.g.'*|*'E.g.'*|*'for example'*)       is_naming_row=true ;;
         *'[EXAMPLE]'*|*'house style'*)           is_naming_row=true ;;
-        *'###'*|*'-##'*|*'{###}'*|*'<DESCRIPTOR>'*|*'<TITLE>'*|*'<NNN>'*)
+        *'###'*|*'-##'*|*'<DESCRIPTOR>'*|*'<TITLE>'*|*'<NNN>'*)
           case "$token" in
             */*) is_naming_row=false ;;
             *)   is_naming_row=true ;;
@@ -1157,7 +1157,7 @@ scan_files() { # $1 = newline-separated file list
       is_registered "$resolved" && continue
       [ "$is_naming_row" = true ] && continue
       record "$file" "$lineno" "dangling path" "$token"
-    done < <(grep -noE '`[^`]+`' "$file" 2>/dev/null | sed 's/`//g' || true)
+    done < <(grep -noE "\`[^\`]+\`" "$file" 2>/dev/null | sed 's/`//g' || true)
   done <<< "$1"
 }
 
@@ -1305,6 +1305,8 @@ st_phase9_probes() {
   st_probes=$((st_probes + 1))
   # RED — P9-F8: R2.5's relative class member still matches its row with realpath unavailable.
   if (
+    # shellcheck disable=SC2329  # tripwire: the script never calls realpath; this stub fires
+    # only if a regression reintroduces it, so 'never invoked' is the passing state
     realpath() { return 1; }
     QUIET=true
     REGISTERED="$FIXTURES_DIR/clean/AUTOMATED/US###-TEST-STATUS.md"
@@ -1319,6 +1321,8 @@ st_phase9_probes() {
   # GUARD — P9-F8: with realpath unavailable, a dead relative path is still a finding.
   st_probes=$((st_probes + 1))
   if (
+    # shellcheck disable=SC2329  # tripwire: the script never calls realpath; this stub fires
+    # only if a regression reintroduces it, so 'never invoked' is the passing state
     realpath() { return 1; }
     QUIET=true
     scan_files "$FIXTURES_DIR/broken/volume-spec.md"
