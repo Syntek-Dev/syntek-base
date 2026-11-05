@@ -149,6 +149,11 @@ S6-03). Every Low and Nit below was fixed in the records pass that returned to
 | R-073 | Nit      | Findings F-022                                               | CR-07: only the Rust links named as surface-gated                                       | Fixed — widened to the mobile links                                                                            |
 | R-074 | Nit      | This record                                                  | S6-06 · S6-07: no 23 round; no graph-refresh evidence                                   | Fixed — this round; the graph line under _Gate evidence_; the cross-reference corrected                        |
 
+**Sign-off.** Sam signed the story off on 05/11/2026 in session, after Steps 1, 2 and 6 above,
+accepting the recorded findings **F-001 to F-025** and the `GAPS.md` carries, **including D1's
+conditional HTMX cell**. Section 4's open manual criterion, his countersignature of the walk, is
+therefore met.
+
 ---
 
 ## 3. Dimension checklists

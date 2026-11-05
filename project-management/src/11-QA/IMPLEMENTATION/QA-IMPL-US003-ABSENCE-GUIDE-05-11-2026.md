@@ -166,9 +166,12 @@ None. Every scenario was walked; the re-walk covered every row the walk-fail fix
 - [x] Accessibility observations confirmed against the build (N/A, no rendered surface)
 - [x] GDPR & security observations confirmed (or N/A recorded)
 - [x] Coverage floors met for all modules in scope (no module in scope)
-- [ ] Manual testing sign-off (see `../../18-TESTS/MANUAL/US003-MANUAL-TESTING.md`) — walked by an
-      independent agent, 47 Pass, 0 Fail; awaits Sam's countersignature at `23-pr-and-review`
-- [ ] Reviewer approval — Sam, at `23-pr-and-review`
+- [x] Manual testing sign-off (see `../../18-TESTS/MANUAL/US003-MANUAL-TESTING.md`) — walked by an
+      independent agent, 47 Pass, 0 Fail. Countersigned by Sam on 05/11/2026 in session, at
+      `23-pr-and-review`, after workflow 23 Steps 1, 2 and 6
+      (`../../19-REVIEWS/REVIEW-US003-ABSENCE-GUIDE.md` → Section 2.5)
+- [x] Reviewer approval — Sam, 05/11/2026 in session, at `23-pr-and-review`, accepting the recorded
+      findings F-001 to F-025 and the `GAPS.md` carries, including D1's conditional HTMX cell
 
 ---
 
