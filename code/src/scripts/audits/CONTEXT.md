@@ -40,7 +40,7 @@ code/src/scripts/audits/
 ├── story-markers.sh         ← story-attribution WARNING (unmarked tests; lists them, always exits 0)
 ├── stubs.sh                 ← stub detection (Python, Rust; also TS/JS if any is ever added)
 ├── template-orphans.sh      ← artefacts stranded by a template update (content, no CONTEXT.md)
-├── fixtures/                ← test data an audit proves itself against
+├── fixtures/                ← test data an audit proves itself against (doc-references/ too: broken/ and clean/)
 │   ├── dict-discipline/     ← broken/ and clean/ — one file per surface in each
 │   ├── render-slop/         ← the known-positive / known-negative screen pair
 │   ├── negative-space/      ← broken/ and clean/ — a whole mini-tree each, not one file

@@ -732,6 +732,43 @@ rest still run. Cut as a story through `02-story-creation`.
 
 ---
 
+## 05/11/2026 — the citation baseline-diff regime outlives US004, and two ADRs now state a stale premise
+
+**Type:** Active gap
+**Summary:** US004 repaired every class it owns, but `code/src/scripts/audits/doc-references.sh`
+still exits 1 on 28 forward references owned by US005, US006, US010 and US014. The baseline-diff
+regime of
+`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`
+retires only when `S-06` lands **and** the gate goes green, so it stays in force, and so does
+`project-management/src/15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`, whose
+trigger is the same. Separately,
+`project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` still
+says no gate verifies a PM `src/` citation, which Check 1 now does for the path form. Findings
+F-004 and F-005 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** The retirement is blocked by the 28 survivors: each clears when its owner
+builds the path. Until then every story captures a baseline before its first edit. The story that
+clears the last survivor writes one superseding ADR retiring the regime and ADR-US008-SCOPED by
+full filename on both. The ADR-US001 supersession is blocked by nothing and needs a driving story;
+no map or story claims either.
+
+---
+
+## 05/11/2026 — the `.copier/` seed bodies a generated project receives are read by no citation clause
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` exempts `.copier/` outright, and since
+US004 a seeded citer — the root `GAPS.md`, `DEFERRED.md`, `README.md`, the boards, the cut plan —
+is non-shipping for Checks 2 and 3, because the seed replaces it. The seed text that does reach a
+generated project is therefore read by no clause: a dead path or an instance citation in it ships
+unreported. Measured in US004 phase 9 by copying a seed outside the exempt tree (four findings,
+none a defect on reading). The exemption predates US004; finding F-013 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Read each `.copier/` seed as a shipping citer under its
+seeded destination's path, with fixtures. No map or story claims it.
+
+---
+
 ## 05/11/2026 — US003's findings for the absence map's remaining slices wait on stories nobody has cut
 
 **Type:** Planned feature
