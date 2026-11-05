@@ -5,7 +5,7 @@
 #                     Two checks, one rule. A file that ships is read in a project that is
 #                     not this one, so it may cite only what that project is guaranteed to
 #                     have: the LAYERING SYSTEM — CONTEXT.md, CLAUDE.md, docs/, workflows/,
-#                     scripts, guides. It may never cite a PER-PROJECT INSTANCE — ADR-###,
+#                     scripts, guides. It may never cite a PER-PROJECT INSTANCE — ADR-US###,
 #                     US###, SPRINT-##, MAP-*, PLAN-*, BUG-*, QA-* — because a generated
 #                     project has different ones at those numbers, or none at all.
 #
@@ -94,7 +94,7 @@
 #                 derived here from `copier.yml`; `is_exempt()` below hardcodes its own tree  # doc-references: template-only
 #                 arms. RECONCILED 05/11/2026 (US004 P1): those arms said "none of these ship"
 #                 while the pair files and templates copier re-includes out of them did, so a
-#                 fall-through arm above them now mirrors copier's three negation spellings and
+#                 fall-through arm above them now mirrors copier's re-includes, tree by tree, and
 #                 lets those files back into the scan. And both predicates read ONE population
 #                 (US004 P2, repo_files() below), so an untracked file's verdict no longer
 #                 depends on whether it has been staged.
@@ -140,8 +140,9 @@
 #                 the one most needing the check, and it is not tracked yet.
 #
 # Exempt:         history (CHANGELOG/RELEASES/VERSION-HISTORY) records what was true then;
-#                 handoffs/ and .copier/ are staging. Never a CONTEXT.md, a CLAUDE.md or a
-#                 `-TEMPLATE.` file inside an exempt tree, which ship (US004 P1).
+#                 handoffs/ and .copier/ are staging. Never what copier re-includes from an
+#                 exempt tree, which ships (US004 P1): the top-level research/, handoffs/ and
+#                 learning/ pairs, and every pair and `-TEMPLATE.` file under the PM tree.
 #
 #                 NOT exempt, deliberately: the root GAPS.md and DEFERRED.md. They are
 #                 copier-excluded as of 22/08/2026, so this repository's copies hold real
@@ -360,12 +361,19 @@ is_exempt() {
       if ! $SELF_TEST; then return 0; fi ;;
     # ADDED 05/11/2026 (US004 P1): the files copier lifts back OUT of the exempt trees below.
     # `copier.yml`'s allowlist block — _The artefact trees: tracked HERE, never shipped_ —  # doc-references: template-only
-    # re-includes every CONTEXT.md and CLAUDE.md inside them and every `-TEMPLATE.` file, so
-    # those ship and are policed like any other shipped file. The arm mirrors copier's three
-    # negation spellings rather than listing folders, so a new exempt tree needs no edit here.
+    # re-includes some CONTEXT.md, CLAUDE.md and `-TEMPLATE.` files from them, so those ship and
+    # are policed like any other shipped file. NARROWED 05/11/2026 (US004 phase 9, F5 /
+    # QA-US004-01): the arm was global and copier's negations are scoped, so it mirrors them
+    # tree by tree — the TOP-LEVEL pair of research/, handoffs/ and learning/ alone, and under
+    # project-management/src/ every pair and every `-TEMPLATE.` file at any depth. A nested
+    # research/ pair, a template outside the PM tree and anything under .copier/ stay exempt,
+    # because copier drops them. A new negation in copier.yml needs a matching arm here.
     # `-TEMPLATE.` and not the bare word: copier re-includes `*-TEMPLATE.*`, and the bare form
-    # would read a research note or an ADR whose title merely contains the word as shipped.
-    */CONTEXT.md|*/CLAUDE.md|*-TEMPLATE.*)        return 1 ;;
+    # would read an ADR whose title merely contains the word as shipped.
+    research/CONTEXT.md|research/CLAUDE.md|handoffs/CONTEXT.md|handoffs/CLAUDE.md) return 1 ;;
+    learning/CONTEXT.md|learning/CLAUDE.md)       return 1 ;;
+    project-management/src/*/CONTEXT.md|project-management/src/*/CLAUDE.md) return 1 ;;
+    project-management/src/*-TEMPLATE.*)          return 1 ;;
     handoffs/*|.copier/*)                         return 0 ;;
     # The artefact trees. This rule polices what a SHIPPED file may cite, and these FOLDERS
     # do not ship — copier.yml `_exclude` empties every one of them at generation, bar the
@@ -584,10 +592,34 @@ peel_anchor() { # $1 = token -> sets `peeled`
   fi
 }
 
+# ONE NORMALISER FOR A RELATIVE CITATION (US004 phase 9, F1 and F8, 05/11/2026). Takes a path
+# relative to the repository root that may carry `.` and `..` segments -- the citing file's
+# directory joined to the token -- and collapses them textually, as normalise_scope() does for
+# --path. Pure bash: it replaced two `realpath -m --relative-to` calls, which BSD and macOS
+# realpath reject, and whose `|| printf` fallback then kept the unnormalised path in silence.
+# Returns 1 when the path climbs out of the repository: such a target is not a repository
+# path, so neither check may test it as one. Sets `normalised` rather than echoing, for the
+# reason peel_anchor() gives; scan_files() declares it local. Symlinks are not followed.
+normalise_rel() { # $1 = root-relative path holding . or .. -> sets `normalised`; 1 = outside the repo
+  local rest="$1" seg out=""
+  while [ -n "$rest" ]; do
+    seg="${rest%%/*}"
+    if [[ "$rest" == */* ]]; then rest="${rest#*/}"; else rest=""; fi
+    case "$seg" in
+      ''|.) ;;
+      ..)   [ -n "$out" ] || return 1
+            if [[ "$out" == */* ]]; then out="${out%/*}"; else out=""; fi ;;
+      *)    out="${out:+$out/}$seg" ;;
+    esac
+  done
+  normalised="$out"
+}
+
 # A token with a template placeholder, a numeric pattern, or a glob is not a citation.
 # The literal house date placeholder `DD-MM-YYYY` in a name is one too (US004 R2.4, 05/11/2026):
 # it describes a dated artefact's naming convention, and the same path carrying a real date is
-# still a citation and still checked.
+# still a citation and still checked. Only the BASENAME is a placeholder (US004 phase 9,
+# QA-US004-12): the folder such a token names is concrete, so scan_files() tests that folder.
 # Split out of is_pattern() on 05/11/2026 so the template-presence test below can ask the
 # placeholder question alone.
 is_placeholder() {
@@ -609,6 +641,9 @@ is_placeholder() {
 is_template_target() {
   case "$1" in */*) ;; *) return 1 ;; esac
   is_placeholder "$1" && return 1
+  # A `.../` elision is the ASCII spelling of the `…` placeholder: a schematic path whose
+  # leading folders are left out, which names no one file (US004 phase 9, QA-US004-08).
+  case "$1" in *'.../'*) return 1 ;; esac
   case "${1##*/}" in *US000*|*-TEMPLATE.*) return 0 ;; esac
   return 1
 }
@@ -625,11 +660,13 @@ INSTANCE_CITED_RE='^(ADR-US[0-9]{3}|US[0-9]{3}|SPRINT-[0-9]{2}|([0-9]{2}-)?SPRIN
 # optionally PLAN-, + exactly two digits), anywhere in the name, or it starts BUG-. Every
 # per-story artefact's name carries its number by convention, so the rule tracks the convention
 # rather than a copy of it that drifts. The digit runs are BOUNDED -- a further digit after the
-# run means it is not a story or sprint number, at the start of the name or mid-name. Not the
+# run means it is not a story or sprint number, at the start of the name or mid-name. So is the
+# LEFT side (US004 phase 9, F4): the number starts the name or follows a non-letter, so a word
+# that merely ends in US -- STATUS200, CORPUS123 -- is not a story number. Not the
 # same set as the cited side above: a review record cites and is never cited, a map is cited
 # and lives in an exempt tree. The zero-index and `-TEMPLATE.` files match and DO ship, so
 # is_instance_citer() excludes them and they stay policed.
-INSTANCE_CITER_RE='(US[0-9]{3}|SPRINT-(PLAN-)?[0-9]{2})([^0-9]|$)|^BUG-'
+INSTANCE_CITER_RE='(^|[^A-Za-z])(US[0-9]{3}|SPRINT-(PLAN-)?[0-9]{2})([^0-9]|$)|^BUG-'
 
 is_instance_citer() { # $1 = citing file path
   local name="${1##*/}"
@@ -687,7 +724,7 @@ scan_files() { # $1 = newline-separated file list
   path_tests=0
   local file lineno token line prev is_naming_row stripped resolved sibling base
   local is_marked file_ships file_dir tmpl tmpl_base peeled plan citer_instance template_target
-  local citer_seeded
+  local citer_seeded normalised check_tok date_dir relative tok_base
   local resolved_skip=false
 
   while IFS= read -r file; do
@@ -698,12 +735,14 @@ scan_files() { # $1 = newline-separated file list
       continue
     fi
     scanned_files=$((scanned_files + 1))
-    # Check 3 alone asks whether the CITING file ships: Direction B is a rule about what a
-    # shipped document claims, and a file copier drops takes its citations with it. Checks 1
-    # and 2 are unaffected — a dangling path is a defect wherever it is written.
-    # ADDED 05/11/2026 (US004, the story plan's Key Decisions row "Seeded citers"): a citer copier
-    # SEEDS from .copier/ is non-shipping too, for Checks 2 and 3 — the seed replaces its content
-    # at generation, so nothing it cites reaches a generated project. Check 1 still runs on it.
+    # Whether the CITING file ships. A file copier EXCLUDES is non-shipping for Check 3 alone:
+    # Direction B is a rule about what a shipped document claims, and a file copier drops takes
+    # its citations with it. A file copier SEEDS from .copier/ is non-shipping for Checks 2 AND
+    # 3 (ADDED 05/11/2026, US004, the story plan's Key Decisions row "Seeded citers"): the seed
+    # replaces its content at generation, so nothing it cites reaches a generated project.
+    # CORRECTED 05/11/2026 (US004 phase 9, F2): this read "Checks 1 and 2 are unaffected" above
+    # the seeded rule that affects Check 2. Check 1 runs on every citer, whichever applies — a
+    # dangling path is a defect wherever it is written.
     citer_seeded=false
     if is_seeded "$file"; then citer_seeded=true; fi
     file_ships=true
@@ -724,11 +763,23 @@ scan_files() { # $1 = newline-separated file list
       # or a `###` is a naming convention being shown rather than a citation, so it is not part
       # of the population either check could have fired on.
       # A path-form shipped template is the one exception: is_template_target() above.
+      # A path-form token whose ONE placeholder is the date in its basename is the second
+      # exception (US004 phase 9, QA-US004-12): the basename is a convention, the folder is a
+      # citation. `date_dir` hands Check 1 that folder and keeps Checks 2 to 4 off the token.
       template_target=false
+      date_dir=false
       if is_template_target "$token"; then
         template_target=true
       elif is_pattern "$token"; then
-        continue
+        tok_base="${token##*/}"
+        case "$token" in
+          */*DD-MM-YYYY*) ;;
+          *) continue ;;
+        esac
+        [[ "$tok_base" == *DD-MM-YYYY* ]] || continue
+        is_placeholder "${tok_base//DD-MM-YYYY/}" && continue
+        is_placeholder "${token%/*}" && continue
+        date_dir=true
       fi
       checked_tokens=$((checked_tokens + 1))
 
@@ -742,7 +793,15 @@ scan_files() { # $1 = newline-separated file list
       # `doc-references: ignore` suppresses a line outright. It is for the one case neither
       # rule reaches: a document QUOTING a path in order to ban it, or naming a path that
       # belongs to another repository. Accepted on the line OR the line directly above it,
-      # the same annotation convention the sibling audits already use.
+      # the same annotation convention the sibling audits already use. ONE EXCEPTION (US004
+      # phase 9, F6 / QA-US004-07): a missing path-form shipped template is reported DESPITE
+      # the marker. Its presence test runs before the marker is consulted, because the
+      # 09/10/2026 ADR lets nothing quieten a required file that is absent.
+      #
+      # The PLACEHOLDER arms are scoped to the token (US004 phase 9, QA-US004-06, closing
+      # EC-04): a `###`, `-##` or `<DESCRIPTOR>` on the line makes a BARE name a worked example,
+      # and never a separate token carrying a slash, which is a path citation in its own right and
+      # is still tested. The markers and the example words stay line-level.
       #
       # `doc-references: template-only` suppresses the same finding and records the opposite
       # judgement: the check DOES apply, and the citation is deliberate because the path is
@@ -764,10 +823,13 @@ scan_files() { # $1 = newline-separated file list
       case "$line" in
         *'doc-references: ignore'*)              is_naming_row=true ;;
         *'doc-references: template-only'*)       is_naming_row=true ;;
-        *'###'*|*'-##'*|*'{###}'*)               is_naming_row=true ;;
-        *'<DESCRIPTOR>'*|*'<TITLE>'*|*'<NNN>'*)  is_naming_row=true ;;
         *'e.g.'*|*'E.g.'*|*'for example'*)       is_naming_row=true ;;
         *'[EXAMPLE]'*|*'house style'*)           is_naming_row=true ;;
+        *'###'*|*'-##'*|*'{###}'*|*'<DESCRIPTOR>'*|*'<TITLE>'*|*'<NNN>'*)
+          case "$token" in
+            */*) is_naming_row=false ;;
+            *)   is_naming_row=true ;;
+          esac ;;
         *)                                       is_naming_row=false ;;
       esac
 
@@ -777,7 +839,7 @@ scan_files() { # $1 = newline-separated file list
       # and that guard would drop every one of them before the test. This check needs no
       # path heuristic to begin with: it matches against a CLOSED LIST read from copier.yml,
       # so a token either is one of those paths or is not.
-      if [ "$file_ships" = true ] && [ "$is_marked" = false ]; then
+      if [ "$file_ships" = true ] && [ "$is_marked" = false ] && [ "$date_dir" = false ]; then
         tmpl="${token%\\}"
         tmpl="${tmpl%/}"
         # An anchored citation of an excluded path is still a citation of that path:
@@ -790,10 +852,10 @@ scan_files() { # $1 = newline-separated file list
           case "$tmpl" in
             http*|*@*|*' '*) tmpl="" ;;
             ../*|./*)
-              # Normalised, unlike Check 1's own relative arm: `../../../copier.yml` has to  # doc-references: ignore
-              # become the repo-relative path before a set lookup can see it, where Check 1
-              # only needs it to exist and hands `a/b/../c` straight to `[ -e ]`.
-              tmpl="$(realpath -m --relative-to="$PROJECT_ROOT" "$file_dir/$tmpl" 2>/dev/null || printf '%s' "$tmpl")" ;;
+              # Normalised: `../../../copier.yml` has to become the repo-relative path before  # doc-references: ignore
+              # a set lookup can see it. normalise_rel() is the same pure-bash normaliser
+              # Check 1 uses (US004 phase 9, F8); a path outside the repository is in no set.
+              if normalise_rel "$file_dir/$tmpl"; then tmpl="$normalised"; else tmpl=""; fi ;;
             *)
               # Sibling-first, exactly as Check 1 resolves, and it is what keeps the seven
               # SECURITY.md citations under code/docs/ pointing at their own guide rather
@@ -870,7 +932,7 @@ scan_files() { # $1 = newline-separated file list
       # The anchor is peeled first, on the same argument the other two peels make: an anchored
       # citation names a location inside a file, and the filename it names is what the
       # convention governs. Peeling into a LOCAL copy leaves Check 2's raw token untouched.
-      if [ "$is_naming_row" = false ]; then
+      if [ "$is_naming_row" = false ] && [ "$date_dir" = false ]; then
         case "$token" in
           *STORY-PLAN-US*|*SPRINT-PLAN-*)
             peel_anchor "$token"; plan="${peeled##*/}"
@@ -904,7 +966,7 @@ scan_files() { # $1 = newline-separated file list
       # ADDED 05/11/2026 (US004, Key Decisions row "Seeded citers"): so is a citer copier seeds
       # from .copier/ — `citer_seeded`, decided once per file above; its content never ships.
       if [ "$is_naming_row" = false ] && [ "$citer_instance" = false ] \
-         && [ "$citer_seeded" = false ] \
+         && [ "$citer_seeded" = false ] && [ "$date_dir" = false ] \
          && [[ "$token" =~ $INSTANCE_CITED_RE ]]; then
         base="${token##*/}"
         # The archive arm (31/10/2026): a Closed map is moved into 01-FEATURE-MAPS/archive/ by
@@ -918,19 +980,41 @@ scan_files() { # $1 = newline-separated file list
       fi
 
       # ── Check 1 — dangling repo path ────────────────────────────────────────
-      case "$token" in
+      # `check_tok` is what this check tests; `record` still quotes the raw `token`. For a dated
+      # placeholder it is the folder (QA-US004-12 above), kept slash-terminated so the path
+      # guard reads it as a path and the trailing-slash strip below takes the slash off again.
+      check_tok="$token"
+      [ "$date_dir" = true ] && check_tok="${token%/*}/"
+      case "$check_tok" in
         */*) ;;   # only tokens that look like a path
         *)   continue ;;
       esac
+      case "$check_tok" in
+        http*|*@*|*' '*) continue ;;
+      esac
       # `*:/*` is a Compose volume spec (US004 R2.2, 05/11/2026): `host:container` names a path
-      # on two machines and neither is a file in this repository. A line anchor never puts a
-      # slash after its colon, so the peel below is untouched.
-      case "$token" in
-        http*|*@*|*' '*|*:/*) continue ;;
+      # on two machines. CHANGED 05/11/2026 (US004 phase 9, QA-US004-03): the CONTAINER half is
+      # never a file here and is never tested, but the HOST half of a bind mount is a directory
+      # here when it is spelt from the repository root -- a `./` prefix or a bare `a/b` -- so it
+      # is tested as that path. A `../` host half is relative to a Compose file the line does
+      # not name, a slashless one is a named volume, and an absolute one is another machine's:
+      # none of the three is tested. A line anchor never puts a slash after its colon, so the
+      # peel below is untouched.
+      case "$check_tok" in
+        *:/*)
+          check_tok="${check_tok%%:*}"
+          case "$check_tok" in
+            ../*|/*) continue ;;
+            ./*)     check_tok="${check_tok#./}" ;;
+          esac
+          case "$check_tok" in
+            */*) ;;
+            *)   continue ;;
+          esac ;;
       esac
 
       # Trailing backslashes survive from shell heredocs in the *.sh files.
-      stripped="${token%\\}"
+      stripped="${check_tok%\\}"
       # Peeled here, beside the other two peels and never before the path guard above -- a
       # port (`django:8000`) and an OWASP id (`A05:2025`) carry no slash, and that guard is
       # what already drops them. Forms and ordering: peel_anchor() above.
@@ -942,10 +1026,18 @@ scan_files() { # $1 = newline-separated file list
       # writes it, and resolving them all from the root invents failures.
       # A `./` prefix is written for the repo root in practice, so accept either
       # reading rather than pick one and generate a false positive from the other.
+      # CHANGED 05/11/2026 (US004 phase 9, F1): the joined path is NORMALISED here, before
+      # anything reads it. The checkable-tree case below used to see `dir/../x`, so it sorted
+      # the token by the CITER's tree rather than the target's, and the two spellings of one
+      # target got two verdicts. A path climbing out of the repository is no repository path
+      # and is dropped. The root reading is `./` alone: a `../` read from the root is outside.
+      relative=false
       case "$stripped" in
-        ../*|./*) resolved="$(cd "$(dirname "$file")" 2>/dev/null && printf '%s' "$PWD")/$stripped"
-                  resolved="${resolved#"$PROJECT_ROOT"/}"
-                  [ -e "${stripped#./}" ] && continue ;;
+        ../*|./*)
+          case "$stripped" in ./*) [ -e "${stripped#./}" ] && continue ;; esac
+          normalise_rel "$file_dir/$stripped" || continue
+          resolved="$normalised"
+          relative=true ;;
         *)        resolved="$stripped" ;;
       esac
 
@@ -961,7 +1053,9 @@ scan_files() { # $1 = newline-separated file list
             *.sh|*.md|*.py|*.yml|*/) ;;
             *) resolved_skip=true ;;
           esac
-          if [ "${resolved_skip:-false}" = false ] && [ ! -e "$resolved" ]; then
+          # A relative citation is already resolved against its citer: no shorthand reading.
+          if [ "${resolved_skip:-false}" = false ] && [ "$relative" = false ] \
+             && [ ! -e "$resolved" ]; then
             sibling="$(dirname "$file")/$resolved"
             sibling="${sibling#./}"
             if [ -e "$sibling" ]; then
@@ -1022,7 +1116,25 @@ scan_files() { # $1 = newline-separated file list
         project-management/docs/*|project-management/workflows/*) ;;
         project-management/src/*) ;;
         .claude/*|.github/*) ;;
-        *) continue ;;
+        # A path-form shipped template is presence-tested WHEREVER it resolves (US004 phase 9,
+        # QA-US004-08): beside its citer and from the root, both tried by the shorthand block
+        # above, then from each directory between them. The last is the layer-relative house
+        # shorthand -- a guide under project-management/ naming a template by its src/ path --
+        # and without it 21 shipped citations of templates that exist were reported. Absent
+        # everywhere, it is a finding like the one below.
+        *)
+          if [ "$template_target" = true ]; then
+            path_tests=$((path_tests + 1))
+            if [ ! -e "$resolved" ] && [ "$relative" = false ]; then
+              sibling="$file_dir"
+              while [[ "$sibling" == */* ]]; do
+                sibling="${sibling%/*}"
+                [ -e "$sibling/$resolved" ] && { resolved="$sibling/$resolved"; break; }
+              done
+            fi
+            [ -e "$resolved" ] || record "$file" "$lineno" "dangling path" "$token"
+          fi
+          continue ;;
       esac
 
       # Counted HERE, at the existence test, and nowhere earlier: everything above this line
@@ -1032,19 +1144,15 @@ scan_files() { # $1 = newline-separated file list
       path_tests=$((path_tests + 1))
       [ -e "$resolved" ] && continue
       # A shipped template is a literal presence obligation (US004, ADR 09/10/2026): absent is
-      # a finding, and nothing below — a seed, a register row, a naming row — may quieten it.
+      # a finding, and nothing below — a seed, a register row, a naming row, the ignore marker
+      # folded into it — may quieten it.
       if [ "$template_target" = true ]; then
         record "$file" "$lineno" "dangling path" "$token"
         continue
       fi
-      # The relative arm above keeps `..` in `$resolved` — `[ -e ]` reads through it, a register
-      # row cannot. Normalised here, on the miss path alone, so a sibling-relative citation of a
-      # registered class member (US004 P4) matches its row as the repo-relative spelling does.
-      case "$resolved" in
-        */../*|*/./*)
-          resolved="$(realpath -m --relative-to="$PROJECT_ROOT" "$PROJECT_ROOT/$resolved" 2>/dev/null \
-            || printf '%s' "$resolved")" ;;
-      esac
+      # `$resolved` is already normalised by the relative arm above (US004 phase 9, F1), so a
+      # sibling-relative citation of a registered class member (US004 P4) matches its row as
+      # the repo-relative spelling does.
       is_seeded "$resolved" && continue
       is_registered "$resolved" && continue
       [ "$is_naming_row" = true ] && continue
@@ -1093,6 +1201,243 @@ st_probe() { # label file want-violations want-substring
     return
   fi
   log "  ✓ $label"
+}
+
+# ── US004 phase 9 (05/11/2026) — one probe set per confirmed finding that moves the detector ─
+# Story plan → Key Decisions, "Phase 9 findings": every confirmed finding is fixed in this story,
+# red first. Findings: the review's F1, F4, F5, F8, F9 and QA-US004-01, -03, -06, -08, -11, -12.
+# Each probe is labelled P9-<id> and tagged RED (fails against the detector at 74b9892, and
+# must) or GUARD (passes there: it pins the direction the repair could over-reach in). The
+# text-only findings (F2, F3, F6) change no behaviour and carry no probe. F9 / QA-US004-11 sit
+# with P2 in self_test(), because they prove that block. Fix the detector, never these.
+st_has_probe() { # label file wanted-substring
+  st_probes=$((st_probes + 1))
+  scan_files "$2"
+  if [ "${report#*"$3"}" = "$report" ]; then st_fail "$1: no finding names \`$3\`"; return; fi
+  log "  ✓ $1"
+}
+st_absent_probe() { # label file unwanted-substring
+  st_probes=$((st_probes + 1))
+  scan_files "$2"
+  if [ "${report#*"$3"}" != "$report" ]; then st_fail "$1: a finding names \`$3\`"; return; fi
+  log "  ✓ $1"
+}
+st_citer_probe() { # label basename expect(yes|no)
+  st_probes=$((st_probes + 1))
+  if is_instance_citer "some/dir/$2"; then [ "$3" = yes ] && { log "  ✓ $1"; return; }
+  else [ "$3" = no ] && { log "  ✓ $1"; return; }; fi
+  st_fail "$1: is_instance_citer $2 answered the wrong way"
+}
+st_exempt9_probe() { # label path expect(yes|no) — st_exempt_probe lives inside self_test()
+  st_probes=$((st_probes + 1))
+  if is_exempt "$2"; then [ "$3" = yes ] && { log "  ✓ $1"; return; }
+  else [ "$3" = no ] && { log "  ✓ $1"; return; }; fi
+  st_fail "$1: is_exempt $2 answered the wrong way"
+}
+# A fixture under this folder always sits inside a checked tree, so a citer OUTSIDE one is
+# staged in a scratch tree outside the repository: the fixture is copied to $2 there, the scan
+# runs with the scratch tree as the root, and the subshell removes it on every exit path.
+# Prints the finding count on the first line and the report after it.
+st_scratch_scan() { # fixture dest
+  (
+    scratch="$(mktemp -d "${TMPDIR:-/tmp}/doc-references-p9.XXXXXXXX")" || exit 3
+    trap 'rm -rf -- "$scratch"' EXIT
+    mkdir -p "$scratch/${2%/*}" "$scratch/project-management/src/02-STORIES" || exit 3
+    : > "$scratch/project-management/src/02-STORIES/FIXTURE-ONLY-PRESENT.md"
+    cp -- "$1" "$scratch/$2" || exit 3
+    cd "$scratch" || exit 3
+    PROJECT_ROOT="$scratch"
+    QUIET=true
+    scan_files "$2"
+    printf '%s\n%s' "$violations" "$report"
+  )
+}
+
+st_phase9_probes() {
+  local BT=$'\x60' out v rep
+  local st_saved_registered="$REGISTERED"
+
+  # F1 — a relative token is normalised BEFORE the checkable-tree case, so both spellings of one
+  # target get one verdict, and a target outside the repository is never tested as a repo path.
+  log ""
+  log "  US004 P9-F1 — a relative citation is normalised before the checkable-tree decision:"
+  # RED — P9-F1(b): the relative spelling of an unchecked-tree target was read as the CITER's
+  # tree and reported, while its repo-relative spelling was silent. Two findings, not three.
+  st_probe "P9-F1 broken/relative-normalise.md: one verdict per target, either spelling" \
+    "$FIXTURES_DIR/broken/relative-normalise.md" 2 \
+    "dangling path | ${BT}project-management/src/02-STORIES/NO-SUCH-FIXTURE-ONLY-STORY.md${BT}"
+  # GUARD — P9-F1(b): the relative spelling of a dead checked-tree target is still reported.
+  st_has_probe "P9-F1 broken/relative-normalise.md still reports the relative dead path (GUARD)" \
+    "$FIXTURES_DIR/broken/relative-normalise.md" \
+    "dangling path | ${BT}../../../../../../../project-management/src/02-STORIES/NO-SUCH-FIXTURE-ONLY-STORY.md${BT}"
+  # RED — P9-F1 escape: a path climbing out of the repository is not a repository path.
+  st_probe "P9-F1 broken/relative-escape.md silent on a path outside the repository" \
+    "$FIXTURES_DIR/broken/relative-escape.md" 1 \
+    "dangling path | ${BT}../../../../../../../code/docs/NO-SUCH-FIXTURE-ONLY-GUIDE.md${BT}"
+  # RED — P9-F1(a), the review's reproduction: research/CONTEXT.md, which P1 polices, citing
+  # into the artefact tree by a relative path. Both spellings of the dead target are reported.
+  local st_f1a_rel="dangling path | ${BT}../project-management/src/02-STORIES/NO-SUCH-FIXTURE-ONLY-STORY.md${BT}"
+  local st_f1a_abs="dangling path | ${BT}project-management/src/02-STORIES/NO-SUCH-FIXTURE-ONLY-STORY.md${BT}"
+  st_probes=$((st_probes + 1))
+  out="$(st_scratch_scan "$FIXTURES_DIR/broken/relative-unchecked.md" research/CONTEXT.md)"
+  v="${out%%$'\n'*}"; rep="${out#*$'\n'}"
+  if [ "$v" != 2 ]; then
+    st_fail "P9-F1 scratch research/CONTEXT.md: expected 2 finding(s), got ${v:-none}"
+  elif [ "${rep#*"$st_f1a_rel"}" = "$rep" ]; then
+    st_fail "P9-F1 scratch research/CONTEXT.md: the relative spelling into the artefact tree is unreported"
+  else
+    log "  ✓ P9-F1 a citer outside the checked trees: its relative citation into one is tested"
+  fi
+  # GUARD — P9-F1(a): the repo-relative spelling is reported, and a present relative target is not.
+  st_probes=$((st_probes + 1))
+  if [ "${rep#*"$st_f1a_abs"}" = "$rep" ]; then
+    st_fail "P9-F1 scratch research/CONTEXT.md: the repo-relative dead path is unreported"
+  elif [ "${rep#*FIXTURE-ONLY-PRESENT}" != "$rep" ]; then
+    st_fail "P9-F1 scratch research/CONTEXT.md: a present relative target was reported"
+  else
+    log "  ✓ P9-F1 scratch: repo-relative dead path reported, present relative target silent (GUARD)"
+  fi
+
+  # F8 — the normalisation must not depend on GNU `realpath -m --relative-to`. A realpath that
+  # rejects those flags, as BSD and macOS do, is stood in by a function that fails.
+  log ""
+  log "  US004 P9-F8 — normalisation without GNU realpath:"
+  st_probes=$((st_probes + 1))
+  # RED — P9-F8: R2.5's relative class member still matches its row with realpath unavailable.
+  if (
+    realpath() { return 1; }
+    QUIET=true
+    REGISTERED="$FIXTURES_DIR/clean/AUTOMATED/US###-TEST-STATUS.md"
+    scan_files "$FIXTURES_DIR/clean/MANUAL/relative-class.md"
+    [ "$violations" -eq 0 ]
+  ); then
+    log "  ✓ P9-F8 clean/MANUAL/relative-class.md silent with no GNU realpath"
+  else
+    st_fail "P9-F8 clean/MANUAL/relative-class.md: reported with no GNU realpath — the" \
+      "normalisation still depends on realpath -m --relative-to"
+  fi
+  # GUARD — P9-F8: with realpath unavailable, a dead relative path is still a finding.
+  st_probes=$((st_probes + 1))
+  if (
+    realpath() { return 1; }
+    QUIET=true
+    scan_files "$FIXTURES_DIR/broken/volume-spec.md"
+    [ "$violations" -eq 1 ]
+  ); then
+    log "  ✓ P9-F8 broken/volume-spec.md still fires with no GNU realpath (GUARD)"
+  else
+    st_fail "P9-F8 broken/volume-spec.md: expected 1 finding with no GNU realpath"
+  fi
+
+  # F4 — the derived citer rule is bounded on the LEFT as well: a story or sprint number starts
+  # the name or follows a non-letter, so a word merely ending in US is not an instance citer.
+  log ""
+  log "  US004 P9-F4 — the derived citer rule has a left boundary:"
+  # RED — P9-F4.
+  st_citer_probe "P9-F4 STATUS200.md is NOT an instance citer      " "STATUS200.md" no
+  st_citer_probe "P9-F4 BONUS100.md is NOT an instance citer       " "BONUS100.md" no
+  st_citer_probe "P9-F4 CORPUS123-NOTES.md is NOT an instance citer" "CORPUS123-NOTES.md" no
+  st_citer_probe "P9-F4 XUS123.md is NOT an instance citer         " "XUS123.md" no
+  st_citer_probe "P9-F4 XSPRINT-07.md is NOT an instance citer     " "XSPRINT-07.md" no
+  # GUARD — P9-F4: every live form stays an instance citer.
+  st_citer_probe "P9-F4 US123.md stays an instance citer (GUARD)            " "US123.md" yes
+  st_citer_probe "P9-F4 QA-PLAN-US123-X.md stays an instance citer (GUARD)  " "QA-PLAN-US123-X.md" yes
+  st_citer_probe "P9-F4 07-SPRINT-PLAN-07.md stays an instance citer (GUARD)" "07-SPRINT-PLAN-07.md" yes
+  st_citer_probe "P9-F4 SPRINT-07.md stays an instance citer (GUARD)        " "SPRINT-07.md" yes
+  st_citer_probe "P9-F4 SPRINT-PLAN-07.md stays an instance citer (GUARD)   " "SPRINT-PLAN-07.md" yes
+  st_citer_probe "P9-F4 07-STORY-PLAN-US123-X.md stays one (GUARD)          " "07-STORY-PLAN-US123-X.md" yes
+  st_citer_probe "P9-F4 BUG-X-01-01-2026.md stays an instance citer (GUARD) " "BUG-X-01-01-2026.md" yes
+
+  # F5 / QA-US004-01 — the P1 fall-through arm mirrors copier's re-includes exactly: the
+  # top-level research/, handoffs/ and learning/ pairs, every pair under project-management/src/,
+  # and -TEMPLATE. only under project-management/src/. Nothing else leaves an exempt tree.
+  log ""
+  log "  US004 P9-F5 / QA-US004-01 — the fall-through arm is scoped to copier's re-includes:"
+  # RED — P9-F5 / P9-QA-US004-01: copier drops each of these, so each stays exempt.
+  st_exempt9_probe "P9-F5 research/sub/CONTEXT.md stays exempt      " "research/sub/CONTEXT.md" yes
+  st_exempt9_probe "P9-F5 research/sub/CLAUDE.md stays exempt       " "research/sub/CLAUDE.md" yes
+  st_exempt9_probe "P9-F5 research/FOO-TEMPLATE.md stays exempt     " "research/FOO-TEMPLATE.md" yes
+  st_exempt9_probe "P9-QA-01 handoffs/HANDOFF-QA-TEMPLATE.md exempt " "handoffs/HANDOFF-QA-TEMPLATE.md" yes
+  st_exempt9_probe "P9-QA-01 handoffs/sub/CONTEXT.md stays exempt   " "handoffs/sub/CONTEXT.md" yes
+  st_exempt9_probe "P9-QA-01 learning/FOO-TEMPLATE.md stays exempt  " "learning/FOO-TEMPLATE.md" yes
+  st_exempt9_probe "P9-QA-01 learning/sub/CLAUDE.md stays exempt    " "learning/sub/CLAUDE.md" yes
+  st_exempt9_probe "P9-F5 .copier/CONTEXT.md stays exempt           " ".copier/CONTEXT.md" yes
+  st_exempt9_probe "P9-F5 .copier/sub/CLAUDE.md stays exempt        " ".copier/sub/CLAUDE.md" yes
+  st_exempt9_probe "P9-F5 .copier/FOO-TEMPLATE.md stays exempt      " ".copier/FOO-TEMPLATE.md" yes
+  # GUARD — P9-F5: what copier does re-include stays policed, at any depth under PM src.
+  st_exempt9_probe "P9-F5 research/CLAUDE.md is NOT exempt (GUARD)  " "research/CLAUDE.md" no
+  st_exempt9_probe "P9-F5 handoffs/CONTEXT.md is NOT exempt (GUARD) " "handoffs/CONTEXT.md" no
+  st_exempt9_probe "P9-F5 learning/CLAUDE.md is NOT exempt (GUARD)  " "learning/CLAUDE.md" no
+  st_exempt9_probe "P9-F5 01-FEATURE-MAPS/archive/CONTEXT.md NOT exempt (GUARD)" \
+    "project-management/src/01-FEATURE-MAPS/archive/CONTEXT.md" no
+  st_exempt9_probe "P9-F5 WALK-TESTS/WALK-FOO-TEMPLATE.md NOT exempt (GUARD)   " \
+    "project-management/src/00-ASSETS/WALK-TESTS/WALK-FOO-TEMPLATE.md" no
+  # GUARD — P9-F5: the vendored arms above the fall-through still win.
+  st_exempt9_probe "P9-F5 code/docs/cloudinary/CONTEXT.md stays exempt (GUARD)  " \
+    "code/docs/cloudinary/CONTEXT.md" yes
+  st_exempt9_probe "P9-F5 .agents/skills/x/CLAUDE.md stays exempt (GUARD)       " \
+    ".agents/skills/x/CLAUDE.md" yes
+
+  # QA-US004-03 — the HOST half of a host:container volume token is a path here when it is
+  # spelt from the repository root; the container half never is. A `../` host half is relative
+  # to a Compose file the line does not name, so R2.2's clean fixture pins it silent.
+  log ""
+  log "  US004 P9-QA-US004-03 — the host half of a volume spec is tested:"
+  # RED — P9-QA-US004-03.
+  st_probe "P9-QA-03 broken/volume-host.md fires on a dead host half" \
+    "$FIXTURES_DIR/broken/volume-host.md" 2 \
+    "dangling path | ${BT}./code/docs/NO-SUCH-FIXTURE-ONLY-DIR:/workspace/logs${BT}"
+  # GUARD — P9-QA-US004-03: a present host half, a container half and a named volume are silent.
+  st_probe "P9-QA-03 clean/volume-host.md silent on a present host half (GUARD)" \
+    "$FIXTURES_DIR/clean/volume-host.md" 0
+
+  # QA-US004-06 — is_naming_row's PLACEHOLDER arms no longer suppress a separate concrete path
+  # token on the same line. A worked example in a naming row, and an explicit marker, still do.
+  log ""
+  log "  US004 P9-QA-US004-06 — a placeholder on a line does not hide a separate citation:"
+  local st_q6="$FIXTURES_DIR/broken/naming-row-mixed.md"
+  # RED — P9-QA-US004-06 (EC-04), the QA reproduction: a `###` in the line's prose.
+  st_probe "P9-QA-06 broken/naming-row-mixed.md fires on three separate dead paths" "$st_q6" 3 \
+    "dangling path | ${BT}project-management/src/15-DECISIONS/NO-SUCH-FIXTURE-ONLY-NAMING-ROW-B.md${BT}"
+  # RED — P9-QA-US004-06: a placeholder TOKEN beside the dead path, and a `<DESCRIPTOR>` one.
+  st_has_probe "P9-QA-06 the dead path beside a ### token is reported" "$st_q6" \
+    "dangling path | ${BT}project-management/src/15-DECISIONS/NO-SUCH-FIXTURE-ONLY-NAMING-ROW-A.md${BT}"
+  st_has_probe "P9-QA-06 the dead path beside a <DESCRIPTOR> token is reported" "$st_q6" \
+    "dangling path | ${BT}code/docs/NO-SUCH-FIXTURE-ONLY-NAMING-ROW-C.md${BT}"
+  # GUARD — P9-QA-US004-06: a naming row's worked example is still not an instance citation.
+  st_absent_probe "P9-QA-06 a naming row's bare worked example stays silent (GUARD)" "$st_q6" \
+    "${BT}US042.md${BT}"
+  st_absent_probe "P9-QA-06 a naming row's worked plan name stays silent (GUARD)" "$st_q6" \
+    "STORY-PLAN-US042-FIXTURE-ONLY.md"
+  # GUARD — P9-QA-US004-06: an explicit example marker stays a line-level suppression.
+  st_absent_probe "P9-QA-06 an e.g. line stays suppressed (GUARD)" "$st_q6" \
+    "NO-SUCH-FIXTURE-ONLY-EXAMPLE.md"
+
+  # QA-US004-08 — a path-form template target that resolves into no checkable tree is still
+  # presence-tested, beside its citer and then from the root, and reported if absent in both.
+  log ""
+  log "  US004 P9-QA-US004-08 — a template target outside the checked trees is presence-tested:"
+  # RED — P9-QA-US004-08.
+  st_probe "P9-QA-08 broken/template-unchecked.md fires on two absent template targets" \
+    "$FIXTURES_DIR/broken/template-unchecked.md" 2 \
+    "dangling path | ${BT}MANUAL/US000-FIXTURE-ONLY-GONE-MANUAL-TESTING.md${BT}"
+  # GUARD — P9-QA-US004-08: a template target present beside its citer is silent.
+  st_probe "P9-QA-08 clean/template-sibling.md silent on a present sibling template (GUARD)" \
+    "$FIXTURES_DIR/clean/template-sibling.md" 0
+
+  # QA-US004-12 — a DD-MM-YYYY placeholder drops the basename, never the DIRECTORY: the folder
+  # a dated artefact is named under is a citation, and is tested for existence.
+  log ""
+  log "  US004 P9-QA-US004-12 — a dated placeholder's directory is tested:"
+  # RED — P9-QA-US004-12.
+  st_probe "P9-QA-12 broken/date-folder.md fires on a dead folder under a dated placeholder" \
+    "$FIXTURES_DIR/broken/date-folder.md" 1 "99-NO-SUCH-FIXTURE-ONLY-FOLDER"
+  # GUARD — P9-QA-US004-12: a present folder, spelt relative, is silent (R2.4 pins the
+  # repo-relative spelling).
+  st_probe "P9-QA-12 clean/date-folder.md silent on a present folder (GUARD)" \
+    "$FIXTURES_DIR/clean/date-folder.md" 0
+
+  REGISTERED="$st_saved_registered"
 }
 
 self_test() {
@@ -1220,28 +1565,63 @@ self_test() {
   # (QA ES-03, manual SELFTEST-01).
   log ""
   log "  US004 P2 — an untracked file under an excluded tree is in the derived set:"
-  st_probes=$((st_probes + 1))
-  ST_P2_PROBE="$(mktemp "research/us004-p2-probe.XXXXXXXX")" \
-    || die "P2 probe: could not create a temporary file under research/"
-  trap 'rm -f -- "$ST_P2_PROBE"' EXIT
+  # P9-F9 / QA-US004-11 (phase 9, 05/11/2026). A SIGKILL or a crashed shell runs no trap, so a
+  # killed earlier run leaves its probe file behind; P2 sweeps the stale ones before it starts.
+  # One is planted here exactly as a killed run leaves it, under the same name pattern, and
+  # asserted gone once P2 has run. The plant carries its own trap until that assertion.
+  local st_p9_stale
+  st_p9_stale="$(mktemp "research/us004-p2-probe.XXXXXXXX")" \
+    || die "P9-F9 probe: could not plant a stale probe file under research/"
+  trap 'rm -f -- "$st_p9_stale"' EXIT
   trap 'exit 130' INT
   trap 'exit 143' TERM
-  # RED — P2, QA AC-GAP-8 / ES-03, story plan P2.
-  if ( build_template_only; build_template_only_index; is_template_only "$ST_P2_PROBE" ); then
-    log "  ✓ P2 AC-GAP-8 an untracked excluded file is template-only after a rebuild"
-  else
-    st_fail "P2 AC-GAP-8: is_template_only $ST_P2_PROBE answered no after both builders re-ran" \
-      "— the derived set still reads the git index alone"
-  fi
-  rm -f -- "$ST_P2_PROBE"
-  trap - EXIT INT TERM
-  # GUARD — P2, QA ES-03: the probe leaves nothing behind in the working tree.
+  # P2 runs in a subshell that creates the probe, holds the trap and exits, and it hands the
+  # probe's name back on its first line. CHANGED 05/11/2026 (P9-QA-US004-11): the GUARD below
+  # used to follow an unconditional `rm -f` in this same shell, so it could never fail. It now
+  # asserts from the parent, after the shell holding the trap has gone, that the trap removed it.
   st_probes=$((st_probes + 1))
-  if [ -e "$ST_P2_PROBE" ]; then
-    st_fail "P2 ES-03: the probe file $ST_P2_PROBE survived the self-test"
+  local st_p2_out st_p2_rc st_p2_probe
+  st_p2_out="$(
+    # P9-F9: sweep what a killed earlier run left, before this run makes its own probe. Only
+    # this pattern, only under research/, and only untracked files ever carry it.
+    rm -f -- research/us004-p2-probe.*
+    ST_P2_PROBE="$(mktemp "research/us004-p2-probe.XXXXXXXX")" || exit 3
+    trap 'rm -f -- "$ST_P2_PROBE"' EXIT
+    trap 'exit 130' INT
+    trap 'exit 143' TERM
+    printf '%s\n' "$ST_P2_PROBE"
+    build_template_only; build_template_only_index
+    is_template_only "$ST_P2_PROBE" && exit 0
+    exit 1
+  )"
+  st_p2_rc=$?
+  st_p2_probe="${st_p2_out%%$'\n'*}"
+  # RED — P2, QA AC-GAP-8 / ES-03, story plan P2.
+  case "$st_p2_rc" in
+    0) log "  ✓ P2 AC-GAP-8 an untracked excluded file is template-only after a rebuild" ;;
+    3) st_fail "P2 AC-GAP-8: could not create a temporary file under research/" ;;
+    *) st_fail "P2 AC-GAP-8: is_template_only $st_p2_probe answered no after both builders re-ran" \
+         "— the derived set still reads the git index alone" ;;
+  esac
+  # GUARD — P2, QA ES-03, P9-QA-US004-11: the probe leaves nothing behind in the working tree.
+  st_probes=$((st_probes + 1))
+  if [ -z "$st_p2_probe" ]; then
+    st_fail "P2 ES-03: the P2 subshell reported no probe name, so its removal cannot be asserted"
+  elif [ -e "$st_p2_probe" ]; then
+    st_fail "P2 ES-03: the probe file $st_p2_probe survived the shell whose trap owned it"
+    rm -f -- "$st_p2_probe"
   else
-    log "  ✓ P2 ES-03 the probe file is gone (GUARD)"
+    log "  ✓ P2 ES-03 the probe file is gone once its shell has exited (GUARD)"
   fi
+  # RED — P9-F9: the stale probe planted above is swept by P2.
+  st_probes=$((st_probes + 1))
+  if [ -e "$st_p9_stale" ]; then
+    st_fail "P9-F9: a stale probe file a killed run left ($st_p9_stale) survived P2 — no sweep"
+  else
+    log "  ✓ P9-F9 P2 sweeps a stale probe file a killed earlier run left behind"
+  fi
+  rm -f -- "$st_p9_stale"
+  trap - EXIT INT TERM
 
   # P3 — Check 2 asks whether the CITING FILE is an instance artefact, read from its name, and
   # never consults is_template_only() (ADR-US004-INSTANCE-ARTEFACT-CITER-TEST, AC-GAP-4/5). The
@@ -1518,6 +1898,9 @@ $st_r4"
     log "  ✓ R4 unseeded broken/seeded-citer.md reports instance, template-only and dangling (GUARD)"
   fi
 
+  # ── US004 phase 9 — failing proofs for the confirmed review and QA findings ─
+  st_phase9_probes
+
   log ""
   # The fixtures must stay invisible to an ordinary run, or this proof reddens the gate it
   # exists to prove. Asserted directly, with the flag put back the way a normal run sees it.
@@ -1595,7 +1978,7 @@ else
   log ""
   log "Rule: a shipped file may cite layering-system artefacts only (CONTEXT.md,"
   log "CLAUDE.md, docs/, workflows/, scripts, guides) and never a per-project"
-  log "instance (ADR-###, US###, SPRINT-##, MAP-*, PLAN-*). Drop the citation, or"
+  log "instance (ADR-US###, US###, SPRINT-##, MAP-*, PLAN-*). Drop the citation, or"
   log "point at the guide that carries the rule."
   log ""
   log "A [template-only citation] is the other direction: the path resolves here and"
