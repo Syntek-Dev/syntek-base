@@ -558,6 +558,13 @@ build_template_only_index
 # short-circuits, so BASH_REMATCH carries the FIRST branch to match and the plain form, which
 # is a prefix of the other two, must come last.
 #
+# A FOURTH FORM, peeled first (US004 R2.3, 05/11/2026): a record citing several lines of one
+# file comma-joins the anchors -- `foo.py:12,:40`, repeated as often as it likes. Each trailing
+# `,:N` is stripped in a loop before the three branches run, so what remains is the ordinary
+# `:N` form. A loop rather than one `(,:[0-9]+)+` group because POSIX leftmost-longest gives the
+# leading `.+` every repeat but the last. Both Check 1 routes peel here -- the ordinary one
+# and the shipped-template presence route -- so the form is proven once for each by fixture.
+#
 # Sets `peeled` rather than echoing. This runs once per backticked token -- 29k times on an
 # unscoped run -- and a command substitution forks a subshell each time, which costs more than
 # every other check in this file put together. `scan_files()` declares `peeled` local, so
@@ -567,6 +574,9 @@ build_template_only_index
 # would move `base` and the is_seeded lookup with it, and that is a decision nobody has made.
 peel_anchor() { # $1 = token -> sets `peeled`
   peeled="$1"
+  while [[ "$peeled" =~ ^(.+),:[0-9]+$ ]]; do
+    peeled="${BASH_REMATCH[1]}"
+  done
   if [[ "$peeled" =~ ^(.+):[0-9]+:[0-9]+$ ]] \
      || [[ "$peeled" =~ ^(.+):[0-9]+-[0-9]+$ ]] \
      || [[ "$peeled" =~ ^(.+):[0-9]+$ ]]; then
@@ -575,6 +585,9 @@ peel_anchor() { # $1 = token -> sets `peeled`
 }
 
 # A token with a template placeholder, a numeric pattern, or a glob is not a citation.
+# The literal house date placeholder `DD-MM-YYYY` in a name is one too (US004 R2.4, 05/11/2026):
+# it describes a dated artefact's naming convention, and the same path carrying a real date is
+# still a citation and still checked.
 # Split out of is_pattern() on 05/11/2026 so the template-presence test below can ask the
 # placeholder question alone.
 is_placeholder() {
@@ -582,6 +595,7 @@ is_placeholder() {
     *"$TOK_OPEN"*|*"$BLK_OPEN"*)                                     return 0 ;;
     *'{'*|*'###'*|*'##'*|*'<'*'>'*|*'*'*|*'…'*|*'NN'*)               return 0 ;;
     *'–'*|*'—'*)                                                     return 0 ;;  # en/em-dash range
+    *DD-MM-YYYY*)                                                    return 0 ;;  # date placeholder
   esac
   return 1
 }
@@ -604,12 +618,18 @@ is_template_target() {
 # 05/11/2026 (US004 P3): `ADR-US[0-9]{3}` replaces the bare-number decision form retired
 # 31/08/2026, and `QA-PLAN-US[0-9]{3}` replaces a QA form no artefact was ever named with.
 INSTANCE_CITED_RE='^(ADR-US[0-9]{3}|US[0-9]{3}|SPRINT-[0-9]{2}|([0-9]{2}-)?SPRINT-PLAN-[0-9]{2}|MAP-[A-Z][A-Z0-9-]+|PLAN-US[0-9]{3}|([0-9]{2}-)?STORY-PLAN-US[0-9]{3}|BUG-[A-Z]|QA-PLAN-US[0-9]{3}|API-US[0-9]{3})'
-# The citing side (US004 P3): the per-story artefact forms whose FILE never ships, so what it
-# cites is no claim a generated project reads. A separate list because the two sides are not
-# the same set — a review record cites and is never cited, a map is cited and lives in an
-# exempt tree — and each list is pinned by its own fixture pair. The zero-index and
-# `-TEMPLATE.` files match these shapes and DO ship, so they are excluded and stay policed.
-INSTANCE_CITER_RE='^(US[0-9]{3}|SPRINT-[0-9]{2}|ADR-US[0-9]{3}|QA-PLAN-US[0-9]{3}|([0-9]{2}-)?STORY-PLAN-US[0-9]{3}|([0-9]{2}-)?SPRINT-PLAN-[0-9]{2}|REVIEW-US[0-9]{3}|BUG-)'
+# The citing side (US004 P3): a per-project artefact whose FILE never ships, so what it cites
+# is no claim a generated project reads. A DERIVED RULE, not a list of forms (US004 R2.1,
+# project-management/src/15-DECISIONS/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md):
+# the basename carries a story number (US + exactly three digits) or a sprint number (SPRINT-,
+# optionally PLAN-, + exactly two digits), anywhere in the name, or it starts BUG-. Every
+# per-story artefact's name carries its number by convention, so the rule tracks the convention
+# rather than a copy of it that drifts. The digit runs are BOUNDED -- a further digit after the
+# run means it is not a story or sprint number, at the start of the name or mid-name. Not the
+# same set as the cited side above: a review record cites and is never cited, a map is cited
+# and lives in an exempt tree. The zero-index and `-TEMPLATE.` files match and DO ship, so
+# is_instance_citer() excludes them and they stay policed.
+INSTANCE_CITER_RE='(US[0-9]{3}|SPRINT-(PLAN-)?[0-9]{2})([^0-9]|$)|^BUG-'
 
 is_instance_citer() { # $1 = citing file path
   local name="${1##*/}"
@@ -893,8 +913,11 @@ scan_files() { # $1 = newline-separated file list
         */*) ;;   # only tokens that look like a path
         *)   continue ;;
       esac
+      # `*:/*` is a Compose volume spec (US004 R2.2, 05/11/2026): `host:container` names a path
+      # on two machines and neither is a file in this repository. A line anchor never puts a
+      # slash after its colon, so the peel below is untouched.
       case "$token" in
-        http*|*@*|*' '*) continue ;;
+        http*|*@*|*' '*|*:/*) continue ;;
       esac
 
       # Trailing backslashes survive from shell heredocs in the *.sh files.
