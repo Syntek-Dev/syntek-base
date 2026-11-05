@@ -18,7 +18,7 @@ project-management/src/03-SPRINTS/
 └── archive/                 ← Closed sprints, moved here by pm-archive.sh — frozen
 ```
 
-**Naming:** `SPRINT-##.md` — 2-digit zero-padded (e.g. `SPRINT-01.md`), numbered across this
+**Naming:** `SPRINT-##.md` — 2-digit zero-padded (the first is SPRINT-01.md), numbered across this
 folder **and** `archive/`.
 
 ## What each sprint record holds

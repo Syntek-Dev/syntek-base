@@ -49,7 +49,9 @@ US004's own written premise that patterned rows already worked.
 ### Option A — one literal row per story
 
 - **Summary:** keep `is_registered()` exact; add
-  `project-management/src/18-TESTS/US001-MANUAL-TESTING.md` and its siblings, one row at a time.
+  `project-management/src/18-TESTS/MANUAL/US001-MANUAL-TESTING.md` and its siblings, one row at a
+  time.
+  <!-- UPDATED 05/11/2026 (US004 P5): read "project-management/src/18-TESTS/US001-MANUAL-TESTING.md" until then; the 09/09/2026 split moved the guide under MANUAL/, and the pre-split path was a dead citation the citation gate now polices in this tree. -->
 - **Pros:** no mechanism change; every row is exactly as narrow as the register's doctrine wants;
   a dead citation to a story that never existed is still caught.
 - **Cons:** unbounded — two rows per story, forever, added by a workflow with no reason to

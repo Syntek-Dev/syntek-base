@@ -446,13 +446,15 @@ that day, and its own _Story Plans — the code master_ states why US005's plan 
 
 **There is no Plans Index row for either**, and that is a decision rather than an omission. The
 index eight artefacts already cite has never existed; `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md`
-slice `S-01` **creates `../17-STORY-PLANS/STORY-PLAN-INDEX.md`** — the file all eight citations
-should have named — and repoints them. The claim lives on that map's _Register claimed_ table; the
+slice `S-01` **was to create a story-plan index file in `../17-STORY-PLANS/`** — the file all eight
+citations should have named — and repoint them. The claim lives on that map's _Register claimed_ table; the
 entry was re-triaged off `GAPS.md`, so that register is **not** where a reader will find it.
 Building an index here would pre-empt a claimed slice and add a ninth citation of a surface about
 to be named something else. That slice is US002's line of work, and US002 now builds in SPRINT-02,
 ahead of this sprint: if the index exists when this sprint is worked, its row is that mechanism's
 to write, not a hand edit here.
+
+<!-- UPDATED 05/11/2026 (US004 P5): read "slice `S-01` **creates ../17-STORY-PLANS/STORY-PLAN-INDEX.md** — the file all eight citations should have named — and repoints them" until then; no such index exists or will: the 7.7.0 PM-boards change superseded it with the generated story-plans board in that folder, and a backticked path to a file that never existed is a dead citation the citation gate now polices in this tree. -->
 
 <!-- 08/09/2026 — STORY-PLAN FILENAMES GAINED AN `<exec-order>-` PREFIX, and this plan's live
      citations were repointed the same day: US004's plan is `05-STORY-PLAN-US004-…` and US003's
