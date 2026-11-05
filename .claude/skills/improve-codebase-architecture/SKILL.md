@@ -23,8 +23,8 @@ This command is _informed_ by the project's domain model and built on a shared d
 - Load **`.claude/skills/codebase-design`** for the architecture vocabulary (**module**,
   **interface**, **depth**, **seam**, **adapter**, **leverage**, **locality**) and its principles
   (the deletion test, "the interface is the test surface", "one adapter is a hypothetical seam, two
-  are real"). Use these terms exactly in every suggestion — don't drift into "component," "service"
-  (as a loose synonym), "API," or "boundary."
+  are real"). Use these terms exactly in every suggestion — never a synonym its _Vocabulary — use
+  exactly_ bans, under the scope that keeps "boundary" for edges that are not seams.
 - The domain language in the layered **`CONTEXT.md`** files gives names to good seams
   (**`.claude/skills/domain-modelling`**); the ADRs in **`project-management/src/15-DECISIONS/`**
   record decisions this review must **not** re-litigate.

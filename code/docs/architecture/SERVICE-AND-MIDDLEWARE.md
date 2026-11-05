@@ -8,14 +8,14 @@ model: opus
 
 **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
 British English (en_GB) **Timezone:** <%TIMEZONE%>
-**Claude Model:** opus — Service layer boundaries, business logic placement, middleware patterns
+**Claude Model:** opus — Service-layer seams, business logic placement, middleware patterns
 
 ---
 
 ## Service Layer
 
 Business logic lives in service classes or modules, not in views, Ninja endpoints, schemas,
-models, or templates. This is the most important architectural boundary in the application.
+models, or templates. This is the most important seam in the application.
 
 ### The rule
 
@@ -186,7 +186,8 @@ opposite of depth.
 - **The deletion test.** Delete the module and inline it: if the same complexity reappears across
   N callers, it earned its keep; if nothing reappears, it was padding a seam that did not exist.
 - **The interface is the test surface.** Test a service through its public methods, never its
-  internals — a test that must reach past the interface is telling you the boundary is wrong.
+  internals — a test that must reach past the interface is telling you the seam is in the wrong
+  place.
 - **One adapter is a hypothetical seam; two adapters are a real seam.** Do not introduce an
   abstraction (base class, protocol, strategy) until a second implementation actually varies —
   see YAGNI in [`../CODING-PRINCIPLES.md`](../CODING-PRINCIPLES.md).

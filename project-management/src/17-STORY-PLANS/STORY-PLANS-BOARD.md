@@ -10,9 +10,9 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 8     |
+| Pending           | 7     |
 | In Progress       | 0     |
-| In Review         | 0     |
+| In Review         | 1     |
 | Accepted          | 3     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -30,7 +30,6 @@ _None._
 
 | Plan                | Story                           | Title                                                                                                                      | Status  | File                                                                                             |
 | ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
-| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270                                                                               | Pending | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md)                     |
 | 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index                                                                         | Pending | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md) |
 | 07-STORY-PLAN-US006 | [US006](../02-STORIES/US006.md) | The destructive dev scripts read the deployment posture, and refuse to run above development                               | Pending | [07-STORY-PLAN-US006-POSTURE-GUARD.md](07-STORY-PLAN-US006-POSTURE-GUARD.md)                     |
 | 08-STORY-PLAN-US008 | [US008](../02-STORIES/US008.md) | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                     | Pending | [08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md](08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md)             |
@@ -45,7 +44,9 @@ _None._
 
 ## In Review
 
-_None._
+| Plan                | Story                           | Title                                        | Status    | File                                                                         |
+| ------------------- | ------------------------------- | -------------------------------------------- | --------- | ---------------------------------------------------------------------------- |
+| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270 | In Review | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md) |
 
 ## Accepted
 

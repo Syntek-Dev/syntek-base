@@ -32,6 +32,7 @@ Internal and external references for all coding work in this repository.
 
 ### Guides in code/docs/
 
+- `code/docs/ABSENCE.md` — what an absence **means**, where the `TYPES-*` family owns what shape a value has: the six kinds (expected miss, not-yet, empty, failure, not-supplied, not-applicable), the decision order that makes them exhaustive and mutually exclusive and the tie-breaks between neighbours, the crib mapping each onto Python, Rust, Alpine, HTMX and mobile TypeScript, and the two rules it owns — an absence with more than one meaning is an enum, never a null (pinned by `audits/doctrine-drift.sh`), and one absence never carries two meanings
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA, semantic HTML, ARIA patterns
 - `code/docs/API-DESIGN.md` — Django Ninja conventions, JSON API patterns
 - `code/docs/ARCHITECTURE-PATTERNS.md` — service layer, Django app structure, page routing
