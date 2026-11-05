@@ -11,8 +11,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 7     |
-| In Progress       | 1     |
-| In Review         | 0     |
+| In Progress       | 0     |
+| In Review         | 1     |
 | Accepted          | 3     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -40,13 +40,13 @@ _None._
 
 ## In Progress
 
-| ID    | Title                                                                        | Status      | File                 |
-| ----- | ---------------------------------------------------------------------------- | ----------- | -------------------- |
-| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated | In Progress | [US003.md](US003.md) |
+_None._
 
 ## In Review
 
-_None._
+| ID    | Title                                                                        | Status    | File                 |
+| ----- | ---------------------------------------------------------------------------- | --------- | -------------------- |
+| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated | In Review | [US003.md](US003.md) |
 
 ## Accepted
 

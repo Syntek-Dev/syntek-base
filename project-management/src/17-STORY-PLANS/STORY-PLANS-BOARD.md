@@ -11,8 +11,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 7     |
-| In Progress       | 1     |
-| In Review         | 0     |
+| In Progress       | 0     |
+| In Review         | 1     |
 | Accepted          | 3     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -40,13 +40,13 @@ _None._
 
 ## In Progress
 
-| Plan                | Story                           | Title                                        | Status      | File                                                                         |
-| ------------------- | ------------------------------- | -------------------------------------------- | ----------- | ---------------------------------------------------------------------------- |
-| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270 | In Progress | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md) |
+_None._
 
 ## In Review
 
-_None._
+| Plan                | Story                           | Title                                        | Status    | File                                                                         |
+| ------------------- | ------------------------------- | -------------------------------------------- | --------- | ---------------------------------------------------------------------------- |
+| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270 | In Review | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md) |
 
 ## Accepted
 
