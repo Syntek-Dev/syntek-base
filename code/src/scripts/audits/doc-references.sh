@@ -687,6 +687,7 @@ scan_files() { # $1 = newline-separated file list
   path_tests=0
   local file lineno token line prev is_naming_row stripped resolved sibling base
   local is_marked file_ships file_dir tmpl tmpl_base peeled plan citer_instance template_target
+  local citer_seeded
   local resolved_skip=false
 
   while IFS= read -r file; do
@@ -700,8 +701,13 @@ scan_files() { # $1 = newline-separated file list
     # Check 3 alone asks whether the CITING file ships: Direction B is a rule about what a
     # shipped document claims, and a file copier drops takes its citations with it. Checks 1
     # and 2 are unaffected — a dangling path is a defect wherever it is written.
+    # ADDED 05/11/2026 (US004, the story plan's Key Decisions row "Seeded citers"): a citer copier
+    # SEEDS from .copier/ is non-shipping too, for Checks 2 and 3 — the seed replaces its content
+    # at generation, so nothing it cites reaches a generated project. Check 1 still runs on it.
+    citer_seeded=false
+    if is_seeded "$file"; then citer_seeded=true; fi
     file_ships=true
-    if is_template_only "$file"; then file_ships=false; fi
+    if is_template_only "$file" || [ "$citer_seeded" = true ]; then file_ships=false; fi
     file_dir="${file%/*}"
     [ "$file_dir" = "$file" ] && file_dir="."
     # Check 2 alone asks whether the CITING file is itself a per-project instance, read from its
@@ -895,7 +901,10 @@ scan_files() { # $1 = newline-separated file list
       # ADDED 05/11/2026 (US004 P3): a citer that is itself a per-project instance is exempt from
       # this check alone — `citer_instance`, decided once per file above. Check 1 still runs on
       # it, so a missing path such a file names is reported as a dangling path.
+      # ADDED 05/11/2026 (US004, Key Decisions row "Seeded citers"): so is a citer copier seeds
+      # from .copier/ — `citer_seeded`, decided once per file above; its content never ships.
       if [ "$is_naming_row" = false ] && [ "$citer_instance" = false ] \
+         && [ "$citer_seeded" = false ] \
          && [[ "$token" =~ $INSTANCE_CITED_RE ]]; then
         base="${token##*/}"
         # The archive arm (31/10/2026): a Closed map is moved into 01-FEATURE-MAPS/archive/ by
@@ -1449,6 +1458,64 @@ $st_class/US###-FIXTURE-ONLY-TEMPLATE.md"
     st_fail "R2.6 broken/plan-prefix-stubs.md: Check 1 reported a dangling path — it ran first"
   else
     log "  ✓ R2.6 broken/plan-prefix-stubs.md reports [plan prefix], never [dangling path] (GUARD)"
+  fi
+
+  # ── US004 round 4 — failing proofs for the green-round decision of 05/11/2026 ─
+  # Story plan → Key Decisions: "Seeded citers, 05/11/2026". A citer copier seeds from
+  # .copier/ is non-shipping for Checks 2 and 3 — the seed replaces its content at generation —
+  # and Check 1 still runs on it. SEEDED is read at call time by is_seeded(), so the fixture is
+  # made seeded by appending its path, and the parsed set is put back after, as REGISTERED is
+  # above. One fixture serves all three probes: the only variable is whether it is seeded.
+  log ""
+  log "  US004 R4 — a seeded citer is non-shipping for Checks 2 and 3, never for Check 1:"
+  local st_saved_seeded="$SEEDED"
+  local st_r4="$FIXTURES_DIR/broken/seeded-citer.md"
+  local st_r4_inst="instance citation | ${BT}US042.md${BT}"
+  local st_r4_tmpl="template-only citation | ${BT}copier.yml${BT}"
+  local st_r4_dead="dangling path | ${BT}project-management/src/15-DECISIONS/NO-SUCH-FIXTURE-ONLY-SEEDED-DECISION.md${BT}"
+  SEEDED="$SEEDED
+$st_r4"
+  # RED — R4 Check 2: seeded, the instance citation is silent.
+  st_probes=$((st_probes + 1))
+  scan_files "$st_r4"
+  if [ "${report#*"$st_r4_inst"}" != "$report" ]; then
+    st_fail "R4 seeded broken/seeded-citer.md: Check 2 reported the instance citation"
+  else
+    log "  ✓ R4 seeded broken/seeded-citer.md silent on the instance citation (Check 2)"
+  fi
+  # RED — R4 Check 3: seeded, the template-only citation is silent, and the dead path is the one
+  # finding left.
+  st_probes=$((st_probes + 1))
+  scan_files "$st_r4"
+  if [ "${report#*"$st_r4_tmpl"}" != "$report" ]; then
+    st_fail "R4 seeded broken/seeded-citer.md: Check 3 reported the template-only citation"
+  elif [ "$violations" -ne 1 ]; then
+    st_fail "R4 seeded broken/seeded-citer.md: expected 1 finding(s), got $violations"
+  else
+    log "  ✓ R4 seeded broken/seeded-citer.md silent on the excluded path (Check 3), one finding left"
+  fi
+  # GUARD — R4: seeded, Check 1 still runs, so the dead path is still reported.
+  st_probes=$((st_probes + 1))
+  scan_files "$st_r4"
+  if [ "${report#*"$st_r4_dead"}" = "$report" ]; then
+    st_fail "R4 seeded broken/seeded-citer.md: Check 1 did not report the dead path"
+  else
+    log "  ✓ R4 seeded broken/seeded-citer.md still reports [dangling path] (GUARD)"
+  fi
+  SEEDED="$st_saved_seeded"
+  # GUARD — R4: the identical citer NOT seeded still reports all three.
+  st_probes=$((st_probes + 1))
+  scan_files "$st_r4"
+  if [ "$violations" -ne 3 ]; then
+    st_fail "R4 unseeded broken/seeded-citer.md: expected 3 finding(s), got $violations"
+  elif [ "${report#*"$st_r4_inst"}" = "$report" ]; then
+    st_fail "R4 unseeded broken/seeded-citer.md: no instance citation of the US042 sibling"
+  elif [ "${report#*"$st_r4_tmpl"}" = "$report" ]; then
+    st_fail "R4 unseeded broken/seeded-citer.md: no template-only citation of the contract"
+  elif [ "${report#*"$st_r4_dead"}" = "$report" ]; then
+    st_fail "R4 unseeded broken/seeded-citer.md: no dangling path for the dead decision"
+  else
+    log "  ✓ R4 unseeded broken/seeded-citer.md reports instance, template-only and dangling (GUARD)"
   fi
 
   log ""
