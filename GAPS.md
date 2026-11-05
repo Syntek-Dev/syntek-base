@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 03/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 05/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -296,6 +296,11 @@ the 4.x GA (npm `latest` has moved and the event-grammar migration is charted), 
 template exists that actually loads htmx. The migration is then its own charted feature (event
 grammar, swap policy, CSRF inheritance, the gate regex) — never a side-effect of another
 story.
+
+**Annotated 05/11/2026 (US003, finding F-007 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md"):** `code/docs/ABSENCE.md` joins the
+surfaces that encode htmx 2's behaviour. It states that htmx 2 swaps no 4xx or 5xx by default, which
+is why its HTMX expected-miss row answers a 200 not-found partial; v4 swaps 4xx by default and would
+falsify that row, so the migration moves it with the rest.
 
 ---
 
@@ -702,3 +707,130 @@ US002, owes neither record under 22 yet fails 23's verify as written. Finding F-
 **Blocked by / Action:** Nothing blocks it. A template-maintenance fix: restate 23's two rows and
 two checklist items as conditional, routing to 22 Step 1's _Applies when_ column rather than
 restating it. No map or story claims this entry.
+
+---
+
+## 05/11/2026 — US003's findings for the absence map's remaining slices wait on stories nobody has cut
+
+**Type:** Planned feature
+**Summary:** US003 shipped `code/docs/ABSENCE.md` as slice `S-01` of "MAP-ABSENCE". Its closeout
+found work that belongs to four later slices, none of which `02-story-creation` has cut yet, so the
+findings have no story to carry them. Held here, slice by slice, from "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md":
+`S-02` — F-012 (state the `ServiceError` subclass-to-status table once, in
+`code/docs/api-design/AUTH-AND-ERRORS.md`) and F-013 (the `OrderOut | None` exemplar in
+`code/docs/api-design/NINJA-CONVENTIONS.md`, already in the slice's acceptance). `S-03` — F-004
+(`code/docs/ABSENCE.md` is a seventh 5xx-only artefact: its Expected miss × HTMX and Failure × HTMX
+cells and its HTMX note, found by the phrase "when that listener gains a 4xx leg", move with the
+listener's 4xx leg) and F-005 (the HTMX-facing exemplar in
+`code/docs/rendering/PITFALLS-AND-EXAMPLES.md` answers a miss 404 through `get_object_or_404` and
+reads `request.POST["body"]` unparsed). `S-04` — F-014 (the mobile client maps a single-object 404
+to a not-found member at its parse boundary, with the crib back-link). `S-05` — F-015 (widen the
+`absence-enum` regex in `code/src/scripts/audits/doctrine-drift.sh` to the other Python, Rust and
+TypeScript spellings and `~~~` fences, a broken fixture each) and F-016 (settle `[gate: prose]`'s
+meaning against `code/docs/VISUAL-DESIGN.md` Section 6 before the per-surface clauses are marked).
+Across `S-02` to `S-04` — F-024 (check each per-surface crib cell against its owner guide and the
+library's documentation before review).
+**Blocked by / Action:** Blocked on the slices being cut. The story `02-story-creation` cuts from a
+slice carries that slice's lines into its acceptance, and they leave this entry in that change; the
+entry goes when the last slice's lines have gone.
+
+---
+
+## 05/11/2026 — `SCHEMA-DESIGN.md` passes `check=` to `CheckConstraint`, which Django 6 removed
+
+**Type:** Active gap
+**Summary:** A live defect in a shipped guide. `code/docs/data-structures/SCHEMA-DESIGN.md` →
+_Foreign Keys and Constraints_ (`:151`) and _Polymorphic Relationships_ (`:262`) build
+`models.CheckConstraint(check=…)`. Django 6 removed the `check` keyword (its replacement,
+`condition`, arrived in 5.1), so on this stack (`django>=6.1`) both examples raise `TypeError` as
+written. `code/docs/ABSENCE.md`'s not-applicable route sends readers to _Polymorphic
+Relationships_. The same section shows only an XOR of two nullable foreign keys, with no
+kind-discriminated constraint for the not-applicable pattern. Findings F-010 and F-011 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Rename `check=` to `condition=` in both examples; add
+one kind-discriminated example, such as
+`CheckConstraint(condition=Q(kind=INDIVIDUAL, vat_number__isnull=True) | Q(kind=COMPANY))`. No map
+or story claims this entry.
+
+---
+
+## 05/11/2026 — `TYPES-BROWSER.md`'s sanctioned Alpine component fetches, and `RENDERING.md` keeps Alpine off the network
+
+**Type:** Active gap
+**Summary:** `code/docs/data-structures/TYPES-BROWSER.md` → _An Alpine component is a contract, not
+a bag of keys_ teaches `searchPanel`, a component that fetches on `@input.debounce` and reads
+`.json()` without checking `response.ok`, so a 404 or 5xx body parses as data.
+`code/docs/RENDERING.md` → _The doctrine (the decision rule)_ and
+`code/docs/FRONTEND-CODING-PRINCIPLES.md` → _HTMX & Alpine_ keep Alpine off the network. US003's
+decision D2 (Sam, 05/11/2026) followed RENDERING and kept the conflict out of the crib. Finding F-008
+in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Rewrite the example to the server-rendered form
+RENDERING sanctions, or record a sanctioned exception in RENDERING with the `response.ok` branch.
+No map or story claims this entry.
+
+---
+
+## 05/11/2026 — two owners disagree on what absent and not-owned answer for a caller-scoped lookup
+
+**Type:** Active gap
+**Summary:** `code/docs/api-design/CLIENT-PATTERNS.md` → _Errors_ sends HTMX "Not permitted" as a
+403 with nothing to swap, so for a caller-scoped lookup absent (a 200 not-found partial) and
+not-owned (a 403) differ on the wire — the oracle `code/docs/security/AUTH-AND-AUTHZ.md` →
+_Anti-Enumeration_ forbids. And _Anti-Enumeration_ prescribes `"Access denied."` / `"FORBIDDEN"`
+for both, against the 404 and `not_found` that `code/docs/api-design/AUTH-AND-ERRORS.md` and
+`code/docs/ABSENCE.md` use. A documentation conflict with no shipped endpoint behind it. Finding
+F-006 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Exempt a caller-scoped lookup from CLIENT-PATTERNS'
+403 row, and state once in _Anti-Enumeration_ which single answer absent and not-owned share. No
+map or story claims this entry.
+
+---
+
+## 05/11/2026 — the `#status` region's `announce` trigger has no listener
+
+**Type:** Active gap
+**Summary:** `code/docs/accessibility/TESTING-AND-COMPONENTS.md` → _Announcing dynamic updates_
+writes the base template's `#status` live region only through a server
+`HX-Trigger: {"announce": …}`, and no listener for `announce` ships anywhere under
+`code/src/django/`, so the documented path announces nothing. `code/docs/ABSENCE.md` no longer
+depends on it. Finding F-009 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Ship the listener with the first base template that
+loads htmx, or state in the guide that the path is declared, not wired. No map or story claims this
+entry.
+
+---
+
+## 05/11/2026 — `doc-references.sh` does not test file-relative Markdown link targets
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` catches a dangling repo-rooted citation
+(`code/docs/…`) but not a file-relative one — the form `code/docs/ABSENCE.md` writes every
+citation in. A crib cell linking `data-structures/` plus a nonexistent file exits 0, so US003's
+ES-05 and BITE-05 bite only for the repo-rooted form. Finding F-017 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md" (QA round 1 F-003).
+**Blocked by / Action:** Nothing blocks it. Resolve `](relative)` link targets and backticked
+file-relative tokens against the citing file's directory, with a broken fixture. No map or story
+claims this entry.
+
+---
+
+## 05/11/2026 — `skill-conformance.sh` clause 14 accepts a back-citation inside an HTML comment
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/skill-conformance.sh` clause 14, which requires a skill named
+in a guide's routing frontmatter to cite the guide back, is satisfied by a citation inside
+`<!-- … -->`, which no agent reads as routing. Reproduced in a throwaway worktree during US003's QA
+pass: moving `refactor/SKILL.md`'s citation of `code/docs/ABSENCE.md` into a comment left exit 0.
+Pre-existing. Finding F-018 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Ignore matches inside HTML comments and fenced code in
+clause 14, with a fixture. No map or story claims this entry.
+
+---
+
+## 05/11/2026 — the seeded README omits three _Influences_ rows the template's own README carries
+
+**Type:** Active gap
+**Summary:** `README.md` → _Influences and attribution_ credits TigerStyle, Semantic Versioning and
+Conventional Commits; `.copier/README.md`, which a generated project receives, carries none of the
+three, so their doctrine ships uncredited. US003's Harper row reaches both. Pre-existing. Finding
+F-019 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md" (QA round 1 F-008).
+**Blocked by / Action:** Decide that doctrine credits must reach generated projects, then add the
+three rows to `.copier/README.md`, licence column included. No map or story claims this entry.
