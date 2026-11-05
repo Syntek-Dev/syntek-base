@@ -320,6 +320,10 @@ left `GAPS.md` on 01/11/2026, carried by US004, so nothing is closed or correcte
 | Missing-template targets vs `is_pattern()`, 05/11/2026 | Literal-presence test for path-form US000 / `-TEMPLATE.` tokens, before `is_pattern`    | Drop the two proofs                                | `is_pattern` dropped them before any check; the 09/10/2026 ADR requires presence first (build grilling Q2) |
 | Template spelling, 05/11/2026                          | `*-TEMPLATE.*`, mirroring `copier.yml`'s re-include                                     | `*TEMPLATE*`                                       | The bare form reads this story's own `…-TEMPLATES-…` ADR as shipped (build grilling Q3)                    |
 | P1 arm placement, 05/11/2026                           | After the fixture and vendored arms, before the artefact-tree arms                      | First in the `case`                                | Vendored and fixture pairs stay exempt for their own reason (build grilling Q4)                            |
+| Citer test shape, 05/11/2026 (green round) | Derived rule: basename carries `US[0-9]{3}`, `SPRINT-[0-9]{2}` or `BUG-`, minus US000 and `-TEMPLATE.` — successor ADR | The eight-form list · seven more forms · 47 survivors | The list missed seven live classes before it shipped; a derived rule removes the drift (build grilling round 2 Q1) |
+| PM-arm false-positive classes, 05/11/2026 | Fixed in the detector with red proofs: `:/` volume specs, `,:N` anchors, `DD-MM-YYYY` placeholders | Per-site ignore markers · `GAPS.md` | Classes recur with every story; markers would not (round 2 Q2) |
+| Dead paths in PM records, 05/11/2026 | Repaired in place in P5, each with a dated `UPDATED` comment, closed records included | Ignore closed records · survivors | An ignored record is one the PM arm never polices again (round 2 Q3) |
+| Forward references to unbuilt code, 05/11/2026 | Named survivors, each owned by the story that builds the path | Register rows · ignore markers | The register is for paths a generated project creates, not this backlog (round 2 Q4) |
 
 ## Dependencies
 

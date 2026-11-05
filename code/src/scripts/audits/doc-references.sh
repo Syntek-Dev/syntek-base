@@ -1332,6 +1332,102 @@ $st_class/US###-FIXTURE-ONLY-TEMPLATE.md"
     "dangling path | ${BT}$st_class/AUTOMATED/US000-TEST-STATUS.md${BT}"
   REGISTERED="$st_saved_registered"
 
+  # ── US004 round 2 — failing proofs for the green-round decisions of 05/11/2026 ─
+  # Story plan → Key Decisions: "Citer test shape" and "PM-arm false-positive classes". Tags as
+  # above, plus POST-HOC: green before it was written, proven red against e3d5187 instead.
+
+  # R2.1 — the derived citer rule replaces the eight-form list: a basename carrying a three-digit
+  # story number, a two-digit sprint number, or opening `BUG-` is an instance citer, minus the
+  # zero-index and `-TEMPLATE.` names. One clean probe per live form the list missed.
+  log ""
+  log "  US004 R2.1 — the derived citer rule:"
+  # RED — R2.1, six live forms the anchored list does not match.
+  st_probe "R2.1 clean/THREAT-MODEL-PLAN-US123-… citer is exempt" \
+    "$FIXTURES_DIR/clean/THREAT-MODEL-PLAN-US123-FIXTURE-ONLY.md" 0
+  st_probe "R2.1 clean/LOGGING-PLAN-US123-… citer is exempt" \
+    "$FIXTURES_DIR/clean/LOGGING-PLAN-US123-FIXTURE-ONLY.md" 0
+  st_probe "R2.1 clean/ASSESSMENT-PLAN-US123-… citer is exempt" \
+    "$FIXTURES_DIR/clean/ASSESSMENT-PLAN-US123-FIXTURE-ONLY.md" 0
+  st_probe "R2.1 clean/QA-IMPL-US123-…-05-11-2026.md citer is exempt" \
+    "$FIXTURES_DIR/clean/QA-IMPL-US123-FIXTURE-ONLY-05-11-2026.md" 0
+  st_probe "R2.1 clean/FINDING-US123-… citer is exempt" \
+    "$FIXTURES_DIR/clean/FINDING-US123-FIXTURE-ONLY.md" 0
+  st_probe "R2.1 clean/REFACTORING-US123-… citer is exempt" \
+    "$FIXTURES_DIR/clean/REFACTORING-US123-FIXTURE-ONLY.md" 0
+  # RED — R2.1: four digits are not a story number even at the start of the name, where the
+  # anchored list reads the first three and exempts the file. The derived rule must bound it.
+  st_probe "R2.1 broken/US1234-… citer is still reported" \
+    "$FIXTURES_DIR/broken/US1234-FIXTURE-ONLY.md" 1 "instance citation | ${BT}US042.md${BT}"
+  # GUARD — R2.1: an unanchored rule must not over-reach. Four digits or letters mid-name, a
+  # zero-index name, a template name and a plain guide all stay reported.
+  st_probe "R2.1 broken/NOTES-US1234-… citer is still reported (GUARD)" \
+    "$FIXTURES_DIR/broken/NOTES-US1234-FIXTURE-ONLY.md" 1 "instance citation | ${BT}US042.md${BT}"
+  st_probe "R2.1 broken/NOTES-USabc-… citer is still reported (GUARD)" \
+    "$FIXTURES_DIR/broken/NOTES-USabc-FIXTURE-ONLY.md" 1 "instance citation | ${BT}US042.md${BT}"
+  st_probe "R2.1 broken/FINDING-US000-… citer is still reported (GUARD)" \
+    "$FIXTURES_DIR/broken/FINDING-US000-FIXTURE-ONLY.md" 1 "instance citation | ${BT}US042.md${BT}"
+  st_probe "R2.1 broken/THREAT-MODEL-PLAN-US123-…-TEMPLATE.md citer is still reported (GUARD)" \
+    "$FIXTURES_DIR/broken/THREAT-MODEL-PLAN-US123-FIXTURE-ONLY-TEMPLATE.md" 1 \
+    "instance citation | ${BT}US042.md${BT}"
+  st_probe "R2.1 broken/GUIDE.md citer is still reported (GUARD)" \
+    "$FIXTURES_DIR/broken/GUIDE.md" 1 "instance citation | ${BT}US042.md${BT}"
+
+  # R2.2–R2.4 — the three PM-arm false-positive classes, each fixed in the detector rather than
+  # by a marker. Each fixture's token resolves into a checkable tree, as the live sites do.
+  log ""
+  log "  US004 R2.2–R2.4 — volume specs, comma-joined anchors, the date placeholder:"
+  # RED — R2.2: a Compose volume spec names a host and a container path, not a file here.
+  st_probe "R2.2 clean/volume-spec.md silent on a host:container volume token" \
+    "$FIXTURES_DIR/clean/volume-spec.md" 0
+  # GUARD — R2.2: a plain dead relative path on the same kind of line is still a finding.
+  st_probe "R2.2 broken/volume-spec.md fires on a dead relative path (GUARD)" \
+    "$FIXTURES_DIR/broken/volume-spec.md" 1 \
+    "dangling path | ${BT}../logs/NO-SUCH-FIXTURE-ONLY-LOG.md${BT}"
+  # RED — R2.3: `<file>:N,:M` cites one existing file at two lines, a script and a template.
+  st_probe "R2.3 clean/multi-anchor.md silent on :N,:M of existing files" \
+    "$FIXTURES_DIR/clean/multi-anchor.md" 0
+  # GUARD — R2.3: the same shape on a file that does not exist still fires, quoted raw.
+  st_probe "R2.3 broken/multi-anchor.md fires on :N,:M of a missing file (GUARD)" \
+    "$FIXTURES_DIR/broken/multi-anchor.md" 1 \
+    "dangling path | ${BT}code/src/scripts/audits/NO-SUCH-FIXTURE-ONLY.sh:345,:351${BT}"
+  # RED — R2.4: a basename carrying the literal date placeholder is a placeholder.
+  st_probe "R2.4 clean/date-placeholder.md silent on a DD-MM-YYYY basename" \
+    "$FIXTURES_DIR/clean/date-placeholder.md" 0
+  # GUARD — R2.4: a concrete date in the same position is a citation, and it is dead.
+  st_probe "R2.4 broken/date-placeholder.md fires on a concrete-dated dead path (GUARD)" \
+    "$FIXTURES_DIR/broken/date-placeholder.md" 1 \
+    "dangling path | ${BT}project-management/src/12-SEO/SEO-REPORT-FIXTURE-ONLY-05-11-2026.md${BT}"
+
+  # R2.5 — the green phase normalises `..` before is_registered() and nothing proved it. A
+  # fixture-local class row stands in for the real one, as P4 does above.
+  # POST-HOC — passes at 022f61a; written after the repair. Proven red by running this probe
+  # against e3d5187's script (scratch copy outside the repo, PROJECT_ROOT pinned to the repo).
+  log ""
+  log "  US004 R2.5 — a relative citation of a registered class member:"
+  REGISTERED="$FIXTURES_DIR/clean/AUTOMATED/US###-TEST-STATUS.md"
+  st_probe "R2.5 clean/MANUAL/relative-class.md silent on ../AUTOMATED/US123 (POST-HOC)" \
+    "$FIXTURES_DIR/clean/MANUAL/relative-class.md" 0
+  REGISTERED="$st_saved_registered"
+
+  # R2.6 — Check 4, not the plan stubs, owns the silence of clean/plan-prefix.md. The broken
+  # twin cites the same stub paths unprefixed: if Check 1 ran first, both would be dangling
+  # paths. Exactly two findings, both plan prefix, and no dangling path among them.
+  log ""
+  log "  US004 R2.6 — Check 4 decides the plan-prefix stubs before Check 1:"
+  # GUARD — R2.6: Check 4 already sits above Check 1; this pins the order.
+  st_probes=$((st_probes + 1))
+  scan_files "$FIXTURES_DIR/broken/plan-prefix-stubs.md"
+  local st_r26_story="$FIXTURES_DIR/clean/plans/17-STORY-PLANS/STORY-PLAN-US042-FIXTURE-ONLY.md"
+  if [ "$violations" -ne 2 ]; then
+    st_fail "R2.6 broken/plan-prefix-stubs.md: expected 2 finding(s), got $violations"
+  elif [ "${report#*"plan prefix | ${BT}${st_r26_story}${BT}"}" = "$report" ]; then
+    st_fail "R2.6 broken/plan-prefix-stubs.md: no plan-prefix finding names the story stub"
+  elif [ "${report#*dangling path}" != "$report" ]; then
+    st_fail "R2.6 broken/plan-prefix-stubs.md: Check 1 reported a dangling path — it ran first"
+  else
+    log "  ✓ R2.6 broken/plan-prefix-stubs.md reports [plan prefix], never [dangling path] (GUARD)"
+  fi
+
   log ""
   # The fixtures must stay invisible to an ordinary run, or this proof reddens the gate it
   # exists to prove. Asserted directly, with the flag put back the way a normal run sees it.
