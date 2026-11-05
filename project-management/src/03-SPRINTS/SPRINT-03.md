@@ -1,6 +1,6 @@
 # SPRINT-03
 
-**Last Updated**: 31/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 05/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -17,7 +17,7 @@ after this one carries a written baseline to subtract from a red run.
      05/09/2026 records as the drift a goal must not hold. The replacement is derived from the
      title and Client Summary of US004, the sole member. -->
 
-**Status:** Planned
+**Status:** In Progress
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->

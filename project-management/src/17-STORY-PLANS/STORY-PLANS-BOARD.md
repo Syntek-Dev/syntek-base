@@ -10,8 +10,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 7     |
-| In Progress       | 0     |
+| Pending           | 6     |
+| In Progress       | 1     |
 | In Review         | 1     |
 | Accepted          | 3     |
 | Customer Review   | 0     |
@@ -30,7 +30,6 @@ _None._
 
 | Plan                | Story                           | Title                                                                                                                      | Status  | File                                                                                             |
 | ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
-| 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index                                                                         | Pending | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md) |
 | 07-STORY-PLAN-US006 | [US006](../02-STORIES/US006.md) | The destructive dev scripts read the deployment posture, and refuse to run above development                               | Pending | [07-STORY-PLAN-US006-POSTURE-GUARD.md](07-STORY-PLAN-US006-POSTURE-GUARD.md)                     |
 | 08-STORY-PLAN-US008 | [US008](../02-STORIES/US008.md) | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                     | Pending | [08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md](08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md)             |
 | 09-STORY-PLAN-US009 | [US009](../02-STORIES/US009.md) | The git hooks arm on purpose at install, and the README claim that they already do becomes true                            | Pending | [09-STORY-PLAN-US009-HOOK-ARMING.md](09-STORY-PLAN-US009-HOOK-ARMING.md)                         |
@@ -40,7 +39,9 @@ _None._
 
 ## In Progress
 
-_None._
+| Plan                | Story                           | Title                                              | Status      | File                                                                                             |
+| ------------------- | ------------------------------- | -------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------ |
+| 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index | In Progress | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md) |
 
 ## In Review
 
