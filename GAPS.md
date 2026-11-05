@@ -433,11 +433,15 @@ Q11) over a single-canonical-table alternative, with the drift risk stated befor
 repairs are available and the second is the cheaper one to reach for first: (1) widen
 `doctrine-drift.sh` — add `project-management/src/` to `SCAN_DIRS` and teach it a prose-table
 mode, which is a change to the scanner's core assumption and should not be undertaken lightly;
-(2) a new single-purpose `code/src/scripts/audits/sprint-register.sh` that extracts the register
+(2) a new single-purpose "sprint-register.sh" audit (proposed, not built) that extracts the register
 from every `SPRINT-##.md` and fails when any two differ — no new doctrine, one comparison, and it
 needs nothing from the existing gate. The obligation to hand-update **every** copy is written in
 `project-management/src/03-SPRINTS/CLAUDE.md` and the rule in
 `project-management/docs/planning/SPRINTS.md`; both are instructions to a reader, not enforcement.
+<!-- UPDATED 05/11/2026 (US004 P5): this entry and the one below backticked the proposed audit
+     at its intended path under code/src/scripts/audits/ until then. Nothing builds it and no story
+     owns it, so the citation gate read it as a dead path; it is named in prose as a proposal
+     instead (US004 build grilling round 4 Q2). -->
 
 <!-- 20/09/2026: this sentence read "The obligation to hand-update **all five**", which by that
      date attributed to `project-management/src/03-SPRINTS/CLAUDE.md` a five-copy obligation the
@@ -459,7 +463,7 @@ the register itself.
 
 **The five copies were byte-identical to one another throughout.** The divergence was
 register-versus-**record**, not copy-versus-copy — so proposed repair (2) above, "a new
-single-purpose `code/src/scripts/audits/sprint-register.sh` that extracts the register from every
+single-purpose "sprint-register.sh" audit (proposed, not built) that extracts the register from every
 `SPRINT-##.md` and fails when any two differ", **would have stayed green through this**. It is
 still the cheaper repair and is still worth writing, but it is not sufficient on its own: whatever
 gate lands has to compare each row against the capacity line and Story Summary of the record it
