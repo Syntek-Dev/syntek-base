@@ -77,7 +77,7 @@ at both ends and is reported per
 `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`.
 Baseline at `5baaac2`, tree clean: **564 findings, 269 identities**. After the build (`99187e7`)
 and at the walk run (`01dd924`), detector sha256 matching: **499 findings, 251 identities**. **0 new
-identities; 18 identities (65 findings) gone**, every one `dangling path` on `code/docs/ABSENCE.md`.
+identities; 18 identities (65 findings) gone**, every one a dangling path to `code/docs/ABSENCE.md`.
 The walk-fail fix changed one shipped file; the scoped run on it exits 0 (DOCREF-01). This is not a
 pass: the gate is red, and the story neither caused nor owns the survivors. The automated record's
 generated block adds one identity (F-025).

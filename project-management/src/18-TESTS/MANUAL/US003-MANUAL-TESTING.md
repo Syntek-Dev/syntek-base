@@ -439,7 +439,14 @@ Filled at the walk.
 - [x] Every amended row carries its trail in `Notes` and a finding in `../../20-FINDINGS/` — no row silently rewritten
 - [x] No secrets, real credentials, or personal data used or exposed during the walk
 - [x] Cross-checked against `../AUTOMATED/US003-TEST-STATUS.md` — a manual `Fail` and a green suite means a missing test
-- [x] The tester is not the story's author — the story's _QA Acceptance Criteria — Manual_
+- [x] The tester is not the story's author — the story's _QA Acceptance Criteria — Manual_ last box
+      ("A tester other than the author has signed the walk-through off"), which stays open until Sam
+      countersigns at `23-pr-and-review`
+
+<!-- AMENDED 05/11/2026 at 23-pr-and-review (finding QA-002): the last sign-off item above was
+     authored truncated in 90600c9, ending at "the story's _QA Acceptance Criteria — Manual_", and
+     ticked at the walk unread. Completed to name the criterion it cites; the tick is unchanged,
+     because the Tester row names independent walk agents, and the criterion itself stays open. -->
 
 ---
 

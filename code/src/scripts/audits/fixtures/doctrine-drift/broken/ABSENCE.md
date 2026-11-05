@@ -4,7 +4,7 @@ This file is the registered owner of the `absence-enum` claim. Its statement is 
 not be a finding on its own.
 
 ```python
-class VatNumberAbsence(StrEnum):
-    NOT_SUPPLIED = "not-supplied"
-    NOT_APPLICABLE = "not-applicable"
+class VatNumberAbsence(Enum):
+    NOT_SUPPLIED = auto()
+    NOT_APPLICABLE = auto()
 ```

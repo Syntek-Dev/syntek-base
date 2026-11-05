@@ -834,3 +834,21 @@ three, so their doctrine ships uncredited. US003's Harper row reaches both. Pre-
 F-019 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md" (QA round 1 F-008).
 **Blocked by / Action:** Decide that doctrine credits must reach generated projects, then add the
 three rows to `.copier/README.md`, licence column included. No map or story claims this entry.
+
+---
+
+## 05/11/2026 — nine body lines still say "boundary" where the scoped ban asks for "seam"
+
+**Type:** Active gap
+**Summary:** `.claude/skills/codebase-design/SKILL.md` scopes its "boundary (for seam)" ban to
+architectural contexts. A body-line sweep at US003's `23-pr-and-review` found nine lines still
+naming a seam "boundary": `.claude/skills/backend/SKILL.md:158`,
+`.claude/skills/code-reviewer/SKILL.md:214`, `.claude/skills/planner/SKILL.md:127`,
+`.claude/skills/setup/SKILL.md:113`, `.claude/skills/stack-django/SKILL.md:5` and `:212`,
+`.claude/skills/stack-htmx-templates/SKILL.md:216`,
+`code/docs/coding-principles/DESIGN-PRINCIPLES.md:90` and `code/docs/desktop/CLAUDE.md:33`. Ten
+more are borderline, the service layer named as a test surface or a data crossing; the list is in
+finding F-023 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Reword the nine to "seam", decide the ten against the
+scope, and inventory body lines rather than headings when doing so. No map or story claims this
+entry.
