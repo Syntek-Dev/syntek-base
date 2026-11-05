@@ -714,6 +714,24 @@ restating it. No map or story claims this entry.
 
 ---
 
+## 05/11/2026 — the citation gate's self-test cannot pass in a generated project
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` and its fixtures ship, but `copier.yml`
+does not, so in a generated project the derived excluded-path set and the seeded list are both
+empty and `--self-test` exits 1 rather than reporting that it could not look. Measured 05/11/2026
+in a clone with `copier.yml` removed: the "broken/direction-b.md" probe and the "anchored entry is
+in the set" probe fail, as they did before US004, and US004's P2 untracked-population probe and its
+R4 unseeded-citer guard join them (US004 phase 9, finding QA-US004-05). Under
+`code/docs/GATE-REPORTING.md` an unrunnable proof must say so and exit 2, never fail as if the
+detector were wrong, nor pass having measured nothing.
+**Blocked by / Action:** Nothing blocks it. Deferred from US004 by <%DEVELOPER_NAME%> on 05/11/2026
+because it predates that story and the shape of a shipped self-test deserves its own grilling:
+which probes need `copier.yml`, whether they skip with a printed list and exit 2, and whether the
+rest still run. Cut as a story through `02-story-creation`.
+
+---
+
 ## 05/11/2026 — US003's findings for the absence map's remaining slices wait on stories nobody has cut
 
 **Type:** Planned feature
