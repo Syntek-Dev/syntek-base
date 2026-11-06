@@ -2,7 +2,7 @@
 
 _The automated-test record for US004: what each automated test checks and whether it passed. Written at `22-implementation-documentation` Step 4. This story ships one bash script, its fixtures and Markdown, so it has no pytest or Bruno suite; its automated proof is the gate's own `--self-test`, a gate run that no story marker can attribute. The record states that rather than skipping the file (`CLAUDE.md` in this folder → Guardrails)._
 
-**Last Updated**: 05/11/2026 · **Story**: US004 · **Status**: Partial
+**Last Updated**: 06/11/2026 · **Story**: US004 · **Status**: Partial
 
 - **Story:** `../../02-STORIES/US004.md` — the citation gate stops depending on the git index, and the PM tree becomes checkable
 - **Story plan:** `../../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` — the code master this record closes the loop on
@@ -28,28 +28,6 @@ bash code/src/scripts/tests/test-record.sh US004
 changes no Python or Bruno path. The coverage figures below come from the **whole-project** report
 artefacts already on disk, not from anything this story ran or touched — the defect filed as
 `../../21-BUGS/BUG-TEST-RECORD-CLAIMS-PROJECT-COVERAGE-FOR-UNTESTED-STORY-02-11-2026.md`.
-
-The floors are **one floor, not one per layer** — template, django-component and HTMX-partial
-tests are pytest tests and count towards the same number as the rest of the backend. On
-`staging` and `main` the pre-PR gate raises every floor to **80%**, so a story green locally can
-still block the PR if a module in scope sits between its floor and 80%. **Auth-critical** means
-any module in the authentication, session or permission path.
-
-> **Half this file is generated.** Everything between the `BEGIN GENERATED` and `END GENERATED`
-> markers is written by `code/src/scripts/tests/test-record.sh` from the suites' own report
-> artefacts — **never edit it by hand**, because the next run silently discards the edit. The
-> sections after it are yours. The script's contract and the story marker it filters on are in
-> this folder's `CLAUDE.md`.
-
----
-
-## 1. Results
-
-Regenerate after any suite run, green or red:
-
-```bash
-bash code/src/scripts/tests/test-record.sh US###
-```
 
 The floors are **one floor, not one per layer** — template, django-component and HTMX-partial
 tests are pytest tests and count towards the same number as the rest of the backend. On
@@ -114,24 +92,28 @@ The story's automated proof is the gate's own self-test, run through its project
 bash code/src/scripts/audits/doc-references.sh --self-test
 ```
 
-**Closeout run, 05/11/2026, live checkout at `46d5c0f`, `git status --porcelain` showing only the
-walked guide:** exit 0, `Self-test passed — 130 probes`, about 6 s, no untracked file left behind.
-The detector run was sha256 `5ff7dc94…89c69`. The walk's SELFTEST-01 gave the same 130 on a clean
-index (`../MANUAL/US004-MANUAL-TESTING.md`).
+**Current run, 06/11/2026, after workflow 23's fix rounds:** in a `--no-hardlinks` clone holding
+the uncommitted working tree as one scratch commit on `3de67ff`, porcelain empty: exit 0,
+`Self-test passed — 174 probes`, no untracked file left behind. The detector run was sha256
+`f6d081b4…0400033`, byte-identical to the live working tree's, 2881 lines. ShellCheck 0.11.0 by
+hand over the same script: exit 0, no output. The first closeout run, 05/11/2026 at `46d5c0f`,
+gave 130.
 
-| Probe family                         | Probes | What it proves                                                                                                                                                                                                          |
-| ------------------------------------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Pre-US004 fixture pairs and set rows | 14     | The five clauses added 20/08–08/09/2026 still separate `broken/` from `clean/`; the derived excluded-path set's four direct rows                                                                                        |
-| P1 — exemption arm                   | 11     | The top-level research, handoffs and learning pairs, the feature-map pair and a `-TEMPLATE.` file are read; a research note and a feature map stay exempt (HP-01, EC-02)                                                |
-| P2 — one population                  | 3      | An untracked excluded file is template-only after both set builders re-run; the probe file is gone once its shell exits; a stale probe from a killed run is swept (AC-GAP-8, ES-03)                                     |
-| P3 — the citer test and alternation  | 12     | Eight instance-shaped citers exempt; `US000` and `-TEMPLATE.` citers still reported; `ADR-US###` and `QA-PLAN-US###` fire, the retired spellings are silent (AC-GAP-5, EC-01, EC-02)                                    |
-| P4 — PM tree and class registration  | 16     | A dead PM path fires; the citer is exempt and Check 1 still fires; three-digit bounds; both US000 targets fire despite the class row (HP-03, HP-04, EC-01, EC-03, EC-05, EC-06, AC-GAP-10)                              |
-| R2 — round 2 decisions               | 20     | The derived citer rule; volume specs; multi-anchor; date placeholders; relative class rows; Check 4 before Check 1                                                                                                      |
-| R4 — seeded citers                   | 4      | A seeded citer is non-shipping for Checks 2 and 3; Check 1 still runs on it                                                                                                                                             |
-| Phase 9 fixes                        | 48     | Relative paths routed after normalisation; no GNU `realpath`; the citer rule bounded on the left; the exemption arms scoped to copier's re-includes; volume host halves; naming rows; unrouted templates; dated folders |
-| Fixture-tree exemption               | 2      | The fixture tree, `-TEMPLATE.` fixtures included, stays exempt from an ordinary run                                                                                                                                     |
+| Probe family                         | Probes | What it proves                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Pre-US004 fixture pairs and set rows | 14     | The five clauses added 20/08–08/09/2026 still separate `broken/` from `clean/`; the derived excluded-path set's four direct rows                                                                                                                                                                                                                                                                                                           |
+| P1 — exemption arm                   | 11     | The top-level research, handoffs and learning pairs, the feature-map pair and a `-TEMPLATE.` file are read; a research note and a feature map stay exempt (HP-01, EC-02)                                                                                                                                                                                                                                                                   |
+| P2 — one population                  | 3      | An untracked excluded file is template-only after both set builders re-run; the probe file is gone once its shell exits; a stale probe from a killed run is swept (AC-GAP-8, ES-03)                                                                                                                                                                                                                                                        |
+| P3 — the citer test and alternation  | 12     | Eight instance-shaped citers exempt; `US000` and `-TEMPLATE.` citers still reported; `ADR-US###` and `QA-PLAN-US###` fire, the retired spellings are silent (AC-GAP-5, EC-01, EC-02)                                                                                                                                                                                                                                                       |
+| P4 — PM tree and class registration  | 16     | A dead PM path fires; the citer is exempt and Check 1 still fires; three-digit bounds; both US000 targets fire despite the class row (HP-03, HP-04, EC-01, EC-03, EC-05, EC-06, AC-GAP-10)                                                                                                                                                                                                                                                 |
+| R2 — round 2 decisions               | 20     | The derived citer rule; volume specs; multi-anchor; date placeholders; relative class rows; Check 4 before Check 1                                                                                                                                                                                                                                                                                                                         |
+| R4 — seeded citers                   | 4      | A seeded citer is non-shipping for Checks 2 and 3; Check 1 still runs on it                                                                                                                                                                                                                                                                                                                                                                |
+| Phase 9 fixes                        | 48     | Relative paths routed after normalisation; no GNU `realpath`; the citer rule bounded on the left; the exemption arms scoped to copier's re-includes; volume host halves; naming rows; unrouted templates; dated folders                                                                                                                                                                                                                    |
+| Workflow 23, first fix round         | 26     | QA-F01 mutant-killers; the story-less dated citers and their guards; every anchor form; date-hidden instances; Direction B without presence; the single-source shipping facts and their drift check; file-relative Markdown links (GAPS-REL)                                                                                                                                                                                               |
+| Workflow 23, second fix round        | 18     | Linked targets judged as tokens are (REV-01, H-01); the line-level mutant-killers (REV-02); one finding per citation (REV-03); the link extractor's code spans, fences, comments and escapes (H-02); path-form dated instances (H-03); the citer date arm's scope (H-04); root-form Direction B (H-05); the `_exclude` parse and template signal (H-06); a hyphen-led token (H-07); the remaining anchors (H-08); remedies by class (H-10) |
+| Fixture-tree exemption               | 2      | The fixture tree, `-TEMPLATE.` fixtures included, stays exempt from an ordinary run                                                                                                                                                                                                                                                                                                                                                        |
 
-Totals 130. The reference self-test at the branch point `173abff`, re-measured in a clone at the
+Totals 174: 130 at the first closeout, 156 after the first fix round, 174 after the second. Round 2 proved each repair by reverting it alone: 33 reverts, every one red. The reference self-test at the branch point `173abff`, re-measured in a clone at the
 walk, gave **15**; it is not the before-edit capture, which was never taken (finding F-001 in
 `../../20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md`).
 
@@ -142,9 +124,15 @@ green. No expectation was edited to pass: the phase 9 verifier compared 114 expe
 `HEAD`, and the only four that moved are the P2 block, restructured so its guard can fail
 (QA-US004-11 in `../../19-REVIEWS/REVIEW-US004-CITATION-GATE-GIT-INDEX.md`).
 
+**In a generated project the self-test exits 2, not 0** — `Self-test NOT RUN in full`: 12 probe
+sets need the copier contract, which a generated project never receives, and are named as not
+run; the 153 that ran pass (project generated from the working tree, 06/11/2026). It is reported
+as not run, never as passed (`code/docs/GATE-REPORTING.md`).
+
 The walk's own runs, the whole-tree figures and the gate results are rows in
-`../MANUAL/US004-MANUAL-TESTING.md` (walked 05/11/2026 at `46d5c0f`: **23 Pass, 12 Fail**; **28 Pass, 7 Fail** after Sam's rulings of
-05/11/2026 and 06/11/2026).
+`../MANUAL/US004-MANUAL-TESTING.md`: walked 05/11/2026 at `46d5c0f`, **23 Pass, 12 Fail**; after
+Sam's rulings of 05/11/2026 and 06/11/2026, and the re-walk of 06/11/2026 against the fix rounds,
+**28 Pass, 7 Fail**.
 
 ---
 
@@ -153,23 +141,25 @@ The walk's own runs, the whole-tree figures and the gate results are rows in
 | Item                                   | Type             | Reason / owner                                                                                                                                                                                                                                        |
 | -------------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Every pytest, Bruno, E2E and axe suite | Out of scope     | No code path. The story edits `code/src/scripts/audits/doc-references.sh`, adds fixtures under `code/src/scripts/audits/fixtures/doc-references/`, two register rows and Markdown. Every FLAGS row but `QA` reads `N/A` (`../../02-STORIES/US004.md`) |
-| `doc-references.sh --self-test`        | Gate, not suite  | 130/130, exit 0 (Section 2). A gate run carries no story marker and cannot reach the generated block                                                                                                                                                  |
+| `doc-references.sh --self-test`        | Gate, not suite  | 174/174, exit 0 (Section 2). A gate run carries no story marker and cannot reach the generated block                                                                                                                                                  |
 | ES-03's failure path                   | Not a probe      | No probe forces a failure between the P2 probe creating its file and asserting on it. Proved by hand in phase 9: a forced P2 failure, and SIGTERM at 17 points in the run, each left the tree clean (QA-US004-11). The guide routes ES-03 here        |
 | SIGKILL during `--self-test`           | Known limitation | A killed run leaves its probe file under `research/`; the next run sweeps it (P9-F9). Two concurrent self-tests can delete each other's probe (finding F-009)                                                                                         |
-| `--self-test` in a generated project   | Open gap         | Exits 1 without `copier.yml`: four probes fail, two of them US004's. Dated `GAPS.md` entry of 05/11/2026, deferred by Sam (QA-US004-05)                                                                                                               |
-| ShellCheck over the edited script      | Not clean        | Run by hand, not a project script: SC2221/SC2222 at `:828`, SC2016 ×2, SC2329 ×2 new in US004 (manual row GATES-05; finding F-003)                                                                                                                    |
+| `--self-test` in a generated project   | Not run in full  | Exits 2: 12 contract-bound probe sets named as not run, the 153 that ran pass. Closed as a gap 06/11/2026 (finding F-022); its `GAPS.md` entry marked closed                                                                                          |
+| ShellCheck over the edited script      | Clean            | Run by hand, not a project script: ShellCheck 0.11.0, exit 0, no output, on the 2881-line script (manual row GATES-05; findings F-003, F-031)                                                                                                         |
 | Coverage figures in Section 1.2        | Not attributable | The 100.0% figures and "Met? Yes" are the whole Django project's, which the no-test block prints regardless. They say nothing about US004 (the filed bug above)                                                                                       |
 | Auth-critical row                      | N/A              | No module in the authentication, session or permission path is in scope                                                                                                                                                                               |
 | Migration check                        | N/A              | No model and no migration                                                                                                                                                                                                                             |
-| Manual rows                            | 12 failing       | Ten read the before-edit captures that were never taken (F-001); MEASURE-01 awaits a proposed amendment (F-002); GATES-05 is ShellCheck (F-003). None is a missing automated test: no suite could have taken a capture the build skipped              |
+| Manual rows                            | 7 failing        | All seven read the before-edit captures that were never taken (F-001), a deviation Sam accepted 05/11/2026. None is a missing automated test: no suite could have taken a capture the build skipped                                                   |
 
 ### Whole-tree survivors — every one named with its owner
 
 The story requires each finding that survives it to be named here with the story that owns it.
-`bash code/src/scripts/audits/doc-references.sh` over the whole tree at `46d5c0f`, porcelain empty
-(manual row AFTER-01): **exit 1, 28 findings, every one `[dangling path]`**, and 0 instance, 0
-template-only, 0 plan-prefix. 1181 files read, 173 exempt, 67,364 tokens, 13,592 path tests,
-330.27 s. **No finding of the three classes this story owns remains. This is not the gate
+`bash code/src/scripts/audits/doc-references.sh` over the whole tree, 06/11/2026, in the clone
+of Section 2 (manual row AFTER-01): **exit 1, 28 findings, every one `[dangling path]`**, and 0
+instance, 0 template-only, 0 plan-prefix, 0 `[dangling link]`, 0 `[shipping facts]`; nothing on
+stderr. 1185 files read, 199 exempt, 68,159 tokens, 13,767 path tests, 1,335 Markdown link
+targets, 348 s, in a clone holding the records of this closeout too. The same 28 targets from the same citers as at `46d5c0f`, and the same set as the fix
+round's own clean-clone run. **No finding of the three classes this story owns remains. This is not the gate
 passing** (`code/docs/GATE-REPORTING.md`): it exits 1, and stays red until each owner builds its
 path.
 
@@ -193,7 +183,7 @@ warning. None of the 72 is a US004 test, because the story wrote none.
 
 ## 4. Status line
 
-**Partial**: 0 attributed tests, no coverage attributable (no Python path); the story's automated proof is `doc-references.sh --self-test`, 130/130 at exit 0. The whole-tree gate exits 1 on 28 named survivors, and 12 manual rows fail. Verified 05/11/2026.
+**Partial**: 0 attributed tests, no coverage attributable (no Python path); the story's automated proof is `doc-references.sh --self-test`, 174/174 at exit 0, and ShellCheck is clean. The whole-tree gate exits 1 on 28 named survivors, and 7 manual rows fail, all on the accepted F-001 deviation. Verified 06/11/2026.
 
 ---
 

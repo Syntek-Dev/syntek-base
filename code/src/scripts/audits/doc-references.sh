@@ -91,13 +91,19 @@
 #
 #                 A CITING FILE THAT DOES NOT SHIP IS SKIPPED for this check alone, because
 #                 Direction B is a rule about what a SHIPPED document claims. That predicate is
-#                 derived here from `copier.yml`; `is_exempt()` below hardcodes its own tree  # doc-references: template-only
-#                 arms. RECONCILED 05/11/2026 (US004 P1): those arms said "none of these ship"
-#                 while the pair files and templates copier re-includes out of them did, so a
-#                 fall-through arm above them now mirrors copier's re-includes, tree by tree, and
-#                 lets those files back into the scan. And both predicates read ONE population
-#                 (US004 P2, repo_files() below), so an untracked file's verdict no longer
-#                 depends on whether it has been staged.
+#                 derived here from `copier.yml`; `is_exempt()` below states its own tree arms  # doc-references: template-only
+#                 as policy. RECONCILED 05/11/2026 (US004 P1): those arms said "none of these
+#                 ship" while the pair files and templates copier re-includes out of them did.
+#                 READ, NOT MIRRORED, as of 06/11/2026 (US004 QA-F05 / DR-001): what copier lifts
+#                 back out, and what it seeds, come from ONE source -- the contract here, and the
+#                 committed derivation of it, doc-references-shipping.txt, in a generated project
+#                 that receives no contract (load_shipping() below). And both predicates read ONE
+#                 population (US004 P2, repo_files() below), so an untracked file's verdict no
+#                 longer depends on whether it has been staged.
+#
+#                 ADDED 06/11/2026 (US004 QA-F08): Direction B no longer depends on the target
+#                 being present. An absent path the contract excludes is the same finding as a
+#                 present one, so deleting or gitignoring a cited note no longer "fixes" it.
 #
 #                 ACCEPTED COST, stated rather than found later: `GAPS.md`, `DEFERRED.md`,
 #                 `README.md` and `.claude/MEMORY.md` are excluded AND seeded, so THIS
@@ -141,8 +147,18 @@
 #
 # Exempt:         history (CHANGELOG/RELEASES/VERSION-HISTORY) records what was true then;
 #                 handoffs/ and .copier/ are staging. Never what copier re-includes from an
-#                 exempt tree, which ships (US004 P1): the top-level research/, handoffs/ and
-#                 learning/ pairs, and every pair and `-TEMPLATE.` file under the PM tree.
+#                 exempt tree, which ships (US004 P1), read from the one shipping source (QA-F05).
+#                 A tracked symlink is read once, as its in-repository target (QA-F04).
+#
+# ADDED 06/11/2026 (US004 GAPS-REL): Check 1 reads a second population, the Markdown link
+#                 targets of every .md file, file-relative as Markdown defines them, and reports
+#                 a dead one as [dangling link]. A bare backticked token whose leading folder sits
+#                 beside its citer is tested in that folder rather than dropped.
+# CHANGED 06/11/2026 (US004 review round): a link is judged as a token is -- Direction B present
+#                 or absent, Check 2 on its basename, the register and the seeds -- and a target
+#                 the token loop already reported on that line is reported once. The template is
+#                 the tree holding copier.yml AND .copier/ (has_contract); anywhere else the
+#                 shipped facts file is read, and the contract-bound self-test probes exit 2.
 #
 #                 NOT exempt, deliberately: the root GAPS.md and DEFERRED.md. They are
 #                 copier-excluded as of 22/08/2026, so this repository's copies hold real
@@ -180,7 +196,7 @@
 #                 Rule: `code/docs/GATE-REPORTING.md`, Section 1 and Section 5.
 #
 # Usage: doc-references.sh [--output FORMAT] [--output-file PATH] [--quiet]
-#                          [--path PATH] [--self-test] [--help]
+#                          [--path PATH] [--self-test] [--write-shipping] [--help]
 #
 # Self-test:      --self-test runs the ordinary scan over fixtures/doc-references/{broken,clean}
 #                 and asserts it separates them: broken/ must fire on every clause, clean/ on
@@ -191,7 +207,9 @@
 #                 out and --self-test is the only way in.
 #
 # Exit codes:  0 = clean   1 = violation(s), or a self-test the detector no longer passes
-#              2 = script error (bad arguments, or --self-test with the fixtures missing)
+#              2 = script error (bad arguments, --self-test with the fixtures missing, or a
+#                  copier.yml _exclude line the parse cannot classify), or a self-test that
+#                  could not run every probe because the copier contract is absent
 #
 set -euo pipefail
 
@@ -199,12 +217,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
 FIXTURES_DIR="code/src/scripts/audits/fixtures/doc-references"
+SHIPPING_FILE="code/src/scripts/audits/doc-references-shipping.txt"
+SHIPPING_CONTRACT="copier.yml"
 
 OUTPUT_FORMAT=""
 OUTPUT_FILE=""
 QUIET=false
 TARGET_PATH=""
 SELF_TEST=false
+WRITE_SHIPPING=false
 
 log()  { $QUIET || printf '%s\n' "$*"; }
 die()  { printf 'doc-references.sh error: %s\n' "$*" >&2; exit 2; }
@@ -220,6 +241,9 @@ Usage:
   doc-references.sh --path DIR      Restrict the check to a directory or file
   doc-references.sh --quiet         Suppress progress output
   doc-references.sh --self-test     Prove the detector still separates the fixtures
+  doc-references.sh --write-shipping
+                                    Regenerate doc-references-shipping.txt from the copier
+                                    contract (template only; the file is never hand-edited)
 
 Every run names what it read — files scanned, files exempt by rule, backticked tokens
 checked, how many of those were tested as repo paths, and how many paths copier excludes
@@ -254,6 +278,7 @@ while [ $# -gt 0 ]; do
     --path)        require_arg "$@"; TARGET_PATH="$2";   shift 2 ;;
     --quiet)       QUIET=true;             shift   ;;
     --self-test)   SELF_TEST=true;         shift   ;;
+    --write-shipping) WRITE_SHIPPING=true; shift   ;;
     --help|-h)     usage; exit 0 ;;
     *)             die "unknown argument: $1" ;;
   esac
@@ -347,9 +372,9 @@ is_exempt() {
     # register can no longer quote a broken citation in order to log one, and must describe it
     # instead of reproducing it.
     #
-    # MOVED 05/11/2026 (US004 P1): the vendored and fixture arms now sit ABOVE the pair-and-
-    # template fall-through below, so each stays exempt for its own reason — a vendored
-    # `CONTEXT.md` is upstream's text, and a `-TEMPLATE.` fixture is reached by --self-test alone.
+    # MOVED 05/11/2026 (US004 P1): the vendored and fixture arms sit ABOVE the artefact-tree arm
+    # below, so each stays exempt for its own reason — a vendored `CONTEXT.md` is upstream's
+    # text, and a `-TEMPLATE.` fixture is reached by --self-test alone.
     code/docs/cloudinary/*)                       return 0 ;;  # vendored SDK docs
     .agents/*)                                    return 0 ;;  # vendored third-party skills
     # This audit's own fixtures, exempted as docs-pairing.sh exempts the same tree and for
@@ -359,57 +384,159 @@ is_exempt() {
     # purpose -- so the exemption lifts there and nowhere else.
     code/src/scripts/audits/fixtures/*)
       if ! $SELF_TEST; then return 0; fi ;;
-    # ADDED 05/11/2026 (US004 P1): the files copier lifts back OUT of the exempt trees below.
-    # `copier.yml`'s allowlist block — _The artefact trees: tracked HERE, never shipped_ —  # doc-references: template-only
-    # re-includes some CONTEXT.md, CLAUDE.md and `-TEMPLATE.` files from them, so those ship and
-    # are policed like any other shipped file. NARROWED 05/11/2026 (US004 phase 9, F5 /
-    # QA-US004-01): the arm was global and copier's negations are scoped, so it mirrors them
-    # tree by tree — the TOP-LEVEL pair of research/, handoffs/ and learning/ alone, and under
-    # project-management/src/ every pair and every `-TEMPLATE.` file at any depth. A nested
-    # research/ pair, a template outside the PM tree and anything under .copier/ stay exempt,
-    # because copier drops them. A new negation in copier.yml needs a matching arm here.
-    # `-TEMPLATE.` and not the bare word: copier re-includes `*-TEMPLATE.*`, and the bare form
-    # would read an ADR whose title merely contains the word as shipped.
-    research/CONTEXT.md|research/CLAUDE.md|handoffs/CONTEXT.md|handoffs/CLAUDE.md) return 1 ;;
-    learning/CONTEXT.md|learning/CLAUDE.md)       return 1 ;;
-    project-management/src/*/CONTEXT.md|project-management/src/*/CLAUDE.md) return 1 ;;
-    project-management/src/*-TEMPLATE.*)          return 1 ;;
-    handoffs/*|.copier/*)                         return 0 ;;
+    .copier/*)                                    return 0 ;;  # seed staging, moved at generation
     # The artefact trees. This rule polices what a SHIPPED file may cite, and these FOLDERS
-    # do not ship — copier.yml `_exclude` empties every one of them at generation, bar the
-    # pair files and templates the arm above has already let through. CORRECTED 05/11/2026:
-    # this read "none of these ship" until US004, while eleven files inside them did. A map
-    # cites sibling maps and paths that do not exist yet BY DESIGN: charting future work
-    # is what it is for, and the citation resolves when the work lands.
+    # do not ship — the copier contract empties every one of them at generation. A map cites
+    # sibling maps and paths that do not exist yet BY DESIGN: charting future work is what it
+    # is for, and the citation resolves when the work lands. A walk-test RUN is CAPTURED rather
+    # than authored -- the prompt a cold reader was given, its verbatim answer, the transcript --
+    # and is evidence of what a stranger cited INCLUDING WHAT IT CITED WRONGLY, so editing it to
+    # satisfy this gate would destroy the record. Scoped to WALK-* deliberately: the folder's
+    # own pair ships and stays policed.
     #
-    # These were exempt by accident until 17/08/2026, and the candidates() comment above
-    # still described that mechanism: the trees were gitignored, so `git ls-files` never
-    # saw them. They are committed now — so they sync across devices — which made 160
-    # citations visible in one commit. The exemption is stated here instead.
-    research/*|learning/*)                        return 0 ;;
-    project-management/src/01-FEATURE-MAPS/*)          return 0 ;;
-    # A walk-test RUN, on the same argument as the maps above: copier excludes every WALK-* file,
-    # so none of them ships. Three of the four are also CAPTURED rather than authored -- the
-    # prompt a cold reader was given, its verbatim answer, and the transcript. The report is
-    # evidence of what a stranger cited INCLUDING WHAT IT CITED WRONGLY, and the first run's
-    # value is precisely that it named a per-project map and a line-suffixed path no shipped file
-    # may name. Editing it to satisfy this gate would destroy the record the folder holds. The
-    # fourth, the result, is authored here and cites the map whose node it settles -- the same
-    # citation 01-FEATURE-MAPS is exempted for, one file further out.
+    # These were exempt by accident until 17/08/2026: the trees were gitignored, so `git
+    # ls-files` never saw them. They are committed now — so they sync across devices — which
+    # made 160 citations visible in one commit. The exemption is stated here instead.
     #
-    # Scoped to WALK-* deliberately. The folder's own CONTEXT.md and CLAUDE.md DO ship and stay
-    # policed -- the exemption covers the evidence, never the documentation over it.
-    project-management/src/00-ASSETS/WALK-TESTS/WALK-*) return 0 ;;
+    # WHAT COPIER LIFTS BACK OUT SHIPS, and is policed (US004 P1, 05/11/2026). Until 06/11/2026
+    # (QA-F05 / DR-001) that was a second, hand-kept copy of the contract's negations, arm by
+    # arm, which had already drifted once (phase 9, F5) and which a generated project could
+    # never check, because it receives no contract. It is now read: is_reincluded() asks the
+    # one list load_shipping() takes from the contract here and from the shipped facts file
+    # downstream (the block below this function).
+    research/*|learning/*|handoffs/*|project-management/src/01-FEATURE-MAPS/*|project-management/src/00-ASSETS/WALK-TESTS/WALK-*)
+      is_reincluded "$1" && return 1
+      return 0 ;;
   esac
   return 1
 }
 
-# Paths copier seeds into place at generation exist in a generated project even
-# though they are absent here. Parsed from copier.yml so a new seed needs no edit.
-SEEDED="$(grep -oE 'mv \.copier/[^ ]+ ([^ ]+)' copier.yml 2>/dev/null | awk '{print $3}' || true)"
+# ── What ships: ONE source, read in both trees (US004 QA-F05 / DR-001, 06/11/2026) ──────────────
+# Two facts about generation decide which citers ship: what copier SEEDS from .copier/ (is_seeded,
+# below) and what its exclusion list LIFTS BACK OUT of an excluded tree (is_reincluded, read by
+# is_exempt above). Both used to be read from the copier contract alone -- and the contract is
+# excluded from every generated project, so downstream both sets were empty: a project's own
+# GAPS.md and .claude/MEMORY.md were policed as shipped files, citing their own stories.
+#
+# THE CONTRACT IS THE ONE PLACE A HUMAN EDITS. Where it exists -- the template -- it is read, and
+# shipping_derive() renders the two facts from it. That rendering is committed beside this script
+# as $SHIPPING_FILE, which ships; a generated project, holding no contract, reads the file. The
+# file is never hand-edited: `--write-shipping` writes it, and the ordinary run reports a
+# [shipping facts] finding whenever it differs from the derivation, so the copy a generated
+# project receives cannot lag the contract it was cut from. Rule: code/docs/FORWARD-VOICE.md
+# Section 7. Check 3's excluded-path set is NOT read from the file, deliberately: downstream it is
+# empty by decision (story plan, Key Decisions, "Whether Check 3's citer test changes too").
+SEEDED=""
+SHIPS=()
+SHIPPING_SOURCE="none"
 
+# WHICH TREE IS THE TEMPLATE (US004 H-06, 06/11/2026). A contract file alone does not say so: a
+# generated project may write its own -- to become a template in turn, or for any other reason --
+# and reading that one as THE contract replaced the shipped facts with whatever it excluded, so the
+# project's own GAPS.md lost its seeded exemption. The template is the tree holding the contract
+# AND the `.copier/` staging directory the seed tasks move out of, which generation removes.
+has_contract() { [ -f "$SHIPPING_CONTRACT" ] && [ -d .copier ]; }
+
+# The contract's `_exclude` entries, one per line, classified: `A <path>` anchored, `N <path>`
+# negated. Templated (surface-gated) and unanchored entries are dropped -- the header says why.
+# The single parse both build_template_only() and shipping_derive() read.
+#
+# EVERY SPELLING YAML ALLOWS, OR A LOUD STOP (US004 H-06, 06/11/2026). Only double quotes came off,
+# so a single-quoted negation -- valid YAML, honoured by copier -- fell to the unanchored arm and
+# vanished: its file was then treated as excluded, and --write-shipping would have baked the loss
+# into the facts file. Both quote styles come off now, and exclude_fault() below names any entry
+# this parse still cannot classify, so the top level stops at exit 2 rather than read a smaller set.
+exclude_entries() {
+  local raw entry
+  has_contract || return 0
+  raw="$(awk '/^_exclude:/{on=1; next} on && /^[A-Za-z_]+:/{exit} on' "$SHIPPING_CONTRACT" 2>/dev/null || true)"
+  [ -n "$raw" ] || return 0
+  while IFS= read -r entry; do
+    entry="${entry#"${entry%%[![:space:]]*}"}"
+    case "$entry" in -\ *) entry="${entry#- }" ;; *) continue ;; esac
+    entry="${entry%%[[:space:]]#*}"
+    entry="${entry%"${entry##*[![:space:]]}"}"
+    case "$entry" in
+      \"*\") entry="${entry#\"}"; entry="${entry%\"}" ;;
+      \'*\') entry="${entry#\'}"; entry="${entry%\'}" ;;
+    esac
+    case "$entry" in
+      "$BLK_OPEN"*) continue ;;                 # templated — surface-gated, out of scope
+      "!/"*)  printf 'N %s\n' "${entry#!/}" ;;
+      /*)     printf 'A %s\n' "${entry#/}" ;;
+      *)      continue ;;                       # unanchored — never part of a checkout
+    esac
+  done <<< "$raw"
+}
+
+# The first `_exclude` line the parse above cannot classify, or nothing: a flow-style list on the
+# key's own line, an entry still quoted after one matching pair came off, an unanchored negation
+# (it would lift a path back out ANYWHERE, which no set here models), or a line that is neither a
+# list entry, a comment nor blank. Called at top level, where `die` ends the run.
+exclude_fault() {
+  local line entry
+  has_contract || return 0
+  line="$(grep -m1 -E '^_exclude:' "$SHIPPING_CONTRACT" 2>/dev/null || true)"
+  entry="${line#_exclude:}"; entry="${entry%%#*}"
+  case "$entry" in *[![:space:]]*) printf '%s\n' "$line"; return 0 ;; esac
+  while IFS= read -r line; do
+    entry="${line#"${line%%[![:space:]]*}"}"
+    case "$entry" in ''|'#'*) continue ;; -\ *) entry="${entry#- }" ;; *) printf '%s\n' "$line"; return 0 ;; esac
+    entry="${entry%%[[:space:]]#*}"
+    entry="${entry%"${entry##*[![:space:]]}"}"
+    case "$entry" in
+      \"*\") entry="${entry#\"}"; entry="${entry%\"}" ;;
+      \'*\') entry="${entry#\'}"; entry="${entry%\'}" ;;
+    esac
+    case "$entry" in
+      "$BLK_OPEN"*) ;;
+      *[\"\']*|'!'[!/]*) printf '%s\n' "$line"; return 0 ;;
+    esac
+  done < <(awk '/^_exclude:/{on=1; next} on && /^[A-Za-z_]+:/{exit} on' "$SHIPPING_CONTRACT" 2>/dev/null || true)
+}
+
+# Renders the facts file from the contract: a fixed header, then `seeded <path>` per seed task
+# and `ships <glob>` per negation, in contract order. 1 when there is no contract to read.
+shipping_derive() {
+  has_contract || return 1
+  printf '%s\n' \
+    "# doc-references-shipping.txt -- what copier seeds and lifts back out, for doc-references.sh." \
+    "#" \
+    "# GENERATED from the copier contract by: bash code/src/scripts/audits/doc-references.sh --write-shipping" \
+    "# Never hand-edit it. The contract is the one place a human edits; the template's ordinary run" \
+    "# fails while this file and the contract disagree. It ships so a generated project, which" \
+    "# receives no contract, reads the same two facts. Rule: code/docs/FORWARD-VOICE.md Section 7." \
+    "#"
+  grep -oE 'mv \.copier/[^ ]+ ([^ ]+)' "$SHIPPING_CONTRACT" 2>/dev/null | awk '{print "seeded " $3}' || true
+  exclude_entries | awk '$1=="N"{print "ships " $2}'
+}
+
+# 0 when $1 differs from what the contract derives -- missing counts as different.
+shipping_stale() { # $1 = facts file
+  [ "$(shipping_derive)" != "$(cat -- "$1" 2>/dev/null)" ]
+}
+
+load_shipping() {
+  local facts=""
+  if has_contract; then
+    facts="$(shipping_derive)"; SHIPPING_SOURCE="contract"
+  elif [ -f "$SHIPPING_FILE" ]; then
+    facts="$(cat -- "$SHIPPING_FILE")"; SHIPPING_SOURCE="facts file"
+  fi
+  SEEDED="$(printf '%s\n' "$facts" | awk '$1=="seeded"{print $2}')"
+  mapfile -t SHIPS < <(printf '%s\n' "$facts" | awk '$1=="ships"{print $2}')
+}
+
+is_reincluded() { # $1 = repo-relative path; 0 when a negation lifts it back out of an excluded tree
+  local g
+  for g in "${SHIPS[@]}"; do path_matches "$1" "$g" && return 0; done
+  return 1
+}
+
+# `--` before the pattern (US004 H-07): a CSS-token citation such as `--text-primary/-muted` reaches
+# here through is_excluded_by_rule(), and grep read it as an option and printed an error per token.
 is_seeded() {
-  [ -n "$SEEDED" ] && printf '%s\n' "$SEEDED" | grep -qxF "$1"
+  [ -n "$SEEDED" ] && printf '%s\n' "$SEEDED" | grep -qxF -- "$1"
 }
 
 # Direction A — the register. `how-to/src/PROJECT-PATHS.md` names every path a shipped
@@ -478,28 +605,36 @@ declare -A TEMPLATE_ONLY=()
 declare -A TEMPLATE_ONLY_DIR=()
 template_only_paths=0
 
+# The parsed globs are kept (US004 QA-F08) so a path can be judged by the RULE as well as by the
+# set: an absent path is in no set, and Check 1's catch-all asks the rule about it instead.
+EXCL_ANCHORED=()
+EXCL_NEGATED=()
+# The anchored entries naming a ROOT file (no slash), kept apart (US004 H-05) so a slashless token
+# can ask the rule in one lookup: literal names in an index, the rare glob in a short list.
+declare -A EXCL_ROOT_LIT=()
+EXCL_ROOT_GLOB=()
 build_template_only() {
-  local raw entry anchored=() negated=() f d
-  raw="$(awk '/^_exclude:/{on=1; next} on && /^[A-Za-z_]+:/{exit} on' copier.yml 2>/dev/null || true)"
-  [ -n "$raw" ] || return 0
-  while IFS= read -r entry; do
-    entry="${entry#"${entry%%[![:space:]]*}"}"
-    case "$entry" in -\ *) entry="${entry#- }" ;; *) continue ;; esac
-    entry="${entry%%[[:space:]]#*}"
-    entry="${entry#\"}"; entry="${entry%\"}"
-    entry="${entry%"${entry##*[![:space:]]}"}"
-    case "$entry" in
-      "$BLK_OPEN"*) continue ;;                 # templated — surface-gated, out of scope
-      "!/"*)  negated+=("${entry#!/}") ;;
-      /*)     anchored+=("${entry#/}") ;;
-      *)      continue ;;                       # unanchored — never part of a checkout
+  local kind entry anchored=() negated=() f d g
+  while read -r kind entry; do
+    case "$kind" in
+      A) anchored+=("$entry") ;;
+      N) negated+=("$entry") ;;
     esac
-  done <<< "$raw"
+  done < <(exclude_entries)
   [ "${#anchored[@]}" -gt 0 ] || return 0
+  EXCL_ANCHORED=("${anchored[@]}")
+  EXCL_NEGATED=("${negated[@]}")
+  for g in "${anchored[@]}"; do
+    case "$g" in
+      */*) ;;
+      *[*?[]*) EXCL_ROOT_GLOB+=("$g") ;;
+      *) EXCL_ROOT_LIT["$g"]=1 ;;
+    esac
+  done
 
   local -a population
   mapfile -t population < <(repo_files 2>/dev/null)
-  local g keep
+  local keep
   for f in "${population[@]}"; do
     keep=false
     for g in "${anchored[@]}"; do path_matches "$f" "$g" && { keep=true; break; }; done
@@ -551,6 +686,39 @@ is_template_only() {
   return 1
 }
 
+# THE SAME VERDICT FOR AN ABSENT PATH (US004 QA-F08, 06/11/2026). TEMPLATE_ONLY is built over the
+# files that exist, so a citation into an excluded tree was a [template-only citation] while its
+# target was on disk and clean once it was deleted or gitignored: removing the target "fixed" the
+# finding. This asks the parsed RULE rather than the set -- an anchored entry matches, no negation
+# re-includes it, and it is neither seeded nor the regenerated lock -- so presence decides nothing.
+# Downstream the contract is absent, both arrays are empty, and this answers no, as the set does.
+is_excluded_by_rule() { # $1 = repo-relative path
+  local p="${1%/}" g
+  p="${p#./}"
+  [ "${#EXCL_ANCHORED[@]}" -gt 0 ] || return 1
+  is_seeded "$p" && return 1
+  [ "$p" = "uv.lock" ] && return 1
+  for g in "${EXCL_NEGATED[@]}"; do path_matches "$p" "$g" && return 1; done
+  for g in "${EXCL_ANCHORED[@]}"; do path_matches "$p" "$g" && return 0; done
+  return 1
+}
+
+# A slashless ROOT path the rule excludes (US004 H-05). One index lookup before the full rule, so
+# the 28k slashless tokens of an unscoped run -- `git`, `--path`, ports -- cost one array read each.
+is_root_excluded() { # $1 = slashless path
+  local g hit=false
+  if [ -n "${EXCL_ROOT_LIT[$1]:-}" ]; then
+    hit=true
+  else
+    for g in "${EXCL_ROOT_GLOB[@]}"; do path_matches "$1" "$g" && { hit=true; break; }; done
+  fi
+  [ "$hit" = true ] && is_excluded_by_rule "$1"
+}
+
+exclude_fault_line="$(exclude_fault)"
+[ -z "$exclude_fault_line" ] \
+  || die "cannot classify this copier.yml _exclude line, so the excluded and shipped sets would be read short: $exclude_fault_line"
+load_shipping
 build_template_only
 build_template_only_index
 
@@ -580,14 +748,32 @@ build_template_only_index
 #
 # NEITHER CALL SITE MAY HOIST THIS ABOVE CHECK 2, which reads the RAW token: peeling there
 # would move `base` and the is_seeded lookup with it, and that is a decision nobody has made.
+#
+# EVERY FORM, NOT ONE MORE EACH TIME (US004 QA-F03, 06/11/2026). The loop above took `,:N` alone,
+# so `:12,40`, a trailing range after the comma and a `#heading` fragment reached the existence
+# test whole -- and a shipped template cited with a fragment was a [dangling path] no marker could
+# answer, because presence is tested before the marker is read. The fragment comes off first, from
+# the first `#` with no slash after it; then each trailing `,N`, `,:N`, `,N-M` or `,N:M` in a loop;
+# then the three branches. A marker reaches exactly what it reached before: it is read after this.
+#
+# AND THE REST OF WHAT A LINK CARRIES (US004 H-08, 06/11/2026): a `?query` (GitHub's `?plain=1`)
+# after the fragment comes off, then a trailing comma prose leaves behind, and `:L12` / `:L12-L20`
+# beside `:12`. A fragment holding a slash is still left alone, deliberately: it may be a path.
 peel_anchor() { # $1 = token -> sets `peeled`
   peeled="$1"
-  while [[ "$peeled" =~ ^(.+),:[0-9]+$ ]]; do
+  if [[ "$peeled" =~ ^([^#]+)#[^/]*$ ]]; then
+    peeled="${BASH_REMATCH[1]}"
+  fi
+  if [[ "$peeled" =~ ^([^?]+)\?[^/]*$ ]]; then
+    peeled="${BASH_REMATCH[1]}"
+  fi
+  peeled="${peeled%,}"
+  while [[ "$peeled" =~ ^(.+),:?L?[0-9]+([-:]L?[0-9]+)?$ ]]; do
     peeled="${BASH_REMATCH[1]}"
   done
   if [[ "$peeled" =~ ^(.+):[0-9]+:[0-9]+$ ]] \
-     || [[ "$peeled" =~ ^(.+):[0-9]+-[0-9]+$ ]] \
-     || [[ "$peeled" =~ ^(.+):[0-9]+$ ]]; then
+     || [[ "$peeled" =~ ^(.+):L?[0-9]+-L?[0-9]+$ ]] \
+     || [[ "$peeled" =~ ^(.+):L?[0-9]+$ ]]; then
     peeled="${BASH_REMATCH[1]}"
   fi
 }
@@ -613,6 +799,25 @@ normalise_rel() { # $1 = root-relative path holding . or .. -> sets `normalised`
     esac
   done
   normalised="$out"
+}
+
+# A symlink's in-repository target, followed textually as normalise_rel() does: an absolute
+# target inside PROJECT_ROOT is made relative, anything else is outside. Sets `normalised`;
+# returns 1 for a target outside the repository or a chain deeper than eight (US004 QA-F04).
+resolve_link() { # $1 = repo-relative link path
+  local p="$1" t d n=0
+  while [ -L "$p" ]; do
+    n=$((n + 1)); [ "$n" -le 8 ] || return 1
+    t="$(readlink -- "$p")" || return 1
+    case "$t" in
+      "$PROJECT_ROOT"/*) p="${t#"$PROJECT_ROOT"/}" ;;
+      /*)                return 1 ;;
+      *)                 d="${p%/*}"; [ "$d" = "$p" ] && d="."
+                         normalise_rel "$d/$t" || return 1
+                         p="$normalised" ;;
+    esac
+  done
+  normalised="$p"
 }
 
 # A token with a template placeholder, a numeric pattern, or a glob is not a citation.
@@ -666,7 +871,17 @@ INSTANCE_CITED_RE='^(ADR-US[0-9]{3}|US[0-9]{3}|SPRINT-[0-9]{2}|([0-9]{2}-)?SPRIN
 # same set as the cited side above: a review record cites and is never cited, a map is cited
 # and lives in an exempt tree. The zero-index and `-TEMPLATE.` files match and DO ship, so
 # is_instance_citer() excludes them and they stay policed.
-INSTANCE_CITER_RE='(^|[^A-Za-z])(US[0-9]{3}|SPRINT-(PLAN-)?[0-9]{2})([^0-9]|$)|^BUG-'
+#
+# A CONCRETE DATE BINDS AN INSTANCE TOO (US004 QA-F02, 06/11/2026). Four record families have a
+# story-less form -- FINDING-, REVIEW-, REFACTORING- and INCIDENT-<DESCRIPTOR>-DD-MM-YYYY.md, each
+# folder's CLAUDE.md -- and what binds that name to one project's history is the date it ends in,
+# exactly as a story number binds the primary form. So the same derivation the ADR prescribes
+# reads that property too: a basename ending `-NN-NN-NNNN.<ext>` in digits. The placeholder date
+# is letters, so the naming convention itself never matches; a `-TEMPLATE.` name is excluded below.
+# SCOPED TO THOSE FOUR FAMILIES (US004 H-04, 06/11/2026): the date arm first matched any dated
+# basename, so a dated shipped guide anywhere silently lost Check 2. Only the record families whose
+# convention binds the date are instance citers by it.
+INSTANCE_CITER_RE='(^|[^A-Za-z])(US[0-9]{3}|SPRINT-(PLAN-)?[0-9]{2})([^0-9]|$)|^BUG-|^(FINDING|REVIEW|REFACTORING|INCIDENT)-.*-[0-9]{2}-[0-9]{2}-[0-9]{4}\.[A-Za-z0-9]+$'
 
 is_instance_citer() { # $1 = citing file path
   local name="${1##*/}"
@@ -704,9 +919,15 @@ scanned_files=0
 exempt_files=0
 checked_tokens=0
 path_tests=0
+link_tests=0
 
+# Which classes fired, so the report prints the remedy for those alone (US004 H-10).
+declare -A class_hits=()
+declare -A scan_hit=()   # scan_files() shadows it per run; global so record() may always write it
 record() { # file line kind detail
   violations=$((violations + 1))
+  class_hits["$3"]=1
+  scan_hit["$2|tok:$4"]=1   # the citation as written, so a link spelling it the same way is one finding
   report+="| \`$1\` | $2 | $3 | \`$4\` |"$'\n'
   log "  $1:$2  [$3]  $4"
 }
@@ -722,14 +943,32 @@ scan_files() { # $1 = newline-separated file list
   exempt_files=0
   checked_tokens=0
   path_tests=0
+  link_tests=0
   local file lineno token line prev is_naming_row stripped resolved sibling base
   local is_marked file_ships file_dir tmpl tmpl_base peeled plan citer_instance template_target
-  local citer_seeded normalised check_tok date_dir relative tok_base
+  local citer_seeded normalised check_tok date_dir relative tok_base root_tok
   local resolved_skip=false
+  local -A scan_seen=()
+  # What the token loop reported, keyed `line|repo-relative target`, so the link loop does not
+  # report the same target on the same line a second time (US004 REV-03): the house style writes
+  # [`x`](x), and one dead citation is one finding.
+  local -A scan_hit=()
 
   while IFS= read -r file; do
     [ -n "$file" ] || continue
     [ -f "$file" ] || continue
+    # A TRACKED SYMLINK IS READ AS ITS TARGET, ONCE (US004 QA-F04, 06/11/2026). `.ai/MEMORY.md`
+    # points at `.claude/MEMORY.md`, and every predicate below keys on the PATH: read under the
+    # link's name the same bytes lost the seeded-citer exemption their target holds, and were read
+    # twice in an unscoped run. The link is resolved to its in-repository target first, so the
+    # target's exemptions apply and its findings are reported once, under the target's path. A
+    # link leaving the repository is not repository content and is skipped as exempt.
+    if [ -L "$file" ]; then
+      if ! resolve_link "$file"; then exempt_files=$((exempt_files + 1)); continue; fi
+      file="$normalised"
+    fi
+    if [ -n "${scan_seen[$file]:-}" ]; then exempt_files=$((exempt_files + 1)); continue; fi
+    scan_seen["$file"]=1
     if is_exempt "$file"; then
       exempt_files=$((exempt_files + 1))
       continue
@@ -755,6 +994,7 @@ scan_files() { # $1 = newline-separated file list
     # (ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026).
     citer_instance=false
     if is_instance_citer "$file"; then citer_instance=true; fi
+    scan_hit=()
 
     # Every backticked token in the file, with its line number.
     while IFS=: read -r lineno token; do
@@ -768,14 +1008,27 @@ scan_files() { # $1 = newline-separated file list
       # citation. `date_dir` hands Check 1 that folder and keeps Checks 2 to 4 off the token.
       template_target=false
       date_dir=false
+      tok_base=""
       if is_template_target "$token"; then
         template_target=true
       elif is_pattern "$token"; then
         tok_base="${token##*/}"
+        # A DATE PLACEHOLDER DOES NOT LAUNDER AN INSTANCE (US004 QA-F07, 06/11/2026). A bare name
+        # whose ONLY placeholder is the date, and whose remainder is itself a concrete instance --
+        # a story number appended `-DD-MM-YYYY`, an ADR-US### with the date left generic -- still
+        # names that instance, and Check 2 sees it as it did before the date became a placeholder.
+        # Bare only, because Check 2 is anchored and has never read a path-form token. The date
+        # alone stays a pattern: a zero-index or placeholder remainder is still not an instance.
         case "$token" in
           */*DD-MM-YYYY*) ;;
+          *DD-MM-YYYY*)
+            is_pattern "${token//DD-MM-YYYY/}" && continue
+            [[ "$token" =~ $INSTANCE_CITED_RE ]] || continue
+            tok_base="" ;;   # a bare dated instance: Check 2 reads it, the folder route below does not
           *) continue ;;
         esac
+      fi
+      if [ -n "${tok_base:-}" ]; then
         [[ "$tok_base" == *DD-MM-YYYY* ]] || continue
         is_placeholder "${tok_base//DD-MM-YYYY/}" && continue
         is_placeholder "${token%/*}" && continue
@@ -845,6 +1098,13 @@ scan_files() { # $1 = newline-separated file list
         # An anchored citation of an excluded path is still a citation of that path:
         # `copier.yml:41-42` has to reach the set lookup as `copier.yml`.  # doc-references: template-only
         peel_anchor "$tmpl"; tmpl="$peeled"
+        root_tok=""
+        case "$tmpl" in
+          http*|*@*|*' '*|'') ;;
+          ./*) root_tok="${tmpl#./}" ;;
+          */*) ;;
+          *)   root_tok="$tmpl" ;;
+        esac
         # The whole cost of this check, and it is one array lookup. Everything below runs
         # only for a token whose last segment names one of the forty.
         tmpl_base="${tmpl##*/}"
@@ -866,6 +1126,31 @@ scan_files() { # $1 = newline-separated file list
           esac
           if [ -n "$tmpl" ] && is_template_only "$tmpl"; then
             record "$file" "$lineno" "template-only citation" "$token"
+            scan_hit["$lineno|$tmpl"]=1
+            continue
+          fi
+        fi
+        # A ROOT SPELLING, ABSENT OR PRESENT (US004 H-05, 06/11/2026). A slashless token never
+        # reaches Check 1's catch-all, where the rule is asked about an absent path, and a `./`
+        # token was resolved file-relative above, so its present root file read as not
+        # template-only and Check 1 then cleared it on the root reading. Both now ask the set for
+        # a present root file and the rule for an absent one -- unless the file-relative reading
+        # exists, which is what the sibling-first lookups above already prefer.
+        # Cheapest test first: an unscoped run carries ~28k slashless tokens, and only an index hit
+        # may cost a stat.
+        if [ -n "$root_tok" ]; then
+          tmpl=""
+          if is_template_only "$root_tok"; then
+            tmpl="$root_tok"
+          else
+            case "$root_tok" in
+              */*) [ ! -e "$root_tok" ] && is_excluded_by_rule "$root_tok" && tmpl="$root_tok" ;;
+              *)   is_root_excluded "$root_tok" && [ ! -e "$root_tok" ] && tmpl="$root_tok" ;;
+            esac
+          fi
+          if [ -n "$tmpl" ] && [ ! -e "$file_dir/$root_tok" ]; then
+            record "$file" "$lineno" "template-only citation" "$token"
+            scan_hit["$lineno|$root_tok"]=1
             continue
           fi
         fi
@@ -965,6 +1250,18 @@ scan_files() { # $1 = newline-separated file list
       # it, so a missing path such a file names is reported as a dangling path.
       # ADDED 05/11/2026 (US004, Key Decisions row "Seeded citers"): so is a citer copier seeds
       # from .copier/ — `citer_seeded`, decided once per file above; its content never ships.
+      # THE PATH FORM TOO (US004 H-03, 06/11/2026). QA-F07 above kept a bare dated instance on
+      # Check 2, and the path form went to the folder route, which passes because the folder
+      # exists -- so ".../ADR-US987-FOO-DD-MM-YYYY.md" was silent while the same path with a real
+      # date was a finding. The basename's remainder is read here as the bare token is above.
+      if [ "$date_dir" = true ] && [ "$is_naming_row" = false ] && [ "$citer_instance" = false ] \
+         && [ "$citer_seeded" = false ]; then
+        base="${tok_base//DD-MM-YYYY/}"
+        if [[ "$base" =~ $INSTANCE_CITED_RE ]] && ! is_pattern "$base"; then
+          record "$file" "$lineno" "instance citation" "$token"
+          continue
+        fi
+      fi
       if [ "$is_naming_row" = false ] && [ "$citer_instance" = false ] \
          && [ "$citer_seeded" = false ] && [ "$date_dir" = false ] \
          && [[ "$token" =~ $INSTANCE_CITED_RE ]]; then
@@ -1066,6 +1363,14 @@ scan_files() { # $1 = newline-separated file list
               case "$resolved" in
                 audits/*|tests/*|syntax/*|database/*|development/*|deployment/*|desktop/*|mobile/*|rust/*)
                   resolved="code/src/scripts/$resolved" ;;
+                # A BARE FILE-RELATIVE TOKEN (US004 GAPS-REL, 06/11/2026). Neither reading exists,
+                # but the token's leading folder sits beside its citer -- `data-structures/X.md`
+                # written in code/docs/ -- so it names a file in that folder, and it is tested
+                # there rather than dropped as an unresolvable shorthand. A folder that is not
+                # beside the citer leaves the token as it was.
+                /*) ;;   # a root-anchored spelling, `/GAPS.md`: no leading folder to find
+                *)
+                  [ -d "$(dirname "$file")/${resolved%%/*}" ] && resolved="$sibling" ;;
               esac
             fi
           fi
@@ -1132,7 +1437,14 @@ scan_files() { # $1 = newline-separated file list
                 [ -e "$sibling/$resolved" ] && { resolved="$sibling/$resolved"; break; }
               done
             fi
-            [ -e "$resolved" ] || record "$file" "$lineno" "dangling path" "$token"
+            [ -e "$resolved" ] || { record "$file" "$lineno" "dangling path" "$token"; scan_hit["$lineno|$resolved"]=1; }
+          # US004 QA-F08: an ABSENT target the copier contract excludes is Check 3's finding,
+          # exactly as the present one was above. A present one never reaches here: Check 3
+          # reported it and moved on. Same three gates as Check 3 -- a shipping citer, no marker.
+          elif [ "$file_ships" = true ] && [ "$is_marked" = false ] && [ "$date_dir" = false ] \
+               && [ ! -e "$resolved" ] && is_excluded_by_rule "$resolved"; then
+            record "$file" "$lineno" "template-only citation" "$token"
+            scan_hit["$lineno|$resolved"]=1
           fi
           continue ;;
       esac
@@ -1148,6 +1460,7 @@ scan_files() { # $1 = newline-separated file list
       # folded into it — may quieten it.
       if [ "$template_target" = true ]; then
         record "$file" "$lineno" "dangling path" "$token"
+        scan_hit["$lineno|$resolved"]=1
         continue
       fi
       # `$resolved` is already normalised by the relative arm above (US004 phase 9, F1), so a
@@ -1157,7 +1470,130 @@ scan_files() { # $1 = newline-separated file list
       is_registered "$resolved" && continue
       [ "$is_naming_row" = true ] && continue
       record "$file" "$lineno" "dangling path" "$token"
+      scan_hit["$lineno|$resolved"]=1
     done < <(grep -noE "\`[^\`]+\`" "$file" 2>/dev/null | sed 's/`//g' || true)
+
+    # ── Check 1, second population — a Markdown link target (US004 GAPS-REL, 06/11/2026) ────────
+    # The loop above reads backticked spans only, so `[text](target)` was never read: the house
+    # habit of backticking the TEXT kept the repo-rooted spelling checked while the target -- the
+    # half a reader actually follows -- went untested, and a file written in file-relative links
+    # had nothing checked at all. A link target is file-relative by definition, so it is resolved
+    # against its citer with no shorthand reading. Not a target: a URL or any `scheme:`, an
+    # in-page `#fragment`, an absolute or `<angle>` target, a placeholder, or one climbing out of
+    # the repository.
+    #
+    # THE SAME JUDGEMENTS AS A BACKTICKED CITATION (US004 REV-01 / H-01 / REV-03, 06/11/2026). A
+    # link is a citation, so Direction B applies to it as it does to a token: from a shipping citer
+    # with no marker, a present target copier excludes, or an absent one its rule excludes, is a
+    # [template-only citation] -- otherwise a shipped guide could link into research/ and pass the
+    # template while the link died in every generated project. An absent target whose basename
+    # names a per-project instance is an [instance citation], on Check 2's own citer gates. The
+    # register and the seeds are read first, as the token loop reads them first in the PM tree, and
+    # a target the token loop already reported on the same line -- resolved to the same path, or
+    # spelt the same way -- is not reported again.
+    #
+    # WHAT IS READ AS A LINK (US004 H-02, 06/11/2026), in the extractor below: never inside a fence
+    # (a fence closes only on the same character, at least as long), an indented code block (four
+    # columns after a blank line, outside a list), an HTML comment, or a code span of any width;
+    # never from an escaped bracket; and a target keeps one balanced level of parentheses.
+    [[ "$file" == *.md ]] || continue
+    while IFS=: read -r lineno token; do
+      [ -n "$token" ] || continue
+      case "$token" in
+        '#'*|/*|'<'*|*://*|*%*|mailto:*|tel:*|data:*) continue ;;
+      esac
+      [[ "$token" =~ ^[A-Za-z][A-Za-z0-9+.-]*: ]] && continue
+      is_placeholder "$token" && continue
+      check_tok="${token%%#*}"; check_tok="${check_tok%%\?*}"; check_tok="${check_tok%/}"
+      [ -n "$check_tok" ] || continue
+      normalise_rel "$file_dir/$check_tok" || continue
+      resolved="$normalised"
+      case "$resolved" in
+        */reports/*|*/coverage/*|*/staticfiles/*|.claude/worktrees/*|code/docs/MACHINE-SPEC.md) continue ;;
+      esac
+      link_tests=$((link_tests + 1))
+      [ -n "${scan_hit[$lineno|$resolved]:-}${scan_hit[$lineno|tok:$check_tok]:-}" ] && continue
+      line="$(sed -n "${lineno}p" "$file" 2>/dev/null || true)"
+      prev="$(sed -n "$((lineno > 1 ? lineno - 1 : 1))p" "$file" 2>/dev/null || true)"
+      case "$line$prev" in
+        *'doc-references: ignore'*|*'doc-references: template-only'*) is_marked=true ;;
+        *)                                                           is_marked=false ;;
+      esac
+      if [ -e "$resolved" ]; then
+        if [ "$file_ships" = true ] && [ "$is_marked" = false ] && is_template_only "$resolved"; then
+          record "$file" "$lineno" "template-only citation" "$token"
+        fi
+        continue
+      fi
+      if ! is_template_target "$resolved"; then
+        is_registered "$resolved" && continue
+        if [ "$file_ships" = true ] && [ "$is_marked" = false ] && is_excluded_by_rule "$resolved"; then
+          record "$file" "$lineno" "template-only citation" "$token"
+          continue
+        fi
+        is_seeded "$resolved" && continue
+        [ "$is_marked" = true ] && continue
+        base="${resolved##*/}"
+        if [ "$citer_instance" = false ] && [ "$citer_seeded" = false ] \
+           && [[ "$base" =~ $INSTANCE_CITED_RE ]] && ! is_pattern "$base"; then
+          record "$file" "$lineno" "instance citation" "$token"
+          continue
+        fi
+      fi
+      record "$file" "$lineno" "dangling link" "$token"
+    done < <(awk '
+      # Fences: the opening run sets the character and the length; only a run of the same
+      # character, at least as long, with nothing after it, closes it.
+      {
+        raw = $0
+        if (fence) {
+          if (match(raw, /^[ \t]*(`+|~+)[ \t]*$/)) {
+            run = substr(raw, RSTART, RLENGTH); gsub(/[ \t]/, "", run)
+            if (substr(run, 1, 1) == fch && length(run) >= flen) fence = 0
+          }
+          prevblank = 0; next
+        }
+        if (match(raw, /^[ \t]*(```+|~~~+)/)) {
+          run = substr(raw, RSTART, RLENGTH); gsub(/[ \t]/, "", run)
+          fence = 1; fch = substr(run, 1, 1); flen = length(run); prevblank = 0; next
+        }
+      }
+      # An indented code block: four columns in, after a blank line or more code, outside a list.
+      /^[ \t]*$/ { prevblank = 1; next }
+      {
+        if (raw ~ /^ {0,3}([-*+]|[0-9]+[.)])[ \t]/) inlist = 1
+        else if (raw !~ /^[ \t]/) inlist = 0
+        if ((raw ~ /^(    |\t)/) && (prevblank || incode) && !inlist) { incode = 1; prevblank = 0; next }
+        incode = 0; prevblank = 0
+      }
+      {
+        line = raw
+        # HTML comments, on one line or across several.
+        if (incomment) {
+          if ((i = index(line, "-->")) == 0) next
+          line = substr(line, i + 3); incomment = 0
+        }
+        while ((i = index(line, "<!--")) > 0) {
+          rest = substr(line, i + 4)
+          if ((j = index(rest, "-->")) == 0) { line = substr(line, 1, i - 1); incomment = 1; break }
+          line = substr(line, 1, i - 1) substr(rest, j + 3)
+        }
+        gsub(/``([^`]|`[^`])*``/, "", line)
+        gsub(/`[^`]*`/, "", line)
+        gsub(/\\[][]/, "", line)
+        while ((i = index(line, "](")) > 0) {
+          line = substr(line, i + 2); t = ""; depth = 0
+          for (k = 1; k <= length(line); k++) {
+            c = substr(line, k, 1)
+            if (c ~ /[ \t]/) break
+            if (c == "(") depth++
+            else if (c == ")") { if (depth == 0) break; depth-- }
+            t = t c
+          }
+          if (t != "") print NR ":" t
+          line = substr(line, k)
+        }
+      }' "$file" 2>/dev/null || true)
   done <<< "$1"
 }
 
@@ -1263,8 +1699,15 @@ st_phase9_probes() {
   log "  US004 P9-F1 — a relative citation is normalised before the checkable-tree decision:"
   # RED — P9-F1(b): the relative spelling of an unchecked-tree target was read as the CITER's
   # tree and reported, while its repo-relative spelling was silent. Two findings, not three.
+  # CHANGED 06/11/2026 (US004 QA-F08): the research/ target is excluded by copier, and an absent
+  # excluded target is now a [template-only citation] rather than silent -- so four findings, the
+  # same verdict for both spellings of each target, which is the property this probe pins.
+  # Downstream the excluded set is empty by decision, so the research/ pair is silent under both
+  # spellings and two findings remain: the same property, read without the contract (REV-04).
+  local st_f1_want=2
+  if has_contract; then st_f1_want=4; fi
   st_probe "P9-F1 broken/relative-normalise.md: one verdict per target, either spelling" \
-    "$FIXTURES_DIR/broken/relative-normalise.md" 2 \
+    "$FIXTURES_DIR/broken/relative-normalise.md" "$st_f1_want" \
     "dangling path | ${BT}project-management/src/02-STORIES/NO-SUCH-FIXTURE-ONLY-STORY.md${BT}"
   # GUARD — P9-F1(b): the relative spelling of a dead checked-tree target is still reported.
   st_has_probe "P9-F1 broken/relative-normalise.md still reports the relative dead path (GUARD)" \
@@ -1444,6 +1887,353 @@ st_phase9_probes() {
   REGISTERED="$st_saved_registered"
 }
 
+# ── US004 QA round (06/11/2026) — one probe set per item the QA pass and the review raised ─────
+# Every item is fixed in US004 by <%DEVELOPER_NAME%>'s ruling, none deferred. Labels carry the item
+# id (QA-F01..F08, GAPS-REL); tags as above. QA-F01's probes are GUARDs by construction -- they pass
+# on the detector as it stood -- and their red is a MUTANT that survived the self-test before them
+# and is killed after; the four mutants are named at the probes. Fix the detector, never these.
+st_qa_round_probes() {
+  local BT=$'\x60' out
+
+  # QA-F01 — four phase 9 behaviours had no probe, so deleting the line left the self-test green.
+  log ""
+  log "  US004 QA-F01 — the four phase 9 lines a mutation run deleted without a red:"
+  # GUARD — kills mutant M9 (is_template_target's `.../` elision arm deleted).
+  st_probe "QA-F01 clean/template-elision.md silent on a .../-elided template (M9)" \
+    "$FIXTURES_DIR/clean/template-elision.md" 0
+  # GUARD — kills mutant M10 (the dated placeholder's own folder-placeholder test deleted).
+  st_probe "QA-F01 clean/date-folder-placeholder.md silent when the folder is a placeholder (M10)" \
+    "$FIXTURES_DIR/clean/date-folder-placeholder.md" 0
+  # GUARD — kills mutant M11 (the template record ahead of the marker deleted).
+  st_probe "QA-F01 broken/template-ignore.md fires on a missing template under ignore (M11)" \
+    "$FIXTURES_DIR/broken/template-ignore.md" 2 \
+    "dangling path | ${BT}project-management/src/18-TESTS/MANUAL/US000-NO-SUCH-FIXTURE-ONLY-IGNORED-ABOVE.md${BT}"
+  # GUARD — kills mutant M13 (the ancestor presence walk deleted).
+  st_probe "QA-F01 clean/template-layer-relative.md silent on an ancestor-relative template (M13)" \
+    "$FIXTURES_DIR/clean/template-layer-relative.md" 0
+
+  # QA-F02 — the story-less dated records are instance citers by the same derived rule.
+  log ""
+  log "  US004 QA-F02 — a story-less dated record is an instance citer:"
+  local k
+  for k in FINDING REVIEW REFACTORING INCIDENT; do
+    # RED — QA-F02, one per record family whose convention has a story-less form.
+    st_probe "QA-F02 clean/$k-FIXTURE-ONLY-05-11-2026.md citer is exempt" \
+      "$FIXTURES_DIR/clean/$k-FIXTURE-ONLY-05-11-2026.md" 0
+  done
+  # GUARD — QA-F02: a template, a placeholder name, an undated register and a bare year are not.
+  st_citer_probe "QA-F02 INCIDENT-000-TEMPLATE.md is NOT an instance citer        " "INCIDENT-000-TEMPLATE.md" no
+  st_citer_probe "QA-F02 FINDING-X-05-11-2026-TEMPLATE.md is NOT one            " "FINDING-X-05-11-2026-TEMPLATE.md" no
+  st_citer_probe "QA-F02 FINDING-<DESCRIPTOR>-DD-MM-YYYY.md is NOT one          " "FINDING-<DESCRIPTOR>-DD-MM-YYYY.md" no
+  st_citer_probe "QA-F02 INCIDENT-INDEX.md is NOT an instance citer             " "INCIDENT-INDEX.md" no
+  st_citer_probe "QA-F02 NOTES-2026.md is NOT an instance citer                 " "NOTES-2026.md" no
+
+  # QA-F03 — every anchor form is peeled, and the markers keep their reach.
+  log ""
+  log "  US004 QA-F03 — every anchor form is peeled before the existence test:"
+  # RED — QA-F03: `:N,M`, `:N,M-K`, `:N,:M-K`, `#heading` and `#L12` on files that exist.
+  st_probe "QA-F03 clean/anchor-forms.md silent on every anchor form of a present file" \
+    "$FIXTURES_DIR/clean/anchor-forms.md" 0
+  # GUARD — QA-F03: the same forms on absent files fire, quoted raw; presence beats the marker.
+  st_probe "QA-F03 broken/anchor-forms.md fires on each dead anchored path (GUARD)" \
+    "$FIXTURES_DIR/broken/anchor-forms.md" 3 \
+    "dangling path | ${BT}project-management/src/18-TESTS/MANUAL/US000-NO-SUCH-FIXTURE-ONLY-ANCHORED-TESTING.md#how-to-use${BT}"
+
+  # QA-F04 — a tracked symlink is read as its in-repo target, once.
+  log ""
+  log "  US004 QA-F04 — a symlinked citer takes its target's exemptions, and is read once:"
+  st_probes=$((st_probes + 1))
+  out="$(
+    scratch="$(mktemp -d "${TMPDIR:-/tmp}/doc-references-qaf04.XXXXXXXX")" || exit 3
+    trap 'rm -rf -- "$scratch"' EXIT
+    mkdir -p "$scratch/.claude" "$scratch/.ai" || exit 3
+    printf 'Cites %sUS042.md%s and %scode/docs/NO-SUCH-FIXTURE-ONLY-LINKED.md%s.\n' \
+      "$BT" "$BT" "$BT" "$BT" > "$scratch/.claude/MEMORY.md"
+    ln -s ../.claude/MEMORY.md "$scratch/.ai/MEMORY.md" || exit 3
+    cd "$scratch" || exit 3
+    PROJECT_ROOT="$scratch"; QUIET=true
+    SEEDED=".claude/MEMORY.md" scan_files $'.ai/MEMORY.md\n.claude/MEMORY.md'
+    printf '%s\n%s' "$violations" "$report"
+  )"
+  # RED — QA-F04: the link is seeded through its target, and its one dangling path is reported once.
+  case "$out" in
+    1$'\n'*'dangling path'*) log "  ✓ QA-F04 .ai/MEMORY.md -> .claude/MEMORY.md: seeded, one finding, not two" ;;
+    *) st_fail "QA-F04 symlinked citer: expected exactly the one dangling path, got: ${out%%$'\n'*}" ;;
+  esac
+
+  # QA-F05 / DR-001 — one human-edited source for what ships, read here and downstream alike.
+  log ""
+  log "  US004 QA-F05 / DR-001 — the shipping facts hold in a tree with no copier contract:"
+  # RED — QA-F05: a generated project (no contract file) still knows GAPS.md is seeded, and still
+  # polices research/CONTEXT.md while exempting a research note.
+  st_probes=$((st_probes + 1))
+  out="$(
+    scratch="$(mktemp -d "${TMPDIR:-/tmp}/doc-references-qaf05.XXXXXXXX")" || exit 3
+    trap 'rm -rf -- "$scratch"' EXIT
+    mkdir -p "$scratch/code/src/scripts/audits" "$scratch/research" "$scratch/code/docs" || exit 3
+    cp -- "$SCRIPT_DIR/doc-references.sh" "$scratch/code/src/scripts/audits/" || exit 3
+    cp -- "$SCRIPT_DIR/doc-references-shipping.txt" "$scratch/code/src/scripts/audits/" 2>/dev/null || true
+    printf 'Cites %sUS042.md%s.\n' "$BT" "$BT" > "$scratch/GAPS.md"
+    printf 'Cites %scode/docs/NO-SUCH-FIXTURE-ONLY-SHIPPED.md%s.\n' "$BT" "$BT" > "$scratch/research/CONTEXT.md"
+    printf 'Cites %scode/docs/NO-SUCH-FIXTURE-ONLY-NOTE.md%s.\n' "$BT" "$BT" > "$scratch/research/NOTE.md"
+    : > "$scratch/code/docs/CONTEXT.md"
+    cd "$scratch" && git init -q . || exit 3
+    bash code/src/scripts/audits/doc-references.sh --path GAPS.md 2>&1
+    bash code/src/scripts/audits/doc-references.sh --path research 2>&1
+    true                                     # the scans exit 1 by design; the text is the result
+  )"
+  if [ "${out#*"GAPS.md:1  [instance citation]"}" != "$out" ]; then
+    st_fail "QA-F05 downstream: GAPS.md is not known to be seeded without the contract file"
+  elif [ "${out#*"research/CONTEXT.md:1  [dangling path]"}" = "$out" ]; then
+    st_fail "QA-F05 downstream: research/CONTEXT.md is exempt — the re-include is lost downstream"
+  elif [ "${out#*research/NOTE.md}" != "$out" ]; then
+    st_fail "QA-F05 downstream: a research note was scanned — the tree exemption is lost downstream"
+  else
+    log "  ✓ QA-F05 downstream: GAPS.md seeded, research/CONTEXT.md policed, the note exempt"
+  fi
+  # RED — QA-F05: the shipped facts are DERIVED, and a stale copy is detected rather than trusted.
+  if ! st_needs_contract "QA-F05 the shipping facts are derived"; then
+    :
+  elif st_probes=$((st_probes + 1)); (
+    tmp="$(mktemp "${TMPDIR:-/tmp}/doc-references-qaf05s.XXXXXXXX")" || exit 3
+    trap 'rm -f -- "$tmp"' EXIT
+    shipping_derive > "$tmp" || exit 1
+    shipping_stale "$tmp" && exit 1          # an exact derivation is not stale
+    sed -i.bak '$d' "$tmp" && rm -f -- "$tmp.bak"
+    shipping_stale "$tmp" || exit 1          # one row short is stale
+    exit 0
+  ); then
+    log "  ✓ QA-F05 the shipping facts are derived, and one row of drift is caught"
+  else
+    st_fail "QA-F05: shipping_derive / shipping_stale missing, or drift went undetected"
+  fi
+  # GUARD — QA-F05: the committed facts file is the derivation of the contract it ships beside.
+  if ! st_needs_contract "QA-F05 the committed shipping facts match the contract"; then
+    :
+  elif st_probes=$((st_probes + 1)); shipping_stale "$SHIPPING_FILE" 2>/dev/null; then
+    st_fail "QA-F05: $SHIPPING_FILE is stale against the contract — run --write-shipping"
+  else
+    log "  ✓ QA-F05 the committed shipping facts match the contract (GUARD)"
+  fi
+
+  # QA-F06 is a citation repair, not a detector change: proven by the downstream run, not here.
+
+  # QA-F07 — the date placeholder no longer hides a concrete instance before it.
+  log ""
+  log "  US004 QA-F07 — a concrete instance name carrying the date placeholder still fires:"
+  # RED — QA-F07.
+  # CHANGED 06/11/2026 (US004 H-03): 2 -> 4, the fixture now carries the two path forms too.
+  st_probe "QA-F07 broken/date-instance.md fires on US042 and ADR-US042 under a placeholder date" \
+    "$FIXTURES_DIR/broken/date-instance.md" 4 "instance citation | ${BT}US042-DD-MM-YYYY${BT}"
+  # GUARD — QA-F07: the zero-index and placeholder-throughout names stay patterns.
+  st_probe "QA-F07 clean/date-instance.md silent on zero-index and placeholder names (GUARD)" \
+    "$FIXTURES_DIR/clean/date-instance.md" 0
+
+  # QA-F08 — a citation into an excluded tree is a finding whether or not its target exists.
+  log ""
+  log "  US004 QA-F08 — Direction B does not depend on the target being present:"
+  # RED — QA-F08.
+  st_needs_contract "QA-F08 broken/direction-b-absent.md" \
+    && st_probe "QA-F08 broken/direction-b-absent.md fires on two absent excluded-tree targets" \
+    "$FIXTURES_DIR/broken/direction-b-absent.md" 2 \
+    "template-only citation | ${BT}research/NO-SUCH-FIXTURE-ONLY-NOTE.md${BT}"
+  # GUARD — QA-F08: both markers still answer it.
+  st_probe "QA-F08 clean/direction-b-absent.md silent under template-only and ignore (GUARD)" \
+    "$FIXTURES_DIR/clean/direction-b-absent.md" 0
+
+  # GAPS-REL — a file-relative Markdown link target is a citation, and so is a bare token whose
+  # leading folder sits beside its citer.
+  log ""
+  log "  US004 GAPS-REL — file-relative link targets and bare file-relative tokens are tested:"
+  # RED — GAPS-REL: three dead link targets and one bare token.
+  # CHANGED 06/11/2026 (US004 H-02 / REV-03): 4 -> 9. The fixture gained a parenthesised target,
+  # a link after a nested fence closes, a list continuation, and two targets written both ways.
+  st_probe "GAPS-REL broken/link-relative.md fires on every dead link and the bare token, once each" \
+    "$FIXTURES_DIR/broken/link-relative.md" 9 \
+    "dangling link | ${BT}rel/NO-SUCH-FIXTURE-ONLY-LINK.md${BT}"
+  st_has_probe "GAPS-REL the bare file-relative token is reported" \
+    "$FIXTURES_DIR/broken/link-relative.md" "dangling path | ${BT}rel/NO-SUCH-FIXTURE-ONLY-BARE.md${BT}"
+  # GUARD — GAPS-REL: live links, URLs, mail, fragments, patterns and the marker stay silent.
+  st_probe "GAPS-REL clean/link-relative.md silent on live and non-file link targets (GUARD)" \
+    "$FIXTURES_DIR/clean/link-relative.md" 0
+}
+
+# ── US004 review round (06/11/2026) — REV-01..04 and H-01..10 ───────────────────────────────
+# One probe set per reproduced finding, tagged RED (fails against the detector before this round,
+# and must) or GUARD. The probes needing the copier contract go through st_needs_contract().
+st_review_round_probes() {
+  local BT=$'\x60' out err
+
+  log ""
+  log "  US004 REV-01 / H-01 — a Markdown link answers Direction B and Check 2 as a token does:"
+  if st_needs_contract "REV-01 broken/link-direction-b.md"; then
+    # RED — REV-01 / H-01: present and absent excluded targets, a linked instance, one duplicate.
+    st_probe "REV-01 broken/link-direction-b.md fires on five linked citations, once each" \
+      "$FIXTURES_DIR/broken/link-direction-b.md" 5 \
+      "template-only citation | ${BT}../../../../../../../research/AI-HOST-CONFIG-CONVENTIONS.md${BT}"
+    st_has_probe "H-01 a linked story instance is an instance citation" \
+      "$FIXTURES_DIR/broken/link-direction-b.md" "instance citation | ${BT}US042.md${BT}"
+    st_has_probe "H-01 an absent linked note in an excluded tree is template-only" \
+      "$FIXTURES_DIR/broken/link-direction-b.md" \
+      "template-only citation | ${BT}../../../../../../../research/NO-SUCH-FIXTURE-ONLY-LINKED-NOTE.md${BT}"
+    # GUARD — both markers answer it; the re-included pair and the regenerated lock are no finding.
+    st_probe "REV-01 clean/link-direction-b.md silent under the markers and on what ships (GUARD)" \
+      "$FIXTURES_DIR/clean/link-direction-b.md" 0
+  fi
+
+  log ""
+  log "  US004 REV-02 — the guards a mutation run deleted without a red:"
+  # GUARD — REV-02: is_excluded_by_rule() leaves a seeded path and the regenerated lock out.
+  if st_needs_contract "REV-02 is_excluded_by_rule seeded and uv.lock guards"; then
+    st_probes=$((st_probes + 1))
+    if is_excluded_by_rule "project-management/src/01-FEATURE-MAPS/NO-SUCH-FIXTURE-ONLY-MAP.md" \
+       && ! SEEDED="project-management/src/01-FEATURE-MAPS/NO-SUCH-FIXTURE-ONLY-MAP.md" \
+            is_excluded_by_rule "project-management/src/01-FEATURE-MAPS/NO-SUCH-FIXTURE-ONLY-MAP.md" \
+       && ! is_excluded_by_rule "uv.lock"; then
+      log "  ✓ REV-02 a seeded path and uv.lock are not excluded by rule; a plain map is"
+    else
+      st_fail "REV-02: is_excluded_by_rule answered a seeded path, uv.lock or a plain map the wrong way"
+    fi
+  fi
+  # RED — REV-02: the ordinary run reports a stale facts file as exactly one [shipping facts].
+  st_probes=$((st_probes + 1))
+  out="$(
+    scratch="$(mktemp -d "${TMPDIR:-/tmp}/doc-references-rev02.XXXXXXXX")" || exit 3
+    trap 'rm -rf -- "$scratch"' EXIT
+    mkdir -p "$scratch/code/src/scripts/audits" "$scratch/.copier" "$scratch/docs" || exit 3
+    cp -- "$SCRIPT_DIR/doc-references.sh" "$scratch/code/src/scripts/audits/" || exit 3
+    printf '# stale\n' > "$scratch/code/src/scripts/audits/doc-references-shipping.txt"
+    printf '_exclude:\n  - /copier.yml\n  - /research/**\n  - "!/research/CONTEXT.md"\n' > "$scratch/copier.yml"
+    printf 'code/\n' > "$scratch/.gitignore"
+    printf '# docs\n' > "$scratch/docs/GUIDE.md"
+    cd "$scratch" && git init -q . || exit 3
+    bash code/src/scripts/audits/doc-references.sh 2>&1
+    true
+  )"
+  case "$out" in
+    *"1 citation(s) do not resolve."*"[shipping facts]"*|*"[shipping facts]"*"1 citation(s) do not resolve."*)
+      log "  ✓ REV-02 a stale facts file is one [shipping facts] finding in an ordinary run" ;;
+    *) st_fail "REV-02: the ordinary run did not report the stale facts file as one [shipping facts]" ;;
+  esac
+
+  # GUARD — REV-02: a seeded link target is no dead link; unseeded, the same file reports it.
+  local st_saved_seeded_rev="$SEEDED"
+  SEEDED="$SEEDED
+code/docs/NO-SUCH-FIXTURE-ONLY-SEEDED-LINK.md"
+  st_probe "REV-02 clean/link-seeded.md silent on a seeded link target (GUARD)" \
+    "$FIXTURES_DIR/clean/link-seeded.md" 0
+  SEEDED="$st_saved_seeded_rev"
+  st_probe "REV-02 clean/link-seeded.md unseeded reports the dead link (GUARD)" \
+    "$FIXTURES_DIR/clean/link-seeded.md" 1 "dangling link"
+  # GUARD — H-02: a dead link in an indented code block is an example.
+  st_probe "H-02 clean/link-indented.md silent on an indented code block (GUARD)" \
+    "$FIXTURES_DIR/clean/link-indented.md" 0
+
+  log ""
+  log "  US004 H-03 / H-04 — the dated forms:"
+  # RED — H-03: the path form of a dated instance is read as the bare form is.
+  st_probe "H-03 broken/date-instance.md fires on the bare and the path form" \
+    "$FIXTURES_DIR/broken/date-instance.md" 4 \
+    "instance citation | ${BT}project-management/src/15-DECISIONS/ADR-US042-FIXTURE-ONLY-DD-MM-YYYY.md${BT}"
+  # RED — H-04: a dated guide outside the four record families keeps Check 2.
+  st_probe "H-04 broken/GUIDE-FIXTURE-ONLY-05-11-2026.md still fires on its story" \
+    "$FIXTURES_DIR/broken/GUIDE-FIXTURE-ONLY-05-11-2026.md" 1 "instance citation | ${BT}US042${BT}"
+  st_citer_probe "H-04 MIGRATION-GUIDE-01-01-2026.md is NOT an instance citer      " \
+    "MIGRATION-GUIDE-01-01-2026.md" no
+
+  log ""
+  log "  US004 H-05 — a root file copier excludes, slashless or ./, present or absent:"
+  if st_needs_contract "H-05 broken/direction-b-root.md"; then
+    # RED — H-05: the contract's dot-slash spelling (present) fires. With no rule naming the root note, its `./`
+    # spelling is an ordinary dead path and its slashless one no path at all.
+    st_probe "H-05 broken/direction-b-root.md fires on ./copier.yml with no root rule added" \
+      "$FIXTURES_DIR/broken/direction-b-root.md" 2 "template-only citation | ${BT}./copier.yml${BT}"
+    # RED — H-05: once a rule names the absent root note, both its spellings are template-only.
+    EXCL_ANCHORED+=("NO-SUCH-FIXTURE-ONLY-ROOT-NOTE.md")
+    EXCL_ROOT_LIT["NO-SUCH-FIXTURE-ONLY-ROOT-NOTE.md"]=1
+    st_probe "H-05 broken/direction-b-root.md fires on both spellings of an absent excluded root file" \
+      "$FIXTURES_DIR/broken/direction-b-root.md" 3 \
+      "template-only citation | ${BT}NO-SUCH-FIXTURE-ONLY-ROOT-NOTE.md${BT}"
+    unset 'EXCL_ANCHORED[${#EXCL_ANCHORED[@]}-1]'
+    unset 'EXCL_ROOT_LIT[NO-SUCH-FIXTURE-ONLY-ROOT-NOTE.md]'
+  fi
+
+  log ""
+  log "  US004 H-06 — the _exclude parse, and which tree is the template:"
+  # RED — H-06(a): a single-quoted negation is read, and an unclassifiable entry is named.
+  if ! st_needs_contract "H-06(a) the _exclude parse"; then
+    :
+  elif st_probes=$((st_probes + 1)); (
+    tmp="$(mktemp "${TMPDIR:-/tmp}/doc-references-h06.XXXXXXXX")" || exit 3
+    trap 'rm -f -- "$tmp"' EXIT
+    SHIPPING_CONTRACT="$tmp"
+    printf "_exclude:\n  - /research/**\n  - '!/research/CLAUDE.md'\n" > "$tmp"
+    [ "$(exclude_entries | grep -c '^N research/CLAUDE.md$')" = 1 ] || exit 1
+    [ -z "$(exclude_fault)" ] || exit 1
+    printf "_exclude:\n  - /research/**\n  - '!research/CLAUDE.md'\n" > "$tmp"
+    [ -n "$(exclude_fault)" ] || exit 1
+    printf "_exclude: [/research]\n" > "$tmp"
+    [ -n "$(exclude_fault)" ] || exit 1
+    exit 0
+  ); then
+    log "  ✓ H-06 a single-quoted negation is parsed, and an unclassifiable entry is named"
+  else
+    st_fail "H-06: a single-quoted negation was dropped, or an unclassifiable entry went unnamed"
+  fi
+  # RED — H-06(b): a generated project's own copier.yml is not the template's contract, and the
+  # remedy text there never points at --write-shipping (H-10).
+  st_probes=$((st_probes + 1))
+  out="$(
+    scratch="$(mktemp -d "${TMPDIR:-/tmp}/doc-references-h06b.XXXXXXXX")" || exit 3
+    trap 'rm -rf -- "$scratch"' EXIT
+    mkdir -p "$scratch/code/src/scripts/audits" || exit 3
+    cp -- "$SCRIPT_DIR/doc-references.sh" "$scratch/code/src/scripts/audits/" || exit 3
+    cp -- "$SCRIPT_DIR/doc-references-shipping.txt" "$scratch/code/src/scripts/audits/" 2>/dev/null || true
+    printf '_exclude:\n  - /node_modules\n' > "$scratch/copier.yml"
+    printf 'Cites %sUS042.md%s and %sdocs/NO-SUCH-FIXTURE-ONLY.md%s.\n' "$BT" "$BT" "$BT" "$BT" > "$scratch/GAPS.md"
+    printf 'Cites %sUS042%s.\n' "$BT" "$BT" > "$scratch/GUIDE.md"
+    cd "$scratch" && git init -q . || exit 3
+    bash code/src/scripts/audits/doc-references.sh --path GAPS.md 2>&1
+    bash code/src/scripts/audits/doc-references.sh --path GUIDE.md 2>&1
+    true
+  )"
+  if [ "${out#*"GAPS.md:1  [instance citation]"}" != "$out" ]; then
+    st_fail "H-06(b): a downstream copier.yml displaced the shipped facts -- GAPS.md lost its seed"
+  elif [ "${out#*"read from the facts file"}" = "$out" ]; then
+    st_fail "H-06(b): the facts file was not the source in a tree with no .copier/"
+  elif [ "${out#*"--write-shipping"}" != "$out" ]; then
+    st_fail "H-10: a downstream run printed the --write-shipping remedy"
+  elif [ "${out#*"GUIDE.md:1  [instance citation]"}" = "$out" ] || [ "${out#*"Rule: a shipped file"}" = "$out" ]; then
+    st_fail "H-10: the instance citation, or its own remedy, was not printed"
+  else
+    log "  ✓ H-06(b) / H-10 a project's own copier.yml is not the contract, and only its remedies print"
+  fi
+
+  log ""
+  log "  US004 H-07 / H-08 — a hyphen-led token, and the remaining anchor forms:"
+  # RED — H-07: a citation opening with `-` reaches grep as a pattern, never as an option.
+  st_probes=$((st_probes + 1))
+  err="$( { scan_files "$FIXTURES_DIR/clean/css-token.md" >/dev/null; } 2>&1 )"
+  if [ -n "$err" ]; then
+    st_fail "H-07 clean/css-token.md wrote to stderr: ${err%%$'\n'*}"
+  else
+    log "  ✓ H-07 clean/css-token.md writes nothing to stderr"
+  fi
+  st_probe "H-07 clean/css-token.md is silent (GUARD)" "$FIXTURES_DIR/clean/css-token.md" 0
+  # RED — H-08 rides on clean/anchor-forms.md (QA-F03 above): `:L12`, a trailing comma, `?query`.
+}
+
+# A probe that reads the copier contract cannot run in a generated project, which receives none
+# (US004 REV-04 / F-012). It is named and counted as not run, and a self-test that skipped any
+# exits 2 rather than reporting a proof it did not make (code/docs/GATE-REPORTING.md).
+st_skipped=0
+st_needs_contract() { # label
+  has_contract && return 0
+  st_skipped=$((st_skipped + 1))
+  log "  - not run: $1 (needs the copier contract, absent here)"
+  return 1
+}
+
 self_test() {
   bold "▸ doc-references.sh --self-test"
   log ""
@@ -1466,7 +2256,8 @@ self_test() {
     "$FIXTURES_DIR/broken/django-arm.md" 2 'no_such_app/views.py'
   # Check 3, isolated: every path in that fixture RESOLVES here, so Check 1 passes on all of
   # them and a finding can only have come from the Direction B clause.
-  st_probe "broken/direction-b.md  fires on an undeclared excluded path, bare and anchored" \
+  st_needs_contract "broken/direction-b.md" \
+    && st_probe "broken/direction-b.md  fires on an undeclared excluded path, bare and anchored" \
     "$FIXTURES_DIR/broken/direction-b.md" 3 'copier.yml:41-42'
   # Check 4, in the direction that had no detector at all until 08/09/2026. Five forms, and the
   # PATH ones are the reason the clause exists: Check 2 is anchored and cannot see them, Check 1
@@ -1493,7 +2284,8 @@ self_test() {
     "$FIXTURES_DIR/clean/django-arm.md" 0
   # Both markers suppress Check 3, and the three classes that need no marker stay silent:
   # surface-gated, seeded, regenerated, and re-included inside an excluded tree.
-  st_probe "clean/direction-b.md   silent on both markers, anchored or bare, and the four classes" \
+  st_needs_contract "clean/direction-b.md" \
+    && st_probe "clean/direction-b.md   silent on both markers, anchored or bare, and the four classes" \
     "$FIXTURES_DIR/clean/direction-b.md" 0
   # The other half of Check 4, and the half a naming rule gets wrong most easily: the prose that
   # DESCRIBES the pattern must never read as an instance of it. Four spellings of the
@@ -1515,10 +2307,12 @@ self_test() {
   }
   log ""
   log "  the derived set — forty paths, parsed from copier.yml rather than listed:"
-  st_set_probe "anchored entry is in the set          " "copier.yml"                          yes
-  st_set_probe "surface-gated entry is NOT            " "code/docs/RUST.md"                    no
-  st_set_probe "excluded-and-seeded entry is NOT      " "CHANGELOG.md"                         no
-  st_set_probe "re-included pair file is NOT          " "project-management/src/CONTEXT.md"    no
+  if st_needs_contract "the derived set, four rows"; then
+    st_set_probe "anchored entry is in the set          " "copier.yml"                          yes
+    st_set_probe "surface-gated entry is NOT            " "code/docs/RUST.md"                    no
+    st_set_probe "excluded-and-seeded entry is NOT      " "CHANGELOG.md"                         no
+    st_set_probe "re-included pair file is NOT          " "project-management/src/CONTEXT.md"    no
+  fi
 
   # ── US004 — failing proofs written at the Red phase, one per repair ─────────
   # Story plan: project-management/src/17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md
@@ -1569,63 +2363,67 @@ self_test() {
   # (QA ES-03, manual SELFTEST-01).
   log ""
   log "  US004 P2 — an untracked file under an excluded tree is in the derived set:"
-  # P9-F9 / QA-US004-11 (phase 9, 05/11/2026). A SIGKILL or a crashed shell runs no trap, so a
-  # killed earlier run leaves its probe file behind; P2 sweeps the stale ones before it starts.
-  # One is planted here exactly as a killed run leaves it, under the same name pattern, and
-  # asserted gone once P2 has run. The plant carries its own trap until that assertion.
-  local st_p9_stale
-  st_p9_stale="$(mktemp "research/us004-p2-probe.XXXXXXXX")" \
-    || die "P9-F9 probe: could not plant a stale probe file under research/"
-  trap 'rm -f -- "$st_p9_stale"' EXIT
-  trap 'exit 130' INT
-  trap 'exit 143' TERM
-  # P2 runs in a subshell that creates the probe, holds the trap and exits, and it hands the
-  # probe's name back on its first line. CHANGED 05/11/2026 (P9-QA-US004-11): the GUARD below
-  # used to follow an unconditional `rm -f` in this same shell, so it could never fail. It now
-  # asserts from the parent, after the shell holding the trap has gone, that the trap removed it.
-  st_probes=$((st_probes + 1))
-  local st_p2_out st_p2_rc st_p2_probe
-  st_p2_out="$(
-    # P9-F9: sweep what a killed earlier run left, before this run makes its own probe. Only
-    # this pattern, only under research/, and only untracked files ever carry it.
-    rm -f -- research/us004-p2-probe.*
-    ST_P2_PROBE="$(mktemp "research/us004-p2-probe.XXXXXXXX")" || exit 3
-    trap 'rm -f -- "$ST_P2_PROBE"' EXIT
+  # The derived set needs the copier contract (US004 REV-04): downstream this block is not run.
+  if st_needs_contract "P2 / P9-F9 the untracked-population probes"; then
+    # P9-F9 / QA-US004-11 (phase 9, 05/11/2026). A SIGKILL or a crashed shell runs no trap, so a
+    # killed earlier run leaves its probe file behind; P2 sweeps the stale ones before it starts.
+    # One is planted here exactly as a killed run leaves it, under the same name pattern, and
+    # asserted gone once P2 has run. The plant carries its own trap until that assertion.
+    # Global, not local (US004 REV-04): the EXIT trap below outlives this function when the run
+    # ends early, and under `set -u` a local gone out of scope aborted it on an unbound variable.
+    st_p9_stale="$(mktemp "research/us004-p2-probe.XXXXXXXX")" \
+      || die "P9-F9 probe: could not plant a stale probe file under research/"
+    trap 'rm -f -- "${st_p9_stale:-}"' EXIT
     trap 'exit 130' INT
     trap 'exit 143' TERM
-    printf '%s\n' "$ST_P2_PROBE"
-    build_template_only; build_template_only_index
-    is_template_only "$ST_P2_PROBE" && exit 0
-    exit 1
-  )"
-  st_p2_rc=$?
-  st_p2_probe="${st_p2_out%%$'\n'*}"
-  # RED — P2, QA AC-GAP-8 / ES-03, story plan P2.
-  case "$st_p2_rc" in
-    0) log "  ✓ P2 AC-GAP-8 an untracked excluded file is template-only after a rebuild" ;;
-    3) st_fail "P2 AC-GAP-8: could not create a temporary file under research/" ;;
-    *) st_fail "P2 AC-GAP-8: is_template_only $st_p2_probe answered no after both builders re-ran" \
-         "— the derived set still reads the git index alone" ;;
-  esac
-  # GUARD — P2, QA ES-03, P9-QA-US004-11: the probe leaves nothing behind in the working tree.
-  st_probes=$((st_probes + 1))
-  if [ -z "$st_p2_probe" ]; then
-    st_fail "P2 ES-03: the P2 subshell reported no probe name, so its removal cannot be asserted"
-  elif [ -e "$st_p2_probe" ]; then
-    st_fail "P2 ES-03: the probe file $st_p2_probe survived the shell whose trap owned it"
-    rm -f -- "$st_p2_probe"
-  else
-    log "  ✓ P2 ES-03 the probe file is gone once its shell has exited (GUARD)"
+    # P2 runs in a subshell that creates the probe, holds the trap and exits, and it hands the
+    # probe's name back on its first line. CHANGED 05/11/2026 (P9-QA-US004-11): the GUARD below
+    # used to follow an unconditional `rm -f` in this same shell, so it could never fail. It now
+    # asserts from the parent, after the shell holding the trap has gone, that the trap removed it.
+    st_probes=$((st_probes + 1))
+    local st_p2_out st_p2_rc st_p2_probe
+    st_p2_rc=0
+    st_p2_out="$(
+      # P9-F9: sweep what a killed earlier run left, before this run makes its own probe. Only
+      # this pattern, only under research/, and only untracked files ever carry it.
+      rm -f -- research/us004-p2-probe.*
+      ST_P2_PROBE="$(mktemp "research/us004-p2-probe.XXXXXXXX")" || exit 3
+      trap 'rm -f -- "$ST_P2_PROBE"' EXIT
+      trap 'exit 130' INT
+      trap 'exit 143' TERM
+      printf '%s\n' "$ST_P2_PROBE"
+      build_template_only; build_template_only_index
+      is_template_only "$ST_P2_PROBE" && exit 0
+      exit 1
+    )" || st_p2_rc=$?
+    st_p2_probe="${st_p2_out%%$'\n'*}"
+    # RED — P2, QA AC-GAP-8 / ES-03, story plan P2.
+    case "$st_p2_rc" in
+      0) log "  ✓ P2 AC-GAP-8 an untracked excluded file is template-only after a rebuild" ;;
+      3) st_fail "P2 AC-GAP-8: could not create a temporary file under research/" ;;
+      *) st_fail "P2 AC-GAP-8: is_template_only $st_p2_probe answered no after both builders re-ran" \
+           "— the derived set still reads the git index alone" ;;
+    esac
+    # GUARD — P2, QA ES-03, P9-QA-US004-11: the probe leaves nothing behind in the working tree.
+    st_probes=$((st_probes + 1))
+    if [ -z "$st_p2_probe" ]; then
+      st_fail "P2 ES-03: the P2 subshell reported no probe name, so its removal cannot be asserted"
+    elif [ -e "$st_p2_probe" ]; then
+      st_fail "P2 ES-03: the probe file $st_p2_probe survived the shell whose trap owned it"
+      rm -f -- "$st_p2_probe"
+    else
+      log "  ✓ P2 ES-03 the probe file is gone once its shell has exited (GUARD)"
+    fi
+    # RED — P9-F9: the stale probe planted above is swept by P2.
+    st_probes=$((st_probes + 1))
+    if [ -e "$st_p9_stale" ]; then
+      st_fail "P9-F9: a stale probe file a killed run left ($st_p9_stale) survived P2 — no sweep"
+    else
+      log "  ✓ P9-F9 P2 sweeps a stale probe file a killed earlier run left behind"
+    fi
+    rm -f -- "$st_p9_stale"
+    trap - EXIT INT TERM
   fi
-  # RED — P9-F9: the stale probe planted above is swept by P2.
-  st_probes=$((st_probes + 1))
-  if [ -e "$st_p9_stale" ]; then
-    st_fail "P9-F9: a stale probe file a killed run left ($st_p9_stale) survived P2 — no sweep"
-  else
-    log "  ✓ P9-F9 P2 sweeps a stale probe file a killed earlier run left behind"
-  fi
-  rm -f -- "$st_p9_stale"
-  trap - EXIT INT TERM
 
   # P3 — Check 2 asks whether the CITING FILE is an instance artefact, read from its name, and
   # never consults is_template_only() (ADR-US004-INSTANCE-ARTEFACT-CITER-TEST, AC-GAP-4/5). The
@@ -1888,9 +2686,9 @@ $st_r4"
   fi
   SEEDED="$st_saved_seeded"
   # GUARD — R4: the identical citer NOT seeded still reports all three.
-  st_probes=$((st_probes + 1))
-  scan_files "$st_r4"
-  if [ "$violations" -ne 3 ]; then
+  if ! st_needs_contract "R4 unseeded broken/seeded-citer.md"; then
+    :
+  elif st_probes=$((st_probes + 1)); scan_files "$st_r4"; [ "$violations" -ne 3 ]; then
     st_fail "R4 unseeded broken/seeded-citer.md: expected 3 finding(s), got $violations"
   elif [ "${report#*"$st_r4_inst"}" = "$report" ]; then
     st_fail "R4 unseeded broken/seeded-citer.md: no instance citation of the US042 sibling"
@@ -1904,6 +2702,12 @@ $st_r4"
 
   # ── US004 phase 9 — failing proofs for the confirmed review and QA findings ─
   st_phase9_probes
+
+  # ── US004 QA round — failing proofs for the QA and review items of 06/11/2026 ─
+  st_qa_round_probes
+
+  # ── US004 review round — failing proofs for REV-01..04 and H-01..10 of 06/11/2026 ─
+  st_review_round_probes
 
   log ""
   # The fixtures must stay invisible to an ordinary run, or this proof reddens the gate it
@@ -1927,6 +2731,12 @@ $st_r4"
   SELF_TEST=true
 
   log ""
+  if [ "$st_fails" -eq 0 ] && [ "$st_skipped" -gt 0 ]; then
+    bold "? Self-test NOT RUN in full — $st_skipped probe set(s) need the copier contract, absent here."
+    log "  The $st_probes that ran passed. A generated project receives no copier.yml, so the"
+    log "  Direction B set and the contract parse are proven in the template, never here."
+    return 2
+  fi
   if [ "$st_fails" -eq 0 ]; then
     bold "✓ Self-test passed — $st_probes probes over the five clauses added 20/08–08/09/2026"
     log "  and the US004 repairs of 05/11/2026 (exemption, population, citer, artefact tree)."
@@ -1944,6 +2754,16 @@ if $SELF_TEST; then
   exit $?
 fi
 
+# The one writer of the shipped facts file (US004 QA-F05). It needs the contract to derive from,
+# so a generated project -- which reads the file and has nothing to regenerate it from -- is
+# refused at exit 2 rather than handed an empty file.
+if $WRITE_SHIPPING; then
+  has_contract || die "--write-shipping needs the copier contract, absent here: the facts file is regenerated in the template, never downstream"
+  shipping_derive > "$SHIPPING_FILE"
+  log "Wrote $SHIPPING_FILE from the copier contract."
+  exit 0
+fi
+
 # ── Run ──────────────────────────────────────────────────────────────────────
 FILES="$(candidates)"
 # Filtered on a LITERAL prefix rather than a regex. `.claude`, `.github` and `.copier` all open
@@ -1958,17 +2778,28 @@ bold "doc-references.sh — checking citations resolve"
 
 scan_files "$FILES"
 
+# The shipped facts must be the contract's derivation (US004 QA-F05). Checked where the contract
+# exists and the scope covers the file -- unscoped, or a --path that contains it -- and reported
+# as a finding, because a stale copy is what every generated project would then be cut from.
+if has_contract \
+   && { [ -z "$TARGET_PATH" ] || [[ "$SHIPPING_FILE" == "$TARGET_PATH" || "$SHIPPING_FILE" == "$TARGET_PATH"/* ]]; } \
+   && shipping_stale "$SHIPPING_FILE"; then
+  record "$SHIPPING_FILE" 1 "shipping facts" "stale: run doc-references.sh --write-shipping"
+fi
+
 # ── Report ───────────────────────────────────────────────────────────────────
 # The count comes before the verdict, because it is what the verdict is a verdict OVER. An
 # exempt file is named separately from an absent one: the first was excluded by a rule this
 # script states, the second was never there, and only the second makes a clean run empty.
 log "  read    $scanned_files file(s); $exempt_files exempt by rule"
 log "  checked $checked_tokens backticked token(s) — $path_tests of them tested as repo paths"
+log "  tested  $link_tests Markdown link target(s) against their citing file"
 # Check 3's denominator, and it is a different KIND of number from the three above: those
 # count what this run read, this counts what it was reading AGAINST. A zero here means the
 # `_exclude` parse found nothing and every Direction B citation passed unexamined — which
 # would otherwise print as "Clean" (code/docs/GATE-REPORTING.md Section 1).
 log "  matched against $template_only_paths path(s) copier excludes unconditionally"
+log "  shipping facts read from the $SHIPPING_SOURCE"
 
 if [ "$scanned_files" -eq 0 ]; then
   # An absent surface, not an absent tool: the population is legitimately empty, so exit 0 is
@@ -1979,25 +2810,47 @@ elif [ "$violations" -eq 0 ]; then
   bold "Clean — every citation resolves."
 else
   bold "$violations citation(s) do not resolve."
-  log ""
-  log "Rule: a shipped file may cite layering-system artefacts only (CONTEXT.md,"
-  log "CLAUDE.md, docs/, workflows/, scripts, guides) and never a per-project"
-  log "instance (ADR-US###, US###, SPRINT-##, MAP-*, PLAN-*). Drop the citation, or"
-  log "point at the guide that carries the rule."
-  log ""
-  log "A [template-only citation] is the other direction: the path resolves here and"
-  log "copier excludes it, so the reader of a generated project has no such file. The"
-  log "default disposition is still to correct or drop it — reach for the marker only"
-  log "when the citation is right and merely unprovable downstream:"
-  log "  ... the contract lives in \`copier.yml\`. <!-- doc-references: template-only -->"
-  log "Rule and the difference from \`ignore\`: code/docs/FORWARD-VOICE.md Sections 1 and 4."
-  log ""
-  log "A [plan prefix] finding is neither: it is a NAMING rule, and no file has to be"
-  log "missing for it to be true. A story plan is named for its position in the settled"
-  log "build order across the whole backlog and a sprint plan likewise, so both carry a"
-  log "two-digit prefix and the citation must carry it too. That number is renumbered"
-  log "whenever build order changes — so repoint the citation at the name the plan is on"
-  log "disk under, and quote a superseded name in \"double quotes\", never in backticks."
+  # Each remedy is printed for the class that fired and no other (US004 H-10, 06/11/2026): a run
+  # holding one class read as if it held all four, and downstream it told the reader to run a
+  # --write-shipping that exits 2 there.
+  if [ -n "${class_hits[instance citation]:-}" ]; then
+    log ""
+    log "Rule: a shipped file may cite layering-system artefacts only (CONTEXT.md,"
+    log "CLAUDE.md, docs/, workflows/, scripts, guides) and never a per-project"
+    log "instance (ADR-US###, US###, SPRINT-##, MAP-*, PLAN-*). Drop the citation, or"
+    log "point at the guide that carries the rule."
+  fi
+  if [ -n "${class_hits[template-only citation]:-}" ]; then
+    log ""
+    log "A [template-only citation] is the other direction: the path resolves here and"
+    log "copier excludes it, so the reader of a generated project has no such file. The"
+    log "default disposition is still to correct or drop it — reach for the marker only"
+    log "when the citation is right and merely unprovable downstream:"
+    log "  ... the contract lives in \`copier.yml\`. <!-- doc-references: template-only -->"
+    log "Rule and the difference from \`ignore\`: code/docs/FORWARD-VOICE.md Sections 1 and 4."
+  fi
+  if [ -n "${class_hits[dangling path]:-}${class_hits[dangling link]:-}" ]; then
+    log ""
+    log "A [dangling path] or [dangling link] names a file in neither tree: correct the"
+    log "citation or drop it. A path a generated project CREATES is promised by a row in"
+    log "how-to/src/PROJECT-PATHS.md naming its creator, and a row carrying ### binds"
+    log "every story's copy of a per-story record -- but a row is written only when that"
+    log "creator exists, never to quieten a finding, and no row covers a shipped template."
+  fi
+  if [ -n "${class_hits[shipping facts]:-}" ]; then
+    log ""
+    log "A [shipping facts] finding means the shipped copy lags the copier contract: run"
+    log "doc-references.sh --write-shipping, never edit the file."
+  fi
+  if [ -n "${class_hits[plan prefix]:-}" ]; then
+    log ""
+    log "A [plan prefix] finding is a NAMING rule, and no file has to be"
+    log "missing for it to be true. A story plan is named for its position in the settled"
+    log "build order across the whole backlog and a sprint plan likewise, so both carry a"
+    log "two-digit prefix and the citation must carry it too. That number is renumbered"
+    log "whenever build order changes — so repoint the citation at the name the plan is on"
+    log "disk under, and quote a superseded name in \"double quotes\", never in backticks."
+  fi
 fi
 
 if [ -n "$OUTPUT_FORMAT" ]; then
@@ -2012,6 +2865,7 @@ if [ -n "$OUTPUT_FORMAT" ]; then
     printf 'Scope: %s\n\n' "${TARGET_PATH:-the whole repository}"
     printf 'Files scanned: %s (%s exempt by rule)\n\n' "$scanned_files" "$exempt_files"
     printf 'Backticked tokens checked: %s (%s tested as repo paths)\n\n' "$checked_tokens" "$path_tests"
+    printf 'Markdown link targets tested: %s\n\n' "$link_tests"
     printf 'Unconditionally excluded paths matched against: %s\n\n' "$template_only_paths"
     printf 'Violations: %s\n\n' "$violations"
     if [ "$scanned_files" -eq 0 ]; then

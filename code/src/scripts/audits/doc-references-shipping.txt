@@ -1,0 +1,46 @@
+# doc-references-shipping.txt -- what copier seeds and lifts back out, for doc-references.sh.
+#
+# GENERATED from the copier contract by: bash code/src/scripts/audits/doc-references.sh --write-shipping
+# Never hand-edit it. The contract is the one place a human edits; the template's ordinary run
+# fails while this file and the contract disagree. It ships so a generated project, which
+# receives no contract, reads the same two facts. Rule: code/docs/FORWARD-VOICE.md Section 7.
+#
+seeded README.md
+seeded VERSION
+seeded VERSION-HISTORY.md
+seeded CHANGELOG.md
+seeded RELEASES.md
+seeded project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md
+seeded .claude/MEMORY.md
+seeded GAPS.md
+seeded DEFERRED.md
+seeded project-management/src/01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md
+seeded project-management/src/02-STORIES/STORIES-BOARD.md
+seeded project-management/src/03-SPRINTS/SPRINTS-BOARD.md
+seeded project-management/src/16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md
+seeded project-management/src/17-STORY-PLANS/STORY-PLANS-BOARD.md
+seeded project-management/src/02-STORIES/CUT-PLAN.md
+ships research/CONTEXT.md
+ships research/CLAUDE.md
+ships handoffs/CONTEXT.md
+ships handoffs/CLAUDE.md
+ships learning/CONTEXT.md
+ships learning/CLAUDE.md
+ships project-management/src/**/CONTEXT.md
+ships project-management/src/**/CLAUDE.md
+ships project-management/src/**/*-TEMPLATE.*
+ships project-management/src/00-ASSETS/scripts/*.sh
+ships project-management/src/06-BRAND-GUIDE/guide-build/*.py
+ships project-management/src/06-BRAND-GUIDE/guide-build/*.tex
+ships project-management/src/07-COMPONENTS/component-build/*.py
+ships project-management/src/07-COMPONENTS/component-build/*.tex
+ships project-management/src/08-WIREFRAMES/SHARED/wireframe.css
+ships project-management/src/09-GDPR/BREACH-NOTIFICATION.md
+ships project-management/src/09-GDPR/CONSENT-LAWFUL-BASIS.md
+ships project-management/src/09-GDPR/DATA-INVENTORY.md
+ships project-management/src/09-GDPR/DATA-SUBJECT-RIGHTS.md
+ships project-management/src/09-GDPR/RETENTION-DELETION.md
+ships project-management/src/09-GDPR/THIRD-PARTY-PROCESSORS.md
+ships project-management/src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md
+ships project-management/src/18-TESTS/AUTOMATED/US000-TEST-STATUS.md
+ships project-management/src/23-INCIDENTS/INCIDENT-INDEX.md

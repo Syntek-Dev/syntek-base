@@ -716,6 +716,10 @@ restating it. No map or story claims this entry.
 
 ## 05/11/2026 — the citation gate's self-test cannot pass in a generated project
 
+✅ CLOSED 06/11/2026 — fixed in the US004 review round on Sam's instruction (finding F-022 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): the
+probes needing the copier contract are named as not run and `--self-test` exits 2 downstream.
+
 **Type:** Active gap
 **Summary:** `code/src/scripts/audits/doc-references.sh` and its fixtures ship, but `copier.yml`
 does not, so in a generated project the derived excluded-path set and the seeded list are both
@@ -729,6 +733,20 @@ detector were wrong, nor pass having measured nothing.
 because it predates that story and the shape of a shipped self-test deserves its own grilling:
 which probes need `copier.yml`, whether they skip with a printed list and exit 2, and whether the
 rest still run. Cut as a story through `02-story-creation`.
+
+---
+
+## 06/11/2026 — the citation gate reads any token holding `NN` as a placeholder
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` treats a token containing the letters
+`NN` anywhere as a naming placeholder and never tests it, so every `PLANNING/` path and names
+such as `MAP-SCALE-PLANNING.md` pass unexamined — 213 distinct path tokens in tracked Markdown and
+shell on 06/11/2026. Found in the US004 review round (finding F-021 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md").
+**Blocked by / Action:** Nothing blocks it. Narrow the arm to `NN` as a placeholder segment, then
+triage what the gate reports. Not fixed in US004 because it changes the verdict on tokens outside
+the review's findings; cut as a story through `02-story-creation`.
 
 ---
 
@@ -859,6 +877,12 @@ entry.
 ---
 
 ## 05/11/2026 — `doc-references.sh` does not test file-relative Markdown link targets
+
+✅ CLOSED 06/11/2026 — fixed in US004's workflow 23 fix rounds (findings F-035 and F-037 to F-040 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): every
+`[text](target)` is resolved against its citing file and a dead one reports `[dangling link]`, and a
+bare token whose leading folder sits beside the citer is tested there. The reproduction, a
+`code/docs/` file citing a missing `data-structures/` file both ways, now reports both.
 
 **Type:** Active gap
 **Summary:** `code/src/scripts/audits/doc-references.sh` catches a dangling repo-rooted citation

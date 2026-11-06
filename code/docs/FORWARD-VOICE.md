@@ -172,14 +172,27 @@ believed on its own.
 
 ## 7. Where each half lives
 
-| Fact                                            | Owner                                                                                       |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| The rule, the two directions, the token grammar | This file                                                                                   |
-| This project's registered paths and creators    | `how-to/src/PROJECT-PATHS.md`                                                               |
-| The clauses, exemptions and the `--self-test`   | `code/src/scripts/audits/doc-references.sh`                                                 |
-| Which paths are excluded, and conditionally     | `copier.yml` → `_exclude`, parsed and never restated <!-- doc-references: template-only --> |
-| What a gate may claim it looked at              | `code/docs/GATE-REPORTING.md`                                                               |
-| The `CONTEXT.md` / `CLAUDE.md` split            | `code/docs/DOCUMENTATION-PAIRING.md`                                                        |
+| Fact                                             | Owner                                                                                       |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| The rule, the two directions, the token grammar  | This file                                                                                   |
+| This project's registered paths and creators     | `how-to/src/PROJECT-PATHS.md`                                                               |
+| The clauses, exemptions and the `--self-test`    | `code/src/scripts/audits/doc-references.sh`                                                 |
+| Which paths are excluded, and conditionally      | `copier.yml` → `_exclude`, parsed and never restated <!-- doc-references: template-only --> |
+| What copier seeds and lifts back out, downstream | `code/src/scripts/audits/doc-references-shipping.txt` — generated, never hand-edited        |
+| What a gate may claim it looked at               | `code/docs/GATE-REPORTING.md`                                                               |
+| The `CONTEXT.md` / `CLAUDE.md` split             | `code/docs/DOCUMENTATION-PAIRING.md`                                                        |
+
+**One source for what ships, read in both trees.** Two facts decide whether a citing file ships:
+what copier **seeds** from `.copier/`, and what its exclusion list **lifts back out** of an excluded
+tree. The copier contract is the only place a human states either. It is excluded from every
+generated project, so the gate cannot read it there — and until 06/11/2026 a project's own
+`GAPS.md` and `.claude/MEMORY.md` were policed as shipped files for that reason. The two facts are
+therefore rendered from the contract into the shipped facts file above, by
+`doc-references.sh --write-shipping`; the template's ordinary run reports `[shipping facts]` while
+the two disagree, and a generated project reads the file. Check 3's excluded-path set is
+deliberately **not** carried: downstream it is empty by decision. The contract counts as present
+only where `.copier/` sits beside it, so a project that writes a contract file of its own still
+reads the shipped facts.
 
 ## Cross-references
 
