@@ -1,9 +1,9 @@
 # ADR-US004: The derived instance-citer rule admits the four story-less dated record families
 
-**Status:** Proposed — for <%DEVELOPER_NAME%>'s acceptance at US004's `23-pr-and-review`
+**Status:** Accepted <!-- Accepted 06/11/2026 by <%DEVELOPER_NAME%> at US004's `23-pr-and-review` (finding F-024). It read "Proposed — for <%DEVELOPER_NAME%>'s acceptance at US004's 23-pr-and-review" until then. -->
 **Date:** 06/11/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md`, on acceptance; that record's Status is flipped in the same change
+**Supersedes:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md` — its Status and Superseded by line set in the change that accepted this record, 06/11/2026
 **Superseded by:** —
 **Related:** US004
 
@@ -82,5 +82,5 @@ citer's filename, never `is_template_only()`, and the numbers are bounded.
   `INCIDENT-FIXTURE-ONLY-05-11-2026.md`, and the guard `broken/GUIDE-FIXTURE-ONLY-05-11-2026.md`
   with the `MIGRATION-GUIDE-01-01-2026.md` probe, all under
   `code/src/scripts/audits/fixtures/doc-references/`.
-- **Follow-on:** if <%DEVELOPER_NAME%> rejects this record, the clause is removed before merge
-  and the four clean fixtures with it.
+- **Follow-on:** accepted 06/11/2026, so the clause and its four clean fixtures stay. The
+  superseded record keeps its text and gains only its Status and its Superseded by line.

@@ -2,14 +2,14 @@
 
 **Last Updated**: 06/11/2026 · **Story**: US004 · **Status**: In Review
 
-| Field        | Value                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Story**    | US004 — the citation gate stops depending on the git index, and the PM tree becomes checkable                                                                                                                                                                                                                                                                                                                                                                 |
-| **Branch**   | `us004/citation-gate-git-index` (cut from `testing` at `173abff`; P1–P4 `e3d5187` red, `022f61a` green; round 2 `9abb477`, `a56ce40`; P5 `48a2501`; round 4 `53a8713`; phase 9 fixes `5c24c12`; decisions `94e7671`, `2b24ae8`, `74b9892`, `46d5c0f`)                                                                                                                                                                                                         |
-| **PR**       | Raised at `23-pr-and-review` Step 3 · target `testing`                                                                                                                                                                                                                                                                                                                                                                                                        |
-| **Reviewer** | Claude — phase 9 `code-reviewer` and `qa-tester` dispatches at `53a8713`, each finding then put to an adversarial verifier; the fix round's red, green and verify dispatches; at `23-pr-and-review`, a `code-reviewer` and a `qa-tester` pass over the branch, then a second pair over the fix diff (Section 2.5). None wrote the work it reviewed                                                                                                            |
-| **Date**     | 05/11/2026                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| **Verdict**  | Phase 9: no blocker; one major and seven minor or nit confirmed by the review, ten by QA; three rejected. Every confirmed finding fixed (16 in `5c24c12`, QA-US004-02 at `74b9892`), and QA-US004-05 too on 06/11/2026 (F-022). **The walk failed 12 rows**, 7 after Sam's rulings of 05/11/2026 and 06/11/2026 (Section 4). Workflow 23's two passes: 27 findings, every one fixed or, for DR-004, handled at the PR (Section 2.5). Final verdict: Section 5 |
+| Field        | Value                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**    | US004 — the citation gate stops depending on the git index, and the PM tree becomes checkable                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| **Branch**   | `us004/citation-gate-git-index` (cut from `testing` at `173abff`; P1–P4 `e3d5187` red, `022f61a` green; round 2 `9abb477`, `a56ce40`; P5 `48a2501`; round 4 `53a8713`; phase 9 fixes `5c24c12`; decisions `94e7671`, `2b24ae8`, `74b9892`, `46d5c0f`)                                                                                                                                                                                                                                                                                  |
+| **PR**       | Raised at `23-pr-and-review` Step 3 · target `testing`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| **Reviewer** | Claude — phase 9 `code-reviewer` and `qa-tester` dispatches at `53a8713`, each finding then put to an adversarial verifier; the fix round's red, green and verify dispatches; at `23-pr-and-review`, a `code-reviewer` and a `qa-tester` pass over the branch, then a second pair over the fix diff and a third over the F-021 round and the generation script (Section 2.5). None wrote the work it reviewed                                                                                                                          |
+| **Date**     | 05/11/2026                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| **Verdict**  | Phase 9: no blocker; one major and seven minor or nit confirmed by the review, ten by QA; three rejected. Every confirmed finding fixed (16 in `5c24c12`, QA-US004-02 at `74b9892`), and QA-US004-05 too on 06/11/2026 (F-022). **The walk failed 12 rows**, 7 after Sam's rulings of 05/11/2026 and 06/11/2026 (Section 4). Workflow 23's two passes: 27 findings, every one fixed or, for DR-004, handled at the PR; the third pair: 15 more, all but three fixed, F-051's disposition Sam's (Section 2.5). Final verdict: Section 5 |
 
 **Codes from:** `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` → _Key Decisions_
 — every row dated 05/11/2026 is Sam's: the build grilling (Q1 to Q4), round 2, round 4, the phase 9
@@ -28,17 +28,17 @@ round (Q1 to Q3) and the phase 9 fix round (Q1, Q2).
 
 A bash script, its fixtures and Markdown. No Python, template, endpoint, migration or UI.
 
-| File                                                                      | Change                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `code/src/scripts/audits/doc-references.sh`                               | 1119 → 2023 lines at the walk, 2881 after workflow 23's fix rounds (shell is exempt from the 750-line limit; F-017). One population for scan and excluded set; the scoped exemption arms, then re-includes derived from `copier.yml`; the derived citer rule; the PM arm; class registration; literal template presence; the round 2, round 4, phase 9 and workflow 23 repairs; Markdown link targets; self-test 15 → 130 → 174 probes                             |
-| `code/src/scripts/audits/fixtures/doc-references/` `broken/` and `clean/` | 10 → 63 tracked fixtures at the walk; 88 with the workflow 23 rounds' 25 new files                                                                                                                                                                                                                                                                                                                                                                                 |
-| `code/src/scripts/audits/CONTEXT.md`                                      | The `doc-references.sh` row replaced within itself at each round; the Dependencies row no longer lists `realpath`                                                                                                                                                                                                                                                                                                                                                  |
-| `code/src/scripts/audits/doc-references-shipping.txt`                     | New, generated by `--write-shipping`: the seeds and re-includes a generated project reads in place of `copier.yml` (F-027)                                                                                                                                                                                                                                                                                                                                         |
-| Workflow 23 fix rounds — Markdown                                         | `code/docs/FORWARD-VOICE.md` Section 7; `project-management/docs/git/BRANCHES-AND-WORKTREES.md:28`; workflow 22's `CHECKLIST.md`; workflow 23's `STEPS.md` Step 6 and `CHECKLIST.md`; the audits `CONTEXT.md` tree (226 → 228 counted lines)                                                                                                                                                                                                                       |
-| `how-to/src/PROJECT-PATHS.md` · `code/docs/FORWARD-VOICE.md`              | Two patterned `18-TESTS` rows and the header note; Section 3's pattern form and duty                                                                                                                                                                                                                                                                                                                                                                               |
-| P5 sweep — shipped files                                                  | `project-management/src/02-STORIES/CONTEXT.md`, `project-management/src/03-SPRINTS/CONTEXT.md`, `how-to/src/TEMPLATE-GUIDE/10-FIRST-FEATURE.md`, `project-management/docs/planning/SPRINTS.md`, `project-management/src/15-DECISIONS/CONTEXT.md`, `project-management/workflows/15-decisions/STEPS.md`, `project-management/src/00-ASSETS/scripts/pm-board.sh`, `THIRD-PARTY-NOTICES.md`, `research/CLAUDE.md`                                                     |
-| P5 sweep — PM records                                                     | Dead PM paths repaired in place, each with a dated `UPDATED` comment; `US014.md:813` respelt in full (QA-US004-02)                                                                                                                                                                                                                                                                                                                                                 |
-| Decision trail                                                            | `../15-DECISIONS/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md` accepted and the 30/09/2026 citer record superseded; the plan's _Key Decisions_; N-009's overturned claim on `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md`; the self-test-downstream `GAPS.md` entry; at workflow 23, `../15-DECISIONS/ADR-US004-INSTANCE-CITER-ADMITS-STORYLESS-DATED-RECORDS-06-11-2026.md` (Proposed) and the plan row recording Sam's instruction to fix every finding |
+| File                                                                      | Change                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `code/src/scripts/audits/doc-references.sh`                               | 1119 → 2023 lines at the walk, 2881 after workflow 23's fix rounds, 2943 after round 3 (shell is exempt from the 750-line limit; F-017). One population for scan and excluded set; the scoped exemption arms, then re-includes derived from `copier.yml`; the derived citer rule; the PM arm; class registration; literal template presence; the round 2, round 4, phase 9 and workflow 23 repairs; Markdown link targets; self-test 15 → 130 → 174 → 182 probes                                                                                  |
+| `code/src/scripts/audits/fixtures/doc-references/` `broken/` and `clean/` | 10 → 63 tracked fixtures at the walk; 88 with the workflow 23 rounds' 25 new files; 90 with round 3's two `nn-letters.md`. Round 3 also adds `code/src/scripts/development/template-render.sh`, edits `sync-trees.sh`, `copier.yml`, the CI template job, the development and syntax `CLAUDE.md`/`CONTEXT.md`, `how-to/docs/CLI-TOOLING.md` and `CONTRIBUTING.md`                                                                                                                                                                                 |
+| `code/src/scripts/audits/CONTEXT.md`                                      | The `doc-references.sh` row replaced within itself at each round; the Dependencies row no longer lists `realpath`                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `code/src/scripts/audits/doc-references-shipping.txt`                     | New, generated by `--write-shipping`: the seeds and re-includes a generated project reads in place of `copier.yml` (F-027)                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Workflow 23 fix rounds — Markdown                                         | `code/docs/FORWARD-VOICE.md` Section 7; `project-management/docs/git/BRANCHES-AND-WORKTREES.md:28`; workflow 22's `CHECKLIST.md`; workflow 23's `STEPS.md` Step 6 and `CHECKLIST.md`; the audits `CONTEXT.md` tree (226 → 228 counted lines)                                                                                                                                                                                                                                                                                                      |
+| `how-to/src/PROJECT-PATHS.md` · `code/docs/FORWARD-VOICE.md`              | Two patterned `18-TESTS` rows and the header note; Section 3's pattern form and duty                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| P5 sweep — shipped files                                                  | `project-management/src/02-STORIES/CONTEXT.md`, `project-management/src/03-SPRINTS/CONTEXT.md`, `how-to/src/TEMPLATE-GUIDE/10-FIRST-FEATURE.md`, `project-management/docs/planning/SPRINTS.md`, `project-management/src/15-DECISIONS/CONTEXT.md`, `project-management/workflows/15-decisions/STEPS.md`, `project-management/src/00-ASSETS/scripts/pm-board.sh`, `THIRD-PARTY-NOTICES.md`, `research/CLAUDE.md`                                                                                                                                    |
+| P5 sweep — PM records                                                     | Dead PM paths repaired in place, each with a dated `UPDATED` comment; `US014.md:813` respelt in full (QA-US004-02)                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Decision trail                                                            | `../15-DECISIONS/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md` accepted and the 30/09/2026 citer record superseded; the plan's _Key Decisions_; N-009's overturned claim on `../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md`; the self-test-downstream `GAPS.md` entry; at workflow 23, `../15-DECISIONS/ADR-US004-INSTANCE-CITER-ADMITS-STORYLESS-DATED-RECORDS-06-11-2026.md` (Accepted 06/11/2026, superseding the 05/11/2026 record); the `template-render.sh` ruling and the plan row recording Sam's instruction to fix every finding |
 
 ---
 
@@ -122,46 +122,79 @@ round worked red-first under `code/workflows/02-tdd-cycle` and took the self-tes
 `qa-tester` pass (H-01 to H-10). All 14 reproduced and were fixed in a second round, each repair
 proven by reverting it alone (33 reverts, every one red); the self-test reached 174 probes.
 
-| ID          | Severity     | Issue                                                                          | Resolution                                        |
-| ----------- | ------------ | ------------------------------------------------------------------------------ | ------------------------------------------------- |
-| QA-F01      | Medium       | Four phase 9 behaviours survived mutation                                      | Fixed — four fixtures, four mutants killed; F-023 |
-| QA-F02      | Medium       | Story-less dated records were not instance citers                              | Fixed, scoped by H-04; Proposed ADR; F-024        |
-| QA-F03      | Low          | Most anchor forms were not peeled                                              | Fixed; F-025                                      |
-| QA-F04      | Low          | A tracked symlink bypassed the seeded-citer exemption                          | Fixed; F-026                                      |
-| QA-F05      | Low          | Exemption arms and seeded list hand-copied, absent downstream                  | Fixed with DR-001 — single source; F-027          |
-| QA-F06      | Low          | A worked example rendered to a dangling path downstream                        | Fixed; F-028                                      |
-| QA-F07      | Low          | A date placeholder hid a concrete instance (regression)                        | Fixed; F-029                                      |
-| QA-F08      | Info         | Direction B's verdict depended on presence                                     | Fixed; F-030                                      |
-| DR-001      | Medium → Low | The exemption arms could drift from `copier.yml`                               | Fixed with QA-F05; F-027                          |
-| DR-002      | Medium → Low | The test record and this review still showed pre-ruling ShellCheck and tallies | Fixed in the records pass; F-031                  |
-| DR-003      | Low → Info   | No remedy text for `[dangling path]`                                           | Fixed; F-032                                      |
-| DR-004      | Info         | An out-of-scope commit, `3de67ff`, on the branch                               | Handled at the PR — named, squash-merged; F-033   |
-| DR-005      | Info         | The fixture tree in a parenthesis                                              | Fixed; F-034, with GATES-01 amended (F-049)       |
-| GAPS-REL    | —            | File-relative Markdown links unchecked                                         | Fixed — `[dangling link]` class; F-035            |
-| WF-DISAGREE | —            | Workflow 23 Step 6 disagreed with 22 Step 1 on GDPR and Security               | Fixed; F-036, refined by H-09                     |
-| REV-01      | Medium       | Linked targets bypassed Direction B                                            | Fixed with H-01; F-037                            |
-| REV-02      | Low          | Nine new lines deletable with the self-test green                              | Fixed; F-038                                      |
-| REV-03      | Low          | One citation reported twice, once per population                               | Fixed; F-039                                      |
-| REV-04      | Info         | `--self-test` still failed downstream (F-012)                                  | Fixed on Sam's instruction; F-022                 |
-| H-01        | Medium       | Links bypassed Check 3 and Check 2                                             | Fixed with REV-01; F-037                          |
-| H-02        | Low          | The link extractor misread spans, fences, comments, escapes, parentheses       | Fixed; F-040                                      |
-| H-03        | Low          | Path-form date-hidden instances silent                                         | Fixed; F-041                                      |
-| H-04        | Low          | The date-citer arm was unscoped                                                | Fixed; F-042                                      |
-| H-05        | Low          | Root-form Direction B depended on presence                                     | Fixed; F-043                                      |
-| H-06        | Low          | Single-quoted `_exclude` entries dropped; template signal too weak             | Fixed; F-044                                      |
-| H-07        | Low          | `grep` read a `--token` citation as an option                                  | Fixed; F-045                                      |
-| H-08        | Info         | `:L12`, trailing comma and `?query` not peeled                                 | Fixed; F-046                                      |
-| H-09        | Info         | The WF-DISAGREE fix restated 22 Step 1; 22's checklist contradicted it         | Fixed; F-047                                      |
-| H-10        | Info         | Remedy text printed regardless of class                                        | Fixed; F-048                                      |
+| ID          | Severity     | Issue                                                                          | Resolution                                            |
+| ----------- | ------------ | ------------------------------------------------------------------------------ | ----------------------------------------------------- |
+| QA-F01      | Medium       | Four phase 9 behaviours survived mutation                                      | Fixed — four fixtures, four mutants killed; F-023     |
+| QA-F02      | Medium       | Story-less dated records were not instance citers                              | Fixed, scoped by H-04; ADR Accepted 06/11/2026; F-024 |
+| QA-F03      | Low          | Most anchor forms were not peeled                                              | Fixed; F-025                                          |
+| QA-F04      | Low          | A tracked symlink bypassed the seeded-citer exemption                          | Fixed; F-026                                          |
+| QA-F05      | Low          | Exemption arms and seeded list hand-copied, absent downstream                  | Fixed with DR-001 — single source; F-027              |
+| QA-F06      | Low          | A worked example rendered to a dangling path downstream                        | Fixed; F-028                                          |
+| QA-F07      | Low          | A date placeholder hid a concrete instance (regression)                        | Fixed; F-029                                          |
+| QA-F08      | Info         | Direction B's verdict depended on presence                                     | Fixed; F-030                                          |
+| DR-001      | Medium → Low | The exemption arms could drift from `copier.yml`                               | Fixed with QA-F05; F-027                              |
+| DR-002      | Medium → Low | The test record and this review still showed pre-ruling ShellCheck and tallies | Fixed in the records pass; F-031                      |
+| DR-003      | Low → Info   | No remedy text for `[dangling path]`                                           | Fixed; F-032                                          |
+| DR-004      | Info         | An out-of-scope commit, `3de67ff`, on the branch                               | Handled at the PR — named, squash-merged; F-033       |
+| DR-005      | Info         | The fixture tree in a parenthesis                                              | Fixed; F-034, with GATES-01 amended (F-049)           |
+| GAPS-REL    | —            | File-relative Markdown links unchecked                                         | Fixed — `[dangling link]` class; F-035                |
+| WF-DISAGREE | —            | Workflow 23 Step 6 disagreed with 22 Step 1 on GDPR and Security               | Fixed; F-036, refined by H-09                         |
+| REV-01      | Medium       | Linked targets bypassed Direction B                                            | Fixed with H-01; F-037                                |
+| REV-02      | Low          | Nine new lines deletable with the self-test green                              | Fixed; F-038                                          |
+| REV-03      | Low          | One citation reported twice, once per population                               | Fixed; F-039                                          |
+| REV-04      | Info         | `--self-test` still failed downstream (F-012)                                  | Fixed on Sam's instruction; F-022                     |
+| H-01        | Medium       | Links bypassed Check 3 and Check 2                                             | Fixed with REV-01; F-037                              |
+| H-02        | Low          | The link extractor misread spans, fences, comments, escapes, parentheses       | Fixed; F-040                                          |
+| H-03        | Low          | Path-form date-hidden instances silent                                         | Fixed; F-041                                          |
+| H-04        | Low          | The date-citer arm was unscoped                                                | Fixed; F-042                                          |
+| H-05        | Low          | Root-form Direction B depended on presence                                     | Fixed; F-043                                          |
+| H-06        | Low          | Single-quoted `_exclude` entries dropped; template signal too weak             | Fixed; F-044                                          |
+| H-07        | Low          | `grep` read a `--token` citation as an option                                  | Fixed; F-045                                          |
+| H-08        | Info         | `:L12`, trailing comma and `?query` not peeled                                 | Fixed; F-046                                          |
+| H-09        | Info         | The WF-DISAGREE fix restated 22 Step 1; 22's checklist contradicted it         | Fixed; F-047                                          |
+| H-10        | Info         | Remedy text printed regardless of class                                        | Fixed; F-048                                          |
 
-**Found while fixing, not fixed:** the `NN` placeholder arm hides 213 path tokens (F-021), a new
-dated `GAPS.md` entry, because narrowing it changes verdicts outside every review finding.
+**Found while fixing:** the `NN` placeholder arm hid path tokens from the gate (F-021). Recorded
+then as a dated `GAPS.md` entry; Sam ruled 06/11/2026 that it is fixed in US004 (round 3 below).
 
 **State after both rounds**, re-measured 06/11/2026 in a `--no-hardlinks` clone holding the working
 tree: `--self-test` 174, exit 0; ShellCheck exit 0; the whole tree exits 1 on the same 28
 `[dangling path]` survivors, 0 of every other class, nothing on stderr. In a generated project the
 self-test exits 2 with 153 probes run and passed, and the whole tree reports only docs for the
 optional surfaces the project declined (98 `[dangling path]`, 21 `[dangling link]`).
+
+**Round 3 — F-021 and the generation script, 06/11/2026.** On Sam's rulings of 06/11/2026 the
+`NN` arm was narrowed red-first (F-021), exposing one false positive in Check 2's seeded
+exemption, fixed in the detector (F-054); and `code/src/scripts/development/template-render.sh`
+was written so a scratch project is never generated with a raw `copier copy` (F-050, F-055). A
+third review pair — a `code-reviewer` pass (A-1 to A-3, B-1 to B-4) and a `qa-tester` pass (QA-A1
+to QA-A3, QA-B1 to QA-B5) — raised 15 items, B-1 and QA-B1 one defect between them. The fix round
+reproduced all 15: 12 fixed red-first, one trade-off pinned, two recorded. It ran without an Agent
+tool, so its own checks are not independent QA (F-068). The self-test reached 182 probes,
+`template-render.sh` gained a 7-probe `--self-test`, and every regex mutant now fails.
+
+| ID          | Severity     | Issue                                                              | Resolution                                                  |
+| ----------- | ------------ | ------------------------------------------------------------------ | ----------------------------------------------------------- |
+| A-1         | Medium       | The F-021 fixtures pinned neither capital-letter guard alone       | Fixed; F-056                                                |
+| A-2         | Medium       | The regex's anchors and two-`N` minimum unpinned                   | Fixed; F-057                                                |
+| A-3         | Medium       | A default-answer project fails its own citation gate, 119 findings | Recorded; **disposition Sam's**; F-051                      |
+| B-1 · QA-B1 | Low · Medium | A relative `--target` resolved against the repository root         | Fixed; F-058                                                |
+| B-2         | Low          | Script defaults said to mirror CI's, but did not                   | Fixed: one answer set, CI renders through the script; F-059 |
+| B-3         | Low          | The formatting-preview rule written outside `syntax/`              | Fixed; F-060                                                |
+| B-4         | Info         | A template-only tree row escaped `sync-trees.sh` by its wording    | Fixed; F-061                                                |
+| QA-B2       | Low          | A `--target` symlinked into the repository wrote into it           | Fixed; F-062                                                |
+| QA-B3       | Low          | SIGTERM orphaned copier, which recreated the removed target        | Fixed; F-063                                                |
+| QA-B4       | Low          | `git status` rewrote the live `.git/index`                         | Fixed; F-064                                                |
+| QA-A1       | Low          | `[:upper:]` is locale-dependent for non-ASCII capitals             | Fixed: a literal capital list; F-065                        |
+| QA-A2       | Info         | A path whose only placeholder is one `NN` segment is never tested  | Recorded, scoped out by the reviewer; F-052                 |
+| QA-A3       | Info         | `USNNN` is no longer a placeholder                                 | Pinned as the accepted trade-off; F-066                     |
+| QA-B5       | Info         | A misleading hint, a wrong shortcut row, renders left on disk      | Fixed; F-067                                                |
+
+**Found on the way, recorded:** a default render also fails `sync-trees.sh` with 13 tree findings
+(F-053), none caused by these rounds.
+
+**State after round 3**, re-walked 06/11/2026 in fresh `--no-hardlinks` clones holding the working
+tree, this records pass included (/tmp/us004-w3.jbal/): `--self-test` 182, exit 0, also under `LC_ALL=C`; ShellCheck exit 0 on all three changed scripts; the whole tree exits 1 on the same 28 `[dangling path]` survivors, 0 of every other class, nothing on stderr. Rendered through `template-render.sh`: the default-answer project's self-test exits 2 with 161 probes run and passed, and its whole tree reports 119 findings (F-051); the all-surfaces project is clean. Manual guide unchanged at **28 Pass, 7 Fail**.
 
 ---
 
@@ -180,10 +213,10 @@ optional surfaces the project declined (98 `[dangling path]`, 21 `[dangling link
 
 - N/A for the code floors — no Python path, and no automated test declares US004
   (`../18-TESTS/AUTOMATED/US004-TEST-STATUS.md`).
-- [x] `--self-test` 174/174, exit 0 (130 at the walk); every new probe red against the detector it
+- [x] `--self-test` 182/182, exit 0 (130 at the walk, 174 after round 2); every new probe red against the detector it
       was written for, and each workflow 23 round 2 repair red when reverted alone (33 reverts).
 - [ ] Every manual QA acceptance criterion walked and passing — **28 Pass, 7 Fail** after Sam's
-      rulings of 05/11/2026 and 06/11/2026 and the re-walk of 06/11/2026 (Section 2.4); all seven
+      rulings of 05/11/2026 and 06/11/2026 and the re-walks of 06/11/2026, the second against round 3 (Section 2.4); all seven
       Fails stand on the accepted capture deviation (F-001).
 
 ### 3.4 Quality, DRY & file length
@@ -196,7 +229,7 @@ optional surfaces the project declined (98 `[dangling path]`, 21 `[dangling link
       exit 1 was the gitignored `graphify-out/GRAPH_REPORT.md`, the filed
       `../21-BUGS/BUG-LINT-READS-GITIGNORED-GRAPHIFY-OUT-02-11-2026.md`; re-walked 06/11/2026 in a clean
       clone, which has no `graphify-out/`: 1117 files, 0 issues, exit 0.
-- [x] ShellCheck clean — 0.11.0, exit 0 (R-024 fixed; re-run 06/11/2026 on the 2881-line script).
+- [x] ShellCheck clean — 0.11.0, exit 0 (R-024 fixed; re-run 06/11/2026 on the 2943-line script, and on `template-render.sh` and `sync-trees.sh`).
 - Observation: the script nearly doubled, roughly half of it self-test. Shell is exempt from the
   750-line limit but should stay focused (`code/src/scripts/CLAUDE.md`); F-017.
 
@@ -225,11 +258,16 @@ optional surfaces the project declined (98 `[dangling path]`, 21 `[dangling link
    accepted 05/11/2026 at `d13b168`.
 5. Sam's countersignature of the walk. The guide's cross-check against the automated record is
    ticked (05/11/2026, re-checked 06/11/2026).
-6. **F-024** — Sam accepts or rejects
-   `../15-DECISIONS/ADR-US004-INSTANCE-CITER-ADMITS-STORYLESS-DATED-RECORDS-06-11-2026.md`, Proposed
-   06/11/2026. On rejection the dated-record citer clause and its four clean fixtures come out
-   before merge.
+6. **F-024** — done 06/11/2026: Sam accepted
+   `../15-DECISIONS/ADR-US004-INSTANCE-CITER-ADMITS-STORYLESS-DATED-RECORDS-06-11-2026.md`; the
+   05/11/2026 derived-rule record is Superseded.
 7. **F-033 / DR-004** — name commit `3de67ff` in the PR body and squash-merge.
+8. **F-051** — Sam's disposition: fix the default-answer project's 119 citation findings in US004,
+   or name a later story.
+9. **F-068** — an independent `qa-tester` pass over round 3's diff, which no context other than
+   its fix round has reviewed.
+10. **F-059** — the CI generation job, now rendering through `template-render.sh`, has not yet run
+    in CI; confirm it on the PR.
 
 ---
 
@@ -259,17 +297,19 @@ optional surfaces the project declined (98 `[dangling path]`, 21 `[dangling link
 
 ### Gate evidence
 
-| Gate                                                       | At the walk (`46d5c0f`)                                              | Reading                                                                                                          |
-| ---------------------------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `code/src/scripts/audits/doc-references.sh`                | exit 1; 28 `[dangling path]`; 0 instance, template-only, plan-prefix | Survivors owned by US005, US006, US010 and US014. Not a pass, and no before-edit run to diff against (F-001)     |
-| `doc-references.sh --self-test`                            | exit 0, 130 probes                                                   | 174 probes, exit 0, after workflow 23's fix rounds (06/11/2026); exit 2 in a generated project, 153 run and pass |
-| `docs-length.sh` · `doctrine-drift.sh` · `docs-pairing.sh` | exit 0 · exit 0 · exit 0                                             | GATES-01 fails only on F-001                                                                                     |
-| ShellCheck 0.11.0, by hand                                 | exit 1                                                               | exit 0 since the F-003 fix; again 06/11/2026 (R-024 fixed)                                                       |
+| Gate                                                       | At the walk (`46d5c0f`)                                              | Reading                                                                                                                                |
+| ---------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `code/src/scripts/audits/doc-references.sh`                | exit 1; 28 `[dangling path]`; 0 instance, template-only, plan-prefix | Survivors owned by US005, US006, US010 and US014. Not a pass, and no before-edit run to diff against (F-001)                           |
+| `doc-references.sh --self-test`                            | exit 0, 130 probes                                                   | 174 probes after workflow 23's rounds 1 and 2, 182 after round 3 (06/11/2026), exit 0; exit 2 in a generated project, 161 run and pass |
+| `docs-length.sh` · `doctrine-drift.sh` · `docs-pairing.sh` | exit 0 · exit 0 · exit 0                                             | GATES-01 fails only on F-001                                                                                                           |
+| ShellCheck 0.11.0, by hand                                 | exit 1                                                               | exit 0 since the F-003 fix; again 06/11/2026 (R-024 fixed)                                                                             |
 
 ### Known reds for the PR body
 
 - `Audit — Doc References` / `Citations resolve` — 28 forward references owned by US005, US006,
   US010 and US014, and none of US004's classes.
+- In a project generated with the default answers, the same gate exits 1 on 119 citations of
+  optional-surface files (F-051), until Sam disposes of it.
 
 ---
 

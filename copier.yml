@@ -45,6 +45,10 @@ _exclude:
   - /.github/PULL_REQUEST_TEMPLATE.md
   - /.github/scripts # template-integrity checks — meaningless once rendered
   - /.github/workflows/audit-template.yml
+  # Renders a disposable project FROM this template; it reads copier.yml and .copier/, which a
+  # generated project never holds, so it would only ever refuse to run there. Its sibling
+  # template-update.sh ships, because updating FROM a template is a generated project's job.
+  - /code/src/scripts/development/template-render.sh
   - /README.md # the project's README ships from .copier/README.md (see _tasks)
   # syntek-base commits its OWN uv.lock (16/08/2026) so its Python gates and suites can
   # run against a real dependency set. That lock pins `syntek-base`, so it must not travel:

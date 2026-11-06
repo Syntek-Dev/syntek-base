@@ -827,13 +827,24 @@ resolve_link() { # $1 = repo-relative link path
 # QA-US004-12): the folder such a token names is concrete, so scan_files() tests that folder.
 # Split out of is_pattern() on 05/11/2026 so the template-presence test below can ask the
 # placeholder question alone.
+# CORRECTED 06/11/2026 (US004 F-021): `NN` is a placeholder only as a RUN of its own -- two or
+# more `N` with no capital letter on either side, as the conventions write it: `NN-name/`,
+# `NN-SPRINT-PLAN-NN.md`, `US0NN`, `F-0NN`, `-NN-NN-NNNN`, `dev-usNNN`. The arm used to match the
+# letters anywhere, so every `PLANNING/` path and `MAP-SCALE-PLANNING.md` went untested.
+# A capital is an ASCII capital, spelt out letter by letter (CORRECTED 06/11/2026, US004 QA-A1):
+# `[:upper:]` follows LC_CTYPE, so `ÉNNÉ` was a placeholder under C and a citation under UTF-8,
+# and `A-Z` is a range, whose members follow the locale's collation. A literal list is neither.
+# A run against a non-ASCII letter is therefore a placeholder in every locale.
+NN_UPPER_ASCII='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+NN_PLACEHOLDER_RE="(^|[^${NN_UPPER_ASCII}])NN+([^${NN_UPPER_ASCII}]|\$)"
 is_placeholder() {
   case "$1" in
     *"$TOK_OPEN"*|*"$BLK_OPEN"*)                                     return 0 ;;
-    *'{'*|*'###'*|*'##'*|*'<'*'>'*|*'*'*|*'…'*|*'NN'*)               return 0 ;;
+    *'{'*|*'###'*|*'##'*|*'<'*'>'*|*'*'*|*'…'*)                      return 0 ;;
     *'–'*|*'—'*)                                                     return 0 ;;  # en/em-dash range
     *DD-MM-YYYY*)                                                    return 0 ;;  # date placeholder
   esac
+  [[ "$1" =~ $NN_PLACEHOLDER_RE ]] && return 0
   return 1
 }
 
@@ -1269,7 +1280,10 @@ scan_files() { # $1 = newline-separated file list
         # The archive arm (31/10/2026): a Closed map is moved into 01-FEATURE-MAPS/archive/ by
         # pm-archive.sh, and a bare citation of it is still a citation of a map that exists —
         # every PM reader resolves an ID across the folder AND its archive/, and so does this.
-        if ! is_seeded "$token" && [ ! -e "$token" ] && [ ! -e "project-management/src/01-FEATURE-MAPS/$base" ] \
+        # The seeded arm reads the same folder (US004 F-021, 06/11/2026): a map seeded there is in
+        # every generated project, and a bare `MAP-SCALE-PLANNING.md` is a citation of that file.
+        if ! is_seeded "$token" && ! is_seeded "project-management/src/01-FEATURE-MAPS/$base" \
+           && [ ! -e "$token" ] && [ ! -e "project-management/src/01-FEATURE-MAPS/$base" ] \
            && [ ! -e "project-management/src/01-FEATURE-MAPS/archive/$base" ]; then
           record "$file" "$lineno" "instance citation" "$token"
           continue
@@ -2223,6 +2237,51 @@ code/docs/NO-SUCH-FIXTURE-ONLY-SEEDED-LINK.md"
   # RED — H-08 rides on clean/anchor-forms.md (QA-F03 above): `:L12`, a trailing comma, `?query`.
 }
 
+# ── US004 F-021 (06/11/2026) — `NN` is a placeholder only as a run of its own ─────────────────
+# Sam's ruling of 06/11/2026: fixed in US004. is_placeholder() read any token holding the letters
+# `NN` as a placeholder, so every `PLANNING/` path and `MAP-SCALE-PLANNING.md` went untested.
+# RED fails against d035f04's detector, and must; GUARD pins the real placeholder spellings.
+st_f021_probes() {
+  local BT=$'\x60'
+  log ""
+  log "  US004 F-021 — the letters NN inside a word are not a placeholder:"
+  # RED — F-021: a dead PLANNING/ path and an absent copy of the seeded map's name both fire.
+  # GUARD (its third finding) — a bare map name nothing seeds is still an instance citation.
+  # RED by mutation (round 3, A-1 / A-2 / QA-A3): one dead path per guard of the expression, so
+  # dropping the left guard, the right guard or the two-N minimum each turns this probe red.
+  st_probe "F-021 broken/nn-letters.md fires on a dead PLANNING/ path, an absent MAP-SCALE-PLANNING.md, an unseeded map and four one-sided runs" \
+    "$FIXTURES_DIR/broken/nn-letters.md" 7 \
+    "dangling path | ${BT}project-management/src/11-QA/PLANNING/NO-SUCH-FIXTURE-ONLY.md${BT}"
+  st_has_probe "F-021 the absent MAP-SCALE-PLANNING.md is reported" \
+    "$FIXTURES_DIR/broken/nn-letters.md" "dangling path | ${BT}code/docs/MAP-SCALE-PLANNING.md${BT}"
+  local tok
+  for tok in code/docs/PLANN-NO-SUCH-FIXTURE-ONLY.md code/docs/no-such-NNA-FIXTURE-ONLY.md \
+             code/docs/N-NO-SUCH-FIXTURE-ONLY.md code/docs/USNNN-NO-SUCH-FIXTURE-ONLY.md; do
+    st_has_probe "F-021 ${BT}$tok${BT} is letters, not a placeholder, and is reported" \
+      "$FIXTURES_DIR/broken/nn-letters.md" "dangling path | ${BT}$tok${BT}"
+  done
+  # RED — QA-A1 (round 3): the class used to be [:upper:], so a run against a non-ASCII capital
+  # was a placeholder under C and a citation under a UTF-8 locale. Asked under three locales,
+  # the answer must be the same, and must be "placeholder" -- a capital is an ASCII capital.
+  st_probes=$((st_probes + 1))
+  local loc verdicts="" want_tok="code/docs/ÉNNÉ-NO-SUCH-FIXTURE-ONLY.md"
+  for loc in C C.UTF-8 "${LC_ALL:-${LC_CTYPE:-${LANG:-C}}}"; do
+    if ( LC_ALL="$loc"; is_placeholder "$want_tok" ) 2>/dev/null; then verdicts+="$loc=yes "
+    else verdicts+="$loc=no "; fi
+  done
+  if [[ "$verdicts" == *"=no"* ]]; then
+    st_fail "QA-A1 is_placeholder ${BT}$want_tok${BT} depends on the locale: $verdicts"
+  else
+    log "  ✓ QA-A1 is_placeholder reads a run against a non-ASCII letter the same in every locale"
+  fi
+  # GUARD — F-021: NN-FOO/, US0NN, NN-SPRINT-PLAN-NN.md, usNNN stay patterns; live paths resolve.
+  # RED by mutation (round 3, A-2): a run at the token's very start and very end pins `^` and `$`.
+  # RED (its last line) — the seeded map named bare was a Check 2 finding once F-021 unmasked it:
+  # the clause tested the seeded set for the bare token, never for the feature-maps path it names.
+  st_probe "F-021 clean/nn-letters.md silent on real NN placeholders, live PLANNING paths and the seeded map" \
+    "$FIXTURES_DIR/clean/nn-letters.md" 0
+}
+
 # A probe that reads the copier contract cannot run in a generated project, which receives none
 # (US004 REV-04 / F-012). It is named and counted as not run, and a self-test that skipped any
 # exits 2 rather than reporting a proof it did not make (code/docs/GATE-REPORTING.md).
@@ -2708,6 +2767,9 @@ $st_r4"
 
   # ── US004 review round — failing proofs for REV-01..04 and H-01..10 of 06/11/2026 ─
   st_review_round_probes
+
+  # ── US004 F-021 — the NN placeholder arm reads a run, never letters in a word ─
+  st_f021_probes
 
   log ""
   # The fixtures must stay invisible to an ordinary run, or this proof reddens the gate it

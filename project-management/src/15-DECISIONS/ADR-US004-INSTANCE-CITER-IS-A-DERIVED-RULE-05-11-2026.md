@@ -1,10 +1,10 @@
 # ADR-US004: The citation gate derives whether a citer is an instance from its name, not from a list of forms
 
-**Status:** Accepted
+**Status:** Superseded
 **Date:** 05/11/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`
-**Superseded by:** —
+**Superseded by:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-CITER-ADMITS-STORYLESS-DATED-RECORDS-06-11-2026.md`
 **Related:** US004
 
 ---

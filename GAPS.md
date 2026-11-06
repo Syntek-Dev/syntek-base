@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 05/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 06/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -738,6 +738,12 @@ rest still run. Cut as a story through `02-story-creation`.
 
 ## 06/11/2026 — the citation gate reads any token holding `NN` as a placeholder
 
+✅ CLOSED 06/11/2026 — fixed in US004 on Sam's ruling of 06/11/2026 (findings F-021 and F-054 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): a run
+of two or more `N` is a placeholder only with no A-Z capital on either side, so `PLANNING/` paths
+and `MAP-SCALE-PLANNING.md` are tested; the whole tree keeps the same 28 survivors, and the one
+false positive the narrowing exposed was fixed in the detector.
+
 **Type:** Active gap
 **Summary:** `code/src/scripts/audits/doc-references.sh` treats a token containing the letters
 `NN` anywhere as a naming placeholder and never tests it, so every `PLANNING/` path and names
@@ -747,6 +753,48 @@ shell on 06/11/2026. Found in the US004 review round (finding F-021 in
 **Blocked by / Action:** Nothing blocks it. Narrow the arm to `NN` as a placeholder segment, then
 triage what the gate reports. Not fixed in US004 because it changes the verdict on tokens outside
 the review's findings; cut as a story through `02-story-creation`.
+
+---
+
+## 06/11/2026 — a project generated with the default answers fails its own citation gate
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh`, whole tree, exits 1 inside a project
+rendered with the default answers: 119 findings (98 `[dangling path]`, 21 `[dangling link]`),
+each a shipped file citing an optional-surface file the defaults leave out — `code/docs/WAGTAIL*`,
+`code/docs/rust/*`, `code/docs/accessibility/MOBILE.md` and the like. The all-surfaces render is
+clean. `.github/workflows/audit-doc-references.yml` ships and runs that gate, so every
+default-answer project starts with a red CI job. It is the unenforced half of
+`code/docs/FORWARD-VOICE.md` Section 5, the surface-gated citations. Finding F-051 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Sam's disposition: fix in US004, or name a later story. Either teach the
+gate the surface flags from the project's answers file or reword the citations; never markers.
+
+---
+
+## 06/11/2026 — the citation gate never tests a path whose only placeholder is one `NN` segment
+
+**Type:** Active gap
+**Summary:** `no-such-root/NN-FOO/CONTEXT.md` passes untested, where a `DD-MM-YYYY` placeholder
+already has its concrete leading folders tested. Predates the F-021 narrowing. Finding F-052 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Extend the folder route to that token shape, with a
+fixture. No map or story claims this entry.
+
+---
+
+## 06/11/2026 — a project generated with the default answers fails `sync-trees.sh`
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/development/sync-trees.sh` reports 13 tree drift findings in a fresh
+default render: surface-gated rows left unannotated (`stack-wagtail/`, `WAGTAIL.md`,
+`design-tokens/MOBILE.md`), the root tree's template-only rows (`.copier/`, `LICENSE`,
+`SECURITY.md`, `CONTRIBUTING.md`, `copier.yml`), and four `WALK-N010-COLD-31-08-2026*` rows.
+Finding F-053 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Annotate each row with its surface or `template-only`,
+which the check now reads, and decide whether the WALK rows ship. No map or story claims this
+entry.
 
 ---
 
