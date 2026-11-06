@@ -143,7 +143,8 @@ green. No expectation was edited to pass: the phase 9 verifier compared 114 expe
 (QA-US004-11 in `../../19-REVIEWS/REVIEW-US004-CITATION-GATE-GIT-INDEX.md`).
 
 The walk's own runs, the whole-tree figures and the gate results are rows in
-`../MANUAL/US004-MANUAL-TESTING.md` (walked 05/11/2026 at `46d5c0f`: **23 Pass, 12 Fail**).
+`../MANUAL/US004-MANUAL-TESTING.md` (walked 05/11/2026 at `46d5c0f`: **23 Pass, 12 Fail**; **28 Pass, 7 Fail** after Sam's rulings of
+05/11/2026 and 06/11/2026).
 
 ---
 

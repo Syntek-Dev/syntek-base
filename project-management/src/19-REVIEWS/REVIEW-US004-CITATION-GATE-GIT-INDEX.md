@@ -1,15 +1,15 @@
 # Code Review — US004 The citation gate stops depending on the git index, and the PM tree becomes checkable
 
-**Last Updated**: 05/11/2026 · **Story**: US004 · **Status**: In Review
+**Last Updated**: 06/11/2026 · **Story**: US004 · **Status**: In Review
 
-| Field        | Value                                                                                                                                                                                                                                                                                                                 |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Story**    | US004 — the citation gate stops depending on the git index, and the PM tree becomes checkable                                                                                                                                                                                                                         |
-| **Branch**   | `us004/citation-gate-git-index` (cut from `testing` at `173abff`; P1–P4 `e3d5187` red, `022f61a` green; round 2 `9abb477`, `a56ce40`; P5 `48a2501`; round 4 `53a8713`; phase 9 fixes `5c24c12`; decisions `94e7671`, `2b24ae8`, `74b9892`, `46d5c0f`)                                                                 |
-| **PR**       | Raised at `23-pr-and-review` Step 3 · target `testing`                                                                                                                                                                                                                                                                |
-| **Reviewer** | Claude — phase 9 `code-reviewer` and `qa-tester` dispatches at `53a8713`, each finding then put to an adversarial verifier; the fix round's red, green and verify dispatches. None wrote the work it reviewed                                                                                                         |
-| **Date**     | 05/11/2026                                                                                                                                                                                                                                                                                                            |
-| **Verdict**  | Phase 9: no blocker; one major and seven minor or nit confirmed by the review, ten by QA; three rejected. Every confirmed finding fixed (16 in `5c24c12`, QA-US004-02 at `74b9892`) bar QA-US004-05, deferred to `GAPS.md` by Sam. **The walk then failed 12 rows**, 11 after Sam's rulings of 05/11/2026 (Section 4) |
+| Field        | Value                                                                                                                                                                                                                                                                                                                               |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**    | US004 — the citation gate stops depending on the git index, and the PM tree becomes checkable                                                                                                                                                                                                                                       |
+| **Branch**   | `us004/citation-gate-git-index` (cut from `testing` at `173abff`; P1–P4 `e3d5187` red, `022f61a` green; round 2 `9abb477`, `a56ce40`; P5 `48a2501`; round 4 `53a8713`; phase 9 fixes `5c24c12`; decisions `94e7671`, `2b24ae8`, `74b9892`, `46d5c0f`)                                                                               |
+| **PR**       | Raised at `23-pr-and-review` Step 3 · target `testing`                                                                                                                                                                                                                                                                              |
+| **Reviewer** | Claude — phase 9 `code-reviewer` and `qa-tester` dispatches at `53a8713`, each finding then put to an adversarial verifier; the fix round's red, green and verify dispatches. None wrote the work it reviewed                                                                                                                       |
+| **Date**     | 05/11/2026                                                                                                                                                                                                                                                                                                                          |
+| **Verdict**  | Phase 9: no blocker; one major and seven minor or nit confirmed by the review, ten by QA; three rejected. Every confirmed finding fixed (16 in `5c24c12`, QA-US004-02 at `74b9892`) bar QA-US004-05, deferred to `GAPS.md` by Sam. **The walk then failed 12 rows**, 7 after Sam's rulings of 05/11/2026 and 06/11/2026 (Section 4) |
 
 **Codes from:** `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` → _Key Decisions_
 — every row dated 05/11/2026 is Sam's: the build grilling (Q1 to Q4), round 2, round 4, the phase 9
@@ -102,11 +102,11 @@ points.
 
 ### 2.4 The walk — at `46d5c0f`; not fixed
 
-| ID    | Severity | Where                                                            | Issue                                                                                                                           | Resolution/Status                                                                                                                                  |
-| ----- | -------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| R-022 | High     | Manual guide _Recorded during the build_, five before-edit slots | The before-edit captures were never taken; ten rows fail on them, and the story's "before any edit" criterion cannot now be met | Deviation accepted by Sam 05/11/2026 (Q1, option 2) for BASELINE-02 to 05, rows stay Fail; BASELINE-01's evidence pending his confirmation (F-001) |
-| R-023 | Low      | Manual row MEASURE-01                                            | The arm-only copy adds one `-DD-MM-YYYY.md` date-placeholder finding, which the row forbids; the shipped detector clears it     | Resolved — amended 05/11/2026 on Sam's ruling (Q2), re-walked Pass (F-002)                                                                         |
-| R-024 | Low      | `doc-references.sh:828`, `:1308`, `:1322`                        | ShellCheck not clean: SC2221/SC2222 (pre-existing), SC2016 ×2 (pre-existing), SC2329 ×2 new in the P9-F8 `realpath` stubs       | In progress — Sam ruled 05/11/2026 (Q3) it is fixed in this story; GATES-05 re-walked at the check stage (F-003)                                   |
+| ID    | Severity | Where                                                            | Issue                                                                                                                           | Resolution/Status                                                                                                                                           |
+| ----- | -------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| R-022 | High     | Manual guide _Recorded during the build_, five before-edit slots | The before-edit captures were never taken; ten rows fail on them, and the story's "before any edit" criterion cannot now be met | Deviation accepted by Sam 05/11/2026 (Q1, option 2) for BASELINE-02 to 05, rows stay Fail; BASELINE-01 amended and Pass on his ruling of 06/11/2026 (F-020) |
+| R-023 | Low      | Manual row MEASURE-01                                            | The arm-only copy adds one `-DD-MM-YYYY.md` date-placeholder finding, which the row forbids; the shipped detector clears it     | Resolved — amended 05/11/2026 on Sam's ruling (Q2), re-walked Pass (F-002)                                                                                  |
+| R-024 | Low      | `doc-references.sh:828`, `:1308`, `:1322`                        | ShellCheck not clean: SC2221/SC2222 (pre-existing), SC2016 ×2 (pre-existing), SC2329 ×2 new in the P9-F8 `realpath` stubs       | In progress — Sam ruled 05/11/2026 (Q3) it is fixed in this story; GATES-05 re-walked at the check stage (F-003)                                            |
 
 ---
 
@@ -143,7 +143,7 @@ points.
 
 ### 3.5 Performance
 
-- The whole-tree run took 330.27 s at the walk (AFTER-01), against the session's 438 s on the
+- The whole-tree run took 330.27 s at the walk (AFTER-01), against BASELINE-01's 438 s on the
   stock detector at the branch point and the reviewer's 7:59 against 5:52, run concurrently. The
   wider population did not slow the run (plan _Risks_).
 
@@ -156,9 +156,10 @@ points.
 ## 4. Required actions before merge
 
 1. **R-022 / F-001** — ruled 05/11/2026: the missed captures for BASELINE-02 to 05 are an accepted,
-   documented deviation. **Still open:** BASELINE-01, which the ruling holds was captured, but
-   whose cited evidence file matches the walk's own re-measurement; Sam confirms its source or
-   extends the deviation to it.
+   documented deviation. **BASELINE-01 — ruled 06/11/2026:** its original capture
+   (`/home/sam-desktop/.claude/tmp/tmp.X6zOVdkES2/base.txt`, 12:06:43 UTC, before the first branch commit) stands; Sam's
+   attestation of `HEAD` `151a4e3`, the index state taken as clean, satisfies the row, amended
+   (F-020). BASELINE-01, AFTER-01 and CLASSIFY-01 Pass; the walk is 28 Pass, 7 Fail.
 2. **R-023 / F-002** — done 05/11/2026: MEASURE-01 amended with its trail and re-walked Pass.
 3. **R-024 / F-003** — ruled 05/11/2026: fixed in the build; GATES-05 re-walked at the check stage.
 4. **F-019** — done: `../15-DECISIONS/ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL-08-09-2026.md`
@@ -173,7 +174,7 @@ points.
 - **Verdict:** the phase 9 review and its fix round leave no open code finding but one deferred
   gap; the walk does not pass. **Changes-requested at drafting.** Sam's rulings of 05/11/2026 settle
   three of the four decisions and part of the fourth (Section 4); the final verdict is
-  `23-pr-and-review`'s, per this folder's rule, once BASELINE-01 and GATES-05 are settled.
+  `23-pr-and-review`'s, per this folder's rule, now that BASELINE-01 and GATES-05 are settled.
 - **Reasoning:** every owned class is at zero over the whole tree, and the 130-probe self-test
   separates every fixture pair. But a story whose subject is a before-and-after measurement
   never took the before, and the gate it repairs still exits 1 on 28 named survivors, so the

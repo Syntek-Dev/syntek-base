@@ -16,7 +16,7 @@ checkable): settle one held manual row, then take the story through `23-pr-and-r
     (seeded citers) and every phase 9 finding are in, each red first.
   - `--self-test` passes 130/130. ShellCheck exits 0.
   - Whole tree: **28 findings, all named survivors** (US005 ×10, US006 ×10, US014 ×6, US010 ×2).
-    Baseline was 502, exit 1, 438 s.
+    Baseline was 500 (462 instance / 29 dangling / 9 template-only), exit 1, 438 s. <!-- UPDATED 06/11/2026: 502 was a whole-output grep that counted footer lines -->
 - **ADR:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md`
   is Accepted and supersedes the 30/09/2026 citer record. `ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL-08-09-2026.md`
   is Accepted.
@@ -48,7 +48,7 @@ checkable): settle one held manual row, then take the story through `23-pr-and-r
   - The branch's first commit `8fbe020` is 15:29:26, and its first source edit `e3d5187` is
     15:43:26.
   - The run was on `151a4e3`, whose tree equals `173abff` (`git diff --stat` is empty).
-  - Finding lines: 462 instance, 29 dangling, 10 template-only, 1 plan-prefix.
+  - Finding lines: 462 instance, 29 dangling, 9 template-only, 0 plan-prefix (500). <!-- UPDATED 06/11/2026: was 10 and 1, from grepping the footer -->
 - `:135` **AFTER-01** and `:142` **CLASSIFY-01** fail only because they read BASELINE-01.
 - `:231-232` and the BASELINE-01 Failures row route to "Sam, at 23".
 - `project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md:46`
@@ -63,7 +63,7 @@ It should:
 
 1. Mark BASELINE-01 Pass using the original capture and timestamps above, citing the evidence by
    absolute path in prose.
-2. Re-mark AFTER-01 and CLASSIFY-01 against the 502-finding capture, and drop their three Failures
+2. Re-mark AFTER-01 and CLASSIFY-01 against the 500-finding capture, and drop their three Failures
    rows. That takes the tally to **28 Pass, 7 Fail**.
 3. Update F-001 and its Section 5, plus the QA-IMPL outcome.
 
