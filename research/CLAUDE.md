@@ -23,7 +23,7 @@ The committed home for `/research` primary-source notes that feed decisions.
 - **Cite the primary source for every claim.** Blogs and threads are scouts that lead to the
   primary — the citation kept is always the primary.
 - **Never quote a source that grants no licence.** Check the licence before writing a verbatim
-  line: a source with no `LICENSE` upstream grants nothing, so quoting it here **publishes**
+  line: a source with no `LICENSE` upstream grants nothing, so quoting it here **publishes** <!-- doc-references: ignore — an upstream source's licence file, a generic noun, not this repository's own -->
   text there is no permission to publish. Take the fact, re-author the wording, cite the URL.
   A share-alike source (CC-BY-SA) is read as a checklist of concerns and never quoted either
   (`.claude/CLAUDE.md` Section 6). Permissive sources — MIT, Apache-2.0, CC BY — may be quoted

@@ -388,9 +388,11 @@ paid, and nothing on either row is owed.
      the change was committed; corrected against the plans as they stand on disk. -->
 
 **There is no Plans Index row for either**, and that is a decision rather than an omission.
-`../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` slice `S-01` creates `../17-STORY-PLANS/STORY-PLAN-INDEX.md`
-and repoints the citations that already name it; the file does not exist today, and this plan does
-not pre-empt a claimed slice by building one.
+`../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` slice `S-01` was to create a story-plan index file in
+`../17-STORY-PLANS/` and repoint the citations that already name it; the file did not exist then,
+and this plan does not pre-empt a claimed slice by building one.
+
+<!-- UPDATED 05/11/2026 (US004 P5): read "slice `S-01` creates ../17-STORY-PLANS/STORY-PLAN-INDEX.md and repoints the citations that already name it; the file does not exist today" until then; no such index exists or will: the 7.7.0 PM-boards change superseded it with the generated story-plans board in that folder, and a backticked path to a file that never existed is a dead citation the citation gate now polices in this tree. -->
 
 <!-- US003's row sat below US004's until 05/09/2026, when the story moved to SPRINT-03; its plan
      was indexed by ../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md instead.

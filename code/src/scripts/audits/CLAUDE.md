@@ -186,6 +186,9 @@ audit. Full inventory: `CONTEXT.md`.
   Most are `<script>-report.<FORMAT>` and five are not, so **take the name from `CONTEXT.md` →
   _Reports_ rather than deriving it** — a pattern asserted here read as the rule and was wrong
   for five of the twenty-four.
+- **Generated / committed:** `doc-references-shipping.txt`, written only by
+  `doc-references.sh --write-shipping` from the copier contract. Never hand-edit it: change the
+  contract, regenerate in the same change, and the ordinary run's `[shipping facts]` clears.
 - **A report is written on every path, including the no-op one.** An absent surface writes a
   clean, zero-finding report naming the reason rather than leaving nothing on disk — a CI job
   told to collect the artefact must always find it, and under `--quiet --output json` a missing

@@ -1179,7 +1179,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      REWRITTEN 30/09/2026 at gate 11's close (settled 30/09/2026, 16-sprint-plans grilling round 3
      Q9 and Q10), from each member's QA Tasks as its story now states them. The US008 rows read
      "US008 — the self-test runs and its output is recorded in
-     `project-management/src/18-TESTS/US008-TEST-STATUS.md`" and "US008 — each new fixture case
+     project-management/src/18-TESTS/US008-TEST-STATUS.md" and "US008 — each new fixture case
      is run against both the pre- and post-change script, and both results recorded" until then.
      The second has no script to run against: the comparison runs one way only (QA-PLAN-US008
      Section 6). The unscoped-audit row is new, and the first US009 row gains the worktree and
@@ -1188,6 +1188,11 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      probe's failure case, joined later the same day: the task behind US009's criterion of that
      name (settled 30/09/2026, 16-sprint-plans grilling round 5 Q16). The gate runs that US008's
      task list also names stay under Verification Checks. -->
+
+<!-- UPDATED 05/11/2026 (US004 P5): the quoted US008 row in the comment above carried its pre-split
+     18-TESTS path in backticks until then; they are dropped so the quotation stops reading as a
+     live citation, which the citation gate now polices in this tree. The record it names lives
+     under 18-TESTS/AUTOMATED/ since the 09/09/2026 split. -->
 
 ### QA Tasks — Manual
 

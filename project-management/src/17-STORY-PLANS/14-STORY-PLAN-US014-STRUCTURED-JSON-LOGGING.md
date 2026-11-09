@@ -169,8 +169,9 @@ node N-020).
   (`entrypoint.staging.sh`:30, `entrypoint.prod.sh`:31, `entrypoint.test.sh`:27): a plain-text line
   per request holding the peer address and query string, with no `request_id`. Staging runs the
   process server at `--log-level info` (`:29`) where production runs `warning` (`:30`).
-- The dev `django` service mounts only `../django` (`docker-compose.dev.yml`:50-51), so the
-  `RotatingFileHandler`'s file never reaches the host.
+- The dev `django` service mounts only `code/src/django` (`docker-compose.dev.yml`:50-51, written
+  relative to the Compose file), so the `RotatingFileHandler`'s file never reaches the host.
+  <!-- UPDATED 05/11/2026 (US004 P5): read "mounts only ../django" until then; the path is relative to code/src/docker/, so read from this plan it was a dead citation the citation gate now polices in this tree. -->
 - The selectors name containers that do not exist — `-backend` (09 `STEPS.md`, five sites), `-web`
   and `(web|worker)` (`OBSERVABILITY.md`), `-worker` (already marked absent at `:127-129`).
 

@@ -23,7 +23,8 @@ model: opus
 - [ ] Every spec that carried a `PLANNING/` artefact for the story identified
 - [ ] GDPR IMPLEMENTATION record written from template (if the story processes personal data)
 - [ ] Security IMPLEMENTATION record(s) written from template under `AUDITS/IMPLEMENTATION/`
-      (plus threat-model / assessment / vulnerability closures where planned)
+      (if the story ships a security surface; plus threat-model / assessment / vulnerability
+      closures where planned)
 - [ ] QA IMPLEMENTATION record written from template
 - [ ] SEO IMPLEMENTATION record written from template (or `SEO: N/A` recorded with a reason)
 - [ ] API IMPLEMENTATION record written from template (if the story adds or changes the Django Ninja API)

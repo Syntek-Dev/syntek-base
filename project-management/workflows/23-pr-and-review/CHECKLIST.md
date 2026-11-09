@@ -47,12 +47,12 @@ a `## Status history` row appended, and `pm-board.sh --write` run. Vocabulary ow
 If any applicable record below is missing or incomplete, return to
 `22-implementation-documentation` before proceeding — do not write it here.
 
-- [ ] GDPR implementation record complete (`src/09-GDPR/IMPLEMENTATION/`)
-- [ ] Security assessment / audit / threat-model reviews complete (`src/10-SECURITY/<CATEGORY>/IMPLEMENTATION/`)
+- [ ] GDPR implementation record complete (`src/09-GDPR/IMPLEMENTATION/`) — where `22-implementation-documentation` Step 1 listed its `PLANNING/` artefact
+- [ ] Security assessment / audit / threat-model reviews complete (`src/10-SECURITY/<CATEGORY>/IMPLEMENTATION/`) — where `22-implementation-documentation` Step 1 listed its `PLANNING/` artefact
 - [ ] Vulnerability closure present if this story resolved a known vulnerability (`src/10-SECURITY/VULNERABILITIES/IMPLEMENTATION/`)
-- [ ] QA implementation review complete (`src/11-QA/IMPLEMENTATION/`)
-- [ ] SEO implementation review complete if story adds public-facing pages (`src/12-SEO/IMPLEMENTATION/`)
-- [ ] API design verification complete if story adds or changes the Django Ninja API (`src/13-API-DESIGN/IMPLEMENTATION/`)
+- [ ] QA implementation review complete (`src/11-QA/IMPLEMENTATION/`) — where `22-implementation-documentation` Step 1 listed its `PLANNING/` artefact
+- [ ] SEO implementation review complete (`src/12-SEO/IMPLEMENTATION/`) — where `22-implementation-documentation` Step 1 listed its `PLANNING/` artefact
+- [ ] API design verification complete (`src/13-API-DESIGN/IMPLEMENTATION/`) — where `22-implementation-documentation` Step 1 listed its `PLANNING/` artefact
 - [ ] Automated test record complete (`US###-TEST-STATUS.md` → `src/18-TESTS/AUTOMATED/`) — its generated block regenerated against the **last** suite run, not an earlier green one
 - [ ] A short per-test table checked against `bash code/src/scripts/audits/story-markers.sh` before it is read as coverage — an unmarked test is silently absent from the record, never reported as missing
 - [ ] Manual testing guide walked (`US###-MANUAL-TESTING.md` → `src/18-TESTS/MANUAL/`) — every row's `Result` marked `Pass` or `Fail`, a retired stub excepted, none left empty (an empty `Result` means the step was not run), and every _Recorded during the build_ slot filled or recorded as missed

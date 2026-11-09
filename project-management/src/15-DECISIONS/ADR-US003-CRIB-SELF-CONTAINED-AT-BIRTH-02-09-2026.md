@@ -31,10 +31,12 @@ in the slice's acceptance said what those cells should contain in the interim, a
 was found at `11-qa-checks` as **AC-GAP-5**.
 
 **The naive answer is forbidden by this story's own criteria.** A crib cell citing
-`code/docs/rendering/PITFALLS-AND-EXAMPLES.md#absence` before `S-03` writes it is a dangling
+"code/docs/rendering/PITFALLS-AND-EXAMPLES.md#absence" before `S-03` writes it is a dangling
 path, which `code/src/scripts/audits/doc-references.sh` Check 1 catches — `code/docs/*` is in
 its checkable-tree `case`, so unlike the PM-`src/` tree these citations are genuinely verified.
 US003 would ship a guide that reddens the gate for as long as four slices take to land.
+
+<!-- UPDATED 05/11/2026 (US004 P5): the forbidden citation above was backticked until then; it is quoted now, because it names a section anchor that was never written and read as a dead citation the citation gate now polices in this tree. The crib US003 shipped is `code/docs/ABSENCE.md` → _The crib — six kinds on five runtime surfaces_. -->
 
 The competing pull is navigability. A crib is most useful when each cell reaches the rule
 behind it in one hop, and a guide that never links out ages into a summary nobody trusts.

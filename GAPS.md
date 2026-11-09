@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 05/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 06/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -433,11 +433,15 @@ Q11) over a single-canonical-table alternative, with the drift risk stated befor
 repairs are available and the second is the cheaper one to reach for first: (1) widen
 `doctrine-drift.sh` — add `project-management/src/` to `SCAN_DIRS` and teach it a prose-table
 mode, which is a change to the scanner's core assumption and should not be undertaken lightly;
-(2) a new single-purpose `code/src/scripts/audits/sprint-register.sh` that extracts the register
+(2) a new single-purpose "sprint-register.sh" audit (proposed, not built) that extracts the register
 from every `SPRINT-##.md` and fails when any two differ — no new doctrine, one comparison, and it
 needs nothing from the existing gate. The obligation to hand-update **every** copy is written in
 `project-management/src/03-SPRINTS/CLAUDE.md` and the rule in
 `project-management/docs/planning/SPRINTS.md`; both are instructions to a reader, not enforcement.
+<!-- UPDATED 05/11/2026 (US004 P5): this entry and the one below backticked the proposed audit
+     at its intended path under code/src/scripts/audits/ until then. Nothing builds it and no story
+     owns it, so the citation gate read it as a dead path; it is named in prose as a proposal
+     instead (US004 build grilling round 4 Q2). -->
 
 <!-- 20/09/2026: this sentence read "The obligation to hand-update **all five**", which by that
      date attributed to `project-management/src/03-SPRINTS/CLAUDE.md` a five-copy obligation the
@@ -459,7 +463,7 @@ the register itself.
 
 **The five copies were byte-identical to one another throughout.** The divergence was
 register-versus-**record**, not copy-versus-copy — so proposed repair (2) above, "a new
-single-purpose `code/src/scripts/audits/sprint-register.sh` that extracts the register from every
+single-purpose "sprint-register.sh" audit (proposed, not built) that extracts the register from every
 `SPRINT-##.md` and fails when any two differ", **would have stayed green through this**. It is
 still the cheaper repair and is still worth writing, but it is not sufficient on its own: whatever
 gate lands has to compare each row against the capacity line and Story Summary of the record it
@@ -710,6 +714,134 @@ restating it. No map or story claims this entry.
 
 ---
 
+## 05/11/2026 — the citation gate's self-test cannot pass in a generated project
+
+✅ CLOSED 06/11/2026 — fixed in the US004 review round on Sam's instruction (finding F-022 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): the
+probes needing the copier contract are named as not run and `--self-test` exits 2 downstream.
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` and its fixtures ship, but `copier.yml`
+does not, so in a generated project the derived excluded-path set and the seeded list are both
+empty and `--self-test` exits 1 rather than reporting that it could not look. Measured 05/11/2026
+in a clone with `copier.yml` removed: the "broken/direction-b.md" probe and the "anchored entry is
+in the set" probe fail, as they did before US004, and US004's P2 untracked-population probe and its
+R4 unseeded-citer guard join them (US004 phase 9, finding QA-US004-05). Under
+`code/docs/GATE-REPORTING.md` an unrunnable proof must say so and exit 2, never fail as if the
+detector were wrong, nor pass having measured nothing.
+**Blocked by / Action:** Nothing blocks it. Deferred from US004 by <%DEVELOPER_NAME%> on 05/11/2026
+because it predates that story and the shape of a shipped self-test deserves its own grilling:
+which probes need `copier.yml`, whether they skip with a printed list and exit 2, and whether the
+rest still run. Cut as a story through `02-story-creation`.
+
+---
+
+## 06/11/2026 — the citation gate reads any token holding `NN` as a placeholder
+
+✅ CLOSED 06/11/2026 — fixed in US004 on Sam's ruling of 06/11/2026 (findings F-021 and F-054 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): a run
+of two or more `N` is a placeholder only with no A-Z capital on either side, so `PLANNING/` paths
+and `MAP-SCALE-PLANNING.md` are tested; the whole tree keeps the same 28 survivors, and the one
+false positive the narrowing exposed was fixed in the detector.
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` treats a token containing the letters
+`NN` anywhere as a naming placeholder and never tests it, so every `PLANNING/` path and names
+such as `MAP-SCALE-PLANNING.md` pass unexamined — 213 distinct path tokens in tracked Markdown and
+shell on 06/11/2026. Found in the US004 review round (finding F-021 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md").
+**Blocked by / Action:** Nothing blocks it. Narrow the arm to `NN` as a placeholder segment, then
+triage what the gate reports. Not fixed in US004 because it changes the verdict on tokens outside
+the review's findings; cut as a story through `02-story-creation`.
+
+---
+
+## 06/11/2026 — a project generated with the default answers fails its own citation gate
+
+✅ CLOSED 09/11/2026 — fixed in US004 on Sam's ruling (findings F-051 and F-069 to F-074 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): each
+templated `copier.yml` `_exclude` entry is parsed into a `gated FLAG path` row of the shipping
+facts, and in a generated project the gate reads `.copier-answers.yml`, passing an absent target
+under a declined surface and counting it per flag in its verdict; a missing or unreadable answers
+file exempts nothing. The default render exits 0 (121 passed unjudged); the template keeps its 28.
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh`, whole tree, exits 1 inside a project
+rendered with the default answers: 119 findings (98 `[dangling path]`, 21 `[dangling link]`),
+each a shipped file citing an optional-surface file the defaults leave out — `code/docs/WAGTAIL*`,
+`code/docs/rust/*`, `code/docs/accessibility/MOBILE.md` and the like. The all-surfaces render is
+clean. `.github/workflows/audit-doc-references.yml` ships and runs that gate, so every
+default-answer project starts with a red CI job. It is the unenforced half of
+`code/docs/FORWARD-VOICE.md` Section 5, the surface-gated citations. Finding F-051 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Sam's disposition: fix in US004, or name a later story. Either teach the
+gate the surface flags from the project's answers file or reword the citations; never markers.
+
+---
+
+## 06/11/2026 — the citation gate never tests a path whose only placeholder is one `NN` segment
+
+**Type:** Active gap
+**Summary:** `no-such-root/NN-FOO/CONTEXT.md` passes untested, where a `DD-MM-YYYY` placeholder
+already has its concrete leading folders tested. Predates the F-021 narrowing. Finding F-052 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Extend the folder route to that token shape, with a
+fixture. No map or story claims this entry.
+
+---
+
+## 06/11/2026 — a project generated with the default answers fails `sync-trees.sh`
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/development/sync-trees.sh` reports 13 tree drift findings in a fresh
+default render: surface-gated rows left unannotated (`stack-wagtail/`, `WAGTAIL.md`,
+`design-tokens/MOBILE.md`), the root tree's template-only rows (`.copier/`, `LICENSE`,
+`SECURITY.md`, `CONTRIBUTING.md`, `copier.yml`), and four `WALK-N010-COLD-31-08-2026*` rows.
+Finding F-053 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Annotate each row with its surface or `template-only`,
+which the check now reads, and decide whether the WALK rows ship. No map or story claims this
+entry.
+
+---
+
+## 05/11/2026 — the citation baseline-diff regime outlives US004, and two ADRs now state a stale premise
+
+**Type:** Active gap
+**Summary:** US004 repaired every class it owns, but `code/src/scripts/audits/doc-references.sh`
+still exits 1 on 28 forward references owned by US005, US006, US010 and US014. The baseline-diff
+regime of
+`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`
+retires only when `S-06` lands **and** the gate goes green, so it stays in force, and so does
+`project-management/src/15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`, whose
+trigger is the same. Separately,
+`project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` still
+says no gate verifies a PM `src/` citation, which Check 1 now does for the path form. Findings
+F-004 and F-005 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** The retirement is blocked by the 28 survivors: each clears when its owner
+builds the path. Until then every story captures a baseline before its first edit. The story that
+clears the last survivor writes one superseding ADR retiring the regime and ADR-US008-SCOPED by
+full filename on both. The ADR-US001 supersession is blocked by nothing and needs a driving story;
+no map or story claims either.
+
+---
+
+## 05/11/2026 — the `.copier/` seed bodies a generated project receives are read by no citation clause
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` exempts `.copier/` outright, and since
+US004 a seeded citer — the root `GAPS.md`, `DEFERRED.md`, `README.md`, the boards, the cut plan —
+is non-shipping for Checks 2 and 3, because the seed replaces it. The seed text that does reach a
+generated project is therefore read by no clause: a dead path or an instance citation in it ships
+unreported. Measured in US004 phase 9 by copying a seed outside the exempt tree (four findings,
+none a defect on reading). The exemption predates US004; finding F-013 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Read each `.copier/` seed as a shipping citer under its
+seeded destination's path, with fixtures. No map or story claims it.
+
+---
+
 ## 05/11/2026 — US003's findings for the absence map's remaining slices wait on stories nobody has cut
 
 **Type:** Planned feature
@@ -800,6 +932,12 @@ entry.
 ---
 
 ## 05/11/2026 — `doc-references.sh` does not test file-relative Markdown link targets
+
+✅ CLOSED 06/11/2026 — fixed in US004's workflow 23 fix rounds (findings F-035 and F-037 to F-040 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): every
+`[text](target)` is resolved against its citing file and a dead one reports `[dangling link]`, and a
+bare token whose leading folder sits beside the citer is tested there. The reproduction, a
+`code/docs/` file citing a missing `data-structures/` file both ways, now reports both.
 
 **Type:** Active gap
 **Summary:** `code/src/scripts/audits/doc-references.sh` catches a dangling repo-rooted citation

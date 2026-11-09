@@ -456,6 +456,17 @@ sets the gate's naming-row flag and suppresses the dangling-path record; `code/d
 reserves it for a citation that is right and merely unprovable downstream, and a dangling citation
 is **fixed rather than marked**. That is the misuse `AC-GAP-12` removed from the story itself.
 
+### Carried from US004's findings, 05/11/2026
+
+`22-implementation-documentation` Step 5 carries the `Next story` rows of
+`../20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md` into this plan, the next one
+built. They overtake the 05/09/2026 measurement above wherever the two disagree:
+
+| Finding       | Carried as                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F-001 · F-004 | **The baseline is still owed before the first edit, and the regime has not retired.** US004 left the gate at exit 1 on 28 named `[dangling path]` survivors and every owned class at zero, so this story's baseline should hold only named survivors. Take every _Recorded during the build_ capture in this story's manual guide **before phase 2**, alongside the `completion` status move; a missed capture is recorded as missed and never reconstructed (`.claude/MEMORY.md` → _Feedback_, 05/11/2026) |
+| F-006         | **Clear this story's own survivors.** F-006 attributes ten of the 28 to US005: citations of the outbound-timeouts register, "how-to/src/OUTBOUND-TIMEOUTS.md", which this plan's table above assigns to slice `S-09`. Whichever story creates that file clears them; if this story changes a survivor's path it repoints the citations in the same change. Whichever story clears the **last** survivor writes F-004's superseding ADR, retiring the baseline-diff regime                                   |
+
 ## Key Decisions
 
 | Decision                                      | Chosen                                                      | Rejected                                             | Why                                                                                                                                                                  | Reference                              |

@@ -36,6 +36,9 @@
 #                   * GATED rows — anything annotated MOBILE-ONLY / RUST-ONLY /
 #                     DESKTOP-ONLY, or "absent unless"/"optional"/"opted in". These
 #                     dangle by design so the index carries no conditional contents.
+#                     "template-only" is gated too: copier excludes such a
+#                     file, and in a generated project there is no copier.yml for
+#                     copier_excluded() to read, so the row's own word is the reason.
 #
 #                 NOT HANDLED HERE: `.copier/README.md`'s Project Tree. That is a
 #                 template-integrity concern and the template-integrity check already
@@ -181,7 +184,7 @@ def placeholder_to_regex(nm):
             out += re.escape(c); i += 1
     return re.compile("^" + out + "$")
 GATED = re.compile(
-    r'MOBILE-ONLY|RUST-ONLY|DESKTOP-ONLY|absent unless|opted in|optional'
+    r'MOBILE-ONLY|RUST-ONLY|DESKTOP-ONLY|template-only|absent unless|opted in|optional'
     r'|gitignored|local override|no content|planned', re.I)
 
 # Template-only paths never appear in a shipped tree, and must not be demanded of one.

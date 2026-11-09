@@ -2,11 +2,13 @@
 
 Fixture for `doc-references.sh --self-test`. Never read as documentation.
 
-Two plan filenames carrying the two-digit exec-order prefix. Both are path-form and neither
-exists, which is deliberate: Check 4 is a naming rule, so the prefix alone is what makes it
-silent, and a path under the artefact tree proves that without any file being involved —
-`project-management/src/17-STORY-PLANS/07-STORY-PLAN-US042-FIXTURE-ONLY.md` and
-`project-management/src/16-SPRINT-PLANS/09-SPRINT-PLAN-09.md`.
+Two plan filenames carrying the two-digit exec-order prefix, both path-form. Check 4 is a naming
+rule decided from the string before any existence test runs, so the prefix alone is what keeps
+it silent. Each names a stub under this fixture's own plans tree, because Check 1 checks the
+artefact tree as of US004 and a dead plan citation there is a finding of its own — the stubs keep
+that clause out of a probe about Check 4 —
+`code/src/scripts/audits/fixtures/doc-references/clean/plans/17-STORY-PLANS/07-STORY-PLAN-US042-FIXTURE-ONLY.md`
+and `code/src/scripts/audits/fixtures/doc-references/clean/plans/16-SPRINT-PLANS/09-SPRINT-PLAN-09.md`.
 
 A correctly prefixed BARE basename cannot appear here, and the reason is a different rule
 rather than an oversight: bare or not, it names a per-project instance, so Check 2 reports it
