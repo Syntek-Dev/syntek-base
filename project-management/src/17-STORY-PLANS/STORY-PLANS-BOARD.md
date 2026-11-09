@@ -12,8 +12,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Open              | 0     |
 | Pending           | 6     |
 | In Progress       | 0     |
-| In Review         | 2     |
-| Accepted          | 3     |
+| In Review         | 1     |
+| Accepted          | 4     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
 | Rejected          | 0     |
@@ -43,10 +43,9 @@ _None._
 
 ## In Review
 
-| Plan                | Story                           | Title                                              | Status    | File                                                                                             |
-| ------------------- | ------------------------------- | -------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------ |
-| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270       | In Review | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md)                     |
-| 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index | In Review | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md) |
+| Plan                | Story                           | Title                                        | Status    | File                                                                         |
+| ------------------- | ------------------------------- | -------------------------------------------- | --------- | ---------------------------------------------------------------------------- |
+| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270 | In Review | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md) |
 
 ## Accepted
 
@@ -55,6 +54,7 @@ _None._
 | 01-STORY-PLAN-US007 | [US007](../02-STORIES/US007.md) | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Accepted | [01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md](01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md) |
 | 02-STORY-PLAN-US001 | [US001](../02-STORIES/US001.md) | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Accepted | [02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md](02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md)     |
 | 03-STORY-PLAN-US002 | [US002](../02-STORIES/US002.md) | The audits register regains the headroom nine new gates need                                                   | Accepted | [03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md](03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md)       |
+| 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index                                                             | Accepted | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md)         |
 
 ## Customer Review
 

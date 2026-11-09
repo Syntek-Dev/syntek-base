@@ -1,6 +1,6 @@
 # SPRINT-03
 
-**Last Updated**: 05/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 09/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -17,7 +17,7 @@ after this one carries a written baseline to subtract from a red run.
      05/09/2026 records as the drift a goal must not hold. The replacement is derived from the
      title and Client Summary of US004, the sole member. -->
 
-**Status:** In Progress
+**Status:** Done — US004, the sole member, Accepted 09/11/2026; US003's reserved carry never arrived
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
@@ -82,9 +82,9 @@ record, and if it lands this sprint is **13 / 11 SP** and at grace. See Notes.
 
 ## Story Summary
 
-| ID    | Title                                                                                 | MoSCoW    | SP  |
-| ----- | ------------------------------------------------------------------------------------- | --------- | --- |
-| US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable | Must Have | 8   |
+| ID      | Title                                                                                 | MoSCoW    | SP  |
+| ------- | ------------------------------------------------------------------------------------- | --------- | --- |
+| US004 ✓ | The citation gate stops depending on the git index, and the PM tree becomes checkable | Must Have | 8   |
 
 **Total:** 8 SP — all committed, no stretch tier at opening. **US003's 5 SP `Should` carry is
 reserved to this record from SPRINT-02**; if it arrives the total is 13 SP, 8 committed and 5
