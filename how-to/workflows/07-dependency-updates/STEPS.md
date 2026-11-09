@@ -112,12 +112,17 @@ bash code/src/scripts/development/pnpm-update.sh --pin X.Y.Z
 > **Model:** opus
 
 ```bash
+bash code/src/scripts/dependencies/audit.sh     # advisories + every lockfile, one verdict
+bash code/src/scripts/audits/toolchain-pins.sh  # every toolchain pin against its source
 bash code/src/scripts/audits/security.sh
 bash code/src/scripts/tests/all.sh --coverage
 echo '{"tool_input":{"command":"gh pr create"}}' | bash .claude/hooks/pre-pr-check.sh
 ```
 
-**The pipe on the third line is required.** `pre-pr-check.sh` is a `PreToolUse` hook that reads
+`dependencies/audit.sh` exits `2` when a leg could not run — **unmeasured**, never a pass:
+install the missing tool and run it again rather than dropping that ecosystem.
+
+**The pipe on the last line is required.** `pre-pr-check.sh` is a `PreToolUse` hook that reads
 its payload from stdin and exits 0 unless it names `gh pr create` — run bare it either blocks
 forever or exits 0 having checked nothing. Workflow `06-quality-gates` Step 5 carries the full
 explanation.
@@ -129,6 +134,9 @@ the suite covering the code you touched.
 **Expect the matched-set failure.** A toolchain bump usually needs several pins moved
 together — `.nvmrc`, `.python-version`, `package.json`, and the `env:` blocks in
 `.github/workflows/*.yml`. A version moved in one place and not the others fails only in CI.
+`audits/toolchain-pins.sh` finds every site — CI, Dockerfiles, manifests and the documents a
+contributor installs from — and fails on the one left behind; its held tier names what a story
+already owns, and does not fail.
 
 ---
 

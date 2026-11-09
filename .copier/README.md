@@ -158,6 +158,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-css-slop.yml           ← the AI-slop family, CSS half
 │       ├── audit-css-tokens.yml         ← every var(--x) must resolve in the token layer
 │       ├── audit-deps.yml               ← scheduled CVE sweep (pnpm audit + pip-audit) and lockfile drift
+│       ├── audit-dependencies.yml       ← one verdict: every advisory audit and every lockfile, on a dependency PR
 │       ├── audit-dict-discipline.yml    ← a dictionary used as a record where a named type belongs
 │       ├── audit-doc-references.yml     ← every citation in a shipped file must resolve
 │       ├── audit-docs-length.yml        ← the 300-line instructional-document limit
@@ -176,6 +177,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-stubs.yml              ← detects hard stubs and TODO/FIXME/HACK markers
 │       ├── audit-template-orphans.yml   ← artefacts a `copier update` stranded
 │       ├── audit-template-slop.yml      ← the AI-slop family, markup half
+│       ├── audit-toolchain-pins.yml     ← every Node/Python/uv/pnpm/Rust pin against its source — no path filter
 │       ├── claude.yml                   ← Claude Code GitHub Actions integration
 │       ├── clickup-sync.yml             ← CLICKUP-ONLY — pushes story exports to ClickUp (push/PR)
 │       ├── pm-boards.yml                ← PM boards current and archive/ frozen; stale-status warnings
@@ -1232,12 +1234,14 @@ All three support `--file-type`, `--output`, `--quiet`, and `--path` flags.
 | Script      | Purpose                                                                                   |
 | ----------- | ----------------------------------------------------------------------------------------- |
 | `update.sh` | Report or apply dependency updates across Python (uv), JavaScript (pnpm) and Rust (cargo) |
+| `audit.sh`  | One verdict: every advisory audit and every lockfile against its manifest, all three      |
 
 ```bash
 ./code/src/scripts/dependencies/update.sh                            # what is out of date
 ./code/src/scripts/dependencies/update.sh --apply --package django   # narrowest upgrade
 ./code/src/scripts/dependencies/update.sh --apply --ecosystem rust   # one ecosystem
 ./code/src/scripts/dependencies/update.sh --apply                    # everything
+./code/src/scripts/dependencies/audit.sh                             # advisories + lockfiles
 ```
 
 **A floor is not a pin.** Raising `redis>=5.0.0` to `redis>=6.0` forbids redis 5; it does not
@@ -1280,6 +1284,7 @@ table ever falls behind it.
 | `routing-skills.sh`    | Every skill named in routing frontmatter exists, and gated names co-vary with their flag       |
 | `mcp-parity.sh`        | `.mcp.json` and `.codex/config.toml` declare the same MCP servers, commands and arguments      |
 | `playwright-pin.sh`    | Eight sites declare the Playwright pin - checks they agree with each other, never the host     |
+| `toolchain-pins.sh`    | Every Node, Python, uv, pnpm and Rust pin agrees with its one source of truth                  |
 | `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                           |
 | `story-markers.sh`     | Tests carrying no `story` marker — warns and always exits `0`; they are absent from the record |
 | `mobile-tokens.sh`     | **Mobile-only.** StyleSheet values resolve to generated tokens                                 |

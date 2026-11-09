@@ -1,0 +1,3 @@
+error[yanked]: detected yanked crate (try `cargo update -p async-executor`)
+   ┌─ code/src/rust/Cargo.lock:28:1
+advisories FAILED, bans ok, licenses ok, sources ok

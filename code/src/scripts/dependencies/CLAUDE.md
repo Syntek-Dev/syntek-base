@@ -9,7 +9,7 @@ imported above) → this file.
 ## Purpose (one line)
 
 The sanctioned entry point for moving a dependency in any of the three ecosystems — Python
-(uv), JavaScript (pnpm), Rust (cargo).
+(uv), JavaScript (pnpm), Rust (cargo) — and for judging the result with one verdict.
 
 ## How to work here
 
@@ -19,7 +19,7 @@ The sanctioned entry point for moving a dependency in any of the three ecosystem
   tools disagree about what "update" means.
 - **Model:** Opus, for authoring the script and for running it.
 - **Concrete steps:** `update.sh` (reports) → read what moved and decide → `update.sh --apply`
-  → **run the suites** (`code/src/scripts/tests/all.sh`) → commit the manifest and the lockfile
+  → **run the suites** (`code/src/scripts/tests/all.sh`) → `audit.sh` exits `0` → commit the manifest and the lockfile
   **in the same commit**, never one without the other.
 - **Definition of done:** lockfile and manifest agree; the suites pass on the resolved graph;
   any floor raised deliberately carries an inline comment saying why, beside the dependency.
@@ -39,10 +39,17 @@ The sanctioned entry point for moving a dependency in any of the three ecosystem
 - **This script never edits a version number for you.** Choosing a floor is a judgement about
   what the project supports, and a script that guessed it would be making that judgement
   silently.
-- Shell scripts are exempt from the 750-line source limit; keep this one focused all the same.
+- **`audit.sh` never decides an advisory is acceptable.** The allowlists are the owning tools'
+  — `audit.ignore` in `pnpm-workspace.yaml`, `code/src/rust/deny.toml` — and a leg is quietened
+  there with its advisory reason, never by teaching the classifier to read a failure as clean.
+  Its exit `2` is a NOT RUN leg: install the tool, never re-run with that ecosystem dropped.
+- **A new leg arrives with three transcripts** — clean, finding, NOT RUN — in
+  `audits/fixtures/dependencies-audit/`; `--self-test` fails on a leg missing any of them. Fix
+  the classifier, never a transcript.
+- Shell scripts are exempt from the 750-line source limit; keep these focused all the same.
 
 ## Output & naming
 
-- **Hand-written:** `update.sh`, this file, `CONTEXT.md`.
+- **Hand-written:** `update.sh`, `audit.sh`, this file, `CONTEXT.md`.
 - **Generated / gitignored:** reports under `code/src/scripts/reports/`.
 - Script files `kebab-case.sh`; documentation `SCREAMING-SNAKE-CASE.md`.

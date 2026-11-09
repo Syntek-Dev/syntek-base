@@ -1,0 +1,148 @@
+# Dependency audit — the CI half of code/src/scripts/dependencies/audit.sh.
+#
+# One verdict over every ecosystem: the advisory audits (pip-audit, pnpm audit, cargo-deny) and
+# each lockfile checked against its manifest (uv lock --check, pnpm --frozen-lockfile, cargo
+# --locked). The per-PR "[8/8] Security" gate in claude.yml runs the JS and Python advisory legs
+# alone; this adds the lockfile legs and the Rust leg to a pull request that moves a dependency,
+# under the script's single exit code.
+#
+# A leg that could not run is NOT RUN and the job fails with exit 2 ("unmeasured") rather than
+# reporting green — code/docs/GATE-REPORTING.md. That is why cargo-deny is installed here at the
+# repository's own pin rather than left to chance.
+#
+# PATH-FILTERED, AND HERE THAT IS HONEST: a lockfile or an advisory set only moves when a
+# manifest, a lockfile, an allowlist or the audit itself does. Advisories published against an
+# UNCHANGED lockfile are the nightly sweep's (audit-deps.yml), not this workflow's.
+#
+# NOT ELIGIBLE FOR THE REQUIRED SET while it carries this filter — criterion 1 of
+# project-management/docs/git/PR-AND-REQUIRED-CHECKS.md → What earns a place in the required set.
+name: Audit — Dependencies
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "pyproject.toml"
+      - "uv.lock"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "patches/**"
+      - "code/src/*/package.json"
+      - "code/src/rust/Cargo.toml"
+      - "code/src/rust/Cargo.lock"
+      - "code/src/rust/crates/**/Cargo.toml"
+      - "code/src/rust/deny.toml"
+      - "code/src/rust/.cargo-deny-version"
+      - "code/src/scripts/dependencies/audit.sh"
+      - "code/src/scripts/audits/security.sh"
+      - "code/src/scripts/rust/audit.sh"
+      - "code/src/scripts/audits/fixtures/dependencies-audit/**"
+      - ".github/workflows/audit-dependencies.yml"
+  pull_request:
+    branches: [main, staging, dev, testing]
+    paths:
+      - "pyproject.toml"
+      - "uv.lock"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "patches/**"
+      - "code/src/*/package.json"
+      - "code/src/rust/Cargo.toml"
+      - "code/src/rust/Cargo.lock"
+      - "code/src/rust/crates/**/Cargo.toml"
+      - "code/src/rust/deny.toml"
+      - "code/src/rust/.cargo-deny-version"
+      - "code/src/scripts/dependencies/audit.sh"
+      - "code/src/scripts/audits/security.sh"
+      - "code/src/scripts/rust/audit.sh"
+      - "code/src/scripts/audits/fixtures/dependencies-audit/**"
+      - ".github/workflows/audit-dependencies.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  UV_VERSION: "0.12.5"
+  PYTHON_VERSION: "3.14"
+
+jobs:
+  dependencies:
+    name: Dependency audit (advisories and lockfiles)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # The classifier proof needs no toolchain, so it runs first and fails fast.
+      - name: Prove the classifier separates findings from failed runs
+        run: bash code/src/scripts/dependencies/audit.sh --self-test
+
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          version: ${{ env.UV_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+          # This workflow ships, and a generated project may run it before its own uv.lock
+          # exists — audit-deps.yml carries the full reason.
+          ignore-nothing-to-cache: true
+
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+
+      # pip-audit runs from the project environment, so it has to exist. The lock decides the
+      # mode, never whether the audit happens: with no uv.lock the script reports the Python
+      # lockfile leg as a finding and the advisory leg as NOT RUN.
+      - name: Install backend deps (uv)
+        run: |
+          if [ -f uv.lock ]; then uv sync --frozen; else echo "No uv.lock — the audit will say so."; fi
+
+      - name: Rust — is there a surface to audit?
+        id: rust_surface
+        run: |
+          if [ -f code/src/rust/Cargo.lock ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No code/src/rust/Cargo.lock — the Rust legs report the surface as not present."
+          fi
+
+      - name: Rust — restore the pinned cargo-deny
+        id: deny_cache
+        if: steps.rust_surface.outputs.present == 'true'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cargo/bin/cargo-deny
+          key: cargo-deny-${{ runner.os }}-${{ hashFiles('code/src/rust/.cargo-deny-version') }}
+
+      # Not continue-on-error: an install that fails leaves cargo-deny absent, and the audit then
+      # reports the Rust advisory leg NOT RUN and exits 2 — the failure is named, not hidden.
+      - name: Rust — install cargo-deny (pinned)
+        id: deny_install
+        if: steps.rust_surface.outputs.present == 'true'
+        run: |
+          version="$(tr -d '[:space:]' < code/src/rust/.cargo-deny-version)"
+          if ! cargo-deny --version 2>/dev/null | grep -qx "cargo-deny $version"; then
+            cargo install --locked --version "$version" cargo-deny
+          fi
+
+      - name: Rust — save the pinned cargo-deny
+        if: steps.deny_install.outcome == 'success' && steps.deny_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cargo/bin/cargo-deny
+          key: cargo-deny-${{ runner.os }}-${{ hashFiles('code/src/rust/.cargo-deny-version') }}
+
+      - name: Run the dependency audit
+        run: bash code/src/scripts/dependencies/audit.sh --output md
+
+      - name: Upload dependency audit report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dependency-audit-report
+          path: code/src/scripts/reports/dependency-audit.md
+          if-no-files-found: ignore

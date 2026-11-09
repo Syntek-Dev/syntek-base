@@ -1,9 +1,10 @@
 # code/src/scripts/dependencies
 
-The one place a dependency moves. Python (uv), JavaScript (pnpm) and Rust (cargo) each have
-their own tool and their own idea of what "update" means; this group puts a single command
-and a single exit-code contract over all three, so a sweep is a decision someone made rather
-than three half-remembered incantations run in the wrong order.
+The one place a dependency moves, and the one place its state is judged. Python (uv),
+JavaScript (pnpm) and Rust (cargo) each have their own tool and their own idea of what "update"
+and "clean" mean; this group puts a single command and a single exit-code contract over all
+three, so a sweep is a decision someone made rather than three half-remembered incantations run
+in the wrong order — and its verdict is one answer rather than three.
 
 ## Directory Tree
 
@@ -11,14 +12,16 @@ than three half-remembered incantations run in the wrong order.
 code/src/scripts/dependencies/
 ├── CONTEXT.md   ← this file
 ├── CLAUDE.md    ← operating rules
+├── audit.sh     ← one verdict: every advisory audit, every lockfile against its manifest
 └── update.sh    ← report or apply updates across all three ecosystems
 ```
 
 ## Scripts
 
-| Script      | Does                                                                      |
-| ----------- | ------------------------------------------------------------------------- |
-| `update.sh` | `--check` (default) reports what is out of date; `--apply` re-resolves it |
+| Script      | Does                                                                                      |
+| ----------- | ----------------------------------------------------------------------------------------- |
+| `update.sh` | `--check` (default) reports what is out of date; `--apply` re-resolves it                 |
+| `audit.sh`  | Advisories and lockfile agreement in every present ecosystem, under one exit code — below |
 
 ## Common flags
 
@@ -34,6 +37,33 @@ code/src/scripts/dependencies/
 | `--help`             | Print usage                                                |
 
 **Exit codes:** `0` up to date or applied · `1` updates available (`--check`) · `2` script error.
+
+## One verdict over every audit
+
+`audit.sh` changes nothing. It runs six legs — the advisory audit and the lockfile check for each
+ecosystem — by delegating to what already owns each: `audits/security.sh` for pip-audit and
+`pnpm audit` (one lockfile covers the root and every workspace member, mobile included),
+`rust/audit.sh` for cargo-deny, and `uv lock --check`, `pnpm install --frozen-lockfile
+--lockfile-only` and `cargo metadata --locked` for the lockfiles. It takes `--ecosystem`,
+`--output md|txt|json`, `--quiet` and `--self-test`, and writes
+`code/src/scripts/reports/dependency-audit.<FORMAT>`.
+
+Each leg ends **clean**, **finding**, **not present** (no such surface — no `code/src/rust` is a
+project without Rust) or **NOT RUN** (the surface is there and the tool is missing, or it failed
+for a reason that is not a finding). A non-zero exit from a tool is matched against the shape that
+tool prints for a real result; anything else is NOT RUN, and `--self-test` proves that
+classification against captured transcripts in `audits/fixtures/dependencies-audit/`.
+
+| Exit | Means                                                                                    |
+| ---- | ---------------------------------------------------------------------------------------- |
+| `0`  | Every present leg ran clean                                                              |
+| `1`  | At least one finding — it outranks everything else, and the fix is to the dependency set |
+| `2`  | Nothing found but a leg NOT RUN (**unmeasured**), or a script error                      |
+
+Unmeasured is never `0`, because that prints "clean" over a population nobody opened
+(`code/docs/GATE-REPORTING.md`). It is `2` rather than `1` because the fix is to the environment
+— install the tool, restore the network — which is what `2` means across these scripts: a
+prerequisite the caller must fix.
 
 ## A floor is not a pin
 
@@ -96,6 +126,7 @@ Three neighbours sit close enough to be confused with this one, and the line bet
 | ------------------------------------------------- | ------------------------------------------------- |
 | "Give me the dependencies this project declares"  | `development/install-backend.sh` · `-frontend.sh` |
 | "Move the declared dependencies forward"          | **`update.sh`, here**                             |
+| "Is every dependency safe, and every lock true?"  | **`audit.sh`, here**                              |
 | "Update pnpm itself and pin it"                   | `development/pnpm-update.sh`                      |
 | "What would a **template** update do to my deps?" | `audits/dependency-drift.sh`                      |
 
@@ -106,6 +137,8 @@ reports, and `template-update.sh` runs it for you before anything is applied.
 ## Cross-references
 
 - `code/src/scripts/audits/dependency-drift.sh` — what an incoming template update would impose
+- `code/src/scripts/audits/toolchain-pins.sh` — the toolchain itself (Node, Python, uv, pnpm,
+  Rust) pinned in step; this group judges the dependencies those toolchains install
 - `code/src/scripts/development/template-update.sh` — previews an update, and runs that audit
 - `how-to/workflows/07-dependency-updates/` — the procedure this script serves
 - `code/src/scripts/CONTEXT.md` — the full script-group map
