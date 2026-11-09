@@ -758,6 +758,13 @@ the review's findings; cut as a story through `02-story-creation`.
 
 ## 06/11/2026 — a project generated with the default answers fails its own citation gate
 
+✅ CLOSED 09/11/2026 — fixed in US004 on Sam's ruling (findings F-051 and F-069 to F-074 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): each
+templated `copier.yml` `_exclude` entry is parsed into a `gated FLAG path` row of the shipping
+facts, and in a generated project the gate reads `.copier-answers.yml`, passing an absent target
+under a declined surface and counting it per flag in its verdict; a missing or unreadable answers
+file exempts nothing. The default render exits 0 (121 passed unjudged); the template keeps its 28.
+
 **Type:** Active gap
 **Summary:** `code/src/scripts/audits/doc-references.sh`, whole tree, exits 1 inside a project
 rendered with the default answers: 119 findings (98 `[dangling path]`, 21 `[dangling link]`),

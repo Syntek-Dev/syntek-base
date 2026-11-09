@@ -3,7 +3,7 @@
 # GENERATED from the copier contract by: bash code/src/scripts/audits/doc-references.sh --write-shipping
 # Never hand-edit it. The contract is the one place a human edits; the template's ordinary run
 # fails while this file and the contract disagree. It ships so a generated project, which
-# receives no contract, reads the same two facts. Rule: code/docs/FORWARD-VOICE.md Section 7.
+# receives no contract, reads the same facts. Rule: code/docs/FORWARD-VOICE.md Section 7.
 #
 seeded README.md
 seeded VERSION
@@ -44,3 +44,47 @@ ships project-management/src/09-GDPR/THIRD-PARTY-PROCESSORS.md
 ships project-management/src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md
 ships project-management/src/18-TESTS/AUTOMATED/US000-TEST-STATUS.md
 ships project-management/src/23-INCIDENTS/INCIDENT-INDEX.md
+gated INCLUDE_MOBILE code/src/mobile
+gated INCLUDE_MOBILE code/src/scripts/mobile
+gated INCLUDE_MOBILE code/docs/accessibility/MOBILE.md
+gated INCLUDE_MOBILE code/docs/design-tokens/MOBILE.md
+gated INCLUDE_MOBILE code/docs/visual-design/MOBILE.md
+gated INCLUDE_MOBILE code/docs/discoverability/APP-STORE.md
+gated INCLUDE_MOBILE code/docs/MOBILE-CODING-PRINCIPLES.md
+gated INCLUDE_MOBILE code/docs/data-structures/TYPES-TYPESCRIPT.md
+gated INCLUDE_MOBILE how-to/src/STORE-LISTING.md
+gated INCLUDE_MOBILE .claude/skills/stack-react-native
+gated INCLUDE_MOBILE .agents/skills/stack-react-native
+gated INCLUDE_RUST code/src/rust
+gated INCLUDE_RUST code/src/scripts/rust
+gated INCLUDE_RUST code/docs/RUST.md
+gated INCLUDE_RUST code/docs/rust
+gated INCLUDE_RUST code/docs/encryption/RUST-CRYPTO.md
+gated INCLUDE_RUST code/docs/data-structures/TYPES-RUST.md
+gated INCLUDE_RUST code/workflows/12-rust-extension
+gated INCLUDE_RUST .github/workflows/syntax-rust.yml
+gated INCLUDE_RUST .claude/skills/stack-rust
+gated INCLUDE_RUST .agents/skills/stack-rust
+gated INCLUDE_DESKTOP code/src/rust/crates/desktop
+gated INCLUDE_DESKTOP code/src/scripts/desktop
+gated INCLUDE_DESKTOP code/docs/DESKTOP.md
+gated INCLUDE_DESKTOP code/docs/desktop
+gated INCLUDE_DESKTOP code/docs/visual-design/DESKTOP.md
+gated INCLUDE_DESKTOP code/workflows/13-desktop-app
+gated INCLUDE_DESKTOP .claude/skills/stack-slint
+gated INCLUDE_DESKTOP .agents/skills/stack-slint
+gated INCLUDE_DESKTOP .github/workflows/audit-style-check.yml
+gated INCLUDE_WAGTAIL code/docs/WAGTAIL.md
+gated INCLUDE_WAGTAIL code/docs/wagtail
+gated INCLUDE_WAGTAIL .claude/skills/stack-wagtail
+gated INCLUDE_WAGTAIL .agents/skills/stack-wagtail
+gated INCLUDE_CLICKUP .github/workflows/clickup-sync.yml
+gated INCLUDE_CLICKUP project-management/src/00-ASSETS/scripts/export-clickup-stories.sh
+gated INCLUDE_CLICKUP project-management/src/00-ASSETS/scripts/precommit-clickup.sh
+gated INCLUDE_CLICKUP project-management/src/00-ASSETS/scripts/sync-clickup.sh
+gated INCLUDE_CLICKUP project-management/export/clickup/**
+absent INCLUDE_MOBILE declined
+absent INCLUDE_RUST declined
+absent INCLUDE_DESKTOP declined
+absent INCLUDE_WAGTAIL declined
+absent INCLUDE_CLICKUP taken
