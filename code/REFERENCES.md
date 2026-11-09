@@ -93,14 +93,14 @@ Internal and external references for all coding work in this repository.
 
 ### Backend
 
-- **Django 6.x** — <https://docs.djangoproject.com/en/6.0/> — official Django reference
+- **Django 6.x** — <https://docs.djangoproject.com/en/6.1/> — official Django reference
 - **Python 3.14** — <https://docs.python.org/3.14/> — language reference and standard library
 - **Django Ninja** — <https://django-ninja.dev/> — Python JSON API framework used for all API endpoints and Schema (Pydantic) models
 - **FastMCP** — <https://gofastmcp.com/> — the Python MCP server framework behind the `/mcp/` tool surface (not installed at baseline)
 - **Model Context Protocol** — <https://modelcontextprotocol.io/> — the protocol specification FastMCP implements; read for transport and session semantics
 - **Starlette** — <https://www.starlette.io/> — the ASGI toolkit that composes the `/mcp/` and Django mounts in `config/asgi.py` (arrives with FastMCP)
 - **Celery — configuration reference** — <https://docs.celeryq.dev/en/stable/userguide/configuration.html> — the acknowledgement settings that decide the delivery guarantee. `task_acks_late` is **disabled by default**, so a message is acked before the task body runs and a killed worker loses its task rather than repeating it; `task_reject_on_worker_lost` is what re-queues it, at the risk of a loop. Read before wiring the task surface (`code/docs/TASK-AUTHORING.md` → _Idempotency_)
-- **Django — writing management commands** — <https://docs.djangoproject.com/en/6.0/howto/custom-management-commands/> — `BaseCommand`, `add_arguments`, and the `CommandError` contract `ManagementCommand` builds on. Note that `run_from_argv` catches `CommandError` and closes connections, while `call_command()` does neither — the asymmetry `code/docs/MANAGEMENT-COMMANDS.md` exists partly to close
+- **Django — writing management commands** — <https://docs.djangoproject.com/en/6.1/howto/custom-management-commands/> — `BaseCommand`, `add_arguments`, and the `CommandError` contract `ManagementCommand` builds on. Note that `run_from_argv` catches `CommandError` and closes connections, while `call_command()` does neither — the asymmetry `code/docs/MANAGEMENT-COMMANDS.md` exists partly to close
 - **`sysexits.h` (BSD)** — <https://man.freebsd.org/cgi/man.cgi?sysexits(3)> — the source of `EX_TEMPFAIL` (75), the one exit code this project spends on meaning. Cited as a platform convention rather than credited in `README.md` Section _Influences_: it supplies a number and a name, not doctrine
 - **Gunicorn** — <https://docs.gunicorn.org/en/stable/> — WSGI HTTP server
 - **Uvicorn** — <https://www.uvicorn.org/> — ASGI server used alongside Gunicorn
@@ -161,5 +161,5 @@ Internal and external references for all coding work in this repository.
 - **OWASP REST Security Cheat Sheet** — <https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html> — JSON API security guidance
 - **NIST SP 800-63B** — <https://pages.nist.gov/800-63-4/sp800-63b.html> — authentication, password policy, and MFA requirements
 - **WCAG 2.2 AA** — <https://www.w3.org/TR/WCAG22/> — accessibility compliance standard for all frontend components
-- **Django security overview** — <https://docs.djangoproject.com/en/6.0/topics/security/> — CSRF, clickjacking, SQL injection, and XSS guidance
+- **Django security overview** — <https://docs.djangoproject.com/en/6.1/topics/security/> — CSRF, clickjacking, SQL injection, and XSS guidance
 - **UK GDPR (ICO)** — <https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/> — data protection law reference for GDPR compliance work

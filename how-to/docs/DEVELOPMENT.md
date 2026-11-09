@@ -19,7 +19,7 @@ model: opus
 
 | Layer                 | Technology                                                                                                                                     | Container | Dev URL                                         |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------- |
-| **App (Django ASGI)** | Django 6.0.6, Python 3.14, Django Ninja API; django-components + Django templates + HTMX + Alpine + vanilla token CSS                          | `backend` | http://dev.<%PROJECT_SLUG%>.localhost:81        |
+| **App (Django ASGI)** | Django 6.1.3, Python 3.14, Django Ninja API; django-components + Django templates + HTMX + Alpine + vanilla token CSS                          | `backend` | http://dev.<%PROJECT_SLUG%>.localhost:81        |
 | **Admin area**        | The `/admin/` surface — Django templates + django-components + HTMX + Alpine, same as every other surface (Django admin itself is `/control/`) | `django`  | http://dev.<%PROJECT_SLUG%>.localhost:81/admin/ |
 | **Database**          | PostgreSQL 18                                                                                                                                  | `db`      | `localhost:5432` (internal)                     |
 | **Cache**             | Valkey (latest stable)                                                                                                                         | `valkey`  | `localhost:6379` (internal)                     |
