@@ -44,7 +44,12 @@ dependencies = [
   # now and wired incrementally.
   "django-htmx>=1.19",
   "django-components>=0.151",
-  "django-ninja>=1.3",
+  # Floor raised 1.3 -> 1.8 (09/11/2026). 1.4.x predates Ninja's Python 3.14 annotation
+  # fixes (1.6/1.7) on a 3.14 project; Wagtail (cms-only) needs >=1.6.3 anyway; and
+  # 1.6.0-1.7.2 leak subclass-only fields when a view returns a subclass of its response
+  # schema (fixed 1.6.5/1.7.3), so the floor skips that range outright. 1.6 deprecated
+  # the `(status, body)` return tuple: return `Status(code, body)` instead.
+  "django-ninja>=1.8",
   "django-ratelimit>=4.1",
   "sentry-sdk[django]",
   "argon2-cffi",

@@ -47,7 +47,7 @@ class OrderService:
 
 ```python
 # api.py — thin Ninja endpoint (input validated by the CreateOrderIn schema)
-from ninja import Router
+from ninja import Router, Status
 
 router = Router()
 
@@ -61,7 +61,7 @@ def create_order(request, payload: CreateOrderIn):
         customer=request.auth,
         items=payload.items,
     )
-    return 201, OrderOut.from_orm(order)
+    return Status(201, OrderOut.model_validate(order))
 ```
 
 ### Rules
