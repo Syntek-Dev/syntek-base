@@ -10,7 +10,7 @@ model: opus
 British English (en_GB) **Timezone:** <%TIMEZONE%>
 **Claude Model:** opus (the enqueue boundary, the delivery guarantee, limits, queue routing, testing)
 
-**Status: declared, not wired.** `celery[redis]>=5.6` is declared in the root
+**Status: declared, not wired.** `celery[redis]>=5.7` is declared in the root
 `pyproject.toml` and nothing consumes it. There is no `config/celery.py`, no task module
 anywhere under `code/src/django/apps/`, no `CELERY_*` setting under
 `code/src/django/config/settings/`, and no `worker` or `beat` service in any Compose file

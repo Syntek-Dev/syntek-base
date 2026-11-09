@@ -64,8 +64,8 @@ disagree about what "update" means and the differences are not worth carrying in
 
 **A floor is not a pin.** Raising `redis>=5.0.0` to `redis>=6.0` forbids redis 5; it does not
 install redis 6. And latest is bounded by the rest of the graph, never by the registry —
-`celery[redis]` excludes `redis>=6.5`, so a floor of `redis>=8` does not fail loudly, it drags
-celery back three minors to satisfy itself. Raise a floor deliberately, say why beside it, and
+`celery[redis]` admits only `redis<9` (kombu 5.7; kombu 5.6 capped it at `<6.5`), so a floor
+past the cap does not fail loudly, it drags celery back to an older kombu to satisfy itself. Raise a floor deliberately, say why beside it, and
 re-resolve in the same change.
 
 For an advisory fix, pin the patched version in `pnpm-workspace.yaml` `overrides` (with

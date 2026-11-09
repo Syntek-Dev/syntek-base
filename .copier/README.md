@@ -1250,8 +1250,8 @@ re-resolve in the same change — then run the suites before committing. Manifes
 are one change, never two.
 
 Latest is also bounded by the rest of your graph rather than by the registry: `celery[redis]`
-excludes `redis>=6.5`, so a floor above that does not fail loudly — it quietly drags celery
-backwards to satisfy itself.
+admits only `redis<9` (through kombu's `redis` extra), so a floor above that does not fail
+loudly — it quietly drags celery backwards to satisfy itself.
 
 ### Audit scripts (`code/src/scripts/audits/`)
 

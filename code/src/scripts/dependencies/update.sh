@@ -23,9 +23,9 @@
 # "formatted" meant. Raise a floor deliberately, and re-resolve in the same change.
 #
 # A floor is also bounded by what your other dependencies permit, not by what the registry
-# calls latest. `celery[redis]` excludes `redis>=6.5`, so redis 6.4 is the newest this
-# project can resolve — raising the floor past it does not fail, it silently drags celery
-# backwards to satisfy it. --check reports the registry's latest; it cannot tell you what
+# calls latest. `celery[redis]` admits only `redis<9` (kombu 5.7's extra; kombu 5.6 capped
+# it at `<6.5`) — a floor past the cap does not fail, it silently drags celery backwards to
+# an older kombu, or cannot resolve at all. --check reports the registry's latest; it cannot tell you what
 # your graph will tolerate. Only a resolve does that, which is why --apply re-resolves
 # rather than editing a number.
 #

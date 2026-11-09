@@ -79,9 +79,11 @@ re-resolve happens in the same change.
 ## Latest is not always reachable
 
 A floor is bounded by what the rest of the graph tolerates, not by what the registry calls
-latest. `celery[redis]` excludes `redis>=6.5`, so **redis 6.4 is the newest this project can
-resolve** — and raising the floor past it does not fail loudly, it silently drags celery
-backwards to satisfy the constraint.
+latest. `celery[redis]` reaches redis through kombu's `redis` extra, so **kombu decides the
+newest redis this project can resolve**: kombu 5.6 capped it at `<6.5`, and kombu 5.7 (required
+by celery 5.7) at `<9`. Under the old cap, a redis 8 floor did not fail loudly — it silently
+dragged celery back to 5.3.1 to satisfy the constraint. That is why the floor moved to
+`redis>=8.1` only after celery moved to 5.7 (09/11/2026).
 
 `--check` reports the registry's latest; it cannot know what your graph will tolerate. Only a
 resolve can, which is why `--apply` re-resolves rather than editing a number.

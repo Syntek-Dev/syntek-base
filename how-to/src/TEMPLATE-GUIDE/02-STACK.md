@@ -57,14 +57,14 @@ setting exists yet. Wiring it is a deliberate change — `how-to/docs/CELERY-FIR
 | **Django Ninja**       | ≥ 1.3   | Typed request/response Schemas over plain Django views, with automatic OpenAPI. Chosen over DRF for Pydantic types and less ceremony; chosen over GraphQL because a single-client app does not need query flexibility and does pay its complexity. |
 | **PostgreSQL**         | 18      | Row-level security, real constraints, `CHECK`, partial and concurrent indexes, full-text search. The template enforces invariants in the database, which needs a database that can hold them.                                                      |
 | **Valkey**             | latest  | BSD-licensed Redis fork, reached through `django-valkey`. DB 0 is the Celery broker, pub/sub and rate limiting; DB 1 is the cache.                                                                                                                 |
-| **Celery**             | ≥ 5.6   | Worker and beat for background work, scheduled jobs, anything that must not block a request. **Declared, not wired at baseline** — no `worker`/`beat` service ships in any Compose file.                                                           |
+| **Celery**             | ≥ 5.7   | Worker and beat for background work, scheduled jobs, anything that must not block a request. **Declared, not wired at baseline** — no `worker`/`beat` service ships in any Compose file.                                                           |
 | **Gunicorn + Uvicorn** | latest  | Gunicorn process management with Uvicorn ASGI workers.                                                                                                                                                                                             |
 | **WhiteNoise**         | ≥ 6.12  | Hashed, pre-compressed static files served from the app process itself, so the backend container is hermetic — no static volume and no separate static server.                                                                                     |
 | **Nginx**              | latest  | Reverse proxy in dev and test. In staging and production the edge is Cloudflare and the server deploy repo — security headers are set there, never in this repo.                                                                                   |
 
 A dependency floor is not a pin — it forbids older versions and leaves the resolver to pick. Some
-floors are also capped by something else in the graph: `celery[redis]` excludes `redis>=6.5`, so
-`redis>=6.0` resolves to 6.4.x however new the registry gets. Raise one deliberately and
+floors are also capped by something else in the graph: `celery[redis]` admits only `redis<9`
+(through kombu 5.7's `redis` extra), so `redis>=8.1` resolves to 8.x however new the registry gets. Raise one deliberately and
 re-resolve in the same change (`code/src/scripts/dependencies/update.sh`).
 
 Declared alongside them and wired incrementally: `django-htmx`, `django-components`,

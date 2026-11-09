@@ -49,15 +49,17 @@ dependencies = [
   "sentry-sdk[django]",
   "argon2-cffi",
   "cryptography",
-  # redis-py's floor is capped by Celery, NOT by what PyPI calls latest. `celery[redis]`
-  # excludes `redis>=6.5`, so 6.4.x is the newest redis this project can resolve while
-  # Celery is current — raising this floor to redis 8 does not fail loudly, it silently
-  # drags celery back to 5.3.1 to satisfy it. Verified by resolution, not by reading:
-  # `celery[redis]>=5.6` + `redis>=8.1.0` is unsatisfiable outright. Move this floor only
-  # after checking Celery has lifted the cap.
-  "redis>=6.0",
+  # redis-py's ceiling is set by Celery's kombu, NOT by what PyPI calls latest.
+  # `celery[redis]` reaches redis through kombu's `redis` extra: kombu 5.6 capped it at
+  # `redis<6.5`, and kombu 5.7 (which celery 5.7 requires) lifts it to `redis>=6.4,<9`.
+  # Floor raised 6.0 -> 8.1 with celery 5.6 -> 5.7 (09/11/2026), in that order, because
+  # under the old cap a redis 8 floor did not fail loudly — it silently dragged celery
+  # back to 5.3.1. The next ceiling is redis 9: move this floor past it only after a
+  # resolve shows kombu has lifted `<9`. redis-py 8 speaks RESP3 by default — smoke-test
+  # it against Valkey when Celery is wired.
+  "redis>=8.1",
   "django-valkey>=0.4.1",
-  "celery[redis]>=5.6",
+  "celery[redis]>=5.7",
   # Private-document storage (S3 API). Public media goes to Cloudinary above.
   "boto3>=1.34",
 ]

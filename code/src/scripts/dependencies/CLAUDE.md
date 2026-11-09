@@ -30,8 +30,9 @@ The sanctioned entry point for moving a dependency in any of the three ecosystem
   versions; it does not install new ones. State the reason inline, and re-resolve in the same
   change — the `ruff` 0.11 → 0.16 comment in the root `pyproject.toml` is the worked example.
 - **Never raise a floor to "latest" without resolving.** Latest is bounded by the rest of the
-  graph. `celery[redis]` excludes `redis>=6.5`, so a floor of `redis>=8` does not fail — it
-  silently drags celery back three minors to satisfy itself. Prove it with a resolve.
+  graph. `celery[redis]` admits only `redis<9` through kombu 5.7 (`<6.5` under kombu 5.6), so a
+  floor past the cap does not fail — it silently drags celery back to satisfy itself, as a
+  `redis>=8` floor once did under the old cap. Prove it with a resolve.
 - **Never commit a manifest without its lockfile.** They are one change. A manifest that moved
   alone is a claim nothing verified.
 - **`--apply` is not a gate pass.** It rewrites lockfiles and nothing else; the suites decide
