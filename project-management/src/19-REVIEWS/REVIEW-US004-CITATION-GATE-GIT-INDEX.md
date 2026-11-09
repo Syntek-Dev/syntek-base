@@ -6,8 +6,8 @@
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Story**    | US004 — the citation gate stops depending on the git index, and the PM tree becomes checkable                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | **Branch**   | `us004/citation-gate-git-index` (cut from `testing` at `173abff`; P1–P4 `e3d5187` red, `022f61a` green; round 2 `9abb477`, `a56ce40`; P5 `48a2501`; round 4 `53a8713`; phase 9 fixes `5c24c12`; decisions `94e7671`, `2b24ae8`, `74b9892`, `46d5c0f`)                                                                                                                                                                                                                                                                                                                                                                                        |
-| **PR**       | Raised at `23-pr-and-review` Step 3 · target `testing`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| **Reviewer** | Claude — phase 9 `code-reviewer` and `qa-tester` dispatches at `53a8713`, each finding then put to an adversarial verifier; the fix round's red, green and verify dispatches; at `23-pr-and-review`, a `code-reviewer` and a `qa-tester` pass over the branch, then a second pair over the fix diff a third over the F-021 round and the generation script, and on 09/11/2026 a fourth over the F-051 fix (Section 2.5). None wrote the work it reviewed                                                                                                                                                                                     |
+| **PR**       | #24, raised at `23-pr-and-review` Step 3 · target `testing`; merged 09/11/2026 with a merge commit, `7ad0cb8`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| **Reviewer** | Claude — phase 9 `code-reviewer` and `qa-tester` dispatches at `53a8713`, each finding then put to an adversarial verifier; the fix round's red, green and verify dispatches; at `23-pr-and-review`, a `code-reviewer` and a `qa-tester` pass over the branch, then a second pair over the fix diff a third over the F-021 round and the generation script, and on 09/11/2026 a fourth over the F-051 fix (Section 2.5); after the merge, an independent `qa-tester` sign-off of the manual walk at `7ad0cb8`, 09/11/2026 (Section 5). None wrote the work it reviewed                                                                       |
 | **Date**     | 05/11/2026                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | **Verdict**  | Phase 9: no blocker; one major and seven minor or nit confirmed by the review, ten by QA; three rejected. Every confirmed finding fixed (16 in `5c24c12`, QA-US004-02 at `74b9892`), and QA-US004-05 too on 06/11/2026 (F-022). **The walk failed 12 rows**, 7 after Sam's rulings of 05/11/2026 and 06/11/2026 (Section 4). Workflow 23's two passes: 27 findings, every one fixed or, for DR-004, handled at the PR; the third pair: 15 more, all but three fixed; F-051 then fixed on Sam's ruling, 09/11/2026, and its round 4 pair: 16 items, 14 confirmed and fixed or documented, two refuted (Section 2.5). Final verdict: Section 5 |
 
@@ -122,37 +122,37 @@ round worked red-first under `code/workflows/02-tdd-cycle` and took the self-tes
 `qa-tester` pass (H-01 to H-10). All 14 reproduced and were fixed in a second round, each repair
 proven by reverting it alone (33 reverts, every one red); the self-test reached 174 probes.
 
-| ID          | Severity     | Issue                                                                          | Resolution                                            |
-| ----------- | ------------ | ------------------------------------------------------------------------------ | ----------------------------------------------------- |
-| QA-F01      | Medium       | Four phase 9 behaviours survived mutation                                      | Fixed — four fixtures, four mutants killed; F-023     |
-| QA-F02      | Medium       | Story-less dated records were not instance citers                              | Fixed, scoped by H-04; ADR Accepted 06/11/2026; F-024 |
-| QA-F03      | Low          | Most anchor forms were not peeled                                              | Fixed; F-025                                          |
-| QA-F04      | Low          | A tracked symlink bypassed the seeded-citer exemption                          | Fixed; F-026                                          |
-| QA-F05      | Low          | Exemption arms and seeded list hand-copied, absent downstream                  | Fixed with DR-001 — single source; F-027              |
-| QA-F06      | Low          | A worked example rendered to a dangling path downstream                        | Fixed; F-028                                          |
-| QA-F07      | Low          | A date placeholder hid a concrete instance (regression)                        | Fixed; F-029                                          |
-| QA-F08      | Info         | Direction B's verdict depended on presence                                     | Fixed; F-030                                          |
-| DR-001      | Medium → Low | The exemption arms could drift from `copier.yml`                               | Fixed with QA-F05; F-027                              |
-| DR-002      | Medium → Low | The test record and this review still showed pre-ruling ShellCheck and tallies | Fixed in the records pass; F-031                      |
-| DR-003      | Low → Info   | No remedy text for `[dangling path]`                                           | Fixed; F-032                                          |
-| DR-004      | Info         | An out-of-scope commit, `3de67ff`, on the branch                               | Handled at the PR — named, squash-merged; F-033       |
-| DR-005      | Info         | The fixture tree in a parenthesis                                              | Fixed; F-034, with GATES-01 amended (F-049)           |
-| GAPS-REL    | —            | File-relative Markdown links unchecked                                         | Fixed — `[dangling link]` class; F-035                |
-| WF-DISAGREE | —            | Workflow 23 Step 6 disagreed with 22 Step 1 on GDPR and Security               | Fixed; F-036, refined by H-09                         |
-| REV-01      | Medium       | Linked targets bypassed Direction B                                            | Fixed with H-01; F-037                                |
-| REV-02      | Low          | Nine new lines deletable with the self-test green                              | Fixed; F-038                                          |
-| REV-03      | Low          | One citation reported twice, once per population                               | Fixed; F-039                                          |
-| REV-04      | Info         | `--self-test` still failed downstream (F-012)                                  | Fixed on Sam's instruction; F-022                     |
-| H-01        | Medium       | Links bypassed Check 3 and Check 2                                             | Fixed with REV-01; F-037                              |
-| H-02        | Low          | The link extractor misread spans, fences, comments, escapes, parentheses       | Fixed; F-040                                          |
-| H-03        | Low          | Path-form date-hidden instances silent                                         | Fixed; F-041                                          |
-| H-04        | Low          | The date-citer arm was unscoped                                                | Fixed; F-042                                          |
-| H-05        | Low          | Root-form Direction B depended on presence                                     | Fixed; F-043                                          |
-| H-06        | Low          | Single-quoted `_exclude` entries dropped; template signal too weak             | Fixed; F-044                                          |
-| H-07        | Low          | `grep` read a `--token` citation as an option                                  | Fixed; F-045                                          |
-| H-08        | Info         | `:L12`, trailing comma and `?query` not peeled                                 | Fixed; F-046                                          |
-| H-09        | Info         | The WF-DISAGREE fix restated 22 Step 1; 22's checklist contradicted it         | Fixed; F-047                                          |
-| H-10        | Info         | Remedy text printed regardless of class                                        | Fixed; F-048                                          |
+| ID          | Severity     | Issue                                                                          | Resolution                                                                            |
+| ----------- | ------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| QA-F01      | Medium       | Four phase 9 behaviours survived mutation                                      | Fixed — four fixtures, four mutants killed; F-023                                     |
+| QA-F02      | Medium       | Story-less dated records were not instance citers                              | Fixed, scoped by H-04; ADR Accepted 06/11/2026; F-024                                 |
+| QA-F03      | Low          | Most anchor forms were not peeled                                              | Fixed; F-025                                                                          |
+| QA-F04      | Low          | A tracked symlink bypassed the seeded-citer exemption                          | Fixed; F-026                                                                          |
+| QA-F05      | Low          | Exemption arms and seeded list hand-copied, absent downstream                  | Fixed with DR-001 — single source; F-027                                              |
+| QA-F06      | Low          | A worked example rendered to a dangling path downstream                        | Fixed; F-028                                                                          |
+| QA-F07      | Low          | A date placeholder hid a concrete instance (regression)                        | Fixed; F-029                                                                          |
+| QA-F08      | Info         | Direction B's verdict depended on presence                                     | Fixed; F-030                                                                          |
+| DR-001      | Medium → Low | The exemption arms could drift from `copier.yml`                               | Fixed with QA-F05; F-027                                                              |
+| DR-002      | Medium → Low | The test record and this review still showed pre-ruling ShellCheck and tallies | Fixed in the records pass; F-031                                                      |
+| DR-003      | Low → Info   | No remedy text for `[dangling path]`                                           | Fixed; F-032                                                                          |
+| DR-004      | Info         | An out-of-scope commit, `3de67ff`, on the branch                               | Handled at the PR — named; merged with a merge commit, `7ad0cb8`, not squashed; F-033 |
+| DR-005      | Info         | The fixture tree in a parenthesis                                              | Fixed; F-034, with GATES-01 amended (F-049)                                           |
+| GAPS-REL    | —            | File-relative Markdown links unchecked                                         | Fixed — `[dangling link]` class; F-035                                                |
+| WF-DISAGREE | —            | Workflow 23 Step 6 disagreed with 22 Step 1 on GDPR and Security               | Fixed; F-036, refined by H-09                                                         |
+| REV-01      | Medium       | Linked targets bypassed Direction B                                            | Fixed with H-01; F-037                                                                |
+| REV-02      | Low          | Nine new lines deletable with the self-test green                              | Fixed; F-038                                                                          |
+| REV-03      | Low          | One citation reported twice, once per population                               | Fixed; F-039                                                                          |
+| REV-04      | Info         | `--self-test` still failed downstream (F-012)                                  | Fixed on Sam's instruction; F-022                                                     |
+| H-01        | Medium       | Links bypassed Check 3 and Check 2                                             | Fixed with REV-01; F-037                                                              |
+| H-02        | Low          | The link extractor misread spans, fences, comments, escapes, parentheses       | Fixed; F-040                                                                          |
+| H-03        | Low          | Path-form date-hidden instances silent                                         | Fixed; F-041                                                                          |
+| H-04        | Low          | The date-citer arm was unscoped                                                | Fixed; F-042                                                                          |
+| H-05        | Low          | Root-form Direction B depended on presence                                     | Fixed; F-043                                                                          |
+| H-06        | Low          | Single-quoted `_exclude` entries dropped; template signal too weak             | Fixed; F-044                                                                          |
+| H-07        | Low          | `grep` read a `--token` citation as an option                                  | Fixed; F-045                                                                          |
+| H-08        | Info         | `:L12`, trailing comma and `?query` not peeled                                 | Fixed; F-046                                                                          |
+| H-09        | Info         | The WF-DISAGREE fix restated 22 Step 1; 22's checklist contradicted it         | Fixed; F-047                                                                          |
+| H-10        | Info         | Remedy text printed regardless of class                                        | Fixed; F-048                                                                          |
 
 **Found while fixing:** the `NN` placeholder arm hid path tokens from the gate (F-021). Recorded
 then as a dated `GAPS.md` entry; Sam ruled 06/11/2026 that it is fixed in US004 (round 3 below).
@@ -292,7 +292,9 @@ self-test exits 2, 186 run and passed, 13 sets needing the contract. Evidence
 6. **F-024** — done 06/11/2026: Sam accepted
    `../15-DECISIONS/ADR-US004-INSTANCE-CITER-ADMITS-STORYLESS-DATED-RECORDS-06-11-2026.md`; the
    05/11/2026 derived-rule record is Superseded.
-7. **F-033 / DR-004** — name commit `3de67ff` in the PR body and squash-merge.
+7. **F-033 / DR-004** — done: `3de67ff` named in the PR body. Corrected 09/11/2026: PR #24 was merged
+   with a merge commit, `7ad0cb8`, not squashed, so `3de67ff` (a US002 handoff prune, out of scope,
+   no secret-like literal) is in `testing`'s history. Harmless.
 8. **F-051** — done 09/11/2026 on Sam's ruling: fixed in US004; the default-answer project's
    gate exits 0 (F-069 to F-075).
 9. **F-068** — answered 09/11/2026 for the F-051 change by round 4's independent pair; round 3's
@@ -312,6 +314,21 @@ self-test exits 2, 186 run and passed, 13 sets needing the contract. Evidence
   separates every fixture pair. But a story whose subject is a before-and-after measurement
   never took the before, and the gate it repairs still exits 1 on 28 named survivors, so the
   baseline-diff regime does not retire with it (F-004).
+- **Final verdict, 09/11/2026 — merged; QA sign-off with notes.** PR #24 merged into `testing` as
+  the merge commit `7ad0cb8` on 09/11/2026, with the known `Citations resolve` red (Section 6: the
+  28 survivors owned by US005, US006, US010 and US014). An independent `qa-tester`, which wrote none
+  of the work, then signed the manual walk off **with notes** at `7ad0cb8` in disposable clones: all
+  35 rows reproduce their recorded results, 28 Pass and 7 Fail, the seven F-001's accepted
+  deviations; each missing before-value re-measured at `173abff` (self-test 15 probes;
+  `research/CONTEXT.md` read 0, exempt 1; `docs-length.sh` 226 for the audits `CONTEXT.md`; US998
+  A/B untracked 12 `[template-only citation]` exit 1, intent-to-add 0 exit 0); BASELINE-01's
+  original capture matches its record; no acceptance criterion unproven beyond the accepted
+  "recorded before edit" wording. Generated projects through `template-render.sh`: default answers
+  exit 0 (121 declined-surface citations passed unjudged, counted per flag); all surfaces exit 0;
+  answers file removed, the default render fails closed on 119 and all surfaces exit 0. Notes:
+  QA-SO-01 (Low, F-076) and QA-SO-03 (Info, F-077), each a dated `GAPS.md` entry; QA-SO-02 is
+  F-014, re-confirmed. Each note was confirmed by a separate verifier agent. Evidence:
+  /home/sam-desktop/.claude/tmp/us004-qa-signoff/.
 - **Status transition:** none recorded here. `In Progress` → `In Review` and onward are the
   `completion` skill's, at `23-pr-and-review`.
 
