@@ -26,7 +26,10 @@ authors = ["<%DEVELOPER_NAME%> <<%DEVELOPER_EMAIL%>>"]
 rust-version = "1.92"
 
 [workspace.dependencies]
-pyo3 = { version = "0.29", features = ["extension-module", "abi3-py314"] }
+# No `extension-module` feature: PyO3 0.30 deprecates it, and maturin >= 1.9.4 (the floor in
+# crates/nativecore/pyproject.toml) handles not linking libpython itself. Verified 09/11/2026:
+# the release-built nativecore.abi3.so lists no libpython in its NEEDED entries.
+pyo3 = { version = "0.30", features = ["abi3-py314"] }
 zeroize = { version = "1.8", features = ["derive"] }
 secrecy = "0.10"
 

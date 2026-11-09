@@ -252,7 +252,7 @@ all three build rows name the same pass — entered at `18`, closed at `20`, nev
 | Django                 | 6.x     | https://docs.djangoproject.com/en/6.1/                  |
 | Wagtail (cms-only)     | 8.x     | https://docs.wagtail.org/en/stable/                     |
 | Rust (rust-only)       | 1.92+   | https://doc.rust-lang.org/stable/book/                  |
-| PyO3 (rust-only)       | 0.29    | https://pyo3.rs/                                        |
+| PyO3 (rust-only)       | 0.30    | https://pyo3.rs/                                        |
 | maturin (rust-only)    | 1.x     | https://www.maturin.rs/                                 |
 | Slint (desktop-only)   | 1.18    | https://slint.dev/docs                                  |
 | Django Ninja           | 1.x     | https://django-ninja.dev/                               |
