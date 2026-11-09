@@ -375,6 +375,12 @@ overrides:
   # its own fix, bounded by its major.
   protobufjs@>=7.0.0 <7.6.5: ^7.6.5
   protobufjs@>=8.0.0 <8.6.6: ^8.6.6
+  # yaml — GHSA-48c2-rrv3-qjmp (moderate, stack overflow on deeply nested collections),
+  # affects >=2.0.0 <2.8.3. Added 09/11/2026 with @usebruno/cli 4.0 -> 4.3: its
+  # @usebruno/js went from `yaml ^2.3.4` (0.50.0, which resolved here to 2.9.0) to an
+  # EXACT `2.3.4` pin (0.55.0), so the bump reintroduced the advisory. Dev-time only, the
+  # Bruno API runner. Bounded by the 2.x major; 2.9.0 is the line Bruno already ran on.
+  yaml@>=2.0.0 <2.8.3: ^2.8.3
 allowedDeprecatedVersions:
   whatwg-encoding: "*"
   node-domexception: "*"
