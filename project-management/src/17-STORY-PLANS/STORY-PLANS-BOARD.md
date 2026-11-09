@@ -11,8 +11,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 6     |
-| In Progress       | 1     |
-| In Review         | 1     |
+| In Progress       | 0     |
+| In Review         | 2     |
 | Accepted          | 3     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -39,15 +39,14 @@ _None._
 
 ## In Progress
 
-| Plan                | Story                           | Title                                              | Status      | File                                                                                             |
-| ------------------- | ------------------------------- | -------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------ |
-| 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index | In Progress | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md) |
+_None._
 
 ## In Review
 
-| Plan                | Story                           | Title                                        | Status    | File                                                                         |
-| ------------------- | ------------------------------- | -------------------------------------------- | --------- | ---------------------------------------------------------------------------- |
-| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270 | In Review | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md) |
+| Plan                | Story                           | Title                                              | Status    | File                                                                                             |
+| ------------------- | ------------------------------- | -------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------ |
+| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270       | In Review | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md)                     |
+| 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index | In Review | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md) |
 
 ## Accepted
 

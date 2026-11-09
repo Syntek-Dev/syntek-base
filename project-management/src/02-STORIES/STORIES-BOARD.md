@@ -11,8 +11,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 6     |
-| In Progress       | 1     |
-| In Review         | 1     |
+| In Progress       | 0     |
+| In Review         | 2     |
 | Accepted          | 3     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -39,15 +39,14 @@ _None._
 
 ## In Progress
 
-| ID    | Title                                                                                 | Status      | File                 |
-| ----- | ------------------------------------------------------------------------------------- | ----------- | -------------------- |
-| US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable | In Progress | [US004.md](US004.md) |
+_None._
 
 ## In Review
 
-| ID    | Title                                                                        | Status    | File                 |
-| ----- | ---------------------------------------------------------------------------- | --------- | -------------------- |
-| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated | In Review | [US003.md](US003.md) |
+| ID    | Title                                                                                 | Status    | File                 |
+| ----- | ------------------------------------------------------------------------------------- | --------- | -------------------- |
+| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated          | In Review | [US003.md](US003.md) |
+| US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable | In Review | [US004.md](US004.md) |
 
 ## Accepted
 
