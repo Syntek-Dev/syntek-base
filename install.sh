@@ -12,7 +12,7 @@
 #   bash install.sh --spec    Only (re)generate code/docs/MACHINE-SPEC.md, then exit
 #   bash install.sh --help    Show this help
 #
-# Requirements: docker, docker compose v2, git, uv >= 0.11, pnpm >= 11, openssl
+# Requirements: docker, docker compose v2, git, uv >= 0.13, pnpm >= 11.28.9, openssl
 #
 # Exit codes:  0 = success   1 = requirement missing   2 = install failed
 #
@@ -57,7 +57,7 @@ Phase 2 (--full only):
   7. Build and start Docker dev stack
   8. Apply database migrations
 
-Requirements: docker, docker compose v2, git, uv >= 0.11, pnpm >= 11, openssl
+Requirements: docker, docker compose v2, git, uv >= 0.13, pnpm >= 11.28.9, openssl
 
 Exit codes:  0 = success   1 = requirement missing   2 = install failed
 EOF
