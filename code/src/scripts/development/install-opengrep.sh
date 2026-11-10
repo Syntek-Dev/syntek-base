@@ -72,8 +72,11 @@ RELEASE_BASE="https://github.com/opengrep/opengrep/releases/download"
 # opengrep release workflow, running on GitHub's OIDC issuer, may have produced this
 # binary. If upstream renames or moves that workflow this fails loudly on the next
 # version bump, which is the correct outcome and better than a regex loose enough to
-# keep passing through it.
-CERT_IDENTITY='https://github.com/opengrep/opengrep/.github/workflows/rolling-release.yml@refs/heads/main'
+# keep passing through it. It did, once: from 1.30.1 upstream signs from a per-release
+# branch, `refs/heads/release-v<version>`, where earlier releases signed from `main`
+# (read from each release's certificate, 10/11/2026). The identity is therefore
+# completed from the pin below — still one exact identity per version.
+CERT_IDENTITY_PREFIX='https://github.com/opengrep/opengrep/.github/workflows/rolling-release.yml@refs/heads/release-v'
 CERT_OIDC_ISSUER='https://token.actions.githubusercontent.com'
 
 PREFIX="${XDG_BIN_HOME:-$HOME/.local/bin}"
@@ -123,6 +126,7 @@ bold "▸ install-opengrep.sh"
 [ -f "$PIN_FILE" ] || fail "no .opengrep-version at the repository root — nothing to pin to"
 VERSION="$(tr -d '[:space:]' < "$PIN_FILE")"
 [ -n "$VERSION" ] || fail ".opengrep-version is empty — the pin is the whole point"
+CERT_IDENTITY="${CERT_IDENTITY_PREFIX}${VERSION}"
 log "pinned version: $VERSION"
 
 # ── Already installed? ────────────────────────────────────────────────────────
@@ -215,7 +219,7 @@ cosign verify-blob \
   "$WORK/opengrep" >/dev/null 2>&1 \
   || fail "the signature did not verify against the pinned release-workflow identity.
   Nothing has been installed. Either upstream moved that workflow — in which case
-  CERT_IDENTITY here and in audit-static-analysis.yml both need updating together —
+  CERT_IDENTITY_PREFIX here and in audit-static-analysis.yml both need updating together —
   or this asset is not what it claims to be."
 ok "signature verified against the pinned release-workflow identity"
 
