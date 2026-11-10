@@ -268,9 +268,10 @@ overrides:
   browserslist: ">=4.28.7 <5"
   fast-uri: ">=3.1.9 <4"
   # js-yaml is split per major, because the blanket ">=4.3.1 <5" it replaces forced
-  # two consumers across a major: markdownlint-cli2 (pins 5.2.2) DOWN to 4, and
-  # @istanbuljs/load-nyc-config (^3.13.1) UP to 4. The 5.x selector returns
-  # markdownlint-cli2 to its own line, patched (GHSA-r3ph-w7gj-g6xm).
+  # two consumers across a major: markdownlint-cli2 DOWN to 4, and
+  # @istanbuljs/load-nyc-config (^3.13.1) UP to 4. markdownlint-cli2 0.24.0 pins the
+  # patched 5.4.3 itself (GHSA-r3ph-w7gj-g6xm), so its 5.x selector was pruned
+  # 09/11/2026; a selector that matches nothing is a rule nobody can see fire.
   #
   # load-nyc-config KEEPS its 3 → 4 crossing, deliberately and scoped to that one
   # parent. js-yaml 3 pulls argparse@1 → sprintf-js@1.0.3, whose advisory
@@ -280,27 +281,21 @@ overrides:
   # has none.
   "@istanbuljs/load-nyc-config>js-yaml": ^4.3.2
   js-yaml@>=4.0.0 <4.3.2: ^4.3.2
-  js-yaml@>=5.0.0 <5.4.1: ^5.4.1
   undici: ">=7.30.1 <8"
   ip-address: ">=10.7.1 <11"
   linkify-it: ">=5.0.2 <6"
   nanoid: ">=3.3.18 <4"
-  # The old `>=13.0.0 <14.1.2` selector matched markdownlint-cli2 0.22.x's exact
-  # 14.1.1 pin, then stopped matching once 0.23 pinned 14.3.0 — pnpm applies a
-  # selector only where it intersects the declared spec. The lower bound now starts
-  # at 14 so a future ^13 consumer is never forced across a major.
+  # markdown-it and smol-toml selectors pruned 09/11/2026: markdownlint-cli2 0.24.0, their
+  # only consumer, pins the patched markdown-it 15.0.3 (GHSA-gfr2-rv44-r23c,
+  # GHSA-vfgh-jcmw-g37q) and smol-toml 1.9.1 (GHSA-r4xh-jqrq-34v2) itself.
   #
-  # Re-floored 02/11/2026: GHSA-gfr2-rv44-r23c (high, quadratic link-reference parse,
-  # default options) and GHSA-vfgh-jcmw-g37q (low, quadratic inline HTML with
-  # html:true) fix in 14.3.3 and 15.0.3. The locked markdownlint-cli2 0.23.2 pins
-  # 14.3.0; 0.23.3, already inside the root's ^0.23.2, pins 15.0.1, which is affected;
-  # 0.24.0 pins 15.0.3. So the 15.x selector ships now, with the 14.x one, rather than
-  # waiting for a refresh to float onto an unpatched 15.
-  markdown-it@>=14.0.0 <14.3.3: ^14.3.3
-  markdown-it@>=15.0.0 <15.0.3: ^15.0.3
-  # markdownlint-cli2 pins smol-toml exactly, and its newest release (0.23.3) pins
-  # 1.8.0, still inside GHSA-r4xh-jqrq-34v2 — so no upstream bump clears it.
-  smol-toml: ">=1.9.0 <2"
+  # re2js — GHSA-gg6h-894w-4m9c (high, quadratic lookbehind matching), affects
+  # >=2.2.0 <2.8.7. markdownlint 0.42.0 pins 2.8.6 exactly, and markdownlint-cli2 0.24.0
+  # pins that markdownlint exactly, so no in-range bump clears it; markdownlint 0.42.1
+  # moves to re2js 2.9.1 upstream, which is what this resolves to. Dev-time only: the
+  # Markdown linter, absent from every deployed artefact. Retire once a markdownlint-cli2
+  # release pins markdownlint >=0.42.1.
+  re2js@>=2.2.0 <2.8.7: ^2.8.7
   postcss@<8.5.10: ^8.5.10
   esbuild@<0.28.1: ^0.28.1
   form-data@>=4.0.0 <4.0.6: ^4.0.6
