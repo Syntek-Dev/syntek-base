@@ -201,7 +201,8 @@ dev = [
   # docs are in scope. It was found by CI resolving the floor to latest while the
   # host ran 0.14.11 — a `>=` constraint is not a pin, and the two disagreed about
   # what "formatted" meant. Raise this deliberately, and reformat in the same change.
-  "ruff>=0.16.3",
+  # Raised 0.16.3 -> 0.17.4 (09/11/2026), with the tree reformatted in the same commit.
+  "ruff>=0.17.4",
   "basedpyright>=1.28.0",
   "pip-audit",
 ]
