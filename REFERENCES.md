@@ -267,7 +267,7 @@ all three build rows name the same pass — entered at `18`, closed at `20`, nev
 | pytest-django          | latest  | https://pytest-django.readthedocs.io/en/latest/         |
 | Playwright (Python)    | latest  | https://playwright.dev/python/docs/intro                |
 | pnpm                   | 11.x    | https://pnpm.io/motivation                              |
-| uv                     | 0.12.x  | https://docs.astral.sh/uv/                              |
+| uv                     | 0.13.x  | https://docs.astral.sh/uv/                              |
 | Docker / Compose       | latest  | https://docs.docker.com/compose/                        |
 | Nginx                  | latest  | https://nginx.org/en/docs/                              |
 | Gunicorn               | latest  | https://docs.gunicorn.org/en/stable/                    |

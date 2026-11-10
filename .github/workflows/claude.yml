@@ -49,7 +49,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/staging' }}
 
 env:
-  UV_VERSION: "0.12.5"
+  UV_VERSION: "0.13.7"
   NODE_VERSION: "24"
   PYTHON_VERSION: "3.14"
 

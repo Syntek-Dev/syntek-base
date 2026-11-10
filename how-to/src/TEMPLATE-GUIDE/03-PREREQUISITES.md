@@ -38,7 +38,7 @@ describe, and treat the distribution as the machine from then on.
 ```bash
 docker --version && docker compose version   # 24+ / v2+
 node --version && pnpm --version             # 24+ / 11.25.0+
-python3 --version && uv --version            # 3.14+ / 0.11+
+python3 --version && uv --version            # 3.14+ / 0.13+
 git --version && openssl version
 ```
 
@@ -53,7 +53,7 @@ Copier itself needs no installation — `uvx` fetches and runs it on demand.
 | **git**            | any recent  | Version control; Copier reads the template over git.                     |
 | **Docker Engine**  | 24+         | Every application service. Nothing runs on the host directly.            |
 | **Docker Compose** | v2 (plugin) | Orchestrating the dev, test, staging and prod stacks.                    |
-| **uv**             | 0.11+       | Python dependencies and the lockfile; also provides `uvx` to run Copier. |
+| **uv**             | 0.13+       | Python dependencies and the lockfile; also provides `uvx` to run Copier. |
 | **Python**         | 3.14+       | Root tooling (ruff, basedpyright) and uv's interpreter resolution.       |
 | **Node.js**        | 24+         | Repo tooling and git hooks. Not an application dependency.               |
 | **pnpm**           | 11.25.0+    | Root workspace packages — Prettier, ESLint, markdownlint, Lefthook.      |

@@ -491,7 +491,7 @@ states no order; the one below is inferred from what each slice reads. **P1 gove
 
 **Edge, 16/10/2026, with MAP-PIN-DETECT-MOVE (:380-404).** S-03's image half — the
 `python:3.14-slim` digest, the uv pin, nginx's tag — and the four branch-only tag-pinned `uses:` are
-built by PIN S-01, and uv moves to `0.12.24`; the MCP servers number five, not three. S-01 gains
+built by PIN S-01, and uv moves to `0.13.7` <!-- UPDATED 09/11/2026 (dependency sweep, ruling D5/D6): read "`0.12.24`" until then, the newest 0.12.x when the edge was cut; CI and the docs moved to 0.13.7 ahead of the slice, which still owns the Dockerfile pins. -->; the MCP servers number five, not three. S-01 gains
 Grype and cosign rows and writes N-003's Expo trigger as "once past the 7-day cooldown" (N-015 on
 that map, which rides PIN S-09 since 17/10/2026). S-02 watches `.grype-version`, its vulnerability
 carve-out meets PIN S-03's strict cooldown, and the `SUPPLY-CHAIN.md:36` its acceptance cites is

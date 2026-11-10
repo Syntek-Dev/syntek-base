@@ -39,7 +39,7 @@ permissions:
   issues: write
 
 env:
-  UV_VERSION: "0.12.5"
+  UV_VERSION: "0.13.7"
   NODE_VERSION: "24"
 
 jobs:
