@@ -1,6 +1,6 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: 02/11/2026 **Version**: 7.8.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 11/11/2026 **Version**: 7.9.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
@@ -8,6 +8,69 @@ User-facing release notes for each published version.
 ---
 
 ## Unreleased
+
+## v7.9.0 — 11/11/2026
+
+**Status:** Minor — every tool and building block the project depends on is brought up to its
+current release, two new checks keep their version numbers in agreement, the daily security
+check passes again, and the review and release checklists now cover every change of status.
+Two new guides settle retries and what "nothing" means, and the documentation link check gives
+the same answer whatever the state of your working copy.
+Nothing you have built stops working.
+
+### Everything is up to date
+
+The tools, container images and packages the project is built from all move to their current
+releases, including the optional mobile app's framework (Expo 58) and the version of Node used to
+run the tooling (now 26). A handful are deliberately held back for now, and the project's gaps
+list records what will release each one. One package the project no longer needs, last updated in
+2020, is removed.
+
+### No more Alpine-based containers
+
+The local database, cache and web server containers now use the standard Debian-based images
+rather than Alpine ones. **If you already have a local database, reset it once after updating**,
+because the two sort text slightly differently.
+
+### Two new checks keep versions in step
+
+One check confirms that every place in the project naming a version of Node, Python, uv, pnpm or
+Rust names the same one, so a version changed in one place no longer fails only once it reaches
+the build server. A second gives a single answer on whether any building block has a published
+security warning against it.
+
+### The accessibility check is stricter
+
+The automatic accessibility check now uses a current rule set, including the latest WCAG 2.2
+rules, and now also runs the basic Level A rules — missing image descriptions, unlabelled form
+fields and buttons — which it had been skipping.
+
+### One place for the rules on retrying and repeating work
+
+The rules on what to do when a call to another system fails, and when it is safe to do something
+twice, were spread across three documents that disagreed. They now live in one guide, and every
+related document points to it, so a developer finds one answer instead of three.
+
+### One guide to what "nothing" means
+
+When code returns "nothing", it can mean six different things: the record was never there, it
+has not arrived yet, the list is genuinely empty, something failed, nobody supplied it, or it does
+not apply. A new guide names all six and shows what each looks like in every language the project
+uses, so different parts of the code stop guessing differently.
+
+### The documentation link check gives one answer
+
+The check that every file named in the documentation really exists used to give different answers
+for the same sentence depending on whether the file had been saved into version control yet, and
+it could not see the planning folder at all. Its answer now depends only on what the documentation
+says, and it checks the planning folder too. In a project generated from this template, a link to
+an optional part the project chose not to include is no longer reported as broken.
+
+### Room in the list of quality checks
+
+The index of the project's automated quality checks was two lines from its size limit, with nine
+new checks due to be added. Repeated material is removed and one family of checks gets its own
+index, so there is room again and nothing in the list is lost.
 
 ### The daily security check passes again
 
