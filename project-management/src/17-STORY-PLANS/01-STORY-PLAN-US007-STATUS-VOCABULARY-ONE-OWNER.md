@@ -81,6 +81,44 @@ no sibling plan in this folder carries one (measured 08/09/2026).
 
 ---
 
+## Re-cut — 02/11/2026
+
+**Phases 0 to 6 and the edit set below are superseded by `../02-STORIES/US007.md` -> _Re-cut
+criteria — 02/11/2026_.** The 7.7.0 PM-boards change made `.claude/skills/completion/SKILL.md` ->
+_The status vocabulary_ the owner of the twelve story, four sprint and five map statuses, which
+landed most of what this plan was written to do. The re-cut's _Measured as already true_ list
+says what is not re-asserted. The rest of this plan stands as the record of the route it planned
+and is not rewritten (grilling pass of 02/11/2026, Q1 append rather than rewrite; Q5 amend this
+plan and the manual guide).
+
+**What the build now does — the five residue edits (Q3: all five in scope):**
+
+| Scenario | File                                                                                                                                              | Edit                                                                                                                                                        |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| RC-1     | `project-management/workflows/23-pr-and-review/CHECKLIST.md` · `project-management/workflows/24-release/CHECKLIST.md`                             | A box per transition its `STEPS.md` orders, recorded through `completion`; `24` reads `pm-board.sh --warn`, commits what it names, closes no story          |
+| RC-2     | `../16-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md`                                                                                                | The _Sprint Definition of Done_ line names the sprint record's `Status` as `Done`, recorded by `completion`; no other line changes                          |
+| RC-3     | `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md`                                                                                                      | The ownership paragraph ending at `:228` gains a pointer, and a dated **end note** carries the correction — over 40 citations point past `:228`, none moves |
+| RC-4     | `../18-TESTS/MANUAL/US000-MANUAL-TESTING.md:5`                                                                                                    | `In progress` -> `In Progress`; nothing else on the line                                                                                                    |
+| RC-5     | `project-management/workflows/23-pr-and-review/STEPS.md` · `project-management/workflows/24-release/STEPS.md` · `00-STORY-PLAN-US000-TEMPLATE.md` | Every sentence ordering a ClickUp step marked clickup-only, one line for one line, so the template stays 822 lines                                          |
+
+**Phase 0 is proportionate (Q4).** ADR-US003's identity diff of `doc-references.sh` against a
+recorded baseline is kept. `skill-conformance.sh`, `docs-pairing.sh`, `doctrine-drift.sh` and
+`docs-length.sh` run before and after and are compared by exit and output. The detector-hash
+capture and the four-set identity regime are **dropped**. Captured before the first edit:
+
+- HEAD `777595f01b0c529623bfe49ed3a2b035a76f009e`; `git status --porcelain` count 0
+- The five gate outputs in `/tmp/us007-baseline/*.before.txt` — `doc-references.sh` exit 1, 633
+  output lines; the other four exit 0
+
+RC-6 closes it: the four exit as they did, the `doc-references.sh` identity diff gains no line, and
+`pm-board.sh --check` passes.
+
+**No writer table (Q2).** The skill already names its writers — `completion` records every
+transition and only `pm-archive.sh` sets `Closed`; a table would restate it. **No ADR still
+holds**: every edit is to a document that can be edited back, the reversibility test above.
+
+---
+
 ## Problem Statement
 
 **Requirement confirmed 09/10/2026 (Q1):** build-start owns the story transition to

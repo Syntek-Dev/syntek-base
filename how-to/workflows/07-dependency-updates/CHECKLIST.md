@@ -29,10 +29,11 @@ model: opus
 
 ## Verification
 
+- [ ] `dependencies/audit.sh` exits `0` — every present leg ran clean; a `2` is unmeasured, never a pass · _opus_
 - [ ] `audits/security.sh` clean · _opus_
 - [ ] Full suite green with coverage · _opus_
 - [ ] `pre-pr-check.sh` green end to end · _opus_
-- [ ] Toolchain pins moved as a **matched set** (`.nvmrc`, `.python-version`, `package.json`, workflow `env:` blocks) · _opus_
+- [ ] Toolchain pins moved as a **matched set** (`.nvmrc`, `.python-version`, `package.json`, workflow `env:` blocks), and `audits/toolchain-pins.sh` exits `0` — a held site it prints is the named story's · _opus_
 
 ## Record
 

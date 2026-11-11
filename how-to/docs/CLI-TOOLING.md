@@ -264,32 +264,40 @@ bash project-management/src/00-ASSETS/scripts/pm-archive.sh US###  # close + arc
 
 ---
 
+## Rendering a Scratch Project (template repository only)
+
+A check seen in a **generated** project runs in one `code/src/scripts/development/template-render.sh` renders, never a raw `copier copy`. <!-- doc-references: template-only -->
+Template-only (copier excludes it). `--check-references` runs the citation gate in the render; `--help` has the rest.
+
+---
+
 ## Common Shortcuts
 
-| Task                         | Command                                                           |
-| ---------------------------- | ----------------------------------------------------------------- |
-| Start all services           | `bash code/src/scripts/development/server.sh up`                  |
-| Stop all services            | `bash code/src/scripts/development/server.sh down`                |
-| Tail all logs                | `bash code/src/scripts/development/logs.sh --follow`              |
-| Apply migrations             | `bash code/src/scripts/database/migrate.sh run`                   |
-| Make migrations              | `bash code/src/scripts/database/migrate.sh make`                  |
-| Django shell                 | `bash code/src/scripts/development/shell.sh`                      |
-| psql shell                   | `bash code/src/scripts/database/shell.sh --psql`                  |
-| Run backend tests            | `bash code/src/scripts/tests/backend.sh`                          |
-| Run backend tests (coverage) | `bash code/src/scripts/tests/backend-coverage.sh`                 |
-| Run API tests                | `bash code/src/scripts/tests/api.sh`                              |
-| Backend lint                 | `bash code/src/scripts/syntax/lint.sh --file-type python`         |
-| Backend type-check           | `bash code/src/scripts/syntax/check.sh --file-type python`        |
-| Backend format               | `bash code/src/scripts/syntax/format.sh --fix --file-type python` |
-| Markdown lint                | `bash code/src/scripts/syntax/lint.sh --file-type markdown`       |
-| JavaScript lint (web)        | `bash code/src/scripts/syntax/lint.sh --file-type javascript`     |
-| TypeScript lint (mobile)     | `bash code/src/scripts/syntax/lint.sh --file-type typescript`     |
-| TypeScript type-check        | `bash code/src/scripts/syntax/check.sh --file-type typescript`    |
-| Rust lint / type-check       | `bash code/src/scripts/syntax/lint.sh --file-type rust`           |
-| Every surface at once        | `bash code/src/scripts/syntax/lint.sh` (unscoped)                 |
-| CSS format                   | `bash code/src/scripts/syntax/format.sh --fix --file-type css`    |
-| CSS token guard              | `bash code/src/scripts/audits/css-tokens.sh`                      |
-| CSS gradient guard           | `bash code/src/scripts/audits/css-gradients.sh`                   |
+| Task                         | Command                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------- |
+| Start all services           | `bash code/src/scripts/development/server.sh up`                          |
+| Stop all services            | `bash code/src/scripts/development/server.sh down`                        |
+| Tail all logs                | `bash code/src/scripts/development/logs.sh --follow`                      |
+| Apply migrations             | `bash code/src/scripts/database/migrate.sh run`                           |
+| Make migrations              | `bash code/src/scripts/database/migrate.sh make`                          |
+| Django shell                 | `bash code/src/scripts/development/shell.sh`                              |
+| psql shell                   | `bash code/src/scripts/database/shell.sh --psql`                          |
+| Run backend tests            | `bash code/src/scripts/tests/backend.sh`                                  |
+| Run backend tests (coverage) | `bash code/src/scripts/tests/backend-coverage.sh`                         |
+| Run API tests                | `bash code/src/scripts/tests/api.sh`                                      |
+| Backend lint                 | `bash code/src/scripts/syntax/lint.sh --file-type python`                 |
+| Backend type-check           | `bash code/src/scripts/syntax/check.sh --file-type python`                |
+| Backend format               | `bash code/src/scripts/syntax/format.sh --fix --file-type python`         |
+| Markdown lint                | `bash code/src/scripts/syntax/lint.sh --file-type markdown`               |
+| JavaScript lint (web)        | `bash code/src/scripts/syntax/lint.sh --file-type javascript`             |
+| TypeScript lint (mobile)     | `bash code/src/scripts/syntax/lint.sh --file-type typescript`             |
+| TypeScript type-check        | `bash code/src/scripts/syntax/check.sh --file-type typescript`            |
+| Rust lint / type-check       | `bash code/src/scripts/syntax/lint.sh --file-type rust`                   |
+| Every surface at once        | `bash code/src/scripts/syntax/lint.sh` (unscoped)                         |
+| CSS format                   | `bash code/src/scripts/syntax/format.sh --fix --file-type css`            |
+| Format preview (dry-run)     | `bash code/src/scripts/syntax/format.sh --file-type markdown --path FILE` |
+| CSS token guard              | `bash code/src/scripts/audits/css-tokens.sh`                              |
+| CSS gradient guard           | `bash code/src/scripts/audits/css-gradients.sh`                           |
 
 ---
 

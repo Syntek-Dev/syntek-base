@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Stand-in maturin for rust/build.sh --self-test. `--version` prints the case file named by
+# MATURIN_STUB_VERSION; `develop` records that it ran in MATURIN_STUB_LOG and installs nothing.
+case "${1:-}" in
+  --version) cat "$MATURIN_STUB_VERSION" ;;
+  develop) printf 'develop\n' >> "$MATURIN_STUB_LOG" ;;
+  *) exit 0 ;;
+esac

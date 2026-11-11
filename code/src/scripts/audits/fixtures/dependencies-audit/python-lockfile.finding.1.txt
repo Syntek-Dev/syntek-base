@@ -1,0 +1,4 @@
+Using CPython 3.14.8 interpreter at: /usr/bin/python3
+error: The lockfile at `uv.lock` needs to be updated, but `--check` was provided.
+
+hint: To update the lockfile, run `uv lock`.

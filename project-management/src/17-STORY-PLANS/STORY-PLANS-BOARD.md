@@ -10,15 +10,15 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 10    |
+| Pending           | 7     |
 | In Progress       | 0     |
 | In Review         | 0     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
-| Customer Accepted | 0     |
+| Customer Accepted | 5     |
 | Rejected          | 0     |
 | Customer Rejected | 0     |
-| Blocked           | 4     |
+| Blocked           | 2     |
 | Completed         | 0     |
 | Closed            | 0     |
 
@@ -30,10 +30,7 @@ _None._
 
 | Plan                | Story                           | Title                                                                                                                      | Status  | File                                                                                                     |
 | ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------- |
-| 01-STORY-PLAN-US007 | [US007](../02-STORIES/US007.md) | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits             | Pending | [01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md](01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md) |
-| 02-STORY-PLAN-US001 | [US001](../02-STORIES/US001.md) | Reliability doctrine gets an owning guide, and every pointer reaches it                                                    | Pending | [02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md](02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md)     |
-| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270                                                                               | Pending | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md)                             |
-| 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index                                                                         | Pending | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md)         |
+| 06-STORY-PLAN-US005 | [US005](../02-STORIES/US005.md) | Exactly one layer decides to retry, and every budget says how long it may take                                             | Pending | [06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md](06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md) |
 | 07-STORY-PLAN-US006 | [US006](../02-STORIES/US006.md) | The destructive dev scripts read the deployment posture, and refuse to run above development                               | Pending | [07-STORY-PLAN-US006-POSTURE-GUARD.md](07-STORY-PLAN-US006-POSTURE-GUARD.md)                             |
 | 08-STORY-PLAN-US008 | [US008](../02-STORIES/US008.md) | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                     | Pending | [08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md](08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md)                     |
 | 09-STORY-PLAN-US009 | [US009](../02-STORIES/US009.md) | The git hooks arm on purpose at install, and the README claim that they already do becomes true                            | Pending | [09-STORY-PLAN-US009-HOOK-ARMING.md](09-STORY-PLAN-US009-HOOK-ARMING.md)                                 |
@@ -59,7 +56,13 @@ _None._
 
 ## Customer Accepted
 
-_None._
+| Plan                | Story                           | Title                                                                                                          | Status            | File                                                                                                     |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------- |
+| 01-STORY-PLAN-US007 | [US007](../02-STORIES/US007.md) | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Customer Accepted | [01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md](01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md) |
+| 02-STORY-PLAN-US001 | [US001](../02-STORIES/US001.md) | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Customer Accepted | [02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md](02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md)     |
+| 03-STORY-PLAN-US002 | [US002](../02-STORIES/US002.md) | The audits register regains the headroom nine new gates need                                                   | Customer Accepted | [03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md](03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md)       |
+| 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270                                                                   | Customer Accepted | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md)                             |
+| 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index                                                             | Customer Accepted | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md)         |
 
 ## Rejected
 
@@ -71,12 +74,10 @@ _None._
 
 ## Blocked
 
-| Plan                | Story                           | Title                                                                                                    | Status  | File                                                                                                     |
-| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------- |
-| 03-STORY-PLAN-US002 | [US002](../02-STORIES/US002.md) | The audits register regains the headroom nine new gates need                                             | Blocked | [03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md](03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md)       |
-| 06-STORY-PLAN-US005 | [US005](../02-STORIES/US005.md) | Exactly one layer decides to retry, and every budget says how long it may take                           | Blocked | [06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md](06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md) |
-| 12-STORY-PLAN-US011 | [US011](../02-STORIES/US011.md) | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Blocked | [12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md](12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md)         |
-| 14-STORY-PLAN-US014 | [US014](../02-STORIES/US014.md) | Structured JSON logging with a `request_id` on every entry, queried by Compose service label             | Blocked | [14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md](14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md)         |
+| Plan                | Story                           | Title                                                                                                    | Status  | File                                                                                             |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
+| 12-STORY-PLAN-US011 | [US011](../02-STORIES/US011.md) | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Blocked | [12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md](12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md) |
+| 14-STORY-PLAN-US014 | [US014](../02-STORIES/US014.md) | Structured JSON logging with a `request_id` on every entry, queried by Compose service label             | Blocked | [14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md](14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md) |
 
 ## Completed
 

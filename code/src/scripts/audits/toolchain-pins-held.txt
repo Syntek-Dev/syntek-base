@@ -1,0 +1,10 @@
+# toolchain-pins.sh held register — TEMPLATE-ONLY. copier.yml excludes this file.
+#
+# One line per held class: tool:class|owner-path|reason. The owner path is resolved in the tree
+# being audited; an entry whose owner is absent holds nothing and its class fails. A generated
+# project receives neither this file nor the story it names, so there the class fails as unpinned.
+#
+# Release condition: when an owner ships, its line is deleted in the same change.
+#
+# Empty since 11/11/2026: the uv:unpinned entry (PIN S-01) was deleted when every Dockerfile
+# and setup-uv step was pinned to the CI uv. The file stays so the mechanism has its input.

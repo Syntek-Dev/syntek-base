@@ -20,29 +20,40 @@ Cloudinary. This eliminates the ephemeral-container media loss problem entirely.
 
 ### Installation
 
-Add `cloudinary` and `django-cloudinary-storage` to the backend dependencies.
+`cloudinary`, the official Python SDK, is already declared in the root `pyproject.toml`. It is
+the only Cloudinary package: **never add `django-cloudinary-storage`.** That package was dropped
+on 11/11/2026 because its last release was 0.3.0 on 23/08/2020.
+
+### The storage backend is an adapter, not a package
+
+The SDK ships fields, forms and template tags, but **no Django `Storage` class**. Making
+Cloudinary the default storage backend therefore means writing a small adapter: a
+`django.core.files.storage.Storage` subclass whose `_save` and `delete` call `cloudinary.uploader`,
+`exists` calls `cloudinary.api.resource`, and `url` calls `cloudinary.CloudinaryImage(...).build_url()`, with its own tests
+against a mocked SDK. It is the same adapter-seam shape as the private-document store in
+[`../OBJECT-STORAGE.md`](../OBJECT-STORAGE.md). Wagtail's rendition pipeline sits on top of it
+and keeps doing its own transforms (`../wagtail/IMAGES-AND-MEDIA.md`).
 
 ### Configuration (`config/settings/base.py`)
 
 ```python
-INSTALLED_APPS = [
-    "cloudinary",
-    "cloudinary_storage",
-    # … other apps
-]
+import cloudinary
 
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": env("CLOUDINARY_CLOUD_NAME"),
-    "API_KEY": env("CLOUDINARY_API_KEY"),
-    "API_SECRET": env("CLOUDINARY_API_SECRET"),
-}
+cloudinary.config(
+    cloud_name=env("CLOUDINARY_CLOUD_NAME"),
+    api_key=env("CLOUDINARY_API_KEY"),
+    api_secret=env("CLOUDINARY_API_SECRET"),
+    secure=True,
+)
 
-# Django 6 STORAGES API — Cloudinary as the default (media) backend.
+# Django 6 STORAGES API — Cloudinary as the default (media) backend, through the adapter.
 STORAGES = {
-    "default": {"BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage"},
+    "default": {"BACKEND": "apps.<owning_app>.storage.CloudinaryStorage"},
     "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
 }
 ```
+
+`apps.<owning_app>` stands for wherever the adapter is built. Nothing is wired at baseline.
 
 ### What Cloudinary provides
 

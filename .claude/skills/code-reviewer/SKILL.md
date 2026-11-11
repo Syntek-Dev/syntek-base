@@ -215,6 +215,8 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/PERFORMANCE.md` · `code/docs/architecture/CORE-AND-SCALING.md` — the two axes above
 - `code/docs/NEGATIVE-SPACE.md` · `how-to/src/INVARIANTS.md` — the rule and this project's
   register; the two `[judgement]` clauses above are this skill's and no gate's
+- `code/docs/ABSENCE.md` — the six kinds of absence; flag a `None` carrying two meanings, or a
+  failure read as an empty list, against its absence-enum and never-overload rules
 - `code/docs/TESTING.md` — the coverage floors, to flag a gap rather than fill it
 - `code/docs/VISUAL-DESIGN.md` — Section 3 before Section 4.2, every time
 - `code/docs/CODE-REVIEW-GRAPH.md` — the review playbook run before broad search

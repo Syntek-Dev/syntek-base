@@ -262,12 +262,15 @@ and demonstrably fails at.
 
 | Quality                  | Members                                                                                                                                                                    |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Exact**                | rust-toolchain 1.97.1 · cargo-deny 0.20.2 · opengrep 1.27.1 · pnpm 11.25.0 · uv 0.12.5 (CI) · react 19.2.3 · react-native 0.86.2 · 13 pnpm age-excludes · 5 CI action tags |
+| **Exact**                | rust-toolchain 1.97.1 · cargo-deny 0.20.2 · opengrep 1.27.1 · pnpm 11.25.0 · uv 0.12.5 (CI) · react 19.3.0 · react-native 0.88.1 · 13 pnpm age-excludes · 5 CI action tags |
 | **Bounded range**        | 25 `pnpm-workspace.yaml` overrides · maturin `>=1.7,<2.0`                                                                                                                  |
 | **Open floor (`>=`)**    | 11 Python runtime · 12 Python dev/test · 2 `engines` · Copier 9.6.0                                                                                                        |
 | **Caret / tilde**        | 7 root JS devDeps · 18 mobile deps · 5 Rust crates                                                                                                                         |
 | **Major tag only**       | 7 CI actions (**126 of 144 `uses:` sites**) · `postgres:18-alpine` · `valkey/valkey:8-alpine` · node 24 · python 3.14                                                      |
 | **`latest`, or nothing** | `ghcr.io/astral-sh/uv:latest` (4) · `nginx:alpine` (2) · `ubuntu-latest` (53) · `python-version: "3.x"` (1) · **3 MCP servers** · 10 unconstrained Python runtime deps     |
+
+<!-- UPDATED 09/11/2026: react 19.2.3 -> 19.3.0 and react-native 0.86.2 -> 0.88.1 with Expo SDK 58
+(code/src/mobile 0.2.0). The rest of this table is not re-measured here. -->
 
 **Three findings that decide nodes below:**
 
@@ -382,7 +385,7 @@ twice or against a moved premise (the S-03 split follows Sam's Q9 and Q14 on MAP
 16/10/2026; the rest follows from that map's nodes):
 
 - **S-03's image half is built by S-01 on MAP-PIN-DETECT-MOVE**: the `python:3.14-slim` digest, the
-  uv pin in the Dockerfiles and nginx's specific tag. One value moves: uv is pinned to `0.12.24`,
+  uv pin in the Dockerfiles and nginx's specific tag. One value moves: uv is pinned to `0.13.7` <!-- UPDATED 11/11/2026 (dependency sweep, Sam's ruling on N-017 on MAP-PIN-DETECT-MOVE): read "`0.12.24`" until then; N-017 there carries the dated correction. -->,
   with CI's `UV_VERSION` moving in the same change (N-017 on MAP-PIN-DETECT-MOVE), so "the CI version" in S-03's row no
   longer means `0.12.5`. Everything else in S-03 stays here: the MCP servers (five in `.mcp.json`
   on 16/10/2026, not the three the row names), the postgres/valkey re-point register note, the

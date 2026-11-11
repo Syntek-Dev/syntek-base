@@ -185,7 +185,7 @@ bash code/src/scripts/mobile/bundle.sh
 bundle. Run it before raising a PR, not after.
 
 **Accessibility verification here is manual.** There is no React Native counterpart to
-`axe-core-python`, so Step 8's automated browser suite has no mobile equivalent. React Native
+`axe-playwright-python`, so Step 8's automated browser suite has no mobile equivalent. React Native
 Testing Library queries (`getByRole`, `getByLabelText`) catch missing props in unit tests; the
 rest is VoiceOver on iOS **and** TalkBack on Android — neither is a proxy for the other. Never
 record mobile a11y as "scanned clean".

@@ -127,7 +127,7 @@ Cut from the map — not from a conversation.
 Use the `story` skill to write a user story for <what you want>.
 ```
 
-Produces `project-management/src/02-STORIES/US001.md` via
+Produces `project-management/src/02-STORIES/US###.md` (US001.md, for a first story) via
 `project-management/workflows/02-story-creation/`.
 
 The `story` skill opens with a **grilling pass** — in rounds, each carrying a recommended
@@ -139,7 +139,8 @@ an estimate, and a status.
 
 ## 2. Slot it into the open sprint
 
-`project-management/workflows/03-sprint-planning/` → `src/03-SPRINTS/SPRINT-01.md`.
+`project-management/workflows/03-sprint-planning/` → `src/03-SPRINTS/SPRINT-##.md` (SPRINT-01.md,
+for a first sprint).
 
 A running ledger, not a plan: the sprint goal, and each story added with its points as it clears
 `15-decisions`. When the total reaches the capacity ceiling the sprint is **full**, and that is

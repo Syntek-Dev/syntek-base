@@ -8,7 +8,7 @@ name: "<%PROJECT_SLUG%>-dev"
 
 services:
   db:
-    image: postgres:18-alpine
+    image: postgres:18
     environment:
       POSTGRES_DB: "<%PROJECT_SLUG%>_dev"
       POSTGRES_USER: ${POSTGRES_USER:-<%PROJECT_SLUG%>}
@@ -32,7 +32,7 @@ services:
     restart: unless-stopped
 
   cache:
-    image: valkey/valkey:8-alpine
+    image: valkey/valkey:8
     command: valkey-server --save 20 1 --loglevel warning
     volumes:
       - valkey_dev_data:/data
@@ -74,7 +74,7 @@ services:
     restart: unless-stopped
 
   nginx:
-    image: nginx:alpine
+    image: nginx:mainline
     ports:
       # Host 81, not 80 — a local router (e.g. DDEV) commonly holds 127.0.0.1:80.
       - "127.0.0.1:81:80"

@@ -1,0 +1,15 @@
+# The drifting tree: one disagreement per class and per site family.
+# "class tool file" per reported line; agree and derived lines are not listed.
+drift msrv REFERENCES.md
+drift node how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md
+drift node package.json
+drift pnpm package.json
+drift python code/src/docker/django/Dockerfile.dev
+drift python pyproject.toml
+drift rust README.md
+drift uv README.md
+held uv code/src/docker/django/Dockerfile.dev
+held uv .github/workflows/other.yml
+readsother node .github/workflows/other.yml
+unpinned node .github/workflows/other.yml
+unpinned python .github/workflows/other.yml

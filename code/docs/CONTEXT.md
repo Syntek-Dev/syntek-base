@@ -12,6 +12,7 @@ before it stops being writable.
 
 ```text
 code/docs/
+├── ABSENCE.md                        ← what an absence means: the six kinds, the runtime crib, the absence-enum rule
 ├── ACCESSIBILITY.md                  ← WCAG 2.2 AA, semantic HTML, ARIA patterns
 │   └── accessibility/                ← html-and-aria/ interaction/ testing-and-components/ mobile/
 ├── API-DESIGN.md                     ← Django Ninja JSON API + REST conventions
@@ -47,7 +48,9 @@ code/docs/
 ├── NOTIFICATIONS.md         ← the channel layer: send boundary, one branded template foundation, PII per channel (declared, not wired)
 ├── OBJECT-STORAGE.md        ← private-document S3 storage: adapter, presigned URLs, validation (declared, not wired)
 ├── PROCESS-MODEL.md         ← worker class, event loop, the ORM sync boundary, where a task worker sits
-├── TASK-AUTHORING.md        ← background tasks: enqueue boundary, delivery guarantee, idempotency, retries (declared, not wired)
+├── TASK-AUTHORING.md        ← background tasks: enqueue boundary, delivery guarantee, limits, routing (declared, not wired)
+├── RELIABILITY.md           ← retries and idempotency, once for every surface that can fail or repeat
+│   └── reliability/                  ← idempotency/ retries/
 ├── MANAGEMENT-COMMANDS.md   ← the CLI surface: arguments as untrusted input, blast radius, the exit classes
 ├── MCP-SERVER.md            ← the FastMCP tool surface at /mcp/ (available but unwired)
 │   └── mcp-server/                   ← mounting/ tool-design/ auth-and-threats/ testing-and-ops/
@@ -89,7 +92,9 @@ code/docs/
 | `API-DESIGN.md`                 | Django Ninja JSON API and REST conventions                                                                                                                                                                                                                                                                                                                                 |
 | `MCP-SERVER.md`                 | The FastMCP tool surface at `/mcp/` — mounting, tool design, auth, testing (available but unwired)                                                                                                                                                                                                                                                                         |
 | `NEGATIVE-SPACE.md`             | What the code must never allow — what counts as an invariant, the invariant classes and their one enforcement point each, the programmer/user/environment error taxonomy, and the guard clause (`raise`, never `assert` — ruff `S101`)                                                                                                                                     |
-| `TASK-AUTHORING.md`             | Background-task authoring: the enqueue boundary and its committed-but-unpublished window, the delivery guarantee as a configured choice, idempotency, retries and backoff, limits, queue routing, testing without a broker (declared, not wired)                                                                                                                           |
+| `ABSENCE.md`                    | **What an absence means**, beside the `TYPES-*` family's what shape a value has — the six kinds and their decision order, the crib onto Python, Rust, Alpine, HTMX and mobile TypeScript, the absence-enum rule (pinned by `audits/doctrine-drift.sh`) and the never-overload rule                                                                                         |
+| `TASK-AUTHORING.md`             | Background-task authoring: the enqueue boundary and its committed-but-unpublished window, the delivery guarantee as a configured choice, what a queue adds to idempotency, limits, queue routing, testing without a broker (declared, not wired). The idempotency contract and the retry doctrine are `RELIABILITY.md`'s                                                   |
+| `RELIABILITY.md`                | **Retries and idempotency, stated once for every surface** — HTTP clients, transactions, queue consumers, webhooks, MCP tools, the CLI. The run-twice contract and its proof ladder (`reliability/IDEMPOTENCY.md`); classifying a failure, jittered backoff, bounds and the end of retrying (`reliability/RETRIES.md`). Each surface guide keeps only its own expression   |
 | `MANAGEMENT-COMMANDS.md`        | The CLI surface, and the one whose runtime already exists: arguments as untrusted input because argparse parses rather than validates, blast radius as the argument nobody passes, and the error taxonomy expressed as exit codes — `ManagementCommand` plus the ruff `TID251` ban that makes it a rule                                                                    |
 | `PROCESS-MODEL.md`              | Worker class, event loop, the ORM's sync boundary, and where a task worker sits relative to the web process family                                                                                                                                                                                                                                                         |
 | `OBJECT-STORAGE.md`             | Private-document storage over the S3 API: the adapter contract, presigned URLs, upload validation (declared, not wired)                                                                                                                                                                                                                                                    |

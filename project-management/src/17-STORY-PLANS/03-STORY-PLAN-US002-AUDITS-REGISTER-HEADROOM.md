@@ -88,7 +88,9 @@ lines of headroom**. It is the register for the audit suite, and every new audit
 
 **Nine audits are queued across eight slices and seven maps**, so 27 lines are due. The
 Dependencies table is separately **four rows short for scripts that already exist** — 24 scripts,
-20 rows. The next story to write a gate cannot register it, and an audit absent from the register
+20 rows. _(Figures as written, 02/09/2026. Re-cut 03/11/2026 at the build's first step — see
+**The re-cut** under the arithmetic: 299 lines, eleven audits and 33 rows due, 27 scripts and 22
+rows.)_ The next story to write a gate cannot register it, and an audit absent from the register
 reads as a suite that is complete when it is not.
 
 This story is wave 0 and Must because those nine stories all land red without it.
@@ -161,7 +163,8 @@ carries are dropped because the story touches none of them, not to dodge a gate.
 1. `bash code/src/scripts/audits/docs-length.sh --path code/src/scripts/audits --limit 1` — the
    `--limit 1` form is required, because a bare run prints only files at or above 270 and would go
    silent about this file the moment the shrink succeeds.
-2. The register counts: 24 scripts, 26 Directory Tree rows, 24 inventory rows, 20 Dependencies rows.
+2. The register counts: 24 scripts, 26 Directory Tree rows, 24 inventory rows, 20 Dependencies rows
+   as written; captured 03/11/2026 as 27 · 29 · 27 · 22.
 3. `bash code/src/scripts/audits/doc-references.sh` — **the finding identities, not just the
    count**, per `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` <!-- doc-references: template-only -->,
    superseded 30/09/2026 by
@@ -189,7 +192,9 @@ existed between them` (12 lines) restates `code/docs/DOCUMENTATION-LENGTH.md`; i
 ~3-line route. Any passage in `security.sh`, the Cargo-tree section or the TDD bypass that
 restates a rule owned elsewhere goes the same way. **Facts with no other home stay.**
 
-**Step F: complete the Dependencies register.** Add rows for the four scripts that have none, so
+**Step F: complete the Dependencies register.** Add rows for the five scripts that have none
+(four when written — re-cut 03/11/2026: `dependency-drift.sh`, `dict-discipline.sh`,
+`doc-references.sh`, `doctrine-drift.sh`, `story-markers.sh`), so
 "every register complete" is decidable rather than asserted.
 
 **Step G: retire the allowance.** `CONTEXT.md:8`'s `docs-length-allow` comment is deleted — the
@@ -202,6 +207,17 @@ story did not use.
 `code/src/scripts/audits/CLAUDE.md` (`:35`, `:160`, `:168-169`) are re-resolved. The line anchor
 at `project-management/src/01-FEATURE-MAPS/MAP-PROGRESSIVE-ENHANCEMENT.md` <!-- doc-references: template-only --> line 476 citing `CONTEXT.md:154` is re-pinned to whatever line the
 `css-tokens.sh` inventory row ends up on.
+
+**Step H, re-cut 03/11/2026 (Q1b, Q1c, Q4).** The text above is the plan as written. Re-measured,
+Step H is three sets: (1) the section-name citations — the three workflow headers and the
+desktop `CONTEXT.md`, now pointing at the new file, and `code/src/scripts/audits/CLAUDE.md` `:35`,
+`:107`, `:121`, `:173`, `:181`, re-resolved; (2) every live line anchor into this file, replaced by
+section name plus row name rather than re-pinned — MAP-PROGRESSIVE-ENHANCEMENT `:124` and `:477`,
+MAP-SCRIPT-GUARDS `:104`, and the `negative-space.sh` row anchor across US008's story, plan,
+threat model and assessment plan (story Scenario 7 lists each); (3) the seven baseline findings
+citing the superseded bare "SLOP-FAMILY.md", repointed to the pair (story Scenario 8). Dated
+history keeps its old anchor. Each site is read before it is edited: a line the grep calls live
+can be history in prose.
 
 ### The arithmetic, stated so it can be checked
 
@@ -219,6 +235,31 @@ at `project-management/src/01-FEATURE-MAPS/MAP-PROGRESSIVE-ENHANCEMENT.md` <!-- 
 bare file would have — the price of a ceiling a script enforces. Step E takes the last one to three
 lines from the remaining unprotected prose in `security.sh` and the Cargo-tree section, which holds
 ~30. The forward demand is 27, so even at 231 the file keeps 39 lines below the warn tier.
+
+### The re-cut — 03/11/2026, at the build's first step
+
+The table above is the plan as written against 298 and is kept as the record of that reasoning.
+Re-measured at `357db65` before the first edit (Q1; captures in
+`../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` → _Before the first edit_):
+
+| Step                                                                                         | Δ   | Running  |
+| -------------------------------------------------------------------------------------------- | --- | -------- |
+| Baseline, by `docs-length.sh --limit 1`                                                      | —   | **299**  |
+| B — the rationale leaves (Q3: the annotation section routes to `VISUAL-DESIGN.md` Section 6) | −70 | 229      |
+| C — the route stub                                                                           | +4  | 233      |
+| D — the folder and its pair in the Directory Tree                                            | +3  | 236      |
+| F — five owed Dependencies rows                                                              | +5  | 241      |
+| E — _Markdown: two limits_ (now 7) becomes a route                                           | −4  | 237      |
+| E — restatements in `security.sh` and the Cargo section (Q2)                                 | ≥−7 | **≤230** |
+| G — the allowance comment retired                                                            | 0   | —        |
+
+**The forward demand is 33, not 27** — eleven audits across ten slices and nine maps, recounted
+03/11/2026 (Q1a): the nine of 02/09/2026, all still unbuilt, plus MAP-PIN-DETECT-MOVE S-02
+(`image-vulns.sh`) and MAP-SENTENCE-RULES S-03 (a changed-lines prose audit, blocked). Six
+conditional rows elsewhere are named in the story and not counted. **At 230 the dry run lands at
+263; at 237 it lands at exactly 270 and fails.** Q2's "hold 230" is therefore load-bearing, not
+only a discipline: the story's 231–269 band is in practice 231–236, the highest landing from which
+33 rows stay under the gate.
 
 <!-- The allowance comment is a whole-line HTML comment, which cloc does not count as code, so
      deleting it changes the counted total by zero. Stated because it looks like a saving. -->
@@ -238,6 +279,47 @@ unrecoverable once editing starts, and the repointing (H) cannot be done until t
 | How `doc-references.sh` is read                   | Identity diff against a captured baseline | Exit 0                              | The gate is red before the story starts, for 22 findings it does not own                          | `ADR-US003-CITATION-GATE-BASELINE-DIFF`           |
 | Whether US002 fills the four owed Dependency rows | Yes                                       | Leave room for them as future work  | "Every register complete" is otherwise undecidable, and the two scenarios contradicted each other | `QA-PLAN-US002` AC-GAP-9                          |
 | The `CLAUDE.md` ceiling                           | 200 counted lines                         | The 270 warn tier                   | 270 licenses filling the sibling from 165 to 269 — moving the wall rather than removing it        | `code/docs/DOCUMENTATION-LENGTH.md` Section 6     |
+
+**Settled at a pre-build grilling, 03/11/2026** (Sam, during the US001 build). Recorded here
+because the measurements this plan was written against have moved, and the build reads its scope
+from this table before the re-cut below runs.
+
+Measured 03/11/2026 on `testing` at `0d32a1d`, against the figures above:
+
+| Fact                                               | Plan / story says         | Measured                                                                                                      |
+| -------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `code/src/scripts/audits/CONTEXT.md` counted lines | 298                       | 299                                                                                                           |
+| Scripts in the folder                              | 24                        | 27                                                                                                            |
+| Dependencies rows owed                             | 4                         | 5 — `dependency-drift.sh`, `dict-discipline.sh`, `doc-references.sh`, `doctrine-drift.sh`, `story-markers.sh` |
+| Sibling `code/src/scripts/audits/CLAUDE.md`        | 165                       | 178, against the 200 ceiling                                                                                  |
+| _Markdown: two limits_ section                     | 12 counted                | 7 — compressed by three registering stories since                                                             |
+| Unprotected prose (security, Markdown, Cargo, TDD) | 46                        | 35 (12 + 7 + 12 + 4)                                                                                          |
+| `CLAUDE.md` citations into `CONTEXT.md`            | `:35`, `:160`, `:168-169` | `:35`, `:107`, `:121`, `:173`, `:181`                                                                         |
+| The arithmetic                                     | ends 228 (prose says 231) | about 237: 299 − 70 + 4 route + 3 folder and pair + 5 rows − 4 Markdown route                                 |
+| `docs-length-allow` expiry                         | 01/12/2026                | unchanged — four weeks out                                                                                    |
+
+| Decision                                                | Chosen                                                                                                                                                                | Rejected                                                                                         | Why                                                                                                                                 |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Q1 — the stale figures                                  | Re-cut the story's criteria and this plan's arithmetic at the build's first step, with dated trails; the forward demand ("nine audits, 27 rows") recounted then       | Build against today's figures and amend at the walk; a standalone `02-story-creation` pass first | Scenarios assert "298" and "24 scripts" literally; the US007 precedent re-cuts at the build's first step                            |
+| Q2 — the 230 target, now about 7 lines short            | Hold 230 and find the lines in the `security.sh` and Cargo sections, restatements only; fall back to the story's 231–269 band, reason recorded, only if those run out | Take the band up front; lower the bar to under 250                                               | The band is licensed only once restatements genuinely run out — taking it first retires the discipline the target encodes           |
+| Q3 — the `slop-allow` annotation section                | Reduce it to a route to `code/docs/VISUAL-DESIGN.md` Section 6, keeping only the scope table that guide lacks                                                         | Move it intact into the new slop-family CONTEXT.md; move it into the new slop-family CLAUDE.md   | It ends "Full rule: VISUAL-DESIGN.md Section 6" — Scenario 4 names that guide as an owner whose restatements become routes          |
+| Q4 — the anchor at "MAP-PROGRESSIVE-ENHANCEMENT.md:477" | Drop the line number; keep the section name                                                                                                                           | Re-pin the line; leave it and record a finding                                                   | A section name survives the next registering story; a re-pinned line goes stale again with it                                       |
+| Q5 — the story's status                                 | `Blocked` → `Pending` now, through `completion`                                                                                                                       | Wait for US001 to close and SPRINT-02 to open                                                    | The block's stated cause cleared: US007 Accepted, PR #20                                                                            |
+| Q1a — the forward demand                                | Eleven audits across ten slices and nine maps, 33 rows; the six conditional rows named, not counted                                                                   | Ten firm audits, 30 rows                                                                         | The blocked prose audit names this file and its 01/12/2026 expiry; a dry run that omits it understates demand already on the record |
+| Q1b — line anchors beyond the eight                     | Replace every live anchor into this file with section and row name                                                                                                    | Scope to the eight; record US008's anchors as a finding                                          | Q4's reason holds for every anchor: a re-pinned line goes stale with the next registering story                                     |
+| Q1c — the superseded bare-file citations                | Repoint the seven `SLOP-FAMILY.md` findings to the pair                                                                                                               | Leave them red as pre-existing                                                                   | This story owns the design change that orphaned them; they clear from the baseline                                                  |
+
+### Verification corrections, 03/11/2026 (QA triage)
+
+The independent QA pass of 03/11/2026 found three manual-guide checks that cannot pass, or prove
+nothing, as written. Each row below is the recorded decision the walker cites when amending that
+check; the journey rows themselves are not edited by the build.
+
+| Check     | As written                                   | Corrected to                                                                                                                       | Why                                                                                                                                                                                        | QA finding |
+| --------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- |
+| DRYRUN-01 | 27 rows, nine each, boundary 243             | **33 rows, eleven each, boundary 236** — a landing above 236 would have reached 270                                                | The forward demand was re-cut to 33 at Q1a; a dry run of 27 understates it, and 236 is the highest landing from which 33 rows stay under 270                                               | M-2        |
+| BITE-01   | Move `slop-family/CLAUDE.md` aside, unstaged | **Stage the deletion** (`git rm --cached`), then run `docs-pairing.sh`; expect exit 1 naming the missing `CLAUDE.md`, then restore | `docs-pairing.sh` reads the git index, so an unstaged move exits 2 with no finding naming the folder. That unstaged behaviour is filed as a bug at `22`, not fixed in this docs-only story | M-3        |
+| BITE-03   | The bare `docs-length.sh` at 270/271         | **`docs-length.sh --since HEAD`**; expect exit 1, the file grown into the warn tier with no dated allowance                        | The bare form only warns ("approaching") and exits 0; the block is the ratchet, and `--since` is the form lefthook and CI run                                                              | L-4        |
 
 ## Dependencies
 
@@ -345,7 +427,7 @@ convenience: three of this story's acceptance criteria are decidable by nothing 
 | The rationale survived whole    | Human read-across of "code/src/scripts/audits/slop-family/CONTEXT.md" against the three enumerated arguments |
 | Each route lands on a real rule | Human read-across — open each route's target and confirm it states the rule                                  |
 | The register inventory balances | Before/after counts recorded in `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md`                                 |
-| The forward demand fits         | 27 rows dry-run into the shrunk file; it stays under 270                                                     |
+| The forward demand fits         | 33 rows dry-run into the shrunk file; it stays under 270 (27 when written; re-cut 03/11/2026)                |
 
 The rows a person walks for these checks are in `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md`,
 authored from this plan before code (backfilled 30/09/2026) and walked at `22`.
@@ -356,7 +438,7 @@ Owned by `22-implementation-documentation`, which walks rather than writes this 
 guide: `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` was authored before code from this plan
 (backfilled 30/09/2026), and the walk records in it the baseline, the before/after register
 inventory, the relocation-versus-deletion split required by `code/docs/DOCUMENTATION-LENGTH.md`
-Section 6, the 27-row dry run, and the read-across sign-off.
+Section 6, the 33-row dry run (27 when written), and the read-across sign-off.
 
 <!-- 30/09/2026: this section read "This story produces ../18-TESTS/US002-MANUAL-TESTING.md
      carrying ..." until the 18-TESTS folder split into MANUAL/ and AUTOMATED/ and the manual
@@ -406,14 +488,14 @@ Section 6, the 27-row dry run, and the read-across sign-off.
 - [ ] `slop-family/CONTEXT.md` exists, carries the three arguments whole, and is
       registered in the Directory Tree
 - [ ] `code/src/scripts/audits/CLAUDE.md` at or under 200 counted lines
-- [ ] The Dependencies register carries a row for all 24 scripts
+- [ ] The Dependencies register carries a row for all 27 scripts (24 when written)
 - [ ] The `docs-length-allow` comment is retired
 - [ ] All eight inbound citations re-resolved and repointed
 - [ ] `docs-length.sh`, `docs-pairing.sh`, markdown lint and format all pass
 - [ ] `doc-references.sh` shows no new finding against the recorded baseline
 - [ ] `doctrine-drift.sh` recorded `N/A` with its cause — never as a pass
 - [ ] `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` carries the baseline, the inventory balance, the
-      deletion/relocation split and the 27-row dry run
+      deletion/relocation split and the 33-row dry run
 - [ ] A tester other than the author has signed the read-across off
 - [ ] Story `**Status:**` moved to `Completed`; this plan's row in
       `../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md` → _Story Plans — the code master_ mirrors it

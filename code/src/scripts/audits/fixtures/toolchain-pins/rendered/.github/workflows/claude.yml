@@ -1,0 +1,6 @@
+name: Fixture gate
+
+on: workflow_dispatch
+
+env:
+  UV_VERSION: "0.12.5"

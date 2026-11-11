@@ -22,7 +22,13 @@ remove stale entries rather than appending contradictions.
 
 ## Feedback
 
-_No entries yet._
+### Take the manual guide's before-edit captures before the red phase — 05/11/2026
+
+US004's walk failed nine rows because the `18-TESTS/MANUAL/` guide's _Recorded during the build_
+slots were never filled before the first source edit; a missed capture is recorded as missed and
+never reconstructed, so the deviation stood (Sam's ruling). When `/implement-story` starts, read
+the story's manual guide for capture slots and take every one **before phase 2**, alongside the
+`completion` status move.
 
 ---
 

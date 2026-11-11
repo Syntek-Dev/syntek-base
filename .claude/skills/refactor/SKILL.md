@@ -144,5 +144,7 @@ Route to the one that matches the task and follow its `STEPS.md` against its `CH
 - `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` · `code/docs/architecture/FRONTEND-PATTERNS.md`
 - `code/docs/NEGATIVE-SPACE.md` · `how-to/src/INVARIANTS.md` — the guard clause, and the register
   row that moves with the function it names
+- `code/docs/ABSENCE.md` — the absence-enum rule, for a refactor that splits an overloaded `None`
+  into named kinds
 - `code/docs/testing/COVERAGE.md` — the floors a refactor must not drop below
 - `code/docs/PERFORMANCE.md` — read when the refactor touches a query or render hot path

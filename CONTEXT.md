@@ -82,8 +82,6 @@ consumes this API; none of them changes the rule above for the web.
 ├── questionnaires/                  ← /to-questionnaire — outbound discovery questionnaires
 ├── learning/                        ← /teach sandbox — throwaway learning workspace
 ├── research/                        ← /research notes — primary-source-cited
-├── patches/                         ← pnpm dependency patches — one per advisory whose
-│                                      fix this graph cannot consume; see pnpm-workspace.yaml
 ├── .copier/                         ← seed-once staging: the README, version state, blank
 │                                      project memory, blank standing registers and
 │                                      scale-planning map a generated project starts from;
@@ -180,7 +178,7 @@ decision test, the headings that never belong in an orientation file, and the en
 
 ## Repository State
 
-Current version: **7.8.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
+Current version: **7.9.0** — see `VERSION`, `CHANGELOG.md`, and `RELEASES.md`.
 
 Versioning is two-tier: the root project tracks the monorepo on single-track semver, and each
 deployable sub-package carries its own independent semver — `code/src/django/` (manifest: root

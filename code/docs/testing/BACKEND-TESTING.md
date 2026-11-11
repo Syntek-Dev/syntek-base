@@ -81,7 +81,7 @@ def test_create_user_sets_unusable_password_when_none_given() -> None:
 
 ### PostgreSQL 18 via Docker Compose
 
-Integration tests use the real `postgres:18-alpine` instance managed by
+Integration tests use the real `postgres:18` instance managed by
 `docker-compose.test.yml` (a dedicated project test database — never dev or production). No
 testcontainers or external setup required.
 

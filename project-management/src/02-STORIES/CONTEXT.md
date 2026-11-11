@@ -18,7 +18,7 @@ project-management/src/02-STORIES/
 └── archive/                 ← Closed stories, moved here by pm-archive.sh — frozen
 ```
 
-**Naming:** `US###.md` — 3-digit zero-padded (e.g. `US001.md`). Numeric gaps are
+**Naming:** `US###.md` — 3-digit zero-padded, so the first story is US001.md. Numeric gaps are
 acceptable — only files that exist are listed; never renumber to close a gap. Numbers are
 taken across this folder **and** `archive/`, and every reader looks a story up by ID in both.
 

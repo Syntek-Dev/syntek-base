@@ -22,7 +22,8 @@ in every project generated from this template. **This file is the answer sheet, 
 20/08/2026 [`code/src/scripts/audits/doc-references.sh`](../../code/src/scripts/audits/doc-references.sh)
 checks `code/src/django/` like any other tree: a backticked path there passes because it exists,
 because it holds a row below, or not at all. Nothing else quietens it — not a forward tense, not a
-disclaimer at the top of the citing file — because the check reads the path.
+disclaimer at the top of the citing file — because the check reads the path. As of 05/11/2026 it
+checks `project-management/src/` the same way.
 
 **That makes writing a row the wrong first instinct.** A finding means the citation is unbacked,
 and the default disposition in
@@ -35,13 +36,21 @@ registered; it proves nothing about whether the **Created by** entry creates tha
 a reviewer's call.
 
 **A row names a creator, or it is not written.** An entry that cannot say what brings the path into
-being is a wish, and the rule keeps wishes out of both files. Exactly three paths clear that bar
-today; the ones that do not are listed under _What is deliberately not registered_ so nobody has to
+being is a wish, and the rule keeps wishes out of both files. Three paths and two record classes
+clear that bar today; the ones that do not are listed under _What is deliberately not registered_ so nobody has to
 re-derive the verdict.
 
 **Register a path, not a site.** One row covers every document citing that path, however many there
 are. Two documents disagreeing about what a path is for is a defect to fix in those documents, not
 a second row here.
+
+**A row may name a class, and a class carries the same duty.** Where every story creates its own
+copy of a record, one row binds them all: `###` in the **Path** column means exactly three digits,
+the rest is matched literally and whole, so a four-digit number or letters are never members. A new
+per-story record class a shipped document promises takes a row of its own in the same change, under
+the same creator rule. **A class row never covers a shipped template.** The zero-index and
+`-TEMPLATE.` files it is copied from ship with this template and must exist; the gate tests them
+for presence before it reads this table, so no row here can hide one going missing.
 
 **The `When` column is written the way this repository already writes absence.** The house style is
 [`code/docs/FRONTEND-CODING-PRINCIPLES.md`](../../code/docs/FRONTEND-CODING-PRINCIPLES.md) Section
@@ -54,11 +63,13 @@ missing piece, and prints the command that creates it.
 
 ## Registered paths
 
-| Path                              | Created by                                       | When                                                                                                                                           |
-| --------------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `code/src/django/apps/marketing/` | `code/src/scripts/development/new-django-app.sh` | The first story that needs a public page — Step 2 of `project-management/workflows/21-frontend-code/`, which cannot scaffold a page without it |
-| `code/src/django/config/api.py`   | `project-management/workflows/20-api-code/`      | The first story that adds an endpoint — Step 2, in the same change as the router it mounts                                                     |
-| `code/src/django/components/`     | `project-management/workflows/21-frontend-code/` | The first story with a reusable server-rendered component — Step 4                                                                             |
+| Path                                                             | Created by                                                      | When                                                                                                                                                                |
+| ---------------------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `code/src/django/apps/marketing/`                                | `code/src/scripts/development/new-django-app.sh`                | The first story that needs a public page — Step 2 of `project-management/workflows/21-frontend-code/`, which cannot scaffold a page without it                      |
+| `code/src/django/config/api.py`                                  | `project-management/workflows/20-api-code/`                     | The first story that adds an endpoint — Step 2, in the same change as the router it mounts                                                                          |
+| `code/src/django/components/`                                    | `project-management/workflows/21-frontend-code/`                | The first story with a reusable server-rendered component — Step 4                                                                                                  |
+| `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md` | `project-management/workflows/17-story-plans/`                  | Every story, beside its plan and before any code — Step 7.2, which copies the shipped `US000-MANUAL-TESTING.md` template                                            |
+| `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md` | `project-management/workflows/22-implementation-documentation/` | Every story, once its code ships — Step 4 copies the shipped `US000-TEST-STATUS.md` template, and `code/src/scripts/tests/test-record.sh` fills its generated block |
 
 ### What the marketing row does not cover
 
@@ -133,18 +144,19 @@ shipped file. This is a definition-of-done item, not a tidy-up task.
 `code/src/django/apps/marketing/` exists, its citations resolve like any other and the promise has
 been kept — so the row goes, in the same change that creates the directory. Left in place, this
 file quietly becomes a list of things that are already true, which is the state in which nobody
-reads it. The three rows above never retire in the template itself, because the template builds
-nothing.
+reads it. The three path rows above never retire in the template itself, because the template
+builds nothing; the two class rows never retire at all, because every story adds a member.
 
 **The creator column checks itself, at no cost.** Every creator is a backticked path in a shipped
 file, so `doc-references.sh`'s ordinary dangling check already reads it. No clause was ever written
 for that, and none has to be maintained. The **Path** column is the half that did take one — the
-arm reads this section to decide which citations under `code/src/django/` are backed — so the two
+arm reads this section to decide which citations under `code/src/django/` and
+`project-management/src/` are backed — so the two
 columns are checked by different means and only one of them for free.
 
 **Know what a green run is worth, because it is less than it looks.** It proves the creators exist,
-and — since the arm landed — that every cited path under `code/src/django/` either exists or is
-registered here. It proves nothing about whether a creator creates the path its row claims, which
+and — since the arm landed — that every cited path under `code/src/django/` or
+`project-management/src/` either exists or is registered here. It proves nothing about whether a creator creates the path its row claims, which
 is the judgement no run has ever made. That limit is stated in [`code/docs/FORWARD-VOICE.md`](../../code/docs/FORWARD-VOICE.md) Section _What the gate
 cannot decide, stated plainly_, and they are written here as well rather than assumed, on the rule
 in [`code/docs/GATE-REPORTING.md`](../../code/docs/GATE-REPORTING.md): a check that could not look

@@ -46,9 +46,13 @@ need_tool cargo-deny "Install it with: cargo install --locked --version ${CARGO_
 bold "▸ audit.sh (rust supply chain)"
 log ""
 
-$UPDATE && cargo deny fetch
+# --locked: an audit reads the graph as committed and never edits it. Without it cargo-deny
+# resolves through `cargo metadata`, which rewrites a Cargo.lock its manifest has moved past —
+# so dependencies/audit.sh's lockfile leg would check a lock this audit had just repaired.
+# A stale lock now fails here, loudly, instead of being silently re-written.
+$UPDATE && cargo deny --locked fetch
 
-cargo deny check advisories licenses bans sources
+cargo deny --locked check advisories licenses bans sources
 
 log ""
 bold "✓ Rust supply chain clean."

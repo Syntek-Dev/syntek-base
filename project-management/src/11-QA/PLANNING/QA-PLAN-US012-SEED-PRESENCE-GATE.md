@@ -40,7 +40,7 @@
      exists on this host, and none may be made with a raw `uvx copier copy`
      (`.claude/CLAUDE.md` Section 6), so every run in Section 7 is against a MINIMAL FIXTURE under
      /tmp: the four pair-only trees, every `NAMED_SHIPPED` file, one file per `SHIPPED_GLOBS`
-     pattern and the seed, read by a scratch copy of the script whose `../../copier.yml` is a copy
+     pattern and the seed, read by a scratch copy of the script whose copier.yml, two directories above it, is a copy
      of the real one (the script resolves it from its own location, `:66-68`). Nothing was written
      into the repository and the fixture was deleted afterwards. Fixture readings are indicative;
      the proof of record is CI's generated tree (AC-GAP-4). Every citation the story makes into
@@ -52,6 +52,8 @@
      read "Reviewed — all nine gaps resolved into the story; AC-GAP-2,
      -4, -5 and -6 settled by <%DEVELOPER_NAME%>, all 21/09/2026" until then, and the two sentences
      above that say Status reads Reviewed are the record of 21/09/2026, kept as written. -->
+
+<!-- UPDATED 05/11/2026 (US004 P5): the comment above read "whose ../../copier.yml is a copy" until then; that path is relative to the script under test, not to this plan, so read from here it was a dead citation the citation gate now polices in this tree. -->
 
 > **Corrected in place, 30/09/2026, at the `16-sprint-plans` gate, and signed off by
 > <%DEVELOPER_NAME%>**: gate 11 closes when a QA plan reads `Signed off`, as gate 10 does (settled

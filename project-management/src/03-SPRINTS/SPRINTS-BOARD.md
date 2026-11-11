@@ -9,18 +9,15 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 
 | Column      | Items |
 | ----------- | ----- |
-| Planned     | 8     |
+| Planned     | 5     |
 | In Progress | 0     |
-| Done        | 0     |
+| Done        | 3     |
 | Closed      | 0     |
 
 ## Planned
 
 | ID        | Title                                                                                                                                                                                       | Status  | File                         |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------- |
-| SPRINT-01 | Two rules get exactly one owner each before anything downstream writes against them                                                                                                         | Planned | [SPRINT-01.md](SPRINT-01.md) |
-| SPRINT-02 | The audits register regains the headroom nine new gates need, and the absence guide is born behind it                                                                                       | Planned | [SPRINT-02.md](SPRINT-02.md) |
-| SPRINT-03 | The citation gate gives one verdict on one sentence whichever side of the git index its file sits, and the project-management tree it could never read becomes checkable                    | Planned | [SPRINT-03.md](SPRINT-03.md) |
 | SPRINT-04 | Retry doctrine gets its single owner, and the posture rule gets a guard                                                                                                                     | Planned | [SPRINT-04.md](SPRINT-04.md) |
 | SPRINT-05 | The cookie doctrine lands and the git hooks arm on purpose                                                                                                                                  | Planned | [SPRINT-05.md](SPRINT-05.md) |
 | SPRINT-06 | Every register folder gains an index file of its own, born seeded and seed-once so no `copier update` can overwrite a filled one                                                            | Planned | [SPRINT-06.md](SPRINT-06.md) |
@@ -33,7 +30,11 @@ _None._
 
 ## Done
 
-_None._
+| ID        | Title                                                                                                                                                                    | Status | File                         |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ---------------------------- |
+| SPRINT-01 | Two rules get exactly one owner each before anything downstream writes against them                                                                                      | Done   | [SPRINT-01.md](SPRINT-01.md) |
+| SPRINT-02 | The audits register regains the headroom nine new gates need, and the absence guide is born behind it                                                                    | Done   | [SPRINT-02.md](SPRINT-02.md) |
+| SPRINT-03 | The citation gate gives one verdict on one sentence whichever side of the git index its file sits, and the project-management tree it could never read becomes checkable | Done   | [SPRINT-03.md](SPRINT-03.md) |
 
 ## Closed
 

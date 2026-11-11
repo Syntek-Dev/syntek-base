@@ -2,10 +2,10 @@
   "name": "<%PROJECT_SLUG%>",
   "description": "<%PROJECT_DESCRIPTION%>",
   "private": true,
-  "packageManager": "pnpm@11.25.0",
+  "packageManager": "pnpm@11.28.9",
   "engines": {
-    "node": ">=24",
-    "pnpm": ">=11.25.0"
+    "node": ">=26",
+    "pnpm": ">=11.28.9"
   },
   "scripts": {
     "prepare": "[ -d .git ] && lefthook install || true",
@@ -16,11 +16,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@usebruno/cli": "^4.0.0",
-    "eslint": "^10.8.1",
-    "globals": "^17.11.0",
-    "lefthook": "^2.1.10",
-    "markdownlint-cli2": "^0.23.2",
-    "prettier": "^3.9.6"
+    "@usebruno/cli": "^4.3.0",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "lefthook": "^2.2.2",
+    "markdownlint-cli2": "^0.24.0",
+    "prettier": "^3.9.10"
   }
 }

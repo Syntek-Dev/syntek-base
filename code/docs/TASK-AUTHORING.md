@@ -8,9 +8,9 @@ model: opus
 
 **Last Updated:** <%DATE%> **Version:** 0.1.0 **Maintained By:** <%ORG_NAME%> **Language:**
 British English (en_GB) **Timezone:** <%TIMEZONE%>
-**Claude Model:** opus (idempotency, retries, limits, queue routing, the enqueue boundary, testing)
+**Claude Model:** opus (the enqueue boundary, the delivery guarantee, limits, queue routing, testing)
 
-**Status: declared, not wired.** `celery[redis]>=5.6` is declared in the root
+**Status: declared, not wired.** `celery[redis]>=5.7` is declared in the root
 `pyproject.toml` and nothing consumes it. There is no `config/celery.py`, no task module
 anywhere under `code/src/django/apps/`, no `CELERY_*` setting under
 `code/src/django/config/settings/`, and no `worker` or `beat` service in any Compose file
@@ -118,9 +118,10 @@ budget ([`DATABASE.md`](DATABASE.md) → _Connection handling_) before adding wo
 
 ## Idempotency
 
-**Every task is written so that running it twice has the same effect as running it once.**
-This is the contract, not defensive style: a retry after a timeout, a redelivery, or a task
-re-queued after its worker died each produce a second run of a task that already did its work.
+**Every task is idempotent.** The contract, the proof ladder and the run-twice acceptance test
+are the reliability family's — [`reliability/IDEMPOTENCY.md`](reliability/IDEMPOTENCY.md) — and
+hold here unmodified. This section owns what a queue adds to them: a redelivery, or a task
+re-queued after its worker died, is a second run of a task that may already have done its work.
 
 **At-least-once is configured, not inherited.** Celery acknowledges a message _before_ the task
 body runs — `task_acks_late` is disabled by default — so under the defaults a worker killed
@@ -128,8 +129,8 @@ mid-flight **loses** its task instead of repeating it. That is the opposite fail
 idempotency defends against, and it is silent. Wiring the task surface therefore sets
 `task_acks_late` and `task_reject_on_worker_lost` deliberately and records which guarantee was
 chosen, because late acknowledgement is what makes redelivery possible and redelivery is what
-idempotency is for. Note the pairing: re-queueing on worker loss without the idempotency rule
-above turns a poisoned task into an endless loop, which is why the two are decided together.
+idempotency is for. Note the pairing: re-queueing on worker loss without the idempotency contract
+turns a poisoned task into an endless loop, which is why the two are decided together.
 
 **A message the store may evict is not queued work.** No acknowledgement setting recovers a
 message that was evicted rather than delivered. The broker's keyspace must therefore sit outside
@@ -139,19 +140,6 @@ messages directly. The eviction policy is a deploy-repo knob recorded with no ow
 (`how-to/src/SCALE-ARCHITECTURE/SIZING-ENVELOPE.md`), so wiring the task surface both states the
 requirement — a policy that cannot evict broker keys, or a broker instance of its own — and
 confirms it against the deployment rather than assuming it.
-
-A task **proves** idempotency by answering "has this already been done?" from durable
-state. In descending order of preference:
-
-1. **A database constraint.** Attempt the write against a natural key with a `UNIQUE`
-   constraint and treat the violation as "already done". Never check-then-write: that is a
-   race, and the constraint is what makes the invariant true ([`DATABASE.md`](DATABASE.md)).
-2. **A conditional state transition.** An update that both matches the expected state and
-   sets the new one, judged by the number of rows it changed, is idempotent. Reading the
-   state and then writing it is not.
-3. **An idempotency key for an external effect.** Where the effect leaves the database (an
-   email, a webhook, a payment), record the effect and its key in the same transaction, and
-   send the key to the remote so its own de-duplication can do the rest.
 
 Arguments must still make sense whenever the task runs, which may be well after it was
 enqueued. A task that acts on "the current" anything re-reads it; a task handed a derived
@@ -165,10 +153,6 @@ the function, before the body runs and where no idempotency check reaches it. A 
 change is therefore a two-release change: add the parameter with a default, deploy, drain,
 then remove the old one — the add-nullable-then-constrain rule
 ([`DATABASE.md`](DATABASE.md)) applied to a message instead of a column.
-
-**The acceptance test for a task is the task run twice**, against the same input, asserting
-the same end state and exactly one external effect. A task without that test is not known
-to be idempotent, it is only hoped to be.
 
 ## The error taxonomy on this surface
 
@@ -188,28 +172,17 @@ arriving on an endpoint would be a 422. The user error, if there was one, happen
 **enqueue** time on the surface that had a user, and was either caught there or never checked.
 A task that validates and then returns quietly converts a bug into a silent no-op.
 
-The classification below reads this table — **the class decides retryability**, rather than it
-being judged again per call site. The sibling surface keeps all three and spends exit codes on
-them instead ([`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COMMANDS.md)).
+This table is the task surface's input to the retry classification
+([`reliability/RETRIES.md`](reliability/RETRIES.md)). The sibling surface keeps all three classes
+and spends exit codes on them instead ([`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COMMANDS.md)).
 
 ## Retries and backoff
 
-- **Classify the failure in the task.** A timeout, a 5xx from a remote, or lock contention
-  is retryable. A validation failure, a 4xx, or a row that will never exist is permanent.
-  Retrying a permanent failure repeats the work, holds the queue, and fails anyway.
-- **Backoff is exponential and jittered.** Unjittered backoff synchronises: every task that
-  failed in one incident retries at the same instant and hits the recovering dependency
-  with the wave that knocked it over. Same rule the cache TTLs already carry
-  ([`BACKEND-CODING-PRINCIPLES.md`](BACKEND-CODING-PRINCIPLES.md) → _Caching_).
-- **Every retry is bounded**, by attempt count and by total age. A task must not be able to
-  retry for ever.
-- **State what happens after the last attempt.** The row is marked failed, an alert fires,
-  or the message is parked for inspection. Silent exhaustion is the failure mode a customer
-  discovers for you.
-- **A retried task re-runs its idempotency check by definition.** Retries and idempotency
-  are one rule seen twice; a task that is not idempotent cannot safely be retried at all.
-- **Failure is visible.** A failed task is an error in the error tracker carrying the task
-  name and its arguments' identifiers, never their contents and never personal data.
+**The retry doctrine is the reliability family's**, and a task follows it unmodified:
+[`reliability/RETRIES.md`](reliability/RETRIES.md) — classify before retrying, jittered
+exponential backoff, bounds by attempts and by age, a stated end, and what a failure record
+carries. Retrying presumes the idempotency above; why the two are one rule is
+[`RELIABILITY.md`](RELIABILITY.md). On this surface the class comes from the table above.
 
 ## Time limits and rate limits
 
@@ -292,6 +265,7 @@ counts towards the same coverage floors as everything else
 | Enabling `worker` and `beat` in an environment for the first time   | `how-to/docs/CELERY-FIRST-RUN.md`                                                   |
 | Backfills as batched background jobs                                | [`data-structures/SCHEMA-MIGRATIONS.md`](data-structures/SCHEMA-MIGRATIONS.md)      |
 | Error tracking, metrics, and alert routing                          | [`LOGGING.md`](LOGGING.md) · [`logging/OBSERVABILITY.md`](logging/OBSERVABILITY.md) |
+| The idempotency contract and proof ladder; the retry doctrine       | [`RELIABILITY.md`](RELIABILITY.md) and its `reliability/` sub-documents             |
 
 ## Deferred, with a trigger
 
@@ -310,6 +284,8 @@ a trigger, not a shrug.
 
 ## Cross-references
 
+- [`RELIABILITY.md`](RELIABILITY.md): the cross-surface retry and idempotency doctrine this
+  surface expresses
 - [`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md): the
   service layer a task delegates to, and the job classification table
 - [`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COMMANDS.md): the sibling surface — the shared
@@ -317,8 +293,8 @@ a trigger, not a shrug.
   and the exit codes
 - [`PROCESS-MODEL.md`](PROCESS-MODEL.md): the process family a worker belongs to, and the
   ORM's synchronous boundary that constrains what a task body may do
-- [`BACKEND-CODING-PRINCIPLES.md`](BACKEND-CODING-PRINCIPLES.md): transactions, error
-  handling, and the cache rules the backoff rule mirrors
+- [`BACKEND-CODING-PRINCIPLES.md`](BACKEND-CODING-PRINCIPLES.md): transactions and error
+  handling
 - [`DATABASE.md`](DATABASE.md): constraints, scope columns, the connection budget, and the
   batched-backfill shape
 - [`LOGGING.md`](LOGGING.md): where a failed task becomes visible

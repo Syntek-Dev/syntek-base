@@ -66,20 +66,20 @@ This is the one test that matters. A change can look fine in the template and be
 everything generated from it.
 
 ```bash
-uvx copier copy --trust --defaults \
-  --data PROJECT_NAME="Test Project" --data ORG_NAME="Test Org" \
-  --data PROJECT_DESCRIPTION="A test project for checking that the template renders end to end." \
-  --data DEVELOPER_NAME="You" --data DEVELOPER_EMAIL="you@example.com" \
-  --data DATE="01/01/2027" \
-  . /tmp/syntek-check
+# renders your working tree, uncommitted changes included; prints the project's path
+dir=$(bash code/src/scripts/development/template-render.sh --quiet)
 
 # no token should survive
-grep -rIo '<%[A-Z_]*%>' /tmp/syntek-check --exclude-dir=.git | wc -l   # must be 0
+grep -rIo '<%[A-Z_]*%>' "$dir" --exclude-dir=.git | wc -l   # must be 0
 
 # a new project starts at 0.1.0 with its own empty history, not ours
-cat /tmp/syntek-check/VERSION                                          # must be 0.1.0
-grep -c '^## \[' /tmp/syntek-check/CHANGELOG.md                        # must be 1
+cat "$dir/VERSION"                                          # must be 0.1.0
+grep -c '^## \[' "$dir/CHANGELOG.md"                        # must be 1
 ```
+
+Never a raw `copier copy`: the script answers every question that has no default, renders
+outside the repository, and with `--check-references` runs the citation gate inside the result.
+`--help` lists the rest.
 
 ### 1b. Never touch a versioning document outside the root
 

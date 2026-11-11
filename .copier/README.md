@@ -72,11 +72,11 @@ project-management artefact needed to develop, test, and deploy the product.
 | **Styling**                | Vanilla CSS (design tokens / custom properties)                       |
 | **Client build**           | None — no bundler, no client-side framework                           |
 | **Public media**           | Cloudinary                                                            |
-| **Node runtime**           | Node.js 24 — repo tooling only (see `.nvmrc`)                         |
+| **Node runtime**           | Node.js 26 — repo tooling only (see `.nvmrc`)                         |
 | **JS package manager**     | pnpm — repo tooling only                                              |
 | **Python package manager** | uv                                                                    |
 | **Tests**                  | pytest, pytest-django (services, endpoints, templates, HTMX partials) |
-| **Browser e2e / a11y**     | pytest-playwright + axe-core-python                                   |
+| **Browser e2e / a11y**     | pytest-playwright + axe-playwright-python                             |
 | **API integration tests**  | Bruno                                                                 |
 | **Container**              | Docker Compose                                                        |
 
@@ -158,6 +158,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-css-slop.yml           ← the AI-slop family, CSS half
 │       ├── audit-css-tokens.yml         ← every var(--x) must resolve in the token layer
 │       ├── audit-deps.yml               ← scheduled CVE sweep (pnpm audit + pip-audit) and lockfile drift
+│       ├── audit-dependencies.yml       ← one verdict: every advisory audit and every lockfile, on a dependency PR
 │       ├── audit-dict-discipline.yml    ← a dictionary used as a record where a named type belongs
 │       ├── audit-doc-references.yml     ← every citation in a shipped file must resolve
 │       ├── audit-docs-length.yml        ← the 300-line instructional-document limit
@@ -176,6 +177,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-stubs.yml              ← detects hard stubs and TODO/FIXME/HACK markers
 │       ├── audit-template-orphans.yml   ← artefacts a `copier update` stranded
 │       ├── audit-template-slop.yml      ← the AI-slop family, markup half
+│       ├── audit-toolchain-pins.yml     ← every Node/Python/uv/pnpm/Rust pin against its source — no path filter
 │       ├── claude.yml                   ← Claude Code GitHub Actions integration
 │       ├── clickup-sync.yml             ← CLICKUP-ONLY — pushes story exports to ClickUp (push/PR)
 │       ├── pm-boards.yml                ← PM boards current and archive/ frozen; stale-status warnings
@@ -188,6 +190,7 @@ Two things to do on a freshly generated project:
 ├── code/                                ← source code, coding standards, tests
 │   ├── CONTEXT.md                       ← coding layer index
 │   ├── docs/                            ← coding reference guides; each oversized guide has a matching sub-directory
+│   │   ├── ABSENCE.md                   ← what an absence means: the six kinds, the runtime crib, the absence-enum rule
 │   │   ├── ACCESSIBILITY.md             (+ accessibility/ — HTML-AND-ARIA, INTERACTION, TESTING-AND-COMPONENTS)
 │   │   ├── API-DESIGN.md                (+ api-design/ — NINJA-CONVENTIONS, REST-CONVENTIONS, AUTH-AND-ERRORS, …)
 │   │   ├── ARCHITECTURE-PATTERNS.md     (+ architecture/ — CORE-AND-SCALING, AUTH-CONTRACT, SERVICE-AND-MIDDLEWARE, …)
@@ -215,11 +218,12 @@ Two things to do on a freshly generated project:
 │   │   ├── OBJECT-STORAGE.md            ← private documents over the S3 API (declared, not wired)
 │   │   ├── PERFORMANCE.md               (+ performance/ — FRONTEND-PERFORMANCE, DATABASE-PERFORMANCE, API-AND-MONITORING)
 │   │   ├── PROCESS-MODEL.md             ← worker class, event loop, and the ORM's sync boundary
+│   │   ├── RELIABILITY.md               (+ reliability/ — IDEMPOTENCY, RETRIES)
 │   │   ├── RENDERING.md                 (+ rendering/ — TEMPLATES-AND-INTERACTIVITY, PITFALLS-AND-EXAMPLES)
 │   │   ├── RESPONSIVE-DESIGN.md         (+ responsive/ — BREAKPOINTS, MEDIA-QUERIES, CONTAINER-QUERIES, …)
 │   │   ├── RLS-GUIDE.md                 (+ rls/ — FUNDAMENTALS, POLICY-TEMPLATES, MIDDLEWARE-AND-NINJA, …)
 │   │   ├── SECURITY.md                  (+ security/ — AUTH-AND-AUTHZ, OWASP-AND-CHECKLIST, AUDIT-TRAIL, …)
-│   │   ├── TASK-AUTHORING.md            ← background tasks: enqueue boundary, idempotency, retries (declared, not wired)
+│   │   ├── TASK-AUTHORING.md            ← background tasks: enqueue boundary, delivery guarantee, limits (declared, not wired)
 │   │   ├── TESTING.md                   (+ testing/ — BACKEND-TESTING, FRONTEND-TESTING, API-TESTING, COVERAGE, …)
 │   │   ├── URL-STRATEGY.md
 │   │   ├── VISUAL-DESIGN.md             (+ visual-design/ — WEB)
@@ -354,7 +358,6 @@ Two things to do on a freshly generated project:
 ├── questionnaires/                      ← /to-questionnaire — outbound discovery questionnaires
 ├── research/                            ← /research — primary-source-cited notes that feed decisions
 ├── learning/                            ← /teach sandbox — throwaway learning workspace
-├── patches/                             ← pnpm dependency patches — one per advisory whose fix this graph cannot consume (see pnpm-workspace.yaml)
 ├── CHANGELOG.md                         ← human-readable changelog
 ├── CONTEXT.md                           ← project overview and layer map
 ├── DEFERRED.md                          ← items explicitly deferred to future stories (checked at sprint planning)
@@ -398,10 +401,10 @@ local quality checks.
 | **Git**                               | any recent                   | version control                              |
 | **Docker Engine** (or Docker Desktop) | 27+                          | run all application services                 |
 | **Docker Compose plugin**             | v2+                          | orchestrate local containers                 |
-| **Node.js**                           | 24 (see `.nvmrc`)            | root pnpm scripts and git hooks              |
+| **Node.js**                           | 26 (see `.nvmrc`)            | root pnpm scripts and git hooks              |
 | **pnpm**                              | 11+                          | JS package manager (root workspace only)     |
 | **Python**                            | 3.14 (see `.python-version`) | root pyproject tooling (ruff, basedpyright)  |
-| **uv**                                | 0.11+                        | Python environment and dependency management |
+| **uv**                                | 0.13+                        | Python environment and dependency management |
 
 ### Supported platforms
 
@@ -1230,12 +1233,14 @@ All three support `--file-type`, `--output`, `--quiet`, and `--path` flags.
 | Script      | Purpose                                                                                   |
 | ----------- | ----------------------------------------------------------------------------------------- |
 | `update.sh` | Report or apply dependency updates across Python (uv), JavaScript (pnpm) and Rust (cargo) |
+| `audit.sh`  | One verdict: every advisory audit and every lockfile against its manifest, all three      |
 
 ```bash
 ./code/src/scripts/dependencies/update.sh                            # what is out of date
 ./code/src/scripts/dependencies/update.sh --apply --package django   # narrowest upgrade
 ./code/src/scripts/dependencies/update.sh --apply --ecosystem rust   # one ecosystem
 ./code/src/scripts/dependencies/update.sh --apply                    # everything
+./code/src/scripts/dependencies/audit.sh                             # advisories + lockfiles
 ```
 
 **A floor is not a pin.** Raising `redis>=5.0.0` to `redis>=6.0` forbids redis 5; it does not
@@ -1244,8 +1249,8 @@ re-resolve in the same change — then run the suites before committing. Manifes
 are one change, never two.
 
 Latest is also bounded by the rest of your graph rather than by the registry: `celery[redis]`
-excludes `redis>=6.5`, so a floor above that does not fail loudly — it quietly drags celery
-backwards to satisfy itself.
+admits only `redis<9` (through kombu's `redis` extra), so a floor above that does not fail
+loudly — it quietly drags celery backwards to satisfy itself.
 
 ### Audit scripts (`code/src/scripts/audits/`)
 
@@ -1278,6 +1283,7 @@ table ever falls behind it.
 | `routing-skills.sh`    | Every skill named in routing frontmatter exists, and gated names co-vary with their flag       |
 | `mcp-parity.sh`        | `.mcp.json` and `.codex/config.toml` declare the same MCP servers, commands and arguments      |
 | `playwright-pin.sh`    | Eight sites declare the Playwright pin - checks they agree with each other, never the host     |
+| `toolchain-pins.sh`    | Every Node, Python, uv, pnpm and Rust pin agrees with its one source of truth                  |
 | `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                           |
 | `story-markers.sh`     | Tests carrying no `story` marker — warns and always exits `0`; they are absent from the record |
 | `mobile-tokens.sh`     | **Mobile-only.** StyleSheet values resolve to generated tokens                                 |
@@ -1497,14 +1503,15 @@ dependency is direct and the credit is owed accordingly.
 The backend, background-job, observability and security doctrine this project inherits draws on
 these. As above, **rules are derived and re-authored, never copied**.
 
-| Source                                                                                | Contributed                                                                                                                                                                                                        | Licence      |
-| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ |
-| [wshobson/agents](https://github.com/wshobson/agents) — Seth Hobson                   | Background-job discipline (idempotency under at-least-once delivery, retry policy, DLQ) and async/sync patterns                                                                                                    | MIT          |
-| [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — Addy Osmani   | Spec-driven and doubt-driven development, context engineering                                                                                                                                                      | MIT          |
-| [trailofbits/skills](https://github.com/trailofbits/skills) — Trail of Bits           | The security-review agenda: Rust review, constant-time analysis, insecure defaults, Semgrep rule authoring. **Read as a checklist of concerns only** — its share-alike licence is incompatible with redistribution | CC-BY-SA-4.0 |
-| [agentskills/agentskills](https://github.com/agentskills/agentskills)                 | The published Agent Skills specification, which `how-to/docs/SKILL-AUTHORING.md` follows                                                                                                                           | Apache-2.0   |
-| [Claude Code — Agent Skills docs](https://code.claude.com/docs/en/skills) — Anthropic | The runtime behaviour behind the fork rubric and the reference-versus-task split in `how-to/docs/skill-authoring/`. No LICENCE upstream — facts used, every rule re-authored                                       | none         |
-| [alibaba/open-code-review](https://github.com/alibaba/open-code-review)               | Code-review architecture at scale, alongside the code-review-graph                                                                                                                                                 | Apache-2.0   |
+| Source                                                                                                                                         | Contributed                                                                                                                                                                                                        | Licence                                           |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------- |
+| [wshobson/agents](https://github.com/wshobson/agents) — Seth Hobson                                                                            | Background-job discipline (idempotency under at-least-once delivery, retry policy, DLQ) and async/sync patterns                                                                                                    | MIT                                               |
+| [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — Addy Osmani                                                            | Spec-driven and doubt-driven development, context engineering                                                                                                                                                      | MIT                                               |
+| [trailofbits/skills](https://github.com/trailofbits/skills) — Trail of Bits                                                                    | The security-review agenda: Rust review, constant-time analysis, insecure defaults, Semgrep rule authoring. **Read as a checklist of concerns only** — its share-alike licence is incompatible with redistribution | CC-BY-SA-4.0                                      |
+| [agentskills/agentskills](https://github.com/agentskills/agentskills)                                                                          | The published Agent Skills specification, which `how-to/docs/SKILL-AUTHORING.md` follows                                                                                                                           | Apache-2.0                                        |
+| [Claude Code — Agent Skills docs](https://code.claude.com/docs/en/skills) — Anthropic                                                          | The runtime behaviour behind the fork rubric and the reference-versus-task split in `how-to/docs/skill-authoring/`. No LICENCE upstream — facts used, every rule re-authored                                       | none                                              |
+| [alibaba/open-code-review](https://github.com/alibaba/open-code-review)                                                                        | Code-review architecture at scale, alongside the code-review-graph                                                                                                                                                 | Apache-2.0                                        |
+| [_Boolean Blindness_](https://existentialtype.wordpress.com/2011/03/15/boolean-blindness/) — Robert Harper (he credits the term to Dan Licata) | The absence-enum rule in `code/docs/ABSENCE.md`: an absence with more than one meaning is an enum, not a null. The idea is cited and the rule is stated in our own words                                           | all rights reserved — idea cited, no text derived |
 
 Everything above is free to read. **Reuse is narrower than that**, in two directions: an
 unlicensed row grants nothing at all, and a share-alike row cannot travel into anything this
