@@ -262,12 +262,15 @@ and demonstrably fails at.
 
 | Quality                  | Members                                                                                                                                                                    |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Exact**                | rust-toolchain 1.97.1 · cargo-deny 0.20.2 · opengrep 1.27.1 · pnpm 11.25.0 · uv 0.12.5 (CI) · react 19.2.3 · react-native 0.86.2 · 13 pnpm age-excludes · 5 CI action tags |
+| **Exact**                | rust-toolchain 1.97.1 · cargo-deny 0.20.2 · opengrep 1.27.1 · pnpm 11.25.0 · uv 0.12.5 (CI) · react 19.3.0 · react-native 0.88.1 · 13 pnpm age-excludes · 5 CI action tags |
 | **Bounded range**        | 25 `pnpm-workspace.yaml` overrides · maturin `>=1.7,<2.0`                                                                                                                  |
 | **Open floor (`>=`)**    | 11 Python runtime · 12 Python dev/test · 2 `engines` · Copier 9.6.0                                                                                                        |
 | **Caret / tilde**        | 7 root JS devDeps · 18 mobile deps · 5 Rust crates                                                                                                                         |
 | **Major tag only**       | 7 CI actions (**126 of 144 `uses:` sites**) · `postgres:18-alpine` · `valkey/valkey:8-alpine` · node 24 · python 3.14                                                      |
 | **`latest`, or nothing** | `ghcr.io/astral-sh/uv:latest` (4) · `nginx:alpine` (2) · `ubuntu-latest` (53) · `python-version: "3.x"` (1) · **3 MCP servers** · 10 unconstrained Python runtime deps     |
+
+<!-- UPDATED 09/11/2026: react 19.2.3 -> 19.3.0 and react-native 0.86.2 -> 0.88.1 with Expo SDK 58
+(code/src/mobile 0.2.0). The rest of this table is not re-measured here. -->
 
 **Three findings that decide nodes below:**
 

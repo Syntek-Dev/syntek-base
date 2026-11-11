@@ -2,7 +2,7 @@
   "expo": {
     "name": "<%MOBILE_APP_NAME%>",
     "slug": "<%PROJECT_SLUG%>",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "orientation": "portrait",
     "scheme": "<%PROJECT_SLUG%>",
     "userInterfaceStyle": "automatic",
