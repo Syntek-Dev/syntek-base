@@ -59,6 +59,15 @@ jobs:
             libx11-xcb1 libx11-dev libxcb1-dev libxkbcommon0 libxkbcommon-dev \
             libinput10 libinput-dev libgbm1 libgbm-dev
 
+      # pyo3 0.30 without `extension-module` links libpython in every plain cargo build and
+      # test, and `abi3-py314` refuses an interpreter older than 3.14. The runner's system
+      # python3 is 3.12, so without this step pyo3-ffi's build script fails with "cannot set
+      # a minimum Python version 3.14 higher than the interpreter version 3.12" (first seen
+      # 11/11/2026). The version comes from .python-version, never restated here.
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version-file: .python-version
+
       # rustup reads code/src/rust/rust-toolchain.toml, so the channel and components
       # come from the pin rather than being restated here. Restating them would let CI
       # and a developer laptop drift.
