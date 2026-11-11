@@ -163,23 +163,30 @@ verdict() {
 # tree it is auditing. They need nothing installed — the self-test stays tool-free.
 PROBE_STUBS="$FIXTURES_DIR/run/stubs"
 PROBES_RUN=0
+# The Rust half of the probes needs rust/audit.sh, which a project generated without the Rust
+# surface does not have. There the Rust probes are skipped and say so, rather than asserting a
+# leg over a surface the project lacks.
+PROBE_RUST=false
+[[ -f "$SCRIPTS_DIR/rust/audit.sh" ]] && PROBE_RUST=true
 
 probe_tree() {   # probe_tree ROOT — build the scratch project
   local root="$1" s
   s="$root/code/src/scripts"
-  mkdir -p "$s/dependencies" "$s/audits" "$s/_lib" "$s/rust" \
-           "$root/code/src/django" "$root/code/src/rust" "$root/bin"
+  mkdir -p "$s/dependencies" "$s/audits" "$s/_lib" "$root/code/src/django" "$root/bin"
   cp "$SCRIPT_DIR/audit.sh" "$s/dependencies/"
   cp "$SCRIPTS_DIR/audits/security.sh" "$s/audits/"
   cp "$SCRIPTS_DIR/_lib/worktree-detect.sh" "$s/_lib/"
-  cp "$SCRIPTS_DIR/rust/audit.sh" "$SCRIPTS_DIR/rust/_common.sh" "$s/rust/"
+  if $PROBE_RUST; then
+    mkdir -p "$s/rust" "$root/code/src/rust"
+    cp "$SCRIPTS_DIR/rust/audit.sh" "$SCRIPTS_DIR/rust/_common.sh" "$s/rust/"
+    printf '[[package]]\nname = "nativecore"\n# STALE\n' >"$root/code/src/rust/Cargo.lock"
+  fi
   cp "$PROBE_STUBS"/* "$root/bin/"
   chmod +x "$root/bin/"*
   printf '[project]\nname = "probe"\ndependencies = ["six>=1.16"]\n' >"$root/pyproject.toml"
   printf '[[package]]\nname = "probe"\n# STALE - the manifest moved and the lock did not\n' >"$root/uv.lock"
   printf '{"name": "probe"}\n' >"$root/package.json"
   printf "lockfileVersion: '9.0'\n\nimporters:\n\n  .: {}\n" >"$root/pnpm-lock.yaml"
-  printf '[[package]]\nname = "nativecore"\n# STALE\n' >"$root/code/src/rust/Cargo.lock"
 }
 
 # probe NAME PNPM_STATE WANT_RC SCRIPT ARGS... — runs SCRIPT (relative to the scratch root)
@@ -190,7 +197,7 @@ probe() {
   PROBE_ROOT="$(mktemp -d)"; PROBE_OUT="$PROBE_ROOT/out.txt"
   probe_tree "$PROBE_ROOT"
   cp "$PROBE_ROOT/uv.lock" "$PROBE_ROOT/uv.lock.before"
-  cp "$PROBE_ROOT/code/src/rust/Cargo.lock" "$PROBE_ROOT/Cargo.lock.before"
+  if $PROBE_RUST; then cp "$PROBE_ROOT/code/src/rust/Cargo.lock" "$PROBE_ROOT/Cargo.lock.before"; fi
   STUB_ROOT="$PROBE_ROOT" STUB_FIXTURES="$FIXTURES_DIR" STUB_PNPM_AUDIT="$pnpm_state" \
     PATH="$PROBE_ROOT/bin:$PATH" bash "$PROBE_ROOT/$script" "$@" >"$PROBE_OUT" 2>&1 || rc=$?
   PROBES_RUN=$((PROBES_RUN + 1))
@@ -218,13 +225,20 @@ run_probes() {
   # 1. A lockfile behind its manifest is a FINDING, and auditing it changes nothing. The
   #    advisory tools re-lock as a side effect, so run first — or run unfrozen — they repair
   #    the drift before the lockfile leg looks, and the audit reports clean over its own edit.
-  probe relock-is-a-finding clean 1 "$a" --ecosystem python --ecosystem rust || bad=1
+  if $PROBE_RUST; then
+    probe relock-is-a-finding clean 1 "$a" --ecosystem python --ecosystem rust || bad=1
+  else
+    log "  - probe relock-is-a-finding: Rust half skipped — no rust/audit.sh (no Rust surface)"
+    probe relock-is-a-finding clean 1 "$a" --ecosystem python || bad=1
+  fi
   expect relock-is-a-finding '^  python-lockfile +FINDING' || bad=1
-  expect relock-is-a-finding '^  rust-lockfile +FINDING' || bad=1
   cmp -s "$PROBE_ROOT/uv.lock" "$PROBE_ROOT/uv.lock.before" \
     || { bad=1; log "  ✗ probe relock-is-a-finding: the audit rewrote uv.lock"; }
-  cmp -s "$PROBE_ROOT/code/src/rust/Cargo.lock" "$PROBE_ROOT/Cargo.lock.before" \
-    || { bad=1; log "  ✗ probe relock-is-a-finding: the audit rewrote Cargo.lock"; }
+  if $PROBE_RUST; then
+    expect relock-is-a-finding '^  rust-lockfile +FINDING' || bad=1
+    cmp -s "$PROBE_ROOT/code/src/rust/Cargo.lock" "$PROBE_ROOT/Cargo.lock.before" \
+      || { bad=1; log "  ✗ probe relock-is-a-finding: the audit rewrote Cargo.lock"; }
+  fi
   rm -rf "$PROBE_ROOT"
 
   # 2. A finding from a tool that prints no `error[` line (pnpm here; pip-audit and the
