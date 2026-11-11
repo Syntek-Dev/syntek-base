@@ -385,7 +385,7 @@ twice or against a moved premise (the S-03 split follows Sam's Q9 and Q14 on MAP
 16/10/2026; the rest follows from that map's nodes):
 
 - **S-03's image half is built by S-01 on MAP-PIN-DETECT-MOVE**: the `python:3.14-slim` digest, the
-  uv pin in the Dockerfiles and nginx's specific tag. One value moves: uv is pinned to `0.12.24`,
+  uv pin in the Dockerfiles and nginx's specific tag. One value moves: uv is pinned to `0.13.7` <!-- UPDATED 11/11/2026 (dependency sweep, Sam's ruling on N-017 on MAP-PIN-DETECT-MOVE): read "`0.12.24`" until then; N-017 there carries the dated correction. -->,
   with CI's `UV_VERSION` moving in the same change (N-017 on MAP-PIN-DETECT-MOVE), so "the CI version" in S-03's row no
   longer means `0.12.5`. Everything else in S-03 stays here: the MCP servers (five in `.mcp.json`
   on 16/10/2026, not the three the row names), the postgres/valkey re-point register note, the
