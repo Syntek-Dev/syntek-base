@@ -37,7 +37,7 @@ describe, and treat the distribution as the machine from then on.
 
 ```bash
 docker --version && docker compose version   # 24+ / v2+
-node --version && pnpm --version             # 24+ / 11.28.9+
+node --version && pnpm --version             # 26+ / 11.28.9+
 python3 --version && uv --version            # 3.14+ / 0.13+
 git --version && openssl version
 ```
@@ -55,7 +55,7 @@ Copier itself needs no installation — `uvx` fetches and runs it on demand.
 | **Docker Compose** | v2 (plugin) | Orchestrating the dev, test, staging and prod stacks.                    |
 | **uv**             | 0.13+       | Python dependencies and the lockfile; also provides `uvx` to run Copier. |
 | **Python**         | 3.14+       | Root tooling (ruff, basedpyright) and uv's interpreter resolution.       |
-| **Node.js**        | 24+         | Repo tooling and git hooks. Not an application dependency.               |
+| **Node.js**        | 26+         | Repo tooling and git hooks. Not an application dependency.               |
 | **pnpm**           | 11.28.9+    | Root workspace packages — Prettier, ESLint, markdownlint, Lefthook.      |
 | **openssl**        | any recent  | `install.sh` uses it to generate development secrets.                    |
 
@@ -64,7 +64,7 @@ table, and it refuses rather than warning. The pnpm figure is not a round number
 `package.json` sets `packageManager: pnpm@11.28.9` and an `engines` floor to match, so an older
 pnpm fails the install rather than resolving a different tree quietly.
 
-`.python-version` pins `3.14`, `.nvmrc` pins `24`, and `package.json` pins pnpm exactly through
+`.python-version` pins `3.14`, `.nvmrc` pins `26`, and `package.json` pins pnpm exactly through
 `packageManager` — so a version manager plus `corepack` will land you on the right ones without
 being asked.
 

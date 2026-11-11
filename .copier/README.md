@@ -72,7 +72,7 @@ project-management artefact needed to develop, test, and deploy the product.
 | **Styling**                | Vanilla CSS (design tokens / custom properties)                       |
 | **Client build**           | None — no bundler, no client-side framework                           |
 | **Public media**           | Cloudinary                                                            |
-| **Node runtime**           | Node.js 24 — repo tooling only (see `.nvmrc`)                         |
+| **Node runtime**           | Node.js 26 — repo tooling only (see `.nvmrc`)                         |
 | **JS package manager**     | pnpm — repo tooling only                                              |
 | **Python package manager** | uv                                                                    |
 | **Tests**                  | pytest, pytest-django (services, endpoints, templates, HTMX partials) |

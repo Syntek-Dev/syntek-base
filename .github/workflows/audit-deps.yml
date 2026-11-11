@@ -40,7 +40,6 @@ permissions:
 
 env:
   UV_VERSION: "0.13.7"
-  NODE_VERSION: "24"
 
 jobs:
   audit:
@@ -66,7 +65,7 @@ jobs:
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: .nvmrc
 
       # UNGUARDED 15/08/2026. The Python half of this sweep used to be skipped whenever
       # uv.lock was absent, which in the base template was then always: pyproject.toml's

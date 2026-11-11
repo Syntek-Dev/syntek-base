@@ -56,7 +56,7 @@ Full rationale: [`how-to/src/TEMPLATE-GUIDE/02-STACK.md`](how-to/src/TEMPLATE-GU
 
 ## Requirements
 
-Docker Engine 27+ with Compose v2, Node 24, pnpm 11+, Python 3.14, uv 0.13+, and git. Copier
+Docker Engine 27+ with Compose v2, Node 26, pnpm 11+, Python 3.14, uv 0.13+, and git. Copier
 itself needs no install — `uvx` fetches it.
 
 Details and per-platform notes:

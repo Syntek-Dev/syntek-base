@@ -126,7 +126,7 @@ jobs:
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "24"
+          node-version-file: .nvmrc
 
       # cargo and docker are preinstalled on ubuntu-latest. If either ever stops being so,
       # the script FAILS rather than skipping — a manifest present with no toolchain to
