@@ -57,11 +57,10 @@
 # tool moves at (`.nvmrc` = `lts/*` or `node`, `.python-version` = `3`) is itself an unpinned
 # row, and then counts as no source, because every claim would otherwise agree with it.
 #
-# THE HELD TIER, and why it is not a suppression. Unpinned uv — the `uv:latest` image the
-# django Dockerfiles copy from, and setup-uv steps with no version — is assigned to PIN S-01,
-# a held story whose acceptance is exactly "every workflow step and every Dockerfile installs
-# one uv version, and none installs latest". Failing on it would make this gate red for the
-# life of that hold and teach everyone to read past it. Passing it silently would be the
+# THE HELD TIER, and why it is not a suppression. A class of finding a held story owns — the
+# first was unpinned uv, assigned to PIN S-01 until its uv sites were pinned on 11/11/2026 and
+# the entry deleted, so the register is empty today — would make this gate red for the life of
+# that hold if it failed, and teach everyone to read past it. Passing it silently would be the
 # defect code/docs/GATE-REPORTING.md bans. So it is printed, every run, site by site, in a
 # tier of its own naming its owner, and it does not change the exit code. The tier is a
 # CLASS (tool + finding kind), never a marker on a line, so a new held-class site is reported
@@ -72,8 +71,8 @@
 # whose owner is absent is void, reported as such, and its class fails. That register is
 # TEMPLATE-ONLY: copier.yml excludes it, because the story it names lives under
 # project-management/src, which copier also excludes. A generated project therefore holds
-# nothing, and the uv sites it inherits fail as unpinned there until it pins them. When S-01
-# ships, its line is deleted in the same change and the class fails here too.
+# nothing, and any class held here fails there. When an owner ships, its line is deleted in
+# the same change and the class fails here too.
 #
 # ABSENT SURFACE. No code/src/rust means a project generated without Rust: Rust claims in the
 # shipped documents are reported "not compared — no Rust surface" and are not findings. A

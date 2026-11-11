@@ -4,5 +4,7 @@
 # being audited; an entry whose owner is absent holds nothing and its class fails. A generated
 # project receives neither this file nor the story it names, so there the class fails as unpinned.
 #
-# Release condition: when PIN S-01 ships, its line is deleted in the same change.
-uv:unpinned|project-management/src/01-FEATURE-MAPS/MAP-PIN-DETECT-MOVE.md|PIN S-01: builds run what they pin; held per D5, 09/11/2026
+# Release condition: when an owner ships, its line is deleted in the same change.
+#
+# Empty since 11/11/2026: the uv:unpinned entry (PIN S-01) was deleted when every Dockerfile
+# and setup-uv step was pinned to the CI uv. The file stays so the mechanism has its input.
