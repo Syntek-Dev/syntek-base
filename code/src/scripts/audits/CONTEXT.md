@@ -258,7 +258,7 @@ Install Playwright's Chromium (only `render-slop.sh` needs it; without it that a
 success with a note, and its `--self-test` refuses to run at all):
 
 ```bash
-uv run --no-project --with 'playwright==1.61.0' playwright install chromium
+uv run --no-project --with 'playwright==1.64.0' playwright install chromium
 ```
 
 `--no-project` is deliberate. It resolves an ephemeral environment holding only Playwright, so

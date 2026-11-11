@@ -116,7 +116,7 @@ package = false
 # keep it, `code/src/scripts/audits/render-slop.sh` and the workflow that feeds it pin
 # the same version separately, because `uv run --with` reads neither this file nor
 # UV_CONSTRAINT; all three move together or none do.
-constraint-dependencies = ["playwright==1.61.0"]
+constraint-dependencies = ["playwright==1.64.0"]
 
 [tool.ruff]
 src = ["code/src/django"]

@@ -1056,7 +1056,6 @@ below. Each one is held until its trigger fires. None is forgotten, and none is 
 | Rust toolchain     | 1.97.1   | 1.100 is released (expected around 12/11/2026)                                               |
 | pnpm 12            | 11.28.9  | 12 has cleared the 7-day cooldown (D11), together with `pnpm/action-setup` v6.1.x            |
 | Valkey 9           | 8.1      | the deploy repo records its Valkey major in `SERVER-ARCHITECTURE/COMPUTE-ALLOCATION.md`      |
-| Playwright         | 1.61.0   | the Nix bundle moves (`just check-playwright` in nix-config; see `.claude/MEMORY.md`)        |
 | PIN S-01 hardening | unpinned | that story runs: Docker uv and image digest pins, the nginx tag, the four tag-pinned actions |
 
 **Blocked by / Action:** Each row is blocked on its trigger. When one fires, move that item as

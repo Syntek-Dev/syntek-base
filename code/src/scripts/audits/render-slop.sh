@@ -111,7 +111,7 @@ SIGNATURE_ROUND=10         # px the width is rounded to when forming a signature
 # release matching its Chromium revision, and that number is what lands on this line. A
 # bundle bump is therefore the one change this gate cannot start; it can only confirm that
 # every site followed.
-PLAYWRIGHT_PIN="playwright==1.61.0"
+PLAYWRIGHT_PIN="playwright==1.64.0"
 PLAYWRIGHT_INSTALL="uv run --no-project --python 3.14 --with '$PLAYWRIGHT_PIN' playwright install chromium"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
