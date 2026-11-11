@@ -1,0 +1,7 @@
+# A Node major move stated only where Node is now declared: .nvmrc and engines.node.
+# No workflow env block on either side, so the env-block leg alone sees nothing (C-01).
+# Fix the detector, never the fixtures.
+# exit: 1
+# reads: .nvmrc
+[toolchain] node (.nvmrc)  24 -> 26
+[toolchain] node (engines.node)  >=24 -> >=26

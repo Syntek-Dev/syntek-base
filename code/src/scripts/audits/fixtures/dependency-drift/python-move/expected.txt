@@ -1,0 +1,5 @@
+# A Python move stated only in .python-version. Classified as the env-block leg classified
+# PYTHON_VERSION: a major move blocks, anything smaller is informational.
+# exit: 0
+# reads: .python-version
+[toolchain] python (.python-version)  3.14 -> 3.15

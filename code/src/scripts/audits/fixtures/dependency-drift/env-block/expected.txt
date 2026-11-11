@@ -1,0 +1,4 @@
+# The workflow env-block form, kept for a project whose workflows still carry it.
+# exit: 1
+[toolchain] NODE_VERSION  24 -> 26
+[toolchain] UV_VERSION  0.12.5 -> 0.13.7

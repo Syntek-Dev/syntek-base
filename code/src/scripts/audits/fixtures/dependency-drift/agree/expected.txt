@@ -1,0 +1,4 @@
+# Nothing moved. The reads lines are asserted so a silent reader cannot pass as agreement.
+# exit: 0
+# reads: .nvmrc
+# reads: .python-version
