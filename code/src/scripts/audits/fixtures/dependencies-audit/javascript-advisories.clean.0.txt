@@ -1,0 +1,2 @@
+9 vulnerabilities found
+Severity: 2 low (2 ignored) | 4 moderate (4 ignored) | 3 high (3 ignored)

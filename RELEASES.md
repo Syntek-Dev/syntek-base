@@ -9,6 +9,22 @@ User-facing release notes for each published version.
 
 ## Unreleased
 
+### The daily security check passes again
+
+Every day the project checks its building blocks against published security warnings. Since
+23 October that check had been failing on the parts used by the optional desktop app: one of them
+had two known weaknesses, and another was a version its authors had withdrawn. Those parts are
+now updated to fixed versions, and the check passes. The desktop app's toolkit moves from version
+1.17 to 1.18 as part of the same update. Nothing changes in how the app looks or behaves.
+
+### The review and release checklists cover every status change
+
+The checklists you work through when a piece of work goes for review, and when a version is
+released, now have a tick-box for each change of status the steps ask for — sent for review,
+accepted or rejected, and the customer's answer. The release checklist also makes clear that
+releasing does not by itself mark any work finished. Projects that do not use ClickUp are no
+longer told to run ClickUp steps they do not have: those steps are now labelled as ClickUp-only.
+
 ## v7.8.0 — 02/11/2026
 
 **Status:** Minor — saving a planning change now takes one step instead of two, three planning

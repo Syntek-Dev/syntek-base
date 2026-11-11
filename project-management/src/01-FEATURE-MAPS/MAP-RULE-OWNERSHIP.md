@@ -900,6 +900,15 @@ rendered into a project"_. A shipped file pointing a generated project at a file
 have is exactly the defect this gate exists to catch, and it has been invisible because the arm
 above it exempted the file wholesale.
 
+<!-- OVERTURNED 05/11/2026 (US004 P5, story plan Phase P5 and Pre-existing corrections). The two
+     sentences above — "the one finding is genuine" in the Chosen row, and "The one finding is the
+     node's whole justification, and it is real. research/CLAUDE.md:26 cites LICENSE —
+     syntek-base's own licence" — are kept as written and are wrong. Read in context, the line
+     says "a source with no LICENSE upstream grants nothing": the token names an upstream
+     source's licence file, a generic noun, not this repository's own. It was a false positive,
+     and is now marked doc-references: ignore with that reason. The node's justification stands
+     without it: the nine shipped files the arm exempted were unchecked whatever they cited. -->
+
 **Why the rejected glob fails is the instructive half.** A handoff's job is to cite `MAP-*.md`,
 `US###` and a sibling handoff by path — the artefact working as designed. Admitting the whole
 `handoffs/` tree to a gate that forbids per-project instance citations yields 37 findings of which

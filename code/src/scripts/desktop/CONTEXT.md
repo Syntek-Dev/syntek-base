@@ -14,7 +14,7 @@ rot.
 the app ship the stock Fluent default? The Rust group's scripts do not read `build.rs` for a
 design decision and should not start; `audits/` is the wrong home because its input is neither
 CSS, markup nor prose. Splitting the AI-slop audit by input language put this leg here
-(`code/src/scripts/audits/CONTEXT.md` → _The AI-slop family_).
+(`code/src/scripts/audits/slop-family/CONTEXT.md` → _Why four scripts and not one_).
 
 **These run on the HOST, not in Docker** — the third such group, after `mobile/` and `rust/`. A
 desktop application needs a display server, which the app container does not have.

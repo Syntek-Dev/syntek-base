@@ -8,7 +8,7 @@
      Written outside the per-story loop, so it enters as Proposed and is checked at US004's own
      15-decisions pass alongside the story's two Accepted records. -->
 
-**Status:** Proposed <!-- checked, and Accepted or superseded, at US004's own 15-decisions pass -->
+**Status:** Accepted <!-- Accepted 05/11/2026 by <%DEVELOPER_NAME%> at US004's closeout (workflow 22 rulings, Q4; finding F-019): the detector has implemented it since 08/09/2026. It read "Proposed" until then. -->
 **Date:** 08/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** —

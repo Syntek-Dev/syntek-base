@@ -1,6 +1,6 @@
 """Accessibility scan — axe-core WCAG 2.2 AA across every public page.
 
-Uses ``axe-core-python``, which bundles ``axe.min.js``, so the gate carries no Node and
+Uses ``axe-playwright-python``, which bundles ``axe.min.js``, so the gate carries no Node and
 no CDN fetch. Scans ``len(PAGES)`` pages across four projects (desktop/mobile x
 light/dark). Critical and serious violations fail; moderate and minor are reported as
 warnings. Results are written per page/project so CI can publish them.
@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import pytest
-from axe_core_python.sync_playwright import Axe
+from axe_playwright_python.sync_playwright import Axe
 
 from tests.e2e.a11y_config import (
     AXE_TAGS,
@@ -110,7 +110,8 @@ def test_a11y_scan(scanned: ScannedPage, page_path: str) -> None:
     """No critical or serious WCAG 2.2 AA violations on *page_path*."""
     scanned.page.goto(page_path, wait_until="networkidle", timeout=PAGE_TIMEOUT_MS)
 
-    results = Axe().run(scanned.page, options=AXE_OPTIONS)
+    # ``.response`` is axe-core's raw result JSON; the wrapper adds only report helpers.
+    results: dict[str, Any] = Axe().run(scanned.page, options=AXE_OPTIONS).response
     violations: list[dict[str, Any]] = results.get("violations", [])
 
     failures = [v for v in violations if (v.get("impact") or "") in FAIL_IMPACTS]

@@ -91,7 +91,8 @@ one, consume `var(--token)` only, and meet WCAG 2.2 AA on every interactive elem
 
 ## Cross-references
 
-- [`TASK-AUTHORING.md`](TASK-AUTHORING.md) — the enqueue boundary, idempotency, retries
+- [`TASK-AUTHORING.md`](TASK-AUTHORING.md) — the enqueue boundary and the delivery guarantee
+- [`RELIABILITY.md`](RELIABILITY.md) — retries and idempotency
 - [`ENCRYPTION-GUIDE.md`](ENCRYPTION-GUIDE.md) — how recipient PII is stored
 - [`LOGGING.md`](LOGGING.md) — what a send event may record
 - [`DESIGN-TOKENS.md`](DESIGN-TOKENS.md) — the token rule the in-app components consume

@@ -111,8 +111,8 @@ SIGNATURE_ROUND=10         # px the width is rounded to when forming a signature
 # release matching its Chromium revision, and that number is what lands on this line. A
 # bundle bump is therefore the one change this gate cannot start; it can only confirm that
 # every site followed.
-PLAYWRIGHT_PIN="playwright==1.61.0"
-PLAYWRIGHT_INSTALL="uv run --no-project --with '$PLAYWRIGHT_PIN' playwright install chromium"
+PLAYWRIGHT_PIN="playwright==1.64.0"
+PLAYWRIGHT_INSTALL="uv run --no-project --python 3.14 --with '$PLAYWRIGHT_PIN' playwright install chromium"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 OUTPUT_FORMAT=""
@@ -314,10 +314,14 @@ log ""
 # the project's dev group and never mutates the project environment it is auditing.
 # That was originally a workaround — the root package name was an unrendered token
 # uv refused to parse — and it outlived the defect on its own merits.
+#
+# `--python 3.14` because `--no-project` reads no project pin, and from uv 0.13 the
+# interpreter uv picks when nothing pins one is 3.15 (09/11/2026). Both calls name the
+# project's own version, and `audits/toolchain-pins.sh` holds them to `.python-version`.
 tr '\0' '\n' < "$TMP_FILES" > "$TMP_LIST"
 
 set +e
-DETECTOR_OUT=$(uv run --no-project --with "$PLAYWRIGHT_PIN" python - \
+DETECTOR_OUT=$(uv run --no-project --python 3.14 --with "$PLAYWRIGHT_PIN" python - \
   "$TMP_LIST" "$VIEWPORT_W" "$VIEWPORT_H" "$TOLERANCE_PCT" \
   "$MIN_ROW_MEMBERS" "$MIN_SET_SCREENS" "$SIGNATURE_ROUND" <<'PY' 2>/dev/null
 import sys, pathlib, collections

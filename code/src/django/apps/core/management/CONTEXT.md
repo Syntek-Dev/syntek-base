@@ -40,5 +40,5 @@ differently, because a scheduler retries on it and must not retry on the other t
   `BaseCommand` import is banned
 - `code/docs/NEGATIVE-SPACE.md` → The error taxonomy — the three classes being mapped
 - `code/docs/PROCESS-MODEL.md` — the connection rule `execute()` satisfies on entry and exit
-- `code/docs/TASK-AUTHORING.md` — the sibling surface: the same taxonomy, expressed as retry
-  classification rather than exit codes
+- `code/docs/TASK-AUTHORING.md` — the sibling surface: the same taxonomy, expressed as what
+  happens next rather than exit codes

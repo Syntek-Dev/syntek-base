@@ -40,6 +40,7 @@ index is what that rule navigates; it does not restate it.
 
 | Document                                                                                                     | Purpose                                                                                                                                                                                                     |
 | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [code/docs/ABSENCE.md](code/docs/ABSENCE.md)                                                                 | What an absence means — the six kinds, their decision order and tie-breaks, the runtime crib (Python, Rust, Alpine, HTMX, mobile TS), the absence-enum and never-overload rules                             |
 | [code/docs/ACCESSIBILITY.md](code/docs/ACCESSIBILITY.md)                                                     | WCAG 2.2 AA compliance rules for all interactive components                                                                                                                                                 |
 | [code/docs/API-DESIGN.md](code/docs/API-DESIGN.md)                                                           | Django Ninja API design conventions and patterns                                                                                                                                                            |
 | [code/docs/ARCHITECTURE-PATTERNS.md](code/docs/ARCHITECTURE-PATTERNS.md)                                     | Layered architecture decisions and module boundaries                                                                                                                                                        |
@@ -64,7 +65,8 @@ index is what that rule navigates; it does not restate it.
 | [code/docs/NOTIFICATIONS.md](code/docs/NOTIFICATIONS.md)                                                     | Notifications — the send boundary, the shared branded template foundation, PII per channel (declared, not wired)                                                                                            |
 | [code/docs/EXPORTS.md](code/docs/EXPORTS.md)                                                                 | Downloadable file exports — the library per format, the formatter contract, PII gating and audit (declared, not wired)                                                                                      |
 | [code/docs/LOGGING.md](code/docs/LOGGING.md)                                                                 | Structured logging with Sentry and file-based logs                                                                                                                                                          |
-| [code/docs/TASK-AUTHORING.md](code/docs/TASK-AUTHORING.md)                                                   | Background-task authoring: the enqueue boundary, idempotency, retries, limits, queue routing, broker-free testing (declared, not wired)                                                                     |
+| [code/docs/TASK-AUTHORING.md](code/docs/TASK-AUTHORING.md)                                                   | Background-task authoring: the enqueue boundary, the delivery guarantee, limits, queue routing, broker-free testing (declared, not wired)                                                                   |
+| [code/docs/RELIABILITY.md](code/docs/RELIABILITY.md)                                                         | Retries and idempotency, stated once for every surface that can fail or repeat — the proof ladder, jittered backoff, bounds (sub-docs: `code/docs/reliability/`)                                            |
 | [code/docs/MANAGEMENT-COMMANDS.md](code/docs/MANAGEMENT-COMMANDS.md)                                         | The CLI surface: arguments as untrusted input, blast radius, and the error taxonomy as exit codes (`ManagementCommand` + the ruff `TID251` ban)                                                             |
 | [code/docs/PROCESS-MODEL.md](code/docs/PROCESS-MODEL.md)                                                     | Worker class, event loop, the ORM's sync boundary, and where a task worker sits                                                                                                                             |
 | [code/docs/OBJECT-STORAGE.md](code/docs/OBJECT-STORAGE.md)                                                   | Private-document storage over the S3 API: adapter contract, presigned URLs, upload validation (declared, not wired)                                                                                         |
@@ -247,12 +249,12 @@ all three build rows name the same pass — entered at `18`, closed at `20`, nev
 
 | Technology             | Version | Documentation URL                                       |
 | ---------------------- | ------- | ------------------------------------------------------- |
-| Django                 | 6.x     | https://docs.djangoproject.com/en/6.0/                  |
+| Django                 | 6.x     | https://docs.djangoproject.com/en/6.1/                  |
 | Wagtail (cms-only)     | 8.x     | https://docs.wagtail.org/en/stable/                     |
 | Rust (rust-only)       | 1.92+   | https://doc.rust-lang.org/stable/book/                  |
-| PyO3 (rust-only)       | 0.29    | https://pyo3.rs/                                        |
+| PyO3 (rust-only)       | 0.30    | https://pyo3.rs/                                        |
 | maturin (rust-only)    | 1.x     | https://www.maturin.rs/                                 |
-| Slint (desktop-only)   | 1.17    | https://slint.dev/docs                                  |
+| Slint (desktop-only)   | 1.18    | https://slint.dev/docs                                  |
 | Django Ninja           | 1.x     | https://django-ninja.dev/                               |
 | FastMCP                | 3.x     | https://gofastmcp.com/                                  |
 | Model Context Protocol | latest  | https://modelcontextprotocol.io/                        |
@@ -265,7 +267,7 @@ all three build rows name the same pass — entered at `18`, closed at `20`, nev
 | pytest-django          | latest  | https://pytest-django.readthedocs.io/en/latest/         |
 | Playwright (Python)    | latest  | https://playwright.dev/python/docs/intro                |
 | pnpm                   | 11.x    | https://pnpm.io/motivation                              |
-| uv                     | 0.12.x  | https://docs.astral.sh/uv/                              |
+| uv                     | 0.13.x  | https://docs.astral.sh/uv/                              |
 | Docker / Compose       | latest  | https://docs.docker.com/compose/                        |
 | Nginx                  | latest  | https://nginx.org/en/docs/                              |
 | Gunicorn               | latest  | https://docs.gunicorn.org/en/stable/                    |

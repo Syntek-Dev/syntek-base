@@ -1,0 +1,1 @@
+error: failed to fetch advisory database: network unreachable

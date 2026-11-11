@@ -54,11 +54,11 @@ PR description must include:
 - User story reference (US###)
 - Test plan (how to verify)
 
-Set the story `**Status:**` to `In Review` in `src/02-STORIES/US###.md`, append its
+Through the `completion` skill, set the story `**Status:**` to `In Review` in `src/02-STORIES/US###.md`, append its
 `## Status history` row, run `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`,
-and commit — the lefthook regenerates the ClickUp export and the `clickup-sync` workflow pushes
-it to the board. Lifecycle: `project-management/docs/planning/STORIES.md` → _Story statuses_;
-vocabulary owner: `.claude/skills/completion/SKILL.md`.
+and commit. **clickup-only:** the lefthook then regenerates the ClickUp export and the
+`clickup-sync` workflow pushes it to the board. Lifecycle:
+`project-management/docs/planning/STORIES.md` → _Story statuses_; vocabulary owner: `.claude/skills/completion/SKILL.md`.
 
 ### Step 4 — Await CI and QA Sign-off
 
@@ -83,7 +83,7 @@ regeneration every time:
   (`pm-board.sh --warn` names the stories that have reached it); `pm-archive.sh US###` then
   closes and archives the story.
 
-Commit each change so the ClickUp board updates.
+Commit each change. **clickup-only:** the commit is what updates the ClickUp board.
 
 ---
 
@@ -93,17 +93,17 @@ Commit each change so the ClickUp board updates.
 
 The design/compliance IMPLEMENTATION records and the automated test record are **written**, and the manual testing guide **walked**, in `22-implementation-documentation`, which runs before this workflow. Here you **verify** each applicable one exists and is complete, then **write** the single PR-stage record that is the output of Steps 1–2.
 
-**Verify (authored in `22-implementation-documentation`)** — if any applicable record is missing or incomplete, return to `22-implementation-documentation` before proceeding; do not write it here:
+**Verify (authored in `22-implementation-documentation`)** — if any applicable record is missing or incomplete, return to `22-implementation-documentation` before proceeding; do not write it here. **Which disciplines apply is `22-implementation-documentation` Step 1's decision**: a discipline applies exactly when Step 1 listed its `PLANNING/` artefact for the story, and this table does not restate Step 1's conditions.
 
-| Discipline                                          | Required                                           | Expected in                                        |
-| --------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
-| GDPR review                                         | Always                                             | `src/09-GDPR/IMPLEMENTATION/`                      |
-| Security (assessment / audit / threat model / vuln) | Always                                             | `src/10-SECURITY/<CATEGORY>/IMPLEMENTATION/`       |
-| QA plan                                             | Always                                             | `src/11-QA/IMPLEMENTATION/`                        |
-| SEO review                                          | Only if story adds public-facing pages             | `src/12-SEO/IMPLEMENTATION/`                       |
-| API design                                          | Only if story adds or changes the Django Ninja API | `src/13-API-DESIGN/IMPLEMENTATION/`                |
-| Test records (automated + manual)                   | Always                                             | `src/18-TESTS/AUTOMATED/` · `src/18-TESTS/MANUAL/` |
-| Findings                                            | Always                                             | `src/20-FINDINGS/`                                 |
+| Discipline                                          | Required                                          | Expected in                                        |
+| --------------------------------------------------- | ------------------------------------------------- | -------------------------------------------------- |
+| GDPR review                                         | Where `22` Step 1 listed its `PLANNING/` artefact | `src/09-GDPR/IMPLEMENTATION/`                      |
+| Security (assessment / audit / threat model / vuln) | Where `22` Step 1 listed its `PLANNING/` artefact | `src/10-SECURITY/<CATEGORY>/IMPLEMENTATION/`       |
+| QA plan                                             | Where `22` Step 1 listed its `PLANNING/` artefact | `src/11-QA/IMPLEMENTATION/`                        |
+| SEO review                                          | Where `22` Step 1 listed its `PLANNING/` artefact | `src/12-SEO/IMPLEMENTATION/`                       |
+| API design                                          | Where `22` Step 1 listed its `PLANNING/` artefact | `src/13-API-DESIGN/IMPLEMENTATION/`                |
+| Test records (automated + manual)                   | Always                                            | `src/18-TESTS/AUTOMATED/` · `src/18-TESTS/MANUAL/` |
+| Findings                                            | Always                                            | `src/20-FINDINGS/`                                 |
 
 **Complete is not the same as present** — the two test records in `src/18-TESTS/` are read, not
 counted. Rules and templates: `project-management/src/18-TESTS/CLAUDE.md` and its `AUTOMATED/`

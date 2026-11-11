@@ -16,7 +16,7 @@ code/src/scripts/
 │   └── reports/             ← generated report output (gitignored)
 ├── database/                ← database management (migrate, backup, restore, shell)
 │   └── reports/             ← backup files and generated reports (gitignored)
-├── dependencies/            ← move a dependency forward (uv, pnpm, cargo — one command)
+├── dependencies/            ← move a dependency forward, and audit the result (uv, pnpm, cargo)
 ├── deployment/              ← deployment scripts (planned — scripts TBD)
 │   └── reports/             ← generated report output (gitignored)
 ├── development/             ← dev stack lifecycle (server, shell, logs, scaffolding)
@@ -44,7 +44,7 @@ code/src/scripts/
 | `_lib/`         | Internal shell helpers sourced by other scripts — not invoked directly                                                                                       |
 | `audits/`       | Codebase health: line-count enforcement, stub detection                                                                                                      |
 | `database/`     | Django migration management, PostgreSQL backup / restore / reset                                                                                             |
-| `dependencies/` | Move a dependency forward across all three ecosystems — the one place a floor changes                                                                        |
+| `dependencies/` | Move a dependency forward across all three ecosystems — the one place a floor changes — and audit advisories and lockfiles under one verdict                 |
 | `deployment/`   | Deployment automation scripts (planned)                                                                                                                      |
 | `development/`  | Dev stack lifecycle: server up/down, container shell, log tailing, scaffolding                                                                               |
 | `mobile/`       | **Mobile-only.** Every mobile-surface operation — and the one group that runs on the **host** rather than in Docker, because Expo Go needs Metro on the LAN  |

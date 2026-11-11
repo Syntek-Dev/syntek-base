@@ -257,7 +257,7 @@ def git(*args):
 def norm(text):
     """Erase exactly what pm-archive.sh may change in a frozen file: `archive/` segments and
     the `./` / `../` depth of a relative path. Collapsing `../` runs is not enough — a link
-    rewritten to `../US002.md` and later back to `US002.md` must compare equal."""
+    rewritten one level deeper and later back to the bare filename must compare equal."""
     text = text.replace("archive/", "")
     return re.sub(r"(?<![\w.])(?:\.\.?/)+", "", text)
 

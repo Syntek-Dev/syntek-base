@@ -1,9 +1,10 @@
 # code/src/scripts/dependencies
 
-The one place a dependency moves. Python (uv), JavaScript (pnpm) and Rust (cargo) each have
-their own tool and their own idea of what "update" means; this group puts a single command
-and a single exit-code contract over all three, so a sweep is a decision someone made rather
-than three half-remembered incantations run in the wrong order.
+The one place a dependency moves, and the one place its state is judged. Python (uv),
+JavaScript (pnpm) and Rust (cargo) each have their own tool and their own idea of what "update"
+and "clean" mean; this group puts a single command and a single exit-code contract over all
+three, so a sweep is a decision someone made rather than three half-remembered incantations run
+in the wrong order — and its verdict is one answer rather than three.
 
 ## Directory Tree
 
@@ -11,14 +12,16 @@ than three half-remembered incantations run in the wrong order.
 code/src/scripts/dependencies/
 ├── CONTEXT.md   ← this file
 ├── CLAUDE.md    ← operating rules
+├── audit.sh     ← one verdict: every advisory audit, every lockfile against its manifest
 └── update.sh    ← report or apply updates across all three ecosystems
 ```
 
 ## Scripts
 
-| Script      | Does                                                                      |
-| ----------- | ------------------------------------------------------------------------- |
-| `update.sh` | `--check` (default) reports what is out of date; `--apply` re-resolves it |
+| Script      | Does                                                                                      |
+| ----------- | ----------------------------------------------------------------------------------------- |
+| `update.sh` | `--check` (default) reports what is out of date; `--apply` re-resolves it                 |
+| `audit.sh`  | Advisories and lockfile agreement in every present ecosystem, under one exit code — below |
 
 ## Common flags
 
@@ -35,6 +38,46 @@ code/src/scripts/dependencies/
 
 **Exit codes:** `0` up to date or applied · `1` updates available (`--check`) · `2` script error.
 
+## One verdict over every audit
+
+`audit.sh` changes nothing. It runs six legs — the lockfile check and the advisory audit for each
+ecosystem — by delegating to what already owns each: `audits/security.sh` for pip-audit and
+`pnpm audit` (one lockfile covers the root and every workspace member, mobile included),
+`rust/audit.sh` for cargo-deny, and `uv lock --check`, `pnpm install --frozen-lockfile
+--lockfile-only` and `cargo metadata --locked` for the lockfiles. It takes `--ecosystem`,
+`--output md|txt|json`, `--quiet` and `--self-test`, and writes
+`code/src/scripts/reports/dependency-audit.<FORMAT>`.
+
+**Every lockfile leg runs before any advisory leg, and the advisory legs are read-only.** An
+advisory tool resolves the graph before auditing it, and a resolve re-locks: a bare `uv run`
+rewrites `uv.lock`, cargo-deny rewrites `Cargo.lock`. Run first, it repaired a stale lock before
+the lockfile leg looked, and the audit reported clean over its own edit (11/11/2026). So the
+lockfile legs see the tree as committed, and the advisory legs are pinned to it besides —
+`uv run --frozen` in `audits/security.sh`, `cargo deny --locked` in `rust/audit.sh`, which
+therefore fails on a stale lock rather than rewriting it. The summary lists legs in run order.
+
+Each leg ends **clean**, **finding**, **not present** (no such surface — no `code/src/rust` is a
+project without Rust) or **NOT RUN** (the surface is there and the tool is missing, or it failed
+for a reason that is not a finding). A non-zero exit from a tool is matched against the shape that
+tool prints for a real result; anything else is NOT RUN, and `--self-test` proves that
+classification against captured transcripts in `audits/fixtures/dependencies-audit/`. Its
+**run probes** then drive the script itself end to end: each copies `audit.sh`, `security.sh`
+and `rust/audit.sh` into a scratch project with stale lockfiles, puts the stand-ins in
+`run/stubs/` first on `PATH`, and asserts that a stale lock is a finding the audit leaves
+byte-identical, that a finding with no `error[` line still reaches the summary and the report,
+and that a tool failure is NOT RUN — exit `2` from `security.sh` — never "vulnerabilities found".
+
+| Exit | Means                                                                                    |
+| ---- | ---------------------------------------------------------------------------------------- |
+| `0`  | Every present leg ran clean                                                              |
+| `1`  | At least one finding — it outranks everything else, and the fix is to the dependency set |
+| `2`  | Nothing found but a leg NOT RUN (**unmeasured**), or a script error                      |
+
+Unmeasured is never `0`, because that prints "clean" over a population nobody opened
+(`code/docs/GATE-REPORTING.md`). It is `2` rather than `1` because the fix is to the environment
+— install the tool, restore the network — which is what `2` means across these scripts: a
+prerequisite the caller must fix.
+
 ## A floor is not a pin
 
 The distinction this group exists to keep straight. Raising `redis>=5.0.0` to `redis>=6.0`
@@ -49,9 +92,11 @@ re-resolve happens in the same change.
 ## Latest is not always reachable
 
 A floor is bounded by what the rest of the graph tolerates, not by what the registry calls
-latest. `celery[redis]` excludes `redis>=6.5`, so **redis 6.4 is the newest this project can
-resolve** — and raising the floor past it does not fail loudly, it silently drags celery
-backwards to satisfy the constraint.
+latest. `celery[redis]` reaches redis through kombu's `redis` extra, so **kombu decides the
+newest redis this project can resolve**: kombu 5.6 capped it at `<6.5`, and kombu 5.7 (required
+by celery 5.7) at `<9`. Under the old cap, a redis 8 floor did not fail loudly — it silently
+dragged celery back to 5.3.1 to satisfy the constraint. That is why the floor moved to
+`redis>=8.1` only after celery moved to 5.7 (09/11/2026).
 
 `--check` reports the registry's latest; it cannot know what your graph will tolerate. Only a
 resolve can, which is why `--apply` re-resolves rather than editing a number.
@@ -96,6 +141,7 @@ Three neighbours sit close enough to be confused with this one, and the line bet
 | ------------------------------------------------- | ------------------------------------------------- |
 | "Give me the dependencies this project declares"  | `development/install-backend.sh` · `-frontend.sh` |
 | "Move the declared dependencies forward"          | **`update.sh`, here**                             |
+| "Is every dependency safe, and every lock true?"  | **`audit.sh`, here**                              |
 | "Update pnpm itself and pin it"                   | `development/pnpm-update.sh`                      |
 | "What would a **template** update do to my deps?" | `audits/dependency-drift.sh`                      |
 
@@ -106,6 +152,8 @@ reports, and `template-update.sh` runs it for you before anything is applied.
 ## Cross-references
 
 - `code/src/scripts/audits/dependency-drift.sh` — what an incoming template update would impose
+- `code/src/scripts/audits/toolchain-pins.sh` — the toolchain itself (Node, Python, uv, pnpm,
+  Rust) pinned in step; this group judges the dependencies those toolchains install
 - `code/src/scripts/development/template-update.sh` — previews an update, and runs that audit
 - `how-to/workflows/07-dependency-updates/` — the procedure this script serves
 - `code/src/scripts/CONTEXT.md` — the full script-group map

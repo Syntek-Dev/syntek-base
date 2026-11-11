@@ -111,7 +111,8 @@ carries the four-record table.
 
 **US002 cannot take a demotion.** It is the sprint's only committed work, and it unblocks nine
 audit registrations across eight slices and seven maps — every story that adds a script under
-`code/src/scripts/audits/` needs three counted lines in a register with two lines of headroom.
+`code/src/scripts/audits/` needs three counted lines in a register `docs-length.sh` measured at
+299 of 300 on 17/09/2026. <!-- UPDATED 03/11/2026 (US002 Step H): read "in a register with two lines of headroom"; the US004 edge and the US002 table row read "from 298 to 230 counted lines" until then. A standing guard on that file cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. -->
 
 <!-- The Must table held US004 — "The citation gate stops depending on the git index, and the PM
      tree becomes checkable", Script + docs — no code lane, 8 SP,
@@ -287,7 +288,7 @@ constraints put it there:
   settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). The superseded record's citation
   is kept, not repointed. -->
 - **Downstream, and concrete: US002 before US004, now SPRINT-02 → SPRINT-03.** US002 shrinks
-  `code/src/scripts/audits/CONTEXT.md` from **298 to 230 counted lines**, and US004 must edit a row
+  `code/src/scripts/audits/CONTEXT.md` to **230 counted lines**, and US004 must edit a row
   in that file against a 300-line hard limit — recorded as `AC-GAP-9` of
   `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md`. This plan argued the same edge on
   05/09/2026 as "SPRINT-01 before SPRINT-02"; it is the same direction one sprint later on each
@@ -387,9 +388,11 @@ paid, and nothing on either row is owed.
      the change was committed; corrected against the plans as they stand on disk. -->
 
 **There is no Plans Index row for either**, and that is a decision rather than an omission.
-`../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` slice `S-01` creates `../17-STORY-PLANS/STORY-PLAN-INDEX.md`
-and repoints the citations that already name it; the file does not exist today, and this plan does
-not pre-empt a claimed slice by building one.
+`../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` slice `S-01` was to create a story-plan index file in
+`../17-STORY-PLANS/` and repoint the citations that already name it; the file did not exist then,
+and this plan does not pre-empt a claimed slice by building one.
+
+<!-- UPDATED 05/11/2026 (US004 P5): read "slice `S-01` creates ../17-STORY-PLANS/STORY-PLAN-INDEX.md and repoints the citations that already name it; the file does not exist today" until then; no such index exists or will: the 7.7.0 PM-boards change superseded it with the generated story-plans board in that folder, and a backticked path to a file that never existed is a dead citation the citation gate now polices in this tree. -->
 
 <!-- US003's row sat below US004's until 05/09/2026, when the story moved to SPRINT-03; its plan
      was indexed by ../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md instead.
@@ -443,10 +446,10 @@ touch none of them. The phases are recorded as `N/A` with a reason rather than d
 
 ### The lane these stories actually run in
 
-| Story | Deliverable                                                                                                                                                          | Proven by                                                                               |
-| ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| US002 | `code/src/scripts/audits/CONTEXT.md` from 298 to 230 counted lines, its four missing Dependencies rows added, the AI-slop rationale into a bound `slop-family/` pair | Three documentation gates, a human read-across of every new route, and a 27-row dry run |
-| US003 | `code/docs/ABSENCE.md` plus its registration on five surfaces, tier markers on every clause, and the reciprocity edits to four skills                                | Five documentation gates and a human read-across against the six `TYPES-*` guides       |
+| Story | Deliverable                                                                                                                                                 | Proven by                                                                               |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| US002 | `code/src/scripts/audits/CONTEXT.md` to 230 counted lines, its four missing Dependencies rows added, the AI-slop rationale into a bound `slop-family/` pair | Three documentation gates, a human read-across of every new route, and a 27-row dry run |
+| US003 | `code/docs/ABSENCE.md` plus its registration on five surfaces, tier markers on every clause, and the reciprocity edits to four skills                       | Five documentation gates and a human read-across against the six `TYPES-*` guides       |
 
 **This sprint ships no executable proof, and it did until 07/09/2026.** US004's `--self-test` was
 the only automated check this plan carried, and it left with the story. Both members are now
@@ -580,7 +583,7 @@ repair the third is a sprint away.** Three rules apply throughout, from `code/do
   member captures before its first edit. The survivors are named with their owners, and **both
   classes are this sprint's**: the forward references to `code/docs/ABSENCE.md` — three in US003's
   own artefact, and more in every record that has since named the guide — clear the moment US003's
-  guide lands; the citations of `code/src/scripts/audits/SLOP-FAMILY.md` are US002's to disposition
+  guide lands; the citations of "code/src/scripts/audits/SLOP-FAMILY.md" are US002's to disposition <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
   when it ships, and they will never resolve on their own, because the superseding ADR moved the
   target to `slop-family/CONTEXT.md`. **No tree-wide count is quoted in this plan.** The
   05/09/2026 figure in `../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` predates this re-plan's edits to

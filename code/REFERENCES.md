@@ -32,6 +32,7 @@ Internal and external references for all coding work in this repository.
 
 ### Guides in code/docs/
 
+- `code/docs/ABSENCE.md` — what an absence **means**, where the `TYPES-*` family owns what shape a value has: the six kinds (expected miss, not-yet, empty, failure, not-supplied, not-applicable), the decision order that makes them exhaustive and mutually exclusive and the tie-breaks between neighbours, the crib mapping each onto Python, Rust, Alpine, HTMX and mobile TypeScript, and the two rules it owns — an absence with more than one meaning is an enum, never a null (pinned by `audits/doctrine-drift.sh`), and one absence never carries two meanings
 - `code/docs/ACCESSIBILITY.md` — WCAG 2.2 AA, semantic HTML, ARIA patterns
 - `code/docs/API-DESIGN.md` — Django Ninja conventions, JSON API patterns
 - `code/docs/ARCHITECTURE-PATTERNS.md` — service layer, Django app structure, page routing
@@ -61,7 +62,8 @@ Internal and external references for all coding work in this repository.
 - `code/docs/MOBILE-CODING-PRINCIPLES.md` — **mobile-only** — the third peer of the two coding-principles guides above: the four TypeScript flags beyond `strict` (each bans a state) and the two deliberately declined because ESLint already owns them, exhaustiveness through `unreachable()` and why it is not called `assertNever`, branded IDs declined until there is a parse boundary to mint them at, and how this surface expresses the error taxonomy — one `ErrorBoundary` at the root, a tracker declared but not wired, and the inversion that makes an environment error the ordinary case on a phone
 - `code/docs/LOGGING.md` — logging config, error tracking, log aggregation, metrics and dashboards, distributed tracing
 - `code/docs/MCP-SERVER.md` — the FastMCP tool surface at `/mcp/`: mounting, tool design, auth and threats, testing and ops (available but unwired)
-- `code/docs/TASK-AUTHORING.md` — background-task authoring: the enqueue boundary (never enqueue inside an uncommitted transaction, and the committed-but-unpublished window the on-commit hook leaves open), the delivery guarantee as a configured choice rather than an inherited one, idempotency, retries and backoff, time and rate limits, queue routing, testing without a broker (declared, not wired)
+- `code/docs/TASK-AUTHORING.md` — background-task authoring: the enqueue boundary (never enqueue inside an uncommitted transaction, and the committed-but-unpublished window the on-commit hook leaves open), the delivery guarantee as a configured choice rather than an inherited one, what a queue adds to idempotency, time and rate limits, queue routing, testing without a broker (declared, not wired)
+- `code/docs/RELIABILITY.md` — retries and idempotency, stated once for every surface that can fail or repeat — HTTP clients, transactions, queue consumers, webhooks, MCP tools and the CLI. An index over `reliability/IDEMPOTENCY.md` (the run-twice contract, the proof ladder from database constraint to idempotency key, the run-twice acceptance test) and `reliability/RETRIES.md` (classify before retrying, jittered exponential backoff, bounds by attempts and age, a stated end, what a failure record carries); each surface guide keeps only its own expression
 - `code/docs/MANAGEMENT-COMMANDS.md` — the sibling of `TASK-AUTHORING.md`, and the surface whose runtime already exists: when work belongs to a person choosing the moment rather than to a queue, why argparse parsing is not validation and a command-line identifier is as unverified as one from a URL, blast radius as the argument nobody passes (`--dry-run`, declared bounds, and why the confirmation prompt is not the safety), and the taxonomy as exit codes — type distinguishes the classes, only `EX_TEMPFAIL` (75) carries meaning, and a traceback is the correct output for a programmer error. Shipped as `apps.core.management.base.ManagementCommand`, made a rule by the ruff `TID251` ban on both `BaseCommand` import paths
 - `code/docs/PROCESS-MODEL.md` — worker class, event loop, the ORM's sync boundary, and where a task worker sits relative to the web process family
 - `code/docs/OBJECT-STORAGE.md` — private-document storage over the S3 API: the adapter contract, presigned URLs, upload validation (declared, not wired)
@@ -91,14 +93,14 @@ Internal and external references for all coding work in this repository.
 
 ### Backend
 
-- **Django 6.x** — <https://docs.djangoproject.com/en/6.0/> — official Django reference
+- **Django 6.x** — <https://docs.djangoproject.com/en/6.1/> — official Django reference
 - **Python 3.14** — <https://docs.python.org/3.14/> — language reference and standard library
 - **Django Ninja** — <https://django-ninja.dev/> — Python JSON API framework used for all API endpoints and Schema (Pydantic) models
 - **FastMCP** — <https://gofastmcp.com/> — the Python MCP server framework behind the `/mcp/` tool surface (not installed at baseline)
 - **Model Context Protocol** — <https://modelcontextprotocol.io/> — the protocol specification FastMCP implements; read for transport and session semantics
 - **Starlette** — <https://www.starlette.io/> — the ASGI toolkit that composes the `/mcp/` and Django mounts in `config/asgi.py` (arrives with FastMCP)
 - **Celery — configuration reference** — <https://docs.celeryq.dev/en/stable/userguide/configuration.html> — the acknowledgement settings that decide the delivery guarantee. `task_acks_late` is **disabled by default**, so a message is acked before the task body runs and a killed worker loses its task rather than repeating it; `task_reject_on_worker_lost` is what re-queues it, at the risk of a loop. Read before wiring the task surface (`code/docs/TASK-AUTHORING.md` → _Idempotency_)
-- **Django — writing management commands** — <https://docs.djangoproject.com/en/6.0/howto/custom-management-commands/> — `BaseCommand`, `add_arguments`, and the `CommandError` contract `ManagementCommand` builds on. Note that `run_from_argv` catches `CommandError` and closes connections, while `call_command()` does neither — the asymmetry `code/docs/MANAGEMENT-COMMANDS.md` exists partly to close
+- **Django — writing management commands** — <https://docs.djangoproject.com/en/6.1/howto/custom-management-commands/> — `BaseCommand`, `add_arguments`, and the `CommandError` contract `ManagementCommand` builds on. Note that `run_from_argv` catches `CommandError` and closes connections, while `call_command()` does neither — the asymmetry `code/docs/MANAGEMENT-COMMANDS.md` exists partly to close
 - **`sysexits.h` (BSD)** — <https://man.freebsd.org/cgi/man.cgi?sysexits(3)> — the source of `EX_TEMPFAIL` (75), the one exit code this project spends on meaning. Cited as a platform convention rather than credited in `README.md` Section _Influences_: it supplies a number and a name, not doctrine
 - **Gunicorn** — <https://docs.gunicorn.org/en/stable/> — WSGI HTTP server
 - **Uvicorn** — <https://www.uvicorn.org/> — ASGI server used alongside Gunicorn
@@ -139,7 +141,7 @@ Internal and external references for all coding work in this repository.
 - **Hypothesis** — <https://hypothesis.readthedocs.io/> — property-based testing
 - **Bruno** — <https://docs.usebruno.com/> — HTTP-layer API integration tests
 - **pytest-playwright** — <https://playwright.dev/python/docs/test-runners> — the browser e2e suite
-- **axe-core-python** — <https://github.com/mdn/axe-core-python> — the WCAG 2.2 AA scan, no Node required. **Web surface only** — there is no React Native equivalent, so mobile accessibility verification is manual (React Native Testing Library queries, then VoiceOver and TalkBack on device). Mobile a11y is never "scanned clean"; see `code/docs/accessibility/MOBILE.md`
+- **axe-playwright-python** — <https://github.com/pamelafox/axe-playwright-python> — the WCAG 2.2 AA scan (bundled axe-core, Level A and AA tags), no Node required. **Web surface only** — there is no React Native equivalent, so mobile accessibility verification is manual (React Native Testing Library queries, then VoiceOver and TalkBack on device). Mobile a11y is never "scanned clean"; see `code/docs/accessibility/MOBILE.md`
 
 ---
 
@@ -159,5 +161,5 @@ Internal and external references for all coding work in this repository.
 - **OWASP REST Security Cheat Sheet** — <https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html> — JSON API security guidance
 - **NIST SP 800-63B** — <https://pages.nist.gov/800-63-4/sp800-63b.html> — authentication, password policy, and MFA requirements
 - **WCAG 2.2 AA** — <https://www.w3.org/TR/WCAG22/> — accessibility compliance standard for all frontend components
-- **Django security overview** — <https://docs.djangoproject.com/en/6.0/topics/security/> — CSRF, clickjacking, SQL injection, and XSS guidance
+- **Django security overview** — <https://docs.djangoproject.com/en/6.1/topics/security/> — CSRF, clickjacking, SQL injection, and XSS guidance
 - **UK GDPR (ICO)** — <https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/> — data protection law reference for GDPR compliance work

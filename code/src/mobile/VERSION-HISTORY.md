@@ -9,4 +9,4 @@ All version increments for the React Native mobile application are recorded here
 
 | Date       | Version | Description                                                                                                      |
 | ---------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
-| 02/08/2026 | 0.1.0   | Initial template scaffold — Expo SDK 57, expo-router with one route, self-contained TypeScript, jest-expo suite. |
+| 02/08/2026 | 0.1.0   | Initial template scaffold — Expo SDK 58, expo-router with one route, self-contained TypeScript, jest-expo suite. |

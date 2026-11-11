@@ -22,6 +22,11 @@ planned audit scripts need **three rows each** — a Directory Tree row, an inve
 Dependencies row — so **27 lines are due**, plus 4 Dependencies rows already missing for scripts
 that exist. US002 exists to make room.
 
+<!-- NOTE 03/11/2026 (US002 Step H): the 298 in this Context is a reading of 02/09/2026, this
+     record's date, as `docs-length.sh` counted it; it was 299 by 16/09/2026, and US002 measured
+     299 again at its build's first step on 03/11/2026. The decision is unchanged and this note does
+     not amend it. -->
+
 **Measured section by section, the room is not there.** The totals below reconcile exactly to
 `docs-length.sh`'s 298:
 

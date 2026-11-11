@@ -166,6 +166,7 @@ def list_orders(request, status: str | None = None):
   the caller's ownership before use (no IDOR).
 
 ```python
+from ninja import Status
 from ninja.errors import HttpError
 
 from apps.core.schemas import Schema
@@ -182,7 +183,7 @@ def create_order(request, payload: CreateOrderIn):
     if not can_access_module(request.auth, "orders"):
         raise HttpError(403, "You do not have permission to create orders.")
     order = create_order_service(request.auth, payload)
-    return 201, _to_order(order)
+    return Status(201, _to_order(order))
 ```
 
 **Type completeness rule:** the response schema must expose every field a request schema accepts as

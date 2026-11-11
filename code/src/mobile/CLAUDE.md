@@ -71,7 +71,7 @@ Ninja API, never a client-side build for the Django-served pages.
   TypeScript dependency to the repository root would breach the one-conditionalisation-mechanism
   rule that keeps a web-only generation byte-identical.
 - **WCAG 2.2 AA is unchanged by the platform** — one standard, two technique sets. Automated a11y
-  scanning has no React Native counterpart to `axe-core-python`, so verification here is more
+  scanning has no React Native counterpart to `axe-playwright-python`, so verification here is more
   manual than on the web.
 - Source files **≤ 750 lines (800 grace)**, as everywhere under `src/`.
 

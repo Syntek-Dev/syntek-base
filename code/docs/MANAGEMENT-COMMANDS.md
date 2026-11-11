@@ -172,7 +172,9 @@ floors as everything else ([`testing/COVERAGE.md`](testing/COVERAGE.md)).
 ## Cross-references
 
 - [`TASK-AUTHORING.md`](TASK-AUTHORING.md): the sibling surface — same taxonomy, expressed as
-  retry classification rather than exit codes
+  what happens next rather than exit codes
+- [`RELIABILITY.md`](RELIABILITY.md): retries and idempotency on every surface — including a
+  command re-run by an operator
 - [`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md): the taxonomy, the register, and the guard clause
 - [`PROCESS-MODEL.md`](PROCESS-MODEL.md): where a command sits among the process families
 - `code/src/django/apps/core/management/CONTEXT.md`: the shipped base class

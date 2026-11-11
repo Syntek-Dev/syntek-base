@@ -1,0 +1,1 @@
+[ENOENT] ENOENT: no such file or directory, open 'patches/decode-uri-component@0.2.2.patch'

@@ -23,16 +23,24 @@ separate frontend container.
 
 ## Services
 
-| Service  | Image                    | dev | test | staging | prod |
-| -------- | ------------------------ | --- | ---- | ------- | ---- |
-| `django` | `python:3.14-slim`       | ✅  | ✅   | ✅      | ✅   |
-| `db`     | `postgres:18-alpine`     | ✅  | ✅   | ❌      | ❌   |
-| `cache`  | `valkey/valkey:8-alpine` | ✅  | ✅   | ❌      | ❌   |
-| `nginx`  | `nginx:alpine`           | ✅  | ✅   | ❌      | ❌   |
+| Service  | Image              | dev | test | staging | prod |
+| -------- | ------------------ | --- | ---- | ------- | ---- |
+| `django` | `python:3.14-slim` | ✅  | ✅   | ✅      | ✅   |
+| `db`     | `postgres:18`      | ✅  | ✅   | ❌      | ❌   |
+| `cache`  | `valkey/valkey:8`  | ✅  | ✅   | ❌      | ❌   |
+| `nginx`  | `nginx:mainline`   | ✅  | ✅   | ❌      | ❌   |
 
 > **Staging and production:** Postgres, Valkey, and Nginx run on the server, not in
-> Compose — only the `django` container is deployed. **Pin `valkey/valkey:8-alpine` to a
+> Compose — only the `django` container is deployed. **Pin `valkey/valkey:8` to a
 > digest before the first production release.**
+>
+> **No Alpine images (11/11/2026).** Every image is glibc-based (Debian): Alpine's musl libc is
+> excluded as a decision of this template, so `-alpine` tags are never used here. The default tags of
+> `postgres`, `valkey/valkey` and `nginx` are Debian; `nginx:mainline` is the non-Alpine
+> equivalent of the old `nginx:alpine` channel. **A Postgres volume created under the Alpine
+> image carries musl collation rules**, which glibc sorts differently, so text indexes built under
+> one can be wrong under the other. Reset dev and test data once after the switch with
+> `code/src/scripts/database/reset.sh`; the data is disposable at the `development` posture.
 
 ## Application server (`django`)
 

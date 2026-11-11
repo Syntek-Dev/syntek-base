@@ -75,8 +75,8 @@ map's settled nodes and umbrella ADRs.
 
 Copy `src/15-DECISIONS/ADR-US000-TEMPLATE.md` to
 `src/15-DECISIONS/ADR-US###-<DECISION>-DD-MM-YYYY.md` — the driving story, the decision in
-`SCREAMING-SNAKE-CASE`, and today's date (e.g.
-`ADR-US014-OPAQUE-SESSION-TOKENS-31-08-2026.md`). Flat: no per-story subdirectory. Fill the
+`SCREAMING-SNAKE-CASE`, and today's date (an illustrative name:
+ADR-US014-OPAQUE-SESSION-TOKENS-31-08-2026.md). Flat: no per-story subdirectory. Fill the
 metadata header: Status (`Proposed`), Date, Deciders, Supersedes, Superseded by, Related
 (`US###`).
 

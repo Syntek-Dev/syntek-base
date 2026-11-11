@@ -223,7 +223,7 @@ and the release that drives it have to be the same pair. Install it the way the 
 pair holds:
 
 ```bash
-uv run --no-project --with 'playwright==1.61.0' playwright install chromium
+uv run --no-project --with 'playwright==1.64.0' playwright install chromium
 ```
 
 **Do not drop the `==` and take the latest.** An unpinned install resolves whichever release is

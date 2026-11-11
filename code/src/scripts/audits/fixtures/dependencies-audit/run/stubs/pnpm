@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+#
+# Stand-in for pnpm in dependencies/audit.sh --self-test — never a tool. `pnpm audit` replays
+# the captured transcript for the state the probe asks for, with that transcript's exit code:
+# clean, finding (an advisory), or unmeasured (the registry answered 503 — not a finding).
+#
+# Reads: STUB_FIXTURES (the transcripts) · STUB_PNPM_AUDIT (clean | finding | unmeasured)
+set -u
+t="$STUB_FIXTURES"
+case "${1:-}" in
+  audit)
+    case "${STUB_PNPM_AUDIT:-clean}" in
+      clean)      cat "$t/javascript-advisories.clean.0.txt"; exit 0 ;;
+      finding)    cat "$t/javascript-advisories.finding.1.txt"; exit 1 ;;
+      unmeasured) cat "$t/javascript-advisories.unmeasured.1.txt"; exit 1 ;;
+    esac ;;
+  install)
+    cat "$t/javascript-lockfile.clean.0.txt"; exit 0 ;;
+esac
+echo "pnpm stub: unexpected arguments: $*" >&2
+exit 2

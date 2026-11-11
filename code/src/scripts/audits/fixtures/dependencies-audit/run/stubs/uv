@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#
+# Stand-in for uv in dependencies/audit.sh --self-test — never a tool. It replays the captured
+# transcripts one directory up and models the ONE side effect the run probes are about: `uv run`
+# without --frozen re-locks uv.lock, as the real uv does once the manifest has moved. A lock
+# marked STALE is one its manifest has left behind; re-locking rewrites the marker to FRESH.
+#
+# Reads: STUB_ROOT (the scratch project) · STUB_FIXTURES (the transcripts)
+set -u
+lock="$STUB_ROOT/uv.lock"
+t="$STUB_FIXTURES"
+case "${1:-}" in
+  lock)
+    if grep -q STALE "$lock"; then cat "$t/python-lockfile.finding.1.txt"; exit 1; fi
+    cat "$t/python-lockfile.clean.0.txt"; exit 0 ;;
+  export)
+    echo "six==1.16.0"; exit 0 ;;
+  run)
+    shift; frozen=false
+    while [[ $# -gt 0 && "$1" == --* ]]; do [[ "$1" == --frozen ]] && frozen=true; shift; done
+    if ! $frozen && grep -q STALE "$lock"; then
+      sed 's/STALE/FRESH/' "$lock" >"$lock.relock" && mv "$lock.relock" "$lock"
+    fi
+    cat "$t/python-advisories.clean.0.txt"; exit 0 ;;
+esac
+echo "uv stub: unexpected arguments: $*" >&2
+exit 2

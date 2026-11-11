@@ -26,12 +26,12 @@ code/src/scripts/rust/
 
 ## Scripts
 
-| Script     | Purpose                                                | Key flags             |
-| ---------- | ------------------------------------------------------ | --------------------- |
-| `build.sh` | Compile and install the extension into the venv        | `--release` `--check` |
-| `test.sh`  | Run the workspace's Rust tests                         | `--path NAME`         |
-| `lint.sh`  | `cargo fmt --check` and clippy with warnings as errors | `--fix` `--fmt-only`  |
-| `audit.sh` | Supply-chain gate against `code/src/rust/deny.toml`    | `--update`            |
+| Script     | Purpose                                                                                                             | Key flags                           |
+| ---------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| `build.sh` | Compile and install the extension into the venv; refuses a maturin below `crates/nativecore/pyproject.toml`'s floor | `--release` `--check` `--self-test` |
+| `test.sh`  | Run the workspace's Rust tests                                                                                      | `--path NAME`                       |
+| `lint.sh`  | `cargo fmt --check` and clippy with warnings as errors                                                              | `--fix` `--fmt-only`                |
+| `audit.sh` | Supply-chain gate against `code/src/rust/deny.toml`                                                                 | `--update`                          |
 
 Exit codes follow the house contract: `0` success, `1` the tool reported failure, `2` script
 error. Each script hard-fails with an install hint when a toolchain binary is missing, rather than

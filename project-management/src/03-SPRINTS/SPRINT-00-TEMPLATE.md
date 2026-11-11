@@ -342,12 +342,12 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 
 ## Definition of Done
 
-- [ ] All stories in the Story Summary are individually marked **Done** (their own DoD complete)
+- [ ] All stories in the Story Summary are individually at `Accepted` or later (their own DoD complete)
 - [ ] All sprint-level acceptance criteria met and verified by a reviewer
 - [ ] All sprint-level tasks checked off
 - [ ] All verification checks passed
 - [ ] No outstanding TODO or FIXME comments introduced in this sprint
 - [ ] All code merged to `main` (or the active release branch)
-- [ ] Sprint closed in the project board
+- [ ] Sprint record `**Status:**` set to `Done` by the `completion` skill
 - [ ] GDPR gaps identified during the sprint are documented in this file under the GDPR section
 - [ ] Retrospective notes captured (optional — link or inline)

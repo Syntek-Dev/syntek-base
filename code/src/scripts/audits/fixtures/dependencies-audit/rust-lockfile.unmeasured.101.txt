@@ -1,0 +1,2 @@
+error: failed to get `itoa` as a dependency of package `nativecore v0.1.0`
+Caused by: network failure seems to have happened

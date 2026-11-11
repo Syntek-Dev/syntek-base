@@ -1,6 +1,6 @@
 # SPRINT-02
 
-**Last Updated**: 31/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 04/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -19,7 +19,7 @@ born behind it.
      to SPRINT-03. A goal naming a deliverable no member carries is the drift the Story Summary
      exists to prevent. -->
 
-**Status:** Planned
+**Status:** In Progress
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
@@ -103,10 +103,10 @@ born behind it.
 
 ## Story Summary
 
-| ID    | Title                                                                        | MoSCoW      | SP  |
-| ----- | ---------------------------------------------------------------------------- | ----------- | --- |
-| US002 | The audits register regains the headroom nine new gates need                 | Must Have   | 3   |
-| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated | Should Have | 5   |
+| ID      | Title                                                                        | MoSCoW      | SP  |
+| ------- | ---------------------------------------------------------------------------- | ----------- | --- |
+| US002 ✓ | The audits register regains the headroom nine new gates need                 | Must Have   | 3   |
+| US003   | Absence gets an owning guide, born under 270 with every clause's tier stated | Should Have | 5   |
 
 **Total:** 8 SP — **3 committed, 5 stretch**
 
@@ -158,7 +158,8 @@ born behind it.
   And **US004, landing second, reads US003's disposition**: the three `code/docs/ABSENCE.md`
   survivors its Verification Checks name at cutting will have cleared before it is worked.
 - **One dependency runs SPRINT-02 → SPRINT-03 and is concrete.** US002 shrinks
-  `code/src/scripts/audits/CONTEXT.md` from 298 to 230 counted lines, and US004 must edit a row
+  `code/src/scripts/audits/CONTEXT.md` to 230 counted lines, from 299 at its build's first
+  measurement (03/11/2026), and US004 must edit a row
   in that file against a 300-line hard limit — recorded as `AC-GAP-9` of
   `project-management/src/11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md`. The sprint
   plan of 05/09/2026 argued this as "SPRINT-01 before SPRINT-02"; it is now "SPRINT-02 before
@@ -174,7 +175,7 @@ born behind it.
   because the gate's own repair — US004 — now lands **after** this sprint. Every survivor US004's
   Verification Checks name at cutting belongs to a member of this sprint: the three
   `code/docs/ABSENCE.md` forward references are US003's and clear when the guide lands; the three
-  `code/src/scripts/audits/SLOP-FAMILY.md` citations are US002's
+  "code/src/scripts/audits/SLOP-FAMILY.md" citations are US002's <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
   (`project-management/src/02-STORIES/US004.md` -> Acceptance Criteria, the scenario _The classes
   this story owns are cleared, and the baseline regime retires_) and are US002's to disposition
   when it ships.
@@ -187,7 +188,8 @@ born behind it.
   story number exists for it.
 - **US002 unblocks nine audit registrations across eight slices and seven maps** — every story
   that adds a script under `code/src/scripts/audits/` needs three counted lines in a register
-  with two lines of headroom. Its full table is in `project-management/src/02-STORIES/US002.md`.
+  `docs-length.sh` measured at 299 of 300 on 17/09/2026. Its full table is in
+  `project-management/src/02-STORIES/US002.md`. <!-- UPDATED 03/11/2026 (US002 Step H): this bullet read "in a register with two lines of headroom", and the SPRINT-02 → SPRINT-03 dependency "from 298 to 230 counted lines", until then. A standing guard on that file cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. -->
 - **US003 unblocks five slices** on `project-management/src/01-FEATURE-MAPS/MAP-ABSENCE.md` —
   `S-02` (the Python `None` clause), `S-03` (the HTMX contract), `S-04` (the optional-surface
   remainders), `S-05` (tiers and the mechanical legs) and `S-06` (consumer wiring). Every one
@@ -669,8 +671,8 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`; no shipped file either member
       writes or edits adds an unresolved citation of any class; every survivor is named with the
       story that owns it. The three `code/docs/ABSENCE.md` forward references clear when US003's
-      guide lands; the three `code/src/scripts/audits/SLOP-FAMILY.md` citations are US002's to
-      disposition. A bare pass is unavailable to this sprint
+      guide lands; the three "code/src/scripts/audits/SLOP-FAMILY.md" citations are US002's to
+      disposition. A bare pass is unavailable to this sprint <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
       <!-- UPDATED 30/09/2026: successor added beside the superseded record, which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - [ ] `bash code/src/scripts/audits/docs-length.sh` — with `--path code/src/scripts/audits --limit 1`,
       `code/src/scripts/audits/CONTEXT.md` at or under **230** counted lines and

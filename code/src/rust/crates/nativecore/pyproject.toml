@@ -7,7 +7,10 @@
 # not at the root.
 
 [build-system]
-requires = ["maturin>=1.7,<2.0"]
+# 1.9.4 is the floor PyO3 0.30 names for dropping its deprecated `extension-module`
+# feature: from there maturin itself stops the wheel linking libpython. Below it, a
+# resolver could choose a maturin that links it, now that the feature is gone.
+requires = ["maturin>=1.9.4,<2.0"]
 build-backend = "maturin"
 
 [project]
@@ -26,5 +29,4 @@ classifiers = ["Private :: Do Not Upload"]
 # python-source directory. abi3-py314 in the workspace means one wheel covers every
 # CPython from 3.14 up, rather than one wheel per minor version.
 module-name = "nativecore"
-features = ["pyo3/extension-module"]
 strip = true

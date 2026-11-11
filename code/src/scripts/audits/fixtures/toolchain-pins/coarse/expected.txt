@@ -1,0 +1,8 @@
+# Sources coarser than their tool moves at: .nvmrc lts/* and .python-version 3. Each source is
+# itself an unpinned row and is then no source, so every site of its tool is no-source (Q-03).
+# sites: 5
+unpinned node .nvmrc
+unpinned python .python-version
+nosource node README.md
+nosource python .github/workflows/ci.yml
+nosource node .github/workflows/ci.yml
