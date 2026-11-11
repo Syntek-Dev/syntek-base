@@ -224,7 +224,7 @@ in a **generated project** — so the template was shipping them:
 - **Added 15/10/2026, found by the mutation-testing research.** `code/docs/testing/TAXONOMY.md:189`
   also advertises `backend.sh -n auto`. The Testcontainers lines (`BACKEND-TESTING.md:114-115`,
   `TAXONOMY.md:22`) contradict `BACKEND-TESTING.md:84-85`, which puts integration tests on the
-  Compose-managed `postgres:18-alpine` test database.
+  Compose-managed `postgres:18` test database (Alpine dropped 11/11/2026).
 
 ---
 

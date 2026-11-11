@@ -108,7 +108,7 @@ Beyond everything below, a test also declares the story it exists for — see _M
 | Django Ninja API (Python)            | pytest                            | —             | pytest-django + `ninja.testing.TestClient` / test client    |
 | Templates, components, HTMX partials | pytest (Django test client)       | —             | pytest-django                                               |
 | API (HTTP layer)                     | Bruno collection                  | —             | Bruno CLI, environments/local.env                           |
-| PostgreSQL                           | pytest transactional fixtures     | —             | compose-managed postgres:18-alpine                          |
+| PostgreSQL                           | pytest transactional fixtures     | —             | compose-managed postgres:18                                 |
 | a11y                                 | pytest assertions on markup       | axe-core      | pytest-django; `axe-playwright-python` in the browser suite |
 | Responsive overflow                  | —                                 | Playwright    | `pytest-playwright` (measured, never screenshot-diffed)     |
 | Mutation                             | mutmut                            | —             | mutmut (Python)                                             |

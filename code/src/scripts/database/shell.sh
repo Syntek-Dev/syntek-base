@@ -5,7 +5,7 @@
 # Usage: shell.sh [--psql] [--help]
 #
 # --psql:  Direct psql session in the db container. This is the mode that works on the
-#          images this template ships, because postgres:18-alpine carries the psql binary.
+#          images this template ships, because postgres:18 carries the psql binary.
 # Default: Django dbshell (python manage.py dbshell) in the django container. Django does not
 #          implement a shell — its postgresql DatabaseClient sets executable_name = "psql" and
 #          execs it — and Dockerfile.dev installs libpq-dev, which is the client *library* and

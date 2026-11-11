@@ -38,7 +38,9 @@ container, `django`, server-renders everything.
   else rides the catch-all.
 - **Re-scope every published port** in a worktree override to `127.0.0.NNN`, matching the
   `/etc/hosts` entry — otherwise the per-story stack collides with the main one.
-- Pin `valkey/valkey:8-alpine` to a digest before the first production release.
+- Pin `valkey/valkey:8` to a digest before the first production release.
+- **Never an Alpine (musl) image or `-alpine` tag** — every base and service image is
+  glibc-based (decided 11/11/2026). The why and the volume-reset note are in `CONTEXT.md`.
 - Every new directory under `src/` gets a `CONTEXT.md` + `CLAUDE.md` pair.
 
 ## Output & naming
