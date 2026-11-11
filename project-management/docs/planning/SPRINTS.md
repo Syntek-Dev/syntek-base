@@ -150,9 +150,9 @@ its ledger is full, its plan-counted total is not. Say which number you mean.
 **Every live `SPRINT-##.md` carries the same table, and the copies are identical.** It lists every
 record, its members in build order, and its capacity with its admission posture:
 
-| Sprint      | Members, in build order                  | SP               |
-| ----------- | ---------------------------------------- | ---------------- |
-| `SPRINT-01` | US007 (`Must`, 5) then US001 (`Must`, 5) | 10 / 11 — closed |
+| Sprint    | Members, in build order                  | SP               |
+| --------- | ---------------------------------------- | ---------------- |
+| SPRINT-01 | US007 (`Must`, 5) then US001 (`Must`, 5) | 10 / 11 — closed |
 
 One row per record. Mark which record the reader is in **in the prose above the table, never
 inside a cell** — a copy that legitimately differs from its siblings cannot be checked against

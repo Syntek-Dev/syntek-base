@@ -41,7 +41,7 @@ before the sprint plan locks scope. Sign-off is <%DEVELOPER_NAME%>'s.
 - **AC-GAP-3** `[RESOLVED]` — **"the run exits 0" cannot be satisfied by a correct
   implementation.** Six findings survive US004 whatever it does: three citations of
   `code/docs/ABSENCE.md` belonging to US003, and three of
-  `code/src/scripts/audits/SLOP-FAMILY.md` belonging to the parallel session's US002 ADRs. This
+  "code/src/scripts/audits/SLOP-FAMILY.md" belonging to the parallel session's US002 ADRs. This <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
   is `project-management/src/11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` AC-GAP-2
   recurring one story later. **The criterion is restated as a class delta** — no finding of the
   classes this story owns remains, and every survivor is named with the story that owns it, per
@@ -91,7 +91,7 @@ before the sprint plan locks scope. Sign-off is <%DEVELOPER_NAME%>'s.
   must re-run both builders after creating the file**, and carry a `trap` so a failure between
   creation and assertion does not leak an untracked file into the working tree.
 - **AC-GAP-9** `[RESOLVED]` — **the `audits/CONTEXT.md` refresh collides with US002.** That file
-  sits at **298 of 300 counted lines**, and US002 in SPRINT-01 owns shrinking it to 230 by moving
+  sat at **298 of 300 counted lines** when this plan was written (02/09/2026), and US002 in SPRINT-01 owns shrinking it to 230 by moving
   rows out. US004's task refreshes the `doc-references.sh` row in the same file. Whichever lands
   second reverts or duplicates the other, and if US004 lands first it grows a file two lines from
   a hard limit. **US004's edit is scoped to replacing text within the existing row, never adding
@@ -239,8 +239,8 @@ uses, so a screen reader and a terminal pager read them identically to today's.
   `build_template_only` and `build_template_only_index` explicitly (AC-GAP-8).
 - **The A/B changes only index membership.** `git add --intent-to-add` followed by the scoped
   restore above preserves the fixture's bytes; record `git status --porcelain` after every A/B.
-- **Do not edit `code/src/scripts/audits/CONTEXT.md`'s line count.** US002 owns that file's shape
-  and it is at 298 of 300 (AC-GAP-9).
+- **Do not edit `code/src/scripts/audits/CONTEXT.md`'s line count.** US002 owns that file's shape,
+  as `docs-length.sh` measures it (AC-GAP-9). <!-- UPDATED 03/11/2026 (US002 Step H): this bullet read "and it is at 298 of 300", and AC-GAP-9 "sits at **298 of 300 counted lines**" until then. A standing guard on code/src/scripts/audits/CONTEXT.md cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. -->
 
 ---
 

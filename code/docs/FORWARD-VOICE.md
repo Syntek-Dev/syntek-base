@@ -73,6 +73,12 @@ exist and the gate reddens on the register itself. No second clause was written 
 sites this rule was written against name `code/src/django/components/`. If two documents disagree
 about what a path is for, that is a documentation defect to fix, not two rows.
 
+**A row may be patterned.** Where every story creates its own copy of a record, one row binds the
+class: `###` means exactly three digits, the rest matches literally and whole. The duty is the
+same — a newly promised record class takes its row in the same change. **No row covers a shipped
+template**: a zero-index or `-TEMPLATE.` file must exist here, and the gate tests its presence
+before it consults the register.
+
 ## 4. Direction B — the `template-only` token
 
 A citation of a path this repository **holds** but copier **excludes** resolves here and dangles
@@ -112,13 +118,21 @@ discovered later:
   survives generation". The set is parsed rather than listed, so a new exclusion needs no edit
   to the script — and the run prints its size, because a parse that found nothing would
   otherwise report clean.
-- **It does not reach the surface-gated exclusions, and that is a decision.** A path behind
-  `INCLUDE_MOBILE`, `INCLUDE_RUST` or `INCLUDE_DESKTOP` is absent only from a project that
-  declined that surface, so `template-only` would be **false** in every project that took it.
-  Those citations — the `RUST.md`, `DESKTOP.md` and `MOBILE.md` index rows, and the two stack
-  skills — keep the prose `rust-only` / `mobile-only` flag their guides already carry. That
-  half stays reviewer's judgement, and it is the only part of Direction B a green run does not
-  cover.
+- **It does not mark the surface-gated exclusions, and that is a decision.** A path behind
+  `INCLUDE_MOBILE`, `INCLUDE_RUST`, `INCLUDE_DESKTOP`, `INCLUDE_WAGTAIL` or `INCLUDE_CLICKUP` is
+  absent only from a project that declined that surface, so `template-only` would be **false**
+  in every project that took it. Those citations keep the prose `rust-only` / `mobile-only` flag
+  their guides already carry, and no marker. **Since 09/11/2026 the gate reads the decline
+  instead** (US004 F-051): each gated `_exclude` entry is parsed into a `gated FLAG path` row of
+  the shipping facts, and in a generated project an **absent** target under a gated path whose
+  surface `.copier-answers.yml` declined is passed, not reported — and **counted per flag**, in
+  the run's output and its verdict, because a green run must not read as "every cited file
+  exists". It **fails closed**: a missing answers file, one copier did not write, a key not
+  written once at top level, or a non-boolean answer exempts nothing, and the run says why. A taken surface's missing file is an
+  ordinary finding; the template reads no answers, since it holds every gated path.
+- **It cannot tell, downstream, whether a path under a declined gate is spelt right.** A
+  misspelt file under the rust docs passes in a project that declined Rust, because nothing
+  there can tell it from a correct one. Such a citation is judged only in the template run.
 - **It cannot see whether a marker is _true_.** The token declares that a path does not survive
   generation; nothing proves the writer read `_exclude` before writing it. A marker on a path <!-- doc-references: template-only -->
   that ships is a lie this gate will believe, exactly as `ignore` always has been.
@@ -166,14 +180,29 @@ believed on its own.
 
 ## 7. Where each half lives
 
-| Fact                                            | Owner                                                                                       |
-| ----------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| The rule, the two directions, the token grammar | This file                                                                                   |
-| This project's registered paths and creators    | `how-to/src/PROJECT-PATHS.md`                                                               |
-| The clauses, exemptions and the `--self-test`   | `code/src/scripts/audits/doc-references.sh`                                                 |
-| Which paths are excluded, and conditionally     | `copier.yml` → `_exclude`, parsed and never restated <!-- doc-references: template-only --> |
-| What a gate may claim it looked at              | `code/docs/GATE-REPORTING.md`                                                               |
-| The `CONTEXT.md` / `CLAUDE.md` split            | `code/docs/DOCUMENTATION-PAIRING.md`                                                        |
+| Fact                                             | Owner                                                                                       |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| The rule, the two directions, the token grammar  | This file                                                                                   |
+| This project's registered paths and creators     | `how-to/src/PROJECT-PATHS.md`                                                               |
+| The clauses, exemptions and the `--self-test`    | `code/src/scripts/audits/doc-references.sh`                                                 |
+| Which paths are excluded, and conditionally      | `copier.yml` → `_exclude`, parsed and never restated <!-- doc-references: template-only --> |
+| What copier seeds and lifts back out, downstream | `code/src/scripts/audits/doc-references-shipping.txt` — generated, never hand-edited        |
+| What a gate may claim it looked at               | `code/docs/GATE-REPORTING.md`                                                               |
+| The `CONTEXT.md` / `CLAUDE.md` split             | `code/docs/DOCUMENTATION-PAIRING.md`                                                        |
+
+**One source for what ships, read in both trees.** Two facts decide whether a citing file ships:
+what copier **seeds** from `.copier/`, and what its exclusion list **lifts back out** of an excluded
+tree. A third decides whether a cited file may be absent: which paths a surface flag **gates**, and
+what an unanswered flag means — read from the question's own default, since copier omits a question
+its `when` skipped. The copier contract is the only place a human states any of them. It is excluded from every
+generated project, so the gate cannot read it there — and until 06/11/2026 a project's own
+`GAPS.md` and `.claude/MEMORY.md` were policed as shipped files for that reason. The facts are
+therefore rendered from the contract into the shipped facts file above, by
+`doc-references.sh --write-shipping`; the template's ordinary run reports `[shipping facts]` while
+the two disagree, and a generated project reads the file. Check 3's excluded-path set is
+deliberately **not** carried: downstream it is empty by decision. The contract counts as present
+only where `.copier/` sits beside it, so a project that writes a contract file of its own still
+reads the shipped facts.
 
 ## Cross-references
 

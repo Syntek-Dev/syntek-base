@@ -31,10 +31,10 @@ name = "desktop"
 path = "src/main.rs"
 
 [dependencies]
-slint = "1.17"
+slint = "1.18"
 
 [build-dependencies]
-slint-build = "1.17"
+slint-build = "1.18"
 
 [lints.rust]
 unsafe_code = "deny"

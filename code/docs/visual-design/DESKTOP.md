@@ -25,7 +25,7 @@ Slint application at `code/src/rust/crates/desktop/`.
 
 The tell on this surface is precise and verifiable, which makes it unlike the other two.
 
-**From Slint 1.16, Fluent is the default style on every platform.** This project pins 1.17. An app
+**From Slint 1.16, Fluent is the default style on every platform.** This project pins 1.18. An app
 that sets no style and composes from bare `std-widgets` therefore ships as **stock Microsoft
 Fluent** — on macOS and Linux as well as Windows. That is the desktop equivalent of shipping
 untouched component-library defaults: not broken, not ugly, and not designed.

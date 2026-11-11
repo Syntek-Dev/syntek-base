@@ -222,23 +222,23 @@ Its trust boundaries and severities are adopted here unchanged.
 Grouped by severity. All fifteen are carried from the threat model unchanged; see it for the
 full mitigation text and the promotion triggers.
 
-| ID    | STRIDE | OWASP | NIST  | TB  | Threat Description                                                                  | Severity | Planned Mitigation                                                |
-| ----- | ------ | ----- | ----- | --- | ----------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------- |
-| TM-01 | S      | A01   | PR.AA | TB2 | A subdomain plants a session cookie the apex accepts                                | MEDIUM   | The `__Host-` prefix — the story's own deliverable (Section 7.1)  |
-| TM-02 | E      | A01   | PR.AA | TB5 | A deployed module the prefix and the gate never reach                               | MEDIUM   | Rule stated per-module; gate names what it read (Section 7.2)     |
-| TM-03 | T      | A02   | RC.RP | TB6 | A merge leaves `Domain` beside `__Host-`; every login fails                         | MEDIUM   | The unversioned advisory, via the repaired preview (Section 7.11) |
-| TM-04 | D      | A10   | DE.CM | TB6 | The advisory is invisible in the preview that informs the decision                  | MEDIUM   | The preview is repaired inside US008 (Section 7.11)               |
-| TM-05 | S      | A07   | PR.AA | TB4 | `SECURE_SSL_REDIRECT` trusts a client-suppliable header                             | MEDIUM   | A stated precondition and an edge strip clause (Section 7.5)      |
-| TM-08 | T      | A02   | DE.CM | TB7 | The gate reads a directory; the rule is global                                      | MEDIUM   | The guide states the gate's reach (Section 7.7)                   |
-| TM-10 | D      | A10   | RC.RP | TB1 | Rollback invalidates every session a second time                                    | MEDIUM   | The advisory names both directions (Section 7.9)                  |
-| TM-11 | D      | A10   | PR.PS | TB1 | A rolling deploy serves both cookie names at once                                   | MEDIUM   | The advisory names the cutover shape (Section 7.9)                |
-| TM-15 | T      | A03   | PR.PS | TB6 | A design-time migration key may name a release without the doctrine                 | MEDIUM   | Unversioned state gate; key derived at release (Section 7.13)     |
-| TM-06 | I      | A03   | PR.DS | TB3 | `HttpOnly` does not defend the token against XSS                                    | LOW      | Named as a limit in the owner guide (Section 7.6)                 |
-| TM-07 | T      | A01   | PR.DS | TB2 | `messages` and language cookies stay unprefixed                                     | LOW      | Residual, scoped and named (Section 7.6)                          |
-| TM-09 | T      | A02   | DE.CM | TB7 | `code/src/scripts/audits/CONTEXT.md:174` will say twelve when the answer is fifteen | LOW      | Named cost of Q3; recorded, not silently carried (Section 7.10)   |
-| TM-12 | D      | A10   | PR.PS | TB5 | Dev and production differ by cookie name; literal matches rot                       | LOW      | Warning owed to this tree too, not only to updaters (Section 7.8) |
-| TM-13 | R      | A09   | DE.AE | TB1 | A browser discards a malformed prefixed cookie in silence                           | INFO     | Accepted residual, named rather than assumed                      |
-| TM-14 | E      | A03   | PR.PS | TB6 | Two entries on a `--trust` surface, one run on every update                         | INFO     | Pre-existing boundary, counted rather than assumed static         |
+| ID    | STRIDE | OWASP | NIST  | TB  | Threat Description                                                                                                        | Severity | Planned Mitigation                                                |
+| ----- | ------ | ----- | ----- | --- | ------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------- |
+| TM-01 | S      | A01   | PR.AA | TB2 | A subdomain plants a session cookie the apex accepts                                                                      | MEDIUM   | The `__Host-` prefix — the story's own deliverable (Section 7.1)  |
+| TM-02 | E      | A01   | PR.AA | TB5 | A deployed module the prefix and the gate never reach                                                                     | MEDIUM   | Rule stated per-module; gate names what it read (Section 7.2)     |
+| TM-03 | T      | A02   | RC.RP | TB6 | A merge leaves `Domain` beside `__Host-`; every login fails                                                               | MEDIUM   | The unversioned advisory, via the repaired preview (Section 7.11) |
+| TM-04 | D      | A10   | DE.CM | TB6 | The advisory is invisible in the preview that informs the decision                                                        | MEDIUM   | The preview is repaired inside US008 (Section 7.11)               |
+| TM-05 | S      | A07   | PR.AA | TB4 | `SECURE_SSL_REDIRECT` trusts a client-suppliable header                                                                   | MEDIUM   | A stated precondition and an edge strip clause (Section 7.5)      |
+| TM-08 | T      | A02   | DE.CM | TB7 | The gate reads a directory; the rule is global                                                                            | MEDIUM   | The guide states the gate's reach (Section 7.7)                   |
+| TM-10 | D      | A10   | RC.RP | TB1 | Rollback invalidates every session a second time                                                                          | MEDIUM   | The advisory names both directions (Section 7.9)                  |
+| TM-11 | D      | A10   | PR.PS | TB1 | A rolling deploy serves both cookie names at once                                                                         | MEDIUM   | The advisory names the cutover shape (Section 7.9)                |
+| TM-15 | T      | A03   | PR.PS | TB6 | A design-time migration key may name a release without the doctrine                                                       | MEDIUM   | Unversioned state gate; key derived at release (Section 7.13)     |
+| TM-06 | I      | A03   | PR.DS | TB3 | `HttpOnly` does not defend the token against XSS                                                                          | LOW      | Named as a limit in the owner guide (Section 7.6)                 |
+| TM-07 | T      | A01   | PR.DS | TB2 | `messages` and language cookies stay unprefixed                                                                           | LOW      | Residual, scoped and named (Section 7.6)                          |
+| TM-09 | T      | A02   | DE.CM | TB7 | `code/src/scripts/audits/CONTEXT.md` → _Scripts_, the `negative-space.sh` row, will say twelve when the answer is fifteen | LOW      | Named cost of Q3; recorded, not silently carried (Section 7.10)   |
+| TM-12 | D      | A10   | PR.PS | TB5 | Dev and production differ by cookie name; literal matches rot                                                             | LOW      | Warning owed to this tree too, not only to updaters (Section 7.8) |
+| TM-13 | R      | A09   | DE.AE | TB1 | A browser discards a malformed prefixed cookie in silence                                                                 | INFO     | Accepted residual, named rather than assumed                      |
+| TM-14 | E      | A03   | PR.PS | TB6 | Two entries on a `--trust` surface, one run on every update                                                               | INFO     | Pre-existing boundary, counted rather than assumed static         |
 
 <!-- AMENDED 28/09/2026, at the gate-10 sign-off. Six rows were overtaken by an Accepted record of
      17/09/2026 or by a re-measurement, as in the threat model's Section 3 table, and read as
@@ -310,8 +310,10 @@ Each becomes a US008 acceptance criterion; the implementation assessment closes 
       every live session and in-flight CSRF token, **a rollback does the same again**, and the
       cutover cannot be rolling without logging users out repeatedly (A10, TM-10/TM-11)
 - [ ] **7.10** The three clauses carry **no silencing annotation**
-      (`code/src/scripts/audits/CONTEXT.md:174`), and the register's under-count is recorded as the
-      named cost of Q3 rather than left to be found (A02, TM-09)
+      (`code/src/scripts/audits/CONTEXT.md` → _Scripts_, the `negative-space.sh` row), and the
+      register's under-count is recorded as the named cost of Q3 rather than left to be found
+      (A02, TM-09)
+      <!-- UPDATED 03/11/2026 (US002 Step H): 7.10 and TM-09's row in Section 6 cited "`code/src/scripts/audits/CONTEXT.md:174`" until then; US002 shrank that file, so the row is named rather than re-pinned. The :170 and :174 records above and below are history. -->
 - [ ] **7.11** **The advisory reaches its operator.** TM-03's only mitigation is an advisory the
       story's own Q11 row records as invisible in `template-update.sh`'s successful preview. The
       blindness is repaired inside US008, and a successful preview is proved to show the advisory.

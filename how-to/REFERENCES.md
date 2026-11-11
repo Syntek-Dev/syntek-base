@@ -95,7 +95,7 @@ points for that procedure.
 | [Docker Compose file reference](https://docs.docker.com/reference/compose-file/) | `docker-compose.yml` schema and all service options              |
 | [pnpm 11 documentation](https://pnpm.io/motivation)                              | Package manager used for all frontend JS/TS dependencies         |
 | [uv documentation](https://docs.astral.sh/uv/)                                   | Python package and project manager used for backend dependencies |
-| [Node.js 24 documentation](https://nodejs.org/docs/latest-v24.x/api/)            | Node.js runtime API reference                                    |
+| [Node.js 26 documentation](https://nodejs.org/docs/latest-v26.x/api/)            | Node.js runtime API reference                                    |
 | [Python 3.14 documentation](https://docs.python.org/3.14/)                       | Python language and standard library reference                   |
 | [Git worktrees](https://git-scm.com/docs/git-worktree)                           | Official `git worktree` command reference                        |
 | [Lefthook documentation](https://github.com/evilmartians/lefthook)               | Git hook manager used for pre-commit checks                      |

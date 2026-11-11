@@ -18,7 +18,13 @@
 # Usage: security.sh [--docker] [--local] [--js-only] [--py-only]
 #                    [--py-tool pip-audit|uv] [--audit-level LEVEL] [--quiet] [--help]
 #
-# Exit codes:  0 = no vulnerabilities   1 = vulnerabilities found   2 = script error
+# Exit codes:  0 = no vulnerabilities   1 = vulnerabilities found
+#              2 = a tool did not run to a result (network, missing lock), or a script error
+#
+#   A non-zero exit from pnpm audit or pip-audit is not a finding by itself — both exit 1 on a
+#   503 from the advisory service as readily as on an advisory. Each leg's output is matched
+#   against the line that tool prints for a real result; anything else is NOT RUN, and NOT RUN
+#   is exit 2, never 1 and never 0 (code/docs/GATE-REPORTING.md). A finding outranks it.
 #
 set -euo pipefail
 
@@ -116,29 +122,69 @@ require_containers() {
     || die "No dev containers running. Start with: bash code/src/scripts/development/server.sh up"
 }
 
-# Run a command, streaming output unless --quiet. Returns the command's exit code.
-run() {
-  if $QUIET; then "$@" >/dev/null 2>&1; else "$@"; fi
+# run_capture FILE CMD... — run CMD, streaming its output unless --quiet and keeping a copy in
+# FILE, because the verdict is read out of that output. Returns CMD's exit code, never tee's.
+run_capture() {
+  local file="$1" rc=0
+  shift
+  set +e
+  if $QUIET; then
+    "$@" >"$file" 2>&1; rc=$?
+  else
+    "$@" 2>&1 | tee "$file"; rc=${PIPESTATUS[0]}
+  fi
+  set -e
+  return "$rc"
+}
+
+# leg_result RC FILE PATTERN — prints 0 (clean), 1 (finding) or 2 (NOT RUN). PATTERN is the
+# line the tool prints when it found something; a failure without it never examined anything.
+leg_result() {
+  if [[ "$1" -eq 0 ]]; then echo 0
+  elif grep -qE "$3" "$2"; then echo 1
+  else echo 2
+  fi
+}
+
+# leg_label RESULT — the summary wording for each result
+leg_label() {
+  case "$1" in
+    0) echo "clean ✓" ;;
+    1) echo "VULNERABLE ✗" ;;
+    *) echo "NOT RUN ? — the tool failed before reaching a result; nothing was examined" ;;
+  esac
 }
 
 # ── JS/TS — pnpm audit ────────────────────────────────────────────────────────
+# Each audit_* sets its leg's result (0 | 1 | 2) in JS_EXIT / PY_EXIT — see leg_result.
 audit_js() {
+  local out rc=0
   bold "▶ JS/TS — pnpm audit --audit-level $AUDIT_LEVEL (mode: $MODE)"
+  out="$(mktemp)"
   # pnpm is host-only — the django image carries no Node toolchain.
-  run bash -c "cd '$PROJECT_ROOT' && pnpm audit --audit-level $AUDIT_LEVEL" || return 1
+  run_capture "$out" bash -c "cd '$PROJECT_ROOT' && pnpm audit --audit-level $AUDIT_LEVEL" || rc=$?
+  JS_EXIT="$(leg_result "$rc" "$out" '[0-9]+ vulnerabilit(y|ies) found')"
+  rm -f "$out"
 }
 
 # ── Python — pip-audit (default) or uv audit ──────────────────────────────────
 audit_py() {
+  local out rc=0 found
+  out="$(mktemp)"
   if [[ "$PY_TOOL" == "uv" ]]; then
     bold "▶ Python — uv audit (mode: $MODE)"
+    # uv audit is experimental and no finding transcript of it is captured here, so its
+    # finding shape is matched loosely: any line naming a vulnerability.
+    found='[Vv]ulnerabilit'
     local cmd='uv audit --preview-features audit-command'
     if [[ "$MODE" == "docker" ]]; then
-      run "${DC[@]}" exec -T django sh -c "cd /workspace/code/src/django && $cmd" || return 1
+      run_capture "$out" "${DC[@]}" exec -T django sh -c "cd /workspace/code/src/django && $cmd" || rc=$?
     else
-      run bash -c "cd '$BACKEND_DIR' && $cmd" || return 1
+      run_capture "$out" bash -c "cd '$BACKEND_DIR' && $cmd" || rc=$?
     fi
   else
+    found='Found [0-9]+ known vulnerabilit'
+
     bold "▶ Python — pip-audit (mode: $MODE)"
     # Export the locked deps to a requirements file, then scan it — matches the CI gate.
     #
@@ -151,34 +197,44 @@ audit_py() {
     # --all-groups because uv exports its default groups only (`dev`), so until 14/10/2026 the
     # `test` group — pytest, playwright, mutmut and the rest — was never scanned at all. None
     # of it ships (the images sync --no-dev), but all of it runs on a developer's host.
-    local cmd='uv export --frozen --all-groups --format requirements-txt --no-hashes > "$req" && uv run pip-audit --requirement "$req"; rc=$?; rm -f "$req"; exit $rc'
+    #
+    # `uv run --frozen` for the same reason as the export: a bare `uv run` re-locks a uv.lock
+    # its manifest has moved past, and syncs the environment, before pip-audit starts. That made
+    # dependencies/audit.sh's lockfile leg report clean over a lock this audit had just written.
+    local cmd='uv export --frozen --all-groups --format requirements-txt --no-hashes > "$req" && uv run --frozen pip-audit --requirement "$req"; rc=$?; rm -f "$req"; exit $rc'
     if [[ "$MODE" == "docker" ]]; then
-      run "${DC[@]}" exec -T django sh -c \
-        "cd /workspace/code/src/django && req=\$(mktemp) && $cmd" || return 1
+      run_capture "$out" "${DC[@]}" exec -T django sh -c \
+        "cd /workspace/code/src/django && req=\$(mktemp) && $cmd" || rc=$?
     else
-      run bash -c "cd '$BACKEND_DIR' && req=\$(mktemp) && $cmd" || return 1
+      run_capture "$out" bash -c "cd '$BACKEND_DIR' && req=\$(mktemp) && $cmd" || rc=$?
     fi
   fi
+  PY_EXIT="$(leg_result "$rc" "$out" "$found")"
+  rm -f "$out"
 }
 
 # ── Run ───────────────────────────────────────────────────────────────────────
 [[ "$MODE" == "docker" ]] && require_containers
 
-if $RUN_JS; then audit_js || JS_EXIT=1; log ""; fi
-if $RUN_PY; then audit_py || PY_EXIT=1; log ""; fi
+if $RUN_JS; then audit_js; log ""; fi
+if $RUN_PY; then audit_py; log ""; fi
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 js_status="skipped"; py_status="skipped"
-$RUN_JS && { [[ $JS_EXIT -eq 0 ]] && js_status="clean ✓" || js_status="VULNERABLE ✗"; }
-$RUN_PY && { [[ $PY_EXIT -eq 0 ]] && py_status="clean ✓" || py_status="VULNERABLE ✗"; }
+$RUN_JS && js_status="$(leg_label "$JS_EXIT")"
+$RUN_PY && py_status="$(leg_label "$PY_EXIT")"
 
 bold "── Security audit summary (${MODE}) ──"
 $RUN_JS && log "  JS/TS  (pnpm audit):           $js_status"
 $RUN_PY && log "  Python (${PY_TOOL}):$(printf '%*s' $((18 - ${#PY_TOOL})) '')$py_status"
 
-if [[ $JS_EXIT -ne 0 || $PY_EXIT -ne 0 ]]; then
+if [[ $JS_EXIT -eq 1 || $PY_EXIT -eq 1 ]]; then
   bold "✗ Vulnerabilities found."
   exit 1
+fi
+if [[ $JS_EXIT -ne 0 || $PY_EXIT -ne 0 ]]; then
+  bold "? Unmeasured — an audit marked NOT RUN never examined its dependencies. Fix the cause above and re-run."
+  exit 2
 fi
 bold "✓ No vulnerabilities."
 exit 0

@@ -1,0 +1,53 @@
+# Toolchain pin guard — the CI half of code/src/scripts/audits/toolchain-pins.sh.
+#
+# Node, Python, uv, pnpm and Rust are each pinned in many files no tool holds in step — CI
+# env blocks and setup steps, Dockerfiles, package.json, pyproject.toml, and the documents a
+# contributor installs from. Moving one source of truth and not its sites is the matched-set
+# failure how-to/workflows/07-dependency-updates Step 4 warns of, and it is invisible until a
+# job somewhere runs a different toolchain from the one everyone else does.
+#
+# UNFILTERED, AND THAT IS THE POINT. The script DISCOVERS its sites by parsing every workflow,
+# Dockerfile, manifest and registered document, so the set of files that can move a pin is
+# whatever it finds. A path filter would be a hand-written copy of that set — the exact list the
+# script was written not to keep — and it would go stale the first time a new workflow pinned a
+# version. The audit is grep and awk over a few hundred files and runs in seconds, so running it
+# on every pull request costs nothing worth a filter.
+#
+# THE HELD TIER IS PRINTED, NOT FAILED. A class held in the script's held register is reported
+# every run in its own tier without changing the exit code; the script's header carries the
+# reasoning against code/docs/GATE-REPORTING.md. That register is template-only, so in a
+# generated project nothing is held and every unpinned site fails here until it is pinned.
+name: Audit — Toolchain Pins
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+  pull_request:
+    branches: [main, staging, dev, testing]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  toolchain-pins:
+    name: Toolchain pin agreement audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # grep, sed and awk only — no toolchain is installed, because the audit compares what
+      # the files SAY, never what a runner happens to have.
+      - name: Prove the detector still separates agreement from drift
+        run: bash code/src/scripts/audits/toolchain-pins.sh --self-test
+
+      - name: Run toolchain pin audit
+        run: bash code/src/scripts/audits/toolchain-pins.sh --output md
+
+      - name: Upload toolchain pin report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: toolchain-pins-report
+          path: code/src/scripts/audits/reports/toolchain-pins-report.md
+          if-no-files-found: ignore

@@ -43,7 +43,7 @@ work, or a review of the same. For the frontend equivalent see `.claude/skills/s
 | Layer           | Technology                                     |
 | --------------- | ---------------------------------------------- |
 | **Platform**    | Docker Compose (dev) · Gunicorn + Nginx (prod) |
-| **Backend**     | Python 3.14, Django 6.0.6                      |
+| **Backend**     | Python 3.14, Django 6.1.3                      |
 | **API**         | Django Ninja (`/api/`, OpenAPI at `/api/docs`) |
 | **Database**    | PostgreSQL 18 (with row-level security)        |
 | **Cache/queue** | Valkey                                         |

@@ -568,7 +568,9 @@ those edits are already over the 270 ratchet and survive only on dated allowance
 `stack-django/SKILL.md` 290 (expires 01/11/2026), `audits/CONTEXT.md` 282 (01/12/2026),
 `.claude/CLAUDE.md` 277 (01/11/2026). **Three more warn-tier files carry no allowance at all and
 may not grow by a single line:** `encryption/FIELD-ENCRYPTION.md` 291,
-`project-management/docs/SEO-CHECKLIST.md` 289, `VISUAL-DESIGN.md` 287.
+`project-management/docs/SEO-CHECKLIST.md` 289, `VISUAL-DESIGN.md` 287. All six figures are as this
+map recorded them on 17/08/2026. <!-- UPDATED 03/11/2026 (US002 Step H): the six figures stood
+undated until then; `audits/CONTEXT.md`'s allowance has since been retired by US002. -->
 
 **Populations, stated so nothing is a bare ratio.** `ls code/docs/*.md` = 35 files, of which
 **one** (`VISUAL-DESIGN.md`, 287) is at or above 270. `find code/docs -name '*.md'` = 164 files,

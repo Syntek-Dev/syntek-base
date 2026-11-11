@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#
+# Stand-in for cargo (and, through cargo-deny beside it, `cargo deny`) in dependencies/audit.sh
+# --self-test — never a tool. It models the side effect the run probes are about: cargo-deny
+# without --locked or --frozen resolves the graph and rewrites a Cargo.lock its manifest has
+# left behind (marked STALE). With --locked it refuses, as the real one does.
+#
+# Reads: STUB_ROOT (the scratch project) · STUB_FIXTURES (the transcripts)
+set -u
+lock="$STUB_ROOT/code/src/rust/Cargo.lock"
+t="$STUB_FIXTURES"
+case "${1:-}" in
+  deny)
+    shift; locked=false
+    while [[ $# -gt 0 && "$1" == --* ]]; do
+      case "$1" in --locked | --frozen) locked=true ;; esac
+      shift
+    done
+    if grep -q STALE "$lock"; then
+      if $locked; then
+        echo "error: the lock file $lock needs to be updated but --locked was passed to prevent this"
+        exit 1
+      fi
+      sed 's/STALE/FRESH/' "$lock" >"$lock.relock" && mv "$lock.relock" "$lock"
+    fi
+    cat "$t/rust-advisories.clean.0.txt"; exit 0 ;;
+  metadata)
+    if grep -q STALE "$lock"; then cat "$t/rust-lockfile.finding.101.txt"; exit 101; fi
+    echo '{}'; exit 0 ;;
+esac
+echo "cargo stub: unexpected arguments: $*" >&2
+exit 2

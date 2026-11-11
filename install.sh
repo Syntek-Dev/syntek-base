@@ -12,7 +12,10 @@
 #   bash install.sh --spec    Only (re)generate code/docs/MACHINE-SPEC.md, then exit
 #   bash install.sh --help    Show this help
 #
-# Requirements: docker, docker compose v2, git, uv >= 0.11, pnpm >= 11, openssl
+# Requirements: git, openssl, uv, pnpm, and docker with the compose v2 plugin. These
+# are checked for PRESENCE ONLY: nothing here compares a version, and Python and Node are
+# not checked at all. The version floors live in how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md;
+# pnpm's is enforced separately, by package.json packageManager and engines.
 #
 # Exit codes:  0 = success   1 = requirement missing   2 = install failed
 #
@@ -57,7 +60,9 @@ Phase 2 (--full only):
   7. Build and start Docker dev stack
   8. Apply database migrations
 
-Requirements: docker, docker compose v2, git, uv >= 0.11, pnpm >= 11, openssl
+Requirements: git, openssl, uv, pnpm, docker with the compose v2 plugin.
+  Checked for presence only, not version; Python and Node are not checked.
+  Version floors: how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md
 
 Exit codes:  0 = success   1 = requirement missing   2 = install failed
 EOF

@@ -27,6 +27,9 @@ model: opus
       not an audit artefact (`code/docs/discoverability/APP-STORE.md`)
 - [ ] Full test suite passes
 - [ ] Deployed to production successfully
+- [ ] The release itself sets no story's status — `bash project-management/src/00-ASSETS/scripts/pm-board.sh --warn`
+      read, and any transition it names recorded separately (`Completed` through `completion`, `Closed`
+      only through `pm-archive.sh US###`) and committed (Step 5)
 
 ---
 

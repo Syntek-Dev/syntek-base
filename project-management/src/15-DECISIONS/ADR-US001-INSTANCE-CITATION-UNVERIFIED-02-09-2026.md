@@ -38,11 +38,13 @@ the long form does not — but the long form's silence is a miss, not a pass.
 before Check 1's own existence test.
 
 **Proven in this tree, not argued.** `project-management/src/02-STORIES/US001.md` cites
-`../18-TESTS/US001-MANUAL-TESTING.md` twice, in its QA Acceptance Criteria and again in its QA
+"../18-TESTS/US001-MANUAL-TESTING.md" twice, in its QA Acceptance Criteria and again in its QA
 Tasks. That file does not exist — `project-management/src/18-TESTS/` holds `CLAUDE.md`,
 `CONTEXT.md`, `US000-MANUAL-TESTING.md` and `US000-TEST-STATUS.md` and nothing else. **The audit
 exits 0.** A dead citation of exactly the class the superseded record promised would "break the
 gate" sits in the story that record was written for, and the gate is green.
+
+<!-- UPDATED 05/11/2026 (US004 P5): the path US001.md cited here, and again under Consequences, was backticked until then; it is now quoted, because the 09/09/2026 split moved the guide to 18-TESTS/MANUAL/ and the backticked pre-split form had become a dead citation the citation gate now polices in this tree. What US001.md cited on 02/09/2026 is unchanged; the live guide is `../18-TESTS/MANUAL/US001-MANUAL-TESTING.md`. -->
 
 **Two further defects surfaced by the same measurement**, both independent of the anchor:
 
@@ -128,7 +130,7 @@ dead citations through".
   for prose doctrine, and for the same reason.
 - **Follow-on — the phantom is not fixed by this record.**
   `project-management/src/02-STORIES/US001.md`'s two citations of
-  `../18-TESTS/US001-MANUAL-TESTING.md` are a forward reference to a file its implementation
+  "../18-TESTS/US001-MANUAL-TESTING.md" are a forward reference to a file its implementation
   creates, so they are correct as intent and dead as of today. They are left in place and named
   here so that the next reader knows the gate did not clear them.
 - **Follow-on:** `GAPS.md`'s 02/09/2026 entry is corrected in this change — it repeated the same

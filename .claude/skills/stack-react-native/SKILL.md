@@ -197,7 +197,7 @@ more manual than web. Say so rather than implying a scan covered it.
 ```tsx
 import { renderRouter } from "expo-router/testing-library";
 
-const app = renderRouter("./app", { initialUrl: "/" });
+const app = await renderRouter("./app", { initialUrl: "/" });
 expect(await app.findByRole("header")).toBeOnTheScreen();
 ```
 

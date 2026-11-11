@@ -25,6 +25,11 @@ two surfaces.
   `typescript` is the **mobile** surface; `rust` is the Cargo workspace. They never
   overlap — the root config ignores `code/src/mobile/`. Full table:
   `CONTEXT.md` → _File types_.
+- **Preview formatting through `format.sh`, never a raw `prettier`.** It is dry-run by
+  default: `format.sh --file-type markdown --path FILE` names what would change and writes
+  nothing. To see the diff itself, run `--fix` on the file **inside a scratch clone** and
+  `git diff` there — the clone carries `.prettierrc`, whereas a loose copy under `/tmp` is
+  formatted with Prettier's defaults (`printWidth` 80, not 100) and previews the wrong result.
 - **Model:** Opus to author or change a script (flags, exit codes, tool wiring)
   and to run one against the tree.
 - **Concrete steps:** dev stack up (`development/server.sh up`) so containerised

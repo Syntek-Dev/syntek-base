@@ -224,9 +224,9 @@ Removing it fails nothing and breaks no test — every response simply stops car
 and the taxonomy above quietly loses the one thing that makes a user's report findable.
 
 **Retries, backoff and circuit breakers for environment errors are not owned here** —
-[`TASK-AUTHORING.md`](TASK-AUTHORING.md) and
-[`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) already carry
-them.
+[`RELIABILITY.md`](RELIABILITY.md) carries retries and backoff, and
+[`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) circuit
+breakers.
 
 ### The taxonomy is surface-agnostic; the expression is not
 
@@ -315,7 +315,8 @@ guide exists to prevent; the only exit is the raise.
 | The `ServiceError` hierarchy and middleware rules          | `architecture/SERVICE-AND-MIDDLEWARE.md` |
 | Anti-patterns in data shape                                | `data-structures/ANTI-PATTERNS.md`       |
 | Log levels, the Ninja exception handlers, tracker wiring   | `logging/DJANGO-LOGGING.md`              |
-| The enqueue boundary and idempotency                       | [`TASK-AUTHORING.md`](TASK-AUTHORING.md) |
+| The enqueue boundary                                       | [`TASK-AUTHORING.md`](TASK-AUTHORING.md) |
+| Idempotency and retries                                    | [`RELIABILITY.md`](RELIABILITY.md)       |
 | IDOR and ownership checks                                  | `security/INPUT-AND-API.md`              |
 | **This project's actual invariants**                       | `how-to/src/INVARIANTS.md`               |
 

@@ -1,0 +1,10 @@
+name: ci
+on: push
+env:
+  NODE_VERSION: "24"
+  UV_VERSION: "0.12.5"
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: "true"

@@ -1,0 +1,4 @@
+# A generated project: copier excludes the held register, so nothing is held here and the
+# unpinned uv class the template holds fails like any other (Q-05).
+# sites: 3
+unpinned uv code/src/docker/django/Dockerfile.dev

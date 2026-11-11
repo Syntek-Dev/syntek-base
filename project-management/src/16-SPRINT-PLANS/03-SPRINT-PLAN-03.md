@@ -303,8 +303,8 @@ re-measured rather than inherited, which US004's own acceptance already requires
 
 **Two touch-points are ordered rather than blocked, and both now run SPRINT-02 → SPRINT-03.**
 
-- **US002's headroom.** US002 shrinks `code/src/scripts/audits/CONTEXT.md` from **298 to 230
-  counted lines**, and US004 replaces text **within** that file's `doc-references.sh` row against a
+- **US002's headroom.** US002 shrinks `code/src/scripts/audits/CONTEXT.md` to **230 counted
+  lines**, and US004 replaces text **within** that file's `doc-references.sh` row against a
   300-line hard limit — `AC-GAP-9` of `../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md`.
   `02-SPRINT-PLAN-02.md` argued this on 05/09/2026 as "SPRINT-01 before SPRINT-02"; it is now
   "SPRINT-02 before SPRINT-03", the same direction one sprint later on each side. If US002 has
@@ -446,13 +446,15 @@ that day, and its own _Story Plans — the code master_ states why US005's plan 
 
 **There is no Plans Index row for either**, and that is a decision rather than an omission. The
 index eight artefacts already cite has never existed; `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md`
-slice `S-01` **creates `../17-STORY-PLANS/STORY-PLAN-INDEX.md`** — the file all eight citations
-should have named — and repoints them. The claim lives on that map's _Register claimed_ table; the
+slice `S-01` **was to create a story-plan index file in `../17-STORY-PLANS/`** — the file all eight
+citations should have named — and repoint them. The claim lives on that map's _Register claimed_ table; the
 entry was re-triaged off `GAPS.md`, so that register is **not** where a reader will find it.
 Building an index here would pre-empt a claimed slice and add a ninth citation of a surface about
 to be named something else. That slice is US002's line of work, and US002 now builds in SPRINT-02,
 ahead of this sprint: if the index exists when this sprint is worked, its row is that mechanism's
 to write, not a hand edit here.
+
+<!-- UPDATED 05/11/2026 (US004 P5): read "slice `S-01` **creates ../17-STORY-PLANS/STORY-PLAN-INDEX.md** — the file all eight citations should have named — and repoints them" until then; no such index exists or will: the 7.7.0 PM-boards change superseded it with the generated story-plans board in that folder, and a backticked path to a file that never existed is a dead citation the citation gate now polices in this tree. -->
 
 <!-- 08/09/2026 — STORY-PLAN FILENAMES GAINED AN `<exec-order>-` PREFIX, and this plan's live
      citations were repointed the same day: US004's plan is `05-STORY-PLAN-US004-…` and US003's
@@ -701,7 +703,7 @@ apply throughout, from `code/docs/GATE-REPORTING.md`:
 - **`doc-references.sh` never reports a plain pass here.** Findings survive US004 whatever it
   does, and **which survivors stand is a fact about the build order, which has changed under this
   plan.** The six known at US004's cutting — three citations of `code/docs/ABSENCE.md` owned by
-  US003, three of `code/src/scripts/audits/SLOP-FAMILY.md` owned by US002 — belong to stories now
+  US003, three of "code/src/scripts/audits/SLOP-FAMILY.md" owned by US002 — belong to stories now <!-- UPDATED 03/11/2026 (US002 Step H): the superseded name is quoted, not backticked, so it no longer reads as a path; the argument lives in `code/src/scripts/audits/slop-family/CONTEXT.md`. Its baseline `dangling path` finding: cleared by US002, 03/11/2026. -->
   scheduled **ahead** of this sprint in SPRINT-02, so if SPRINT-02 completed in full they have
   cleared before US004 is worked, and if US003 slipped here its three stand until it lands. Two
   classes this order cannot clear: US006's forward references to
@@ -750,8 +752,8 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
       every new fixture case shown to fail against the pre-change script
 - [ ] `docs-length.sh` — `how-to/src/PROJECT-PATHS.md` and `code/docs/FORWARD-VOICE.md`, the files
       US004 grows, do not enter the warn tier without a dated allowance;
-      `code/src/scripts/audits/CONTEXT.md` is not grown while at 298 unless US002 has landed and
-      built the headroom
+      `code/src/scripts/audits/CONTEXT.md` is not grown, as the gate measures it, unless US002 has
+      landed and built the headroom <!-- UPDATED 03/11/2026 (US002 Step H): this check read "is not grown while at 298", and Dependencies "from **298 to 230 counted lines**", until then. A standing guard on that file cites docs-length.sh, not a number, and a figure kept as history carries its measurement date. -->
 - [ ] `doctrine-drift.sh` — regression only; US004 adds no claims row
 - [ ] `docs-pairing.sh` — regression only; US004 creates no directory
 - [ ] `routing-skills.sh` and `skill-conformance.sh` — **N/A since 07/09/2026**; they entered this

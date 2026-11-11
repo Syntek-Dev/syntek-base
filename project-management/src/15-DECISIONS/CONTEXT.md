@@ -13,7 +13,8 @@ project-management/src/15-DECISIONS/
 └── ADR-US###-<DECISION>-DD-MM-YYYY.md  ← one file per accepted decision
 ```
 
-Example: `ADR-US014-OPAQUE-SESSION-TOKENS-31-08-2026.md`.
+Example, illustrative only: a decision on opaque session tokens, driven by story 14 and made on
+31/08/2026, is ADR-US014-OPAQUE-SESSION-TOKENS-31-08-2026.md.
 
 **Naming:** `ADR-US###-<DECISION>-DD-MM-YYYY.md` — the driving story, the decision it
 governs in `SCREAMING-SNAKE-CASE`, and the date it was made. Flat: no per-story

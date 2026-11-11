@@ -1,0 +1,2 @@
+# Fixture held register: the owner path resolves inside this fixture tree.
+uv:unpinned|HELD-OWNER.md|fixture story - owns the unpinned uv class

@@ -30,7 +30,9 @@
 #   Rust toolchain channel   a MINOR move — Rust has one major, so its minor is the real
 #                            one, and new clippy lints arrive denied
 #   uv                       a MINOR move — 0.x, so minor is where breakage lives
-#   pnpm · Node · Python     a MAJOR move
+#   pnpm · Node · Python     a MAJOR move — Node and Python read from `.nvmrc`,
+#                            `.python-version` and `engines.node`, and from any workflow
+#                            env block still carrying NODE_VERSION / PYTHON_VERSION
 #   GitHub Action refs       a MAJOR move, or any move off a branch ref onto a release
 #
 # Read-only. It changes nothing and is safe to run at any time.
@@ -48,6 +50,7 @@
 #
 # Usage: dependency-drift.sh --incoming DIR [--project DIR] [--output FORMAT]
 #                            [--output-file PATH] [--quiet] [--help]
+#        dependency-drift.sh --self-test
 #
 #   --incoming DIR   The updated tree to compare FROM — normally the scratch copy
 #                    `template-update.sh` has already run the update against.
@@ -61,12 +64,14 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/audits/reports"
+FIXTURES_DIR="$SCRIPT_DIR/fixtures/dependency-drift"
 
 INCOMING=""
 PROJECT="$PROJECT_ROOT"
 OUTPUT_FORMAT=""
 OUTPUT_FILE=""
 QUIET=false
+SELF_TEST=false
 
 die() {
   printf 'dependency-drift.sh error: %s\n' "$*" >&2
@@ -79,6 +84,7 @@ dependency-drift.sh — report the dependency changes a template update would im
 
 Usage:
   dependency-drift.sh --incoming DIR [--project DIR] [options]
+  dependency-drift.sh --self-test    Prove the comparison against its fixture pairs
 
 Required:
   --incoming DIR      The updated tree to compare from (a scratch copy the update ran against)
@@ -89,10 +95,13 @@ Options:
   --output-file PATH  Override the report path
                         (default: code/src/scripts/audits/reports/dependency-drift.<FORMAT>)
   --quiet             Suppress terminal output — requires --output
+  --self-test         Run fixtures/dependency-drift/<case>/{incoming,project} and assert
+                      each case's expected.txt (its lines, its exit code, what it read)
   --help              Show this help
 
 Both directories must exist AND hold at least one manifest this reads. Read from BOTH sides:
-pyproject.toml, package.json, code/src/rust/Cargo.toml, code/src/rust/crates/*/Cargo.toml,
+pyproject.toml, package.json (packageManager, engines.node and the dependency maps), .nvmrc,
+.python-version, code/src/rust/Cargo.toml, code/src/rust/crates/*/Cargo.toml,
 rust-toolchain.toml, .github/workflows/*.yml. Read from the PROJECT side only, being
 resolved state rather than a declaration: uv.lock and code/src/rust/Cargo.lock.
 A tree holding none of them is a bad argument, not a clean run:
@@ -112,10 +121,58 @@ while [[ $# -gt 0 ]]; do
     --output) OUTPUT_FORMAT="${2:-}"; shift 2 ;;
     --output-file) OUTPUT_FILE="${2:-}"; shift 2 ;;
     --quiet) QUIET=true; shift ;;
+    --self-test) SELF_TEST=true; shift ;;
     --help) usage; exit 0 ;;
     *) die "Unknown option: $1. Use --help for usage." ;;
   esac
 done
+
+# ── Self-test ─────────────────────────────────────────────────────────────────
+# Each case is an incoming/project pair beside an expected.txt naming the exact "[area] line"
+# findings, the exit code ("# exit: N") and any file both sides must report having read
+# ("# reads: NAME") — the last because a reader that silently reads nothing reports no drift,
+# which on an agreeing pair looks identical to agreement. Fix the detector, never the fixtures.
+run_self_test() {
+  local case_dir name out status want_exit actual expected failed=0 cases=0 want_read
+  [[ -d "$FIXTURES_DIR" ]] || die "self-test fixtures missing: fixtures/dependency-drift/"
+  printf '▸ dependency-drift.sh --self-test\n'
+  for case_dir in "$FIXTURES_DIR"/*/; do
+    name="$(basename "$case_dir")"
+    [[ -f "$case_dir/expected.txt" ]] || die "self-test fixture missing: fixtures/dependency-drift/$name/expected.txt"
+    cases=$((cases + 1))
+    set +e
+    out="$(bash "$SCRIPT_DIR/dependency-drift.sh" --incoming "$case_dir/incoming" --project "$case_dir/project" 2>&1)"
+    status=$?
+    set -e
+    want_exit="$(sed -nE 's/^# exit: ([0-9]+)$/\1/p' "$case_dir/expected.txt")"
+    actual="$(printf '%s\n' "$out" | sed -nE 's/^  (\[[a-z]+\] .*)$/\1/p' | sort)"
+    expected="$(grep -v '^#' "$case_dir/expected.txt" | grep . | sort || true)"
+    printf '  %s: exit %s, %s finding line(s)\n' "$name" "$status" "$(printf '%s' "$actual" | grep -c . || true)"
+    if [[ "$status" != "$want_exit" ]]; then
+      failed=1; printf '  ✗ %s exited %s, expected %s\n' "$name" "$status" "$want_exit"
+    fi
+    if [[ "$actual" != "$expected" ]]; then
+      failed=1; printf '  ✗ %s reported something other than expected.txt:\n' "$name"
+      diff <(printf '%s\n' "$expected") <(printf '%s\n' "$actual") | sed 's/^/      /' || true
+    fi
+    while IFS= read -r want_read; do
+      [[ -n "$want_read" ]] || continue
+      if [[ "$(printf '%s\n' "$out" | grep -c "read: .*$want_read" || true)" -lt 2 ]]; then
+        failed=1; printf '  ✗ %s: %s was not read on both sides\n' "$name" "$want_read"
+      fi
+    done < <(sed -nE 's/^# reads: (.+)$/\1/p' "$case_dir/expected.txt")
+  done
+  [[ $cases -gt 0 ]] || die "self-test fixtures missing: no case under fixtures/dependency-drift/"
+  printf '\n'
+  if [[ $failed -eq 0 ]]; then
+    printf '✓ Self-test passed — %s case(s) matched their expected.txt.\n' "$cases"
+    exit 0
+  fi
+  printf '✗ Self-test FAILED — fix the detector, never the fixtures.\n'
+  exit 1
+}
+
+$SELF_TEST && run_self_test
 
 [[ -n "$INCOMING" ]] || die "--incoming is required. Use --help for usage."
 [[ -d "$INCOMING" ]] || die "--incoming is not a directory: $INCOMING"
@@ -249,6 +306,37 @@ for label, key in (("pnpm", "packageManager"),):
     if a and b and a != b:
         line = f"{label}  {b} -> {a}"
         (blocking if vt(a)[0] != vt(b)[0] else info).append(("toolchain", line))
+
+# ── Node and Python: the sources of truth ─────────────────────────────────────
+# `.nvmrc`, `.python-version` and `engines.node` are where the template DECLARES its Node and
+# Python — setup-node reads `.nvmrc` through `node-version-file`, and toolchain-pins.sh holds
+# every other site to these files. The workflow env-block reader below came first and stays for
+# a project whose workflows still carry NODE_VERSION/PYTHON_VERSION; on its own it went blind
+# the day those blocks were removed, and a Node 24 -> 26 move reached `copier update` unreported
+# (C-01). Classified exactly as that leg classifies them: a MAJOR move blocks, anything less is
+# informational. A file present on one side only is not a move, as an env key on one side is not.
+def first_line_at(p, store=None, label=None):
+    try:
+        text = p.read_text()
+    except Exception:
+        return None
+    if store is not None:
+        store.append(label or p.name)
+    return (text.strip().splitlines() or [""])[0].strip() or None
+
+
+for fname, tool in ((".nvmrc", "node"), (".python-version", "python")):
+    a = first_line_at(INC / fname, inc_read)
+    b = first_line_at(PRJ / fname, prj_read)
+    if a and b and a != b:
+        line = f"{tool} ({fname})  {b} -> {a}"
+        (blocking if vt(a)[0] != vt(b)[0] else info).append(("toolchain", line))
+
+a = (inc_js.get("engines") or {}).get("node")
+b = (prj_js.get("engines") or {}).get("node")
+if isinstance(a, str) and isinstance(b, str) and a != b:
+    line = f"node (engines.node)  {b} -> {a}"
+    (blocking if vt(a)[0] != vt(b)[0] else info).append(("toolchain", line))
 
 # ── Rust ──────────────────────────────────────────────────────────────────────
 def cargo_specs(root, store):
@@ -408,7 +496,7 @@ for key, val in sorted(inc_e.items()):
 # only the project side is read for them — `uv.lock` and `code/src/rust/Cargo.lock` are both
 # read from PRJ alone. Everything else is read from both.
 LOOKED_FOR_BOTH = (
-    "pyproject.toml, package.json, code/src/rust/Cargo.toml, "
+    "pyproject.toml, package.json, .nvmrc, .python-version, code/src/rust/Cargo.toml, "
     "code/src/rust/crates/*/Cargo.toml, code/src/rust/rust-toolchain.toml, "
     ".github/workflows/*.yml"
 )

@@ -10,7 +10,8 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 Lifecycle control for the local dev Docker Compose stack — `server.sh`, `logs.sh`,
 `shell.sh`, dependency install/update, and the
-`new-django-app.sh` / `new-django-view.sh` scaffolders.
+`new-django-app.sh` / `new-django-view.sh` scaffolders, and the two template scripts —
+`template-update.sh` (ships) and `template-render.sh` (template-only). <!-- doc-references: template-only -->
 
 ## How to work here
 
@@ -22,6 +23,11 @@ Lifecycle control for the local dev Docker Compose stack — `server.sh`, `logs.
   django-components + HTMX + Alpine); there is no client-side build, and
   `install-frontend.sh` / `pnpm-update.sh` maintain repo tooling only — never raw
   `pnpm`.
+- **A generated project for a downstream check → `template-render.sh`, never a raw <!-- doc-references: template-only -->
+  `copier copy`.** It snapshots the working tree into a scratch clone (or takes `--ref`),
+  renders outside the repo, and with `--check-references` commits the result and runs the
+  citation gate there. **Template-only** — copier excludes it, so it is absent from a generated
+  project; `--help` carries the flags and the default answers.
 - **Model:** Opus to change a script or scaffolder and to run the stack,
   tail logs, or open a shell.
 - **Concrete steps:** bring the stack up → work → `logs.sh --service <svc> --follow`

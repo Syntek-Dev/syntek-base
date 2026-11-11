@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 01/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 11/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -224,7 +224,7 @@ in a **generated project** — so the template was shipping them:
 - **Added 15/10/2026, found by the mutation-testing research.** `code/docs/testing/TAXONOMY.md:189`
   also advertises `backend.sh -n auto`. The Testcontainers lines (`BACKEND-TESTING.md:114-115`,
   `TAXONOMY.md:22`) contradict `BACKEND-TESTING.md:84-85`, which puts integration tests on the
-  Compose-managed `postgres:18-alpine` test database.
+  Compose-managed `postgres:18` test database (Alpine dropped 11/11/2026).
 
 ---
 
@@ -296,6 +296,11 @@ the 4.x GA (npm `latest` has moved and the event-grammar migration is charted), 
 template exists that actually loads htmx. The migration is then its own charted feature (event
 grammar, swap policy, CSRF inheritance, the gate regex) — never a side-effect of another
 story.
+
+**Annotated 05/11/2026 (US003, finding F-007 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md"):** `code/docs/ABSENCE.md` joins the
+surfaces that encode htmx 2's behaviour. It states that htmx 2 swaps no 4xx or 5xx by default, which
+is why its HTMX expected-miss row answers a 200 not-found partial; v4 swaps 4xx by default and would
+falsify that row, so the migration moves it with the rest.
 
 ---
 
@@ -387,11 +392,11 @@ under `code/docs/security/`.
 **Summary:** Map prose was not re-measured when the slice tables beneath it changed, and the prose
 then stated something falsifiable by the same file:
 `MAP-UPSTREAM-TRACKING.md:541` reads "**This is a template-development map, so there are no
-stories to cut.**" It carries four slice rows, `US002.md:112` names its `S-01` among the slices it
-unblocks, and four other template-development maps have already produced `US001`, `US004`, `US006`
-and `US008`. Its `:544` also says "the remaining open nodes refine them without gating them" while
-`:6` records zero open nodes. Surfaced 17/09/2026 during `02-story-creation`'s Step 0 sweep across
-all thirteen maps.
+stories to cut.**" It carries four slice rows, US002's _Dependencies_ (the slice-row table) names
+its `S-01` among the slices it unblocks, and four other template-development maps have already
+produced `US001`, `US004`, `US006` and `US008`. Its `:544` also says "the remaining open nodes
+refine them without gating them" while `:6` records zero open nodes. Surfaced 17/09/2026 during
+`02-story-creation`'s Step 0 sweep across all thirteen maps. <!-- UPDATED 03/11/2026 (US002): citation repoint only; read "US002.md:112" until then, a line anchor the story's growth had moved. -->
 **Blocked by / Action:** Nothing blocks it, and none of it is a node — this is prose maintenance,
 not a decision. `MAP-UPSTREAM-TRACKING.md`'s next RESOLVE sitting should re-read its own Slices
 preamble against its table and either delete the claim or make it true. Retires when a re-measure
@@ -428,11 +433,15 @@ Q11) over a single-canonical-table alternative, with the drift risk stated befor
 repairs are available and the second is the cheaper one to reach for first: (1) widen
 `doctrine-drift.sh` — add `project-management/src/` to `SCAN_DIRS` and teach it a prose-table
 mode, which is a change to the scanner's core assumption and should not be undertaken lightly;
-(2) a new single-purpose `code/src/scripts/audits/sprint-register.sh` that extracts the register
+(2) a new single-purpose "sprint-register.sh" audit (proposed, not built) that extracts the register
 from every `SPRINT-##.md` and fails when any two differ — no new doctrine, one comparison, and it
 needs nothing from the existing gate. The obligation to hand-update **every** copy is written in
 `project-management/src/03-SPRINTS/CLAUDE.md` and the rule in
 `project-management/docs/planning/SPRINTS.md`; both are instructions to a reader, not enforcement.
+<!-- UPDATED 05/11/2026 (US004 P5): this entry and the one below backticked the proposed audit
+     at its intended path under code/src/scripts/audits/ until then. Nothing builds it and no story
+     owns it, so the citation gate read it as a dead path; it is named in prose as a proposal
+     instead (US004 build grilling round 4 Q2). -->
 
 <!-- 20/09/2026: this sentence read "The obligation to hand-update **all five**", which by that
      date attributed to `project-management/src/03-SPRINTS/CLAUDE.md` a five-copy obligation the
@@ -454,7 +463,7 @@ the register itself.
 
 **The five copies were byte-identical to one another throughout.** The divergence was
 register-versus-**record**, not copy-versus-copy — so proposed repair (2) above, "a new
-single-purpose `code/src/scripts/audits/sprint-register.sh` that extracts the register from every
+single-purpose "sprint-register.sh" audit (proposed, not built) that extracts the register from every
 `SPRINT-##.md` and fails when any two differ", **would have stayed green through this**. It is
 still the cheaper repair and is still worth writing, but it is not sufficient on its own: whatever
 gate lands has to compare each row against the capacity line and Story Summary of the record it
@@ -602,3 +611,535 @@ count of one would be a decision made on nothing.
 HA inside the sized envelope**. The posture then lands as a row in the dependency-posture
 register MAP-CAP-POSTURE `S-01` creates. No map claims this entry, because a claim would remove
 it before the trigger fires.
+
+---
+
+## 02/11/2026 — shipped prose outside the three RC-5 files still names ClickUp as if every project had it
+
+**Type:** Active gap
+**Summary:** US007's re-cut (RC-5) marked every ClickUp **order** clickup-only in the two PR and
+release `STEPS.md` files and the story-plan template, which is all it was scoped to. Its closeout
+found the same assumption in prose it did not touch. The README seed's _ClickUp story sync_ section
+opens "Until the site is deployed, scrum boards are tracked in ClickUp" with no clickup-only
+marking (`.copier/README.md:600-603`). <!-- doc-references: template-only -->
+`.claude/skills/wayfinder/SKILL.md` (`:30-31`, `:241`, `:275`, `:303`) and
+`.claude/skills/scale-planning/SKILL.md:176` say stories sync through the `clickup-sync`
+workflow. Those six lines describe rather than order a step, but a project generated with
+`INCLUDE_CLICKUP: false` holds neither the workflow nor the scripts (`copier.yml:308-312`). <!-- doc-references: template-only -->
+Findings F-003 and F-004 in "project-management/src/20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. A docs pass marks each site clickup-only, or rewords it
+to hold without ClickUp, in one change. No map or story claims this entry.
+
+---
+
+## 02/11/2026 — the PR and release steps order the status lifecycle out of step with its owner
+
+**Type:** Active gap
+**Summary:** US007's `23-pr-and-review` final pass found four places where the workflows that
+order status moves disagree with `.claude/skills/completion/SKILL.md`, the vocabulary's owner:
+
+- **No step orders a sprint's `Done` move (F-015).** The skill names
+  `project-management/workflows/24-release/` as the procedure of record for sprint completion
+  (`:178-179`), but no file in that workflow mentions a sprint. The build-start move `Planned` →
+  `In Progress` is on `code/workflows/01-implement-story/CHECKLIST.md:28`, while
+  `code/workflows/01-implement-story/STEPS.md:31` names only the story's move.
+- **`In Review` is set after the work it names (F-016).** The skill's meaning (`:55`) is "Code
+  review and QA running"; workflow 23 runs QA and review at Steps 1 and 2 and sets `In Review`
+  at Step 3, when the PR opens.
+- **The release step assumes customer review (F-017).** `project-management/workflows/24-release/STEPS.md:90-91` says each
+  released story went through `Customer Review`; a story whose `Customer review` flag is `N/A`
+  skips it.
+- **Step 3 of workflow 23 reads as though `completion` commits (F-018)**
+  (`project-management/workflows/23-pr-and-review/STEPS.md:57-59`); it never
+  does, and Step 3 lacks the `↳ New dispatch` line Steps 1 and 2 carry.
+
+Findings F-015 to F-018 in "project-management/src/20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md".
+**Blocked by / Action:** F-016 needs a decision first: whether `In Review` moves earlier in
+workflow 23 or the skill's meaning is reworded. The other three are a docs pass over the two
+workflows and `code/workflows/01-implement-story/STEPS.md`, in one change. No map or story claims this entry.
+
+---
+
+## 03/11/2026 — the Playwright install instruction is an operating rule held in the audits register by a pin gate
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/CONTEXT.md` → _Dependencies_ still tells the reader to run
+the Playwright Chromium install command — an operating rule in the orientation half, which
+US002's HP-04 requires moved to `code/src/scripts/audits/CLAUDE.md`. US002 kept it because
+`code/src/scripts/audits/playwright-pin.sh` reads that file as one of its eight pin sites (its
+`SITES` list names "audits/CONTEXT.md install instruction"): moving the text alone would
+half-remove the pin and redden the gate. No recorded decision licenses the keep, so the walk
+failed row OPS-01. Finding F-001 in
+"project-management/src/20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md"; review
+L5b raised it first.
+**Blocked by / Action:** Decided for US002: Sam kept the instruction where it stands and accepted
+OPS-01 as a known Fail for merge, 03/11/2026 in session. The move remains open work — move it to
+`code/src/scripts/audits/CLAUDE.md` and, in the same change, repoint `playwright-pin.sh`'s site,
+its header and its `--self-test` fixtures so the eight-site parity holds. No map or story claims
+this entry.
+
+---
+
+## 03/11/2026 — `copy-slop.sh` says `exclamation-count` cannot be annotated, and its code annotates it
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/copy-slop.sh`'s header comment (`:130`) and its `--help`
+text (`:217`) both say `exclamation-count` is the one clause that cannot be annotated. Its code
+(`:725-733`) implements a file-scoped annotation for exactly that clause:
+`slop-allow: exclamation-count` anywhere in the file silences it (proven by US002's QA pass: 14
+marks warn, a file-level annotation clears). A reader who trusts the header or `--help` concludes a
+warning has no answer, against `code/src/scripts/audits/CLAUDE.md`'s rule to answer each warning
+with an annotation. `code/src/scripts/audits/slop-family/CONTEXT.md`'s member-to-scope mapping
+already states the code's behaviour. Finding F-011 in
+"project-management/src/20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Reword both to "a file-scoped annotation naming the
+clause". No map or story claims this entry.
+
+---
+
+## 03/11/2026 — workflow 23 requires GDPR and Security implementation records that workflow 22 makes conditional
+
+**Type:** Active gap
+**Summary:** `project-management/workflows/23-pr-and-review/STEPS.md` Step 6's verify table marks
+the GDPR review and the Security record **Always**, and its `CHECKLIST.md` lists both as
+unconditional items. `project-management/workflows/22-implementation-documentation/STEPS.md`
+Step 1, which writes those records, makes each conditional — GDPR when the story processes
+personal data, Security when it ships a security surface. A story with neither flag, such as
+US002, owes neither record under 22 yet fails 23's verify as written. Finding F-017 in
+"project-management/src/20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md"
+(workflow 23 final passes, S6-02).
+**Blocked by / Action:** Nothing blocks it. A template-maintenance fix: restate 23's two rows and
+two checklist items as conditional, routing to 22 Step 1's _Applies when_ column rather than
+restating it. No map or story claims this entry.
+
+---
+
+## 05/11/2026 — the citation gate's self-test cannot pass in a generated project
+
+✅ CLOSED 06/11/2026 — fixed in the US004 review round on Sam's instruction (finding F-022 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): the
+probes needing the copier contract are named as not run and `--self-test` exits 2 downstream.
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` and its fixtures ship, but `copier.yml`
+does not, so in a generated project the derived excluded-path set and the seeded list are both
+empty and `--self-test` exits 1 rather than reporting that it could not look. Measured 05/11/2026
+in a clone with `copier.yml` removed: the "broken/direction-b.md" probe and the "anchored entry is
+in the set" probe fail, as they did before US004, and US004's P2 untracked-population probe and its
+R4 unseeded-citer guard join them (US004 phase 9, finding QA-US004-05). Under
+`code/docs/GATE-REPORTING.md` an unrunnable proof must say so and exit 2, never fail as if the
+detector were wrong, nor pass having measured nothing.
+**Blocked by / Action:** Nothing blocks it. Deferred from US004 by <%DEVELOPER_NAME%> on 05/11/2026
+because it predates that story and the shape of a shipped self-test deserves its own grilling:
+which probes need `copier.yml`, whether they skip with a printed list and exit 2, and whether the
+rest still run. Cut as a story through `02-story-creation`.
+
+---
+
+## 06/11/2026 — the citation gate reads any token holding `NN` as a placeholder
+
+✅ CLOSED 06/11/2026 — fixed in US004 on Sam's ruling of 06/11/2026 (findings F-021 and F-054 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): a run
+of two or more `N` is a placeholder only with no A-Z capital on either side, so `PLANNING/` paths
+and `MAP-SCALE-PLANNING.md` are tested; the whole tree keeps the same 28 survivors, and the one
+false positive the narrowing exposed was fixed in the detector.
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` treats a token containing the letters
+`NN` anywhere as a naming placeholder and never tests it, so every `PLANNING/` path and names
+such as `MAP-SCALE-PLANNING.md` pass unexamined — 213 distinct path tokens in tracked Markdown and
+shell on 06/11/2026. Found in the US004 review round (finding F-021 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md").
+**Blocked by / Action:** Nothing blocks it. Narrow the arm to `NN` as a placeholder segment, then
+triage what the gate reports. Not fixed in US004 because it changes the verdict on tokens outside
+the review's findings; cut as a story through `02-story-creation`.
+
+---
+
+## 06/11/2026 — a project generated with the default answers fails its own citation gate
+
+✅ CLOSED 09/11/2026 — fixed in US004 on Sam's ruling (findings F-051 and F-069 to F-074 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): each
+templated `copier.yml` `_exclude` entry is parsed into a `gated FLAG path` row of the shipping
+facts, and in a generated project the gate reads `.copier-answers.yml`, passing an absent target
+under a declined surface and counting it per flag in its verdict; a missing or unreadable answers
+file exempts nothing. The default render exits 0 (121 passed unjudged); the template keeps its 28.
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh`, whole tree, exits 1 inside a project
+rendered with the default answers: 119 findings (98 `[dangling path]`, 21 `[dangling link]`),
+each a shipped file citing an optional-surface file the defaults leave out — `code/docs/WAGTAIL*`,
+`code/docs/rust/*`, `code/docs/accessibility/MOBILE.md` and the like. The all-surfaces render is
+clean. `.github/workflows/audit-doc-references.yml` ships and runs that gate, so every
+default-answer project starts with a red CI job. It is the unenforced half of
+`code/docs/FORWARD-VOICE.md` Section 5, the surface-gated citations. Finding F-051 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Sam's disposition: fix in US004, or name a later story. Either teach the
+gate the surface flags from the project's answers file or reword the citations; never markers.
+
+---
+
+## 06/11/2026 — the citation gate never tests a path whose only placeholder is one `NN` segment
+
+**Type:** Active gap
+**Summary:** `no-such-root/NN-FOO/CONTEXT.md` passes untested, where a `DD-MM-YYYY` placeholder
+already has its concrete leading folders tested. Predates the F-021 narrowing. Finding F-052 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Extend the folder route to that token shape, with a
+fixture. No map or story claims this entry.
+
+---
+
+## 06/11/2026 — a project generated with the default answers fails `sync-trees.sh`
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/development/sync-trees.sh` reports 13 tree drift findings in a fresh
+default render: surface-gated rows left unannotated (`stack-wagtail/`, `WAGTAIL.md`,
+`design-tokens/MOBILE.md`), the root tree's template-only rows (`.copier/`, `LICENSE`,
+`SECURITY.md`, `CONTRIBUTING.md`, `copier.yml`), and four `WALK-N010-COLD-31-08-2026*` rows.
+Finding F-053 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Annotate each row with its surface or `template-only`,
+which the check now reads, and decide whether the WALK rows ship. No map or story claims this
+entry.
+
+---
+
+## 09/11/2026 — the citation gate reports an unreadable `copier.yml` as read
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` decides it has the copier contract with
+`has_contract()`, which tests that `copier.yml` exists, not that it can be read. With the file
+present but unreadable, the run still prints "shipping facts read from the contract", yet the
+excluded set drops to 0, the seeded and gated sets are empty and re-included files fall back to
+exempt, so Check 3 and re-include policing switch off silently. A check that could not look is
+reported as one that looked, against `code/docs/GATE-REPORTING.md`. Found by the independent QA
+sign-off of US004, 09/11/2026 (QA-SO-01, Low); not fixed in US004. Finding F-076 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Test readability in `has_contract()` and fail closed,
+naming the contract as unread, with a self-test probe. No map or story claims this entry.
+
+---
+
+## 09/11/2026 — the template's own ClickUp client exports ship into every default-answer project
+
+**Type:** Active gap
+**Summary:** `project-management/export/clickup/US001-CLIENT.md` to `US014-CLIENT.md` are this
+template's own stories exported for ClickUp, yet they ship into every project generated with the
+default `INCLUDE_CLICKUP=true`: `copier.yml` excludes the folder only when the flag is declined.
+Their basenames match the instance-citer rule, so `doc-references.sh` Check 2 does not police them
+downstream either. It looks like a copier `_exclude` gap. Pre-existing and outside US004; found by
+its independent QA sign-off, 09/11/2026 (QA-SO-03, Info). Finding F-077 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Confirm the exports are template-only, then exclude
+them unconditionally, keeping the folder's README, with a render check that none ships. No map or
+story claims this entry.
+
+---
+
+## 05/11/2026 — the citation baseline-diff regime outlives US004, and two ADRs now state a stale premise
+
+**Type:** Active gap
+**Summary:** US004 repaired every class it owns, but `code/src/scripts/audits/doc-references.sh`
+still exits 1 on 28 forward references owned by US005, US006, US010 and US014. The baseline-diff
+regime of
+`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`
+retires only when `S-06` lands **and** the gate goes green, so it stays in force, and so does
+`project-management/src/15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`, whose
+trigger is the same. Separately,
+`project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` still
+says no gate verifies a PM `src/` citation, which Check 1 now does for the path form. Findings
+F-004 and F-005 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** The retirement is blocked by the 28 survivors: each clears when its owner
+builds the path. Until then every story captures a baseline before its first edit. The story that
+clears the last survivor writes one superseding ADR retiring the regime and ADR-US008-SCOPED by
+full filename on both. The ADR-US001 supersession is blocked by nothing and needs a driving story;
+no map or story claims either.
+
+---
+
+## 05/11/2026 — the `.copier/` seed bodies a generated project receives are read by no citation clause
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` exempts `.copier/` outright, and since
+US004 a seeded citer — the root `GAPS.md`, `DEFERRED.md`, `README.md`, the boards, the cut plan —
+is non-shipping for Checks 2 and 3, because the seed replaces it. The seed text that does reach a
+generated project is therefore read by no clause: a dead path or an instance citation in it ships
+unreported. Measured in US004 phase 9 by copying a seed outside the exempt tree (four findings,
+none a defect on reading). The exemption predates US004; finding F-013 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Read each `.copier/` seed as a shipping citer under its
+seeded destination's path, with fixtures. No map or story claims it.
+
+---
+
+## 05/11/2026 — US003's findings for the absence map's remaining slices wait on stories nobody has cut
+
+**Type:** Planned feature
+**Summary:** US003 shipped `code/docs/ABSENCE.md` as slice `S-01` of "MAP-ABSENCE". Its closeout
+found work that belongs to four later slices, none of which `02-story-creation` has cut yet, so the
+findings have no story to carry them. Held here, slice by slice, from "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md":
+`S-02` — F-012 (state the `ServiceError` subclass-to-status table once, in
+`code/docs/api-design/AUTH-AND-ERRORS.md`) and F-013 (the `OrderOut | None` exemplar in
+`code/docs/api-design/NINJA-CONVENTIONS.md`, already in the slice's acceptance). `S-03` — F-004
+(`code/docs/ABSENCE.md` is a seventh 5xx-only artefact: its Expected miss × HTMX and Failure × HTMX
+cells and its HTMX note, found by the phrase "when that listener gains a 4xx leg", move with the
+listener's 4xx leg) and F-005 (the HTMX-facing exemplar in
+`code/docs/rendering/PITFALLS-AND-EXAMPLES.md` answers a miss 404 through `get_object_or_404` and
+reads `request.POST["body"]` unparsed). `S-04` — F-014 (the mobile client maps a single-object 404
+to a not-found member at its parse boundary, with the crib back-link). `S-05` — F-015 (widen the
+`absence-enum` regex in `code/src/scripts/audits/doctrine-drift.sh` to the other Python, Rust and
+TypeScript spellings and `~~~` fences, a broken fixture each) and F-016 (settle `[gate: prose]`'s
+meaning against `code/docs/VISUAL-DESIGN.md` Section 6 before the per-surface clauses are marked).
+Across `S-02` to `S-04` — F-024 (check each per-surface crib cell against its owner guide and the
+library's documentation before review).
+**Blocked by / Action:** Blocked on the slices being cut. The story `02-story-creation` cuts from a
+slice carries that slice's lines into its acceptance, and they leave this entry in that change; the
+entry goes when the last slice's lines have gone.
+
+---
+
+## 05/11/2026 — `SCHEMA-DESIGN.md` passes `check=` to `CheckConstraint`, which Django 6 removed
+
+**Type:** Active gap
+**Summary:** A live defect in a shipped guide. `code/docs/data-structures/SCHEMA-DESIGN.md` →
+_Foreign Keys and Constraints_ (`:151`) and _Polymorphic Relationships_ (`:262`) build
+`models.CheckConstraint(check=…)`. Django 6 removed the `check` keyword (its replacement,
+`condition`, arrived in 5.1), so on this stack (`django>=6.1`) both examples raise `TypeError` as
+written. `code/docs/ABSENCE.md`'s not-applicable route sends readers to _Polymorphic
+Relationships_. The same section shows only an XOR of two nullable foreign keys, with no
+kind-discriminated constraint for the not-applicable pattern. Findings F-010 and F-011 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Rename `check=` to `condition=` in both examples; add
+one kind-discriminated example, such as
+`CheckConstraint(condition=Q(kind=INDIVIDUAL, vat_number__isnull=True) | Q(kind=COMPANY))`. No map
+or story claims this entry.
+
+---
+
+## 05/11/2026 — `TYPES-BROWSER.md`'s sanctioned Alpine component fetches, and `RENDERING.md` keeps Alpine off the network
+
+**Type:** Active gap
+**Summary:** `code/docs/data-structures/TYPES-BROWSER.md` → _An Alpine component is a contract, not
+a bag of keys_ teaches `searchPanel`, a component that fetches on `@input.debounce` and reads
+`.json()` without checking `response.ok`, so a 404 or 5xx body parses as data.
+`code/docs/RENDERING.md` → _The doctrine (the decision rule)_ and
+`code/docs/FRONTEND-CODING-PRINCIPLES.md` → _HTMX & Alpine_ keep Alpine off the network. US003's
+decision D2 (Sam, 05/11/2026) followed RENDERING and kept the conflict out of the crib. Finding F-008
+in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Rewrite the example to the server-rendered form
+RENDERING sanctions, or record a sanctioned exception in RENDERING with the `response.ok` branch.
+No map or story claims this entry.
+
+---
+
+## 05/11/2026 — two owners disagree on what absent and not-owned answer for a caller-scoped lookup
+
+**Type:** Active gap
+**Summary:** `code/docs/api-design/CLIENT-PATTERNS.md` → _Errors_ sends HTMX "Not permitted" as a
+403 with nothing to swap, so for a caller-scoped lookup absent (a 200 not-found partial) and
+not-owned (a 403) differ on the wire — the oracle `code/docs/security/AUTH-AND-AUTHZ.md` →
+_Anti-Enumeration_ forbids. And _Anti-Enumeration_ prescribes `"Access denied."` / `"FORBIDDEN"`
+for both, against the 404 and `not_found` that `code/docs/api-design/AUTH-AND-ERRORS.md` and
+`code/docs/ABSENCE.md` use. A documentation conflict with no shipped endpoint behind it. Finding
+F-006 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Exempt a caller-scoped lookup from CLIENT-PATTERNS'
+403 row, and state once in _Anti-Enumeration_ which single answer absent and not-owned share. No
+map or story claims this entry.
+
+---
+
+## 05/11/2026 — the `#status` region's `announce` trigger has no listener
+
+**Type:** Active gap
+**Summary:** `code/docs/accessibility/TESTING-AND-COMPONENTS.md` → _Announcing dynamic updates_
+writes the base template's `#status` live region only through a server
+`HX-Trigger: {"announce": …}`, and no listener for `announce` ships anywhere under
+`code/src/django/`, so the documented path announces nothing. `code/docs/ABSENCE.md` no longer
+depends on it. Finding F-009 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Ship the listener with the first base template that
+loads htmx, or state in the guide that the path is declared, not wired. No map or story claims this
+entry.
+
+---
+
+## 05/11/2026 — `doc-references.sh` does not test file-relative Markdown link targets
+
+✅ CLOSED 06/11/2026 — fixed in US004's workflow 23 fix rounds (findings F-035 and F-037 to F-040 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md"): every
+`[text](target)` is resolved against its citing file and a dead one reports `[dangling link]`, and a
+bare token whose leading folder sits beside the citer is tested there. The reproduction, a
+`code/docs/` file citing a missing `data-structures/` file both ways, now reports both.
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` catches a dangling repo-rooted citation
+(`code/docs/…`) but not a file-relative one — the form `code/docs/ABSENCE.md` writes every
+citation in. A crib cell linking `data-structures/` plus a nonexistent file exits 0, so US003's
+ES-05 and BITE-05 bite only for the repo-rooted form. Finding F-017 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md" (QA round 1 F-003).
+**Blocked by / Action:** Nothing blocks it. Resolve `](relative)` link targets and backticked
+file-relative tokens against the citing file's directory, with a broken fixture. No map or story
+claims this entry.
+
+---
+
+## 05/11/2026 — `skill-conformance.sh` clause 14 accepts a back-citation inside an HTML comment
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/skill-conformance.sh` clause 14, which requires a skill named
+in a guide's routing frontmatter to cite the guide back, is satisfied by a citation inside
+`<!-- … -->`, which no agent reads as routing. Reproduced in a throwaway worktree during US003's QA
+pass: moving `refactor/SKILL.md`'s citation of `code/docs/ABSENCE.md` into a comment left exit 0.
+Pre-existing. Finding F-018 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Ignore matches inside HTML comments and fenced code in
+clause 14, with a fixture. No map or story claims this entry.
+
+---
+
+## 05/11/2026 — the seeded README omits three _Influences_ rows the template's own README carries
+
+**Type:** Active gap
+**Summary:** `README.md` → _Influences and attribution_ credits TigerStyle, Semantic Versioning and
+Conventional Commits; `.copier/README.md`, which a generated project receives, carries none of the
+three, so their doctrine ships uncredited. US003's Harper row reaches both. Pre-existing. Finding
+F-019 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md" (QA round 1 F-008).
+**Blocked by / Action:** Decide that doctrine credits must reach generated projects, then add the
+three rows to `.copier/README.md`, licence column included. No map or story claims this entry.
+
+---
+
+## 05/11/2026 — nine body lines still say "boundary" where the scoped ban asks for "seam"
+
+**Type:** Active gap
+**Summary:** `.claude/skills/codebase-design/SKILL.md` scopes its "boundary (for seam)" ban to
+architectural contexts. A body-line sweep at US003's `23-pr-and-review` found nine lines still
+naming a seam "boundary": `.claude/skills/backend/SKILL.md:158`,
+`.claude/skills/code-reviewer/SKILL.md:214`, `.claude/skills/planner/SKILL.md:127`,
+`.claude/skills/setup/SKILL.md:113`, `.claude/skills/stack-django/SKILL.md:5` and `:212`,
+`.claude/skills/stack-htmx-templates/SKILL.md:216`,
+`code/docs/coding-principles/DESIGN-PRINCIPLES.md:90` and `code/docs/desktop/CLAUDE.md:33`. Ten
+more are borderline, the service layer named as a test surface or a data crossing; the list is in
+finding F-023 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Reword the nine to "seam", decide the ten against the
+scope, and inventory body lines rather than headings when doing so. No map or story claims this
+entry.
+
+---
+
+## 11/11/2026 — `django-ratelimit` has had no release since 2023
+
+**Type:** Active gap
+**Summary:** The 09/11/2026 dependency sweep flagged three dependencies whose latest release is
+years old (ruling D12). Release dates are from the PyPI JSON API, read on 11/11/2026. Two are
+already dealt with (see the note below). One remains: **`django-ratelimit` 4.1.0**, released
+24/07/2023, declared in `pyproject.toml` and unwired.
+**Blocked by / Action:** Nothing blocks it. Replace it, keep it with a stated reason, or move it
+into the "deliberately NOT declared" register with the trigger that would bring it back. No map
+or story claims this entry.
+
+**Resolved 11/11/2026, recorded rather than removed so the sweep's trail stays whole:**
+
+- **`axe-core-python` 0.1.0** (01/09/2022, bundling axe-core 4.4.3, which predates axe's first
+  WCAG 2.2 rule) was replaced by `axe-playwright-python` 0.1.8 (24/07/2026, axe-core 4.12.1).
+  Its licence is MIT for the wrapper, with the bundled axe-core under MPL-2.0; neither file is
+  redistributed by this template. 4.12.1 (10/06/2026) trails the current axe-core, 4.14.0
+  (05/10/2026), by two minors.
+  The same change found that `a11y_config.AXE_TAGS` held only `wcag2aa` and `wcag22aa`. The
+  bundled axe tags 62 rules `wcag2a` against 3 `wcag2aa`, so the gate had run no Level A rule.
+  The tags are now `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` and `wcag22aa`. axe has no
+  `wcag22a` tag: WCAG 2.2's two new Level A criteria (3.2.6, 3.3.7) cannot be machine-tested
+  and stay manual QA.
+- **`django-cloudinary-storage` 0.3.0** (23/08/2020; its only fork, `dj3-cloudinary-storage`,
+  stopped at 0.0.6 on 20/10/2021) was dropped on Sam's ruling, and the official `cloudinary` SDK
+  stays. The SDK ships no Django `Storage` class, so Cloudinary as `STORAGES["default"]` will be a
+  thin in-house adapter over it. `code/docs/logging/CLOUDINARY.md` now says so. **Still to build:**
+  that adapter, with its tests, when the first thing needs public media. Nothing is wired at
+  baseline.
+
+---
+
+## 11/11/2026 — the FastMCP doctrine describes 3.x, and 4.x is the current major
+
+**Type:** Planned feature
+**Summary:** FastMCP 4.0.0 shipped on 31/08/2026, and 4.1.6 was current at the 09/11/2026
+sweep. 4.x moves to MCP Python SDK v2, removes server-initiated sampling and roots and every
+3.x deprecation shim, makes model fields snake_case, and moves background tasks into a separate
+`fastmcp-tasks` package. `fastmcp` is not a declared dependency and nothing imports it, but
+`code/docs/MCP-SERVER.md`, its `mcp-server/` sub-docs, the `stack-fastmcp` skill and the
+`FastMCP 3.x` row in `REFERENCES.md` all describe the 3.x API. Ruling D10 (09/11/2026) kept the
+docs on 3.x for the sweep.
+**Blocked by / Action:** Nothing blocks it. It is a docs-and-skill rewrite against FastMCP's
+"Upgrading from FastMCP 3" guide, cut as its own story, and never a version bump folded into
+another change. Do it before the first story that builds the `/mcp/` surface, so that story is
+not built on a superseded API. No map or story claims this entry.
+
+---
+
+## 11/11/2026 — upgrades held at the 09/11/2026 sweep, each with its trigger
+
+**Type:** Active gap
+**Summary:** The sweep (rulings D1 to D12, 09/11/2026) held the items below rather than taking
+them. Each one is held until its trigger fires, and none is in progress. Until 11/11/2026 the
+table also lacked the Wagtail floor and three of the D11 cooldown holds recorded in `997a325`; a
+hold found later is added here as a row, not assumed to be absent.
+
+| Held                               | At       | Moves when                                                                                                                                                               |
+| ---------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Python 3.15                        | 3.14     | djc-core ships a cp315 wheel and celery declares 3.15 support                                                                                                            |
+| PostgreSQL 19                      | 18       | 19 reaches GA and the deploy repo records it as the server major                                                                                                         |
+| TypeScript 7                       | ~6.0.3   | Expo and typescript-eslint both allow 7                                                                                                                                  |
+| Mobile ESLint 10                   | 9        | `eslint-plugin-react` and `eslint-plugin-import` lift their `^9` peer caps                                                                                               |
+| django-prometheus                  | 2.4.0    | a release allows Django 6.1 (2.5.0 declares `Django<6.1`)                                                                                                                |
+| django-valkey                      | 0.4.1    | 0.5.x has been reviewed against the cache settings block (0.5.0 shipped on the sweep's day)                                                                              |
+| Rust toolchain                     | 1.97.1   | 1.100 is released (expected around 12/11/2026)                                                                                                                           |
+| pnpm 12                            | 11.28.9  | 12 has cleared the 7-day cooldown (D11), together with `pnpm/action-setup` v6.1.x                                                                                        |
+| Valkey 9                           | 8.1      | the deploy repo records its Valkey major in `SERVER-ARCHITECTURE/COMPUTE-ALLOCATION.md`                                                                                  |
+| PIN S-01 hardening                 | unpinned | that story runs: image digest pins, the nginx tag, the four tag-pinned actions (its uv version pins landed 11/11/2026)                                                   |
+| Wagtail floor (cms-only)           | 8.0      | 8.1's release notes (02/11/2026) are read in full and its deprecations run out, one feature release at a time (`code/docs/wagtail/FUNDAMENTALS.md`, "The version floor") |
+| `sigstore/cosign-installer`        | v4.1.2   | v4.1.3 (04/11/2026) clears the 7-day cooldown (D11) on 11/11/2026                                                                                                        |
+| `anthropics/claude-code-action`    | v1.0.266 | the newest release past the 7-day cooldown (D11); v1.0.267 (03/11/2026) and v1.0.268 (04/11/2026) have cleared it                                                        |
+| `MishaKav/pytest-coverage-comment` | v1.13.0  | v1.13.1 (08/11/2026) clears the 7-day cooldown (D11) on 15/11/2026                                                                                                       |
+
+**Blocked by / Action:** Each row is blocked on its trigger. When one fires, move that item as
+its own commit under `how-to/workflows/07-dependency-updates/` and delete its row. Delete this
+entry with the last row. No map or story claims this entry.
+
+---
+
+## 11/11/2026 — `update.sh --check` calls the Python graph current when it only proved the lock in step
+
+**Type:** Active gap
+**Summary:** In a project with a `uv.lock`, `code/src/scripts/dependencies/update.sh --check`'s
+Python leg runs only `uv lock --check`, which proves the lock agrees with `pyproject.toml`. It
+does not compare anything against PyPI. On 09/11/2026 it printed "Everything is current" while
+the lock was behind on more than thirty packages (Django 6.1.2 against 6.1.3 among them). Its
+`CONTEXT.md` says `--check` reports the registry's latest, which is true of the JavaScript leg
+only. This is a false green (`code/docs/GATE-REPORTING.md`).
+**Blocked by / Action:** Nothing blocks it. Make the Python `--check` leg report resolved
+versions against the registry (for example a `uv lock --upgrade --dry-run` diff, or the PyPI
+JSON comparison that the no-lock branch already runs), or have it say plainly that it checked
+lock agreement only. No map or story claims this entry.
+
+---
+
+## 11/11/2026 — two small doc and lint defects found during the Node 26 move
+
+**Type:** Active gap
+**Summary:**
+
+- `how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md` says the floors in its table "are the ones
+  `install.sh` actually checks ... it refuses rather than warning". `install.sh` compares no
+  version of any tool. It checks that git, openssl, uv, pnpm and the Docker Compose v2 plugin are
+  on `PATH` and prints their versions; it does not check Python or Node at all. So the sentence
+  is false for every row of the table: Docker 24+, uv 0.13+, Python 3.14+, Node 26+ and pnpm
+  11.28.9+ (pnpm's floor is enforced, but by `package.json` `packageManager` and `engines`, not by
+  `install.sh`). Found for Node while moving the floor to 26, and widened on 11/11/2026; the
+  header and `--help` of `install.sh`, which also implied floors, now say presence only.
+- `code/src/scripts/syntax/lint.sh --file-type markdown` lints the gitignored `graphify-out/`
+  directory, because its markdownlint globs carry no `!graphify-out/**` exclusion. A local
+  graphify run (412 issues in `GRAPH_REPORT.md` on 11/11/2026) therefore turns the whole
+  markdown lint red on any machine that has one.
+
+**Blocked by / Action:** Nothing blocks either. Add real floor checks to `install.sh` for uv,
+Python, Node and Docker, read from the same sources `audits/toolchain-pins.sh` uses, or narrow the
+guide's sentence to "presence only". Add the exclusion to `.markdownlint-cli2.jsonc`
+(or the script's glob list), matching `.gitignore`. No map or story claims this entry.

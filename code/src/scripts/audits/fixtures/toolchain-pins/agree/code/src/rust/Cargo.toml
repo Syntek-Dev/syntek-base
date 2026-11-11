@@ -1,0 +1,5 @@
+[workspace]
+members = []
+
+[workspace.package]
+rust-version = "1.92"

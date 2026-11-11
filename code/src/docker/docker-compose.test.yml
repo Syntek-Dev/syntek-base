@@ -6,7 +6,7 @@ name: "<%PROJECT_SLUG%>-test"
 
 services:
   db:
-    image: postgres:18-alpine
+    image: postgres:18
     command: postgres -N 200
     environment:
       POSTGRES_DB: "<%PROJECT_SLUG%>_test"
@@ -32,7 +32,7 @@ services:
       start_period: 120s
 
   cache:
-    image: valkey/valkey:8-alpine
+    image: valkey/valkey:8
     command: valkey-server --loglevel warning
     healthcheck:
       test: ["CMD-SHELL", "valkey-cli ping | grep -q PONG"]
@@ -66,7 +66,7 @@ services:
         condition: service_healthy
 
   nginx:
-    image: nginx:alpine
+    image: nginx:mainline
     ports:
       # Host 83 (dev nginx holds 81) so both stacks can run concurrently.
       - "127.0.0.1:83:80"
