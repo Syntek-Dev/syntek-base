@@ -27,7 +27,6 @@ on:
       - "package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
-      - "patches/**"
       - "code/src/*/package.json"
       - "code/src/rust/Cargo.toml"
       - "code/src/rust/Cargo.lock"
@@ -47,7 +46,6 @@ on:
       - "package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
-      - "patches/**"
       - "code/src/*/package.json"
       - "code/src/rust/Cargo.toml"
       - "code/src/rust/Cargo.lock"
@@ -118,8 +116,9 @@ jobs:
           path: ~/.cargo/bin/cargo-deny
           key: cargo-deny-${{ runner.os }}-${{ hashFiles('code/src/rust/.cargo-deny-version') }}
 
-      # Not continue-on-error: an install that fails leaves cargo-deny absent, and the audit then
-      # reports the Rust advisory leg NOT RUN and exits 2 — the failure is named, not hidden.
+      # Not continue-on-error: an install that fails fails the job AT THIS STEP, and the audit
+      # step below never runs — red and named, never green (code/docs/GATE-REPORTING.md). The
+      # audit's own NOT RUN / exit 2 is for a host where cargo-deny was never installed.
       - name: Rust — install cargo-deny (pinned)
         id: deny_install
         if: steps.rust_surface.outputs.present == 'true'
