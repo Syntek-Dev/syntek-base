@@ -1,0 +1,3 @@
+# A held register naming an owner absent from the tree: the entry is void, so the class fails.
+# sites: 3
+unpinned uv code/src/docker/django/Dockerfile.dev

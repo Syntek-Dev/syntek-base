@@ -49,6 +49,11 @@ _exclude:
   # generated project never holds, so it would only ever refuse to run there. Its sibling
   # template-update.sh ships, because updating FROM a template is a generated project's job.
   - /code/src/scripts/development/template-render.sh
+  # toolchain-pins.sh's held register names PIN S-01 in MAP-PIN-DETECT-MOVE, and
+  # /project-management/src/** below excludes that map. Shipped, it would hold the unpinned uv
+  # class in every generated project against an owner that is not there and a release condition
+  # that can never fire. Absent, the script holds nothing and the class fails as unpinned.
+  - /code/src/scripts/audits/toolchain-pins-held.txt
   - /README.md # the project's README ships from .copier/README.md (see _tasks)
   # syntek-base commits its OWN uv.lock (16/08/2026) so its Python gates and suites can
   # run against a real dependency set. That lock pins `syntek-base`, so it must not travel:

@@ -57,9 +57,16 @@
 # life of that hold and teach everyone to read past it. Passing it silently would be the
 # defect code/docs/GATE-REPORTING.md bans. So it is printed, every run, site by site, in a
 # tier of its own naming its owner, and it does not change the exit code. The tier is a
-# CLASS (tool + finding kind) declared once in HELD below — never a marker on a line, so a
-# new held-class site is reported the moment it appears and nothing in the tree can hide one.
-# When S-01 ships, HELD is emptied in the same change and the class fails like any other.
+# CLASS (tool + finding kind), never a marker on a line, so a new held-class site is reported
+# the moment it appears and nothing in the tree can hide one.
+#
+# The held classes are READ, from HELD_REL below, one "tool:class|owner-path|reason" per line,
+# and an entry holds only while its owner path resolves in the tree being audited — a hold
+# whose owner is absent is void, reported as such, and its class fails. That register is
+# TEMPLATE-ONLY: copier.yml excludes it, because the story it names lives under
+# project-management/src, which copier also excludes. A generated project therefore holds
+# nothing, and the uv sites it inherits fail as unpinned there until it pins them. When S-01
+# ships, its line is deleted in the same change and the class fails here too.
 #
 # ABSENT SURFACE. No code/src/rust means a project generated without Rust: Rust claims in the
 # shipped documents are reported "not compared — no Rust surface" and are not findings. A
@@ -93,10 +100,11 @@ DOC_REGISTER=(
   .claude/hooks/pre-pr-check.sh
 )
 
-# Held classes: "tool:class|owner". Printed every run; never fails. See the header.
-HELD=(
-  "uv:unpinned|PIN S-01 (MAP-PIN-DETECT-MOVE) - builds run what they pin; held per D5, 09/11/2026"
-)
+# Held classes, read per audited tree from HELD_REL — "tool:class|owner-path|reason" per line.
+# Printed every run; never fails. Template-only: see THE HELD TIER in the header.
+HELD_REL="code/src/scripts/audits/toolchain-pins-held.txt" # doc-references: template-only
+HELD=()
+HELD_VOID=()
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
 OUTPUT_FORMAT=""
@@ -141,7 +149,8 @@ Sources:  node .nvmrc · python .python-version · pnpm packageManager ·
 
 Classes:  agree · derived (reads the source itself) · drift · unpinned (floats) ·
           reads-other (a version file that is not the source) · no-source ·
-          held (an unpinned class assigned to a named story; printed, never fails)
+          held (an unpinned class assigned to a story in toolchain-pins-held.txt;
+          printed, never fails — template-only, so a generated project holds nothing)
 
 There is no --path. The sites are a whole-repository fact; a scope would be a clean run
 over a subset. Passing it exits 2.
@@ -428,7 +437,7 @@ collect_sites() {
 # Reads sources on fd 3 and sites on stdin; prints "class<TAB>tool<TAB>raw<TAB>where<TAB>note".
 evaluate() {
   local held_spec
-  held_spec="$(printf '%s\n' "${HELD[@]}" | sed 's/|.*//' | tr '\n' ' ')"
+  held_spec="$(printf '%s\n' ${HELD[@]+"${HELD[@]}"} | sed 's/|.*//' | tr '\n' ' ')"
   awk -F '\t' -v held="$held_spec" '
     function norm(raw,   r, n, i, p, out) {
       r = raw; gsub(/["\047 ]/, "", r); sub(/,.*/, "", r)
@@ -464,9 +473,25 @@ evaluate() {
   ' 3< <(printf '%s\n' "$SOURCES")
 }
 
-# Runs one root: sets SOURCES, RESULTS, SITE_COUNT, FAIL_COUNT, HELD_COUNT.
+# Reads the held register of one tree into HELD; an entry whose owner path does not resolve in
+# that tree goes to HELD_VOID instead and holds nothing, so its class fails like any other.
+load_held() {
+  local root="$1" line spec owner reason
+  HELD=(); HELD_VOID=()
+  [[ -f "$root/$HELD_REL" ]] || return 0
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    case "$line" in ''|'#'*) continue ;; esac
+    spec="${line%%|*}"; owner="${line#*|}"; reason="${owner#*|}"; owner="${owner%%|*}"
+    [[ "$spec" == *:* && "$line" == *'|'*'|'* ]] || die "malformed held entry in $HELD_REL: $line"
+    if [[ -e "$root/$owner" ]]; then HELD+=("$spec|$owner - $reason")
+    else HELD_VOID+=("$spec|$owner"); fi
+  done < "$root/$HELD_REL"
+}
+
+# Runs one root: sets HELD, SOURCES, RESULTS, SITE_COUNT, FAIL_COUNT, HELD_COUNT.
 audit_root() {
   local root="$1" sites
+  load_held "$root"
   SOURCES="$(read_sources "$root")"
   sites="$(collect_sites "$root")"
   if [[ -z "$sites" ]]; then
@@ -484,12 +509,15 @@ audit_root() {
 # must report, held tier included. Then the odd-form probes, run through the same evaluator.
 # Fix the detector, never the fixtures.
 run_self_test() {
-  local variant actual expected failed=0 probe
-  for variant in agree drift; do
+  local variant actual expected failed=0 probe dir want_sites variants=()
+  for dir in "$FIXTURES_DIR"/*/; do
+    [[ -f "$dir/expected.txt" ]] && variants+=("$(basename "$dir")")
+  done
+  for variant in agree drift rendered void-held; do
     [[ -f "$FIXTURES_DIR/$variant/expected.txt" ]] || die "self-test fixture missing: fixtures/toolchain-pins/$variant"
   done
   bold "▸ toolchain-pins.sh --self-test"
-  for variant in agree drift; do
+  for variant in "${variants[@]}"; do
     audit_root "$FIXTURES_DIR/$variant"
     actual="$(printf '%s\n' "$RESULTS" | awk -F '\t' '$1 != "agree" && $1 != "derived" && $1 != "absent" { w = $4; sub(/:[0-9]+$/, "", w); print $1, $2, w }' | sort)"
     expected="$(grep -v '^#' "$FIXTURES_DIR/$variant/expected.txt" | grep . | sort || true)"
@@ -499,15 +527,13 @@ run_self_test() {
       log "  ✗ $variant reported something other than expected.txt:"
       diff <(printf '%s\n' "$expected") <(printf '%s\n' "$actual") | sed 's/^/      /' || true
     fi
+    # A tree must actually be READ: a silent extractor reports nothing, which on an agreeing
+    # tree looks identical to agreement. Where expected.txt states a site count, it is asserted.
+    want_sites="$(sed -nE 's/^# sites: ([0-9]+)$/\1/p' "$FIXTURES_DIR/$variant/expected.txt")"
+    if [[ -n "$want_sites" && "$SITE_COUNT" != "$want_sites" ]]; then
+      failed=1; log "  ✗ $variant tree: read $SITE_COUNT site(s), expected $want_sites — an extractor went silent"
+    fi
   done
-  # The agreeing tree must actually be READ: a silent extractor reports nothing, which on
-  # that tree looks identical to agreement. Its site count is asserted, not just its findings.
-  audit_root "$FIXTURES_DIR/agree"
-  local want_sites
-  want_sites="$(sed -nE 's/^# sites: ([0-9]+)$/\1/p' "$FIXTURES_DIR/agree/expected.txt")"
-  if [[ "$SITE_COUNT" != "$want_sites" ]]; then
-    failed=1; log "  ✗ agree tree: read $SITE_COUNT site(s), expected $want_sites — an extractor went silent"
-  fi
   # Odd forms: "tool raw source expected-class".
   local probes=(
     "node >=24 24 agree" "node 24.x 24 agree" "node 24+ 24 agree" "node >=22 24 drift"
@@ -517,6 +543,8 @@ run_self_test() {
     "uv latest 0.12.5 held" "pnpm 11.x 11.25.0 agree" "pnpm >=11.25.0 11.25.0 agree"
     "pnpm ^11.2 11.25.0 drift" "rust 1.97 1.97.1 agree" "rust stable 1.97.1 unpinned"
   )
+  # The probes test the evaluator, not a tree's register, so they hold the class themselves.
+  HELD=("uv:unpinned|probe owner")
   for probe in "${probes[@]}"; do
     # shellcheck disable=SC2086  # word-split the probe into its four fields
     set -- $probe
@@ -577,6 +605,11 @@ if [[ $HELD_COUNT -gt 0 ]]; then
   for h in "${HELD[@]}"; do
     print_class held "[held - not failing] ${h%%|*} is assigned to ${h#*|}:"
   done
+fi
+if [[ ${#HELD_VOID[@]} -gt 0 ]]; then
+  log ""
+  log "  [held entry void] its owner is not in this tree, so the class is failing above:"
+  for h in "${HELD_VOID[@]}"; do log "    ${h%%|*}  (owner ${h#*|} absent)"; done
 fi
 
 # ── Report ────────────────────────────────────────────────────────────────────

@@ -13,10 +13,10 @@
 # version. The audit is grep and awk over a few hundred files and runs in seconds, so running it
 # on every pull request costs nothing worth a filter.
 #
-# THE HELD TIER IS PRINTED, NOT FAILED. Unpinned uv (the `uv:latest` image and setup-uv steps
-# with no version) belongs to the held story PIN S-01 and is reported every run in its own tier
-# without changing the exit code; the script's header carries the reasoning against
-# code/docs/GATE-REPORTING.md.
+# THE HELD TIER IS PRINTED, NOT FAILED. A class held in the script's held register is reported
+# every run in its own tier without changing the exit code; the script's header carries the
+# reasoning against code/docs/GATE-REPORTING.md. That register is template-only, so in a
+# generated project nothing is held and every unpinned site fails here until it is pinned.
 name: Audit — Toolchain Pins
 
 on:
