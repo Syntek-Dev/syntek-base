@@ -437,16 +437,22 @@ extract_docs() {
         /^[ \t]*(```|~~~)/ { fence = !fence; next }
         {
           line = $0
-          # Inline: "Node 26", "Python 3.14", "uv 0.13+", "pnpm 11.28.9", "Rust 1.92+". Prose
-          # only — never inside a fence, where "Python 2 syntax" is an example, not a pin — and
-          # never coarser than the tool moves at: "Python 3" in a sentence names a language.
-          rest = fence ? "" : line
-          while (match(rest, /(^|[^A-Za-z0-9_.\/-])(Node\.js|Node|Python|uv|pnpm|Rust) v?[0-9]+(\.[0-9]+)*(\.x)?\+?/)) {
-            m = substr(rest, RSTART, RLENGTH); sub(/^[^A-Za-z]/, "", m)
-            split(m, p, " "); v = p[2]; sub(/^v/, "", v)
-            d = v; sub(/\.x$/, "", d); sub(/\+$/, "", d)
-            if (split(d, dc, ".") >= prec[tool(p[1])]) out(tool(p[1]), v, "stated in prose")
-            rest = substr(rest, RSTART + RLENGTH)
+          # Inline: "Node 26", "node 26", "Node >= 26", "Node ≥ 26", "node@26", "Python 3.14",
+          # "Python3.14", "uv 0.13+", "pnpm 11.28.9", "Rust 1.92+" — matched case-insensitively.
+          # Prose only — never inside a fence, where "Python 2 syntax" is an example, not a pin —
+          # and never coarser than the tool moves at: "Python 3" in a sentence names a language.
+          # Only Python is written run-together ("Python3.13"); "pnpm@" is the quoted form below.
+          rest = fence ? "" : tolower(line)
+          while (match(rest, /(^|[^a-z0-9_.\/-])(node\.js|node|python|uv|pnpm|rust)( ?(>=|≥) ?| v?|@v?)?[0-9]+(\.[0-9]+)*(\.x)?\+?/)) {
+            m = substr(rest, RSTART, RLENGTH); rest = substr(rest, RSTART + RLENGTH)
+            sub(/^[^a-z]/, "", m)
+            match(m, /^(node\.js|node|python|uv|pnpm|rust)/); tl = substr(m, 1, RLENGTH); after = substr(m, RLENGTH + 1)
+            match(after, /[0-9]/); sep = substr(after, 1, RSTART - 1); v = substr(after, RSTART)
+            if (sep == "" && tl != "python") continue
+            if (sep ~ /@/ && tl == "pnpm") continue
+            if (sep ~ />=|≥/) v = ">=" v
+            d = v; sub(/^>=/, "", d); sub(/\.x$/, "", d); sub(/\+$/, "", d)
+            if (split(d, dc, ".") >= prec[tool(tl)]) out(tool(tl), v, "stated in prose")
           }
           # Table: a row whose first cell names the tool and whose next cell is a version.
           if (!fence && line ~ /^\|/) {

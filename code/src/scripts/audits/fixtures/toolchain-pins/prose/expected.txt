@@ -1,0 +1,8 @@
+# Prose claims in every separator form, case-insensitive (Q-07): space, >=, the >= sign, @ and,
+# for Python, none at all. The stale five drift; the current five agree; the last line has none.
+# sites: 10
+drift node README.md
+drift node README.md
+drift node README.md
+drift node README.md
+drift python README.md
