@@ -209,8 +209,12 @@ MEASURE-01 as amended (F-002).
       independent agent, **28 Pass, 7 Fail** after Sam's rulings of 05/11/2026 and 06/11/2026;
       GATES-05 re-walked Pass at the check stage 05/11/2026, ShellCheck exit 0 (F-003); BASELINE-01
       amended and Pass (F-020); re-walked 06/11/2026 against workflow 23's fix rounds, still 28 Pass,
-      7 Fail, GATES-01 amended (F-049); re-walked again 06/11/2026 against the F-021 round, unchanged; **signed off with notes 09/11/2026** by an independent `qa-tester` at `7ad0cb8`, every row reproduced, each note confirmed by a separate verifier (F-076, F-077; evidence /home/sam-desktop/.claude/tmp/us004-qa-signoff/). Sam's countersignature is not recorded here
-- [ ] Reviewer approval — Sam, at `23-pr-and-review`
+      7 Fail, GATES-01 amended (F-049); re-walked again 06/11/2026 against the F-021 round, unchanged; **signed off with notes 09/11/2026** by an independent `qa-tester` at `7ad0cb8`, every row reproduced, each note confirmed by a separate verifier (F-076, F-077; evidence /home/sam-desktop/.claude/tmp/us004-qa-signoff/). Countersigned by Sam on 11/11/2026 in session, at
+      `23-pr-and-review`, accepting the walk as recorded, the seven Fails under F-001
+      (`../../19-REVIEWS/REVIEW-US004-CITATION-GATE-GIT-INDEX.md` → Section 4, item 5)
+- [x] Reviewer approval — Sam, 11/11/2026 in session, at `23-pr-and-review`, accepting the recorded
+      findings F-001 to F-077 and the open `GAPS.md` carries (F-004 and F-005, F-013, F-052, F-053,
+      F-076, F-077)
 
 ---
 

@@ -287,8 +287,9 @@ self-test exits 2, 186 run and passed, 13 sets needing the contract. Evidence
 3. **R-024 / F-003** — ruled 05/11/2026: fixed in the build; GATES-05 re-walked Pass, ShellCheck exit 0.
 4. **F-019** — done: `../15-DECISIONS/ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL-08-09-2026.md`
    accepted 05/11/2026 at `d13b168`.
-5. Sam's countersignature of the walk. The guide's cross-check against the automated record is
-   ticked (05/11/2026, re-checked 06/11/2026).
+5. Sam's countersignature of the walk — **given 11/11/2026** in session, at `23-pr-and-review`,
+   accepting the walk as recorded, 28 Pass and 7 Fail, the seven under F-001. The guide's
+   cross-check against the automated record is ticked (05/11/2026, re-checked 06/11/2026).
 6. **F-024** — done 06/11/2026: Sam accepted
    `../15-DECISIONS/ADR-US004-INSTANCE-CITER-ADMITS-STORYLESS-DATED-RECORDS-06-11-2026.md`; the
    05/11/2026 derived-rule record is Superseded.
@@ -298,7 +299,7 @@ self-test exits 2, 186 run and passed, 13 sets needing the contract. Evidence
 8. **F-051** — done 09/11/2026 on Sam's ruling: fixed in US004; the default-answer project's
    gate exits 0 (F-069 to F-075).
 9. **F-068** — answered 09/11/2026 for the F-051 change by round 4's independent pair; round 3's
-   own diff rests on its re-walk and Sam's countersignature.
+   own diff rests on its re-walk and Sam's countersignature, given 11/11/2026 (item 5).
 10. **F-059** — the CI generation job, now rendering through `template-render.sh`, has not yet run
     in CI; confirm it on the PR.
 
@@ -329,6 +330,11 @@ self-test exits 2, 186 run and passed, 13 sets needing the contract. Evidence
   QA-SO-01 (Low, F-076) and QA-SO-03 (Info, F-077), each a dated `GAPS.md` entry; QA-SO-02 is
   F-014, re-confirmed. Each note was confirmed by a separate verifier agent. Evidence:
   /home/sam-desktop/.claude/tmp/us004-qa-signoff/.
+- **Sign-off.** Sam signed the story off on 11/11/2026 in session, at `23-pr-and-review`, giving
+  his reviewer approval and countersigning the walk as recorded, **28 Pass, 7 Fail**, the seven
+  Fails standing on F-001's accepted deviation. He accepted the recorded findings **F-001 to
+  F-077** and the open `GAPS.md` carries — **F-004 and F-005, F-013, F-052, F-053, F-076 and
+  F-077** — including the sign-off notes F-076 and F-077. Section 4's item 5 is therefore met.
 - **Status transition:** none recorded here. `In Progress` → `In Review` and onward are the
   `completion` skill's, at `23-pr-and-review`.
 
