@@ -228,7 +228,10 @@ test = [
   # axe-core packaged for Python + Playwright. Bundles axe.min.js, so the a11y gate
   # carries no Node and no CDN fetch. axe-playwright-python, not axe-core-python: the
   # latter's last release (0.1.0, 01/09/2022) bundles axe-core 4.4.3, which predates
-  # axe's first WCAG 2.2 rule (4.5.0). 0.1.8 bundles axe-core 4.12.1 (11/11/2026).
+  # axe's first WCAG 2.2 rule (4.5.0). 0.1.8 bundles axe-core 4.12.1 (released
+  # 10/06/2026), two minors behind the current 4.14.0 (05/10/2026). Licence: the
+  # wrapper is MIT; the bundled axe.min.js is axe-core's own MPL-2.0 (Deque). This
+  # template declares the package and redistributes neither file.
   "axe-playwright-python>=0.1.8",
 ]
 

@@ -1008,6 +1008,9 @@ or story claims this entry.
 
 - **`axe-core-python` 0.1.0** (01/09/2022, bundling axe-core 4.4.3, which predates axe's first
   WCAG 2.2 rule) was replaced by `axe-playwright-python` 0.1.8 (24/07/2026, axe-core 4.12.1).
+  Its licence is MIT for the wrapper, with the bundled axe-core under MPL-2.0; neither file is
+  redistributed by this template. 4.12.1 (10/06/2026) trails the current axe-core, 4.14.0
+  (05/10/2026), by two minors.
   The same change found that `a11y_config.AXE_TAGS` held only `wcag2aa` and `wcag22aa`. The
   bundled axe tags 62 rules `wcag2a` against 3 `wcag2aa`, so the gate had run no Level A rule.
   The tags are now `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` and `wcag22aa`. axe has no
