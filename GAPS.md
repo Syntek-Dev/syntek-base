@@ -1042,21 +1042,27 @@ not built on a superseded API. No map or story claims this entry.
 ## 11/11/2026 — upgrades held at the 09/11/2026 sweep, each with its trigger
 
 **Type:** Active gap
-**Summary:** The sweep (rulings D1 to D12, 09/11/2026) took everything current except the items
-below. Each one is held until its trigger fires. None is forgotten, and none is in progress.
+**Summary:** The sweep (rulings D1 to D12, 09/11/2026) held the items below rather than taking
+them. Each one is held until its trigger fires, and none is in progress. Until 11/11/2026 the
+table also lacked the Wagtail floor and three of the D11 cooldown holds recorded in `997a325`; a
+hold found later is added here as a row, not assumed to be absent.
 
-| Held               | At       | Moves when                                                                                   |
-| ------------------ | -------- | -------------------------------------------------------------------------------------------- |
-| Python 3.15        | 3.14     | djc-core ships a cp315 wheel and celery declares 3.15 support                                |
-| PostgreSQL 19      | 18       | 19 reaches GA and the deploy repo records it as the server major                             |
-| TypeScript 7       | ~6.0.3   | Expo and typescript-eslint both allow 7                                                      |
-| Mobile ESLint 10   | 9        | `eslint-plugin-react` and `eslint-plugin-import` lift their `^9` peer caps                   |
-| django-prometheus  | 2.4.0    | a release allows Django 6.1 (2.5.0 declares `Django<6.1`)                                    |
-| django-valkey      | 0.4.1    | 0.5.x has been reviewed against the cache settings block (0.5.0 shipped on the sweep's day)  |
-| Rust toolchain     | 1.97.1   | 1.100 is released (expected around 12/11/2026)                                               |
-| pnpm 12            | 11.28.9  | 12 has cleared the 7-day cooldown (D11), together with `pnpm/action-setup` v6.1.x            |
-| Valkey 9           | 8.1      | the deploy repo records its Valkey major in `SERVER-ARCHITECTURE/COMPUTE-ALLOCATION.md`      |
-| PIN S-01 hardening | unpinned | that story runs: Docker uv and image digest pins, the nginx tag, the four tag-pinned actions |
+| Held                               | At       | Moves when                                                                                                                                                               |
+| ---------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Python 3.15                        | 3.14     | djc-core ships a cp315 wheel and celery declares 3.15 support                                                                                                            |
+| PostgreSQL 19                      | 18       | 19 reaches GA and the deploy repo records it as the server major                                                                                                         |
+| TypeScript 7                       | ~6.0.3   | Expo and typescript-eslint both allow 7                                                                                                                                  |
+| Mobile ESLint 10                   | 9        | `eslint-plugin-react` and `eslint-plugin-import` lift their `^9` peer caps                                                                                               |
+| django-prometheus                  | 2.4.0    | a release allows Django 6.1 (2.5.0 declares `Django<6.1`)                                                                                                                |
+| django-valkey                      | 0.4.1    | 0.5.x has been reviewed against the cache settings block (0.5.0 shipped on the sweep's day)                                                                              |
+| Rust toolchain                     | 1.97.1   | 1.100 is released (expected around 12/11/2026)                                                                                                                           |
+| pnpm 12                            | 11.28.9  | 12 has cleared the 7-day cooldown (D11), together with `pnpm/action-setup` v6.1.x                                                                                        |
+| Valkey 9                           | 8.1      | the deploy repo records its Valkey major in `SERVER-ARCHITECTURE/COMPUTE-ALLOCATION.md`                                                                                  |
+| PIN S-01 hardening                 | unpinned | that story runs: Docker uv and image digest pins, the nginx tag, the four tag-pinned actions                                                                             |
+| Wagtail floor (cms-only)           | 8.0      | 8.1's release notes (02/11/2026) are read in full and its deprecations run out, one feature release at a time (`code/docs/wagtail/FUNDAMENTALS.md`, "The version floor") |
+| `sigstore/cosign-installer`        | v4.1.2   | v4.1.3 (04/11/2026) clears the 7-day cooldown (D11) on 11/11/2026                                                                                                        |
+| `anthropics/claude-code-action`    | v1.0.266 | the newest release past the 7-day cooldown (D11); v1.0.267 (03/11/2026) and v1.0.268 (04/11/2026) have cleared it                                                        |
+| `MishaKav/pytest-coverage-comment` | v1.13.0  | v1.13.1 (08/11/2026) clears the 7-day cooldown (D11) on 15/11/2026                                                                                                       |
 
 **Blocked by / Action:** Each row is blocked on its trigger. When one fires, move that item as
 its own commit under `how-to/workflows/07-dependency-updates/` and delete its row. Delete this
@@ -1086,13 +1092,19 @@ lock agreement only. No map or story claims this entry.
 **Summary:**
 
 - `how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md` says the floors in its table "are the ones
-  `install.sh` actually checks". `install.sh` contains no Node version check, so for Node the
-  sentence is false. Found while moving the floor to 26.
+  `install.sh` actually checks ... it refuses rather than warning". `install.sh` compares no
+  version of any tool. It checks that git, openssl, uv, pnpm and the Docker Compose v2 plugin are
+  on `PATH` and prints their versions; it does not check Python or Node at all. So the sentence
+  is false for every row of the table: Docker 24+, uv 0.13+, Python 3.14+, Node 26+ and pnpm
+  11.28.9+ (pnpm's floor is enforced, but by `package.json` `packageManager` and `engines`, not by
+  `install.sh`). Found for Node while moving the floor to 26, and widened on 11/11/2026; the
+  header and `--help` of `install.sh`, which also implied floors, now say presence only.
 - `code/src/scripts/syntax/lint.sh --file-type markdown` lints the gitignored `graphify-out/`
   directory, because its markdownlint globs carry no `!graphify-out/**` exclusion. A local
   graphify run (412 issues in `GRAPH_REPORT.md` on 11/11/2026) therefore turns the whole
   markdown lint red on any machine that has one.
 
-**Blocked by / Action:** Nothing blocks either. Add a Node floor check to `install.sh`, or narrow
-the guide's sentence to the tools it does check. Add the exclusion to `.markdownlint-cli2.jsonc`
+**Blocked by / Action:** Nothing blocks either. Add real floor checks to `install.sh` for uv,
+Python, Node and Docker, read from the same sources `audits/toolchain-pins.sh` uses, or narrow the
+guide's sentence to "presence only". Add the exclusion to `.markdownlint-cli2.jsonc`
 (or the script's glob list), matching `.gitignore`. No map or story claims this entry.
