@@ -160,7 +160,7 @@ audit:
     # glob — NO FIX IN THE CONSUMERS' MAJOR. Affects 9.0.0-14.0.1, fixed only in
     # >=14.0.2. 13.0.6 is the newest 13.x and every @expo/* consumer declares ^13.0.0,
     # at the locked release and at latest alike (cli, config, config-plugins and
-    # metro-config 57.x/58.x; fingerprint 0.20/0.21), as do jest-config, jest-runtime
+    # metro-config 58.x; fingerprint 0.21), as do jest-config, jest-runtime
     # and @jest/reporters 30 since 09/11/2026, so an override would cross a major.
     # The flaw: traversal continues after an AbortSignal fires. Only @expo/cli's
     # anyMatchAsync passes a signal (it aborts after the first match, in the

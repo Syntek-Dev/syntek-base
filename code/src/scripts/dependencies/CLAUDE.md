@@ -28,7 +28,8 @@ The sanctioned entry point for moving a dependency in any of the three ecosystem
 
 - **A floor is not a pin, and a raise is never housekeeping.** Raising a floor forbids old
   versions; it does not install new ones. State the reason inline, and re-resolve in the same
-  change — the `ruff` 0.11 → 0.16 comment in the root `pyproject.toml` is the worked example.
+  change — the `ruff` floor comment in the root `pyproject.toml` (0.11.0 → 0.16.3, then
+  0.16.3 → 0.17.4 with the tree reformatted in the same commit) is the worked example.
 - **Never raise a floor to "latest" without resolving.** Latest is bounded by the rest of the
   graph. `celery[redis]` admits only `redis<9` through kombu 5.7 (`<6.5` under kombu 5.6), so a
   floor past the cap does not fail — it silently drags celery back to satisfy itself, as a

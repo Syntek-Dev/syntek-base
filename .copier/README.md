@@ -401,7 +401,7 @@ local quality checks.
 | **Git**                               | any recent                   | version control                              |
 | **Docker Engine** (or Docker Desktop) | 27+                          | run all application services                 |
 | **Docker Compose plugin**             | v2+                          | orchestrate local containers                 |
-| **Node.js**                           | 24 (see `.nvmrc`)            | root pnpm scripts and git hooks              |
+| **Node.js**                           | 26 (see `.nvmrc`)            | root pnpm scripts and git hooks              |
 | **pnpm**                              | 11+                          | JS package manager (root workspace only)     |
 | **Python**                            | 3.14 (see `.python-version`) | root pyproject tooling (ruff, basedpyright)  |
 | **uv**                                | 0.13+                        | Python environment and dependency management |

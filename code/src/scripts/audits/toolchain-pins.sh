@@ -372,7 +372,7 @@ extract_docs() {
         /^[ \t]*(```|~~~)/ { fence = !fence; next }
         {
           line = $0
-          # Inline: "Node 24", "Python 3.14", "uv 0.12+", "pnpm 11.25.0", "Rust 1.92+". Prose
+          # Inline: "Node 26", "Python 3.14", "uv 0.13+", "pnpm 11.28.9", "Rust 1.92+". Prose
           # only — never inside a fence, where "Python 2 syntax" is an example, not a pin — and
           # never coarser than the tool moves at: "Python 3" in a sentence names a language.
           rest = fence ? "" : line
@@ -400,7 +400,7 @@ extract_docs() {
           if (match(line, /`\.python-version` pins `[^`]+`/)) { v = substr(line, RSTART, RLENGTH); sub(/.*pins `/, "", v); sub(/`$/, "", v); out("python", v, "quoted .python-version") }
           if (match(line, /pnpm@[0-9][0-9.]*[0-9]/)) { v = substr(line, RSTART + 5, RLENGTH - 5); out("pnpm", v, "quoted pnpm@") }
           if (match(line, /`rust-version` \([0-9.]+\)/)) { v = substr(line, RSTART, RLENGTH); sub(/.*\(/, "", v); sub(/\)$/, "", v); out("msrv", v, "quoted rust-version") }
-          # The version-check comments: "node --version && pnpm --version  # 24+ / 11.25.0+".
+          # The version-check comments: "node --version && pnpm --version  # 26+ / 11.28.9+".
           if (match(line, /(node|python3?) --version && (pnpm|uv) --version[ \t]*# *[^ ]+ *\/ *[^ ]+/)) {
             m = substr(line, RSTART, RLENGTH); a = m; sub(/ .*/, "", a); b = m; sub(/^.*&& */, "", b); sub(/ .*/, "", b)
             vs = m; sub(/^[^#]*# */, "", vs); split(vs, q, "/"); gsub(/[ \t]/, "", q[1]); gsub(/[ \t]/, "", q[2])
