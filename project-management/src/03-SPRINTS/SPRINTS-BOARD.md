@@ -10,8 +10,8 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 | Column      | Items |
 | ----------- | ----- |
 | Planned     | 5     |
-| In Progress | 2     |
-| Done        | 1     |
+| In Progress | 0     |
+| Done        | 3     |
 | Closed      | 0     |
 
 ## Planned
@@ -26,15 +26,14 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 
 ## In Progress
 
-| ID        | Title                                                                                                 | Status      | File                         |
-| --------- | ----------------------------------------------------------------------------------------------------- | ----------- | ---------------------------- |
-| SPRINT-01 | Two rules get exactly one owner each before anything downstream writes against them                   | In Progress | [SPRINT-01.md](SPRINT-01.md) |
-| SPRINT-02 | The audits register regains the headroom nine new gates need, and the absence guide is born behind it | In Progress | [SPRINT-02.md](SPRINT-02.md) |
+_None._
 
 ## Done
 
 | ID        | Title                                                                                                                                                                    | Status | File                         |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ---------------------------- |
+| SPRINT-01 | Two rules get exactly one owner each before anything downstream writes against them                                                                                      | Done   | [SPRINT-01.md](SPRINT-01.md) |
+| SPRINT-02 | The audits register regains the headroom nine new gates need, and the absence guide is born behind it                                                                    | Done   | [SPRINT-02.md](SPRINT-02.md) |
 | SPRINT-03 | The citation gate gives one verdict on one sentence whichever side of the git index its file sits, and the project-management tree it could never read becomes checkable | Done   | [SPRINT-03.md](SPRINT-03.md) |
 
 ## Closed

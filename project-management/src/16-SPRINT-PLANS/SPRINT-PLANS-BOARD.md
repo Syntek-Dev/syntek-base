@@ -10,8 +10,8 @@ One row per sprint plan in `16-SPRINT-PLANS/` and `16-SPRINT-PLANS/archive/`, fi
 | Column      | Items |
 | ----------- | ----- |
 | Planned     | 5     |
-| In Progress | 2     |
-| Done        | 1     |
+| In Progress | 0     |
+| Done        | 3     |
 | Closed      | 0     |
 
 ## Planned
@@ -26,15 +26,14 @@ One row per sprint plan in `16-SPRINT-PLANS/` and `16-SPRINT-PLANS/archive/`, fi
 
 ## In Progress
 
-| Plan              | Sprint                                  | Title                                                                             | Status      | File                                         |
-| ----------------- | --------------------------------------- | --------------------------------------------------------------------------------- | ----------- | -------------------------------------------- |
-| 01-SPRINT-PLAN-01 | [SPRINT-01](../03-SPRINTS/SPRINT-01.md) | Two rules get one owner each before anything writes against them                  | In Progress | [01-SPRINT-PLAN-01.md](01-SPRINT-PLAN-01.md) |
-| 02-SPRINT-PLAN-02 | [SPRINT-02](../03-SPRINTS/SPRINT-02.md) | The audits register regains its headroom, and the absence guide is born behind it | In Progress | [02-SPRINT-PLAN-02.md](02-SPRINT-PLAN-02.md) |
+_None._
 
 ## Done
 
 | Plan              | Sprint                                  | Title                                                                                 | Status | File                                         |
 | ----------------- | --------------------------------------- | ------------------------------------------------------------------------------------- | ------ | -------------------------------------------- |
+| 01-SPRINT-PLAN-01 | [SPRINT-01](../03-SPRINTS/SPRINT-01.md) | Two rules get one owner each before anything writes against them                      | Done   | [01-SPRINT-PLAN-01.md](01-SPRINT-PLAN-01.md) |
+| 02-SPRINT-PLAN-02 | [SPRINT-02](../03-SPRINTS/SPRINT-02.md) | The audits register regains its headroom, and the absence guide is born behind it     | Done   | [02-SPRINT-PLAN-02.md](02-SPRINT-PLAN-02.md) |
 | 03-SPRINT-PLAN-03 | [SPRINT-03](../03-SPRINTS/SPRINT-03.md) | The citation gate stops depending on the git index, and the PM tree becomes checkable | Done   | [03-SPRINT-PLAN-03.md](03-SPRINT-PLAN-03.md) |
 
 ## Closed

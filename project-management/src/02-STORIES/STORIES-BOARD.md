@@ -10,15 +10,15 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 6     |
+| Pending           | 7     |
 | In Progress       | 0     |
-| In Review         | 1     |
-| Accepted          | 4     |
+| In Review         | 0     |
+| Accepted          | 5     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
 | Rejected          | 0     |
 | Customer Rejected | 0     |
-| Blocked           | 3     |
+| Blocked           | 2     |
 | Completed         | 0     |
 | Closed            | 0     |
 
@@ -30,6 +30,7 @@ _None._
 
 | ID    | Title                                                                                                                      | Status  | File                 |
 | ----- | -------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
+| US005 | Exactly one layer decides to retry, and every budget says how long it may take                                             | Pending | [US005.md](US005.md) |
 | US006 | The destructive dev scripts read the deployment posture, and refuse to run above development                               | Pending | [US006.md](US006.md) |
 | US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                     | Pending | [US008.md](US008.md) |
 | US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true                            | Pending | [US009.md](US009.md) |
@@ -43,9 +44,7 @@ _None._
 
 ## In Review
 
-| ID    | Title                                                                        | Status    | File                 |
-| ----- | ---------------------------------------------------------------------------- | --------- | -------------------- |
-| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated | In Review | [US003.md](US003.md) |
+_None._
 
 ## Accepted
 
@@ -53,6 +52,7 @@ _None._
 | ----- | -------------------------------------------------------------------------------------------------------------- | -------- | -------------------- |
 | US001 | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Accepted | [US001.md](US001.md) |
 | US002 | The audits register regains the headroom nine new gates need                                                   | Accepted | [US002.md](US002.md) |
+| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated                                   | Accepted | [US003.md](US003.md) |
 | US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable                          | Accepted | [US004.md](US004.md) |
 | US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Accepted | [US007.md](US007.md) |
 
@@ -76,7 +76,6 @@ _None._
 
 | ID    | Title                                                                                                    | Status  | File                 |
 | ----- | -------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
-| US005 | Exactly one layer decides to retry, and every budget says how long it may take                           | Blocked | [US005.md](US005.md) |
 | US011 | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Blocked | [US011.md](US011.md) |
 | US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label             | Blocked | [US014.md](US014.md) |
 

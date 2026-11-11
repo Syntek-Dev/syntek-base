@@ -1,6 +1,6 @@
 # SPRINT-01
 
-**Last Updated**: 03/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 11/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -17,7 +17,7 @@ guide that every pointer reaches.
      the drift SPRINT-02.md's own goal comment names. Rewritten rather than trimmed, because the
      sprint's subject changed with its membership: both members now give a rule one owner. -->
 
-**Status:** In Progress
+**Status:** Done — US007 and US001, both members, Accepted (PR #20, PR #21); nothing carried over
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->

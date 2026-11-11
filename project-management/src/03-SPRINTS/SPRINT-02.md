@@ -1,6 +1,6 @@
 # SPRINT-02
 
-**Last Updated**: 04/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 11/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -19,7 +19,7 @@ born behind it.
      to SPRINT-03. A goal naming a deliverable no member carries is the drift the Story Summary
      exists to prevent. -->
 
-**Status:** In Progress
+**Status:** Done — US002 and US003, both members, Accepted (PR #22, PR #23); nothing carried over
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
@@ -106,7 +106,7 @@ born behind it.
 | ID      | Title                                                                        | MoSCoW      | SP  |
 | ------- | ---------------------------------------------------------------------------- | ----------- | --- |
 | US002 ✓ | The audits register regains the headroom nine new gates need                 | Must Have   | 3   |
-| US003   | Absence gets an owning guide, born under 270 with every clause's tier stated | Should Have | 5   |
+| US003 ✓ | Absence gets an owning guide, born under 270 with every clause's tier stated | Should Have | 5   |
 
 **Total:** 8 SP — **3 committed, 5 stretch**
 
