@@ -40,7 +40,7 @@ code/src/scripts/dependencies/
 
 ## One verdict over every audit
 
-`audit.sh` changes nothing. It runs six legs — the advisory audit and the lockfile check for each
+`audit.sh` changes nothing. It runs six legs — the lockfile check and the advisory audit for each
 ecosystem — by delegating to what already owns each: `audits/security.sh` for pip-audit and
 `pnpm audit` (one lockfile covers the root and every workspace member, mobile included),
 `rust/audit.sh` for cargo-deny, and `uv lock --check`, `pnpm install --frozen-lockfile
@@ -48,11 +48,24 @@ ecosystem — by delegating to what already owns each: `audits/security.sh` for 
 `--output md|txt|json`, `--quiet` and `--self-test`, and writes
 `code/src/scripts/reports/dependency-audit.<FORMAT>`.
 
+**Every lockfile leg runs before any advisory leg, and the advisory legs are read-only.** An
+advisory tool resolves the graph before auditing it, and a resolve re-locks: a bare `uv run`
+rewrites `uv.lock`, cargo-deny rewrites `Cargo.lock`. Run first, it repaired a stale lock before
+the lockfile leg looked, and the audit reported clean over its own edit (11/11/2026). So the
+lockfile legs see the tree as committed, and the advisory legs are pinned to it besides —
+`uv run --frozen` in `audits/security.sh`, `cargo deny --locked` in `rust/audit.sh`, which
+therefore fails on a stale lock rather than rewriting it. The summary lists legs in run order.
+
 Each leg ends **clean**, **finding**, **not present** (no such surface — no `code/src/rust` is a
 project without Rust) or **NOT RUN** (the surface is there and the tool is missing, or it failed
 for a reason that is not a finding). A non-zero exit from a tool is matched against the shape that
 tool prints for a real result; anything else is NOT RUN, and `--self-test` proves that
-classification against captured transcripts in `audits/fixtures/dependencies-audit/`.
+classification against captured transcripts in `audits/fixtures/dependencies-audit/`. Its
+**run probes** then drive the script itself end to end: each copies `audit.sh`, `security.sh`
+and `rust/audit.sh` into a scratch project with stale lockfiles, puts the stand-ins in
+`run/stubs/` first on `PATH`, and asserts that a stale lock is a finding the audit leaves
+byte-identical, that a finding with no `error[` line still reaches the summary and the report,
+and that a tool failure is NOT RUN — exit `2` from `security.sh` — never "vulnerabilities found".
 
 | Exit | Means                                                                                    |
 | ---- | ---------------------------------------------------------------------------------------- |

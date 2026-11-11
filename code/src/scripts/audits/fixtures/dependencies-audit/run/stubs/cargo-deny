@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#
+# Stand-in for cargo-deny in dependencies/audit.sh --self-test. It exists so `command -v
+# cargo-deny` finds one; the behaviour lives in the cargo stub beside it.
+exec cargo deny "$@"

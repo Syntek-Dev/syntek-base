@@ -51,6 +51,7 @@ code/src/scripts/audits/
 │   ├── toolchain-pins/      ← agree/ and drift/ — a mini repository each, with expected.txt
 │   ├── dependency-drift/    ← <case>/{incoming,project} pairs, each with expected.txt
 │   ├── dependencies-audit/  ← captured tool output per leg and state, for dependencies/audit.sh
+│   │   └── run/stubs/       ← uv, pnpm, cargo stand-ins its run probes put first on PATH
 │   ├── routing-skills/      ← broken/ and clean/ — each written twice, inline and wrapped
 │   └── static-analysis/     ← broken/ and clean/ — templates and Python; ruff.toml scopes the silence
 ├── rules/                   ← the in-house Opengrep rule set static-analysis.sh runs
@@ -109,6 +110,13 @@ design-time scope and which member each `slop-allow` scope serves: `slop-family/
 
 The gate its inventory row names is in `.github/workflows/claude.yml`; `pnpm audit` reads
 `audit.ignore` from `pnpm-workspace.yaml` natively.
+
+**Exit `0` clean, `1` vulnerabilities found, `2` a tool that did not run to a result** — or a
+script error. pnpm audit and pip-audit exit 1 on a 503 from the advisory service as readily as on
+an advisory, so each leg's output is matched against the line its tool prints for a real result,
+and a failure without it is **NOT RUN**, never "VULNERABLE" (`code/docs/GATE-REPORTING.md`). A
+finding outranks a NOT RUN. It is read-only: `uv export` and `uv run` are both `--frozen`, so it
+audits `uv.lock` as committed and never re-locks it.
 
 | Flag                | Description                                                                         |
 | ------------------- | ----------------------------------------------------------------------------------- |

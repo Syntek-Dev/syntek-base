@@ -7,7 +7,8 @@
 # so "are the dependencies safe and locked" has an answer a gate can read — it is the
 # reporting twin of update.sh, which moves them.
 #
-# THE SIX LEGS, each delegated to the tool or script that already owns it:
+# THE SIX LEGS, each delegated to the tool or script that already owns it — the three lockfile
+# legs first, then the three advisory legs, because an advisory tool re-locks (see "Two passes"):
 #   python-advisories      audits/security.sh --py-only   (pip-audit over every uv group)
 #   javascript-advisories  audits/security.sh --js-only   (pnpm audit — the root AND every
 #                                                          workspace member, one lockfile)
@@ -32,7 +33,8 @@
 # A non-zero exit from a tool is not a finding by itself: each leg's output is matched against
 # the shape that tool prints for a real result, and anything else is NOT RUN. That
 # classification is what --self-test proves, against captured transcripts in
-# audits/fixtures/dependencies-audit/ — "<leg>.<state>.<exit>.txt".
+# audits/fixtures/dependencies-audit/ — "<leg>.<state>.<exit>.txt" — and its run probes then
+# drive this script end to end over a scratch tree, with run/stubs/ standing in for the tools.
 #
 # THE VERDICT, AND WHY UNMEASURED IS EXIT 2:
 #   0  every present leg ran clean
@@ -88,7 +90,8 @@ Options:
   --output-file PATH  Override the report path
                         (default: code/src/scripts/reports/dependency-audit.<FORMAT>)
   --quiet             Suppress terminal output — requires --output
-  --self-test         Classify fixtures/dependencies-audit/* and the verdict table; needs no tools
+  --self-test         Classify fixtures/dependencies-audit/*, the verdict table, and run the
+                        script over a scratch tree with stub tools; needs no tools
   --help              Show this help
 
 Legs:   advisories — audits/security.sh (pip-audit, pnpm audit) and rust/audit.sh (cargo-deny)
@@ -150,6 +153,103 @@ verdict() {
   if $finding; then echo 1; elif $unmeasured; then echo 2; else echo 0; fi
 }
 
+# ── Run probes — the script itself, end to end, over a scratch tree ────────────
+# The transcripts prove the classifier; they never drive run_leg, the leg order or the
+# delegated scripts, and all three have shipped a defect the transcripts could not see. So
+# each probe copies this script, audits/security.sh and rust/audit.sh into a scratch project
+# whose lockfiles are STALE (their manifests have moved on), puts the stand-ins in
+# fixtures/dependencies-audit/run/stubs/ first on PATH, runs it, and asserts on what came out.
+# The stubs re-lock exactly where the real tools do, so a probe catches an audit that edits the
+# tree it is auditing. They need nothing installed — the self-test stays tool-free.
+PROBE_STUBS="$FIXTURES_DIR/run/stubs"
+PROBES_RUN=0
+
+probe_tree() {   # probe_tree ROOT — build the scratch project
+  local root="$1" s
+  s="$root/code/src/scripts"
+  mkdir -p "$s/dependencies" "$s/audits" "$s/_lib" "$s/rust" \
+           "$root/code/src/django" "$root/code/src/rust" "$root/bin"
+  cp "$SCRIPT_DIR/audit.sh" "$s/dependencies/"
+  cp "$SCRIPTS_DIR/audits/security.sh" "$s/audits/"
+  cp "$SCRIPTS_DIR/_lib/worktree-detect.sh" "$s/_lib/"
+  cp "$SCRIPTS_DIR/rust/audit.sh" "$SCRIPTS_DIR/rust/_common.sh" "$s/rust/"
+  cp "$PROBE_STUBS"/* "$root/bin/"
+  chmod +x "$root/bin/"*
+  printf '[project]\nname = "probe"\ndependencies = ["six>=1.16"]\n' >"$root/pyproject.toml"
+  printf '[[package]]\nname = "probe"\n# STALE - the manifest moved and the lock did not\n' >"$root/uv.lock"
+  printf '{"name": "probe"}\n' >"$root/package.json"
+  printf "lockfileVersion: '9.0'\n\nimporters:\n\n  .: {}\n" >"$root/pnpm-lock.yaml"
+  printf '[[package]]\nname = "nativecore"\n# STALE\n' >"$root/code/src/rust/Cargo.lock"
+}
+
+# probe NAME PNPM_STATE WANT_RC SCRIPT ARGS... — runs SCRIPT (relative to the scratch root)
+# and leaves its output in $PROBE_OUT, its root in $PROBE_ROOT. Returns 1 on a wrong exit.
+probe() {
+  local name="$1" pnpm_state="$2" want="$3" script="$4" rc=0
+  shift 4
+  PROBE_ROOT="$(mktemp -d)"; PROBE_OUT="$PROBE_ROOT/out.txt"
+  probe_tree "$PROBE_ROOT"
+  cp "$PROBE_ROOT/uv.lock" "$PROBE_ROOT/uv.lock.before"
+  cp "$PROBE_ROOT/code/src/rust/Cargo.lock" "$PROBE_ROOT/Cargo.lock.before"
+  STUB_ROOT="$PROBE_ROOT" STUB_FIXTURES="$FIXTURES_DIR" STUB_PNPM_AUDIT="$pnpm_state" \
+    PATH="$PROBE_ROOT/bin:$PATH" bash "$PROBE_ROOT/$script" "$@" >"$PROBE_OUT" 2>&1 || rc=$?
+  PROBES_RUN=$((PROBES_RUN + 1))
+  [[ "$rc" -eq "$want" ]] && return 0
+  log "  ✗ probe $name: exited $rc, expected $want — last lines:"
+  tail -8 "$PROBE_OUT" | sed 's/^/       /'
+  return 1
+}
+
+# expect NAME 'ERE' [absent] — the probe's output must (or must not) match
+expect() {
+  if [[ "${3:-}" == absent ]]; then
+    grep -qE "$2" "$PROBE_OUT" || return 0
+    log "  ✗ probe $1: output matches /$2/, and must not"
+  else
+    grep -qE "$2" "$PROBE_OUT" && return 0
+    log "  ✗ probe $1: output does not match /$2/"
+  fi
+  return 1
+}
+
+run_probes() {
+  local bad=0 a=code/src/scripts/dependencies/audit.sh s=code/src/scripts/audits/security.sh
+
+  # 1. A lockfile behind its manifest is a FINDING, and auditing it changes nothing. The
+  #    advisory tools re-lock as a side effect, so run first — or run unfrozen — they repair
+  #    the drift before the lockfile leg looks, and the audit reports clean over its own edit.
+  probe relock-is-a-finding clean 1 "$a" --ecosystem python --ecosystem rust || bad=1
+  expect relock-is-a-finding '^  python-lockfile +FINDING' || bad=1
+  expect relock-is-a-finding '^  rust-lockfile +FINDING' || bad=1
+  cmp -s "$PROBE_ROOT/uv.lock" "$PROBE_ROOT/uv.lock.before" \
+    || { bad=1; log "  ✗ probe relock-is-a-finding: the audit rewrote uv.lock"; }
+  cmp -s "$PROBE_ROOT/code/src/rust/Cargo.lock" "$PROBE_ROOT/Cargo.lock.before" \
+    || { bad=1; log "  ✗ probe relock-is-a-finding: the audit rewrote Cargo.lock"; }
+  rm -rf "$PROBE_ROOT"
+
+  # 2. A finding from a tool that prints no `error[` line (pnpm here; pip-audit and the
+  #    lockfile legs alike) still reaches the summary and the report.
+  probe plain-finding-is-reported finding 1 "$a" --ecosystem javascript \
+    --output json --output-file report.json || bad=1
+  expect plain-finding-is-reported '^  javascript-advisories +FINDING +2 vulnerabilities found' || bad=1
+  expect plain-finding-is-reported 'Findings in the dependency set' || bad=1
+  grep -q '"state": "finding"' "$PROBE_ROOT/report.json" 2>/dev/null \
+    || { bad=1; log "  ✗ probe plain-finding-is-reported: no report, or no finding in it"; }
+  rm -rf "$PROBE_ROOT"
+
+  # 3. A tool that failed (the registry answered 503) is NOT RUN — exit 2 from security.sh,
+  #    and a summary row quoting the tool's error, never a claim that something was found.
+  probe tool-failure-is-not-run unmeasured 2 "$s" --js-only || bad=1
+  expect tool-failure-is-not-run '[Vv]ulnerabilities found|VULNERABLE' absent || bad=1
+  rm -rf "$PROBE_ROOT"
+  probe tool-failure-is-not-a-finding unmeasured 2 "$a" --ecosystem javascript || bad=1
+  expect tool-failure-is-not-a-finding '^  javascript-advisories +NOT RUN +exit 2, not a finding: +ERR_PNPM_AUDIT_BAD_RESPONSE' || bad=1
+  expect tool-failure-is-not-a-finding 'NOT RUN .*([Vv]ulnerabilities found|VULNERABLE)' absent || bad=1
+  rm -rf "$PROBE_ROOT"
+
+  return "$bad"
+}
+
 # ── Self-test ─────────────────────────────────────────────────────────────────
 run_self_test() {
   local f base leg want rc got failed=0 n=0 l s
@@ -174,7 +274,8 @@ run_self_test() {
     got="$(verdict ${l#*|})"
     [[ "$got" == "${l%%|*}" ]] || { failed=1; log "  ✗ verdict(${l#*|}) = $got, expected ${l%%|*}"; }
   done
-  log "  transcripts: $n classified · legs: ${#LEGS[@]} × 3 states · verdict probes: ${#probes[@]}"
+  run_probes || failed=1
+  log "  transcripts: $n classified · legs: ${#LEGS[@]} × 3 states · verdict probes: ${#probes[@]} · run probes: $PROBES_RUN"
   if [[ $failed -eq 0 ]]; then
     bold "✓ Self-test passed — findings, clean runs and failed runs are told apart."
     exit 0
@@ -185,9 +286,14 @@ run_self_test() {
 
 # ── Running a leg ─────────────────────────────────────────────────────────────
 # run_leg LEG POPULATION DIR CMD... — runs CMD in DIR, classifies it, records a row.
+#
+# Every detail pipeline ends `|| true`: under `set -o pipefail` a grep that matches nothing
+# fails the assignment, and `set -e` then kills the script before the summary or the report
+# exists. Only cargo-deny prints `error[` lines, so that once made every other finding fatal.
 run_leg() {
   local leg="$1" pop="$2" dir="$3" out rc=0 state detail
   shift 3
+  in_phase "$leg" || return 0
   out="$(mktemp)"
   (cd "$dir" && "$@") >"$out" 2>&1 || rc=$?
   state="$(classify "$leg" "$rc" "$out")"
@@ -195,9 +301,14 @@ run_leg() {
     clean)      detail="ran clean" ;;
     finding)
       # cargo-deny names each failure on an `error[kind]:` line; the others on their summary.
-      detail="$(grep -E '^error\[' "$out" | tr -d '\r' | cut -c1-110 | paste -sd ';' - | cut -c1-240)"
-      [[ -n "$detail" ]] || detail="$(grep -E -m1 '(FAILED|vulnerabilit|needs to be updated|OUTDATED|cannot update)' "$out" | tr -d '\r' | cut -c1-140)" ;;
-    unmeasured) detail="exit $rc, not a finding: $(grep -v '^[[:space:]]*$' "$out" | tail -1 | tr -d '\r' | cut -c1-120)" ;;
+      detail="$(grep -E '^error\[' "$out" | tr -d '\r' | cut -c1-110 | paste -sd ';' - | cut -c1-240 || true)"
+      [[ -n "$detail" ]] || detail="$(grep -E -m1 '(FAILED|vulnerabilit|needs to be updated|OUTDATED|cannot update)' "$out" | tr -d '\r' | cut -c1-140 || true)" ;;
+    unmeasured)
+      # The tool's own error, not the last line: a wrapper's closing summary is the last line,
+      # and it is the wrapper's verdict rather than the reason the tool did not run.
+      detail="$(grep -E -m1 '(ERR_|^[[:space:]]*(error|Error|ERROR)|[Ff]ailed|[Uu]nable to|not found|refused|timed out|unreachable)' "$out" | tr -d '\r' | sed 's/^[[:space:]]*//' | cut -c1-120 || true)"
+      [[ -n "$detail" ]] || detail="$(grep -v '^[[:space:]]*$' "$out" | tail -1 | tr -d '\r' | cut -c1-120 || true)"
+      detail="exit $rc, not a finding: ${detail:-the tool printed nothing}" ;;
   esac
   ROWS+=("$leg|$state|$pop|$detail")
   if [[ "$state" != clean ]] && ! $QUIET; then
@@ -207,7 +318,17 @@ run_leg() {
   rm -f "$out"
 }
 
-skip_leg() { ROWS+=("$1|$2|$3|$4"); }   # leg state population detail
+skip_leg() { in_phase "$1" || return 0; ROWS+=("$1|$2|$3|$4"); }   # leg state population detail
+
+# ── Two passes: every lockfile leg, THEN every advisory leg ────────────────────
+# The order is the guarantee, not a preference. An advisory tool resolves the graph before it
+# audits it, and a resolve re-locks: `uv run` rewrites uv.lock, cargo-deny rewrites Cargo.lock.
+# Run first, it would repair a stale lockfile before the lockfile leg looked, and the audit
+# would report clean over its own edit. So the lockfile legs look at the tree as committed,
+# and the advisory legs are read-only besides (`uv run --frozen` in audits/security.sh,
+# `cargo deny --locked` in rust/audit.sh) — this script changes nothing either way.
+PHASE=""
+in_phase() { [[ "${1##*-}" == "$PHASE" ]]; }
 
 $SELF_TEST && run_self_test
 
@@ -216,6 +337,7 @@ log ""
 bold "▸ dependencies/audit.sh — $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
 log ""
 
+all_legs() {
 # ── Python ────────────────────────────────────────────────────────────────────
 if wants python; then
   if [[ ! -f pyproject.toml ]]; then
@@ -274,6 +396,10 @@ if wants rust; then
     run_leg rust-lockfile "$pop" "$RUST_DIR" cargo metadata --locked --format-version 1
   fi
 fi
+
+}
+PHASE=lockfile;   all_legs
+PHASE=advisories; all_legs
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 STATES=()
