@@ -805,6 +805,38 @@ entry.
 
 ---
 
+## 09/11/2026 — the citation gate reports an unreadable `copier.yml` as read
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` decides it has the copier contract with
+`has_contract()`, which tests that `copier.yml` exists, not that it can be read. With the file
+present but unreadable, the run still prints "shipping facts read from the contract", yet the
+excluded set drops to 0, the seeded and gated sets are empty and re-included files fall back to
+exempt, so Check 3 and re-include policing switch off silently. A check that could not look is
+reported as one that looked, against `code/docs/GATE-REPORTING.md`. Found by the independent QA
+sign-off of US004, 09/11/2026 (QA-SO-01, Low); not fixed in US004. Finding F-076 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Test readability in `has_contract()` and fail closed,
+naming the contract as unread, with a self-test probe. No map or story claims this entry.
+
+---
+
+## 09/11/2026 — the template's own ClickUp client exports ship into every default-answer project
+
+**Type:** Active gap
+**Summary:** `project-management/export/clickup/US001-CLIENT.md` to `US014-CLIENT.md` are this
+template's own stories exported for ClickUp, yet they ship into every project generated with the
+default `INCLUDE_CLICKUP=true`: `copier.yml` excludes the folder only when the flag is declined.
+Their basenames match the instance-citer rule, so `doc-references.sh` Check 2 does not police them
+downstream either. It looks like a copier `_exclude` gap. Pre-existing and outside US004; found by
+its independent QA sign-off, 09/11/2026 (QA-SO-03, Info). Finding F-077 in
+"project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Confirm the exports are template-only, then exclude
+them unconditionally, keeping the folder's README, with a render check that none ships. No map or
+story claims this entry.
+
+---
+
 ## 05/11/2026 — the citation baseline-diff regime outlives US004, and two ADRs now state a stale premise
 
 **Type:** Active gap

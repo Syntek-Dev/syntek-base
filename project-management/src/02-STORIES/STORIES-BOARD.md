@@ -12,8 +12,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Open              | 0     |
 | Pending           | 6     |
 | In Progress       | 0     |
-| In Review         | 2     |
-| Accepted          | 3     |
+| In Review         | 1     |
+| Accepted          | 4     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
 | Rejected          | 0     |
@@ -43,10 +43,9 @@ _None._
 
 ## In Review
 
-| ID    | Title                                                                                 | Status    | File                 |
-| ----- | ------------------------------------------------------------------------------------- | --------- | -------------------- |
-| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated          | In Review | [US003.md](US003.md) |
-| US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable | In Review | [US004.md](US004.md) |
+| ID    | Title                                                                        | Status    | File                 |
+| ----- | ---------------------------------------------------------------------------- | --------- | -------------------- |
+| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated | In Review | [US003.md](US003.md) |
 
 ## Accepted
 
@@ -54,6 +53,7 @@ _None._
 | ----- | -------------------------------------------------------------------------------------------------------------- | -------- | -------------------- |
 | US001 | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Accepted | [US001.md](US001.md) |
 | US002 | The audits register regains the headroom nine new gates need                                                   | Accepted | [US002.md](US002.md) |
+| US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable                          | Accepted | [US004.md](US004.md) |
 | US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Accepted | [US007.md](US007.md) |
 
 ## Customer Review
