@@ -1,0 +1,14 @@
+name: Fixture gate
+
+on: workflow_dispatch
+
+env:
+  UV_VERSION: "0.12.5"
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: astral-sh/setup-uv@0000000000000000000000000000000000000000 # v10.0.1
+        with:
+          version: ${{ env.UV_VERSION }}

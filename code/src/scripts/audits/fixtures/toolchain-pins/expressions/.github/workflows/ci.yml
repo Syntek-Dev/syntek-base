@@ -1,0 +1,39 @@
+name: Fixture expressions
+
+on:
+  workflow_call:
+    inputs:
+      node:
+        type: string
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [24]
+    steps:
+      - uses: actions/setup-node@0000000000000000000000000000000000000000 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+
+  inputs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@0000000000000000000000000000000000000000 # v7.1.0
+        with:
+          node-version: ${{ inputs.node }}
+
+      - uses: actions/setup-python@0000000000000000000000000000000000000000 # v6.0.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+  flow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@0000000000000000000000000000000000000000 # v7.1.0
+        with: { node-version: 24, cache: pnpm }
+
+      - uses: actions/setup-python@0000000000000000000000000000000000000000 # v6.0.0
+        with: {
+          python-version: "3.14" }

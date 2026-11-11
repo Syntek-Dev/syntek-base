@@ -1,0 +1,9 @@
+# Version inputs the parser cannot resolve to a value (Q-06). A captured ${{ env.UV_VERSION }}
+# resolves through its env row; a matrix, an input or an env key never captured does not, and
+# each is a failing unresolved row. A one-line flow map is parsed; a multi-line one is reported.
+# sites: 6
+unresolved node .github/workflows/ci.yml
+unresolved node .github/workflows/ci.yml
+unresolved python .github/workflows/ci.yml
+drift node .github/workflows/ci.yml
+unresolved python .github/workflows/ci.yml

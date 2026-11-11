@@ -28,7 +28,11 @@
 # WHAT IS DISCOVERED — parsed, so a new site needs no edit here:
 #   * .github/workflows/*.y*ml  env NODE_VERSION / PYTHON_VERSION / UV_VERSION / PNPM_VERSION;
 #                               each setup-node, setup-python, setup-uv, pnpm/action-setup and
-#                               rust-toolchain step's version input — or its absence
+#                               rust-toolchain step's version input — or its absence. An
+#                               input that is not a literal resolves only as a captured
+#                               ${{ env.KEY }}; a matrix, an input or an uncaptured env key is
+#                               UNRESOLVED and fails. A one-line `with: { ... }` flow map is
+#                               parsed; one spanning lines is reported unresolved
 #   * Dockerfiles under code/src/docker  FROM python: / node: / rust:, the astral uv image tag,
 #                               `npm install -g pnpm@` and `corepack prepare pnpm@`
 #   * package.json at the root and under code/src/*  packageManager, engines.node, engines.pnpm
@@ -152,6 +156,7 @@ Sources:  node .nvmrc · python .python-version · pnpm packageManager ·
           uv .github/workflows/claude.yml UV_VERSION
 
 Classes:  agree · derived (reads the source itself) · drift · unpinned (floats) ·
+          unresolved (an expression this cannot read: matrix, inputs, an uncaptured env key) ·
           reads-other (a version file that is not the source) · no-source ·
           held (an unpinned class assigned to a story in toolchain-pins-held.txt;
           printed, never fails — template-only, so a generated project holds nothing)
@@ -161,7 +166,7 @@ over a subset. Passing it exits 2.
 
 Exit codes:
   0  every pin agrees (held items are printed and do not fail)
-  1  drift, unpinned, reads-other or no-source
+  1  drift, unpinned, unresolved, reads-other or no-source
   2  script error
 EOF
 }
@@ -224,36 +229,70 @@ extract_workflows() {
       function val(s) { sub(/^[^:]*:[ \t]*/, "", s); sub(/[ \t]+#.*$/, "", s); gsub(/^["\047]|["\047]$/, "", s); return s }
       function out(t, r, v, l, n) { printf "%s\t%s\t%s\t%s:%d\t%s\n", t, r, v, rel, l, n }
       function lit(v) { return v != "" && v !~ /\$\{\{/ }
+      # A version input is a literal (a value row), a captured env expression (resolved by its
+      # env row, decided in END once every env key in the file is seen) or anything else — a
+      # matrix, an input, an env key never captured — which is unresolved and fails.
+      function vin(t, v, l, n,   k) {
+        if (v == "") return
+        if (lit(v)) { out(t, "value", v, l, n); return }
+        k = v
+        if (sub(/^\$\{\{[ \t]*env\./, "", k) && sub(/[ \t]*\}\}$/, "", k) && k ~ /^[A-Za-z_][A-Za-z0-9_]*$/) {
+          np++; pt[np] = t; pk[np] = k; pv_[np] = v; pl[np] = l; pn[np] = n; return
+        }
+        out(t, "unresolved", v, l, n " - not a literal or a captured env key")
+      }
+      function tool_of(u) {
+        if (u ~ /^actions\/setup-node@/) return "node"
+        if (u ~ /^actions\/setup-python@/) return "python"
+        if (u ~ /^astral-sh\/setup-uv@/) return "uv"
+        if (u ~ /^pnpm\/action-setup@/) return "pnpm"
+        if (u ~ /rust-toolchain@|setup-rust-toolchain@/) return "rust"
+        return ""
+      }
+      function setkey(k, v, l) {
+        if (k == "version") { ver = v; vl = l }
+        else if (k == "node-version") { nv = v; nvl = l }
+        else if (k == "node-version-file") { nvf = v; nvfl = l }
+        else if (k == "python-version") { pv = v; pvl = l }
+        else if (k == "python-version-file") { pvf = v; pvfl = l }
+        else if (k == "toolchain") { tc = v; tcl = l }
+      }
       function reset() { uses = ""; ul = 0; ver = ""; vl = 0; nv = ""; nvl = 0; nvf = ""; nvfl = 0
-                         pv = ""; pvl = 0; pvf = ""; pvfl = 0; tc = ""; tcl = 0 }
-      function flush() {
-        if (uses ~ /^actions\/setup-node@/) {
-          if (nv != "") { if (lit(nv)) out("node", "value", nv, nvl, "setup-node node-version") }
+                         pv = ""; pvl = 0; pvf = ""; pvfl = 0; tc = ""; tcl = 0; flowbad = 0 }
+      function flush(   t) {
+        t = tool_of(uses)
+        if (flowbad && t != "") {
+          out(t, "unresolved", "with: {", flowbad, "multi-line flow-style with: map - not parsed"); reset(); return
+        }
+        if (t == "node") {
+          if (nv != "") vin("node", nv, nvl, "setup-node node-version")
           else if (nvf != "") out("node", nvf == ".nvmrc" ? "derived" : "readsother", nvf, nvfl, "setup-node node-version-file")
           else out("node", "floating", "", ul, "setup-node with no version input")
-        } else if (uses ~ /^actions\/setup-python@/) {
-          if (pv != "") { if (lit(pv)) out("python", "value", pv, pvl, "setup-python python-version") }
+        } else if (t == "python") {
+          if (pv != "") vin("python", pv, pvl, "setup-python python-version")
           else if (pvf != "") out("python", pvf == ".python-version" ? "derived" : "readsother", pvf, pvfl, "setup-python python-version-file")
           else out("python", "floating", "", ul, "setup-python with no version input")
-        } else if (uses ~ /^astral-sh\/setup-uv@/) {
-          if (ver != "") { if (lit(ver)) out("uv", "value", ver, vl, "setup-uv version") }
+        } else if (t == "uv") {
+          if (ver != "") vin("uv", ver, vl, "setup-uv version")
           else out("uv", "floating", "", ul, "setup-uv with no version input - installs the newest uv")
-          if (lit(pv)) out("python", "value", pv, pvl, "setup-uv python-version")
-        } else if (uses ~ /^pnpm\/action-setup@/) {
-          if (ver != "") { if (lit(ver)) out("pnpm", "value", ver, vl, "pnpm/action-setup version") }
+          vin("python", pv, pvl, "setup-uv python-version")
+        } else if (t == "pnpm") {
+          if (ver != "") vin("pnpm", ver, vl, "pnpm/action-setup version")
           else out("pnpm", "derived", "packageManager", ul, "pnpm/action-setup reads packageManager")
-        } else if (uses ~ /rust-toolchain@|setup-rust-toolchain@/) {
-          if (lit(tc)) out("rust", "value", tc, tcl, "rust toolchain input")
+        } else if (t == "rust") {
+          vin("rust", tc, tcl, "rust toolchain input")
         }
         reset()
       }
-      BEGIN { reset(); insteps = 0; si = -1 }
+      BEGIN { reset(); insteps = 0; si = -1; np = 0; inflow = 0 }
       {
         line = $0
         if (line ~ /^[ \t]*#/ || line ~ /^[ \t]*$/) next
         i = ind(line)
+        # The rest of a multi-line flow map: never read as block keys. flush() reports the step.
+        if (inflow) { if (line ~ /\}/) inflow = 0; next }
         if (line ~ /^ *(NODE_VERSION|PYTHON_VERSION|UV_VERSION|PNPM_VERSION):/) {
-          k = line; sub(/^ */, "", k); sub(/:.*/, "", k); v = val(line)
+          k = line; sub(/^ */, "", k); sub(/:.*/, "", k); v = val(line); seen[k] = 1
           t = (k == "NODE_VERSION") ? "node" : (k == "PYTHON_VERSION") ? "python" : (k == "UV_VERSION") ? "uv" : "pnpm"
           if (lit(v)) out(t, "value", v, NR, "env " k)
         }
@@ -269,14 +308,27 @@ extract_workflows() {
         } else if (i < si) { flush(); insteps = 0; next }
         s = line; sub(/^ *- /, "", s); sub(/^ */, "", s)
         if (s ~ /^uses:/) { uses = val(s); ul = NR }
-        else if (s ~ /^version:/) { ver = val(s); vl = NR }
-        else if (s ~ /^node-version:/) { nv = val(s); nvl = NR }
-        else if (s ~ /^node-version-file:/) { nvf = val(s); nvfl = NR }
-        else if (s ~ /^python-version:/) { pv = val(s); pvl = NR }
-        else if (s ~ /^python-version-file:/) { pvf = val(s); pvfl = NR }
-        else if (s ~ /^toolchain:/) { tc = val(s); tcl = NR }
+        else if (s ~ /^with:[ \t]*\{/) {
+          # A flow-style map: parsed when it closes on its own line, reported when it does not.
+          fm = s; sub(/^with:[ \t]*\{/, "", fm)
+          if (fm !~ /\}/) { flowbad = NR; inflow = 1 }
+          else {
+            sub(/\}.*$/, "", fm); n = split(fm, kv, ",")
+            for (j = 1; j <= n; j++) {
+              k = kv[j]; sub(/^[ \t]+/, "", k); sub(/[ \t]*:.*$/, "", k)
+              if (kv[j] ~ /:/) setkey(k, val(kv[j]), NR)
+            }
+          }
+        }
+        else if (s ~ /^(version|node-version|node-version-file|python-version|python-version-file|toolchain):/) {
+          k = s; sub(/:.*/, "", k); setkey(k, val(s), NR)
+        }
       }
-      END { flush() }
+      END {
+        flush()
+        for (j = 1; j <= np; j++)
+          if (!(pk[j] in seen)) out(pt[j], "unresolved", pv_[j], pl[j], pn[j] " - env key never captured")
+      }
     ' "$f"
   done
 }
@@ -478,6 +530,7 @@ evaluate() {
       # An absent source is tested before derived and reads-other: a step reading a file that
       # is not there derives nothing, so it is no-source like any other site of that tool.
       if (src[t] == "__ABSENT__") { cls = "absent" }
+      else if (role == "unresolved") { cls = "unresolved" }
       else if (src[t] == "") { cls = "nosource" }
       else if (role == "derived") { cls = "derived" }
       else if (role == "readsother") { cls = "readsother" }
@@ -519,7 +572,7 @@ audit_root() {
     RESULTS="$(printf '%s\n' "$sites" | evaluate)"
   fi
   SITE_COUNT=$(printf '%s' "$RESULTS" | grep -c . || true)
-  FAIL_COUNT=$(printf '%s\n' "$RESULTS" | grep -cE '^(drift|unpinned|readsother|nosource)'$'\t' || true)
+  FAIL_COUNT=$(printf '%s\n' "$RESULTS" | grep -cE '^(drift|unpinned|unresolved|readsother|nosource)'$'\t' || true)
   HELD_COUNT=$(printf '%s\n' "$RESULTS" | grep -c '^held'$'\t' || true)
 }
 
@@ -635,6 +688,7 @@ print_class() {
 }
 print_class drift      "[drift] states a version other than its source's:"
 print_class unpinned   "[unpinned] states no version, or one coarser than the tool moves at:"
+print_class unresolved "[unresolved] a version input that is neither a literal nor a captured env key:"
 print_class readsother "[reads-other] reads a version file that is not the source:"
 print_class nosource   "[no-source] names a tool whose source of truth is absent:"
 if [[ $HELD_COUNT -gt 0 ]]; then
