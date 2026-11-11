@@ -1,32 +1,11 @@
 # Releases — mobile
 
-**Last Updated**: <%DATE%> **Version**: 0.2.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 Release notes for the React Native mobile application.
 
 ---
-
-## v0.2.0 — 09/11/2026
-
-**Status:** Expo SDK 58 — the Expo Go dev loop works again
-
-### Summary
-
-Moves the application from Expo SDK 57 to SDK 58 as one matched set. The store build of Expo Go
-now runs SDK 58 only, so until this release a freshly generated project could not be opened in it
-— the day-one development loop was broken. React Native moves to 0.88.1 and React to 19.3.0 with
-the SDK, never independently of it.
-
-### What's new
-
-- **Expo SDK 58** — React Native 0.88 (the Strict TypeScript API by default; nothing here used the deep imports or removed APIs it retires) and React 19.3
-- **Jest 30 and React Native Testing Library 14** — rendering is now async, so tests await `renderRouter`; the coverage floors are unchanged and the suite still measures 100%
-- **Fewer audit exceptions** — the zod and decode-uri-component exceptions, and the dependency patch behind the latter, are gone because SDK 58 no longer pulls those packages in
-
-### Known limitations
-
-- **TypeScript stays on 6.0 and ESLint on 9 in this workspace**, held by SDK 58's own pin and by the peer ranges of the Expo ESLint plugins respectively
 
 ## v0.1.0 — 02/08/2026
 

@@ -15,6 +15,12 @@
 packages:
   - "code/src/*"
 allowBuilds:
+  # File watcher pulled in as an optional dependency of jest-haste-map 30 (the mobile
+  # surface, since jest 30 on 09/11/2026). It ships prebuilt binaries through its
+  # @parcel/watcher-<platform> optional packages; the install script is only the
+  # build-from-source fallback. Without an entry, pnpm 11 fails a fresh install with
+  # ERR_PNPM_IGNORED_BUILDS (first seen in CI on 11/11/2026).
+  "@parcel/watcher": false
   esbuild: false
   lefthook: false
   msw: false
