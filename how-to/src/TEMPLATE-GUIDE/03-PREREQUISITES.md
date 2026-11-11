@@ -66,7 +66,7 @@ pnpm fails the install rather than resolving a different tree quietly.
 
 `.python-version` pins `3.14`, `.nvmrc` pins `26`, and `package.json` pins pnpm exactly through
 `packageManager` — so a version manager plus `corepack` will land you on the right ones without
-being asked. Node 26 no longer bundles Corepack, which is why the command above installs it first.
+being asked. Node 26 no longer bundles Corepack, which is why the command below installs it first.
 
 Two more become prerequisites only if you opt into a surface: **rustup** for `INCLUDE_RUST`
 (because the PyO3 crate is a uv workspace member built by maturin, so `uv sync` needs a Rust
@@ -100,7 +100,7 @@ curl -fsSL https://fnm.vercel.app/install | bash && fnm install 26
 # or nvm
 nvm install && nvm use          # reads .nvmrc once you are inside a generated project
 
-npm install -g corepack && corepack enable && corepack prepare pnpm@latest --activate
+npm install -g corepack && corepack enable && corepack prepare pnpm@11.28.9 --activate
 ```
 
 ### Docker

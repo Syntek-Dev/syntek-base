@@ -27,7 +27,6 @@ the SDK, never independently of it.
 ### Known limitations
 
 - **TypeScript stays on 6.0 and ESLint on 9 in this workspace**, held by SDK 58's own pin and by the peer ranges of the Expo ESLint plugins respectively
-- **Node 26 is supported by SDK 58 but not yet pinned** — the repository's Node version moves in its own change
 
 ## v0.1.0 — 02/08/2026
 
