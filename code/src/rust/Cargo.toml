@@ -28,7 +28,10 @@ rust-version = "1.92"
 [workspace.dependencies]
 # No `extension-module` feature: PyO3 0.30 deprecates it, and maturin >= 1.9.4 (the floor in
 # crates/nativecore/pyproject.toml) handles not linking libpython itself. Verified 09/11/2026:
-# the release-built nativecore.abi3.so lists no libpython in its NEEDED entries.
+# the maturin-built nativecore.abi3.so lists no libpython in its NEEDED entries. ONLY the
+# maturin artefact is spared: a plain `cargo build` (target/*/libnativecore.so) and
+# `cargo test` now link libpython3.14, so they need a shared libpython on the host and the
+# cargo artefact is not abi3-portable. scripts/rust/build.sh refuses a maturin below the floor.
 pyo3 = { version = "0.30", features = ["abi3-py314"] }
 zeroize = { version = "1.8", features = ["derive"] }
 secrecy = "0.10"

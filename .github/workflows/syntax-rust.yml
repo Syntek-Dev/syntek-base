@@ -15,12 +15,14 @@ on:
     paths:
       - "code/src/rust/**"
       - "code/src/scripts/rust/**"
+      - "code/src/scripts/audits/fixtures/rust-build/**"
       - ".github/workflows/syntax-rust.yml"
   pull_request:
     branches: [main, staging, dev, testing]
     paths:
       - "code/src/rust/**"
       - "code/src/scripts/rust/**"
+      - "code/src/scripts/audits/fixtures/rust-build/**"
       - ".github/workflows/syntax-rust.yml"
   workflow_dispatch:
 
@@ -30,6 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Needs no toolchain (stand-in cargo and maturin), so it runs first and fails fast.
+      - name: Prove build.sh refuses a maturin below the floor
+        run: bash code/src/scripts/rust/build.sh --self-test
 
       # Slint links against system libraries, and the runner ships none of them. Without
       # this the workspace does not COMPILE — the failure surfaces inside the lint step

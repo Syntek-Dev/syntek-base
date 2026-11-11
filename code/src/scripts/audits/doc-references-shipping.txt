@@ -57,6 +57,7 @@ gated INCLUDE_MOBILE .claude/skills/stack-react-native
 gated INCLUDE_MOBILE .agents/skills/stack-react-native
 gated INCLUDE_RUST code/src/rust
 gated INCLUDE_RUST code/src/scripts/rust
+gated INCLUDE_RUST code/src/scripts/audits/fixtures/rust-build
 gated INCLUDE_RUST code/docs/RUST.md
 gated INCLUDE_RUST code/docs/rust
 gated INCLUDE_RUST code/docs/encryption/RUST-CRYPTO.md

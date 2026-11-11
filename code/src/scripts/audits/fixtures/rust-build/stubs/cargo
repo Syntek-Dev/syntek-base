@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Stand-in cargo for rust/build.sh --self-test: every compile succeeds, nothing is built.
+exit 0

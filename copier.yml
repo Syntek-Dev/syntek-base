@@ -253,6 +253,7 @@ _exclude:
   # consuming a published wheel needs none of it, so this gates AUTHORING only.
   - "<: if not INCLUDE_RUST :>/code/src/rust<: endif :>"
   - "<: if not INCLUDE_RUST :>/code/src/scripts/rust<: endif :>"
+  - "<: if not INCLUDE_RUST :>/code/src/scripts/audits/fixtures/rust-build<: endif :>"
   - "<: if not INCLUDE_RUST :>/code/docs/RUST.md<: endif :>"
   - "<: if not INCLUDE_RUST :>/code/docs/rust<: endif :>"
   - "<: if not INCLUDE_RUST :>/code/docs/encryption/RUST-CRYPTO.md<: endif :>"

@@ -53,6 +53,7 @@ code/src/scripts/audits/
 │   ├── dependency-drift/    ← <case>/{incoming,project} pairs, each with expected.txt
 │   ├── dependencies-audit/  ← captured tool output per leg and state, for dependencies/audit.sh
 │   │   └── run/stubs/       ← uv, pnpm, cargo stand-ins its run probes put first on PATH
+│   ├── rust-build/          ← RUST-ONLY — maturin --version per case, and cargo/maturin stubs, for rust/build.sh
 │   ├── routing-skills/      ← broken/ and clean/ — each written twice, inline and wrapped
 │   └── static-analysis/     ← broken/ and clean/ — templates and Python; ruff.toml scopes the silence
 ├── rules/                   ← the in-house Opengrep rule set static-analysis.sh runs
