@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 06/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 11/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -990,3 +990,110 @@ finding F-023 in "project-management/src/20-FINDINGS/FINDING-US003-ABSENCE-GUIDE
 **Blocked by / Action:** Nothing blocks it. Reword the nine to "seam", decide the ten against the
 scope, and inventory body lines rather than headings when doing so. No map or story claims this
 entry.
+
+---
+
+## 11/11/2026 — `django-ratelimit` has had no release since 2023
+
+**Type:** Active gap
+**Summary:** The 09/11/2026 dependency sweep flagged three dependencies whose latest release is
+years old (ruling D12). Release dates are from the PyPI JSON API, read on 11/11/2026. Two are
+already dealt with (see the note below). One remains: **`django-ratelimit` 4.1.0**, released
+24/07/2023, declared in `pyproject.toml` and unwired.
+**Blocked by / Action:** Nothing blocks it. Replace it, keep it with a stated reason, or move it
+into the "deliberately NOT declared" register with the trigger that would bring it back. No map
+or story claims this entry.
+
+**Resolved 11/11/2026, recorded rather than removed so the sweep's trail stays whole:**
+
+- **`axe-core-python` 0.1.0** (01/09/2022, bundling axe-core 4.4.3, which predates axe's first
+  WCAG 2.2 rule) was replaced by `axe-playwright-python` 0.1.8 (24/07/2026, axe-core 4.12.1).
+  The same change found that `a11y_config.AXE_TAGS` held only `wcag2aa` and `wcag22aa`. The
+  bundled axe tags 62 rules `wcag2a` against 3 `wcag2aa`, so the gate had run no Level A rule.
+  The tags are now `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` and `wcag22aa`. axe has no
+  `wcag22a` tag: WCAG 2.2's two new Level A criteria (3.2.6, 3.3.7) cannot be machine-tested
+  and stay manual QA.
+- **`django-cloudinary-storage` 0.3.0** (23/08/2020; its only fork, `dj3-cloudinary-storage`,
+  stopped at 0.0.6 on 20/10/2021) was dropped on Sam's ruling, and the official `cloudinary` SDK
+  stays. The SDK ships no Django `Storage` class, so Cloudinary as `STORAGES["default"]` will be a
+  thin in-house adapter over it. `code/docs/logging/CLOUDINARY.md` now says so. **Still to build:**
+  that adapter, with its tests, when the first thing needs public media. Nothing is wired at
+  baseline.
+
+---
+
+## 11/11/2026 — the FastMCP doctrine describes 3.x, and 4.x is the current major
+
+**Type:** Planned feature
+**Summary:** FastMCP 4.0.0 shipped on 31/08/2026, and 4.1.6 was current at the 09/11/2026
+sweep. 4.x moves to MCP Python SDK v2, removes server-initiated sampling and roots and every
+3.x deprecation shim, makes model fields snake_case, and moves background tasks into a separate
+`fastmcp-tasks` package. `fastmcp` is not a declared dependency and nothing imports it, but
+`code/docs/MCP-SERVER.md`, its `mcp-server/` sub-docs, the `stack-fastmcp` skill and the
+`FastMCP 3.x` row in `REFERENCES.md` all describe the 3.x API. Ruling D10 (09/11/2026) kept the
+docs on 3.x for the sweep.
+**Blocked by / Action:** Nothing blocks it. It is a docs-and-skill rewrite against FastMCP's
+"Upgrading from FastMCP 3" guide, cut as its own story, and never a version bump folded into
+another change. Do it before the first story that builds the `/mcp/` surface, so that story is
+not built on a superseded API. No map or story claims this entry.
+
+---
+
+## 11/11/2026 — upgrades held at the 09/11/2026 sweep, each with its trigger
+
+**Type:** Active gap
+**Summary:** The sweep (rulings D1 to D12, 09/11/2026) took everything current except the items
+below. Each one is held until its trigger fires. None is forgotten, and none is in progress.
+
+| Held               | At       | Moves when                                                                                   |
+| ------------------ | -------- | -------------------------------------------------------------------------------------------- |
+| Python 3.15        | 3.14     | djc-core ships a cp315 wheel and celery declares 3.15 support                                |
+| PostgreSQL 19      | 18       | 19 reaches GA and the deploy repo records it as the server major                             |
+| TypeScript 7       | ~6.0.3   | Expo and typescript-eslint both allow 7                                                      |
+| Mobile ESLint 10   | 9        | `eslint-plugin-react` and `eslint-plugin-import` lift their `^9` peer caps                   |
+| django-prometheus  | 2.4.0    | a release allows Django 6.1 (2.5.0 declares `Django<6.1`)                                    |
+| django-valkey      | 0.4.1    | 0.5.x has been reviewed against the cache settings block (0.5.0 shipped on the sweep's day)  |
+| Rust toolchain     | 1.97.1   | 1.100 is released (expected around 12/11/2026)                                               |
+| pnpm 12            | 11.28.9  | 12 has cleared the 7-day cooldown (D11), together with `pnpm/action-setup` v6.1.x            |
+| Valkey 9           | 8.1      | the deploy repo records its Valkey major in `SERVER-ARCHITECTURE/COMPUTE-ALLOCATION.md`      |
+| Playwright         | 1.61.0   | the Nix bundle moves (`just check-playwright` in nix-config; see `.claude/MEMORY.md`)        |
+| PIN S-01 hardening | unpinned | that story runs: Docker uv and image digest pins, the nginx tag, the four tag-pinned actions |
+
+**Blocked by / Action:** Each row is blocked on its trigger. When one fires, move that item as
+its own commit under `how-to/workflows/07-dependency-updates/` and delete its row. Delete this
+entry with the last row. No map or story claims this entry.
+
+---
+
+## 11/11/2026 — `update.sh --check` calls the Python graph current when it only proved the lock in step
+
+**Type:** Active gap
+**Summary:** In a project with a `uv.lock`, `code/src/scripts/dependencies/update.sh --check`'s
+Python leg runs only `uv lock --check`, which proves the lock agrees with `pyproject.toml`. It
+does not compare anything against PyPI. On 09/11/2026 it printed "Everything is current" while
+the lock was behind on more than thirty packages (Django 6.1.2 against 6.1.3 among them). Its
+`CONTEXT.md` says `--check` reports the registry's latest, which is true of the JavaScript leg
+only. This is a false green (`code/docs/GATE-REPORTING.md`).
+**Blocked by / Action:** Nothing blocks it. Make the Python `--check` leg report resolved
+versions against the registry (for example a `uv lock --upgrade --dry-run` diff, or the PyPI
+JSON comparison that the no-lock branch already runs), or have it say plainly that it checked
+lock agreement only. No map or story claims this entry.
+
+---
+
+## 11/11/2026 — two small doc and lint defects found during the Node 26 move
+
+**Type:** Active gap
+**Summary:**
+
+- `how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md` says the floors in its table "are the ones
+  `install.sh` actually checks". `install.sh` contains no Node version check, so for Node the
+  sentence is false. Found while moving the floor to 26.
+- `code/src/scripts/syntax/lint.sh --file-type markdown` lints the gitignored `graphify-out/`
+  directory, because its markdownlint globs carry no `!graphify-out/**` exclusion. A local
+  graphify run (412 issues in `GRAPH_REPORT.md` on 11/11/2026) therefore turns the whole
+  markdown lint red on any machine that has one.
+
+**Blocked by / Action:** Nothing blocks either. Add a Node floor check to `install.sh`, or narrow
+the guide's sentence to the tools it does check. Add the exclusion to `.markdownlint-cli2.jsonc`
+(or the script's glob list), matching `.gitignore`. No map or story claims this entry.
