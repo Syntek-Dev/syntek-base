@@ -20,9 +20,13 @@ from typing import TypedDict
 
 from tests.e2e.browser_types import ColourScheme, ScanProject, Viewport
 
-# WCAG 2.2 AA only. AAA rules are excluded — they produce false positives against a
-# design that never claimed AAA.
-AXE_TAGS: tuple[str, ...] = ("wcag2aa", "wcag22aa")
+# WCAG 2.2 AA: every Level A and Level AA tag axe-core assigns, by WCAG version. axe tags
+# each rule with the level of the criterion it tests, so "wcag2aa" alone runs no Level A
+# rule (image-alt, label, button-name, link-name...) — and AA conformance includes A.
+# There is no "wcag22a" tag: WCAG 2.2's new Level A criteria have no axe rule.
+# AAA rules are excluded — they produce false positives against a design that never
+# claimed AAA.
+AXE_TAGS: tuple[str, ...] = ("wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa")
 
 # Impact levels that fail the build, and those merely reported.
 FAIL_IMPACTS: frozenset[str] = frozenset({"critical", "serious"})

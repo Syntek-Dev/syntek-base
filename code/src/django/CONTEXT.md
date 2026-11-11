@@ -10,15 +10,15 @@ awaiting its first domain module.
 
 ## Stack
 
-| Component   | Technology                            | Environments |
-| ----------- | ------------------------------------- | ------------ |
-| Language    | Python 3.14                           | all          |
-| Framework   | Django 6.x                            | all          |
-| Database    | PostgreSQL 18 (via `dj-database-url`) | all          |
-| Cache       | Valkey (via `django-valkey`)          | all          |
-| Server      | Gunicorn + Uvicorn                    | all          |
-| Tests       | pytest, pytest-django                 | all          |
-| Browser e2e | pytest-playwright + axe-core-python   | on demand    |
+| Component   | Technology                                | Environments |
+| ----------- | ----------------------------------------- | ------------ |
+| Language    | Python 3.14                               | all          |
+| Framework   | Django 6.x                                | all          |
+| Database    | PostgreSQL 18 (via `dj-database-url`)     | all          |
+| Cache       | Valkey (via `django-valkey`)              | all          |
+| Server      | Gunicorn + Uvicorn                        | all          |
+| Tests       | pytest, pytest-django                     | all          |
+| Browser e2e | pytest-playwright + axe-playwright-python | on demand    |
 
 Everything else declared in the root `pyproject.toml` — Django Ninja, django-components,
 django-htmx, Channels, Celery, Cloudinary, Sentry, and the rest — is

@@ -115,7 +115,7 @@ targets matters as much as their size; two 48 dp buttons flush against each othe
 
 ## Verification is manual here
 
-**There is no React Native counterpart to `axe-core-python`.** The web surface has an automated
+**There is no React Native counterpart to `axe-playwright-python`.** The web surface has an automated
 WCAG scan wired into its e2e suite; this surface does not, and no equivalent exists to wire in.
 
 Consequences, which must be stated rather than assumed:

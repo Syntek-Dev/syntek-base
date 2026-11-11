@@ -76,7 +76,7 @@ project-management artefact needed to develop, test, and deploy the product.
 | **JS package manager**     | pnpm — repo tooling only                                              |
 | **Python package manager** | uv                                                                    |
 | **Tests**                  | pytest, pytest-django (services, endpoints, templates, HTMX partials) |
-| **Browser e2e / a11y**     | pytest-playwright + axe-core-python                                   |
+| **Browser e2e / a11y**     | pytest-playwright + axe-playwright-python                             |
 | **API integration tests**  | Bruno                                                                 |
 | **Container**              | Docker Compose                                                        |
 

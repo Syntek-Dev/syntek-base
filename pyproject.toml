@@ -220,8 +220,10 @@ test = [
   # automatically — see [tool.pytest.ini_options] and code/src/scripts/tests/e2e-py.sh.
   "pytest-playwright>=0.5",
   # axe-core packaged for Python + Playwright. Bundles axe.min.js, so the a11y gate
-  # carries no Node and no CDN fetch.
-  "axe-core-python>=0.1",
+  # carries no Node and no CDN fetch. axe-playwright-python, not axe-core-python: the
+  # latter's last release (0.1.0, 01/09/2022) bundles axe-core 4.4.3, which predates
+  # axe's first WCAG 2.2 rule (4.5.0). 0.1.8 bundles axe-core 4.12.1 (11/11/2026).
+  "axe-playwright-python>=0.1.8",
 ]
 
 [tool.pytest.ini_options]
