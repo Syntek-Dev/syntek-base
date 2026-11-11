@@ -13,9 +13,9 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Pending           | 7     |
 | In Progress       | 0     |
 | In Review         | 0     |
-| Accepted          | 5     |
+| Accepted          | 0     |
 | Customer Review   | 0     |
-| Customer Accepted | 0     |
+| Customer Accepted | 5     |
 | Rejected          | 0     |
 | Customer Rejected | 0     |
 | Blocked           | 2     |
@@ -48,13 +48,7 @@ _None._
 
 ## Accepted
 
-| ID    | Title                                                                                                          | Status   | File                 |
-| ----- | -------------------------------------------------------------------------------------------------------------- | -------- | -------------------- |
-| US001 | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Accepted | [US001.md](US001.md) |
-| US002 | The audits register regains the headroom nine new gates need                                                   | Accepted | [US002.md](US002.md) |
-| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated                                   | Accepted | [US003.md](US003.md) |
-| US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable                          | Accepted | [US004.md](US004.md) |
-| US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Accepted | [US007.md](US007.md) |
+_None._
 
 ## Customer Review
 
@@ -62,7 +56,13 @@ _None._
 
 ## Customer Accepted
 
-_None._
+| ID    | Title                                                                                                          | Status            | File                 |
+| ----- | -------------------------------------------------------------------------------------------------------------- | ----------------- | -------------------- |
+| US001 | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Customer Accepted | [US001.md](US001.md) |
+| US002 | The audits register regains the headroom nine new gates need                                                   | Customer Accepted | [US002.md](US002.md) |
+| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated                                   | Customer Accepted | [US003.md](US003.md) |
+| US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable                          | Customer Accepted | [US004.md](US004.md) |
+| US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Customer Accepted | [US007.md](US007.md) |
 
 ## Rejected
 
