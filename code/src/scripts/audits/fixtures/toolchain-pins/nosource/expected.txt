@@ -1,0 +1,6 @@
+# .nvmrc is absent: every node site is no-source, including the step that reads the missing
+# file, which is not "derived" from a source that is not there (Q-03).
+# sites: 4
+# absent: node
+nosource node .github/workflows/ci.yml
+nosource node README.md

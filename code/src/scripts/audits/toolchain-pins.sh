@@ -49,6 +49,9 @@
 # to 0.12. A range is read by its lower bound. A claim coarser than the tool moves at
 # (`3.x` for Python, `latest`, no version input at all) is UNPINNED: it floats, so it will
 # disagree on the day upstream moves, and it is reported as its own class rather than passed.
+# The sources are held to the same bar first: a source that is non-numeric or coarser than its
+# tool moves at (`.nvmrc` = `lts/*` or `node`, `.python-version` = `3`) is itself an unpinned
+# row, and then counts as no source, because every claim would otherwise agree with it.
 #
 # THE HELD TIER, and why it is not a suppression. Unpinned uv — the `uv:latest` image the
 # django Dockerfiles copy from, and setup-uv steps with no version — is assigned to PIN S-01,
@@ -70,7 +73,8 @@
 #
 # ABSENT SURFACE. No code/src/rust means a project generated without Rust: Rust claims in the
 # shipped documents are reported "not compared — no Rust surface" and are not findings. A
-# source of truth that is absent while sites still name its tool IS a finding.
+# source of truth that is absent while sites still name its tool IS a finding — every one of
+# those sites is no-source, a step that reads the missing file included.
 #
 # Usage: toolchain-pins.sh [--output FORMAT] [--output-file PATH] [--quiet] [--self-test] [--help]
 #
@@ -454,14 +458,29 @@ evaluate() {
     BEGIN {
       prec["node"] = 1; prec["pnpm"] = 1; prec["python"] = 2; prec["uv"] = 2; prec["rust"] = 2; prec["msrv"] = 2
       split(held, h, " "); for (i in h) if (h[i] != "") isheld[h[i]] = 1
-      while ((getline l < "/dev/fd/3") > 0) { split(l, s, "\t"); src[s[1]] = s[2] }
+      # The sources are validated before any site is compared against one. A source that is
+      # non-numeric or coarser than its tool moves at (`lts/*`, `node`, a bare `3`) is itself an
+      # unpinned row, and is then no source at all: comparing on its zero or one component
+      # would let every site agree, real drift included.
+      while ((getline l < "/dev/fd/3") > 0) {
+        split(l, s, "\t"); src[s[1]] = s[2]
+        if (s[2] == "" || s[2] == "__ABSENT__") continue
+        norm(s[2])
+        if (NC < prec[s[1]]) {
+          w = s[3]; sub(/ .*/, "", w)
+          printf "unpinned\t%s\t%s\t%s\t%s\n", s[1], s[2], w, "the source of truth states no comparable version"
+          src[s[1]] = ""
+        }
+      }
     }
     {
       t = $1; role = $2; raw = $3; where = $4; note = $5
+      # An absent source is tested before derived and reads-other: a step reading a file that
+      # is not there derives nothing, so it is no-source like any other site of that tool.
       if (src[t] == "__ABSENT__") { cls = "absent" }
+      else if (src[t] == "") { cls = "nosource" }
       else if (role == "derived") { cls = "derived" }
       else if (role == "readsother") { cls = "readsother" }
-      else if (src[t] == "") { cls = "nosource" }
       else {
         a = norm(raw); NA = NC
         if (role == "floating" || NA < prec[t]) cls = "unpinned"
@@ -504,12 +523,27 @@ audit_root() {
   HELD_COUNT=$(printf '%s\n' "$RESULTS" | grep -c '^held'$'\t' || true)
 }
 
+# Prints the sources of truth. Each line is split by parameter expansion, never by IFS=tab
+# `read`, which collapses an empty field and would print an absent source as a value.
+print_sources() {
+  local line t v w
+  while IFS= read -r line; do
+    [[ -n "$line" ]] || continue
+    t="${line%%$'\t'*}"; line="${line#*$'\t'}"; v="${line%%$'\t'*}"; w="${line#*$'\t'}"
+    case "$v" in
+      __ABSENT__) log "    $(printf '%-7s' "$t") not compared — $w (no Rust surface)" ;;
+      "")         log "    $(printf '%-7s' "$t") ABSENT — $w" ;;
+      *)          log "    $(printf '%-7s' "$t") $v  ($w)" ;;
+    esac
+  done <<< "$SOURCES"
+}
+
 # ── Self-test ─────────────────────────────────────────────────────────────────
 # Two fixture trees, each carrying expected.txt — the "class tool file" lines the detector
 # must report, held tier included. Then the odd-form probes, run through the same evaluator.
 # Fix the detector, never the fixtures.
 run_self_test() {
-  local variant actual expected failed=0 probe dir want_sites variants=()
+  local variant actual expected failed=0 probe dir want_sites shown t variants=()
   for dir in "$FIXTURES_DIR"/*/; do
     [[ -f "$dir/expected.txt" ]] && variants+=("$(basename "$dir")")
   done
@@ -533,6 +567,13 @@ run_self_test() {
     if [[ -n "$want_sites" && "$SITE_COUNT" != "$want_sites" ]]; then
       failed=1; log "  ✗ $variant tree: read $SITE_COUNT site(s), expected $want_sites — an extractor went silent"
     fi
+    # "# absent: TOOL" — the sources display must name that source ABSENT, not print it as a value.
+    while IFS= read -r t; do
+      shown="$(QUIET=false print_sources)"
+      if ! grep -qE "^    $t +ABSENT" <<< "$shown"; then
+        failed=1; log "  ✗ $variant tree: the sources display does not show $t as ABSENT"
+      fi
+    done < <(sed -nE 's/^# absent: ([a-z]+)$/\1/p' "$FIXTURES_DIR/$variant/expected.txt")
   done
   # Odd forms: "tool raw source expected-class".
   local probes=(
@@ -542,6 +583,7 @@ run_self_test() {
     "uv 0.12.x 0.12.5 agree" "uv 0.11+ 0.12.5 drift" "uv >=0.12.22,<0.13 0.12.5 drift"
     "uv latest 0.12.5 held" "pnpm 11.x 11.25.0 agree" "pnpm >=11.25.0 11.25.0 agree"
     "pnpm ^11.2 11.25.0 drift" "rust 1.97 1.97.1 agree" "rust stable 1.97.1 unpinned"
+    "node 24 lts/* nosource" "node 24 node nosource" "python 3.13 3 nosource"
   )
   # The probes test the evaluator, not a tree's register, so they hold the class themselves.
   HELD=("uv:unpinned|probe owner")
@@ -549,7 +591,7 @@ run_self_test() {
     # shellcheck disable=SC2086  # word-split the probe into its four fields
     set -- $probe
     SOURCES="$(printf '%s\t%s\tprobe\n' "$1" "$3")"
-    got="$(printf '%s\tvalue\t%s\tprobe:1\tprobe\n' "$1" "$2" | evaluate | cut -f1)"
+    got="$(printf '%s\tvalue\t%s\tprobe:1\tprobe\n' "$1" "$2" | evaluate | tail -1 | cut -f1)"
     if [[ "$got" != "$4" ]]; then failed=1; log "  ✗ probe $1 '$2' against $3: got $got, expected $4"; fi
   done
   log "  probes: ${#probes[@]} odd form(s)"
@@ -572,13 +614,7 @@ audit_root "$PROJECT_ROOT"
 
 log ""
 log "  Sources of truth:"
-printf '%s\n' "$SOURCES" | while IFS=$'\t' read -r t v w; do
-  case "$v" in
-    __ABSENT__) log "    $(printf '%-7s' "$t") not compared — $w (no Rust surface)" ;;
-    "")         log "    $(printf '%-7s' "$t") ABSENT — $w" ;;
-    *)          log "    $(printf '%-7s' "$t") $v  ($w)" ;;
-  esac
-done
+print_sources
 log ""
 log "  Population: $SITE_COUNT site(s) across workflows, Dockerfiles, manifests, pyproject.toml,"
 log "  crate manifests, scripts and ${#DOC_REGISTER[@]} registered document pattern(s)."

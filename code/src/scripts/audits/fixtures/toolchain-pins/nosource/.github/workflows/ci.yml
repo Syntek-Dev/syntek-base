@@ -1,0 +1,15 @@
+name: Fixture ci
+
+on: workflow_dispatch
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@0000000000000000000000000000000000000000 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+
+      - uses: actions/setup-python@0000000000000000000000000000000000000000 # v6.0.0
+        with:
+          python-version-file: .python-version
