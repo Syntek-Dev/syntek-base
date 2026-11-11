@@ -31,7 +31,10 @@ dependencies = [
   "dj-database-url",
   "psycopg[binary]",
   "django-cors-headers",
-  "django-cloudinary-storage",
+  # The official Cloudinary SDK only. django-cloudinary-storage was dropped 11/11/2026:
+  # last release 0.3.0 (23/08/2020), and the SDK ships no Django Storage class, so
+  # Cloudinary as STORAGES["default"] is a thin in-house adapter over this SDK
+  # (code/docs/logging/CLOUDINARY.md).
   "cloudinary",
   # ── Frontend foundation: Django templates + HTMX + Alpine, server-rendered
   # throughout — there is no React and no client build step. django-components is the
@@ -76,6 +79,9 @@ dependencies = [
 #   channels / channels-redis  — ASGI WebSockets; note the stack is one app process
 #                                family, so real-time is a stack change argued in an ADR
 #   cairosvg                   — SVG rasterisation for an asset pipeline
+#   django-cloudinary-storage  — DROPPED 11/11/2026, not deferred: abandoned since
+#                                0.3.0 (23/08/2020). Never re-add it; the Cloudinary
+#                                storage backend is an in-house adapter over `cloudinary`.
 #   maturin                    — RUST-ONLY. The build backend for the PyO3 extension at
 #                                code/src/rust/crates/nativecore/. It is declared in THAT
 #                                crate's own pyproject.toml, not here, because this root is
