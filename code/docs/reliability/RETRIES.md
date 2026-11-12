@@ -161,10 +161,22 @@ checked countdown. The example copies the _Header-aware push_ row of [`BUDGETS.m
 Section _The budget table_: `INTERVAL_CAP`, `TOTAL_AGE_CEILING` and `PER_ATTEMPT_CEILING` are its
 `C`, `T` and `t`. **`RemoteThrottled` is declared, not yet built**: a `DependencyUnavailable`
 subclass the adapter raises for a 429 or 503, carrying only the parsed `retry_after`. It is not in
-`apps/core/services/errors.py` yet, and the manual task never names it in an `autoretry_for`.
+`apps/core/services/errors.py` yet. **Being a `DependencyUnavailable`, it would match the
+declarative default and retry before `Retry-After`**, so that form excludes it
+(`dont_autoretry_for`, Celery 5.3+) and work that can meet a throttle takes the header-aware row.
+There a timeout or a plain 5xx still retries declaratively on the row's `b` and `C`, sharing the
+one `max_retries` count; only the throttle takes the manual branch.
 
 ```python
-@app.task(bind=True, max_retries=2, time_limit=30)  # Header-aware push: 3 attempts, t = 30 s
+@app.task(
+    bind=True,
+    autoretry_for=(DependencyUnavailable,),  # a timeout or plain 5xx: the row's b and C
+    dont_autoretry_for=(RemoteThrottled,),  # a throttle takes the branch below
+    max_retries=2,  # Header-aware push: 3 attempts
+    retry_backoff=1,
+    retry_backoff_max=600,
+    time_limit=30,  # t = 30 s
+)
 def push_invoice(self, invoice_id: int, first_attempt_at: float) -> None:
     try:
         send_invoice(invoice_id)
@@ -218,7 +230,10 @@ operation's payload can be superseded before the row's worst-case total age elap
 ## State what happens after the last attempt
 
 The row is marked failed, an alert fires, or the message is parked for inspection. Silent
-exhaustion is the failure mode a customer discovers for you.
+exhaustion is the failure mode a customer discovers for you. **An expired message is exhaustion
+too**: Celery marks it `REVOKED` and fires `task_revoked` with `expired=True` rather than failing
+it, so it reaches this outcome through a handler on that signal — declared, not yet wired, like the
+`task_retry` handler above.
 
 ## What a failure record carries
 

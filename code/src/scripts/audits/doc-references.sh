@@ -186,11 +186,11 @@
 #
 #                 WHICH IS WHICH IS DERIVED, from the shape of `_exclude`: an anchored entry
 #                 ending `/**` is a tree copier empties and refills by negation, and whatever stays
-#                 excluded inside one is an artefact (is_template_artefact below). Today that is
-#                 research/, handoffs/, learning/ and project-management/src/, less their pairs,
+#                 excluded inside one is an artefact (is_template_artefact below) -- research/ and
+#                 project-management/src/ among them, every one the run counts, less their pairs,
 #                 their `-TEMPLATE.` files, the zero-index test records, the 00-ASSETS scripts,
 #                 the build sources and the GDPR registers -- every one subtracted by the same
-#                 negations Check 3 already reads. A fifth tree needs no edit here.
+#                 negations Check 3 already reads. A new tree needs no edit here.
 #
 #                 Such a citation is a [template artefact], marked or not, on every route Check 3
 #                 has: a present path, an absent one the rule excludes, a root spelling, a link
@@ -323,8 +323,8 @@ Check 3 reads both and neither the example markers nor `e.g.`: an illustration i
 claim that the path survives generation.
 
 A [template artefact] is the citation only an `ignore` marker excuses -- never `template-only`: a record of this template's
-own work -- anything copier leaves excluded under research/, handoffs/, learning/ or
-project-management/src/, the trees read from the `/**` entries of `_exclude`, or the
+own work -- anything copier leaves excluded inside a tree it empties with a `/**` entry of `_exclude`
+(research/ and project-management/src/ among them; the run prints how many), or the
 identifier of a decision record that really exists there, written anywhere in the file (a
 made-up example identifier names none and is silent). It is dead in every generated project, so
 remove it and summarise its reasoning in place. `template-only` stays valid for template
@@ -816,11 +816,11 @@ EXCL_NEGATED=()
 declare -A EXCL_ROOT_LIT=()
 EXCL_ROOT_GLOB=()
 # THE ARTEFACT TREES, DERIVED (12/11/2026). An anchored entry ending `/**` is a TREE copier empties
-# at generation and then refills by negation with what ships: research/, handoffs/, learning/ and
-# project-management/src/ today. What stays excluded inside one is a record of THIS repository's
-# own work -- a decision, a story, a map, a plan, a finding, a note, a handoff -- and never a piece
-# of template machinery. Read from the shape of the entry, never listed, so a fifth tree needs no
-# edit here; the negations that lift a pair or a template back out are already subtracted by the
+# at generation and then refills by negation with what ships -- research/ and
+# project-management/src/ among them; the run prints how many it read, so no list here can go
+# stale. What stays excluded inside one is a record of THIS repository's own work -- a decision,
+# a story, a map, a plan, a finding, a note, a handoff -- and never a piece of template machinery.
+# Read from the shape of the entry, never listed, so a new tree needs no edit here; the negations that lift a pair or a template back out are already subtracted by the
 # set and the rule below, so only the residue is an artefact.
 EXCL_ARTEFACT=()
 build_template_only() {
@@ -1206,8 +1206,10 @@ record() { # file line kind detail
 # Cost: one `grep` per scanned file, nothing per match. The identifiers come out of the matched
 # line through BASH_REMATCH, and the line above is read -- one `mapfile` -- only for a file holding
 # a real identifier, which is a handful per run.
-ARTEFACT_ID_RE='(^|[^A-Za-z0-9_])ADR-(US)?[0-9]{3}-[A-Za-z0-9][A-Za-z0-9-]*'
-ARTEFACT_ID_BASH_RE='(^|[^A-Za-z0-9_])(ADR-(US)?[0-9]{3}-[A-Za-z0-9][A-Za-z0-9-]*)'
+# Case-insensitive since 12/11/2026 (US005 review QA-05): a lowercase `adr-us...` names the same
+# record, so the prefix matches either case and the identifier is upper-cased before the lookup.
+ARTEFACT_ID_RE='(^|[^A-Za-z0-9_])[Aa][Dd][Rr]-([Uu][Ss])?[0-9]{3}-[A-Za-z0-9][A-Za-z0-9-]*'
+ARTEFACT_ID_BASH_RE='(^|[^A-Za-z0-9_])([Aa][Dd][Rr]-([Uu][Ss])?[0-9]{3}-[A-Za-z0-9][A-Za-z0-9-]*)'
 REAL_DECISIONS=()
 build_real_decisions() {
   local k b
@@ -1245,7 +1247,7 @@ scan_artefact_ids() { # reads file, file_ships, citer_instance and scan_hit from
       rest="${rest#*"${BASH_REMATCH[0]}"}"
       id="${BASH_REMATCH[2]}"
       while [[ "$id" == *- ]]; do id="${id%-}"; done
-      names_real_decision "$id" || continue
+      names_real_decision "${id^^}" || continue
       if [ "$loaded" = false ]; then mapfile -t file_lines < "$file"; loaded=true; fi
       p=""
       [ "$n" -gt 1 ] && p="${file_lines[$((n - 2))]:-}"
@@ -1812,6 +1814,16 @@ scan_files() { # $1 = newline-separated file list
               record "$file" "$lineno" "template-only citation" "$token"
               scan_hit["$lineno|$resolved"]=1
             fi
+          # 12/11/2026 (US005 review QA-01): a path an artefact tree's negation RE-INCLUDES ships,
+          # so it is a presence obligation like any shipped file. Neither arm above saw it -- the
+          # tree is unchecked and the path is not excluded -- so a citation of a re-included file
+          # that does not exist passed silently. Downstream the contract is absent, EXCL_ARTEFACT
+          # is empty, and this is off.
+          elif [ ! -e "$resolved" ] && is_template_artefact "$resolved" \
+               && ! is_excluded_by_rule "$resolved" && ! is_declined_gated "$resolved"; then
+            path_tests=$((path_tests + 1))
+            record "$file" "$lineno" "dangling path" "$token"
+            scan_hit["$lineno|$resolved"]=1
           fi
           continue ;;
       esac
@@ -2987,6 +2999,15 @@ st_artefact_probes() {
     # decision template, the pattern and `ignore` stay silent.
     st_probe "clean/template-artefact.md silent on mechanics, the zero index and ignore (GUARD)" \
       "$FIXTURES_DIR/clean/template-artefact.md" 0
+    # RED (US005 review QA-01) — a path an artefact tree's negation re-includes ships, so a
+    # citation of one that does not exist is a dangling path. No real negation names an absent
+    # file, so the seam stands one in, and restores the parsed set after.
+    local -a st_saved_negated=("${EXCL_NEGATED[@]}")
+    EXCL_NEGATED+=("research/NO-SUCH-FIXTURE-ONLY-REINCLUDED.md")
+    st_probe "broken/artefact-reincluded.md: a re-included, absent artefact-tree path is dangling" \
+      "$FIXTURES_DIR/broken/artefact-reincluded.md" 1 \
+      "dangling path | ${BT}research/NO-SUCH-FIXTURE-ONLY-REINCLUDED.md${BT}"
+    EXCL_NEGATED=("${st_saved_negated[@]}")
     # GUARD — the artefact trees are DERIVED: every `/**` entry, and nothing else. The `/**`
     # shape is a convention copier.yml does not record, so a mechanics tree written that way
     # (`/.copier/**`, `/.github/scripts/**`, anything under code/) would be silently read as an
@@ -3056,8 +3077,8 @@ st_artefact_probes() {
       st_fail "the real decision records are empty, or the template or a shipped fixture is among them"
     fi
     # RED — a real record, whole, without its date, and offered as an example: all fire.
-    st_probe "broken/adr-real.md fires on a real record however it is written" \
-      "$FIXTURES_DIR/broken/adr-real.md" 3 \
+    st_probe "broken/adr-real.md fires on a real record however it is written, in either case" \
+      "$FIXTURES_DIR/broken/adr-real.md" 4 \
       "template artefact | ${BT}${D}-US""004-INSTANCE-CITER-IS-A-DERIVED-RULE${BT}"
     # GUARD — a made-up identifier names no record: silent under `e.g.` and without it, and so
     # is one sharing a record's first words, and a resolved shipped path named like a decision.

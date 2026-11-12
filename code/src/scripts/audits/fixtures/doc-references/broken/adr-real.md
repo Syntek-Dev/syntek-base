@@ -9,3 +9,5 @@ Bare in prose, whole: settled in ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-1
 The same record cited without its date still names it: ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE.
 
 A real record offered as an example is still dead downstream, e.g. ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026.
+
+Written in lowercase it names the same record: adr-us004-instance-citer-is-a-derived-rule.

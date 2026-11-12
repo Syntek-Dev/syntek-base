@@ -107,7 +107,7 @@ generated project, and declaring that it does not ship states the defect instead
 The gate reports it as a `[template artefact]`, marked or not. **Remove the citation and summarise
 the reasoning in place**, in the shipped file's own words. Which is which is **derived, never
 listed**: an artefact is whatever `_exclude` leaves excluded inside a tree it empties with a `/**`
-entry — `research/`, `handoffs/`, `learning/` and `project-management/src/` today — so the shipped
+entry — `research/` and `project-management/src/` among them, and the run prints how many it read — so the shipped
 pairs, `-TEMPLATE.` files, zero-index test records, `00-ASSETS` scripts, build sources and GDPR
 registers it re-includes stay citable. A real decision identifier is the same finding wherever it
 is written, backticked or bare, and **real means it names a decision record that exists** among

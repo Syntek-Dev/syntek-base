@@ -40,6 +40,7 @@ count:
 ```python
 @app.task(
     autoretry_for=(DependencyUnavailable,),
+    dont_autoretry_for=(RemoteThrottled,),  # a throttle takes the Header-aware push row
     max_retries=2,  # 3 attempts
     retry_backoff=1,  # first interval b, seconds
     retry_backoff_max=600,  # interval cap C, seconds
@@ -83,8 +84,9 @@ case is within `T`, via the `A` check, and that sum is a reference only.
 intervals and the attempts; it excludes the time each message waits in the queue, so a backed-up
 queue can carry an operation well past it. Where age must actually be bounded — the operation's
 payload can go stale, as [`RETRIES.md`](RETRIES.md) Section _Work that goes stale_ says — each
-enqueue sets a per-message `expires` equal to `T`, and an expired message is exhausted rather than
-run.
+message carries the one absolute deadline of [`RETRIES.md`](RETRIES.md) Section _Honouring
+`Retry-After`_, `expires = first_attempt_at + T - t`, so the last attempt still completes within
+`T`, and an expired message is exhausted rather than run.
 
 ### No counted-down wait outlasts redelivery
 
@@ -96,10 +98,13 @@ Section _Idempotency_). **A persisted-schedule row is exempt**: its wait lives i
 **Longer waits are persisted, not counted down** — a row carrying `first_attempt_at`,
 `next_attempt_at` and the attempt count, and a periodic (Beat) sweep enqueuing what is due. **The
 first attempt is enqueued directly, not through the sweep**, which is why the sweep's latency term
-is `(n - 1) * p`: the row is inserted in the same transaction as that enqueue with
+is `(n - 1) * p`: in one transaction the row is inserted with
 `attempt_count = 1`, `started_attempt = 0`, `first_attempt_at = now` and
-`next_attempt_at = now + t + q`, so the first attempt already holds a lease and its queue wait
-counts toward `elapsed`, which is what the `A` check reads.
+`next_attempt_at = now + t + q`, and that enqueue is registered with `transaction.on_commit`
+([`../TASK-AUTHORING.md`](../TASK-AUTHORING.md) Section _The enqueue boundary_). So the first
+attempt already holds a lease, its queue wait counts toward `elapsed`, which is what the `A` check
+reads, and a publish lost after commit is claimed by the sweep as the next attempt once that lease
+lapses.
 
 **A due row is parked or claimed, never simply re-enqueued.** A due row whose `attempt_count` is
 `n`, or whose `elapsed` already exceeds `T - p - q - t`, is **parked** — marked failed and
@@ -114,9 +119,12 @@ states, so an attempt still queued or running is not swept again.
 
 **The message carries its claimed attempt number `k`, and the attempt makes its own conditional
 transition before sending** — `UPDATE ... SET started_attempt = k WHERE attempt_count = k AND
-started_attempt < k AND next_attempt_at > now`, proceeding only when it changed one row — so a
-duplicated or redelivered message, or one that started after its lease ran out, is a no-op. **Each enqueue is one attempt**, with no `autoretry_for` of its own. A failed
-attempt writes its next wait into `next_attempt_at` under the `C` and `A` checks, its jitter drawn
+started_attempt < k AND next_attempt_at - t > now`, proceeding only when it changed one row — so
+a duplicated or redelivered message, or one starting more than `q` after its claim, is a no-op,
+and an attempt that starts always finishes inside its lease. **Each enqueue is one attempt**, with
+no `autoretry_for` of its own. A failed attempt writes its next wait into `next_attempt_at` only
+while it still holds the claim — `WHERE attempt_count = k AND started_attempt = k`, judged by rows
+changed — and under the `C` and `A` checks, its jitter drawn
 into the headroom as [`RETRIES.md`](RETRIES.md) Section _Honouring `Retry-After`_ states. The
 webhook row takes this form.
 

@@ -39,8 +39,8 @@
 #                          4. Every named shipped file is PRESENT — an allowlist fails by
 #                             not shipping a new template file, and this is the reveal.
 #                          5. No artefact-tree .gitignore leaked.
-#                          6. project-management/export/clickup/ ships its README and
-#                             documentation pair only, never a generated US###-CLIENT.md.
+#                          6. project-management/export/clickup/ ships its README only,
+#                             never a generated US###-CLIENT.md.
 #                             The INCLUDE_CLICKUP gate excludes the folder only from a
 #                             project that declined the sync, so until 12/11/2026 one that
 #                             took it received the template's own story exports.
@@ -82,10 +82,10 @@ PAIR_ONLY_TREES=(research handoffs learning questionnaires)
 SRC_TREE="project-management/src"
 
 # The ClickUp export folder: generated output of THIS repository's stories, so it ships
-# its documentation and nothing else, whatever INCLUDE_CLICKUP answered. A tree that
+# its README and nothing else, whatever INCLUDE_CLICKUP answered. A tree that
 # declined the sync has no such folder at all, and passes check 6 by having nothing in it.
 EXPORT_TREE="project-management/export/clickup"
-EXPORT_SHIPPED=(README.md CONTEXT.md CLAUDE.md)
+EXPORT_SHIPPED=(README.md)
 
 # Shipped content under $SRC_TREE that carries no TEMPLATE in the name, in the two shapes
 # copier.yml's `!` negations use. MIRRORING THE SHAPE IS THE POINT: an enumeration of every

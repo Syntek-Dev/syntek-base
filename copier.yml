@@ -111,14 +111,12 @@ _exclude:
   # INCLUDE_CLICKUP gate below keeps them out only of a project that declined the sync, so
   # until 12/11/2026 every project that TOOK it was handed the template's whole story set as
   # its own, and its first sync would push those stories to its board. Excluded here
-  # UNCONDITIONALLY, in the allowlist shape the artefact trees use: the folder's documentation
+  # UNCONDITIONALLY, in the allowlist shape the artefact trees use: the folder's README
   # ships, the generated output never does, and the export script writes the project's own on
   # its first run. Placed ABOVE the INCLUDE_CLICKUP entry on purpose — later patterns win, so
   # a project that declined the sync still loses the README with the rest of the folder.
   - /project-management/export/clickup/**
   - "!/project-management/export/clickup/README.md"
-  - "!/project-management/export/clickup/CONTEXT.md"
-  - "!/project-management/export/clickup/CLAUDE.md"
   # Update migrations are read from the template clone, never rendered into a
   # project — a generated project has no use for the migrations that produced it.
   - /.copier/migrations

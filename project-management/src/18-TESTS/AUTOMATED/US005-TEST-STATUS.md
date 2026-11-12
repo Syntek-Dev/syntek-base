@@ -134,18 +134,18 @@ budget inventory are rows in `../MANUAL/US005-MANUAL-TESTING.md`, not figures in
 orchestrator 12/11/2026: **exit 1, 28 findings, every one `[dangling path]`** (29 before the F-001 fix), 0 `[template
 artefact]`, 0 of every other class.
 
-| Target, quoted because it does not exist yet  | Findings | Owner        | Note                                                                                                                                                                  |
-| --------------------------------------------- | -------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| "how-to/src/OUTBOUND-TIMEOUTS.md"             | 11       | slice `S-09` | 10 carried from the baseline; **1 added** by `code/docs/reliability/RETRIES.md`, _The delegation escape hatch_, which names it as a forward reference in its own text |
-| "code/src/scripts/\_lib/posture-guard.sh"     | 10       | US006        | Carried from the baseline, unchanged                                                                                                                                  |
-| `observability` (US014's module and its test) | 6        | US014        | Carried from the baseline, unchanged                                                                                                                                  |
-| "project-management/src/21-BUGS/BUG-INDEX.md" | 2        | US010        | Carried from the baseline, unchanged                                                                                                                                  |
+| Target, quoted because it does not exist yet  | Findings | Owner        | Note                                                                                                                                                                                                                               |
+| --------------------------------------------- | -------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "how-to/src/OUTBOUND-TIMEOUTS.md"             | 10       | slice `S-09` | Carried from the baseline. Corrected 12/11/2026 at `23-pr-and-review` (review QA-02): the first run counted 11, the extra one added by `code/docs/reliability/RETRIES.md`, _The delegation escape hatch_; the F-001 fix removed it |
+| "code/src/scripts/\_lib/posture-guard.sh"     | 10       | US006        | Carried from the baseline, unchanged                                                                                                                                                                                               |
+| `observability` (US014's module and its test) | 6        | US014        | Carried from the baseline, unchanged                                                                                                                                                                                               |
+| "project-management/src/21-BUGS/BUG-INDEX.md" | 2        | US010        | Carried from the baseline, unchanged                                                                                                                                                                                               |
 
 The plan expected the register's survivors to be named with `S-09`, not cleared
 (`../../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`, the
 `doc-references.sh` row of its verification table, and the _Forward-looking claims_ row, "a
-dangling path is fixed, not marked"). Whether the one added in a **shipped** guide is acceptable
-under the baseline-diff regime is a Step 5 judgement, not this record's.
+dangling path is fixed, not marked"). The one a **shipped** guide added at the first run is gone: Sam ruled it
+prose (F-001), so no shipped guide carries a survivor.
 
 **Unmarked tests are invisible here.** `bash code/src/scripts/audits/story-markers.sh` was read on
 12/11/2026: exit 0 as a warning, "Scanned 9 test module(s) and 7 Bruno request(s). 0 carry a story
@@ -156,7 +156,7 @@ because the story wrote none.
 
 ## 4. Status line
 
-**Partial**: 0 attributed tests, no coverage attributable (no Python path); the story's stand-in checks are `docs-length.sh` exit 0, `doc-references.sh --self-test` 228 probes at exit 0 and `doctrine-drift.sh` exit 0 on 4 claims (fenced code only, prose unchecked), while the whole-tree `doc-references.sh` exits 1 on 29 named `[dangling path]` survivors, one more than its baseline of 28. Verified 12/11/2026.
+**Partial**: 0 attributed tests, no coverage attributable (no Python path); the story's stand-in checks are `docs-length.sh` exit 0, `doc-references.sh --self-test` 228 probes at exit 0 and `doctrine-drift.sh` exit 0 on 4 claims (fenced code only, prose unchecked), while the whole-tree `doc-references.sh` exits 1 on 28 named `[dangling path]` survivors, identical to its baseline of 28. Verified 12/11/2026; corrected the same day at `23-pr-and-review` (review QA-02) from the pre-F-001 figure of 29.
 
 ---
 
