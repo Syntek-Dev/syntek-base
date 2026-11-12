@@ -160,18 +160,21 @@ through unchanged. The owner therefore makes both checks itself, and the call re
 checked countdown. The example copies the _Header-aware push_ row of [`BUDGETS.md`](BUDGETS.md)
 Section _The budget table_: `INTERVAL_CAP`, `TOTAL_AGE_CEILING` and `PER_ATTEMPT_CEILING` are its
 `C`, `T` and `t`. **`RemoteThrottled` is declared, not yet built**: a `DependencyUnavailable`
-subclass the adapter raises for a 429 or 503, carrying only the parsed `retry_after`. It is not in
+subclass the adapter raises for a 429 or 503 **that carries a `Retry-After`**, holding only the
+parsed `retry_after`; without the header the response stays a plain `DependencyUnavailable`,
+retried on the row's backoff, so a bare 503 still retries on the default form. It is not in
 `apps/core/services/errors.py` yet. **Being a `DependencyUnavailable`, it would match the
 declarative default and retry before `Retry-After`**, so that form excludes it
-(`dont_autoretry_for`, Celery 5.3+) and work that can meet a throttle takes the header-aware row.
+(`dont_autoretry_for`, Celery 5.3+): there a named wait is exhaustion, never an early retry, and
+work that can be told to wait takes the header-aware row.
 There a timeout or a plain 5xx still retries declaratively on the row's `b` and `C`, sharing the
-one `max_retries` count; only the throttle takes the manual branch.
+one `max_retries` count; only a named wait takes the manual branch.
 
 ```python
 @app.task(
     bind=True,
     autoretry_for=(DependencyUnavailable,),  # a timeout or plain 5xx: the row's b and C
-    dont_autoretry_for=(RemoteThrottled,),  # a throttle takes the branch below
+    dont_autoretry_for=(RemoteThrottled,),  # a named wait takes the branch below
     max_retries=2,  # Header-aware push: 3 attempts
     retry_backoff=1,
     retry_backoff_max=600,
@@ -181,8 +184,8 @@ def push_invoice(self, invoice_id: int, first_attempt_at: float) -> None:
     try:
         send_invoice(invoice_id)
         return
-    except RemoteThrottled as exc:  # a 429 or 503; retry_after is None when the header is absent
-        retry_after = exc.retry_after or 0  # copy the one value out of the block
+    except RemoteThrottled as exc:  # a 429 or 503 carrying Retry-After
+        retry_after = exc.retry_after  # copy the one value out of the block
     wait = max(backoff(self.request.retries), retry_after)  # W
     elapsed = time.time() - first_attempt_at
     bound = min(INTERVAL_CAP, TOTAL_AGE_CEILING - elapsed - PER_ATTEMPT_CEILING)  # C, A

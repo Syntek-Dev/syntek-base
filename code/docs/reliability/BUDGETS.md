@@ -40,7 +40,7 @@ count:
 ```python
 @app.task(
     autoretry_for=(DependencyUnavailable,),
-    dont_autoretry_for=(RemoteThrottled,),  # a throttle takes the Header-aware push row
+    dont_autoretry_for=(RemoteThrottled,),  # a named Retry-After takes the Header-aware push row
     max_retries=2,  # 3 attempts
     retry_backoff=1,  # first interval b, seconds
     retry_backoff_max=600,  # interval cap C, seconds
