@@ -72,8 +72,8 @@ code/src/django/apps/content/tests/fixtures/
 # toolchain-pins self-test workflows — their YAML layout IS the test input. The `expressions`
 # fixture carries a deliberately multi-line flow-style `with: {` map that the audit must report
 # as unparsed; Prettier collapses it onto one line, which would silently gut that case and shift
-# the line numbers expected.txt pins. format.sh never checks YAML, so only CI's repo-wide
-# `prettier --check .` saw it (11/11/2026).
+# the line numbers expected.txt pins. format.sh did not check YAML then, so only CI's repo-wide
+# `prettier --check .` saw it (11/11/2026); format.sh's yaml and json legs (12/11/2026) now read it too.
 code/src/scripts/audits/fixtures/toolchain-pins/**/.github/
 
 # Cold walk-test evidence — a captured prompt, a walker's verbatim answer, and the transcript
