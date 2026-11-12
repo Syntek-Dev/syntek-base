@@ -10,8 +10,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 7     |
-| In Progress       | 0     |
+| Pending           | 6     |
+| In Progress       | 1     |
 | In Review         | 0     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
@@ -30,7 +30,6 @@ _None._
 
 | ID    | Title                                                                                                                      | Status  | File                 |
 | ----- | -------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
-| US005 | Exactly one layer decides to retry, and every budget says how long it may take                                             | Pending | [US005.md](US005.md) |
 | US006 | The destructive dev scripts read the deployment posture, and refuse to run above development                               | Pending | [US006.md](US006.md) |
 | US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                     | Pending | [US008.md](US008.md) |
 | US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true                            | Pending | [US009.md](US009.md) |
@@ -40,7 +39,9 @@ _None._
 
 ## In Progress
 
-_None._
+| ID    | Title                                                                          | Status      | File                 |
+| ----- | ------------------------------------------------------------------------------ | ----------- | -------------------- |
+| US005 | Exactly one layer decides to retry, and every budget says how long it may take | In Progress | [US005.md](US005.md) |
 
 ## In Review
 

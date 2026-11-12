@@ -6,7 +6,7 @@
 | Branch | `us005/retry-ownership-and-budgets` |
 | Sprint | SPRINT-04 · Wave 1 · build order 1  |
 | Author | <%ORG_NAME%>                        |
-| Status | `Blocked`                           |
+| Status | `In Progress`                       |
 
 <!-- RENAMED 08/09/2026, by `git mv`: this file took its `06-` prefix that day and carried the
      same name without it before. The old name is not written out here, and no dead filename is
@@ -222,6 +222,12 @@ The story already distinguishes two roles, and the distinction is kept:
 | The budget table and its derived worst-case column     | the retry guide            |
 | The circuit-breaker deferral                           | **the reliability family** |
 
+**Corrected 12/11/2026 — the retry-guide role spans two files.** The budget table, its derived
+worst-case column, overrides and the manual `self.retry` ban moved to
+`code/docs/reliability/BUDGETS.md`; the owner rule, the clamp, the escape hatch and the
+`Retry-After` rule stay in `code/docs/reliability/RETRIES.md`. Sam, 12/11/2026 (Q4, _Key
+Decisions_).
+
 **P1 opens by reading the family's `CONTEXT.md` to resolve those two roles onto real files.** That
 read is the first task of implementation, not a planning assumption.
 
@@ -290,6 +296,10 @@ it.
   rate limiting named as a dependency this tree does not have rather than assumed. **A layer may
   only repeat an operation it can show is idempotent**, by the family's own rule once `S-03` ships
   and by `TASK-AUTHORING.md`'s proof ladder until then. The guide cites the ADR by full path.
+  Corrected 12/11/2026 — was: the guide cites the ADR by full path; why: a shipped guide cites no
+  template-only artefact (<%DEVELOPER_NAME%>, 12/11/2026), so the two rejected alternatives and the
+  accepted cost are stated in place instead; evidence: `code/docs/reliability/RETRIES.md` Section
+  "One layer decides to retry".
 - **The `Retry-After` rule.** Wait `max(backoff, Retry-After)`, never past the row's total-age
   ceiling; **a wait beyond either the interval cap or remaining budget means exhausted — park the work, never sleep
   past the bound.** The clamp and the exhausted case are stated **in the same breath as the
@@ -317,6 +327,11 @@ it.
   credential and N attempts write it N times. And the one staleness escape hatch — a timestamp
   argument or a per-message `expires` — is stated with the condition that makes it **mandatory**
   rather than merely available.
+  Corrected 12/11/2026 — was: defaults are Celery's own, taken declaratively; why: Celery's own
+  defaults are `max_retries=3` (four attempts) and `retry_backoff=False` (no backoff), so the 3
+  attempts and `b = 1 s` are the table's choice and only the exponential shape, the 600 s cap and
+  jitter are Celery's; evidence: `code/docs/reliability/BUDGETS.md` Section _The declarative
+  default_, `../02-STORIES/US005.md:269`, manual row RULES-07; finding F-007.
 - **The breaker deferral**, in the house deferral-with-trigger form, with **both** triggers: the
   first incident where bounded retries against a live provider degrade service, or the story
   integrating a second rate-limited external API. It names `WEBHOOKS.md:88`'s existing
@@ -337,6 +352,13 @@ demonstrates the declarative `autoretry_for` shape with a sanctioned budget, **a
 tuple names specific transient types and excludes permanent failures** — `autoretry_for=(Exception,)`
 is retry-everything in declarative clothing and does not satisfy this, which is the hole
 `AC-GAP-9` found after this story absorbed the fence.
+
+**Corrected 12/11/2026 — the fence no longer retries.** Sam decided (Q3, _Key Decisions_) that the
+retention example drops automatic retry entirely: the purge runs daily on Beat and is idempotent,
+so the next scheduled run is its retry and Beat is the one deciding layer. The fence now carries no
+`autoretry_for`, no `max_retries`, no SQLSTATE set and no `DependencyUnavailable` translation; it
+keeps `time_limit=` and raises an identifiers-only failure `from None` after its `except` block.
+The paragraph above records what was planned, not what ships.
 
 **P3 — three pointer repairs.**
 
@@ -421,6 +443,13 @@ baseline discipline as still in force and the diff as still required. So:
 - **A plain pass is still unavailable**, and for a smaller reason than the story states: four
   correct forward references remain, and `code/docs/GATE-REPORTING.md` forbids reporting that as
   clean.
+- **Corrected 12/11/2026 — ten, not four, and none in a shipped guide.** US004's measurement
+  (F-006 below) counted ten citations of the register among the 28 baseline survivors, every one in
+  a PM artefact, and the table's `4` above predates it. The build added an eleventh in a shipped
+  guide, the retry guide's delegation escape hatch; Sam ruled on 12/11/2026 (finding F-001, option 1)
+  that it names the register in prose, and the re-run that day reads 28 `[dangling path]`, identical
+  to the baseline (manual row GATES-02). The surviving class is these ten, all `S-09`'s; the
+  shipped guides now carry none.
 - **If US003 has not landed**, two `code/docs/ABSENCE.md` references survive as well. Count them
   and name them; do not treat the number as wrong.
 - **If this story is somehow worked ahead of US001 or US004**, it cannot be — US001 is a hard
@@ -467,35 +496,132 @@ built. They overtake the 05/09/2026 measurement above wherever the two disagree:
 | F-001 · F-004 | **The baseline is still owed before the first edit, and the regime has not retired.** US004 left the gate at exit 1 on 28 named `[dangling path]` survivors and every owned class at zero, so this story's baseline should hold only named survivors. Take every _Recorded during the build_ capture in this story's manual guide **before phase 2**, alongside the `completion` status move; a missed capture is recorded as missed and never reconstructed (`.claude/MEMORY.md` → _Feedback_, 05/11/2026) |
 | F-006         | **Clear this story's own survivors.** F-006 attributes ten of the 28 to US005: citations of the outbound-timeouts register, "how-to/src/OUTBOUND-TIMEOUTS.md", which this plan's table above assigns to slice `S-09`. Whichever story creates that file clears them; if this story changes a survivor's path it repoints the citations in the same change. Whichever story clears the **last** survivor writes F-004's superseding ADR, retiring the baseline-diff regime                                   |
 
+### Added 11/11/2026 — `format.sh` gains `yaml` and `json` legs
+
+<%DEVELOPER_NAME%> added this to US005's scope on 11/11/2026. **It is tooling, not retry
+doctrine**, and rides on this branch rather than earning a story of its own.
+
+- **The defect.** CI's format job runs `prettier --check .` repo-wide and lefthook checks staged
+  `*.json`/`*.yaml`/`*.yml`, but `code/src/scripts/syntax/format.sh` handed Prettier only
+  js/ts/css/md. A bare local run reported clean over a population CI then failed: the
+  toolchain-pins fixture under `audits/fixtures/` was caught only in CI (`.prettierignore`'s
+  comment, 11/11/2026). A local gate narrower than CI's is "could not look" filed as clean
+  (`code/docs/GATE-REPORTING.md`).
+- **The change.** Two new `--file-type` tokens, `yaml` (`.yaml`/`.yml`) and `json`
+  (`.json`/`.jsonc`), both Prettier on the host and both in the bare-run default set. Exclusions
+  stay in `.prettierignore`, never in the script. `lint.sh` and `check.sh` do not take the
+  tokens: no linter or type-checker exists for either, the same case as `css`.
+- **Docs moved with it.** `code/src/scripts/syntax/CONTEXT.md`'s file-type table and the folder
+  `CLAUDE.md` purpose line; the stale `.prettierignore` comment.
+- **Verified 11/11/2026.** `format.sh --file-type yaml --file-type json` exits `0` on the tree;
+  a deliberately misformatted probe under `.github/` and one under `code/` were both reported, so
+  the glob reaches dot-directories. Probes removed.
+
+### Added 12/11/2026 — shipped docs cite no template-only artefact
+
+<%DEVELOPER_NAME%> asked on 12/11/2026 for every shipped `**/docs/**` and `**/workflows/**` file to
+be swept against a new standing rule: a shipped `.md` never cites or links a file that does not
+ship — a real ADR, a story, a feature map, a story or sprint plan, a finding, a `research/` or
+`handoffs/` note — and the `doc-references: template-only` marker does not make such a citation
+acceptable. `US000` templates and `*-TEMPLATE` files ship and are fine.
+
+- **Scanned.** 432 shipped `.md` files.
+- **Five dead references found and removed.** The `RETRIES.md` link to this story's ADR (its
+  rejected options and the accepted cost are now summarised in place); the `WAGTAIL.md` citation of
+  its `research/` note; the `FORWARD-VOICE.md` "US004 F-051" credit; the `SPRINTS.md`
+  backlog-register example, which showed this repository's real SPRINT-01 row and carried a hidden
+  history comment (now illustrative values); and the `SPRINTS.md` "filed in `GAPS.md`
+  (17/09/2026)" clause, which cited a register entry that ships blank.
+- **Left on purpose.** Naming examples, the `US000` templates, and the markers that describe
+  `copier.yml` mechanics rather than cite a non-shipping file.
+- **Three more, introduced by this branch and caught by the third verify pass.** The `format.sh`
+  tooling change had credited "US005" in `format.sh`'s header, `syntax/CONTEXT.md` and
+  `.prettierignore`; each now carries the date instead.
+- **Follow-up, decided 12/11/2026.** `doc-references.sh` honoured the marker on such a citation —
+  the loophole this rule closes by hand. Sam decided on 12/11/2026 that the gate should refuse it,
+  and the tightening shipped on this branch as the `[template artefact]` class, which no marker
+  excuses (finding F-021). Corrected 12/11/2026 — was: "Follow-up, awaiting" Sam; finding F-005.
+
+### Settled 12/11/2026 — two QA findings
+
+Sam decided two open questions the QA pass raised on 12/11/2026; both rows are in _Key Decisions_
+below, and the doctrine moved with them.
+
+- **Webhook repeats are re-signed.** Each attempt carries a fresh signature timestamp over the same
+  body and the same event identifier; the consumer's de-duplication on the identifier is the replay
+  defence, and the receiver's 300-second window is unchanged. This amends TM-06's signed-off
+  mitigation, corrected in place with a dated note in the threat model, the assessment's Section 7
+  item and the manual guide's RULES-08 row. Severity stays `INFO`.
+- **No counted-down wait outlasts redelivery.** A wait must not exceed whatever redelivers
+  unacknowledged work beneath it. On a **counted-down** row the interval cap and any manual-form
+  wait sit below the transport's `visibility_timeout`; a **persisted-schedule** row is exempt,
+  because nothing is counted down — its wait lives in `next_attempt_at`, beside the attempt count,
+  and a periodic sweep claims each due row by a conditional transition before enqueueing it, one
+  attempt per enqueue. The webhook override row moved to that form, its 5-attempts-over-24-h budget
+  kept. The Celery/Valkey `visibility_timeout` mechanics live in `code/docs/TASK-AUTHORING.md`; the
+  cross-surface rule stays in the reliability family — `code/docs/reliability/BUDGETS.md` since
+  the 12/11/2026 split. (Reworded 12/11/2026, after the
+  review pass: the first wording bound every row and was broken by the webhook row beside it.)
+- **The two QA majors fixed with them.** Exhaustion now surfaces as an exception carrying
+  identifiers only and raised `from None`, so the final `ERROR` line and the tracker never carry
+  the client's text; and the parked outcome has its own terminal class in the task surface's
+  taxonomy table, never named in an `autoretry_for` tuple. The QA minors landed in the same pass.
+- **Two more decisions, Sam, 12/11/2026** — the GDPR retention example drops automatic retry
+  (Q3), and the budget half of the retry guide splits into `code/docs/reliability/BUDGETS.md`
+  (Q4). Both rows are in _Key Decisions_.
+- **Settled on doctrine (Claude, 12/11/2026; Sam did not object):** A — remaining age is net of
+  the tail (`A = T - elapsed - t`, or `- p - q - t` on a persisted row, the queue-wait bound `q` added with Q5), so the last attempt completes
+  by `T`; B — **withdrawn by Sam, 12/11/2026 (Q5, _Key Decisions_)**: it had jitter shorten the
+  backoff within `[0, backoff]` on a persisted schedule with no `Retry-After`; now jitter only ever
+  lengthens a wait, drawn into the headroom `min(C, A) - W` on every path this project writes, so
+  the persisted row is within `T` via the `A` check, its unjittered 54590 s a reference only;
+  C — the manual `Retry-After` example
+  names the row it copies, and that row states `T` as a number; D — the attempt message carries
+  its claimed attempt number and makes its own conditional transition before sending, the claim's
+  lease is `t` plus a stated queue-wait bound, and the `skip_locked` form advances
+  `next_attempt_at` inside the lock; E — the frame-locals leak is the translating frame's other
+  locals, not the unbound `except` name, so capture is off or every frame's variables are
+  scrubbed, and the terminal raise still follows the block.
+
 ## Key Decisions
 
-| Decision                                      | Chosen                                                      | Rejected                                             | Why                                                                                                                                                                  | Reference                              |
-| --------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| Which layer owns a repeat                     | One named owner per operation                               | Tuned product across layers; or always the outermost | Only a named owner makes the budget stated rather than emergent, and gateable at one site                                                                            | `ADR-US005-ONE-LAYER-DECIDES-TO-RETRY` |
-| The worked SDK clamp                          | `retries={"total_max_attempts": 1}`                         | `max_attempts: 1`                                    | In a `Config` object `max_attempts` counts **retries**, so `1` permits two attempts and clamps nothing                                                               | ADR → _The clamp's correct form_       |
-| Which of the two correct forms the rule names | `total_max_attempts`                                        | `max_attempts: 0` — correct, but not named           | Both clamp to one attempt. `total_max_attempts` exists only on `Config` and **always counts total requests**, so it reads the same whatever the configuration source | ADR → _The clamp's correct form_       |
-| Whether an explicit `retries` dict is a rule  | A control, mandatory at every constructor                   | A style preference                                   | `AWS_MAX_ATTEMPTS` can reconfigure an unconfigured client; only the explicit dict outranks that route                                                                | `AC-GAP-1`                             |
-| How the family's files are named here         | By **role** only                                            | A provisional filename map                           | US001 decides them in its own `CONTEXT.md`; a guessed map ships dead links                                                                                           | `../02-STORIES/US001.md`               |
-| The budget table's defaults                   | Celery's own, taken declaratively                           | Numbers invented for the table                       | A default a reader can verify against the framework beats one only this guide asserts                                                                                | `../02-STORIES/US005.md` scenario 3    |
-| The worst-case column                         | A formula, stating its inner-layer assumption               | A number computed once and copied                    | A copied number cannot be recomputed by hand, and the hand recomputation is the only check on it                                                                     | `AC-GAP-6` · `AC-GAP-10`               |
-| The manual `self.retry` ban                   | Narrowed to the routine environment-error path              | An outright ban                                      | An outright ban contradicts the one `Retry-After` form Celery can actually honour                                                                                    | `AC-GAP-4`                             |
-| The webhook 5/24 h budget                     | A recorded per-row override stating every parameter         | Reconciled down to the table's default               | 5 attempts under the defaults is minutes, not a day; the override is legitimate and must stay recomputable                                                           | `AC-GAP-10`                            |
-| 429 and 503                                   | Carved out of the permanent class explicitly                | Left to the reader to reconcile                      | A 429 is a 4xx and carries `Retry-After`; without the carve-out both rules can be satisfied and still be wrong                                                       | `AC-GAP-5`                             |
-| The GDPR fence                                | Repaired whole by this story                                | Split with `S-04` along the line boundary            | A knowingly incoherent worked example is worse than a widened scope; `S-04` drops to three                                                                           | `../02-STORIES/US005.md` scenario 5    |
-| `mcp-server/TOOL-DESIGN.md:139-141`           | Repaired here **or** assigned to a named slice on the map   | Left standing                                        | Shipping doctrine beside a guide stating its inverse has not repaired the fence                                                                                      | TM-08 · `AC-GAP-8`                     |
-| Where the unenforced window is recorded       | `DEFERRED.md`, written by `22-implementation-documentation` | Written by this story                                | `REFERENCES.md`'s ownership table gives that register's writes to `22`                                                                                               | TM-02                                  |
+| Decision                                          | Chosen                                                                                                                                                                                                                                                                                                                                                          | Rejected                                                                | Why                                                                                                                                                                  | Reference                                    |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| Which layer owns a repeat                         | One named owner per operation                                                                                                                                                                                                                                                                                                                                   | Tuned product across layers; or always the outermost                    | Only a named owner makes the budget stated rather than emergent, and gateable at one site                                                                            | `ADR-US005-ONE-LAYER-DECIDES-TO-RETRY`       |
+| The worked SDK clamp                              | `retries={"total_max_attempts": 1}`                                                                                                                                                                                                                                                                                                                             | `max_attempts: 1`                                                       | In a `Config` object `max_attempts` counts **retries**, so `1` permits two attempts and clamps nothing                                                               | ADR → _The clamp's correct form_             |
+| Which of the two correct forms the rule names     | `total_max_attempts`                                                                                                                                                                                                                                                                                                                                            | `max_attempts: 0` — correct, but not named                              | Both clamp to one attempt. `total_max_attempts` exists only on `Config` and **always counts total requests**, so it reads the same whatever the configuration source | ADR → _The clamp's correct form_             |
+| Whether an explicit `retries` dict is a rule      | A control, mandatory at every constructor                                                                                                                                                                                                                                                                                                                       | A style preference                                                      | `AWS_MAX_ATTEMPTS` can reconfigure an unconfigured client; only the explicit dict outranks that route                                                                | `AC-GAP-1`                                   |
+| How the family's files are named here             | By **role** only                                                                                                                                                                                                                                                                                                                                                | A provisional filename map                                              | US001 decides them in its own `CONTEXT.md`; a guessed map ships dead links                                                                                           | `../02-STORIES/US001.md`                     |
+| The budget table's defaults                       | Celery's exponential shape, 600 s cap and jitter, taken declaratively; 3 attempts and `b = 1 s` the table's own choice. Corrected 12/11/2026 — was: Celery's own, taken declaratively; why: Celery's defaults are `max_retries=3` and `retry_backoff=False`; evidence: `code/docs/reliability/BUDGETS.md` Section _The declarative default_; finding F-007      | Numbers invented for the table                                          | A default a reader can verify against the framework beats one only this guide asserts                                                                                | `../02-STORIES/US005.md` scenario 3          |
+| The worst-case column                             | A formula, stating its inner-layer assumption                                                                                                                                                                                                                                                                                                                   | A number computed once and copied                                       | A copied number cannot be recomputed by hand, and the hand recomputation is the only check on it                                                                     | `AC-GAP-6` · `AC-GAP-10`                     |
+| The manual `self.retry` ban                       | Narrowed to the routine environment-error path                                                                                                                                                                                                                                                                                                                  | An outright ban                                                         | An outright ban contradicts the one `Retry-After` form Celery can actually honour                                                                                    | `AC-GAP-4`                                   |
+| The webhook 5/24 h budget                         | A recorded per-row override stating every parameter                                                                                                                                                                                                                                                                                                             | Reconciled down to the table's default                                  | 5 attempts under the defaults is minutes, not a day; the override is legitimate and must stay recomputable                                                           | `AC-GAP-10`                                  |
+| 429 and 503                                       | Carved out of the permanent class explicitly                                                                                                                                                                                                                                                                                                                    | Left to the reader to reconcile                                         | A 429 is a 4xx and carries `Retry-After`; without the carve-out both rules can be satisfied and still be wrong                                                       | `AC-GAP-5`                                   |
+| The GDPR fence                                    | Repaired whole by this story                                                                                                                                                                                                                                                                                                                                    | Split with `S-04` along the line boundary                               | A knowingly incoherent worked example is worse than a widened scope; `S-04` drops to three                                                                           | `../02-STORIES/US005.md` scenario 5          |
+| `mcp-server/TOOL-DESIGN.md:139-141`               | Repaired here **or** assigned to a named slice on the map                                                                                                                                                                                                                                                                                                       | Left standing                                                           | Shipping doctrine beside a guide stating its inverse has not repaired the fence                                                                                      | TM-08 · `AC-GAP-8`                           |
+| Where the unenforced window is recorded           | `DEFERRED.md`, written by `22-implementation-documentation`                                                                                                                                                                                                                                                                                                     | Written by this story                                                   | `REFERENCES.md`'s ownership table gives that register's writes to `22`                                                                                               | TM-02                                        |
+| The GDPR retention example's retry shape          | No automatic retry: one attempt, `time_limit=` kept, an identifiers-only failure raised `from None` and alerted; the next daily Beat run is the retry                                                                                                                                                                                                           | A declarative `autoretry_for` fence with a transient SQLSTATE set       | The purge is idempotent and scheduled, so Beat is the one layer that decides; a task-level retry would be a second. Sam, 12/11/2026                                  | `project-management/docs/gdpr/COMPLIANCE.md` |
+| Where the budget material lives                   | Split: `reliability/BUDGETS.md` holds the attempt, the declarative default, the table, overrides, the worst case, the redelivery limit, the persisted schedule and the manual ban; `reliability/RETRIES.md` keeps the owner rule, classification, `Retry-After`, the attempt log, the failure record and staleness                                              | One retry guide at the length limit                                     | Two questions, two homes, each routing to the other; both well under 270 lines. Sam, 12/11/2026                                                                      | `code/docs/reliability/CONTEXT.md`           |
+| Webhook repeats and the signature timestamp       | Re-signed each attempt over the same body, same event identifier; the receiver's 300-second window unchanged                                                                                                                                                                                                                                                    | The original timestamp kept on every repeat                             | A repeat signed an hour earlier fails the receiver's window; the identifier de-duplication is the replay defence. Sam, 12/11/2026                                    | TM-06 (corrected 12/11/2026)                 |
+| Waits longer than the broker's visibility timeout | On a counted-down row, every `C` and manual-form wait below `visibility_timeout`; a longer schedule persisted (exempt, nothing counted down) and claimed by a periodic sweep                                                                                                                                                                                    | A countdown longer than the timeout                                     | The Redis/Valkey transport redelivers such a message repeatedly, a hidden second retrying layer. Sam, 12/11/2026                                                     | `code/docs/reliability/BUDGETS.md`           |
+| Which way jitter moves a wait (Q5)                | Only ever lengthens it: drawn into the headroom `min(C, A) - W`, never lowering `W`, on the manual form and a persisted schedule alike; the persisted row's worst case is within `T` via the `A` check, its unjittered sum a reference only. The declarative path keeps Celery's shortening draw, so its worst case uses unjittered intervals as an upper bound | Settled B — jitter shortening a persisted backoff within `[0, backoff]` | One direction on every path this project writes keeps scenario 2's "jitter cannot lower `max(backoff, Retry-After)`" true as written. Sam, 12/11/2026                | `code/docs/reliability/RETRIES.md`           |
 
 ## Dependencies
 
-| Story | Deliverable it owns                      | Required for                                                                                    | Current state |
-| ----- | ---------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------- |
-| US001 | `code/docs/reliability/` — the family    | **Every rule this story writes.** Hard blocker                                                  | `Open`        |
-| US004 | The citation gate's git-index repair     | The gate regime this plan's citation section reads                                              | `Open`        |
-| US003 | `code/docs/ABSENCE.md`                   | Nothing here — no shared file; a co-member until 07/09/2026, now two sprints ahead in SPRINT-02 | `Open`        |
-| US002 | `code/src/scripts/audits/` register room | Nothing here                                                                                    | `Open`        |
+| Story | Deliverable it owns                      | Required for                                                                                    | Current state       |
+| ----- | ---------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------- |
+| US001 | `code/docs/reliability/` — the family    | **Every rule this story writes.** Hard blocker                                                  | `Customer Accepted` |
+| US004 | The citation gate's git-index repair     | The gate regime this plan's citation section reads                                              | `Customer Accepted` |
+| US003 | `code/docs/ABSENCE.md`                   | Nothing here — no shared file; a co-member until 07/09/2026, now two sprints ahead in SPRINT-02 | `Customer Accepted` |
+| US002 | `code/src/scripts/audits/` register room | Nothing here                                                                                    | `Customer Accepted` |
 
 **The `Current state` column is the one the parallel-worktree DAG reads**, and every row is `Open`
 today — which is why this plan's own status is `Blocked` rather than a judgement call.
+
+<!-- 11/11/2026: every row above read `Open` until US001-US004 and US007 shipped in 7.9.0 and
+     reached `Customer Accepted` (Sam's acceptance, 11/11/2026). The header Status moved
+     `Blocked` -> `In Progress` the same day as the branch was cut. The sentence above is the
+     planning-time reasoning and is kept as written. -->
 
 - **Blocked by:** **US001**, absolutely. Not build order — the target directory does not exist,
   and US001 is itself SPRINT-01's second story, behind US007 since 07/09/2026 (behind US002 until
@@ -639,14 +765,14 @@ superseded record is not the one to cite.
 `migrate.sh check` are `N/A` with a reason rather than skipped boxes, and no coverage floor
 applies. Three gates and three human checks stand in for it.
 
-| Check                                | What it proves                                                                                      |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| `docs-length.sh`                     | Nothing born at or above 270; nothing edited crosses it without a dated allowance                   |
-| `doc-references.sh`                  | No new dangling citation; the four `OUTBOUND-TIMEOUTS.md` survivors named with `S-09`               |
-| `doctrine-drift.sh`                  | Registered fenced-code claims still resolve to one home each — **regression guard only**            |
-| Hand recomputation                   | The derived worst-case column matches the table's own parameters                                    |
-| Human read-across                    | No budget stated in two homes; no guide stating the inverse of the owner rule                       |
-| Cold-read of the two repointed lines | `SERVICE-AND-MIDDLEWARE.md:265` reaches the deferral in one hop; `NEGATIVE-SPACE.md:226` reads true |
+| Check                                | What it proves                                                                                                                                                      |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `docs-length.sh`                     | Nothing born at or above 270; nothing edited crosses it without a dated allowance                                                                                   |
+| `doc-references.sh`                  | No new dangling citation; the ten `OUTBOUND-TIMEOUTS.md` survivors named with `S-09` (corrected 12/11/2026 from "four", F-005; none in a shipped guide since F-001) |
+| `doctrine-drift.sh`                  | Registered fenced-code claims still resolve to one home each — **regression guard only**                                                                            |
+| Hand recomputation                   | The derived worst-case column matches the table's own parameters                                                                                                    |
+| Human read-across                    | No budget stated in two homes; no guide stating the inverse of the owner rule                                                                                       |
+| Cold-read of the two repointed lines | `SERVICE-AND-MIDDLEWARE.md:265` reaches the deferral in one hop; `NEGATIVE-SPACE.md:226` reads true                                                                 |
 
 **`doctrine-drift.sh` reads fenced code only**, and this story's doctrine is prose. A green run
 says the registered claims are undisturbed and says **nothing** about retry doctrine appearing in
@@ -689,13 +815,13 @@ owner and the first client-wiring story as its deadline.
 
 ## CONTEXT.md & Index Updates
 
-| File                                              | Change                                                                                                                                         |
-| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `code/docs/reliability/CONTEXT.md`                | **Read first**, to resolve the two placement roles onto real files. Edited only if a new file is added                                         |
-| `../01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md` | `S-02` records this story and describes the doctrine half only; `S-04`'s example count drops to three; `S-09` carries `N-012` and the register |
-| `code/REFERENCES.md` · root `REFERENCES.md`       | **No new row** unless P1 adds a file to the family — US001 owns the family's index rows                                                        |
-| `DEFERRED.md`                                     | The unenforced window — **written by `22`, not by this story**                                                                                 |
-| `../17-STORY-PLANS/CONTEXT.md`                    | **No Plans Index row** — see below                                                                                                             |
+| File                                              | Change                                                                                                                                                                                  |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `code/docs/reliability/CONTEXT.md`                | **Read first**, to resolve the two placement roles onto real files. Edited only if a new file is added — done 12/11/2026, for `BUDGETS.md`                                              |
+| `../01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md` | `S-02` records this story and describes the doctrine half only; `S-04`'s example count drops to three; `S-09` carries `N-012` and the register                                          |
+| `code/REFERENCES.md` · root `REFERENCES.md`       | **No new row** unless P1 adds a file to the family — US001 owns the family's index rows. 12/11/2026: `BUDGETS.md` added to `code/REFERENCES.md`'s family entry; root lists the hub only |
+| `DEFERRED.md`                                     | The unenforced window — **written by `22`, not by this story**                                                                                                                          |
+| `../17-STORY-PLANS/CONTEXT.md`                    | **No Plans Index row** — see below                                                                                                                                                      |
 
 **There is no Plans Index row, and it is a decision — and since 08/09/2026 nothing asks for it.**
 The index eight artefacts once cited has never existed: `../17-STORY-PLANS/CONTEXT.md` →
@@ -765,10 +891,17 @@ pre-empt a claimed slice and create a fresh citation of a surface about to be na
 - [ ] All four budget contradictions resolve against the table; the two `max_retries=3` sites no
       longer land ~3 min and ~9 min apart
 - [ ] The whole `gdpr/COMPLIANCE.md:22-49` fence is repaired, with a specific exception tuple
+      (corrected 12/11/2026: the fence now makes one attempt with no automatic retry, the next
+      Beat run being its retry — Sam, Q3)
 - [ ] `SERVICE-AND-MIDDLEWARE.md:265` is a pointer; `NEGATIVE-SPACE.md:226` reads true and `:211`
       gained prose, not a column
 - [ ] `mcp-server/TOOL-DESIGN.md:139-141` is repaired, or assigned to a named slice on the map
 - [ ] The map's `S-02`, `S-04` and `S-09` rows are correct, and no deliverable lacks a slice
+- [x] `format.sh` carries `yaml` and `json` legs in its bare run, and the syntax docs say so
+      (added 11/11/2026)
+- [x] No shipped `**/docs/**` or `**/workflows/**` file cites a template-only artefact; the five
+      dead references are removed and the marker loophole is recorded as a follow-up (added
+      12/11/2026)
 - [ ] Three gates run and are recorded; none is reported as having checked prose
 - [ ] The read-across across six guides and the two cold-reads are done and recorded
 - [ ] A tester other than the author has signed the walk-through off

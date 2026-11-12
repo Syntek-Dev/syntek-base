@@ -125,7 +125,7 @@ trigger in that document's Section 3a.
 | TM-03 | D      | `A10:2025` | `PR.IR-04` | TB2            | Untrusted `Retry-After` controls sleep duration and can park a worker indefinitely        | INFO     | Manual owner checks the required wait and final countdown against interval and remaining-age bounds; over either parks, never shortens Retry-After; no automatic manual cap (09/10/2026) |
 | TM-04 | T      | `A08:2025` | `PR.DS-01` | TB1            | Duplicate execution of a repeat that is not provably idempotent                           | INFO     | Idempotency precondition stated on the owner rule; proof ladder named until slice `S-03` ships                                                                                           |
 | TM-05 | I      | `A09:2025` | `PR.DS-01` | TB4            | Attempt logs repeat exception text embedding request URLs and presigned credentials       | INFO     | Attempt log records attempt number, elapsed budget and error class only                                                                                                                  |
-| TM-06 | S      | `A08:2025` | `PR.AA-05` | TB1            | A re-signed retry widens the window in which a captured delivery replays as authentic     | INFO     | Webhook override reuses the delivery identifier; signature timestamp not refreshed per attempt                                                                                           |
+| TM-06 | S      | `A08:2025` | `PR.AA-05` | TB1            | A re-signed retry widens the window in which a captured delivery replays as authentic     | INFO     | Webhook override re-signs each repeat and reuses the delivery identifier; the consumer de-duplicates on it (corrected 12/11/2026)                                                        |
 | TM-07 | R      | `A09:2025` | `DE.AE-03` | TB4            | A repeat cannot be reconstructed after an outage without a per-attempt record             | INFO     | Attempt numbering and elapsed-budget recording stated as part of the budget rule                                                                                                         |
 | TM-08 | T      | `A06:2025` | `GV.PO-01` | TB3 · TB5      | `code/docs/mcp-server/TOOL-DESIGN.md:139-141` states the inverse of the doctrine          | INFO     | Repaired in this story or explicitly assigned to a slice — raised to the story via the QA gate                                                                                           |
 | TM-09 | D      | `A06:2025` | `PR.IR-04` | TB5            | "Served surfaces never retry" moves the storm inbound, onto rate limits that do not exist | INFO     | Caller-side obligation stated alongside; absent inbound rate limiting carried as a named dependency                                                                                      |
@@ -175,8 +175,13 @@ constraints on **the doctrine's wording**, because that is all this story ships.
 - [ ] The attempt-log rule names what is recorded — attempt number, elapsed budget, error class —
       and what is never recorded: the exception message, the request URL, the provider body
       (TM-05, TM-07, `A09`).
-- [ ] The webhook override states that a repeat reuses the original delivery identifier and does
-      not refresh the signature timestamp (TM-06, `A08`).
+- [ ] The webhook override states that a repeat is re-signed with a fresh signature timestamp over
+      the same body, reuses the original delivery identifier, and that the consumer's
+      de-duplication on that identifier is the replay defence (TM-06, `A08`). Corrected
+      12/11/2026 — was: "reuses the original delivery identifier and does not refresh the
+      signature timestamp"; why: a repeat carrying the original timestamp fails the receiver's
+      300-second window once the first one-hour wait passes; evidence: Sam's decision of
+      12/11/2026, `code/docs/reliability/BUDGETS.md` Section _Overrides_. Severity stays `INFO`.
 - [ ] `code/docs/mcp-server/TOOL-DESIGN.md:139-141` is either repaired by this story or explicitly
       assigned to a named slice; the doctrine cites the served-surface rule it belongs to
       (TM-08, `A06`) — **raised to the story through the QA gate.**

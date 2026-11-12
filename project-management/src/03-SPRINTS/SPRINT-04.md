@@ -18,7 +18,7 @@ the operator names the live posture out loud.
      US003. The goal is written in build order — US005 then US006 — on SPRINT-02's convention for a
      sprint with two subjects. -->
 
-**Status:** Planned
+**Status:** In Progress — US005 started 11/11/2026, its first story
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->

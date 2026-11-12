@@ -141,6 +141,13 @@ messages directly. The eviction policy is a deploy-repo knob recorded with no ow
 requirement — a policy that cannot evict broker keys, or a broker instance of its own — and
 confirms it against the deployment rather than assuming it.
 
+**The same transport redelivers on a timer.** On Celery's Redis and Valkey transport a message not
+yet acknowledged — one held for its ETA or countdown included — is redelivered to another worker
+once `visibility_timeout` (default 3600 s) lapses, and again each time it lapses. That timeout is
+the redelivery bound every counted-down retry wait stays below
+([`reliability/BUDGETS.md`](reliability/BUDGETS.md) Section _No counted-down wait outlasts
+redelivery_); wiring the task surface records the value it sets.
+
 Arguments must still make sense whenever the task runs, which may be well after it was
 enqueued. A task that acts on "the current" anything re-reads it; a task handed a derived
 value acts on a value that has moved on.
@@ -160,11 +167,25 @@ The three classes ([`NEGATIVE-SPACE.md`](NEGATIVE-SPACE.md) Section _The error t
 too, but a queue has no status code and nobody reading it — so they are carried by **what
 happens next**:
 
-| Class                 | Raise                   | What follows                                 |
-| --------------------- | ----------------------- | -------------------------------------------- |
-| **Programmer error**  | `InvariantViolation`    | permanent — never retried, one tracker event |
-| **Environment error** | `DependencyUnavailable` | retryable — backoff and bounds, aggregated   |
-| **User error**        | —                       | **empty on this surface**                    |
+| Class                 | Raise                                                 | What follows                                   |
+| --------------------- | ----------------------------------------------------- | ---------------------------------------------- |
+| **Programmer error**  | `InvariantViolation`                                  | permanent — never retried, one tracker event   |
+| **Environment error** | `DependencyUnavailable`                               | retryable — backoff and bounds, aggregated     |
+| **Exhausted, parked** | `RetriesExhausted` (declared, not yet in `errors.py`) | terminal — recorded and alerted, never retried |
+| **User error**        | —                                                     | **empty on this surface**                      |
+
+**A remote's answer is classified at the adapter.** A timeout, a 429, a 503 or any other 5xx raises
+`DependencyUnavailable`. Any other remote 4xx is permanent, but it is a **recorded failure** of the
+operation — the row marked failed, the delivery counted — never an `InvariantViolation` and never
+a programmer-error tracker event: the remote refused, the code did not break.
+
+**The parked outcome is an environment error that has run out of budget.** It is terminal: it is
+never named in any `autoretry_for` tuple and never subclasses `DependencyUnavailable`, so nothing
+catches it to schedule another attempt
+([`reliability/RETRIES.md`](reliability/RETRIES.md) Section _Honouring `Retry-After`_). On the
+declarative path there is no such raise: exhaustion surfaces as the re-raised
+`DependencyUnavailable`, logged at `ERROR` and scrubbed as that guide's Section _What a failure
+record carries_ says.
 
 **The empty class is the load-bearing one.** A task has nobody to tell, so an argument it
 cannot act on was put there by code — a programmer error, even where the identical value
@@ -180,8 +201,8 @@ and spends exit codes on them instead ([`MANAGEMENT-COMMANDS.md`](MANAGEMENT-COM
 
 **The retry doctrine is the reliability family's**, and a task follows it unmodified:
 [`reliability/RETRIES.md`](reliability/RETRIES.md) — classify before retrying, jittered
-exponential backoff, bounds by attempts and by age, a stated end, and what a failure record
-carries. Retrying presumes the idempotency above; why the two are one rule is
+exponential backoff, a stated end, and what a failure record carries — and
+[`reliability/BUDGETS.md`](reliability/BUDGETS.md) for the bounds by attempts and by age. Retrying presumes the idempotency above; why the two are one rule is
 [`RELIABILITY.md`](RELIABILITY.md). On this surface the class comes from the table above.
 
 ## Time limits and rate limits

@@ -9,17 +9,23 @@ fails and whether repeating an operation is safe. `code/docs/RELIABILITY.md` is 
 code/docs/reliability/
 ├── CLAUDE.md       ← operating rules
 ├── CONTEXT.md      ← this file
+├── BUDGETS.md      ← how much: the attempt, the budget table, overrides, the worst case, the persisted schedule
 ├── IDEMPOTENCY.md  ← the run-twice contract, the proof ladder, the run-twice acceptance test
-└── RETRIES.md      ← classifying a failure, jittered backoff, bounds, exhaustion, the failure record
+└── RETRIES.md      ← who retries, classifying a failure, Retry-After, the attempt log, exhaustion, the failure record
 ```
 
 ## Why the family is split this way
 
-**Two sub-guides under one hub, named for the two questions.** Idempotency asks whether a second
-run is safe; retrying asks when to make one. They are decided together — the hub states why — but
-they grow at different rates and are read by different people: a developer writing a webhook
-receiver needs the proof ladder and not the backoff curve, and one writing an HTTP client needs the
-reverse. One combined guide would put both on every reader and run out of length first.
+**Sub-guides under one hub, named for the questions.** Idempotency asks whether a second run is
+safe; retrying asks when to make one; the budget asks how many, over how long. They are decided
+together — the hub states why — but they grow at different rates and are read by different people:
+a developer writing a webhook receiver needs the proof ladder and not the backoff curve, and one
+writing an HTTP client needs the reverse. One combined guide would put all of it on every reader
+and run out of length first.
+
+**The budget split out of the retry guide** because the two halves answer different questions and
+each had grown to fill a guide: `RETRIES.md` says who may repeat an operation and on which
+failures, `BUDGETS.md` says how far. Each routes to the other for its half and restates none of it.
 
 **The hub follows the house pattern** (`RLS-GUIDE.md` + `rls/`, `PERFORMANCE.md` +
 `performance/`): one stable file every other guide points at, so a sub-guide can be split or

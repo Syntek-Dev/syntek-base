@@ -218,7 +218,7 @@ Two things to do on a freshly generated project:
 │   │   ├── OBJECT-STORAGE.md            ← private documents over the S3 API (declared, not wired)
 │   │   ├── PERFORMANCE.md               (+ performance/ — FRONTEND-PERFORMANCE, DATABASE-PERFORMANCE, API-AND-MONITORING)
 │   │   ├── PROCESS-MODEL.md             ← worker class, event loop, and the ORM's sync boundary
-│   │   ├── RELIABILITY.md               (+ reliability/ — IDEMPOTENCY, RETRIES)
+│   │   ├── RELIABILITY.md               (+ reliability/ — IDEMPOTENCY, RETRIES, BUDGETS)
 │   │   ├── RENDERING.md                 (+ rendering/ — TEMPLATES-AND-INTERACTIVITY, PITFALLS-AND-EXAMPLES)
 │   │   ├── RESPONSIVE-DESIGN.md         (+ responsive/ — BREAKPOINTS, MEDIA-QUERIES, CONTAINER-QUERIES, …)
 │   │   ├── RLS-GUIDE.md                 (+ rls/ — FUNDAMENTALS, POLICY-TEMPLATES, MIDDLEWARE-AND-NINJA, …)
@@ -615,7 +615,7 @@ then regenerate the export:
 
 ```bash
 bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh        # all stories
-bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US014  # one story
+bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US001  # one story
 ```
 
 The exports are **generated and read-only — never hand-edit them.** Enforcement is layered: a

@@ -253,7 +253,7 @@ table was repointed at it the same day by that workflow's Step 10.
 
 | Story | Story plan (`../17-STORY-PLANS/`)                                      | Status      |
 | ----- | ---------------------------------------------------------------------- | ----------- |
-| US005 | `../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` | Not started |
+| US005 | `../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` | In Progress |
 | US006 | `../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`               | Not started |
 
 <!-- 08/09/2026 — THE STATUS COLUMN. US005's cell reads "Not started", and the value is
