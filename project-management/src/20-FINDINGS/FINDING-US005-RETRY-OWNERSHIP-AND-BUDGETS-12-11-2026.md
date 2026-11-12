@@ -125,8 +125,8 @@ carrying the rows in is its owner's step.
 
 - **Registers, checked 12/11/2026.** `DEFERRED.md`: all six US001 rows targeted at US005 left the
   file. F-004 is retired — `TASK-AUTHORING.md:200-206` now routes to `RETRIES.md` and `BUDGETS.md`,
-  keeping its topic list. That is "accept the list as written", **but no ruling records the choice**
-  (TODO(verify) with Sam). F-006 is retired: the "tested by classification" rule was inventoried,
+  keeping its topic list. That is "accept the list as written", **confirmed by Sam
+  12/11/2026** in session, at `23-pr-and-review`. F-006 is retired: the "tested by classification" rule was inventoried,
   dispositioned and kept on the task surface (`TASK-AUTHORING.md:270-272`). F-010 is retired: the
   inventory re-resolved each planning-time citation by its quoted text, and `RETRIES.md:95-98` cites
   the ladder in `IDEMPOTENCY.md`. F-012 is half retired (F-016). F-005 and F-008 were not retired

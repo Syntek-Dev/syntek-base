@@ -237,7 +237,7 @@ Cases the plan did not foresee, then every walked row whose `QA` column is `—`
 - [x] Accessibility observations confirmed against the build (N/A, with reason)
 - [x] GDPR & security observations confirmed (or N/A recorded)
 - [x] Coverage floors met for all modules in scope — N/A: no code path, no suite (`US005.md:533`)
-- [ ] Manual testing sign-off (see `../../18-TESTS/MANUAL/US005-MANUAL-TESTING.md`) — walked and signed by the independent walker; **the tester-other-than-author countersignature awaits Sam**
+- [x] Manual testing sign-off (see `../../18-TESTS/MANUAL/US005-MANUAL-TESTING.md`) — walked and signed by the independent walker; countersigned by Sam 12/11/2026 in session, at `23-pr-and-review`, accepting the walk as recorded (41 Pass, 1 Fail, PRE-03 a recorded deviation)
 - [ ] Reviewer approval — **blocks merge until complete**; awaits Sam; his rulings on GATES-02 and PRE-03 are in (12/11/2026)
 
 ---
