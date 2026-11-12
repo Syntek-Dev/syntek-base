@@ -35,10 +35,10 @@ right and merely unprovable here.
 The tree here and the tree downstream diverge in both directions, and the direction decides the
 mechanism. Neither is a suppression of the other's check.
 
-| Direction | Shape                                                       | Example                       | Mechanism                                       |
-| --------- | ----------------------------------------------------------- | ----------------------------- | ----------------------------------------------- |
-| **A**     | **Absent here, present downstream** — the project builds it | `code/src/django/components/` | Register: `how-to/src/PROJECT-PATHS.md`         |
-| **B**     | **Present here, absent downstream** — copier excludes it    | `copier.yml`, `LICENSE`       | Per-line token: `doc-references: template-only` |
+| Direction | Shape                                                       | Example                       | Mechanism                                                                    |
+| --------- | ----------------------------------------------------------- | ----------------------------- | ---------------------------------------------------------------------------- |
+| **A**     | **Absent here, present downstream** — the project builds it | `code/src/django/components/` | Register: `how-to/src/PROJECT-PATHS.md`                                      |
+| **B**     | **Present here, absent downstream** — copier excludes it    | `copier.yml`, `LICENSE`       | Per-line token: `doc-references: template-only` — mechanics only (Section 4) |
 
 **Direction A is a promise, Direction B is a disclaimer.** A guide naming
 `code/src/django/components/` is telling a developer where their components will go, and it is
@@ -94,16 +94,38 @@ sibling audit already uses. **`doc-references.sh` Check 3 enforces this as of 23
 excluded path cited by a shipping file without one of the two markers is a finding, so the
 declaration is no longer a convention a reviewer has to remember.
 
+**The token covers template mechanics, never a template artefact (12/11/2026).** Copier excludes
+two different kinds of file, and only one may be cited from a file that ships:
+
+| Excluded file          | Examples                                                                                                         | A shipped file may                                                                  |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| **Template mechanics** | `copier.yml`, `LICENSE`, `.github/scripts/`, `VERSION`, the render script                                        | Describe it, under the `template-only` token <!-- doc-references: template-only --> |
+| **Template artefact**  | A decision, story, feature map, story or sprint plan, finding, review, bug; any research note, handoff or lesson | **Never cite it** — the token does not excuse it                                    |
+
+An artefact is a **record of this repository's own work**, so a citation of it is dead in every
+generated project, and declaring that it does not ship states the defect instead of excusing it.
+The gate reports it as a `[template artefact]`, marked or not. **Remove the citation and summarise
+the reasoning in place**, in the shipped file's own words. Which is which is **derived, never
+listed**: an artefact is whatever `_exclude` leaves excluded inside a tree it empties with a `/**`
+entry — `research/`, `handoffs/`, `learning/` and `project-management/src/` today — so the shipped
+pairs, `-TEMPLATE.` files, zero-index test records, `00-ASSETS` scripts, build sources and GDPR
+registers it re-includes stay citable. A real decision identifier is the same finding wherever it
+is written, backticked or bare, and **real means it names a decision record that exists** among
+those excluded records: a made-up worked example names none and stays silent, and the zero index,
+the shipped decision template, never fires. In a generated project no record is excluded, so the
+identifier half is silent there by the same decision as the path half.
+
 **It is not a synonym for `doc-references: ignore`.** Both suppress a finding; they record
 different judgements, and both are greppable so the distinction survives:
 
-| Token                           | Means                                                                       |
-| ------------------------------- | --------------------------------------------------------------------------- |
-| `doc-references: ignore`        | Neither check applies — a path quoted in order to ban it, or another repo's |
-| `doc-references: template-only` | The check applies and the citation is deliberate — this path does not ship  |
+| Token                           | Means                                                                                                           |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `doc-references: ignore`        | Neither check applies — a path quoted in order to ban it, or another repo's                                     |
+| `doc-references: template-only` | The check applies and the citation is deliberate — a mechanic that does not ship; **never** a template artefact |
 
 Reach for `template-only` whenever the reason is "the reader of a generated project will not
-have this". Reach for `ignore` when the path is not really being cited at all.
+have this" **and the path is template machinery**. Reach for `ignore` when the path is not really
+being cited at all — never to quieten an artefact citation the token can no longer excuse.
 
 ## 5. What the gate cannot decide, stated plainly
 
@@ -123,7 +145,7 @@ discovered later:
   absent only from a project that declined that surface, so `template-only` would be **false**
   in every project that took it. Those citations keep the prose `rust-only` / `mobile-only` flag
   their guides already carry, and no marker. **Since 09/11/2026 the gate reads the decline
-  instead** (US004 F-051): each gated `_exclude` entry is parsed into a `gated FLAG path` row of
+  instead**: each gated `_exclude` entry is parsed into a `gated FLAG path` row of
   the shipping facts, and in a generated project an **absent** target under a gated path whose
   surface `.copier-answers.yml` declined is passed, not reported — and **counted per flag**, in
   the run's output and its verdict, because a green run must not read as "every cited file
@@ -136,6 +158,10 @@ discovered later:
 - **It cannot see whether a marker is _true_.** The token declares that a path does not survive
   generation; nothing proves the writer read `_exclude` before writing it. A marker on a path <!-- doc-references: template-only -->
   that ships is a lie this gate will believe, exactly as `ignore` always has been.
+- **It sees a template artefact only by its path or its decision identifier.** A story, map or
+  plan named in prose by its title, or a story number written without a path, is Check 2's
+  instance rule or nobody's; the artefact class adds no reading of free text beyond the decision
+  identifier, and that only where it names a record present in this tree.
 - **It cannot tell whether a path that resolves is the _right_ one.** Unchanged from the
   script's own header, and the reason `Cannot tell` is written there.
 - **It cannot judge a register row.** That a creator resolves does not mean it creates that
