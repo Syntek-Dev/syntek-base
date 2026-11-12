@@ -1819,11 +1819,11 @@ scan_files() { # $1 = newline-separated file list
           # tree is unchecked and the path is not excluded -- so a citation of a re-included file
           # that does not exist passed silently. Downstream the contract is absent, EXCL_ARTEFACT
           # is empty, and this is off.
-          elif [ ! -e "$resolved" ] && is_template_artefact "$resolved" \
-               && ! is_excluded_by_rule "$resolved" && ! is_declined_gated "$resolved"; then
+          # Counted whether or not it resolves (NEW-07): every one is tested with -e.
+          elif is_template_artefact "$resolved" && ! is_excluded_by_rule "$resolved"; then
             path_tests=$((path_tests + 1))
-            record "$file" "$lineno" "dangling path" "$token"
-            scan_hit["$lineno|$resolved"]=1
+            [ -e "$resolved" ] || is_declined_gated "$resolved" \
+              || { record "$file" "$lineno" "dangling path" "$token"; scan_hit["$lineno|$resolved"]=1; }
           fi
           continue ;;
       esac

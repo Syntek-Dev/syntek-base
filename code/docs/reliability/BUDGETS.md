@@ -48,6 +48,9 @@ count:
 )
 ```
 
+`RemoteThrottled` is declared, not yet built — [`RETRIES.md`](RETRIES.md) Section _Honouring
+`Retry-After`_ — so the `dont_autoretry_for` line arrives with the class.
+
 ### The budget table
 
 | Row                                                                                                                | Attempts `n` (`max_retries`) | First interval `b` | Interval cap `C` | Jitter | Per-attempt ceiling `t`    | Total-age ceiling `T` | Worst-case total age                                                                                                                 | Reason                                                                                                                             |
@@ -86,7 +89,9 @@ queue can carry an operation well past it. Where age must actually be bounded �
 payload can go stale, as [`RETRIES.md`](RETRIES.md) Section _Work that goes stale_ says — each
 message carries the one absolute deadline of [`RETRIES.md`](RETRIES.md) Section _Honouring
 `Retry-After`_, `expires = first_attempt_at + T - t`, so the last attempt still completes within
-`T`, and an expired message is exhausted rather than run.
+`T`, and an expired message is exhausted rather than run. **That work takes a row whose `T` is a
+number** — an override, as the Header-aware row is — never the Default row, whose `T` is its own
+derived worst case and leaves no room for queue wait.
 
 ### No counted-down wait outlasts redelivery
 
@@ -100,11 +105,12 @@ Section _Idempotency_). **A persisted-schedule row is exempt**: its wait lives i
 first attempt is enqueued directly, not through the sweep**, which is why the sweep's latency term
 is `(n - 1) * p`: in one transaction the row is inserted with
 `attempt_count = 1`, `started_attempt = 0`, `first_attempt_at = now` and
-`next_attempt_at = now + t + q`, and that enqueue is registered with `transaction.on_commit`
+`next_attempt_at = now + t + q` (`now` is the transaction's start, so `q` also covers the
+enclosing transaction), and that enqueue is registered with `transaction.on_commit`
 ([`../TASK-AUTHORING.md`](../TASK-AUTHORING.md) Section _The enqueue boundary_). So the first
 attempt already holds a lease, its queue wait counts toward `elapsed`, which is what the `A` check
 reads, and a publish lost after commit is claimed by the sweep as the next attempt once that lease
-lapses.
+lapses, at the cost of one of the row's `n` attempts.
 
 **A due row is parked or claimed, never simply re-enqueued.** A due row whose `attempt_count` is
 `n`, or whose `elapsed` already exceeds `T - p - q - t`, is **parked** — marked failed and
