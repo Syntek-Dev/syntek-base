@@ -212,7 +212,7 @@ The guide is written so a human **or** Claude Chrome can follow it. For an agent
      a Fail.
 
      THE BUILD WRITES ONE SECTION. Added by the review of the same change. The accepted
-     ADR-US003-CITATION-GATE-BASELINE-DIFF puts a baseline in this file "before editing begins",
+     citation-gate baseline-diff decision puts a baseline in this file "before editing begins",
      and several stories put inventories and read-across records here too — writes at neither
      17, 18 nor 22. The first backfilled guides met that three ways: a build section, an evidence
      section, and journey rows run before the first edit, which contradicted "every row is walked

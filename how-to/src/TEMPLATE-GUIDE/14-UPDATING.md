@@ -376,7 +376,7 @@ cut plan. The second run writes the cut plan if you still have none, regenerates
 changes nothing else — the renames have already happened.
 
 **Updating across 7.8.0 also removes a decision record that was never yours.** 7.7.0 shipped
-syntek-base's own decision record "ADR-US004-PATTERNED-REGISTRATION-PRESERVES-SHIPPED-TEMPLATES-09-10-2026.md"
+syntek-base's own decision record "ADR-US004-PATTERNED-REGISTRATION-PRESERVES-SHIPPED-TEMPLATES-09-10-2026.md" <!-- doc-references: ignore -->
 into every project's `project-management/src/15-DECISIONS/` by accident. The update deletes it if it is exactly as shipped, and prints a
 warning and leaves it alone if you have edited it — delete it by hand unless you adopted that
 decision as your own. Commit the deletion with the update.

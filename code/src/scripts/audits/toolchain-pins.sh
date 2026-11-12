@@ -18,8 +18,8 @@
 #
 # uv has no file of its own, so one was chosen: the UV_VERSION of the workflow carrying the
 # required "[8/8] Security" gate, because that is the uv a pull request is judged by. When
-# PIN S-01 (MAP-PIN-DETECT-MOVE) adds `[tool.uv] required-version`, that range becomes a
-# compared site like any other; moving the source is a change to this header.
+# `[tool.uv] required-version` is added to pyproject.toml, that range becomes a compared site
+# like any other; moving the source is a change to this header.
 #
 # The channel and the MSRV are compared SEPARATELY. They are not a matched set
 # (code/docs/rust/SUPPLY-CHAIN.md), so a document's Rust claim is routed by its form: a floor
@@ -58,7 +58,7 @@
 # row, and then counts as no source, because every claim would otherwise agree with it.
 #
 # THE HELD TIER, and why it is not a suppression. A class of finding a held story owns — the
-# first was unpinned uv, assigned to PIN S-01 until its uv sites were pinned on 11/11/2026 and
+# first was unpinned uv, assigned to a held story until its uv sites were pinned on 11/11/2026 and
 # the entry deleted, so the register is empty today — would make this gate red for the life of
 # that hold if it failed, and teach everyone to read past it. Passing it silently would be the
 # defect code/docs/GATE-REPORTING.md bans. So it is printed, every run, site by site, in a

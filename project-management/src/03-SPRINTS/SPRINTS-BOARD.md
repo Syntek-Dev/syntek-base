@@ -9,8 +9,8 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 
 | Column      | Items |
 | ----------- | ----- |
-| Planned     | 5     |
-| In Progress | 0     |
+| Planned     | 4     |
+| In Progress | 1     |
 | Done        | 3     |
 | Closed      | 0     |
 
@@ -18,7 +18,6 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 
 | ID        | Title                                                                                                                                                                                       | Status  | File                         |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------- |
-| SPRINT-04 | Retry doctrine gets its single owner, and the posture rule gets a guard                                                                                                                     | Planned | [SPRINT-04.md](SPRINT-04.md) |
 | SPRINT-05 | The cookie doctrine lands and the git hooks arm on purpose                                                                                                                                  | Planned | [SPRINT-05.md](SPRINT-05.md) |
 | SPRINT-06 | Every register folder gains an index file of its own, born seeded and seed-once so no `copier update` can overwrite a filled one                                                            | Planned | [SPRINT-06.md](SPRINT-06.md) |
 | SPRINT-07 | A seeded file that fails to land in a generated project is reported by the template-integrity gate rather than silently tolerated, and the gate's header stops claiming a coverage it lacks | Planned | [SPRINT-07.md](SPRINT-07.md) |
@@ -26,7 +25,9 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 
 ## In Progress
 
-_None._
+| ID        | Title                                                                   | Status      | File                         |
+| --------- | ----------------------------------------------------------------------- | ----------- | ---------------------------- |
+| SPRINT-04 | Retry doctrine gets its single owner, and the posture rule gets a guard | In Progress | [SPRINT-04.md](SPRINT-04.md) |
 
 ## Done
 

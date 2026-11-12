@@ -20,6 +20,7 @@ seeded project-management/src/03-SPRINTS/SPRINTS-BOARD.md
 seeded project-management/src/16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md
 seeded project-management/src/17-STORY-PLANS/STORY-PLANS-BOARD.md
 seeded project-management/src/02-STORIES/CUT-PLAN.md
+ships project-management/export/clickup/README.md
 ships research/CONTEXT.md
 ships research/CLAUDE.md
 ships handoffs/CONTEXT.md

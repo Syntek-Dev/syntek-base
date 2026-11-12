@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 11/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 12/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -823,6 +823,13 @@ naming the contract as unread, with a self-test probe. No map or story claims th
 
 ## 09/11/2026 — the template's own ClickUp client exports ship into every default-answer project
 
+✅ CLOSED 12/11/2026 — fixed on the US005 branch at Sam's request (finding F-023 in
+"project-management/src/20-FINDINGS/FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md"):
+`copier.yml:118-121` excludes the folder unconditionally and negates its README and pair back in,
+and `.github/scripts/shipped-artefacts.sh` check 6 fails on any other file there. Check 6's
+self-test needs a generated project and was read, not run, so the fix is verified statically
+only. The README's presence is not asserted; that residue is the 12/11/2026 sweep entry below.
+
 **Type:** Active gap
 **Summary:** `project-management/export/clickup/US001-CLIENT.md` to `US014-CLIENT.md` are this
 template's own stories exported for ClickUp, yet they ship into every project generated with the
@@ -1143,3 +1150,81 @@ lock agreement only. No map or story claims this entry.
 Python, Node and Docker, read from the same sources `audits/toolchain-pins.sh` uses, or narrow the
 guide's sentence to "presence only". Add the exclusion to `.markdownlint-cli2.jsonc`
 (or the script's glob list), matching `.gitignore`. No map or story claims this entry.
+
+---
+
+## 12/11/2026 — three shipped lines restate retry or idempotency without the reliability family's route
+
+**Type:** Active gap
+**Summary:** US005 shipped the retry doctrine. Its closeout found three lines outside the family
+that it did not repair. None is owned by a map slice: `S-04`'s acceptance names the job table's
+columns and the bad examples, not these lines.
+
+- `code/docs/performance/API-AND-MONITORING.md:119` — "Background jobs are idempotent with retries
+  and back-off" implies every job retries, while the shipped retention purge deliberately does not
+  (F-014; security audit F-003).
+- `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md:268` — "Failed jobs must be monitored"
+  duplicates the failed-job visibility `performance/API-AND-MONITORING.md` owns. It was deferred
+  to US005 (US001 F-005), and US005 did not retire it (F-015).
+- `project-management/docs/gdpr/COMPLIANCE.md:118` — "Tasks must be idempotent" has no route.
+  This is the unretired half of the US001 F-012 deferral; US005 retired the sample half (F-016).
+
+Findings in "project-management/src/20-FINDINGS/FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. One docs pass: reword `:119` to "retried only as the
+reliability family decides", reduce `:268` to a route, and route `:118` to
+`code/docs/reliability/IDEMPOTENCY.md`. No map or story claims this entry.
+
+---
+
+## 12/11/2026 — whether `Task.retry` carries the first message's `expires` forward is unverified
+
+**Type:** Active gap
+**Summary:** `code/docs/reliability/RETRIES.md:137-139` requires a counted-down attempt to be
+scheduled with `expires = first_attempt_at + T - t`, so a late start is exhausted rather than run.
+The worked example (`:166-183`) shows only the task body. Nobody has verified whether Celery's
+`Task.retry` copies the original message's `expires` into the retry message: context7's Celery
+5.6.3 docs are silent, and the source was not read. If it does not, the example as written runs a
+late attempt past `T`. Finding F-013 in "project-management/src/20-FINDINGS/FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md" (security audit F-002, INFO).
+**Blocked by / Action:** Nothing blocks it. Read `Task.retry` in Celery's source at the pinned
+version. If `expires` does not carry forward, show it in the example's `self.retry` call. No map
+or story claims this entry.
+
+---
+
+## 12/11/2026 — the manual-guide rule has no form for a row corrected during the build
+
+**Type:** Active gap
+**Summary:** `project-management/src/18-TESTS/MANUAL/CLAUDE.md` Section _Changing a row after
+authoring_ names two moments: _Corrected at consolidation_ before code, and _Amended_ at the walk,
+which carries a finding. US005 corrected ten rows **during the build, before the walk**, using a
+third, unwritten form with no finding ID. The walk therefore reported "0 amended" against ten
+departed rows, and the findings step had to rebuild their findings by hand. Finding F-012 in "project-management/src/20-FINDINGS/FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Name the build-time correction as a third form,
+carrying the same trail plus `finding: F-0NN`, recorded at `22-implementation-documentation`
+Step 5 like a walk amendment. No map or story claims this entry.
+
+---
+
+## 12/11/2026 — residue of the template-only reference sweep
+
+**Type:** Active gap
+**Summary:** US005's branch removed template-only references from every shipped file and closed
+the ClickUp export leak. It left four items, each outside a docs sweep or found after it:
+
+- `code/src/scripts/audits/doc-references.sh` ships story-derived internal identifiers: the
+  `st_f051_probes` function (`:2726`, `:3557`) and a `us004-p2-probe` temp-file prefix under
+  `research/` (`:3215`, `:3230-3231`). They were left because renaming them is a code change
+  (F-024).
+- `.github/scripts/shipped-artefacts.sh` asserts that nothing but the README and pair ships from
+  `project-management/export/clickup/` (check 6). No check asserts that the README does ship,
+  because check 4's presence list covers `project-management/src/` only (F-025).
+- `copier.yml` does not say that a `/**` entry with `!` negations is the artefact-tree allowlist
+  shape, so a new tree can still be written as a bare directory entry (F-026).
+- `how-to/src/TEMPLATE-GUIDE/CLAUDE.md:54-59` and `how-to/src/TEMPLATE-GUIDE/CONTEXT.md:11-12`
+  ship (`copier.yml:128`) but narrate syntek-base's own register history (F-027).
+
+Findings in "project-management/src/20-FINDINGS/FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Rename the identifiers and re-run `--self-test`. Add
+a presence assertion and probe for the export README. Add a comment above the first artefact-tree
+entry. Reword the template-guide pair to the general `_exclude` rule; that pair is a protected
+path (`.claude/hooks/CONTEXT.md`). No map or story claims this entry.

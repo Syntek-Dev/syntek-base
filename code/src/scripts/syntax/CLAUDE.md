@@ -10,7 +10,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 The code-quality entry point — `lint.sh`, `check.sh`, and `format.sh` wrap ruff,
 basedpyright, markdownlint-cli2, Prettier and ESLint across the Django source and the
-repo-spanning Markdown/CSS, and **delegate** to the mobile and Rust owners for those
+repo-spanning Markdown/CSS/YAML/JSON, and **delegate** to the mobile and Rust owners for those
 two surfaces.
 
 ## How to work here
