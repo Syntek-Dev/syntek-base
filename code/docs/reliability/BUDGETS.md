@@ -138,7 +138,9 @@ webhook row takes this form.
 
 **An override is a recorded row in this table, stating every parameter it changes**, so its worst
 case recomputes from the row alone. It is legitimate only when the operation's own contract needs a
-horizon the default cannot give — a webhook consumer whose downtime is measured in hours — and the
+horizon the default cannot give — a webhook consumer whose downtime is measured in hours — or a
+numeric `T` the default cannot state, for work whose age must be bounded (Section _The worst case
+is derived, never copied_), and the
 row's _Reason_ cell states that reason, its recomputed worst case fits its `T`, and the operation
 still meets the idempotency precondition. **The manual `Retry-After` form always takes its own row**,
 stating `T` as a number or a stated derivation, because its remaining-age check cannot be computed

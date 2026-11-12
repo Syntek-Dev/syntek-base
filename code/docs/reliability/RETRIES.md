@@ -144,11 +144,12 @@ This is the one statement of `A`. If `W > C`, `W > A`, or the attempts are spent
 
 **`Retry-After` is untrusted input that decides how long a worker sleeps**, so the clamp is a
 control, not a courtesy: a remote can otherwise hold a worker slot for as long as it names.
-**A missing `Retry-After` counts as `0`**, so `W` is the backoff. **Whether the work parks is
+**On a persisted schedule a missing `Retry-After` counts as `0`**, so `W` is the backoff; the
+manual form below never meets one, because a response without it is not a `RemoteThrottled`. **Whether the work parks is
 decided on `W`, never on a random draw**, and **jitter never lowers `W`**: on the manual form below
 and on a persisted schedule ([`BUDGETS.md`](BUDGETS.md) Section _No counted-down wait outlasts
-redelivery_) alike, its draw is added within the headroom `min(C, A) - W`, with or without a
-`Retry-After`. So a persisted row's worst case is within `T`, via the `A` check, and its unjittered
+redelivery_) alike, its draw is added within the headroom `min(C, A) - W` — on the persisted schedule with
+or without a `Retry-After`. So a persisted row's worst case is within `T`, via the `A` check, and its unjittered
 sum is a reference only. The final countdown is still checked against `C` and `A` immediately
 before it is scheduled; an oversized result parks.
 
@@ -160,20 +161,22 @@ through unchanged. The owner therefore makes both checks itself, and the call re
 checked countdown. The example copies the _Header-aware push_ row of [`BUDGETS.md`](BUDGETS.md)
 Section _The budget table_: `INTERVAL_CAP`, `TOTAL_AGE_CEILING` and `PER_ATTEMPT_CEILING` are its
 `C`, `T` and `t`. **`RemoteThrottled` is declared, not yet built**: a `DependencyUnavailable`
-subclass the adapter raises for a 429 or 503 **that carries a `Retry-After`**, holding only the
-parsed `retry_after`; without the header the response stays a plain `DependencyUnavailable`,
+subclass the adapter raises for a 429 or 503 **whose `Retry-After` parses to non-negative
+seconds** (an HTTP-date converted), holding only that `retry_after`; without the header, or with
+one that does not parse, the response stays a plain `DependencyUnavailable`,
 retried on the row's backoff, so a bare 503 still retries on the default form. It is not in
 `apps/core/services/errors.py` yet. **Being a `DependencyUnavailable`, it would match the
 declarative default and retry before `Retry-After`**, so that form excludes it
 (`dont_autoretry_for`, Celery 5.3+): there a named wait is exhaustion, never an early retry, and
 work that can be told to wait takes the header-aware row.
-There a timeout or a plain 5xx still retries declaratively on the row's `b` and `C`, sharing the
-one `max_retries` count; only a named wait takes the manual branch.
+On the header-aware row a timeout, a plain 5xx, or a 429 or 503 without a usable `Retry-After`
+still retries declaratively on the row's `b` and `C`, sharing the one `max_retries` count; only a
+named wait takes the manual branch.
 
 ```python
 @app.task(
     bind=True,
-    autoretry_for=(DependencyUnavailable,),  # a timeout or plain 5xx: the row's b and C
+    autoretry_for=(DependencyUnavailable,),  # a timeout, 5xx or unnamed wait: the row's b and C
     dont_autoretry_for=(RemoteThrottled,),  # a named wait takes the branch below
     max_retries=2,  # Header-aware push: 3 attempts
     retry_backoff=1,
