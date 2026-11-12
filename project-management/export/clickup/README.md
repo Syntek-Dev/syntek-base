@@ -4,7 +4,7 @@ Client-friendly, ClickUp-ready exports — **one `US###-CLIENT.md` per user stor
 
 > **Clickup-only.** This folder, the three `*-clickup.sh` scripts and the `clickup-sync`
 > workflow are present only in a project generated with `INCLUDE_CLICKUP`. ClickUp is the only
-> board this template can write to — see `copier.yml`, section _ClickUp sync (optional)_. <!-- doc-references: template-only -->
+> board this template can write to — the answer is recorded in `.copier-answers.yml`.
 
 > **Generated output — read-only. Do not hand-edit.** These files are produced from the
 > source stories in `project-management/src/02-STORIES/`. Change the source story, then
@@ -36,11 +36,12 @@ Acceptance Criteria, Tasks, Dependencies, DB schema, and all technical sections 
 
 ```bash
 bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh        # all stories
-bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US014  # one story
+bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US001  # one story
 ```
 
 A full run removes stale `US###-CLIENT.md` files (e.g. for deleted stories) and rewrites
-the rest. `README.md` is preserved.
+the rest. `README.md` is preserved. **A new project starts with no exports** — the template's own
+are copier-excluded whatever `INCLUDE_CLICKUP` answered, so the first run writes this project's.
 
 ## Sync to ClickUp
 

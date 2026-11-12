@@ -101,7 +101,7 @@ against its sprint in that sprint plan's _Story Plans — the code master_ table
 
 **Last Updated**: <%DATE%>
 
-<!-- RENAMED 08/09/2026. The six plans in this folder were renamed by `git mv` that day from
+<!-- RENAMED 08/09/2026. The story plans were renamed by `git mv` that day from
      `STORY-PLAN-US###-<DESC>.md` to `<exec-order>-STORY-PLAN-US###-<DESC>.md`, the prefix the
      story's position in the settled build order across the whole backlog and renumbered whenever
      that order changes. This file's Directory Tree, `**Naming:**` line and copy-the-template step
@@ -112,12 +112,11 @@ against its sprint in that sprint plan's _Story Plans — the code master_ table
      Two things asked for and deliberately NOT done, both for reasons this repository has already
      settled, and both stated here WITHOUT naming the artefacts that settled them, because this
      file ships and may name no per-project story, map or plan. (1) A Plans Index table with
-     instance rows — including reserved rows for numbers taken by unwritten plans. Two of the
-     plans in this folder decline that row ON THE RECORD, the standing gap register carries it
-     claimed, and the register-index work charted in `../01-FEATURE-MAPS/` owns the file it should
-     live in; creating it here would ship per-project citations in a copier-included file. The
-     section _The plans index_ above records the decline instead, and each reserved number is
-     recorded in the story that owns it, under `../02-STORIES/`, which does not ship.
+     instance rows — including reserved rows for numbers taken by unwritten plans. The index was
+     declined: a per-plan index belongs to the register-index work, which owns the file it
+     should live in; creating it here would ship per-project citations in a copier-included file.
+     The section _The plans index_ above records the decline instead, and each reserved number is
+     recorded in the story that owns it.
      (2) `**Last Updated**` bumped to 08/09/2026 — the field holds `<%DATE%>`,
      a Copier token rendered at generation, in all 138 shipped `CONTEXT.md` files. Hard-coding a
      date here would ship 08/09/2026 into every project generated afterwards and would leave this
@@ -134,8 +133,8 @@ against its sprint in that sprint plan's _Story Plans — the code master_ table
      describes that. (2) The section named the deferred index file in backticks, as
      "STORY-PLAN-INDEX.md" — a file that exists in no repository, this one or any generated from
      it, cited from a file that ships and read by the citation gate, which takes backticked tokens
-     as paths. It is now described rather than named: the register-index work charted in
-     `../01-FEATURE-MAPS/` names its own file when it lands. -->
+     as paths. It is now described rather than named: the register-index work names its own file
+     when it lands. -->
 
 <!-- 31/10/2026 (7.7.0): _The plans index_ rewritten. It recorded the index's absence as a decision
      deferred to the register-index work, and ended "a plan's own status lives in its metadata

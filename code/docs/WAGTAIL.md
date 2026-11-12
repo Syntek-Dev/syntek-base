@@ -145,5 +145,3 @@ None of that is permanent. All of it is a decision to take on the evidence at th
 - `.claude/skills/stack-wagtail/` — the skill that routes CMS work into this family
 - `code/docs/URL-STRATEGY.md` — the route table the CMS prefix and the catch-all join
 - `code/docs/OBJECT-STORAGE.md` — the media routing invariant that puts Wagtail on Cloudinary
-- `research/WAGTAIL-CMS-INTEGRATION.md` — the primary-source note this family was written from, <!-- doc-references: template-only -->
-  with a citation on every claim

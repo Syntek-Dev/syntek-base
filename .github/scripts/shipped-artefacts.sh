@@ -27,8 +27,9 @@
 #                        match files recursively (`/**`). A reviewer reading
 #                        `- /research` and calling it done is the regression this catches.
 #
-#                        Five checks:
-#                          1. copier.yml carries the recursive exclusion for each tree.
+#                        Six checks:
+#                          1. copier.yml carries the recursive exclusion for each tree,
+#                             and the UNCONDITIONAL one for the ClickUp export folder.
 #                          2. research/, handoffs/, learning/, questionnaires/ ship the
 #                             documentation pair and NOTHING else.
 #                          3. project-management/src/ ships only pairs, *-TEMPLATE.* files,
@@ -38,6 +39,11 @@
 #                          4. Every named shipped file is PRESENT — an allowlist fails by
 #                             not shipping a new template file, and this is the reveal.
 #                          5. No artefact-tree .gitignore leaked.
+#                          6. project-management/export/clickup/ ships its README and
+#                             documentation pair only, never a generated US###-CLIENT.md.
+#                             The INCLUDE_CLICKUP gate excludes the folder only from a
+#                             project that declined the sync, so until 12/11/2026 one that
+#                             took it received the template's own story exports.
 #
 #                        4 is not redundant with 3. An allowlist has two failure modes and
 #                        they point opposite ways: too loose ships a private note, too
@@ -74,6 +80,12 @@ PAIR_ONLY_TREES=(research handoffs learning questionnaires)
 
 # The tree that also ships templates and named content.
 SRC_TREE="project-management/src"
+
+# The ClickUp export folder: generated output of THIS repository's stories, so it ships
+# its documentation and nothing else, whatever INCLUDE_CLICKUP answered. A tree that
+# declined the sync has no such folder at all, and passes check 6 by having nothing in it.
+EXPORT_TREE="project-management/export/clickup"
+EXPORT_SHIPPED=(README.md CONTEXT.md CLAUDE.md)
 
 # Shipped content under $SRC_TREE that carries no TEMPLATE in the name, in the two shapes
 # copier.yml's `!` negations use. MIRRORING THE SHAPE IS THE POINT: an enumeration of every
@@ -179,6 +191,10 @@ run_checks() {
     grep -qxF "/$tree/**" <<< "$excluded" \
       || finding "copier.yml _exclude has no '/$tree/**' rule — a bare directory entry does not prune its contents"
   done
+  # Exact-line match, so the INCLUDE_CLICKUP-templated entry cannot satisfy it: that one
+  # renders empty in a project that took the sync, which is the leak this rule closes.
+  grep -qxF "/$EXPORT_TREE/**" <<< "$excluded" \
+    || finding "copier.yml _exclude has no unconditional '/$EXPORT_TREE/**' rule — a project that takes the ClickUp sync would receive the template's own story exports"
 
   # ── 2 and 5. The pair-only trees ────────────────────────────────────────────
   local f rel
@@ -193,6 +209,19 @@ run_checks() {
       esac
     done < <(find "$GEN/$tree" -type f 2>/dev/null | sort)
   done
+
+  # ── 6. The ClickUp export folder ────────────────────────────────────────────
+  local e ok
+  if [[ -d "$GEN/$EXPORT_TREE" ]]; then
+    while IFS= read -r f; do
+      rel="${f#"$GEN/$EXPORT_TREE/"}"
+      ok=false
+      for e in "${EXPORT_SHIPPED[@]}"; do
+        [[ "$rel" == "$e" ]] && { ok=true; break; }
+      done
+      $ok || finding "$EXPORT_TREE/$rel leaked into the generated project — it is a syntek-base story export, not template content"
+    done < <(find "$GEN/$EXPORT_TREE" -type f 2>/dev/null | sort)
+  fi
 
   # ── 3. project-management/src/ ──────────────────────────────────────────────
   if [[ ! -d "$GEN/$SRC_TREE" ]]; then
@@ -302,6 +331,15 @@ self_test() {
   probe "check 5 fires when an artefact-tree .gitignore leaks" "questionnaires/.gitignore leaked"
   rm -f "$GEN/questionnaires/.gitignore"
 
+  # ── 6. A generated story export leaks ───────────────────────────────────────
+  #
+  # mkdir -p: a tree generated without the ClickUp sync has no export folder to plant in.
+  # The planted id is not one any real story carries.
+  mkdir -p "$GEN/$EXPORT_TREE"
+  printf '# A story export of the template\n' > "$GEN/$EXPORT_TREE/US999-CLIENT.md"
+  probe "check 6 fires when a ClickUp story export leaks" "$EXPORT_TREE/US999-CLIENT.md leaked"
+  rm -f "$GEN/$EXPORT_TREE/US999-CLIENT.md"
+
   # ── 1. The recursive exclusion is dropped ───────────────────────────────────
   #
   # Repoints COPIER, not GEN — check 1 is static and reads copier.yml alone.
@@ -309,6 +347,9 @@ self_test() {
   grep -vxF '  - /research/**' "$real_copier" > "$tmpdir/no-rule.yml"
   COPIER="$tmpdir/no-rule.yml"
   probe "check 1 fires when a tree's recursive exclusion is dropped" "no '/research/**' rule"
+  grep -vxF "  - /$EXPORT_TREE/**" "$real_copier" > "$tmpdir/no-export-rule.yml"
+  COPIER="$tmpdir/no-export-rule.yml"
+  probe "check 1 fires when the unconditional export exclusion is dropped" "no unconditional '/$EXPORT_TREE/**' rule"
   COPIER="$real_copier"
 
   GEN="$real_gen"

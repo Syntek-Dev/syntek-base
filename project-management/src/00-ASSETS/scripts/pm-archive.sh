@@ -41,7 +41,7 @@
 # Examples:
 #   bash project-management/src/00-ASSETS/scripts/pm-archive.sh US001 --dry-run
 #   bash project-management/src/00-ASSETS/scripts/pm-archive.sh SPRINT-03
-#   bash project-management/src/00-ASSETS/scripts/pm-archive.sh MAP-NAVIGATION
+#   bash project-management/src/00-ASSETS/scripts/pm-archive.sh MAP-CHECKOUT
 #
 # Requires: python3 (stdlib only), git.
 # Exit codes: 0 = archived (or eligible, with --dry-run)  1 = not found, already archived,

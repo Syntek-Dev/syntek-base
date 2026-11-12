@@ -85,7 +85,7 @@ one written most carefully. It names three things or it is not filled in:
 
 `code/src/scripts/database/reset.sh` is never a recovery path. It is the thing recovery exists to
 undo. Beyond `development` it must not be run — a rule `.claude/CLAUDE.md` Section 0 binds Claude
-to, not yet a guard the script itself enforces (`GAPS.md`, 31/08/2026).
+to, not yet a guard the script itself enforces.
 
 ## What is deliberately not registered
 
