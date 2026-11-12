@@ -11,8 +11,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 6     |
-| In Progress       | 1     |
-| In Review         | 0     |
+| In Progress       | 0     |
+| In Review         | 1     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
 | Customer Accepted | 5     |
@@ -39,13 +39,13 @@ _None._
 
 ## In Progress
 
-| ID    | Title                                                                          | Status      | File                 |
-| ----- | ------------------------------------------------------------------------------ | ----------- | -------------------- |
-| US005 | Exactly one layer decides to retry, and every budget says how long it may take | In Progress | [US005.md](US005.md) |
+_None._
 
 ## In Review
 
-_None._
+| ID    | Title                                                                          | Status    | File                 |
+| ----- | ------------------------------------------------------------------------------ | --------- | -------------------- |
+| US005 | Exactly one layer decides to retry, and every budget says how long it may take | In Review | [US005.md](US005.md) |
 
 ## Accepted
 
