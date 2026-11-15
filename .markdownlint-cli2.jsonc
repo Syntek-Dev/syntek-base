@@ -18,6 +18,7 @@
     "!**/tests/e2e/playwright-report/**",
     "!project-management/export/**",
     "!code/docs/MACHINE-SPEC.md",
+    "!graphify-out/**",
     "!code/src/scripts/**/reports/**",
     "!code/src/rust/target/**",
     "!project-management/src/00-ASSETS/WALK-TESTS/*-PROMPT.md",
