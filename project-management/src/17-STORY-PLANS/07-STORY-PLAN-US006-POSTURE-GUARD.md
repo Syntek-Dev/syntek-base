@@ -6,7 +6,7 @@
 | Branch | `us006/posture-guard`              |
 | Sprint | SPRINT-04 · Wave 1 · build order 2 |
 | Author | <%ORG_NAME%>                       |
-| Status | `Open`                             |
+| Status | `In Progress`                      |
 
 <!-- BORN WITH ITS PREFIX, 08/09/2026. The number `07-` was reserved for this story that morning,
      when the six plans in this folder were renamed by `git mv` to
