@@ -146,10 +146,16 @@ fi
 # shellcheck source=code/src/scripts/_lib/env-file.sh
 source "$SCRIPT_DIR/../_lib/env-file.sh"
 
+# The project is pinned with -p to the one the compose files declare (normalised as Compose
+# does) — the same project the guard verified on `down --volumes` and `up --seed` — so a
+# COMPOSE_PROJECT_NAME in .env.dev can never select a different one, nor be printed back as a
+# project or container name.
+COMPOSE_PROJECT="$(posture_compose_project "$COMPOSE_FILE" "$OVERRIDE_DEV_FILE")" || exit 2
+
 # Base docker compose command with env file — all subcommands use this array. DOCKER is the
 # plain CLI on every unguarded path and the validated binding on `down --volumes` and
 # `up --seed`.
-DC=("${DOCKER[@]}" compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+DC=("${DOCKER[@]}" compose -p "$COMPOSE_PROJECT" --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
     ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
 
 # ── Internal helpers ──────────────────────────────────────────────────────────

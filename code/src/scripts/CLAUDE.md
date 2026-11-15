@@ -35,11 +35,12 @@ grouped into a functional subdirectory of `*.sh` scripts.
 - **Scripts are the only interface** — any doc that reaches for a raw `pnpm`/`pip`/
   `python manage.py`/`docker` command is a bug; wrap it in a script instead.
 - Secrets via environment only — never hardcode a credential in a script.
-- **A script that reads a live `.env.*`** — directly, or by passing `--env-file` to
-  `docker compose` — **is the developer's to run, never an AI's**; the AI hands over the
-  `! bash …` line. `database/migrate.sh --self-test` reads fixtures only and stays the AI's.
-  Rule: `.claude/CLAUDE.md` Section 6. A new script of that kind joins the deny list in
-  `.claude/settings.json`.
+- **A script may use a live `.env.*` but must never print a value from one** — not in a
+  banner, a URL, a summary, a container name or an error message; print the key name instead.
+  An AI may run any script that holds to this. `database/shell.sh`, `development/shell.sh` and
+  `development/logs.sh` give open-ended access and stay the developer's (denied in
+  `.claude/settings.json`); a new script of that kind joins them. `migrate.sh --self-test`
+  proves the rule with sentinel values. Rule: `.claude/CLAUDE.md` Section 6.
 - `reports/` output under every subdirectory is gitignored — never commit generated
   reports or backups.
 - Scripts are shell, exempt from the 750-line source limit, but keep each focused;

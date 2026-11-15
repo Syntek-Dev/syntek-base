@@ -35,13 +35,14 @@ the story's manual guide for capture slots and take every one **before phase 2**
 Sam: no AI tool — Claude, Codex, a subagent, a probe script — ever reads the live `.env.dev`,
 `.env.test` / `.env.testing`, `.env.staging` or `.env.prod` / `.env.production`, by any route
 (file tool, `cat`, `grep -r` over the folder, a script written to print it). The `.env.*.example`
-files may be read. **A script that uses a live `.env.*` is handed to Sam to run** (give him the
-`! bash …` line); the AI never runs it, even when it would print nothing from the file. That
-includes every script passing `--env-file` to `docker compose` — `development/server.sh`,
-`tests/server.sh`, the `database/` scripts but `--self-test`, `syntax/lint.sh`, `format.sh`,
-`check.sh`, `audits/security.sh`, the `tests/` runners. `database/migrate.sh --self-test` is
-safe for the AI: it branches off before the live file is touched and uses fixture env files only.
-A deny rule that blocks a read is the rule working; never work around it.
+files may be read. **Revised 15/11/2026: a script may _use_ a live `.env.*` and still be run by
+the AI** — passing `--env-file` to `docker compose`, reading a key to build a command — **so long
+as it never _prints_ a value from one.** A script that prints a live env value (directly, in a
+URL or banner, or by giving open-ended access such as an interactive shell) is handed to Sam to
+run as a single command block. Lint, format, typecheck, test and audit scripts must never print
+an env value; one that does is a defect to fix, not a script to hand over. The classification of
+each env-using script lives in `.claude/CLAUDE.md` Section 6 and the `.claude/settings.json` deny
+list. A deny rule that blocks a read is the rule working; never work around it.
 
 ---
 

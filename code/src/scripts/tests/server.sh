@@ -122,9 +122,14 @@ fi
 
 [[ -f "$ENV_FILE" ]] || die "Env file not found: $ENV_FILE"
 
+# The project is pinned with -p to the one the compose files declare (normalised as Compose
+# does) — the same project the guard verified on `down --volumes` — so a COMPOSE_PROJECT_NAME in
+# .env.test can never select a different one, nor be printed back as a project or container name.
+COMPOSE_PROJECT="$(posture_compose_project "$COMPOSE_FILE" "$OVERRIDE_TEST_FILE")" || exit 2
+
 # Base docker compose command — all subcommands use this array. DOCKER is the plain CLI on
 # every unguarded path and the validated binding on `down --volumes`.
-DC=("${DOCKER[@]}" compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+DC=("${DOCKER[@]}" compose -p "$COMPOSE_PROJECT" --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
     ${OVERRIDE_TEST_FILE:+-f "$OVERRIDE_TEST_FILE"})
 
 # ── Commands ──────────────────────────────────────────────────────────────────

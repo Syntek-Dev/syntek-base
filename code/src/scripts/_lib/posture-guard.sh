@@ -37,6 +37,14 @@
 #     The name is printed as declared; the guard normalises it as Compose does (F-018), and
 #     a declared name that normalises to nothing fails the target check closed.
 #
+#   posture_compose_project FILE...
+#     Prints the project Compose acts on for that declared name — posture_compose_name over the
+#     set, normalised as Compose does (F-018) — for a caller to pin with `compose -p`, so a
+#     COMPOSE_PROJECT_NAME in the shell or the env-file can never select (or be printed as) a
+#     different project. Returns 1, with a reason on stderr and nothing on stdout, when no file
+#     declares a name or the name cannot be normalised faithfully (interpolation, non-ASCII,
+#     empty after normalising): the same cases the guard fails closed on.
+#
 #   posture_above_development
 #     Succeeds when the last guard call read staging or production: where a prompting caller's
 #     --yes goes inert. A template or development run is not above development.
@@ -545,6 +553,25 @@ posture_compose_name() {
     [[ -n "$value" ]] && name="$value"
   done
   printf '%s' "$name"
+}
+
+posture_compose_project() {
+  local name project
+  name="$(posture_compose_name "$@")"
+  if [[ -z "$name" ]]; then
+    printf 'posture_compose_project: no compose file in the set declares a top-level name:\n' >&2
+    return 1
+  fi
+  if [[ "$name" == *'$'* ]] || LC_ALL=C posture_has_non_ascii "$name"; then
+    printf 'posture_compose_project: the declared name %s uses interpolation or non-ASCII characters\n' "$(posture_quote "$name")" >&2
+    return 1
+  fi
+  project="$(posture_normalise_name "$name")"
+  if [[ -z "$project" ]]; then
+    printf 'posture_compose_project: the declared name %s normalises to an empty name\n' "$(posture_quote "$name")" >&2
+    return 1
+  fi
+  printf '%s' "$project"
 }
 
 posture_above_development() {

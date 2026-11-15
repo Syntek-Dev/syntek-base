@@ -17,25 +17,22 @@ ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/env-file.sh
+source "$SCRIPT_DIR/../_lib/env-file.sh"
 # shellcheck source=code/src/scripts/_lib/posture-guard.sh
 source "$SCRIPT_DIR/../_lib/posture-guard.sh"
 # The compose array is built only after the posture guard has validated and pinned the Docker
 # target (below), so not even the container preflight can reach a different daemon.
 ORIG_ARGS=("$@")
 
-# Read DB credentials from env file when not set in the shell environment.
-if [[ -f "$ENV_FILE" ]]; then
-  DB_NAME="${POSTGRES_DB:-$(grep -E '^POSTGRES_DB=' "$ENV_FILE" | cut -d= -f2- || true)}"
-  DB_USER="${POSTGRES_USER:-$(grep -E '^POSTGRES_USER=' "$ENV_FILE" | cut -d= -f2- || true)}"
-fi
-
-# The fallback is unconditional, and that is the whole fix: .env.dev carries no
-# POSTGRES_DB line at all — docker-compose.dev.yml fixes the name and .env.dev.example
-# says so — so the grep above yields an empty string on the path where the env file
-# EXISTS. Keeping this inside an `else` made DB_NAME empty in the normal case, and
-# `DROP DATABASE IF EXISTS "";` is the error that produced. backup.sh and restore.sh
-# already resolve it this way; this script was the odd one out.
-DB_NAME="${DB_NAME:-<%PROJECT_SLUG%>_dev}"
+# The database name is docker-compose.dev.yml's own literal (`POSTGRES_DB: "<%PROJECT_SLUG%>_dev"`),
+# never read from .env.dev: compose ignores a POSTGRES_DB there, so a value read from the file
+# could only name a database the stack never created — and this script prints the name, while
+# no AI-run script may print a value from a live env file. A shell POSTGRES_DB still overrides.
+DB_NAME="${POSTGRES_DB:-<%PROJECT_SLUG%>_dev}"
+# The user is read (parsed, never sourced — _lib/env-file.sh) because compose honours it; it is
+# passed to psql -U and never printed.
+DB_USER="${POSTGRES_USER:-$(env_value POSTGRES_USER "$ENV_FILE")}"
 DB_USER="${DB_USER:-<%PROJECT_SLUG%>}"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
@@ -64,9 +61,12 @@ Usage:
                        Run above development, naming the posture the project is at now
                        (staging or production). Without it the posture guard refuses.
 
-Environment (all read from .env.dev):
-  POSTGRES_DB                 Database name (default: <%PROJECT_SLUG%>_dev)
-  POSTGRES_USER               Database user (default: <%PROJECT_SLUG%>)
+Environment:
+  POSTGRES_DB                 Database name — shell only (default: <%PROJECT_SLUG%>_dev, the
+                              name docker-compose.dev.yml fixes; never read from .env.dev)
+  POSTGRES_USER               Database user (shell, else .env.dev; default: <%PROJECT_SLUG%>)
+
+Read from .env.dev (--seed only; never printed — the summary names the keys):
   DJANGO_SUPERUSER_USERNAME   Superuser username  (--seed only)
   DJANGO_SUPERUSER_EMAIL      Superuser email     (--seed only)
   DJANGO_SUPERUSER_PASSWORD   Superuser password  (--seed only)
@@ -159,12 +159,14 @@ if $SEED; then
   # Read seed credentials from .env.dev on the host and inject at exec time.
   # docker compose --env-file only substitutes YAML vars — it does not inject
   # arbitrary keys into the container environment, so -e flags are required.
-  _su_user="$(grep -E '^DJANGO_SUPERUSER_USERNAME=' "$ENV_FILE" | cut -d= -f2- || true)"
-  _su_email="$(grep -E '^DJANGO_SUPERUSER_EMAIL='    "$ENV_FILE" | cut -d= -f2- || true)"
-  _su_pass="$(grep -E '^DJANGO_SUPERUSER_PASSWORD='  "$ENV_FILE" | cut -d= -f2- || true)"
-  _st_user="$(grep -E '^SEED_STAFF_USERNAME='        "$ENV_FILE" | cut -d= -f2- || true)"
-  _st_email="$(grep -E '^SEED_STAFF_EMAIL='          "$ENV_FILE" | cut -d= -f2- || true)"
-  _st_pass="$(grep -E '^SEED_STAFF_PASSWORD='        "$ENV_FILE" | cut -d= -f2- || true)"
+  # Parsed by _lib/env-file.sh, which strips quotes as compose does; a grep | cut kept them.
+  # None of these is ever printed: an AI may run this script, never read its values.
+  _su_user="$(env_value DJANGO_SUPERUSER_USERNAME "$ENV_FILE")"
+  _su_email="$(env_value DJANGO_SUPERUSER_EMAIL "$ENV_FILE")"
+  _su_pass="$(env_value DJANGO_SUPERUSER_PASSWORD "$ENV_FILE")"
+  _st_user="$(env_value SEED_STAFF_USERNAME "$ENV_FILE")"
+  _st_email="$(env_value SEED_STAFF_EMAIL "$ENV_FILE")"
+  _st_pass="$(env_value SEED_STAFF_PASSWORD "$ENV_FILE")"
 
   bold "  Creating dev users…"
   if [[ -n "$_su_user" && -n "$_su_email" && -n "$_su_pass" ]]; then
@@ -194,10 +196,10 @@ email    = os.environ['SEED_STAFF_EMAIL']
 username = os.environ['SEED_STAFF_USERNAME']
 password = os.environ['SEED_STAFF_PASSWORD']
 if User.objects.filter(email=email).exists():
-    print(f'  Staff user {email} already exists — skipping.')
+    print('  Staff user already exists — skipping.')
     sys.exit(0)
 User.objects.create_user(username=username, email=email, password=password, is_staff=True)
-print(f'  Staff user {email} created.')
+print('  Staff user created.')
 " 2>/dev/null \
       || log "  ⚠  Staff user creation failed."
   else
@@ -210,13 +212,7 @@ fi
 
 bold "✓ Database reset complete."
 if $SEED; then
-  _su_user="$(grep -E '^DJANGO_SUPERUSER_USERNAME=' "$ENV_FILE" 2>/dev/null | cut -d= -f2-)"
-  _su_email="$(grep -E '^DJANGO_SUPERUSER_EMAIL='    "$ENV_FILE" 2>/dev/null | cut -d= -f2-)"
-  _st_user="$(grep -E '^SEED_STAFF_USERNAME='        "$ENV_FILE" 2>/dev/null | cut -d= -f2-)"
-  _st_email="$(grep -E '^SEED_STAFF_EMAIL='          "$ENV_FILE" 2>/dev/null | cut -d= -f2-)"
+  # Key names, never values: the developer reads the file, the output never quotes it.
   log ""
-  log "  Dev accounts (passwords in .env.dev):"
-  log "    Superuser  ${_su_user:-superuser} / ${_su_email:-see .env.dev}"
-  log "    Staff      ${_st_user:-staffuser} / ${_st_email:-see .env.dev}"
-  unset _su_user _su_email _st_user _st_email
+  log "  Dev accounts: credentials in .env.dev (DJANGO_SUPERUSER_*, SEED_STAFF_*)"
 fi

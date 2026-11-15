@@ -17,17 +17,21 @@ ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/env-file.sh
+source "$SCRIPT_DIR/../_lib/env-file.sh"
 # shellcheck source=code/src/scripts/_lib/posture-guard.sh
 source "$SCRIPT_DIR/../_lib/posture-guard.sh"
 # The compose array is built only after the posture guard has validated and pinned the Docker
 # target (below), so not even the container preflight can reach a different daemon.
 ORIG_ARGS=("$@")
 
-if [[ -f "$ENV_FILE" ]]; then
-  DB_NAME="${POSTGRES_DB:-$(grep -E '^POSTGRES_DB='   "$ENV_FILE" | cut -d= -f2- || true)}"
-  DB_USER="${POSTGRES_USER:-$(grep -E '^POSTGRES_USER=' "$ENV_FILE" | cut -d= -f2- || true)}"
-fi
-DB_NAME="${DB_NAME:-<%PROJECT_SLUG%>_dev}"
+# The database name is docker-compose.dev.yml's own literal (`POSTGRES_DB: "<%PROJECT_SLUG%>_dev"`),
+# never read from .env.dev: compose ignores a POSTGRES_DB there, and this script prints the
+# name, while no AI-run script may print a value from a live env file. A shell POSTGRES_DB
+# still overrides. The user is parsed (never sourced — _lib/env-file.sh), passed to -U, and
+# never printed.
+DB_NAME="${POSTGRES_DB:-<%PROJECT_SLUG%>_dev}"
+DB_USER="${POSTGRES_USER:-$(env_value POSTGRES_USER "$ENV_FILE")}"
 DB_USER="${DB_USER:-<%PROJECT_SLUG%>}"
 
 # ── Defaults ──────────────────────────────────────────────────────────────────
@@ -64,7 +68,8 @@ Options:
                    (staging or production). Without it the posture guard refuses.
 
 Environment:
-  POSTGRES_DB    Database name (default: <%PROJECT_SLUG%>_dev)
+  POSTGRES_DB    Database name — shell only (default: <%PROJECT_SLUG%>_dev, the name
+                 docker-compose.dev.yml fixes; never read from .env.dev)
   POSTGRES_USER  Database user (default: <%PROJECT_SLUG%>)
 
 Exit codes:  0 = success   1 = command failed   2 = script error

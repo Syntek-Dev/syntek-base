@@ -76,14 +76,25 @@ bash code/src/scripts/database/shell.sh --psql
 
 ## Environment Variables
 
-| Variable        | Default                | Purpose                                                 |
-| --------------- | ---------------------- | ------------------------------------------------------- |
-| `POSTGRES_DB`   | `<%PROJECT_SLUG%>_dev` | Database name used by backup/restore/reset/shell        |
-| `POSTGRES_USER` | `<%PROJECT_SLUG%>`     | PostgreSQL user for backup/restore/reset/shell          |
-| `SEED_COMMANDS` | _(empty)_              | Space-separated `manage.py` commands `seed-dev.sh` runs |
+| Variable        | Default                | Purpose                                                                                                   |
+| --------------- | ---------------------- | --------------------------------------------------------------------------------------------------------- |
+| `POSTGRES_DB`   | `<%PROJECT_SLUG%>_dev` | Database name — a shell override for backup/restore/reset/verify-db-security; `shell.sh` reads `.env.dev` |
+| `POSTGRES_USER` | `<%PROJECT_SLUG%>`     | PostgreSQL user for backup/restore/reset/shell/verify-db-security                                         |
+| `SEED_COMMANDS` | _(empty)_              | Space-separated `manage.py` commands `seed-dev.sh` runs                                                   |
 
-These are read from `code/src/docker/.env.dev`; the defaults match
-`docker-compose.dev.yml`. Set them there if your local config differs.
+`POSTGRES_USER` (the shell's first) and `SEED_COMMANDS` (the file's first — its line wins even when
+empty, and only a file with no `SEED_COMMANDS` line falls back to the shell's) are read from
+`code/src/docker/.env.dev`, parsed through `_lib/env-file.sh` and never sourced; the defaults match
+`docker-compose.dev.yml`. `backup.sh`, `restore.sh`, `reset.sh` and `verify-db-security.sh` never
+read `POSTGRES_DB` from `.env.dev`: `docker-compose.dev.yml` fixes the dev database name and ignores
+one set there, so they use that literal unless the shell overrides it.
+
+No AI-run script here prints a value from `.env.dev` — `reset.sh --seed` and `seed-dev.sh` close
+with the key names (`DJANGO_SUPERUSER_*`, `SEED_STAFF_*`), not the accounts, and a failed upsert or
+`SEED_COMMANDS` entry is named by exception class or position with its stderr withheld, then exits
+`1`. **`shell.sh` is the exception, by rule:** it is developer-run (denied to an AI in
+`.claude/settings.json`, `code/src/scripts/CLAUDE.md`), reads `POSTGRES_DB` and `POSTGRES_USER`
+from `.env.dev`, and its `--psql` banner prints both.
 
 `POSTGRES_USER` is the cluster's **bootstrap superuser** — the db image creates it with
 `initdb --username="$POSTGRES_USER"` — so a `shell.sh --psql` session holds `rolsuper` and

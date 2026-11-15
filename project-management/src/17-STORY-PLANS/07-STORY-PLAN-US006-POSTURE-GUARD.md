@@ -509,6 +509,20 @@ env-file` and prints "(value not shown)" in place of the value; a shell value is
   ships — `.claude/settings.json`, `.codex/config.toml`, `.zed/settings.json` — held in step by
   `code/src/scripts/audits/env-read-deny.sh`. `migrate.sh --self-test` reads fixtures only and
   stays runnable by an AI.
+- **The F-027 rule revised: an AI may run a script that uses a live `.env.*` if it prints no value
+  from it (F-028, F-029).** Sam's second ruling, the same day: dev tooling never prints an
+  env-file value; `database/shell.sh`, `development/shell.sh` and `development/logs.sh` stay his
+  to run, because their access is open-ended. An audit of the 23 env-reading scripts, adversarially
+  verified, found output paths that broke it, and they were fixed on this branch: `reset.sh` and
+  `seed-dev.sh` print key names, not the seeded accounts, and read only the keys they need;
+  `backup.sh`, `restore.sh` and `reset.sh` take the database name from the compose file;
+  `e2e-py.sh` confines `.env.test` to the pytest subshell; the four test-stack scripts pin `-p`
+  from the compose `name:` through a new helper, `posture_compose_project`, and refuse at exit 2
+  without one; `install.sh --full` starts the stack through `server.sh up --build`. Self-test
+  298 of 298 (after a second round that also pinned `development/server.sh`). The `create-staff` injection the audit found in `manageusers.sh` is pre-existing and
+  is a bug report, not part of this story. `.claude/settings.json` now denies running only the
+  three open-ended scripts, and the rule text in `.claude/CLAUDE.md` Section 6,
+  `.ai/INSTRUCTIONS.md` and `code/src/scripts/CLAUDE.md` matches the ruling (F-027).
 
 ### The proof-case list, and how each case is proved
 

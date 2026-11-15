@@ -115,14 +115,17 @@ F-018 fix** in `_lib/posture-guard.sh` and `database/_migrate-self-test.sh`, bot
 in `0a6db24`, **plus the workflow 23 review fixes** (F-020 to F-026 in
 `../../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md`), uncommitted at the time of writing,
 in `_lib/posture-guard.sh`, `database/_migrate-self-test.sh`, `database/restore.sh` and the six
-callers' guard calls. Every run below was repeated after those fixes, last on 15/11/2026:
+callers' guard calls, **plus the env-print fixes** (F-028, 15/11/2026, uncommitted at the time of
+writing) in `reset.sh`, `seed-dev.sh`, `backup.sh`, `restore.sh`, the five `tests/` stack and e2e
+runners, `_lib/posture-guard.sh` and `install.sh`. The self-test was re-run after those, last on
+15/11/2026; the other rows were not re-run for them:
 
-| Run                          | Result                                                                                                                                                                                                                                                                                                                                                                     |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `migrate.sh --self-test`     | **Exit 0**, `✓ self-test passed`. **250 checks, 250 PASS, 0 FAIL**: 164 helper-driven (H) checks — eleven the F-018 cases, thirty-nine the workflow 23 review's `R001-*`, `R002-*` and `R003-*` — 60 structural (S) checks, 25 behavioural (B) checks, and the closing `docker never invoked`. The banner read `stdin is a tty: no`. Was 186 at `0a6db24` (125 H, 60 S, 1) |
-| ShellCheck 0.11.0 (`-x`)     | **Exit 1** — exactly 4 findings, all pre-existing `SC2015 (info)` in four callers; the helper and the harness are clean. Every `# shellcheck source=` directive resolved (no `SC1091`). At `-S warning`: exit 0. Detail in Section 2.2                                                                                                                                     |
-| `audits/story-markers.sh`    | Exit 0 (warn-only): "Scanned 9 test module(s) and 7 Bruno request(s). 0 carry a story marker; 72 do not." — 65 pytest cases and 7 `.bru` files. None of the 72 is a US006 test, because the story wrote none                                                                                                                                                               |
-| `tests/test-record.sh US006` | Exit 0, `wrote 0 test rows`, reading `code/src/scripts/tests/reports`, re-run after the F-018 fix. The block in Section 1 is its output, unedited; the review fixes changed no suite and no marker, so it was not regenerated                                                                                                                                              |
+| Run                          | Result                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `migrate.sh --self-test`     | **Exit 0**, `✓ self-test passed`. **298 checks, 298 PASS, 0 FAIL** (283 after the first env-print round, +15 in the second): 164 helper-driven (H) checks — eleven the F-018 cases, thirty-nine the workflow 23 review's `R001-*`, `R002-*` and `R003-*` — 81 structural (S) checks (21 of them the F-028 `envval-*`), 37 behavioural (B) checks (12 of them F-028's), and the closing `docker never invoked`. The banner read `stdin is a tty: no`. Re-run by the documentation agent, 15/11/2026, with the same totals as the implementer's. Was 250 after the workflow 23 fixes (164 H, 60 S, 25 B, 1) and 186 at `0a6db24` (125 H, 60 S, 1). The harness prints no split; the tiers are counted from the `PASS` lines, with the three `B-restore-*` byte and DROP checks counted as B, as before |
+| ShellCheck 0.11.0 (`-x`)     | **Exit 1** — exactly 4 findings, all pre-existing `SC2015 (info)` in four callers; the helper and the harness are clean. Every `# shellcheck source=` directive resolved (no `SC1091`). At `-S warning`: exit 0. Detail in Section 2.2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `audits/story-markers.sh`    | Exit 0 (warn-only): "Scanned 9 test module(s) and 7 Bruno request(s). 0 carry a story marker; 72 do not." — 65 pytest cases and 7 `.bru` files. None of the 72 is a US006 test, because the story wrote none                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `tests/test-record.sh US006` | Exit 0, `wrote 0 test rows`, reading `code/src/scripts/tests/reports`, re-run after the F-018 fix. The block in Section 1 is its output, unedited; the review fixes changed no suite and no marker, so it was not regenerated                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ### 2.1 The self-test, case by case
 
@@ -227,8 +230,8 @@ first row.
 
 #### Structural cases — the six callers' wiring
 
-Line-order assertions over each caller's own text (story 7.8); comment lines never count. **60
-checks, 60 PASS.**
+Line-order assertions over each caller's own text (story 7.8); comment lines never count. **81
+checks, 81 PASS** — the 60 below plus the 21 F-028 `envval-*` checks in the second table.
 
 | Caller                  | Checks | Cases                                                                                                                                                                                                                                                                                                                                                                                                 |
 | ----------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -238,6 +241,18 @@ checks, 60 PASS.**
 | `development/server.sh` | 16     | `7.8-presence`, `7.8-down-volumes-only`, `7.7-terminates`, `14-binding`, `14-no-bare-docker`, `14-no-repin`, `global-flag`, **`21-seed-guard-first-in-block`**, **`F001-seed-bound-before-up`**, **`F001-up-d-on-compose-array`**, `7.7-terminates-seed-branch`, **`20-forwards-override`**, **`20-pins-child-host`**, `7.7-terminates-shell-out`, **`21-dev-two-guards-only`**, `14-dev-no-reselect` |
 | `tests/server.sh`       | 9      | `7.8-presence`, `7.8-down-volumes-only`, `7.7-terminates`, `14-binding`, `14-no-bare-docker`, `14-no-repin`, `global-flag`, `7.8-tests-one-guard`, `14-tests-no-reselect`                                                                                                                                                                                                                             |
 | `database/migrate.sh`   | 9      | `7.8-presence`, `7.7-terminates`, `14-binding`, `14-no-bare-docker`, `7.8-migrate-one-guard`, `14-no-repin`, `14-no-reselect`, `help-before-guard`, `help-clean`                                                                                                                                                                                                                                      |
+
+The F-028 checks, added 15/11/2026, each shown failing before its fix (the implementer's red run
+failed 21 structural checks):
+
+| Script(s)                                        | Checks | Cases                                                                                                                                                           |
+| ------------------------------------------------ | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `database/reset.sh` · `database/seed-dev.sh`     | 2      | `envval-no-account-print-reset` · `-seed-dev` — no account username or email printed                                                                            |
+| `database/reset.sh` · `backup.sh` · `restore.sh` | 6      | `envval-no-grep-cut-{reset,backup,restore}`, `envval-no-postgres-db-read-{reset,backup,restore}` — no `grep \| cut` read, no `POSTGRES_DB` read from `.env.dev` |
+| `database/seed-dev.sh`                           | 1      | `envval-seed-dev-no-export` — no blanket export of `.env.dev`                                                                                                   |
+| `tests/e2e-py.sh`                                | 2      | `envval-e2e-export-confined` · `envval-e2e-one-wrapped-run` — `.env.test` read only inside `_with_test_env`                                                     |
+| `tests/{api,backend,backend-coverage,server}.sh` | 8      | `envval-pins-project-*` · `envval-project-derived-*` — `compose -p` from `posture_compose_project`                                                              |
+| `install.sh`                                     | 2      | `envval-install-no-raw-up` · `envval-install-uses-server` — the stack starts through `server.sh up --build`                                                     |
 
 Cases **20** and **21** and the **F-001** ordering are proved here by S alone — seven checks
 between them, in bold. **F-001's three** replaced the pre-fix `21-up-bound-on-seed-only` and
@@ -260,7 +275,11 @@ Added 15/11/2026 for the workflow 23 review's R-005 (F-024): the structural chec
 these run it. `st_behavioural` copies the four script groups into a fixture repository with
 one-line compose and env files and puts a recording `docker` stub first on `PATH` — it logs its
 arguments, exits 0 and never reaches a daemon. Each run starts from a directory outside the
-fixture root, with the selectors and `COMPOSE_PROJECT_NAME` unset. **25 checks, 25 PASS** — 22 caller runs and three byte/DROP checks. A refusal
+fixture root, with the selectors and `COMPOSE_PROJECT_NAME` unset. **37 checks, 37 PASS** — 34 caller runs and three byte/DROP checks. Since F-028 (15/11/2026) the
+fixture env files hold `st-sentinel` values, and **every** behavioural run also asserts that no
+sentinel text reaches the output and no secret (`SECRET_KEY`, `POSTGRES_PASSWORD`,
+`DJANGO_SUPERUSER_PASSWORD`) reaches `docker`'s environment; that check turned the existing
+`B-restore-relative-path` and `B-restore-plain-format` red until the fixes landed. A refusal
 passes on exit 4, the prefix and no recorded call. A permit passes on any exit but 4 (the caller
 may stop downstream on the stub's empty answers; several exit 2), no refusal line, at least one
 recorded call, and every recorded call carrying `--host unix:///var/run/docker.sock`.
@@ -274,6 +293,9 @@ recorded call, and every recorded call carrying `--host unix:///var/run/docker.s
 | `B-envfile-name-refused` · `B-envfile-name-matches`                                                                                                                                     | F-020 end to end: an env-file `COMPOSE_PROJECT_NAME` naming another project refuses `development/server.sh down --volumes`; the matching name permits                                                                                                                                                                                                                                 |
 | `B-envfile-test-refused`                                                                                                                                                                | F-020 on the test stack: an `.env.test` naming another project refuses `tests/server.sh down --volumes` (added after the first re-check)                                                                                                                                                                                                                                              |
 | `B-restore-relative-path` · `B-restore-relative-dropped-once` · `B-restore-reads-the-backup` · `B-restore-plain-format` · `B-restore-plain-reads-the-backup` · `B-restore-missing-path` | F-023: a relative backup path is resolved where it was typed (exit 0, exactly one DROP), in custom and `--format plain`; the stub deletes the backup when it sees the DROP (`ST_RM_ON_DROP`), so the restore succeeds only by reading the descriptor opened before it — with `<&3` reverted to the path, four of these fail; a missing relative path stops before `docker` is touched |
+| `B-reset-seed-no-values` · `B-seed-dev-no-values` · `B-seed-dev-error-no-values` · `B-up-seed-no-values`                                                                                | F-028: `reset.sh --seed`, `seed-dev.sh` (including a failed seed, `ST_SHELL_FAIL=1`) and `server.sh up --seed` print no seeded account and no other env-file value                                                                                                                                                                                                                    |
+| `B-backup-no-db-name` · `B-restore-no-db-name` · `B-reset-no-db-name`                                                                                                                   | F-028: the database name in `.env.dev` is never read or printed; every call uses the compose file's name                                                                                                                                                                                                                                                                              |
+| `B-backend-pins-project` · `B-coverage-pins-project` · `B-api-pins-project` · `B-test-status-pins-project` · `B-test-down-vol-pins-project`                                             | F-028: with `COMPOSE_PROJECT_NAME=someone-else` in `.env.test`, every recorded call carries `-p` and the compose file's project (`ST_CALLS_HAVE`)                                                                                                                                                                                                                                     |
 
 ### 2.2 ShellCheck, as run
 
@@ -332,14 +354,17 @@ reach.
 ## 4. Status line
 
 **Partial** — 0 attributed tests and no coverage attributable (no Python path); the story's own
-proof, `migrate.sh --self-test`, exits 0 with 250 of 250 checks passing — 164 H (cases 1 to 19,
+proof, `migrate.sh --self-test`, exits 0 with 298 of 298 checks passing — 164 H (cases 1 to 19,
 14a to 14e in both modes, the extra helper cases including the eleven F-018 and thirty-nine review
-cases), 60 S (including cases 20 and 21 and the three F-001 ordering checks), 25 B (the six callers
-run against a recording `docker`) and `docker never invoked`; 186 of 186 at `0a6db24`. ShellCheck
+cases), 81 S (including cases 20 and 21, the three F-001 ordering checks and the 21 F-028
+`envval-*`), 37 B (the six callers and the F-028 scripts run against a recording `docker`, every
+run checked for leaked env-file values) and `docker never invoked`; 250 of 250 before F-028, 186 of
+186 at `0a6db24`. ShellCheck
 0.11.0 exits 1 on exactly 4 pre-existing `SC2015 (info)` findings in four callers, none in new code
 (the `server.sh` one moved from line 218 to 227 with the F-001 fix, unchanged); helper and harness
-clean. Verified 15/11/2026 at `0a6db24` plus the workflow 23 review fixes (F-020 to F-026,
-uncommitted at the time of writing).
+clean. Verified 15/11/2026 at `0a6db24` plus the workflow 23 review fixes (F-020 to F-026), and
+re-verified the same day at `4ba6e12` plus the F-028 env-print fixes (uncommitted at the time of
+writing).
 
 ---
 

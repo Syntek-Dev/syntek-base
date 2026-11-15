@@ -476,6 +476,58 @@ st_structural() {
   st_set "7.8-tests-one-guard" "exactly one guard call, under down --volumes" "$(st_lines "$file" "$ST_GUARDCALL")" "${c:+$((c + 1))}"
   st_set "14-tests-no-reselect" "no daemon re-selected after the guard" "$(st_lines "$file" "$ST_SELECTOR" "${g:-0}")"
 
+  # Review 15/11/2026 — no live env-file value printed, and no env-file key loose in a script.
+  local s_root="$SCRIPT_DIR/../../../.." pflag='-p "$COMPOSE_PROJECT"'
+  # The dev-account summaries and the in-container prints name no account value.
+  for f in reset seed-dev; do
+    st_set "envval-no-account-print-$f" "no {username} or {email} in a print" \
+      "$(st_lines "$SCRIPT_DIR/$f.sh" '[{](username|email)[}]')"
+  done
+  # Env-file values are read through _lib/env-file.sh, never a grep | cut that keeps quotes.
+  for f in reset backup restore verify-db-security; do
+    st_set "envval-no-grep-cut-$f" "no grep | cut env-file read" \
+      "$(st_lines "$SCRIPT_DIR/$f.sh" 'cut -d= -f2-')"
+    st_set "envval-no-postgres-db-read-$f" "POSTGRES_DB never read from the env file" \
+      "$(st_lines "$SCRIPT_DIR/$f.sh" "(POSTGRES_DB[^A-Za-z_].*ENV_FILE|env_value POSTGRES_DB)")"
+  done
+  # seed-dev.sh reads only the keys it needs: the whole file is never exported into the shell.
+  st_set "envval-seed-dev-no-export" "no env_export in seed-dev.sh" "$(st_lines "$SCRIPT_DIR/seed-dev.sh" 'env_export')"
+  # tests/e2e-py.sh: the live .env.test reaches pytest only, inside the one-line wrapper that
+  # execs its positional arguments — expanded before the file is read, so no key overwrites them.
+  file="$SCRIPT_DIR/../tests/e2e-py.sh"
+  u="$(st_ln "$file" lead '_with_test_env() { local f="$1"; shift; env_export "$f"; exec "$@"; }')"
+  st_set "envval-e2e-export-confined" "env_export only inside _with_test_env" "$(st_lines "$file" 'env_export')" "$u"
+  p="$(st_ln "$file" lead '( _with_test_env "$ENV_FILE" env "E2E_BASE_URL=$E2E_BASE_URL" uv run --group test pytest')"
+  st_set "envval-e2e-one-wrapped-run" "the pytest run is the wrapper's only caller" \
+    "$(st_lines "$file" '_with_test_env "[$]ENV_FILE"')" "$p"
+  # The test-stack compose arrays carry -p with the declared, normalised name.
+  for name in api backend backend-coverage server dev-server; do
+    file="$SCRIPT_DIR/../tests/$name.sh"
+    [[ "$name" == dev-server ]] && file="$SCRIPT_DIR/../development/server.sh"
+    d="$(st_lines "$file" '^[[:space:]]*(DC|DC_TEST)=[(]')"
+    k="$(st_lines "$file" 'compose -p "[$]COMPOSE_PROJECT" --env-file')"
+    st_s "envval-pins-project-$name" "$([[ -n "$d" && "$d" == "$k" ]] && echo 1)" \
+      "every compose array carries $pflag (arrays: ${d:-none}; pinned: ${k:-none})"
+    c="$(st_ln "$file" lead 'COMPOSE_PROJECT="$(posture_compose_project ')"
+    st_order "envval-project-derived-$name" "the project is derived before the compose array" "$c" "${d%% *}"
+  done
+  # install.sh --full starts the stack through server.sh up --build, which re-syncs the password.
+  file="$s_root/install.sh"
+  st_set "envval-install-no-raw-up" "no raw compose up in install.sh" "$(st_lines "$file" 'compose .* up -d')"
+  u="$(st_ln "$file" lead 'bash "$PROJECT_ROOT/code/src/scripts/development/server.sh" up --build')"
+  st_s "envval-install-uses-server" "$([[ -n "$u" ]] && echo 1)" "install.sh --full does not start the stack through server.sh up --build"
+  # Its readiness probe acts on the stack server.sh started: the same compose set (the worktree
+  # override included) and the same project, pinned with -p.
+  p="$(st_lines "$file" 'compose .*ps --services')"
+  k="$(st_lines "$file" 'compose -p "[$]COMPOSE_PROJECT" --env-file .* [$][{]OVERRIDE_DEV_FILE:[+]-f "[$]OVERRIDE_DEV_FILE"[}] ps --services')"
+  st_s "envval-install-probe-pinned" "$([[ -n "$p" && "$p" == "$k" ]] && echo 1)" \
+    "every readiness probe carries $pflag and the worktree override (probes: ${p:-none}; pinned: ${k:-none})"
+  t="$(st_ln "$file" lead 'source "$PROJECT_ROOT/code/src/scripts/_lib/worktree-detect.sh"')"
+  g="$(st_ln "$file" lead 'source "$PROJECT_ROOT/code/src/scripts/_lib/posture-guard.sh"')"
+  c="$(st_ln "$file" lead 'COMPOSE_PROJECT="$(posture_compose_project "$COMPOSE_DEV" "$OVERRIDE_DEV_FILE")"')"
+  st_order "envval-install-probe-derived" "worktree detection, the helper, the derived project, then the probe" \
+    "$t" "$g" "$c" "${p%% *}"
+
   # migrate.sh — warn mode at entry: after the --self-test arm, before argument dispatch.
   file="$SCRIPT_DIR/migrate.sh"
   t="$(st_ln "$file" lead 'if [[ "${1:-}" == "--self-test" ]]; then')"; g="$(st_ln "$file" lead "$guard_w")"
@@ -497,11 +549,24 @@ st_structural() {
 # ── Behavioural cases: the six callers, run (review R-005) ──
 # The structural cases read the callers' text; these run them. A fixture repository holds copies
 # of the four script groups, two one-line compose files and two env files, and a recording
-# `docker` heads PATH for these runs only: it logs its arguments and exits 0, and prints `db` for
-# a `ps` only when the case asks, so a permitted run stops at the container preflight. Every
+# `docker` heads PATH for these runs only: it logs its arguments (one line per call) and exits 0,
+# and prints `db` and `django` for a `ps` only when the case asks, so a permitted run otherwise
+# stops at the container preflight. Every
 # call it records is the stub's — nothing reaches a daemon. The suite-wide exit-97 docker still
 # guards everything else.
 st_cdir=""
+
+# The fixture env files. Every value an AI-run script must never print carries `st-sentinel`, and
+# st_call fails any run whose output shows one (COMPOSE_PROJECT_NAME is not among them: the guard
+# refuses on it, so it is proven through the `-p` every recorded call must carry instead).
+st_cenv_base() {
+  printf '%s\n' 'POSTGRES_DB=st-sentinel-db' 'POSTGRES_USER=st' 'POSTGRES_PASSWORD=st-sentinel-pgpass' \
+    'SECRET_KEY=st-sentinel-secret' \
+    'DJANGO_SUPERUSER_USERNAME=st-sentinel-su' 'DJANGO_SUPERUSER_EMAIL=st-sentinel-su@example.invalid' \
+    'DJANGO_SUPERUSER_PASSWORD=st-sentinel-supass' \
+    'SEED_STAFF_USERNAME=st-sentinel-staff' 'SEED_STAFF_EMAIL=st-sentinel-staff@example.invalid' \
+    'SEED_STAFF_PASSWORD=st-sentinel-stpass'
+}
 
 st_cfix() {
   local d
@@ -513,32 +578,46 @@ st_cfix() {
   done
   printf 'name: st-callers-dev\nservices: {}\n' >"$st_cdir/root/code/src/docker/docker-compose.dev.yml"
   printf 'name: st-callers-test\nservices: {}\n' >"$st_cdir/root/code/src/docker/docker-compose.test.yml"
-  printf 'POSTGRES_DB=st\nPOSTGRES_USER=st\n' >"$st_cdir/root/code/src/docker/.env.dev"
-  printf 'POSTGRES_DB=st\nPOSTGRES_USER=st\n' >"$st_cdir/root/code/src/docker/.env.test"
+  st_cenv_base >"$st_cdir/root/code/src/docker/.env.dev"
+  st_cenv_base >"$st_cdir/root/code/src/docker/.env.test"
   printf 'backup\n' >"$st_cdir/root/backup.dump"
   printf 'backup\n' >"$st_cdir/elsewhere/rel.dump"
   # shellcheck disable=SC2016  # the stub's own text
-  printf '#!/usr/bin/env bash\nprintf "%%s\\n" "$*" >>"%s/calls"\n[[ "${ST_PS_DB:-}" == 1 && " $* " == *" ps "* ]] && echo db\n[[ " $* " == *" -d "* && ( " $* " == *" pg_restore "* || " $* " == *" psql "* ) ]] && wc -c >>"%s/stdin"\n[[ -n "${ST_RM_ON_DROP:-}" && " $* " == *"DROP DATABASE"* ]] && rm -f -- "$ST_RM_ON_DROP"\nexit 0\n' \
-    "$st_cdir" "$st_cdir" >"$st_cdir/bin/docker"
+  printf '#!/usr/bin/env bash\na="$*"\nprintf "%%s\\n" "${a//$'"'"'\\n'"'"'/ }" >>"%s/calls"\n[[ -n "${SECRET_KEY:-}${POSTGRES_PASSWORD:-}${DJANGO_SUPERUSER_PASSWORD:-}" ]] && printf "%%s\\n" "$*" >>"%s/envleak"\n[[ "${ST_PS_DB:-}" == 1 && " $* " == *" ps "* ]] && printf "db\\ndjango\\n"\n[[ "${ST_SHELL_FAIL:-}" == 1 && " $* " == *" manage.py shell "* ]] && { printf "Traceback (most recent call last):\\ndjango.db.utils.IntegrityError: Key (username)=(st-sentinel-su) already exists.\\n" >&2; exit 1; }\n[[ " $* " == *" -d "* && ( " $* " == *" pg_restore "* || " $* " == *" psql "* ) ]] && wc -c >>"%s/stdin"\n[[ -n "${ST_RM_ON_DROP:-}" && " $* " == *"DROP DATABASE"* ]] && rm -f -- "$ST_RM_ON_DROP"\n[[ " $* " == *"SHOW log_statement"* ]] && printf "none\\n"\n[[ " $* " =~ " manage.py "(st-sentinel-[^[:space:]]*)" " ]] && { printf "Unknown command: %%s\\nType manage.py help for usage.\\n" "${BASH_REMATCH[1]}" >&2; exit 1; }\nexit 0\n' \
+    "$st_cdir" "$st_cdir" "$st_cdir" >"$st_cdir/bin/docker"
   chmod +x "$st_cdir/bin/docker"
+  # api.sh probes the stack with curl and runs Bruno through pnpm; both answer 0 here.
+  printf '#!/usr/bin/env bash\nexit 0\n' >"$st_cdir/bin/curl"
+  cp -- "$st_cdir/bin/curl" "$st_cdir/bin/pnpm"
+  chmod +x "$st_cdir/bin/curl" "$st_cdir/bin/pnpm"
+  mkdir -p "$st_cdir/root/code/src/tests/api/health"
+  printf 'meta {\n  name: health\n}\n' >"$st_cdir/root/code/src/tests/api/health/health.bru"
 }
 
 # st_call LABEL WANT POSTURE SCRIPT [ARG...]
 #   WANT 4      refused at 4, with the prefix, and the stub never called;
 #   WANT permit not refused, the stub called, and every call pinned to the default socket;
 #   WANT 0      exit 0 and every call pinned;
-#   WANT stop   a non-zero exit other than 4 before the stub was called. ST_CENV adds env-file lines; ST_PS_DB=1 the db.
+#   WANT stop   a non-zero exit other than 4 before the stub was called. ST_CENV adds env-file lines; ST_PS_DB=1 the db;
+#   WANT ran    exit 0 and the stub called, with no pinning asked (an unguarded caller);
+#   WANT fail   a non-zero exit other than 4 after the stub was called, with no refusal.
+#   On every run: no `st-sentinel` value in the output, and no live-env secret in the stub's
+#   environment. ST_CALLS_HAVE is a literal every recorded call must carry; ST_EXPECT an ERE the
+#   output must match; ST_REJECT an ERE it must not; ST_SHELL_FAIL=1 makes the stub fail
+#   `manage.py shell` with a value on stderr. The stub also fails `manage.py st-sentinel-*` the
+#   way Django rejects an unknown command, quoting the entry on stderr, and answers `none` to
+#   `SHOW log_statement`.
 st_call() {
   local label="$1" want="$2" posture="$3" script="$4" rc=0 ok=1 why="" pinned bad; shift 4
   printf 'DEPLOYMENT_POSTURE: %s\n' "$posture" >"$st_cdir/root/.copier-answers.yml"
-  printf 'POSTGRES_DB=st\nPOSTGRES_USER=st\n%s' "${ST_CENV:-}" >"$st_cdir/root/code/src/docker/.env.dev"
-  printf 'POSTGRES_DB=st\nPOSTGRES_USER=st\n%s' "${ST_CENV:-}" >"$st_cdir/root/code/src/docker/.env.test"
-  rm -f -- "$st_cdir/calls" "$st_cdir/stdin"
+  { st_cenv_base; printf '%s' "${ST_CENV:-}"; } >"$st_cdir/root/code/src/docker/.env.dev"
+  { st_cenv_base; printf '%s' "${ST_CENV:-}"; } >"$st_cdir/root/code/src/docker/.env.test"
+  rm -f -- "$st_cdir/calls" "$st_cdir/stdin" "$st_cdir/envleak"
   (
     cd "$st_cdir/elsewhere" &&
     env -u DOCKER_CONTEXT -u DOCKER_HOST -u COMPOSE_PROJECT_NAME -u DEPLOYMENT_POSTURE \
       HOME="$st_cdir/home" DOCKER_CONFIG="$st_cdir/cfg" PATH="$st_cdir/bin:$PATH" ST_PS_DB="${ST_PS_DB:-}" \
-      ST_RM_ON_DROP="${ST_RM_ON_DROP:-}" \
+      ST_RM_ON_DROP="${ST_RM_ON_DROP:-}" ST_SHELL_FAIL="${ST_SHELL_FAIL:-}" \
       timeout 60 bash "$st_cdir/root/code/src/scripts/$script" "$@"
   ) >"$st_cdir/out" 2>&1 || rc=$?
   pinned="--host $ST_DEFAULT_SOCK "
@@ -553,6 +632,15 @@ st_call() {
       [[ "$rc" != 0 && "$rc" != 4 ]] || { ok=0; why+=" rc $rc, want a non-zero stop other than 4"; }
       [[ -s "$st_cdir/calls" ]] && { ok=0; why+=" docker called before the stop"; }
       ;;
+    ran)
+      [[ "$rc" == 0 ]] || { ok=0; why+=" rc $rc, want 0"; }
+      [[ -s "$st_cdir/calls" ]] || { ok=0; why+=" docker never called"; }
+      ;;
+    fail)
+      [[ "$rc" != 0 && "$rc" != 4 ]] || { ok=0; why+=" rc $rc, want a non-zero failure other than 4"; }
+      grep -qF 'posture-guard: refused —' "$st_cdir/out" && { ok=0; why+=" unexpected refusal"; }
+      [[ -s "$st_cdir/calls" ]] || { ok=0; why+=" docker never called"; }
+      ;;
     permit|0)
       [[ "$want" == 0 && "$rc" != 0 ]] && { ok=0; why+=" rc $rc, want 0"; }
       [[ "$rc" == 4 ]] && { ok=0; why+=" rc 4"; }
@@ -561,6 +649,14 @@ st_call() {
       [[ "${bad:-0}" == 0 ]] || { ok=0; why+=" $bad docker call(s) not pinned to $ST_DEFAULT_SOCK"; }
       ;;
   esac
+  grep -qF 'st-sentinel' "$st_cdir/out" && { ok=0; why+=" printed an env-file value ($(grep -oE 'st-sentinel[^ /]*' "$st_cdir/out" | sort -u | tr '\n' ' '))"; }
+  [[ -s "$st_cdir/envleak" ]] && { ok=0; why+=" a live-env secret reached docker's environment"; }
+  if [[ -n "${ST_CALLS_HAVE:-}" && -s "$st_cdir/calls" ]]; then
+    bad="$(grep -vcF -- "$ST_CALLS_HAVE" "$st_cdir/calls" || true)"
+    [[ "$bad" == 0 ]] || { ok=0; why+=" $bad call(s) without '$ST_CALLS_HAVE'"; }
+  fi
+  [[ -n "${ST_EXPECT:-}" ]] && ! grep -qE -- "$ST_EXPECT" "$st_cdir/out" && { ok=0; why+=" missing /$ST_EXPECT/"; }
+  [[ -n "${ST_REJECT:-}" ]] && grep -qE -- "$ST_REJECT" "$st_cdir/out" && { ok=0; why+=" forbidden /$ST_REJECT/"; }
   if (( ok )); then printf '  PASS  case %-30s B rc=%s\n' "$label" "$rc"
   else
     printf '  FAIL  case %-30s B rc=%s —%s\n' "$label" "$rc" "$why"
@@ -612,6 +708,54 @@ st_behavioural() {
   s="$(tr -d '[:space:]' <"$st_cdir/stdin" 2>/dev/null || true)"
   st_s "B-restore-plain-reads-the-backup" "$([[ "$s" == 7 ]] && echo 1)" "bytes psql read: ${s:-none}"
   ST_PS_DB=1 st_call B-restore-missing-path stop development database/restore.sh --yes nothere.dump
+  # Review 15/11/2026 (no live env-file value printed): every caller run to its closing summary
+  # with the stack "up", and no sentinel may appear in what it prints. The dev DB name is the
+  # compose file's literal, never the env file's POSTGRES_DB.
+  ST_PS_DB=1 ST_EXPECT='DJANGO_SUPERUSER_\*' \
+    st_call B-reset-seed-no-values      0 development database/reset.sh --yes --seed
+  ST_PS_DB=1 st_call B-reset-no-db-name 0 development database/reset.sh --yes
+  ST_PS_DB=1 ST_EXPECT='DJANGO_SUPERUSER_\*' \
+    st_call B-seed-dev-no-values        0 development database/seed-dev.sh
+  ST_PS_DB=1 ST_SHELL_FAIL=1 ST_EXPECT='IntegrityError' ST_REJECT='Seed complete' \
+    st_call B-seed-dev-error-no-values  fail development database/seed-dev.sh
+  ST_PS_DB=1 st_call B-up-seed-no-values 0 development development/server.sh up --seed
+  ST_PS_DB=1 st_call B-backup-no-db-name ran development database/backup.sh
+  ST_PS_DB=1 st_call B-restore-no-db-name 0 development database/restore.sh --yes "$st_cdir/root/backup.dump"
+  # The test-stack runners pin the project with -p, so an env-file COMPOSE_PROJECT_NAME can never
+  # name (or print) a different one. Every compose call carries the declared, normalised name.
+  local pin_test=' -p st-callers-test '
+  ST_CENV=$'COMPOSE_PROJECT_NAME=someone-else\n' ST_CALLS_HAVE="$pin_test" \
+    st_call B-backend-pins-project      ran development tests/backend.sh
+  ST_CENV=$'COMPOSE_PROJECT_NAME=someone-else\n' ST_CALLS_HAVE="$pin_test" \
+    st_call B-coverage-pins-project     ran development tests/backend-coverage.sh
+  ST_CENV=$'COMPOSE_PROJECT_NAME=someone-else\n' ST_CALLS_HAVE="$pin_test" \
+    st_call B-api-pins-project          ran development tests/api.sh
+  ST_CENV=$'COMPOSE_PROJECT_NAME=someone-else\n' ST_CALLS_HAVE="$pin_test" \
+    st_call B-test-status-pins-project  ran development tests/server.sh status
+  ST_CALLS_HAVE="$pin_test" st_call B-test-down-vol-pins-project permit development tests/server.sh down --volumes
+  # development/server.sh pins its project the same way, on every subcommand's compose array.
+  local pin_dev=' -p st-callers-dev '
+  ST_CENV=$'COMPOSE_PROJECT_NAME=someone-else\n' ST_CALLS_HAVE="$pin_dev" \
+    st_call B-dev-up-pins-project       ran development development/server.sh up
+  ST_CENV=$'COMPOSE_PROJECT_NAME=someone-else\n' ST_CALLS_HAVE="$pin_dev" \
+    st_call B-dev-status-pins-project   ran development development/server.sh status
+  ST_CALLS_HAVE="$pin_dev" st_call B-dev-down-vol-pins-project permit development development/server.sh down --volumes
+  # verify-db-security.sh: the DB name is the compose literal, never the env file's POSTGRES_DB.
+  ST_PS_DB=1 ST_EXPECT='Both checks passed' st_call B-verify-db-no-values ran development database/verify-db-security.sh
+  s="$(grep -cF 'st-sentinel' "$st_cdir/calls" 2>/dev/null || true)"
+  st_s "B-verify-db-name-not-from-env" "$([[ "$s" == 0 ]] && grep -qE ' psql .*-d [^ ]+_dev ' "$st_cdir/calls" && echo 1)" \
+    "calls carrying an env-file value: ${s:-none}; psql -d <compose name> calls: $(grep -cE ' psql .*-d [^ ]+_dev ' "$st_cdir/calls" 2>/dev/null || true)"
+  # seed-dev.sh: a failing SEED_COMMANDS entry is named by position, its stderr withheld, and the
+  # run fails rather than claiming success. The file's SEED_COMMANDS wins even when empty.
+  ST_PS_DB=1 ST_CENV=$'SEED_COMMANDS=seed_ok st-sentinel-badcmd\n' \
+    ST_EXPECT='SEED_COMMANDS entry 2 failed' ST_REJECT='Seed complete' \
+    st_call B-seed-dev-bad-entry        fail development database/seed-dev.sh
+  ST_PS_DB=1 ST_CENV=$'SEED_COMMANDS=\n' SEED_COMMANDS=st-sentinel-shellcmd \
+    ST_EXPECT='Project seed commands: none' st_call B-seed-dev-empty-file-wins 0 development database/seed-dev.sh
+  ST_PS_DB=1 ST_CENV=$'SEED_COMMANDS=seed_ok\n' SEED_COMMANDS=st-sentinel-shellcmd \
+    ST_EXPECT='Seed complete' st_call B-seed-dev-file-wins 0 development database/seed-dev.sh
+  ST_PS_DB=1 SEED_COMMANDS=seed_ok ST_EXPECT='SEED_COMMANDS entry 1' \
+    st_call B-seed-dev-shell-when-absent 0 development database/seed-dev.sh
 }
 
 self_test() {
