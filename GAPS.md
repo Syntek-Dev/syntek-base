@@ -1091,7 +1091,7 @@ hold found later is added here as a row, not assumed to be absent.
 
 | Held                            | At       | Moves when                                                                                                                                                               |
 | ------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Python 3.15                     | 3.14     | djc-core ships a cp315 wheel and celery declares 3.15 support                                                                                                            |
+| Python 3.15                     | 3.14     | djc-core ships a cp315 wheel (django-components #1737) and celery declares 3.15 support (soft target v5.7.1, celery PR #10636)                                           |
 | PostgreSQL 19                   | 18       | 19 reaches GA and the deploy repo records it as the server major                                                                                                         |
 | TypeScript 7                    | ~6.0.3   | Expo and typescript-eslint both allow 7                                                                                                                                  |
 | Mobile ESLint 10                | 9        | `eslint-plugin-react` and `eslint-plugin-import` lift their `^9` peer caps                                                                                               |
