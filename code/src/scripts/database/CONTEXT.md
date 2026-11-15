@@ -12,6 +12,7 @@ code/src/scripts/database/
 ├── CONTEXT.md               ← this file
 ├── manageusers.sh           ← create, update, or delete Django users
 ├── migrate.sh               ← Django migration management (run/make/show/check/fake)
+├── _migrate-self-test.sh    ← migrate.sh --self-test's harness; sourced by that arm only
 ├── reset.sh                 ← drop and recreate the dev database + migrate
 ├── restore.sh               ← restore the dev database from a backup file
 ├── seed-dev.sh              ← idempotently seed dev users, then any SEED_COMMANDS
@@ -25,16 +26,17 @@ code/src/scripts/database/
 
 ## Scripts
 
-| Script                  | Purpose                                                                               |
-| ----------------------- | ------------------------------------------------------------------------------------- |
-| `migrate.sh`            | Django migrations — `run`, `make`, `show`, `check`, `fake`, `fake-initial`            |
-| `reset.sh`              | Drop + recreate dev DB, run all migrations, optionally seed fixtures                  |
-| `seed-dev.sh`           | Idempotently seed dev users (superuser + staff), then each command in `SEED_COMMANDS` |
-| `backup.sh`             | `pg_dump` to a timestamped file in `reports/` (custom or plain format)                |
-| `restore.sh`            | Drop + recreate dev DB and restore from a backup file                                 |
-| `shell.sh`              | DB shell — Django `dbshell` by default, raw `psql` in the db container with `--psql`  |
-| `manageusers.sh`        | Create, update, or delete Django users via `manage.py`                                |
-| `verify-db-security.sh` | Django system check + PostgreSQL `log_statement` — no RLS or role-permission check    |
+| Script                  | Purpose                                                                                                                                                                                  |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `migrate.sh`            | Django migrations — `run`, `make`, `show`, `check`, `fake`, `fake-initial`                                                                                                               |
+| `_migrate-self-test.sh` | The `migrate.sh --self-test` harness — proves `_lib/posture-guard.sh` and its six callers' wiring with no Docker; sourced only by that arm, never run directly                           |
+| `reset.sh`              | Drop + recreate dev DB, run all migrations, optionally seed fixtures                                                                                                                     |
+| `seed-dev.sh`           | Idempotently seed dev users (superuser + staff), then each command in `SEED_COMMANDS`; above `development` refuses at exit `4` unless `--force-posture <posture>` names the live posture |
+| `backup.sh`             | `pg_dump` to a timestamped file in `reports/` (custom or plain format)                                                                                                                   |
+| `restore.sh`            | Drop + recreate dev DB and restore from a backup file                                                                                                                                    |
+| `shell.sh`              | DB shell — Django `dbshell` by default, raw `psql` in the db container with `--psql`                                                                                                     |
+| `manageusers.sh`        | Create, update, or delete Django users via `manage.py`                                                                                                                                   |
+| `verify-db-security.sh` | Django system check + PostgreSQL `log_statement` — no RLS or role-permission check                                                                                                       |
 
 ## Quick Reference
 
@@ -57,8 +59,10 @@ bash code/src/scripts/database/reset.sh
 # Reset and load fixtures
 bash code/src/scripts/database/reset.sh --seed
 
-# Seed dev users, then any project seed commands (idempotent — safe to re-run)
+# Seed dev users, then any project seed commands (idempotent — safe to re-run).
+# Above development the posture guard refuses (exit 4) unless the run names the live posture:
 bash code/src/scripts/database/seed-dev.sh
+bash code/src/scripts/database/seed-dev.sh --force-posture <posture>
 
 # Backup the dev database
 bash code/src/scripts/database/backup.sh

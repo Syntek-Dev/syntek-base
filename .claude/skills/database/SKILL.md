@@ -113,6 +113,10 @@ bash code/src/scripts/database/shell.sh --psql          # psql session: superuse
 bash code/src/scripts/database/seed-dev.sh              # seed dev fixtures
 ```
 
+`seed-dev.sh`, like `reset.sh` and `restore.sh`, is posture-guarded: above `development` it
+refuses at exit `4` (`posture-guard: refused —`) unless the run names the live posture with
+`--force-posture <posture>`.
+
 The test database is a separate one from dev — **never point a test run at the dev database.**
 
 ## Definition of done
