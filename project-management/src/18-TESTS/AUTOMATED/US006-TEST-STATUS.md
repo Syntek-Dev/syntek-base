@@ -110,9 +110,9 @@ shellcheck -x \
 ```
 
 **This pass, 15/11/2026,** on `us006/posture-guard` at `fbd9dbc` (P0 to P4 committed) **plus the
-uncommitted F-001 fix** in `development/server.sh` and `database/_migrate-self-test.sh` **and the
-uncommitted F-018 fix** in `_lib/posture-guard.sh` and `database/_migrate-self-test.sh` (commits
-pending), with nothing staged. Every run below was repeated after both fixes, last on 15/11/2026:
+F-001 fix** in `development/server.sh` and `database/_migrate-self-test.sh` **and the
+F-018 fix** in `_lib/posture-guard.sh` and `database/_migrate-self-test.sh`, both since committed
+in `0a6db24`. Every run below was repeated after both fixes, last on 15/11/2026:
 
 | Run                          | Result                                                                                                                                                                                                                                                                                             |
 | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -294,7 +294,7 @@ in both modes, the extra helper cases including the nine F-018 cases, and 60 str
 three F-001 ordering checks); ShellCheck 0.11.0 exits 1 on 4 pre-existing `SC2015 (info)`
 findings in four callers, none in new code (the `server.sh` one moved from line 218 to 227 with the
 fix, unchanged).
-Verified 15/11/2026 at `fbd9dbc` plus the uncommitted F-001 and F-018 fixes; ShellCheck re-run after
+Verified 15/11/2026 at `fbd9dbc` plus the F-001 and F-018 fixes (committed in `0a6db24`); ShellCheck re-run after
 the F-018 fix, the same four findings at the same lines.
 
 ---

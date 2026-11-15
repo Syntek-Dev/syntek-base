@@ -1,14 +1,14 @@
 # QA Implementation Review — US006 The deployment-posture guard
 
-| Field        | Value                                                                                                                                                             |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Story**    | US006 — The destructive dev scripts read the deployment posture, and refuse to run above development                                                              |
-| **Date**     | 15/11/2026                                                                                                                                                        |
-| **Sprint**   | SPRINT-04                                                                                                                                                         |
-| **Reviewer** | Claude Code — `qa-tester` skill, Opus, `22-implementation-documentation` Step 3                                                                                   |
-| **Branch**   | `us006/posture-guard` at `fbd9dbc`, re-evaluated 15/11/2026 against the uncommitted F-001 fix to `development/server.sh` and F-018 fix to `_lib/posture-guard.sh` |
-| **Plan doc** | `../PLANNING/QA-PLAN-US006-POSTURE-GUARD.md`                                                                                                                      |
-| **Outcome**  | Pass — every scenario Pass; ES-07 re-marked Pass after the F-001 fix. Merge still waits on the manual walk's PERM-07 and countersignature (Sign-off)              |
+| Field        | Value                                                                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**    | US006 — The destructive dev scripts read the deployment posture, and refuse to run above development                                                                                   |
+| **Date**     | 15/11/2026                                                                                                                                                                             |
+| **Sprint**   | SPRINT-04                                                                                                                                                                              |
+| **Reviewer** | Claude Code — `qa-tester` skill, Opus, `22-implementation-documentation` Step 3                                                                                                        |
+| **Branch**   | `us006/posture-guard` at `fbd9dbc`, re-evaluated 15/11/2026 against the F-001 fix to `development/server.sh` and the F-018 fix to `_lib/posture-guard.sh`, both committed in `0a6db24` |
+| **Plan doc** | `../PLANNING/QA-PLAN-US006-POSTURE-GUARD.md`                                                                                                                                           |
+| **Outcome**  | Pass — every scenario Pass; ES-07 re-marked Pass after the F-001 fix. Manual walk complete, PERM-07 included (70 Pass, 0 Fail), countersigned by Sam Bailey 15/11/2026                 |
 
 ---
 
@@ -31,15 +31,16 @@ the gate-10 additions it already carried (`seed-dev.sh`, `up --seed`).
    `copier.yml` was touched; the copy was removed.
 3. **Manual row IDs** from `../../18-TESTS/MANUAL/US006-MANUAL-TESTING.md`, walked 15/11/2026: the
    fixture rows at `fbd9dbc`, then the stack-dependent rows on a disposable us006 stack, with
-   REFUSE-05 and TARGET-01 to TARGET-04 re-walked after the F-001 fix — 69 Pass, 0 Fail, 1 not
-   walked (PERM-07). A row cited below is `Pass` unless it says otherwise.
+   REFUSE-05 and TARGET-01 to TARGET-04 re-walked after the F-001 fix, and PERM-07 (amended for
+   F-018) walked by Sam Bailey at `b173cba` — 70 Pass, 0 Fail. A row cited below is `Pass` unless
+   it says otherwise.
 
-**Re-evaluated 15/11/2026** after the F-001 fix (commit pending): `development/server.sh up --seed`
+**Re-evaluated 15/11/2026** after the F-001 fix (committed in `0a6db24`): `development/server.sh up --seed`
 now runs its guard and Docker bind before `compose up -d` and the password sync, and `up` without
 `--seed` stays unguarded. The self-test re-ran at exit 0, 175 of 175, with the new structural cases
 `21-seed-guard-first-in-block`, `F001-seed-bound-before-up` and `F001-up-d-on-compose-array`.
 
-**Re-evaluated again 15/11/2026** after the F-018 fix (commit pending): the guard compares
+**Re-evaluated again 15/11/2026** after the F-018 fix (committed in `0a6db24`): the guard compares
 `COMPOSE_PROJECT_NAME` with the declared compose `name:` as Compose normalises it, so a permitted
 `down --volumes` can no longer act on a different project than the one named. Self-test: exit 0,
 **186 of 186**, adding eleven `F018-*` helper cases. No scenario's result changes; ES-04 gains the
@@ -144,13 +145,13 @@ behave like access control are covered above: EC-06 (TM-05) and ES-04 (TM-01).
 | EC-N2 | Default context on a rootless-Docker host                                                        | Not walked       | `posture_context_to_endpoint` and the default branch hard-code `unix:///var/run/docker.sock`; with no context selected, a rootless host is bound to a socket it does not serve and the command fails. Fail-closed, functional only    | Findings record decides                                                                                           |
 | EC-N3 | `restore.sh` with a missing backup file above `development`                                      | Pass (as built)  | `restore.sh:89-90` exits 2 before the guard; the operator sees the argument error, not the refusal. No security effect                                                                                                                | No                                                                                                                |
 | EC-N4 | Hostile override or context name containing terminal escapes                                     | Pass             | `posture_quote` (`printf %q`) on every caller- or config-supplied value in a refusal                                                                                                                                                  | No                                                                                                                |
-| EC-N5 | `COMPOSE_PROJECT_NAME` set to a declared name Compose normalises (an unrendered slug token)      | Pass (after fix) | **Was a false success** (F-018, found walking PERM-07): permitted, then `down --volumes` printed success while Compose acted on a different, empty project. Fixed on this branch 15/11/2026: refused at 4 as not a valid Compose name | Done — folded back as nine H `F018-*` cases                                                                       |
+| EC-N5 | `COMPOSE_PROJECT_NAME` set to a declared name Compose normalises (an unrendered slug token)      | Pass (after fix) | **Was a false success** (F-018, found walking PERM-07): permitted, then `down --volumes` printed success while Compose acted on a different, empty project. Fixed on this branch 15/11/2026: refused at 4 as not a valid Compose name | Done — folded back as eleven H `F018-*` cases                                                                     |
 
 ## 6. Deferred scenarios
 
-| Scenario                                                                                          | Reason                                                                                                                                                                                                      | When to address                                                      |
-| ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Manual `PERM-07` (correctly named worktree stack passes) — no scenario's Then depends on it alone | Not walked: the worktree needs an env file the permission system refused to write; guard verdicts observed. Raised F-018 (compose-name normalisation), fixed 15/11/2026; the row is the developer's to walk | Before `23-pr-and-review`, by the developer or countersigning tester |
+| Scenario                                                                                          | Reason                                                                                                                                                                                                                         | When to address |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------- |
+| Manual `PERM-07` (correctly named worktree stack passes) — no scenario's Then depends on it alone | **No longer deferred.** Amended for F-018 (the name Compose normalises) and walked 15/11/2026 by Sam Bailey at `b173cba` on a provisioned worktree stack: `Pass`, not refused, containers, volumes and network removed, exit 0 | Done            |
 
 ## 7. Accessibility observations
 
@@ -178,7 +179,7 @@ pasteable re-run (`posture_rerun`) or the concrete repair. Read as an operator w
 - [x] Accessibility observations confirmed against the build — N/A recorded
 - [x] GDPR & security observations confirmed — N/A for GDPR
 - [x] Coverage floors met for all modules in scope — N/A: no pytest, no coverage figure (plan Section 6)
-- [ ] Manual testing sign-off — `../../18-TESTS/MANUAL/US006-MANUAL-TESTING.md` walked 69 of 70 (PERM-07 not walked); countersignature outstanding
+- [x] Manual testing sign-off — `../../18-TESTS/MANUAL/US006-MANUAL-TESTING.md` walked 70 of 70, 70 Pass, 0 Fail; countersigned by Sam Bailey 15/11/2026
 - [ ] Reviewer approval — **blocks merge until complete**; no unresolved Fail (ES-07 resolved), awaiting the developer
 
 ---

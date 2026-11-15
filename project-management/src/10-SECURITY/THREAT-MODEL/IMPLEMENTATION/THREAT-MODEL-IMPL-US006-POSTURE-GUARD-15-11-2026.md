@@ -144,10 +144,10 @@ findings record; the frozen plans are not edited here.
 | Reviewer                             | Role                         | Date       |
 | ------------------------------------ | ---------------------------- | ---------- |
 | Claude Code — `security` skill, Opus | Security review (author)     | 15/11/2026 |
-| <%DEVELOPER_NAME%>                   | Developer — countersignature | _pending_  |
+| <%DEVELOPER_NAME%>                   | Developer — countersignature | 15/11/2026 |
 
-**Independent review is outstanding.** This record was written by one agent and not reviewed by
-another; per `.ai/INSTRUCTIONS.md` the gate is reported open, not satisfied by self-review.
+**Countersigned 15/11/2026 by Sam Bailey**, the developer and second tester — not this record's
+author — together with the US006 manual walk (70 Pass, 0 Fail) and the other closeout records.
 
 **Overall verdict:** every planned threat has a final status — fifteen mitigated with shipped
 evidence, three tracked residuals — and two new ones, a LOW ordering defect on `up --seed` and an

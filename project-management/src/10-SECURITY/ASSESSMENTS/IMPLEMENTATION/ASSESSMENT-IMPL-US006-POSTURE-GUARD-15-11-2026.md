@@ -138,9 +138,10 @@ findings record rather than resolved here.
 | Reviewer                             | Role                         | Date       |
 | ------------------------------------ | ---------------------------- | ---------- |
 | Claude Code — `security` skill, Opus | Security review (author)     | 15/11/2026 |
-| <%DEVELOPER_NAME%>                   | Developer — countersignature | _pending_  |
+| <%DEVELOPER_NAME%>                   | Developer — countersignature | 15/11/2026 |
 
-Independent review is outstanding; reported open per `.ai/INSTRUCTIONS.md`.
+**Countersigned 15/11/2026 by Sam Bailey**, the developer and second tester — not this record's
+author — together with the US006 manual walk (70 Pass, 0 Fail) and the other closeout records.
 
 **Overall verdict:** the story meets the baseline's posture targets; the one LOW exception on
 `server.sh up --seed` was fixed 15/11/2026 (F-001), and the compose-name gap (F-018) with it. No
