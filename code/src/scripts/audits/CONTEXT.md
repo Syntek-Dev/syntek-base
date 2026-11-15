@@ -52,7 +52,7 @@ code/src/scripts/audits/
 │   ├── toolchain-pins/      ← a mini repository per case (agree, drift, rendered, void-held), each with expected.txt
 │   ├── dependency-drift/    ← <case>/{incoming,project} pairs, each with expected.txt
 │   ├── dependencies-audit/  ← captured tool output per leg and state, for dependencies/audit.sh
-│   │   └── run/stubs/       ← uv, pnpm, cargo stand-ins its run probes put first on PATH
+│   │   └── run/             ← stubs/ (uv, pnpm, cargo stand-ins first on PATH); two-document/ (a pnpm 12 lockfile)
 │   ├── rust-build/          ← RUST-ONLY — maturin --version per case, and cargo/maturin stubs, for rust/build.sh
 │   ├── routing-skills/      ← broken/ and clean/ — each written twice, inline and wrapped
 │   └── static-analysis/     ← broken/ and clean/ — templates and Python; ruff.toml scopes the silence

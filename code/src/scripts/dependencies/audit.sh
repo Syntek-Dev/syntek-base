@@ -60,6 +60,8 @@ SCRIPTS_DIR="$PROJECT_ROOT/code/src/scripts"
 REPORTS_DIR="$SCRIPTS_DIR/reports"
 RUST_DIR="$PROJECT_ROOT/code/src/rust"
 FIXTURES_DIR="$SCRIPTS_DIR/audits/fixtures/dependencies-audit"
+# shellcheck source=code/src/scripts/_lib/pnpm-lock.sh
+source "$SCRIPTS_DIR/_lib/pnpm-lock.sh"
 
 LEGS=(python-advisories javascript-advisories rust-advisories
       python-lockfile javascript-lockfile rust-lockfile)
@@ -175,7 +177,7 @@ probe_tree() {   # probe_tree ROOT — build the scratch project
   mkdir -p "$s/dependencies" "$s/audits" "$s/_lib" "$root/code/src/django" "$root/bin"
   cp "$SCRIPT_DIR/audit.sh" "$s/dependencies/"
   cp "$SCRIPTS_DIR/audits/security.sh" "$s/audits/"
-  cp "$SCRIPTS_DIR/_lib/worktree-detect.sh" "$s/_lib/"
+  cp "$SCRIPTS_DIR/_lib/worktree-detect.sh" "$SCRIPTS_DIR/_lib/pnpm-lock.sh" "$s/_lib/"
   if $PROBE_RUST; then
     mkdir -p "$s/rust" "$root/code/src/rust"
     cp "$SCRIPTS_DIR/rust/audit.sh" "$SCRIPTS_DIR/rust/_common.sh" "$s/rust/"
@@ -187,6 +189,8 @@ probe_tree() {   # probe_tree ROOT — build the scratch project
   printf '[[package]]\nname = "probe"\n# STALE - the manifest moved and the lock did not\n' >"$root/uv.lock"
   printf '{"name": "probe"}\n' >"$root/package.json"
   printf "lockfileVersion: '9.0'\n\nimporters:\n\n  .: {}\n" >"$root/pnpm-lock.yaml"
+  # PROBE_LOCK swaps in a captured lockfile shape for the probe that needs one.
+  if [[ -n "${PROBE_LOCK:-}" ]]; then cp "$PROBE_LOCK" "$root/pnpm-lock.yaml"; fi
 }
 
 # probe NAME PNPM_STATE WANT_RC SCRIPT ARGS... — runs SCRIPT (relative to the scratch root)
@@ -259,6 +263,15 @@ run_probes() {
   probe tool-failure-is-not-a-finding unmeasured 2 "$a" --ecosystem javascript || bad=1
   expect tool-failure-is-not-a-finding '^  javascript-advisories +NOT RUN +exit 2, not a finding: +ERR_PNPM_AUDIT_BAD_RESPONSE' || bad=1
   expect tool-failure-is-not-a-finding 'NOT RUN .*([Vv]ulnerabilities found|VULNERABLE)' absent || bad=1
+  rm -rf "$PROBE_ROOT"
+
+  # 4. pnpm 12 writes pnpm-lock.yaml as two YAML documents, and the FIRST locks pnpm itself
+  #    (`packageManagerDependencies`, importer `.` only). The population is read from the
+  #    graph document (_lib/pnpm-lock.sh), so every workspace member is named — read from the
+  #    first, the mobile member vanished and the report still looked complete.
+  PROBE_LOCK="$FIXTURES_DIR/run/two-document/pnpm-lock.yaml" \
+    probe two-document-lockfile clean 0 "$a" --ecosystem javascript || bad=1
+  expect two-document-lockfile 'over pnpm-lock\.yaml, importers: \. code/src/mobile$' || bad=1
   rm -rf "$PROBE_ROOT"
 
   return "$bad"
@@ -382,7 +395,7 @@ if wants javascript; then
     skip_leg javascript-advisories unmeasured "package.json" "no pnpm-lock.yaml — there is no locked graph to audit"
     skip_leg javascript-lockfile finding "package.json" "package.json has no pnpm-lock.yaml beside it"
   else
-    importers="$(awk '/^importers:/ { i = 1; next } i && /^[^ ]/ { exit } i && /^  [^ ]/ { k = $1; sub(/:$/, "", k); gsub(/\047/, "", k); printf "%s%s", (n++ ? " " : ""), k }' pnpm-lock.yaml)"
+    importers="$(pnpm_lock_importers pnpm-lock.yaml)"
     pop="pnpm-lock.yaml, importers: ${importers:-none}"
     run_leg javascript-advisories "$pop" "$PROJECT_ROOT" bash "$SCRIPTS_DIR/audits/security.sh" --js-only
     run_leg javascript-lockfile "$pop" "$PROJECT_ROOT" pnpm install --frozen-lockfile --lockfile-only --ignore-scripts

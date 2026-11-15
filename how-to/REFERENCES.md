@@ -93,7 +93,7 @@ points for that procedure.
 | -------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | [Docker Compose v2 reference](https://docs.docker.com/compose/reference/)        | Full CLI reference for `docker compose` commands                 |
 | [Docker Compose file reference](https://docs.docker.com/reference/compose-file/) | `docker-compose.yml` schema and all service options              |
-| [pnpm 11 documentation](https://pnpm.io/motivation)                              | Package manager used for all frontend JS/TS dependencies         |
+| [pnpm 12 documentation](https://pnpm.io/motivation)                              | Package manager used for all frontend JS/TS dependencies         |
 | [uv documentation](https://docs.astral.sh/uv/)                                   | Python package and project manager used for backend dependencies |
 | [Node.js 26 documentation](https://nodejs.org/docs/latest-v26.x/api/)            | Node.js runtime API reference                                    |
 | [Python 3.14 documentation](https://docs.python.org/3.14/)                       | Python language and standard library reference                   |
