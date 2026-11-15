@@ -504,7 +504,7 @@ Decided by <%DEVELOPER_NAME%>, who directed every review finding fixed on this b
 - **No env-file value reaches the output, and no AI runs these scripts (F-027).** Sam ruled during
   the review that no AI tool reads a live `.env.*` and that a script using one is his to run
   (`.claude/CLAUDE.md` Section 6). The guard's refusal therefore names `COMPOSE_PROJECT_NAME in the
-  env-file` and prints "(value not shown)" in place of the value; a shell value is still printed.
+env-file` and prints "(value not shown)" in place of the value; a shell value is still printed.
   The six callers stay developer-run, and the rule is enforced in the host configs the template
   ships — `.claude/settings.json`, `.codex/config.toml`, `.zed/settings.json` — held in step by
   `code/src/scripts/audits/env-read-deny.sh`. `migrate.sh --self-test` reads fixtures only and
