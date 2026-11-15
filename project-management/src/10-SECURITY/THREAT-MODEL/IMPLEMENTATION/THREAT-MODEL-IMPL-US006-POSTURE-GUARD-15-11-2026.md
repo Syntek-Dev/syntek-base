@@ -149,6 +149,10 @@ findings record; the frozen plans are not edited here.
 **Countersigned 15/11/2026 by Sam Bailey**, the developer and second tester — not this record's
 author — together with the US006 manual walk (70 Pass, 0 Fail) and the other closeout records.
 
+**Independent review is outstanding.** The countersignature is the developer's sign-off, not an
+independent review of this record; workflow `23-pr-and-review`'s security pass closes that gate
+(`.ai/INSTRUCTIONS.md`), and is recorded here when it does.
+
 **Overall verdict:** every planned threat has a final status — fifteen mitigated with shipped
 evidence, three tracked residuals — and two new ones, a LOW ordering defect on `up --seed` and an
 INFO undocumented precedence departure, both resolved 15/11/2026 (F-001 fixed, F-002 ruled). The

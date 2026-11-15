@@ -143,6 +143,10 @@ findings record rather than resolved here.
 **Countersigned 15/11/2026 by Sam Bailey**, the developer and second tester — not this record's
 author — together with the US006 manual walk (70 Pass, 0 Fail) and the other closeout records.
 
+**Independent review is outstanding.** The countersignature is the developer's sign-off, not an
+independent review of this record; workflow `23-pr-and-review`'s security pass closes that gate
+(`.ai/INSTRUCTIONS.md`), and is recorded here when it does.
+
 **Overall verdict:** the story meets the baseline's posture targets; the one LOW exception on
 `server.sh up --seed` was fixed 15/11/2026 (F-001), and the compose-name gap (F-018) with it. No
 CRITICAL or HIGH was introduced. DE and RC, the two functions the plan
