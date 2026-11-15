@@ -130,13 +130,25 @@ if [[ "$COMMAND" == down ]] && $VOLUMES; then
   DOCKER=("${posture_docker[@]}")
 fi
 
+# ── Posture guard: up --seed ──────────────────────────────────────────────────
+# Its own block, not the head of `up`: `up` without --seed (`up --build` above all) stays
+# unbound at every posture. Here and not inside the --seed branch below, so a refusal lands
+# before `up -d` and the password sync, and both run on the validated binding (F-001).
+if [[ "$COMMAND" == up ]] && $SEED; then
+  posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+    bash code/src/scripts/development/server.sh "${ORIG_ARGS[@]}" || exit "$?"
+  posture_docker_bind || exit "$?"
+  DOCKER=("${posture_docker[@]}")
+fi
+
 [[ -f "$ENV_FILE" ]] || die "Env file not found: $ENV_FILE"
 
 # shellcheck source=code/src/scripts/_lib/env-file.sh
 source "$SCRIPT_DIR/../_lib/env-file.sh"
 
 # Base docker compose command with env file — all subcommands use this array. DOCKER is the
-# plain CLI on every unguarded path and the validated binding on `down --volumes`.
+# plain CLI on every unguarded path and the validated binding on `down --volumes` and
+# `up --seed`.
 DC=("${DOCKER[@]}" compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
     ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
 
@@ -177,12 +189,9 @@ case "$COMMAND" in
     if $SEED; then
       log ""
       bold "  Seeding dev data…"
-      # Guarded here and not at the head of `up`: `up --build` stays unbound at every posture.
-      # The child is handed the override verbatim and the validated socket as its only Docker
-      # selection, and validates both through its own guard before it touches anything.
-      posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
-        bash code/src/scripts/development/server.sh "${ORIG_ARGS[@]}" || exit "$?"
-      posture_docker_bind || exit "$?"
+      # Guarded and bound above (Posture guard: up --seed). The child is handed the override
+      # verbatim and the validated socket as its only Docker selection, and validates both
+      # through its own guard before it touches anything.
       env -u DOCKER_CONTEXT DOCKER_HOST="$posture_endpoint" bash "$SCRIPT_DIR/../database/seed-dev.sh" ${FORCE_POSTURE:+--force-posture "$FORCE_POSTURE"} || exit "$?"
     fi
     log ""

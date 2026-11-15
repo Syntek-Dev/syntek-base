@@ -31,6 +31,8 @@
 #     Compose merges its files in order and a later top-level `name:` replaces an earlier one,
 #     so the last declaring file wins — the worktree override over the base. Prints "" when
 #     none declares one, which fails any COMPOSE_PROJECT_NAME comparison closed. Returns 0.
+#     The name is printed as declared; the guard normalises it as Compose does (F-018), and
+#     a declared name that normalises to nothing fails the target check closed.
 #
 #   posture_above_development
 #     Succeeds when the last guard call read staging or production: where a prompting caller's
@@ -71,6 +73,9 @@ posture_say() { printf 'posture-guard: %s — %s\n' "$1" "$2" >&2; }
 
 # printf %q, so a hostile value cannot write terminal escapes into the refusal.
 posture_quote() { printf '%q' "$1"; }
+# True when the argument holds any byte outside printable ASCII. Call under LC_ALL=C so the
+# bracket class is a byte range, not the caller's locale.
+posture_has_non_ascii() { [[ "$1" == *[![:print:]]* || "$1" == *[$'\x80'-$'\xff']* ]]; }
 
 # ── Docker metadata seam ─────────────────────────────────────────────────────
 # Local metadata only: `docker context` reads the context store under the Docker config
@@ -247,11 +252,53 @@ posture_resolve_target() {
     posture_target_reason="$origin resolves to $(posture_quote "$endpoint"), which is not a local unix socket"
     return 1
   fi
-  if [[ -n "$cpn" && "$cpn" != "$compose_name" ]]; then
-    posture_target_reason="COMPOSE_PROJECT_NAME $(posture_quote "$cpn") does not match the declared compose project $(posture_quote "$compose_name")"
+  # The project Compose will act on (F-018): the declared name as Compose normalises it, or
+  # an explicit COMPOSE_PROJECT_NAME, which Compose never rewrites — it refuses one not
+  # already in normal form. Compare those, never the raw strings.
+  local project
+  # Two declared forms the shell port cannot reproduce faithfully, so the guard fails closed
+  # rather than guess: `${VAR}` (Compose interpolates before it normalises, and the guard does
+  # not), and any non-ASCII byte (Go's ToLower folds some, e.g. U+212A to `k`, where an ASCII
+  # port would drop them).
+  if [[ "$compose_name" == *'$'* ]] || LC_ALL=C posture_has_non_ascii "$compose_name"; then
+    posture_target_reason="the declared compose project $(posture_quote "$compose_name") uses interpolation or non-ASCII characters, so the project Compose would act on cannot be determined"
+    return 1
+  fi
+  project="$(posture_normalise_name "$compose_name")"
+  if [[ -n "$compose_name" && -z "$project" ]]; then
+    # Compose would fail to load ("project name must not be empty") or fall back to some
+    # other name; either way the guard cannot name the project, so it fails closed.
+    posture_target_reason="the declared compose project $(posture_quote "$compose_name") normalises to an empty name, so the project Compose would act on cannot be determined"
+    return 1
+  fi
+  if [[ -n "$cpn" && "$cpn" != "$(posture_normalise_name "$cpn")" ]]; then
+    posture_target_reason="COMPOSE_PROJECT_NAME $(posture_quote "$cpn") is not a valid Compose project name (lower-case a-z, 0-9, _ and - only, starting with a letter or digit); Compose would refuse it"
+    return 1
+  fi
+  if [[ -n "$cpn" && "$cpn" != "$project" ]]; then
+    posture_target_reason="COMPOSE_PROJECT_NAME $(posture_quote "$cpn") does not match the declared compose project $(posture_quote "$compose_name"), which Compose names $(posture_quote "$project")"
     return 1
   fi
   posture_candidate="$endpoint"
+}
+
+# Compose's project-name normalisation, verbatim in shell. Primary source, read 15/11/2026:
+# compose-spec/compose-go loader/loader.go, NormalizeProjectName —
+#   s = strings.ToLower(s); keep only regexp "[a-z0-9_-]" matches; strings.TrimLeft(s, "_-")
+# — applied to the top-level `name:` (projectName, `if !opts.SkipNormalization`). An explicit
+# name (-p or COMPOSE_PROJECT_NAME) is NOT normalised: projectName returns
+# InvalidProjectNameErr unless it already equals its normalised form. The rule as documented:
+# https://docs.docker.com/compose/how-tos/project-name/ — "Project names must contain only
+# lowercase letters, decimal digits, dashes, and underscores, and must begin with a lowercase
+# letter or decimal digit." LC_ALL=C pins the ranges to ASCII, as Go's regexp class is.
+posture_normalise_name() {
+  # LC_ALL is set before the expansion: in one `local` statement `${1,,}` would expand first,
+  # in the caller's locale. Callers reject non-ASCII input before this runs.
+  local LC_ALL=C
+  local s="${1,,}"
+  s="${s//[^a-z0-9_-]/}"
+  s="${s#"${s%%[!_-]*}"}"
+  printf '%s' "$s"
 }
 
 # The re-run command: the caller's words with any earlier --force-posture (both the two-word

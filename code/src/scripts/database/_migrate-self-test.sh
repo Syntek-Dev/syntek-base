@@ -214,6 +214,22 @@ st_cn_squote()   { st_yml b.yml "name: 'proj-sq'"; st_cn "$ST_D/b.yml"; }
 st_cn_nested()   { st_yml b.yml 'services:' '  name: inner'; st_cn "$ST_D/b.yml"; }
 st_cn_missing()  { st_cn "$ST_D/absent.yml"; }
 
+# F-018: Compose normalises a declared `name:` (lower-cased, every character outside a-z 0-9 _ -
+# dropped, leading _ and - trimmed) but rejects an explicit COMPOSE_PROJECT_NAME that is not
+# already in that form. The guard must permit exactly the project Compose will act on. The
+# unrendered-token name is BUILT from parts so no Copier delimiter pair appears in this file.
+st_f018_tok() { local o='<' c='%'; o+='%'; c+='>'; printf '%sPROJECT_SLUG%s-Dev-US006' "$o" "$c"; }
+st_f018() { st_dev; ST_COMPOSE="$1"; [[ -n "${2-}" ]] && export COMPOSE_PROJECT_NAME="$2"; st_guard ""; }
+st_f018_raw()    { local n; n="$(st_f018_tok)"; st_f018 "$n" "$n"; }
+st_f018_norm()   { st_f018 "$(st_f018_tok)" project_slug-dev-us006; }
+st_f018_unset()  { st_f018 "$(st_f018_tok)" ""; }
+st_f018_other()  { st_f018 "$(st_f018_tok)" project-slug-dev-us006; }
+st_f018_lead()   { st_f018 '-_Proj.Dev' projdev; }
+st_f018_empty()  { local o='<' c='%'; o+='%'; c+='>'; st_f018 "-_${o}${c}" ""; }
+st_f018_emptyc() { local o='<' c='%'; o+='%'; c+='>'; st_f018 "-_${o}${c}" anything; }
+st_f018_interp() { st_f018 '${X}-dev' x-dev; }
+st_f018_kelvin() { st_f018 $'\u212a-dev' k-dev; }
+
 # ── Structural cases: the six callers' wiring ──
 # Line-order over each caller's own text (story 7.8). Every probe is a deliberate literal — a
 # fixed string, never a pattern — and comment lines never count, so a token parked in a comment
@@ -302,7 +318,7 @@ st_structural() {
   local term='|| exit "$?"' bind='posture_docker_bind || exit "$?"' pin='DOCKER=("${posture_docker[@]}")'
   local dcdef='DC=("${DOCKER[@]}" compose' down_if='if [[ "$COMMAND" == down ]] && $VOLUMES; then'
   local envchk='[[ -f "$ENV_FILE" ]] || die' loop='while [[ $# -gt 0 ]]; do'
-  local f file name g p d b k dc y r q a fp u e v c up sb ud gs ks nx vb t h
+  local f file name g p d b k dc y r q a fp u e v c up sb ud gs ks vb t h kp
 
   # reset.sh, restore.sh — first destructive command: the first `DROP DATABASE`.
   for f in reset restore; do
@@ -355,32 +371,47 @@ st_structural() {
     dc="$(st_ln "$file" lead "$dcdef" "${k:-0}")"
     st_order "14-binding-$name-server" "guard, bind, pin, then the compose array every subcommand uses" "$g" "$b" "$k" "$dc" "$v"
     st_bare "14-no-bare-docker-$name-srv" "$file" "$g"
-    st_set "14-no-repin-$name-server" "after the pin, only the compose array is assigned" "$(st_lines "$file" "$ST_REASSIGN" "${k:-0}")" "$dc"
+    if [[ "$name" == development ]]; then
+      # development binds on two paths, so the up --seed pin follows the down --volumes one.
+      kp="$(st_ln "$file" lead "$pin" "${k:-0}")"
+      st_set "14-no-repin-$name-server" "after the pins, only the compose array is assigned" "$(st_lines "$file" "$ST_REASSIGN" "${k:-0}")" "$kp" "$dc"
+    else
+      st_set "14-no-repin-$name-server" "after the pin, only the compose array is assigned" "$(st_lines "$file" "$ST_REASSIGN" "${k:-0}")" "$dc"
+    fi
     t="$(st_ln "$file" lead "$loop")"; fp="$(st_ln "$file" lead '--force-posture)' "${t:-0}")"
     u="$(st_ln "$file" any 'die "Unknown option' "${t:-0}")"
     st_order "global-flag-$name-server" "--force-posture parsed in the global flag loop, before its die" "$t" "$fp" "$u" "$g"
   done
 
-  # development/server.sh — case 21: `up` is bound on --seed only; case 20: the override and the
-  # pinned host cross the shell-out.
+  # development/server.sh — F-001 and case 21: `up --seed` is guarded and bound in its own
+  # top-level block, beside the down --volumes one and ahead of the env-file check, so a
+  # refusal comes before any daemon operation and `up -d`, the password sync and the seed
+  # shell-out all run on the pinned binding. `up` without --seed never reaches a guard.
+  # Case 20: the override and the pinned host cross the shell-out.
   file="$SCRIPT_DIR/../development/server.sh"
+  local seed_if='if [[ "$COMMAND" == up ]] && $SEED; then' sg bs sy
+  sg="$(st_ln "$file" lead "$seed_if")"; gs="$(st_ln "$file" lead "$guard_r" "${sg:-0}")"
+  bs="$(st_ln "$file" lead "$bind" "${gs:-0}")"; kp="$(st_ln "$file" lead "$pin" "${bs:-0}")"
+  e="$(st_ln "$file" lead "$envchk")"; dc="$(st_ln "$file" lead "$dcdef")"
   up="$(st_ln "$file" lead 'up)')"; ud="$(st_ln "$file" any ' up -d)' "${up:-0}")"
-  sb="$(st_ln "$file" lead 'if $SEED; then' "${up:-0}")"; gs="$(st_ln "$file" lead "$guard_r" "${up:-0}")"
+  sy="$(st_ln "$file" lead '_sync_db_password' "${up:-0}")"
+  sb="$(st_ln "$file" lead 'if $SEED; then' "${up:-0}")"
   ks="$(st_ln "$file" any 'database/seed-dev.sh"' "${up:-0}")"
-  st_order "21-up-bound-on-seed-only" "up head, unbound up -d, the --seed branch, its guard, the shell-out" "$up" "$ud" "$sb" "$gs" "$ks"
+  st_s "21-seed-guard-first-in-block" "$([[ -n "$sg" && -n "$gs" ]] && (( gs == sg + 1 )) && echo 1)" \
+    "the --seed guard (line ${gs:-none}) is not the first statement under: $seed_if"
+  st_order "F001-seed-bound-before-up" "--seed guard, bind, pin, env-file check, compose array, up head, up -d, password sync, seed branch, shell-out" \
+    "$sg" "$gs" "$bs" "$kp" "$e" "$dc" "$up" "$ud" "$sy" "$sb" "$ks"
+  st_has "F001-up-d-on-compose-array" "$file" "$ud" 'args=("${DC[@]}" up -d)'
   st_has "7.7-terminates-seed-branch" "$file" "$gs" "$term"
   st_has "20-forwards-override" "$file" "$ks" '${FORCE_POSTURE:+--force-posture "$FORCE_POSTURE"}'
   st_has "20-pins-child-host" "$file" "$ks" 'env -u DOCKER_CONTEXT DOCKER_HOST="$posture_endpoint" bash'
   st_has "7.7-terminates-shell-out" "$file" "$ks" "$term"
-  nx="$(st_ln "$file" lead ';;' "${gs:-0}")"; b="$(st_ln "$file" any '"${DC[@]}"' "${gs:-0}")"
-  st_s "14-seed-branch-no-compose" "$([[ -n "$nx" ]] && { [[ -z "$b" ]] || (( b > nx )); } && echo 1)" \
-    "a compose call (line ${b:-none}) follows the --seed guard inside the up case (ends ${nx:-none})"
-  # Cases 7.8 and 21 over the whole file: exactly two guard calls — the first statement under the
-  # down --volumes if, and the one inside the --seed branch before the up case closes. A third,
-  # anywhere, would bind a subcommand the story leaves unbound (up --build above all).
+  # Cases 7.8 and 21 over the whole file: exactly two guard calls — the first statement under
+  # the down --volumes if and the first under the up --seed if. A third, anywhere (inside the
+  # up case above all), would bind a subcommand the story leaves unbound: up --build.
   c="$(st_ln "$file" lead "$down_if")"
-  st_set "21-dev-two-guards-only" "guard calls: under down --volumes, inside --seed only" \
-    "$(st_lines "$file" "$ST_GUARDCALL")" "${c:+$((c + 1))}" "$([[ -n "$sb" && -n "$nx" && -n "$gs" ]] && (( sb < gs && gs < nx )) && echo "$gs")"
+  st_set "21-dev-two-guards-only" "guard calls: under down --volumes, under up --seed only" \
+    "$(st_lines "$file" "$ST_GUARDCALL")" "${c:+$((c + 1))}" "${sg:+$((sg + 1))}"
   # The only re-selection after the first guard is the shell-out handing the child its pinned host.
   g="$(st_ln "$file" lead "$guard_r")"
   st_set "14-dev-no-reselect" "re-selection after the guard: the seed shell-out only" "$(st_lines "$file" "$ST_SELECTOR" "${g:-0}")" "$ks"
@@ -483,6 +514,20 @@ self_test() {
   st_run compose-name-squoted 0 refuse st_cn_squote '+^name=proj-sq$'
   st_run compose-name-nested-only 0 refuse st_cn_nested '+^name=$'
   st_run compose-name-missing 0 refuse st_cn_missing '+^name=$'
+
+  # F-018 — both sides compared as Compose sees them.
+  local f018='COMPOSE_PROJECT_NAME'
+  st_run F018-raw-declared-cpn   4 refuse st_f018_raw   "+$f018" '+not a valid Compose project name'
+  st_run F018-normalised-cpn     0 refuse st_f018_norm  '+^valid=1$' "+$bound_default"
+  st_run F018-cpn-unset          0 refuse st_f018_unset '+^valid=1$'
+  st_run F018-different-cpn      4 refuse st_f018_other "+$f018" '+project_slug-dev-us006'
+  st_run F018-leading-trimmed    0 refuse st_f018_lead  '+^valid=1$'
+  st_run F018-empty-normalised   4 refuse st_f018_empty  '+normalises to an empty'
+  st_run F018-empty-norm-cpn     4 refuse st_f018_emptyc '+normalises to an empty'
+  st_run F018-interpolated-name  4 refuse st_f018_interp '+interpolation or non-ASCII'
+  st_run F018-non-ascii-name     4 refuse st_f018_kelvin '+interpolation or non-ASCII'
+  st_run F018-raw-declared-cpn   0 warn   st_f018_raw   '+locality is unverified' '+not a valid Compose project name' '+^bound=REFUSED$'
+  st_run F018-empty-normalised   0 warn   st_f018_empty '+locality is unverified' '+normalises to an empty' '+^bound=REFUSED$'
 
   # Warn mode turns every refusal above into a warning and a 0, printing the posture (or
   # "unknown") and the expand-then-contract obligation at every posture.
