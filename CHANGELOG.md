@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **pnpm moves to 12, and four held CI actions move past the seven-day cooldown (15/11/2026, ruling D11).** pnpm 11.28.9 → **12.18.0** (05/11/2026), the Rust rewrite, pinned through `package.json` `packageManager` and `engines` and in every document that states it. Of its breaking changes ([What's different in pnpm 12](https://pnpm.io/blog/whats-different-in-pnpm-12)), the strict `pnpm-workspace.yaml` check is the one that bites a pinned project. Every key here is recognised: a frozen install under 12.18.0 passes. Nothing here uses `--resolution-only`, `--frozen-lockfile false`, a git-hosted dependency or a `filterLog` hook, and `.npmrc` sets `engine-strict=false`, so pnpm 12's stricter optional-subtree failure does not apply. `pnpm-lock.yaml` is now two YAML documents: pnpm 12 prepends a `packageManagerDependencies` document locking pnpm itself, with its own `importers:`, `packages:` and `snapshots:`, and every resolution of the graph document is kept. `dependencies/update.sh` and `dependencies/audit.sh` read the lockfile through one new reader, `code/src/scripts/_lib/pnpm-lock.sh`, which takes the graph document; before it, `update.sh --apply --package` reported every JavaScript package absent and exited clean having moved nothing, and the audit's importer population dropped `code/src/mobile`. A two-document fixture and a run probe in `audit.sh --self-test` hold it. An unused `patchedDependencies` entry still errors without `allowUnusedPatches` (re-verified on 12.18.0). Actions, each pinned to the tag's commit: `pnpm/action-setup` v6.0.10 → v6.1.1 (pnpm 12 support), `sigstore/cosign-installer` v4.1.2 → v4.1.3 (cosign 3.1.4), `MishaKav/pytest-coverage-comment` v1.13.0 → v1.13.1, and `anthropics/claude-code-action` v1.0.266 → v1.0.269. trufflehog v3.99.9 and claude-code-action v1.0.270 are still inside the cooldown and are held in `GAPS.md`.
+
 ## [7.9.0] - 11/11/2026
 
 ### Added

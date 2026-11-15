@@ -14,6 +14,7 @@ code/src/scripts/_lib/
 ├── conflict-markers.sh    ← conflict-marker + tool-call-residue patterns, shared by audit and update
 ├── env-file.sh            ← read a compose env file without executing it — env_value, env_export
 ├── frontmatter-skills.sh  ← the one reader for a routing `skills:` list, shared by the two skill audits
+├── pnpm-lock.sh           ← the one reader for pnpm-lock.yaml's graph document, shared by update and audit
 ├── posture-guard.sh       ← the deployment-posture guard — refuse or warn, sourced by six scripts
 ├── wizard.sh              ← interactive-wizard helpers — staged prompts, secret entry, .env upserts
 └── worktree-detect.sh     ← git worktree detection and setup utilities
@@ -29,6 +30,7 @@ code/src/scripts/_lib/
 | `frontmatter-skills.sh` | The reader for a routing `skills:` list — all three YAML forms, emitting the key's line number with each name                                                                                                           |
 | `env-file.sh`           | `env_value KEY FILE` and `env_export FILE` — a compose env file read as data, never executed as a script                                                                                                                |
 | `posture-guard.sh`      | `posture_guard` — reads `DEPLOYMENT_POSTURE` from `.copier-answers.yml` and checks the Docker target is one local unix socket; refuses (5 callers) or warns (`migrate.sh`). Proved by `database/migrate.sh --self-test` |
+| `pnpm-lock.sh`          | `pnpm_lock_graph FILE` and `pnpm_lock_importers FILE` — the dependency-graph document of a lockfile pnpm 12 writes as two YAML documents                                                                                |
 
 **`env-file.sh` was extracted after the same disagreement, in the other direction.** Four
 scripts read the same `.env` files with `set -a; source`, which hands the file to bash — and

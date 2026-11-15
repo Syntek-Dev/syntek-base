@@ -6,7 +6,8 @@ nothing committed)
 **Status:** Resolving
 **Status note:** charted 09/10/2026; six research nodes resolved at CHART Step 7; RESOLVE
 sitting 1 (15/10/2026) recorded six decisions Sam settled in conversation, shrank N-007, N-011 and
-N-015 to what those leave open, and opened N-026 and N-027; fifteen grilling nodes open
+N-015 to what those leave open, and opened N-026 and N-027; fifteen grilling nodes open;
+15/11/2026 edges to MAP-FRAMEWORK-NEUTRAL-FOUNDATION recorded, F-03 reworded, F-08 added — no node moved
 **Frontier open**: 15 · **Blocking open**: 12 · **Resolved**: 12 · **Slices**: 5
 
 > **Committed here, never shipped.** `copier.yml` `_exclude` empties `project-management/src/**`
@@ -99,6 +100,17 @@ the node's own row below where it is an input to that node.
   lands in S-02's change (`.claude/CLAUDE.md:273`).
 - **MAP-FRAMEWORK-NEUTRAL-FOUNDATION**'s standing preference, that standalone tools need no Django
   application, bounds N-025: an input, not a blocker.
+- **Added 15/11/2026, from MAP-FRAMEWORK-NEUTRAL-FOUNDATION's widened scope** (its D1, D2 and
+  D6; the inferences below are Claude's, approved with the update plan):
+  - **N-010**'s choice must not preclude native emission — Slint, egui/iced, Jetpack Compose,
+    SwiftUI and TUI themes as well as CSS. Emission itself belongs to the DB-canonical token layer
+    (`code/docs/DESIGN-TOKENS.md`) and N-011 on MAP-NATIVE-MOBILE-SURFACE; the native profiles are
+    [FN N-019](MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md#n-019)'s. An input, not a blocker.
+  - **Whether `04`–`08` apply at all** to a project with no UI (a CLI, a router configuration) is
+    [FN N-010](MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md#n-010)'s, not this map's.
+  - **The native-only preference** (FN D2: no wrapper of any kind) governs apps a project ships.
+    This tier's Playwright and Chromium renderers are design tooling that never ships, so N-008 and
+    N-013 are unaffected.
 
 ---
 
@@ -291,11 +303,14 @@ carried here beside the node it blocks. Re-measure before leaning on either.
 - **F-01 — An ERD checked against the models** — Checking an ERD against the Django models once code exists — needs `django-extensions`, not a
   dependency today
 - **F-02 — A component gallery** — A gallery of the real django-components (a code-layer surface)
-- **F-03 — Mobile wireframes** — Wireframes for the mobile surface in a project generated with `INCLUDE_MOBILE`
+- **F-03 — Mobile wireframes** — Wireframes for the native Android and iOS surfaces (the native opt-ins on MAP-NATIVE-MOBILE-SURFACE), which replace `INCLUDE_MOBILE` _(reworded 15/11/2026)_
 - **F-04 — Theme variants** — Dark-mode and theme variants of wireframes and sheets
 - **F-05 — Link and palette checks** — Checking prototype link targets; checking logos use palette colours only
 - **F-06 — Mermaid theming** — Theming Mermaid diagrams from the token source
 - **F-07 — VectorCraft over MCP** — VectorCraft inspecting SVG assets over MCP — at N-008's re-evaluation trigger
+- **F-08 — Desktop and TUI design artefacts** — Wireframes and component sheets for native desktop
+  (Slint, egui, iced, gtk-rs) and TUI profiles, once MAP-FRAMEWORK-NEUTRAL-FOUNDATION S-05/S-06
+  choose them _(added 15/11/2026)_
 
 ---
 
@@ -329,6 +344,7 @@ rows added, on 15/10/2026 from decisions Sam settled in conversation that day.
 | 15/10/2026 | N-020 to N-025 recorded; N-026, N-027 opened | RESOLVE sitting 1, recording decisions Sam settled in this conversation (15/10/2026) rather than a grilling batch: Q1 as N-020 (N-007 shrunk to the mechanism and the carry-over split); Q2 as N-021 (Out row narrowed); Q18, Q17 and Q19 as N-022 to N-024 (N-011 shrunk to commit surfaces and write guards within the stores); Q7 as N-025 (N-015 shrunk to home, verbs, dependencies and CI). Q3 widened N-019 to MCP set-up; N-018 gained the sha256-manifest input; S-01's acceptance widened; register re-triaged to 23 entries (0 closes, 3 blocks, 20 unrelated), neither file edited; edges wired to MAP-DESIGN-HANDOFF and MAP-MUTATION-TESTING. Evidence: `research/NATIVE-DESIGN-TIER-TOOLING.md` ("Addendum - N-004 re-read, 15/10/2026"), `research/DESIGN-HANDOFF-TARGETS.md`, `research/MUTATION-TESTING.md`. 15 open, 12 blocking, 5 takeable; Step 7 not performed and no research node is open. An independent review the same day corrected S-01's acceptance to Q2's roles (producer, source, gate or record), replaced a misattributed MAP-FRAMEWORK-NEUTRAL-FOUNDATION edge on N-010 with the real outbound one, re-measured N-007's two `CHANGELOG.md` lines, narrowed N-027 to the mechanism with N-026 now blocking N-018 on MAP-DESIGN-HANDOFF, quoted Sam's Q7 words on N-025 and cited each decision's twin on MAP-DESIGN-HANDOFF; Sam confirmed the `disableArtifact` move ("confirm all"); register re-triaged to 24 entries (0 closes, 3 blocks, 21 unrelated) after the tracer-provisioning entry | [x]                 |
 | 15/10/2026 | none (tidy)                                  | The main session appended the 15/10/2026 external-store `GAPS.md` entry; triaged **blocks** and claimed by N-023, so a Register claimed row is added, cited on N-023's Became cell and N-011's Blocked-by, and the gate box that waited for the entry is ticked; register 0 closes, 4 blocks, 21 unrelated against 25 entries, neither file edited by this map. Cross-map shorthand written in full; the triage list's dates written in full; the triage list's, the Evidence row's and the Proposed batches line's middle dots replaced with semicolons                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | n/a — no node moved |
 | 15/10/2026 | none (tidy after the Step 7 review)          | **Gate-box reading, applied on all three maps from this sitting:** a Slices row is a graduation target (`.claude/skills/wayfinder/SKILL.md`, graduation table), so "Every resolved node links to the artefact it became" stays ticked here, N-020 to N-025 linking to the Slices rows they ride in, and the same reading now ticks it on MAP-DESIGN-HANDOFF and MAP-MUTATION-TESTING. Cross-map references in text written 15/10/2026 normalised: N-019 blocks N-017 on MAP-DESIGN-HANDOFF and the MCP section of N-012 on MAP-DESIGN-HANDOFF (Edges across maps and N-019's Blocking cell); this map's N-010 and N-021 are marked "here" beside another map's node in Edges across maps, and S-01's acceptance reads "N-020 here", since N-020 on MAP-DESIGN-HANDOFF is a different node. The map-name-first references in text charted 09/10/2026 are left as history. Counts unchanged: 15 open, 12 blocking, 12 resolved                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | n/a — no node moved |
+| 15/11/2026 | none (edges recorded)                        | MAP-FRAMEWORK-NEUTRAL-FOUNDATION widened (Sam, this conversation): three edges under _Edges across maps_ (N-010 native emission, `04`–`08` applicability, native-only vs design tooling); F-03 reworded for the native mobile surfaces; F-08 added                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | n/a — no node moved |
 
 ---
 

@@ -41,6 +41,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 REPORTS_DIR="$PROJECT_ROOT/code/src/scripts/reports"
 RUST_DIR="$PROJECT_ROOT/code/src/rust"
+# shellcheck source=code/src/scripts/_lib/pnpm-lock.sh
+source "$SCRIPT_DIR/../_lib/pnpm-lock.sh"
 
 MODE="check"
 ECOSYSTEMS=()
@@ -153,7 +155,8 @@ _report_pnpm_writes() {
 
 # Every version pnpm-lock.yaml resolves NAME to, one per line. Read from the `packages:`
 # section, where each resolved version has exactly one key (`name@version`, quoted when
-# scoped); `snapshots:` repeats them with peer suffixes and is not read.
+# scoped); `snapshots:` repeats them with peer suffixes and is not read. Both readers take
+# the graph document only (_lib/pnpm-lock.sh): pnpm 12's first document locks pnpm itself.
 _locked_versions() {
   awk -v name="$1" '
     /^packages:/ { in_p = 1; next }
@@ -162,7 +165,7 @@ _locked_versions() {
       key = $0; sub(/^  /, "", key); sub(/:$/, "", key); gsub(/\047/, "", key)
       at = index(substr(key, 2), "@") + 1
       if (substr(key, 1, at - 1) == name) print substr(key, at + 1)
-    }' "$PROJECT_ROOT/pnpm-lock.yaml" | sort -u
+    }' < <(pnpm_lock_graph "$PROJECT_ROOT/pnpm-lock.yaml") | sort -u
 }
 
 # True when NAME is declared by any workspace importer (root or code/src/*) — i.e. a
@@ -176,7 +179,7 @@ _is_direct() {
       key = $0; sub(/^      /, "", key); sub(/:$/, "", key); gsub(/\047/, "", key)
       if (key == name) { found = 1; exit }
     }
-    END { exit found ? 0 : 1 }' "$PROJECT_ROOT/pnpm-lock.yaml"
+    END { exit found ? 0 : 1 }' < <(pnpm_lock_graph "$PROJECT_ROOT/pnpm-lock.yaml")
 }
 
 # Move ONE JavaScript package, choosing the form that can actually move it.
@@ -214,7 +217,7 @@ _apply_pnpm_package() {
     log "  $name ($kind) — unchanged at $(tr '\n' ' ' <<<"$after")"
     log "    The cause is one of: it is already the newest its declared ranges admit; an"
     log "    override in pnpm-workspace.yaml holds it; or the newer release is younger than"
-    log "    pnpm 11's default 24-hour minimumReleaseAge — a security fix that cannot wait"
+    log "    pnpm's default 24-hour minimumReleaseAge — a security fix that cannot wait"
     log "    takes a minimumReleaseAgeExclude entry. Moving past a consumer's range takes a"
     log "    bounded override there — never a looser range."
   else

@@ -75,7 +75,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 1
-      - uses: anthropics/claude-code-action@d535f5172dec02b204866b393d6b20b9b2aaf98d # v1.0.266
+      - uses: anthropics/claude-code-action@61a9c274fa7110a66dfafc1bbbced03833eb25fe # v1.0.269
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
@@ -122,7 +122,7 @@ jobs:
           # v10 and this input is still how you opt out of it.
           # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
           ignore-nothing-to-cache: true
-      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
@@ -181,7 +181,7 @@ jobs:
           # v10 and this input is still how you opt out of it.
           # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
           ignore-nothing-to-cache: true
-      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
@@ -241,7 +241,7 @@ jobs:
           # v10 and this input is still how you opt out of it.
           # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
           ignore-nothing-to-cache: true
-      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
@@ -313,7 +313,7 @@ jobs:
           # v10 and this input is still how you opt out of it.
           # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
           ignore-nothing-to-cache: true
-      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
@@ -501,7 +501,7 @@ jobs:
           steps.detect.outputs.present == 'true' &&
           github.event_name == 'pull_request' &&
           (github.base_ref == 'staging' || github.base_ref == 'main')
-        uses: MishaKav/pytest-coverage-comment@9516bf7f32a9229cf18d5e1717ae387c7154f279 # v1.13.0
+        uses: MishaKav/pytest-coverage-comment@4cfb48edc8f875ac019afdcfd97c48d78ad2b723 # v1.13.1
         with:
           pytest-xml-coverage-path: code/src/scripts/tests/reports/backend-coverage/coverage.xml
           title: Backend Coverage
@@ -545,7 +545,7 @@ jobs:
           # v10 and this input is still how you opt out of it.
           # Source: https://github.com/astral-sh/setup-uv/blob/main/docs/caching.md
           ignore-nothing-to-cache: true
-      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
