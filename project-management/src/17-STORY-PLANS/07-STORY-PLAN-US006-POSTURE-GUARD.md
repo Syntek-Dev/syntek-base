@@ -465,6 +465,51 @@ and validity indicator on every invocation. Only a successful target check sets 
 conversion to a warning must never manufacture a binding. P2 consumes these outputs before
 container preflight and every guarded-path Docker/Compose call, including seed forwarding.
 
+**Erratum 15/11/2026 — four corrections from the workflow 23 review (F-020 to F-022, F-024).**
+Decided by <%DEVELOPER_NAME%>, who directed every review finding fixed on this branch; detail in
+`../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md`.
+
+- **A sixth input, the env-file (F-020).** After the compose name and before the invocation, the
+  caller hands the helper the file it passes Compose as `--env-file`, or empty — so the contract
+  reads `posture_guard ROOT MODE OVERRIDE COMPOSE_NAME ENV_FILE [INVOCATION...]`. Compose reads
+  `COMPOSE_PROJECT_NAME` from that file when the shell sets none, so step 3 does too: shell first,
+  then the file, read as data by the guard's own `posture_env_project` and never sourced. Compose's
+  env parser is not line-based (it strips a BOM, skips Unicode spaces, starts a statement after a
+  closing quote, and takes the last of duplicates), so the guard does not model it: every mention of
+  `COMPOSE_PROJECT_NAME` in the file counts, comments included, exactly one is accepted, on a plain
+  printable-ASCII `[export ]COMPOSE_PROJECT_NAME=value` line, and anything else — a commented-out
+  key included — fails closed, as does an interpolated value or any NUL byte in the file. The
+  commented-key refusal is deliberate: a `#` line can sit inside a quoted value Compose reads. Sam chose this over pinning `-p` in every caller. All six callers pass it.
+- **Step 2's carrier states, sharpened (F-021).** A top-level line a line reader cannot model — an
+  explicit `?` key, a tag, an anchor, an alias, a flow collection, a quoted key carrying an escape,
+  or an indented continuation line straight after the key — reads as **unrecognised** and refuses,
+  and every line break PyYAML honours — CRLF, a lone CR, NEL, U+2028, U+2029 — is turned into LF
+  first, so a key hidden after one counts as a duplicate, while a quoted answer in which Copier's
+  dumper wrote one raw still reads.
+  Copier writes none of them; PyYAML honours all of them, so a reader that skipped them could take
+  `development` from a carrier PyYAML reads as `production`.
+- **Step 3's refusal names the right repair (F-022).** A compose-project failure prints its own
+  repair — correct `COMPOSE_PROJECT_NAME` (in the shell or the env-file) or the compose file's
+  top-level `name:` — instead of the Docker-socket one, which cannot clear it. Neither is waived by
+  `--force-posture`. Warn mode likewise says "the compose project is unverified" for a project
+  failure; the socket wording is unchanged.
+- **The self-test gains a behavioural tier (F-024).** The Key Decision "How cases 20 and 21 and the
+  prompt path are proved" ruled a dynamic script-level case impossible, because the scripts resolve
+  their root from `BASH_SOURCE`. Copying the script groups into a fixture repository, with a
+  recording `docker` stub first on `PATH`, makes it possible: `st_behavioural` in
+  `code/src/scripts/database/_migrate-self-test.sh` runs the six callers refused at `staging` and
+  permitted, pinned, at `development`, and carries the override across `up --seed` into its child.
+  The structural cases and the manual walk stand; this adds the dynamic half beside them. Self-test
+  250 of 250.
+- **No env-file value reaches the output, and no AI runs these scripts (F-027).** Sam ruled during
+  the review that no AI tool reads a live `.env.*` and that a script using one is his to run
+  (`.claude/CLAUDE.md` Section 6). The guard's refusal therefore names `COMPOSE_PROJECT_NAME in the
+  env-file` and prints "(value not shown)" in place of the value; a shell value is still printed.
+  The six callers stay developer-run, and the rule is enforced in the host configs the template
+  ships — `.claude/settings.json`, `.codex/config.toml`, `.zed/settings.json` — held in step by
+  `code/src/scripts/audits/env-read-deny.sh`. `migrate.sh --self-test` reads fixtures only and
+  stays runnable by an AI.
+
 ### The proof-case list, and how each case is proved
 
 The story enumerates twenty-one top-level cases, with independent fixtures for each case-14 subcase — and every count

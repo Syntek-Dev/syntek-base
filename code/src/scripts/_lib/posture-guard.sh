@@ -6,7 +6,7 @@
 # conflict-marker pattern, so sourcing twice is harmless. Every public name is `posture_`.
 #
 # CONTRACT
-#   posture_guard ROOT MODE OVERRIDE COMPOSE_NAME [INVOCATION WORD...]
+#   posture_guard ROOT MODE OVERRIDE COMPOSE_NAME ENV_FILE [INVOCATION WORD...]
 #     ROOT          absolute repository root — the caller's BASH_SOURCE-derived PROJECT_ROOT.
 #                   Never cwd, never an environment variable: the carrier and the template
 #                   proof are both anchored here, and the self-test aims it at a fixture.
@@ -14,6 +14,9 @@
 #     OVERRIDE      the value the caller parsed from --force-posture, or "".
 #     COMPOSE_NAME  the `name:` of the LAST compose file in the caller's set (the worktree
 #                   override outranks the base file's).
+#     ENV_FILE      the file the caller hands Compose as --env-file, or "" for none. Compose reads
+#                   COMPOSE_PROJECT_NAME from it when the shell sets none, so the guard does too
+#                   (review R-001); it is read as data through _lib/env-file.sh, never sourced.
 #     INVOCATION    the caller's own command words, so a refusal prints a re-run to paste.
 #   Returns 0 to permit and 4 to refuse; never calls `exit`. A refusal goes to stderr with
 #   the greppable prefix "posture-guard: refused —". This is a new return contract for
@@ -68,6 +71,10 @@
 if [[ "${BASH_SOURCE[0]}" == */* ]]; then source "${BASH_SOURCE[0]%/*}/conflict-markers.sh"
 else source ./conflict-markers.sh
 fi
+# shellcheck source=code/src/scripts/_lib/env-file.sh
+if [[ "${BASH_SOURCE[0]}" == */* ]]; then source "${BASH_SOURCE[0]%/*}/env-file.sh"
+else source ./env-file.sh
+fi
 
 posture_say() { printf 'posture-guard: %s — %s\n' "$1" "$2" >&2; }
 
@@ -75,6 +82,21 @@ posture_say() { printf 'posture-guard: %s — %s\n' "$1" "$2" >&2; }
 posture_quote() { printf '%q' "$1"; }
 # True when the argument holds any byte outside printable ASCII. Call under LC_ALL=C so the
 # bracket class is a byte range, not the caller's locale.
+# The argument with CRLF, CR, NEL (C2 85), U+2028 (E2 80 A8) and U+2029 (E2 80 A9) each replaced
+# by LF, matched as bytes. Trailing LFs are dropped, as the caller's $(cat) already does.
+posture_unify_breaks() {
+  local LC_ALL=C
+  local s="$1"
+  s="${s//$'\r\n'/$'\n'}"; s="${s//$'\r'/$'\n'}"; s="${s//$'\xc2\x85'/$'\n'}"
+  s="${s//$'\xe2\x80\xa8'/$'\n'}"; s="${s//$'\xe2\x80\xa9'/$'\n'}"
+  printf '%s' "$s"
+}
+# True when the argument is all printable ASCII (tab allowed) and matches the ERE. Call under
+# LC_ALL=C, so a BOM or a non-ASCII space before the key cannot pass as leading whitespace.
+posture_ascii_match() {
+  local s="${1//$'\t'/ }"
+  [[ "$s" != *[![:print:]]* && "$1" =~ $2 ]]
+}
 posture_has_non_ascii() { [[ "$1" == *[![:print:]]* || "$1" == *[$'\x80'-$'\xff']* ]]; }
 
 # ── Docker metadata seam ─────────────────────────────────────────────────────
@@ -98,6 +120,11 @@ posture_read_carrier() {
   # the colon. Only the canonical spelling (bare key, colon, then space or end) yields a value;
   # every other spelling still counts, so a second one cannot hide behind the first.
   local anykey="^[\"']?DEPLOYMENT_POSTURE[\"']?[[:space:]]*:" canon='^DEPLOYMENT_POSTURE:([[:space:]]|$)'
+  # Top-level forms YAML can read as ANY key, this one included, that a line reader cannot
+  # model (review R-002): an explicit `?` key, a tag, an anchor, an alias, a flow collection,
+  # and a quoted key carrying an escape. Copier writes none of them, so each fails closed as
+  # unrecognised rather than letting a second posture hide behind the canonical line.
+  local exotic='^[?!&*{[]' escaped="^[\"'][^\"']*\\\\" after=0
   posture_carrier_state=""
   if [[ ! -e "$file" && ! -L "$file" ]]; then posture_carrier_state=absent; return 0; fi
   # The single read. Everything below inspects this copy, never the file again.
@@ -109,16 +136,29 @@ posture_read_carrier() {
   if [[ -n "$(conflict_markers_scan /dev/stdin <<<"$content")" || "$content" =~ $CONFLICT_MARKER_RE ]]; then
     posture_carrier_state=conflict; return 0
   fi
+  # Every line break a YAML loader honours becomes the LF this reader splits on: CRLF, a lone CR,
+  # NEL, U+2028 and U+2029 (PyYAML, which Copier loads answers with, treats all five as breaks).
+  # A key hidden after one then counts as a second key; and Copier's own dumper writes NEL, U+2028
+  # and U+2029 raw inside a quoted free-text answer, whose continuation is indented and so ignored.
+  content="$(posture_unify_breaks "$content")"
   while IFS= read -r line; do
     line="${line%$'\r'}"
-    if [[ "$line" =~ $anykey ]]; then
+    # The first non-blank line after the key: indented content there continues the plain
+    # scalar, which YAML folds into the value ("development production"), so it is not a value.
+    if (( after )) && [[ -n "${line//[[:space:]]/}" ]]; then
+      after=0
+      [[ "$line" =~ ^[[:space:]]+[^[:space:]#] ]] && odd=1
+    fi
+    if [[ "$line" =~ $exotic || "$line" =~ $escaped ]]; then
+      odd=1
+    elif [[ "$line" =~ $anykey ]]; then
       keys=$((keys + 1))
-      if [[ "$line" =~ $canon ]]; then value="${line#DEPLOYMENT_POSTURE:}"; else odd=1; fi
+      if [[ "$line" =~ $canon ]]; then value="${line#DEPLOYMENT_POSTURE:}"; after=1; else odd=1; fi
     elif [[ "$line" =~ ^[[:space:]]*#[[:space:]]*DEPLOYMENT_POSTURE[[:space:]]*: ]]; then
       comments=$((comments + 1))
     fi
   done <<<"$content"
-  if (( keys == 0 )); then
+  if (( keys == 0 && ! odd )); then
     if (( comments > 0 )); then posture_carrier_state=commented; else posture_carrier_state=no-key; fi
     return 0
   fi
@@ -218,9 +258,12 @@ posture_saved_context() {
 }
 
 posture_resolve_target() {
-  local compose_name="$1" endpoint path origin
-  local ctx="${DOCKER_CONTEXT:-}" host="${DOCKER_HOST:-}" cpn="${COMPOSE_PROJECT_NAME:-}"
+  local compose_name="$1" env_file="${2-}" endpoint path origin
+  local ctx="${DOCKER_CONTEXT:-}" host="${DOCKER_HOST:-}" cpn="${COMPOSE_PROJECT_NAME:-}" cpn_from cpn_shown
   posture_target_reason=""
+  # "project" when the failure is the compose project rather than the daemon (review R-003),
+  # so the refusal prints a repair that can actually clear it.
+  posture_target_kind=""
   posture_candidate=""
   if [[ -n "$ctx" ]]; then
     origin="DOCKER_CONTEXT"
@@ -256,6 +299,20 @@ posture_resolve_target() {
   # an explicit COMPOSE_PROJECT_NAME, which Compose never rewrites — it refuses one not
   # already in normal form. Compare those, never the raw strings.
   local project
+  posture_target_kind=project
+  # COMPOSE_PROJECT_NAME from the shell first, else from the --env-file — Compose's own
+  # precedence (review R-001). A shell value exported empty falls through to the file, which can
+  # only refuse more often than Compose would, never less. An env-file value the literal reader
+  # will not interpret is a project the guard cannot name, so it fails closed.
+  # The value is printed only when it came from the shell. A live env file's contents never
+  # reach the output: an AI session may be reading it, and no AI tool reads a live .env.*.
+  cpn_from="COMPOSE_PROJECT_NAME"; cpn_shown="$(posture_quote "$cpn")"
+  if [[ -z "$cpn" && -n "$env_file" ]]; then
+    posture_env_project "$env_file" || return 1
+    cpn="$posture_env_cpn"
+    [[ -n "$cpn" ]] && cpn_from="COMPOSE_PROJECT_NAME in the env-file $(posture_quote "$env_file")" \
+      && cpn_shown="(value not shown)"
+  fi
   # Two declared forms the shell port cannot reproduce faithfully, so the guard fails closed
   # rather than guess: `${VAR}` (Compose interpolates before it normalises, and the guard does
   # not), and any non-ASCII byte (Go's ToLower folds some, e.g. U+212A to `k`, where an ASCII
@@ -272,14 +329,48 @@ posture_resolve_target() {
     return 1
   fi
   if [[ -n "$cpn" && "$cpn" != "$(posture_normalise_name "$cpn")" ]]; then
-    posture_target_reason="COMPOSE_PROJECT_NAME $(posture_quote "$cpn") is not a valid Compose project name (lower-case a-z, 0-9, _ and - only, starting with a letter or digit); Compose would refuse it"
+    posture_target_reason="$cpn_from $cpn_shown is not a valid Compose project name (lower-case a-z, 0-9, _ and - only, starting with a letter or digit); Compose would refuse it"
     return 1
   fi
   if [[ -n "$cpn" && "$cpn" != "$project" ]]; then
-    posture_target_reason="COMPOSE_PROJECT_NAME $(posture_quote "$cpn") does not match the declared compose project $(posture_quote "$compose_name"), which Compose names $(posture_quote "$project")"
+    posture_target_reason="$cpn_from $cpn_shown does not match the declared compose project $(posture_quote "$compose_name"), which Compose names $(posture_quote "$project")"
     return 1
   fi
+  posture_target_kind=""
   posture_candidate="$endpoint"
+}
+
+# The env-file's COMPOSE_PROJECT_NAME, into posture_env_cpn ("" = not set). Compose's env-file
+# parser is not line-based — it strips a BOM, skips any Unicode space, accepts `=` or `:` with
+# spaces around it, and starts a new statement after a closing quote on the same line — so the
+# guard does not model it. It counts every mention of the key anywhere in the file, comments
+# included (a `#` line can sit inside a multi-line quoted value), and accepts exactly one, on a
+# line that is plain ASCII `[export ]COMPOSE_PROJECT_NAME=value`. Any other mention is a project
+# the guard cannot name, so it fails closed. The value goes through env-file.sh's literal reader.
+posture_env_project() {
+  local file="$1" line hits found=""
+  local canon='^[[:blank:]]*(export[[:blank:]]+)?COMPOSE_PROJECT_NAME='
+  posture_env_cpn=""
+  [[ -f "$file" && -r "$file" ]] || return 0
+  # A NUL byte makes grep treat the file as binary and report no match, while Compose reads on
+  # past it: refuse the file outright, and search it with -a regardless.
+  if [[ "$(LC_ALL=C tr -d '\000' <"$file" | wc -c)" != "$(wc -c <"$file")" ]]; then
+    posture_target_reason="the env-file $(posture_quote "$file") contains a NUL byte, so the project Compose would act on cannot be determined"
+    return 1
+  fi
+  hits="$(LC_ALL=C grep -aoF -- COMPOSE_PROJECT_NAME "$file" | wc -l)" || hits=0
+  (( hits == 0 )) && return 0
+  found="$(LC_ALL=C grep -aF -- COMPOSE_PROJECT_NAME "$file")" || found=""
+  found="${found%$'\r'}"
+  if (( hits > 1 )) || ! LC_ALL=C posture_ascii_match "$found" "$canon"; then
+    posture_target_reason="the env-file $(posture_quote "$file") mentions COMPOSE_PROJECT_NAME other than on one plain COMPOSE_PROJECT_NAME=value line, so the project Compose would act on cannot be determined"
+    return 1
+  fi
+  if ! posture_env_cpn="$(_env_strip "${found#*=}" COMPOSE_PROJECT_NAME "$file" 2>/dev/null)"; then
+    posture_env_cpn=""
+    posture_target_reason="COMPOSE_PROJECT_NAME in the env-file $(posture_quote "$file") cannot be read literally (it uses interpolation), so the project Compose would act on cannot be determined"
+    return 1
+  fi
 }
 
 # Compose's project-name normalisation, verbatim in shell. Primary source, read 15/11/2026:
@@ -324,14 +415,15 @@ posture_clear_binding() {
 
 # ── The entry point ──────────────────────────────────────────────────────────
 posture_guard() {
-  local root="${1-}" mode="${2-}" override="${3-}" compose_name="${4-}"
-  if (( $# >= 4 )); then shift 4; else shift "$#"; fi
+  local root="${1-}" mode="${2-}" override="${3-}" compose_name="${4-}" env_file="${5-}"
+  if (( $# >= 5 )); then shift 5; else shift "$#"; fi
   local target_ok="" carrier_reason="" rerun=""
   local obligation='migrations here are expand-then-contract: add nullable, backfill, constrain; drop the old column in a later release'
 
   posture_resolved=""
   posture_carrier_state=""
   posture_target_reason=""
+  posture_target_kind=""
   posture_clear_binding
 
   case "$mode" in
@@ -367,7 +459,7 @@ posture_guard() {
   [[ "$posture_carrier_state" == legal ]] || carrier_reason="$(posture_carrier_reason "$posture_carrier_state")"
 
   # Step 3 — at every posture; only success sets the binding outputs.
-  if posture_resolve_target "$compose_name"; then
+  if posture_resolve_target "$compose_name" "$env_file"; then
     target_ok=1
     posture_endpoint="$posture_candidate"
     posture_target_valid=1
@@ -375,7 +467,9 @@ posture_guard() {
 
   if [[ "$mode" == warn ]]; then
     # Step 6 — every refusal becomes a warning; the binding stays exactly as step 3 left it.
-    if [[ -z "$target_ok" ]]; then
+    if [[ -z "$target_ok" && "$posture_target_kind" == project ]]; then
+      posture_say warning "the compose project is unverified: $posture_target_reason; continuing under the existing Docker selection"
+    elif [[ -z "$target_ok" ]]; then
       posture_say warning "Docker target locality is unverified: $posture_target_reason; continuing under the existing Docker selection"
     fi
     if [[ -n "$posture_resolved" ]]; then
@@ -389,6 +483,11 @@ posture_guard() {
     return 0
   fi
 
+  if [[ -z "$target_ok" && "$posture_target_kind" == project ]]; then
+    posture_say refused "the compose project cannot be verified: $posture_target_reason. Unset or correct COMPOSE_PROJECT_NAME (in the shell or the env-file), or the compose file's top-level name:, and re-run; --force-posture does not waive this"
+    posture_clear_binding
+    return 4
+  fi
   if [[ -z "$target_ok" ]]; then
     posture_say refused "the Docker target cannot be verified as local: $posture_target_reason. Select a local unix-socket context (or unset DOCKER_HOST and DOCKER_CONTEXT) and re-run; --force-posture does not waive this"
     posture_clear_binding

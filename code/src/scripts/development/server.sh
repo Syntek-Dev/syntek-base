@@ -124,7 +124,7 @@ DOCKER=(docker)
 # Above the env-file check, so an operator with no .env.dev still sees the posture refusal.
 # A permit pins the compose array below to the target the guard validated.
 if [[ "$COMMAND" == down ]] && $VOLUMES; then
-  posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+  posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" "$ENV_FILE" \
     bash code/src/scripts/development/server.sh "${ORIG_ARGS[@]}" || exit "$?"
   posture_docker_bind || exit "$?"
   DOCKER=("${posture_docker[@]}")
@@ -135,7 +135,7 @@ fi
 # unbound at every posture. Here and not inside the --seed branch below, so a refusal lands
 # before `up -d` and the password sync, and both run on the validated binding (F-001).
 if [[ "$COMMAND" == up ]] && $SEED; then
-  posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+  posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" "$ENV_FILE" \
     bash code/src/scripts/development/server.sh "${ORIG_ARGS[@]}" || exit "$?"
   posture_docker_bind || exit "$?"
   DOCKER=("${posture_docker[@]}")

@@ -26,17 +26,17 @@ code/src/scripts/database/
 
 ## Scripts
 
-| Script                  | Purpose                                                                                                                                                                                  |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `migrate.sh`            | Django migrations — `run`, `make`, `show`, `check`, `fake`, `fake-initial`                                                                                                               |
-| `_migrate-self-test.sh` | The `migrate.sh --self-test` harness — proves `_lib/posture-guard.sh` and its six callers' wiring with no Docker; sourced only by that arm, never run directly                           |
-| `reset.sh`              | Drop + recreate dev DB, run all migrations, optionally seed fixtures                                                                                                                     |
-| `seed-dev.sh`           | Idempotently seed dev users (superuser + staff), then each command in `SEED_COMMANDS`; above `development` refuses at exit `4` unless `--force-posture <posture>` names the live posture |
-| `backup.sh`             | `pg_dump` to a timestamped file in `reports/` (custom or plain format)                                                                                                                   |
-| `restore.sh`            | Drop + recreate dev DB and restore from a backup file                                                                                                                                    |
-| `shell.sh`              | DB shell — Django `dbshell` by default, raw `psql` in the db container with `--psql`                                                                                                     |
-| `manageusers.sh`        | Create, update, or delete Django users via `manage.py`                                                                                                                                   |
-| `verify-db-security.sh` | Django system check + PostgreSQL `log_statement` — no RLS or role-permission check                                                                                                       |
+| Script                  | Purpose                                                                                                                                                                                                                         |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `migrate.sh`            | Django migrations — `run`, `make`, `show`, `check`, `fake`, `fake-initial`                                                                                                                                                      |
+| `_migrate-self-test.sh` | The `migrate.sh --self-test` harness — proves `_lib/posture-guard.sh`, reads its six callers' wiring, and runs them against a fixture repository on a recording `docker` stub; never reaches a daemon. Sourced only by that arm |
+| `reset.sh`              | Drop + recreate dev DB, run all migrations, optionally seed fixtures                                                                                                                                                            |
+| `seed-dev.sh`           | Idempotently seed dev users (superuser + staff), then each command in `SEED_COMMANDS`; above `development` refuses at exit `4` unless `--force-posture <posture>` names the live posture                                        |
+| `backup.sh`             | `pg_dump` to a timestamped file in `reports/` (custom or plain format)                                                                                                                                                          |
+| `restore.sh`            | Drop + recreate dev DB and restore from a backup file                                                                                                                                                                           |
+| `shell.sh`              | DB shell — Django `dbshell` by default, raw `psql` in the db container with `--psql`                                                                                                                                            |
+| `manageusers.sh`        | Create, update, or delete Django users via `manage.py`                                                                                                                                                                          |
+| `verify-db-security.sh` | Django system check + PostgreSQL `log_statement` — no RLS or role-permission check                                                                                                                                              |
 
 ## Quick Reference
 

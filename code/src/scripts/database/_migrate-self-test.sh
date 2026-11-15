@@ -20,6 +20,7 @@
 ST_TMP=""
 ST_D=""
 ST_MODE=""
+ST_ENVF=""
 ST_FAILS=0
 ST_COMPOSE="st-proj"
 ST_DEFAULT_SOCK="unix:///var/run/docker.sock"
@@ -53,7 +54,7 @@ st_guard() {
   local override="$1" tag="${2:-}" rc=0
   posture_resolved="stale"; posture_endpoint="unix:///stale.sock"; posture_target_valid="1"
   posture_docker=(stale)
-  posture_guard "$ST_D/root" "$ST_MODE" "$override" "$ST_COMPOSE" \
+  posture_guard "$ST_D/root" "$ST_MODE" "$override" "$ST_COMPOSE" "$ST_ENVF" \
     bash code/src/scripts/database/reset.sh --force-posture stale-word --force-posture=stale-eq --yes || rc=$?
   printf '%sresolved=%s\n%sendpoint=%s\n%svalid=%s\n%sdocker=%s\n' \
     "$tag" "$posture_resolved" "$tag" "$posture_endpoint" "$tag" "$posture_target_valid" \
@@ -78,7 +79,7 @@ st_run() {
   local label="$1" want="$2" mode="$3" fn="$4"; shift 4
   local dir="$ST_TMP/cases/$label-$mode" rc=0 ok=1 why="" pat note=""
   mkdir -p "$dir/root" "$dir/dockercfg" "$dir/ctx" "$dir/home"
-  ST_D="$dir"; ST_MODE="$mode"
+  ST_D="$dir"; ST_MODE="$mode"; ST_ENVF="$dir/env-file"
   (
     unset DOCKER_CONTEXT DOCKER_HOST COMPOSE_PROJECT_NAME DEPLOYMENT_POSTURE
     # shellcheck disable=SC2030  # deliberately subshell-local: no case leaks into the next
@@ -227,8 +228,61 @@ st_f018_other()  { st_f018 "$(st_f018_tok)" project-slug-dev-us006; }
 st_f018_lead()   { st_f018 '-_Proj.Dev' projdev; }
 st_f018_empty()  { local o='<' c='%'; o+='%'; c+='>'; st_f018 "-_${o}${c}" ""; }
 st_f018_emptyc() { local o='<' c='%'; o+='%'; c+='>'; st_f018 "-_${o}${c}" anything; }
+# shellcheck disable=SC2016  # the literal ${X} is the fixture under test, never expanded here
 st_f018_interp() { st_f018 '${X}-dev' x-dev; }
 st_f018_kelvin() { st_f018 $'\u212a-dev' k-dev; }
+
+# Review R-002 (QA-02, SEC-02): YAML spellings of the key the line reader cannot model. Each sits
+# beside a canonical development line and makes Copier's loader read production (or a value that
+# is not a posture), so each must fail closed as unrecognised rather than read as development.
+st_c07qm()   { st_carrier 'DEPLOYMENT_POSTURE: development' '? DEPLOYMENT_POSTURE' ': production'; st_guard ""; }
+st_c07tag()  { st_carrier 'DEPLOYMENT_POSTURE: development' '!!str DEPLOYMENT_POSTURE: production'; st_guard ""; }
+st_c07anc()  { st_carrier 'DEPLOYMENT_POSTURE: development' '&a DEPLOYMENT_POSTURE: production'; st_guard ""; }
+st_c07esc()  { st_carrier 'DEPLOYMENT_POSTURE: development' '"DEPLOYMENT_POST\u0055RE": production'; st_guard ""; }
+st_c04cont() { st_carrier 'DEPLOYMENT_POSTURE: development' '  production'; st_guard ""; }
+st_c04contb() { st_carrier 'DEPLOYMENT_POSTURE: development' '' '  production' 'project_slug: demo'; st_guard ""; }
+# What Copier really writes around the key still reads: a block scalar elsewhere, a trailing comment.
+st_c01ctx()  { st_carrier '_commit: v7.9.0' 'PROJECT_DESCRIPTION: |-' '  a multi-line' '  description' \
+                 'DEPLOYMENT_POSTURE: development' '  # an indented comment' 'project_slug: demo'; st_guard ""; }
+
+# Review R-001 (F-020, SEC-01, QA-01): COMPOSE_PROJECT_NAME read from the --env-file every caller
+# hands Compose, the shell's value first — Compose's own precedence.
+st_envf()       { printf '%s\n' "$@" >"$ST_ENVF"; }
+st_ef_other()   { st_dev; st_envf 'POSTGRES_DB=x' 'COMPOSE_PROJECT_NAME=someone-else'; st_guard ""; }
+st_ef_export()  { st_dev; st_envf 'export COMPOSE_PROJECT_NAME=someone-else'; st_guard ""; }
+st_ef_match()   { st_dev; st_envf "COMPOSE_PROJECT_NAME=$ST_COMPOSE"; st_guard ""; }
+st_ef_quoted()  { st_dev; st_envf "COMPOSE_PROJECT_NAME=\"$ST_COMPOSE\""; st_guard ""; }
+st_ef_shell()   { st_dev; st_envf 'COMPOSE_PROJECT_NAME=someone-else'; export COMPOSE_PROJECT_NAME="$ST_COMPOSE"; st_guard ""; }
+# shellcheck disable=SC2016  # the literal ${X} is the fixture under test
+st_ef_interp()  { st_dev; st_envf 'COMPOSE_PROJECT_NAME=${X}-dev'; st_guard ""; }
+st_ef_invalid() { st_dev; st_envf 'COMPOSE_PROJECT_NAME=Someone'; st_guard ""; }
+st_ef_none()    { st_dev; st_envf 'POSTGRES_DB=x'; st_guard ""; }
+# Independent re-check of the fixes: line breaks Copier's loader (PyYAML) honours and a line
+# reader does not — a lone CR, NEL, U+2028, U+2029 — each hiding a second key behind the first.
+st_c07cr()   { st_carrier 'DEPLOYMENT_POSTURE: development' $'other: x\rDEPLOYMENT_POSTURE: production'; st_guard ""; }
+st_c07nel()  { st_carrier 'DEPLOYMENT_POSTURE: development' $'other: x\xc2\x85DEPLOYMENT_POSTURE: production'; st_guard ""; }
+st_c07ls()   { st_carrier 'DEPLOYMENT_POSTURE: development' $'other: x\xe2\x80\xa8DEPLOYMENT_POSTURE: production'; st_guard ""; }
+st_c07ps()   { st_carrier 'DEPLOYMENT_POSTURE: development' $'other: x\xe2\x80\xa9DEPLOYMENT_POSTURE: production'; st_guard ""; }
+st_c01crlf() { st_carrier $'_commit: v7.9.0\r' $'DEPLOYMENT_POSTURE: development\r'; st_guard ""; }
+# Compose's env-file grammar also takes `KEY = value` and `KEY: value`; the guard refuses any
+# spelling but the canonical one, and a key set twice, rather than modelling the grammar.
+st_ef_spaced()  { st_dev; st_envf 'COMPOSE_PROJECT_NAME = someone-else'; st_guard ""; }
+st_ef_colon()   { st_dev; st_envf 'COMPOSE_PROJECT_NAME: someone-else'; st_guard ""; }
+st_ef_twice()   { st_dev; st_envf "COMPOSE_PROJECT_NAME=$ST_COMPOSE" 'COMPOSE_PROJECT_NAME: someone-else'; st_guard ""; }
+st_ef_crlf()    { st_dev; st_envf $'COMPOSE_PROJECT_NAME="st-proj"\r'; st_guard ""; }
+st_ef_comment() { st_dev; st_envf '# COMPOSE_PROJECT_NAME=someone-else'; st_guard ""; }
+# What Copier's dumper really writes: NEL / U+2028 / U+2029 raw inside a quoted free-text answer.
+st_c01nel() { st_carrier $'PROJECT_DESCRIPTION: \'line one\xc2\x85    line two\'' 'DEPLOYMENT_POSTURE: development'; st_guard ""; }
+st_c01ls()  { st_carrier $'PROJECT_DESCRIPTION: \'line one\xe2\x80\xa8    line two\'' 'DEPLOYMENT_POSTURE: development'; st_guard ""; }
+st_c04nel() { st_carrier $'DEPLOYMENT_POSTURE: development\xc2\x85  production'; st_guard ""; }
+# Compose's env parser is not line-based: a BOM is stripped, any Unicode space skipped, and a
+# statement may follow a closing quote. Every mention of the key but one canonical line refuses.
+st_ef_bom()   { st_dev; st_envf $'\xef\xbb\xbfCOMPOSE_PROJECT_NAME=someone-else'; st_guard ""; }
+st_ef_nbsp()  { st_dev; st_envf $'\xc2\xa0COMPOSE_PROJECT_NAME=someone-else'; st_guard ""; }
+st_ef_after() { st_dev; st_envf 'X="a" COMPOSE_PROJECT_NAME=someone-else'; st_guard ""; }
+st_ef_nul()   { st_dev; printf 'X=a\000b\nCOMPOSE_PROJECT_NAME=someone-else\n' >"$ST_ENVF"; st_guard ""; }
+st_ef_tab()   { st_dev; st_envf $'export\tCOMPOSE_PROJECT_NAME=st-proj'; st_guard ""; }
+st_ef_multi() { st_dev; st_envf "X='a" "# ' COMPOSE_PROJECT_NAME=someone-else"; st_guard ""; }
 
 # ── Structural cases: the six callers' wiring ──
 # Line-order over each caller's own text (story 7.8). Every probe is a deliberate literal — a
@@ -440,6 +494,126 @@ st_structural() {
   st_order "help-before-guard-migrate" "the --self-test arm, then the --help arm, then the guard" "$t" "$h" "$g"
 }
 
+# ── Behavioural cases: the six callers, run (review R-005) ──
+# The structural cases read the callers' text; these run them. A fixture repository holds copies
+# of the four script groups, two one-line compose files and two env files, and a recording
+# `docker` heads PATH for these runs only: it logs its arguments and exits 0, and prints `db` for
+# a `ps` only when the case asks, so a permitted run stops at the container preflight. Every
+# call it records is the stub's — nothing reaches a daemon. The suite-wide exit-97 docker still
+# guards everything else.
+st_cdir=""
+
+st_cfix() {
+  local d
+  st_cdir="$ST_TMP/callers"
+  mkdir -p "$st_cdir/bin" "$st_cdir/home" "$st_cdir/cfg" "$st_cdir/elsewhere" "$st_cdir/root/code/src/docker"
+  for d in _lib database development tests; do
+    mkdir -p "$st_cdir/root/code/src/scripts/$d"
+    cp -- "$SCRIPT_DIR/../$d"/*.sh "$st_cdir/root/code/src/scripts/$d/"
+  done
+  printf 'name: st-callers-dev\nservices: {}\n' >"$st_cdir/root/code/src/docker/docker-compose.dev.yml"
+  printf 'name: st-callers-test\nservices: {}\n' >"$st_cdir/root/code/src/docker/docker-compose.test.yml"
+  printf 'POSTGRES_DB=st\nPOSTGRES_USER=st\n' >"$st_cdir/root/code/src/docker/.env.dev"
+  printf 'POSTGRES_DB=st\nPOSTGRES_USER=st\n' >"$st_cdir/root/code/src/docker/.env.test"
+  printf 'backup\n' >"$st_cdir/root/backup.dump"
+  printf 'backup\n' >"$st_cdir/elsewhere/rel.dump"
+  # shellcheck disable=SC2016  # the stub's own text
+  printf '#!/usr/bin/env bash\nprintf "%%s\\n" "$*" >>"%s/calls"\n[[ "${ST_PS_DB:-}" == 1 && " $* " == *" ps "* ]] && echo db\n[[ " $* " == *" -d "* && ( " $* " == *" pg_restore "* || " $* " == *" psql "* ) ]] && wc -c >>"%s/stdin"\n[[ -n "${ST_RM_ON_DROP:-}" && " $* " == *"DROP DATABASE"* ]] && rm -f -- "$ST_RM_ON_DROP"\nexit 0\n' \
+    "$st_cdir" "$st_cdir" >"$st_cdir/bin/docker"
+  chmod +x "$st_cdir/bin/docker"
+}
+
+# st_call LABEL WANT POSTURE SCRIPT [ARG...]
+#   WANT 4      refused at 4, with the prefix, and the stub never called;
+#   WANT permit not refused, the stub called, and every call pinned to the default socket;
+#   WANT 0      exit 0 and every call pinned;
+#   WANT stop   a non-zero exit other than 4 before the stub was called. ST_CENV adds env-file lines; ST_PS_DB=1 the db.
+st_call() {
+  local label="$1" want="$2" posture="$3" script="$4" rc=0 ok=1 why="" pinned bad; shift 4
+  printf 'DEPLOYMENT_POSTURE: %s\n' "$posture" >"$st_cdir/root/.copier-answers.yml"
+  printf 'POSTGRES_DB=st\nPOSTGRES_USER=st\n%s' "${ST_CENV:-}" >"$st_cdir/root/code/src/docker/.env.dev"
+  printf 'POSTGRES_DB=st\nPOSTGRES_USER=st\n%s' "${ST_CENV:-}" >"$st_cdir/root/code/src/docker/.env.test"
+  rm -f -- "$st_cdir/calls" "$st_cdir/stdin"
+  (
+    cd "$st_cdir/elsewhere" &&
+    env -u DOCKER_CONTEXT -u DOCKER_HOST -u COMPOSE_PROJECT_NAME -u DEPLOYMENT_POSTURE \
+      HOME="$st_cdir/home" DOCKER_CONFIG="$st_cdir/cfg" PATH="$st_cdir/bin:$PATH" ST_PS_DB="${ST_PS_DB:-}" \
+      ST_RM_ON_DROP="${ST_RM_ON_DROP:-}" \
+      timeout 60 bash "$st_cdir/root/code/src/scripts/$script" "$@"
+  ) >"$st_cdir/out" 2>&1 || rc=$?
+  pinned="--host $ST_DEFAULT_SOCK "
+  bad="$( [[ -f "$st_cdir/calls" ]] && grep -vcF -- "$pinned" "$st_cdir/calls" || true)"
+  case "$want" in
+    4)
+      [[ "$rc" == 4 ]] || { ok=0; why+=" rc $rc, want 4"; }
+      grep -qF 'posture-guard: refused —' "$st_cdir/out" || { ok=0; why+=" no refusal prefix"; }
+      [[ -s "$st_cdir/calls" ]] && { ok=0; why+=" docker called on a refused run"; }
+      ;;
+    stop)
+      [[ "$rc" != 0 && "$rc" != 4 ]] || { ok=0; why+=" rc $rc, want a non-zero stop other than 4"; }
+      [[ -s "$st_cdir/calls" ]] && { ok=0; why+=" docker called before the stop"; }
+      ;;
+    permit|0)
+      [[ "$want" == 0 && "$rc" != 0 ]] && { ok=0; why+=" rc $rc, want 0"; }
+      [[ "$rc" == 4 ]] && { ok=0; why+=" rc 4"; }
+      grep -qF 'posture-guard: refused —' "$st_cdir/out" && { ok=0; why+=" unexpected refusal"; }
+      [[ -s "$st_cdir/calls" ]] || { ok=0; why+=" docker never called"; }
+      [[ "${bad:-0}" == 0 ]] || { ok=0; why+=" $bad docker call(s) not pinned to $ST_DEFAULT_SOCK"; }
+      ;;
+  esac
+  if (( ok )); then printf '  PASS  case %-30s B rc=%s\n' "$label" "$rc"
+  else
+    printf '  FAIL  case %-30s B rc=%s —%s\n' "$label" "$rc" "$why"
+    sed 's/^/          | /' "$st_cdir/out" | tail -n 8
+    ST_FAILS=$((ST_FAILS + 1))
+  fi
+}
+
+st_behavioural() {
+  local s
+  st_cfix
+  # Refused above development: exit 4 and the daemon never contacted.
+  st_call B-staging-reset         4 staging database/reset.sh --yes
+  st_call B-staging-restore       4 staging database/restore.sh --yes "$st_cdir/root/backup.dump"
+  st_call B-staging-seed-dev      4 staging database/seed-dev.sh
+  st_call B-staging-dev-down-vol  4 staging development/server.sh down --volumes
+  st_call B-staging-dev-up-seed   4 staging development/server.sh up --seed
+  st_call B-staging-test-down-vol 4 staging tests/server.sh down --volumes
+  # Permitted at development: every daemon call on the validated socket.
+  st_call B-dev-reset             permit development database/reset.sh --yes
+  st_call B-dev-restore           permit development database/restore.sh --yes "$st_cdir/root/backup.dump"
+  st_call B-dev-seed-dev          permit development database/seed-dev.sh
+  st_call B-dev-down-vol          permit development development/server.sh down --volumes
+  st_call B-dev-up-seed           permit development development/server.sh up --seed
+  st_call B-test-down-vol         permit development tests/server.sh down --volumes
+  st_call B-dev-migrate-show      permit development database/migrate.sh show
+  # The override crosses each parser, and up --seed hands it to its seed-dev child.
+  st_call B-override-seed-dev     permit staging database/seed-dev.sh --force-posture staging
+  st_call B-override-up-seed      permit staging development/server.sh up --seed --force-posture staging
+  st_call B-override-wrong        4 staging database/seed-dev.sh --force-posture production
+  # R-001 end to end: the env file's project name is the one the guard checks.
+  ST_CENV=$'COMPOSE_PROJECT_NAME=someone-else\n' st_call B-envfile-name-refused 4 development development/server.sh down --volumes
+  ST_CENV=$'COMPOSE_PROJECT_NAME=st-callers-dev\n' st_call B-envfile-name-matches permit development development/server.sh down --volumes
+  ST_CENV=$'COMPOSE_PROJECT_NAME=someone-else\n' st_call B-envfile-test-refused 4 development tests/server.sh down --volumes
+  # R-004: a relative backup path is resolved where the operator typed it, before the cd, and a
+  # missing one stops the run before the daemon is touched.
+  # The stub deletes the backup the moment the DROP runs: the restore must still read every byte,
+  # which it can only do from the descriptor it opened before the DROP — in both formats.
+  ST_PS_DB=1 ST_RM_ON_DROP="$st_cdir/elsewhere/rel.dump" \
+    st_call B-restore-relative-path 0 development database/restore.sh --yes rel.dump
+  s="$(grep -c 'DROP DATABASE' "$st_cdir/calls" 2>/dev/null || true)"
+  st_s "B-restore-relative-dropped-once" "$([[ "$s" == 1 ]] && echo 1)" "DROP DATABASE calls: ${s:-0}"
+  # pg_restore is fed the backup itself (7 bytes), from the descriptor opened before the DROP.
+  s="$(tr -d '[:space:]' <"$st_cdir/stdin" 2>/dev/null || true)"
+  st_s "B-restore-reads-the-backup" "$([[ "$s" == 7 ]] && echo 1)" "bytes pg_restore read: ${s:-none}"
+  printf 'backup\n' >"$st_cdir/elsewhere/rel.dump"
+  ST_PS_DB=1 ST_RM_ON_DROP="$st_cdir/elsewhere/rel.dump" \
+    st_call B-restore-plain-format 0 development database/restore.sh --yes --format plain rel.dump
+  s="$(tr -d '[:space:]' <"$st_cdir/stdin" 2>/dev/null || true)"
+  st_s "B-restore-plain-reads-the-backup" "$([[ "$s" == 7 ]] && echo 1)" "bytes psql read: ${s:-none}"
+  ST_PS_DB=1 st_call B-restore-missing-path stop development database/restore.sh --yes nothere.dump
+}
+
 self_test() {
   exec </dev/null
   ST_TMP="$(mktemp -d)"
@@ -526,8 +700,53 @@ self_test() {
   st_run F018-empty-norm-cpn     4 refuse st_f018_emptyc '+normalises to an empty'
   st_run F018-interpolated-name  4 refuse st_f018_interp '+interpolation or non-ASCII'
   st_run F018-non-ascii-name     4 refuse st_f018_kelvin '+interpolation or non-ASCII'
-  st_run F018-raw-declared-cpn   0 warn   st_f018_raw   '+locality is unverified' '+not a valid Compose project name' '+^bound=REFUSED$'
-  st_run F018-empty-normalised   0 warn   st_f018_empty '+locality is unverified' '+normalises to an empty' '+^bound=REFUSED$'
+  st_run F018-raw-declared-cpn   0 warn   st_f018_raw   '+compose project is unverified' '+not a valid Compose project name' '+^bound=REFUSED$'
+  st_run F018-empty-normalised   0 warn   st_f018_empty '+compose project is unverified' '+normalises to an empty' '+^bound=REFUSED$'
+
+  # R-002 — key spellings and continuation lines the line reader cannot model fail closed.
+  st_run R002-explicit-key      4 refuse st_c07qm    "+$repair" '+unrecognised' '+^resolved=$'
+  st_run R002-tagged-key        4 refuse st_c07tag   "+$repair" '+unrecognised' '+^resolved=$'
+  st_run R002-anchored-key      4 refuse st_c07anc   "+$repair" '+unrecognised' '+^resolved=$'
+  st_run R002-escaped-key       4 refuse st_c07esc   "+$repair" '+unrecognised' '+^resolved=$'
+  st_run R002-continuation      4 refuse st_c04cont  "+$repair" '+unrecognised' '+^resolved=$'
+  st_run R002-continuation-gap  4 refuse st_c04contb "+$repair" '+unrecognised' '+^resolved=$'
+  st_run R002-copier-shape      0 refuse st_c01ctx   '+^resolved=development$' '+^valid=1$'
+  st_run R002-tagged-key        0 warn   st_c07tag   '+posture: unknown' '-posture: development'
+
+  # R-001 — the env-file COMPOSE_PROJECT_NAME is compared like the shell's, the shell's first.
+  st_run R001-envfile-other     4 refuse st_ef_other   "+$f018" '-someone-else' '+env-file' '+value not shown'
+  st_run R001-envfile-export    4 refuse st_ef_export  '-someone-else' '+value not shown'
+  st_run R001-envfile-match     0 refuse st_ef_match   '+^valid=1$' "+$bound_default"
+  st_run R001-envfile-quoted    0 refuse st_ef_quoted  '+^valid=1$'
+  st_run R001-shell-first       0 refuse st_ef_shell   '+^valid=1$'
+  st_run R001-envfile-interp    4 refuse st_ef_interp  '+cannot be read'
+  st_run R001-envfile-invalid   4 refuse st_ef_invalid '+not a valid Compose project name' '-Someone'
+  st_run R001-envfile-no-key    0 refuse st_ef_none    '+^valid=1$'
+  st_run R001-envfile-spaced    4 refuse st_ef_spaced  '+other than on one'
+  st_run R001-envfile-colon     4 refuse st_ef_colon   '+other than on one'
+  st_run R001-envfile-twice     4 refuse st_ef_twice   '+other than on one'
+  st_run R001-envfile-crlf      0 refuse st_ef_crlf    '+^valid=1$'
+  st_run R001-envfile-commented 4 refuse st_ef_comment '+other than on one'
+  st_run R001-envfile-bom       4 refuse st_ef_bom     '+other than on one'
+  st_run R001-envfile-nbsp      4 refuse st_ef_nbsp    '+other than on one'
+  st_run R001-envfile-after-quote 4 refuse st_ef_after '+other than on one'
+  st_run R001-envfile-in-quote  4 refuse st_ef_multi   '+more than once|other than on one'
+  st_run R001-envfile-nul       4 refuse st_ef_nul     '+NUL'
+  st_run R001-envfile-tab       0 refuse st_ef_tab     '+^valid=1$'
+  st_run R002-copier-nel        0 refuse st_c01nel     '+^resolved=development$'
+  st_run R002-copier-ls         0 refuse st_c01ls      '+^resolved=development$'
+  st_run R002-nel-continuation  4 refuse st_c04nel     "+$repair" '+unrecognised'
+  st_run R002-lone-cr           4 refuse st_c07cr      "+$repair" '+more than once' '+^resolved=$'
+  st_run R002-nel               4 refuse st_c07nel     "+$repair" '+more than once' '+^resolved=$'
+  st_run R002-line-separator    4 refuse st_c07ls      "+$repair" '+more than once' '+^resolved=$'
+  st_run R002-para-separator    4 refuse st_c07ps      "+$repair" '+more than once' '+^resolved=$'
+  st_run R002-crlf-carrier      0 refuse st_c01crlf    '+^resolved=development$'
+  st_run R001-envfile-other     0 warn   st_ef_other   '+compose project is unverified' '-someone-else' '+^bound=REFUSED$'
+
+  # R-003 — a project-name refusal prints the project repair; a socket refusal the socket one.
+  st_run R003-project-repair    4 refuse st_14a_compose '+Unset or correct COMPOSE_PROJECT_NAME' '-Select a local unix-socket'
+  st_run R003-envfile-repair    4 refuse st_ef_other    '+Unset or correct COMPOSE_PROJECT_NAME' '-Select a local unix-socket'
+  st_run R003-socket-repair     4 refuse st_14a_ssh     '+Select a local unix-socket' '-Unset or correct'
 
   # Warn mode turns every refusal above into a warning and a 0, printing the posture (or
   # "unknown") and the expand-then-contract obligation at every posture.
@@ -548,7 +767,7 @@ self_test() {
   local m want t
   for m in refuse warn; do
     want=4; [[ "$m" == warn ]] && want=0
-    t=(); [[ "$m" == warn ]] && t=('+locality is unverified' '+^valid=$' '+^bound=REFUSED$')
+    t=(); [[ "$m" == warn ]] && t=('+(locality|compose project) is unverified' '+^valid=$' '+^bound=REFUSED$')
     st_run 14a-remote-host    "$want" "$m" st_14a_ssh      '+ssh' "${t[@]}"
     st_run 14a-remote-context "$want" "$m" st_14a_ctx      '+tcp' "${t[@]}"
     st_run 14a-tcp-loopback   "$want" "$m" st_14a_loop     '+tcp' "${t[@]}"
@@ -587,7 +806,7 @@ self_test() {
     rc=0
     # shellcheck disable=SC2016  # the child shell expands its own positional parameters
     env -u DOCKER_CONTEXT -u COMPOSE_PROJECT_NAME DOCKER_CONFIG="$sdir/cfg" DOCKER_HOST="$([[ $label == warn ]] && echo ssh://x)" \
-      bash -euo pipefail -c 'source "$1"; posture_guard "$2" "$3" "$4" st-proj; echo REACHED' \
+      bash -euo pipefail -c 'source "$1"; posture_guard "$2" "$3" "$4" st-proj ""; echo REACHED' \
       _ "$SCRIPT_DIR/../_lib/posture-guard.sh" "$sdir/root" "$smode" "$sover" >"$sdir/out" 2>&1 || rc=$?
     if [[ "$rc" == 0 ]] && grep -qx REACHED "$sdir/out"; then
       printf '  PASS  case %-24s %-6s rc=%s\n' "set-euo-$label" "$smode" "$rc"
@@ -621,6 +840,10 @@ self_test() {
     >"$ST_TMP/cases/help.out" 2>"$ST_TMP/cases/help.err" || rc=$?
   st_s "help-clean-migrate" "$([[ "$rc" == 0 && ! -s "$ST_TMP/cases/help.err" ]] && echo 1)" \
     "rc $rc, stderr: $(head -c 200 "$ST_TMP/cases/help.err")"
+
+  # The callers run for real against a fixture repository, on a recording docker (R-005).
+  log "  ── behavioural cases: the six callers, run ──"
+  st_behavioural
 
   if [[ -e "$ST_TMP/docker-calls" ]]; then
     printf '  FAIL  docker was invoked:\n'; sed 's/^/          | /' "$ST_TMP/docker-calls"

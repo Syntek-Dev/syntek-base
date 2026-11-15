@@ -1,14 +1,14 @@
 # QA Implementation Review — US006 The deployment-posture guard
 
-| Field        | Value                                                                                                                                                                                  |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Story**    | US006 — The destructive dev scripts read the deployment posture, and refuse to run above development                                                                                   |
-| **Date**     | 15/11/2026                                                                                                                                                                             |
-| **Sprint**   | SPRINT-04                                                                                                                                                                              |
-| **Reviewer** | Claude Code — `qa-tester` skill, Opus, `22-implementation-documentation` Step 3                                                                                                        |
-| **Branch**   | `us006/posture-guard` at `fbd9dbc`, re-evaluated 15/11/2026 against the F-001 fix to `development/server.sh` and the F-018 fix to `_lib/posture-guard.sh`, both committed in `0a6db24` |
-| **Plan doc** | `../PLANNING/QA-PLAN-US006-POSTURE-GUARD.md`                                                                                                                                           |
-| **Outcome**  | Pass — every scenario Pass; ES-07 re-marked Pass after the F-001 fix. Manual walk complete, PERM-07 included (70 Pass, 0 Fail), countersigned by Sam Bailey 15/11/2026                 |
+| Field        | Value                                                                                                                                                                                                                                                           |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**    | US006 — The destructive dev scripts read the deployment posture, and refuse to run above development                                                                                                                                                            |
+| **Date**     | 15/11/2026                                                                                                                                                                                                                                                      |
+| **Sprint**   | SPRINT-04                                                                                                                                                                                                                                                       |
+| **Reviewer** | Claude Code — `qa-tester` skill, Opus, `22-implementation-documentation` Step 3                                                                                                                                                                                 |
+| **Branch**   | `us006/posture-guard` at `fbd9dbc`, re-evaluated 15/11/2026 against the F-001 fix to `development/server.sh` and the F-018 fix to `_lib/posture-guard.sh`, both committed in `0a6db24`; then against the workflow 23 review fixes (F-020 to F-026), uncommitted |
+| **Plan doc** | `../PLANNING/QA-PLAN-US006-POSTURE-GUARD.md`                                                                                                                                                                                                                    |
+| **Outcome**  | Pass — every scenario Pass; ES-07 re-marked Pass after the F-001 fix. Manual walk complete, PERM-07 included (70 Pass, 0 Fail), countersigned by Sam Bailey 15/11/2026. Workflow 23 review: seven LOW/INFO findings, all resolved 15/11/2026                    |
 
 ---
 
@@ -45,6 +45,29 @@ now runs its guard and Docker bind before `compose up -d` and the password sync,
 `down --volumes` can no longer act on a different project than the one named. Self-test: exit 0,
 **186 of 186**, adding eleven `F018-*` helper cases. No scenario's result changes; ES-04 gains the
 evidence.
+
+**Re-evaluated a third time 15/11/2026** after workflow 23's review — three separate dispatches
+(content, `security`, `qa-tester`), each adversarially verified by a second agent, with no Critical,
+High or Medium after verification. The developer directed all seven findings fixed on this branch
+(uncommitted at the time of writing; detail in the findings record):
+
+| Finding | Severity | What changed                                                                                                                                                                                                                                                                                                                                                           |
+| ------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| F-020   | LOW      | The compose-project check also reads `COMPOSE_PROJECT_NAME` from the caller's `--env-file` (shell first); new fifth positional `ENV_FILE` on `posture_guard`; after the re-checks, read by `posture_env_project`, which accepts exactly one mention of the key, on a plain `COMPOSE_PROJECT_NAME=value` line, and refuses anything else — a commented-out key included |
+| F-021   | LOW      | Carrier spellings a line reader cannot model (`? KEY`, tag, anchor, escaped quoted key, continuation line; after the re-checks, a key hidden after a lone CR, NEL, U+2028 or U+2029, all now read as line breaks) refuse; a quoted answer Copier dumped with a raw NEL still reads                                                                                     |
+| F-022   | LOW      | A compose-project refusal prints its own repair, not the Docker-socket one; warn mode names the compose project too                                                                                                                                                                                                                                                    |
+| F-023   | LOW      | `restore.sh` makes a relative backup path absolute before its `cd` and opens it on fd 3 before the DROP — **pre-existing, not US006's**; `../../21-BUGS/BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md`                                                                                                                                                     |
+| F-024   | INFO     | A behavioural tier runs the six callers against a recording `docker`                                                                                                                                                                                                                                                                                                   |
+| F-025   | LOW      | The harness's `SC2016` directive added; ShellCheck citations corrected                                                                                                                                                                                                                                                                                                 |
+| F-026   | INFO     | Stale counts and lines in the security records corrected                                                                                                                                                                                                                                                                                                               |
+
+Self-test: exit 0, **250 of 250** (164 H, 60 S, 25 B, `docker never invoked`). No scenario's result
+changes and no manual row needed amending or re-walking. An independent re-check of the fixes
+(four rounds, by a separate agent that wrote none of the code) verified R-003, R-005 and R-006
+closed, found R-001 and R-002 not fully closed (both reshaped into final forms), found a MEDIUM
+NUL-byte gap in the F-020 fix and a tab false refusal, and strengthened the F-023 regression case;
+all fixed, no regression (the guide's _Failures_ says why); ES-04
+gains the env-file evidence (EC-N6), and EC-N7 and EC-N8 are new below.
 
 ## 2. Acceptance-criteria gaps closed
 
@@ -139,13 +162,16 @@ behave like access control are covered above: EC-06 (TM-05) and ES-04 (TM-01).
 
 ## 5. New edge cases discovered
 
-| ID    | Scenario                                                                                         | Result           | Evidence                                                                                                                                                                                                                              | Fold back?                                                                                                        |
-| ----- | ------------------------------------------------------------------------------------------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| EC-N1 | `server.sh up --seed` with an unverifiable Docker target, or a `staging` carrier and no override | Pass (after fix) | **Was Fail** (pre-guard `compose up -d` and password sync). Fixed on this branch 15/11/2026 (F-001): manual `REFUSE-05` (zero daemon events) and `TARGET-01`, `TARGET-03` (no pre-guard calls)                                        | Done — folded back as S `21-seed-guard-first-in-block`, `F001-seed-bound-before-up`, `F001-up-d-on-compose-array` |
-| EC-N2 | Default context on a rootless-Docker host                                                        | Not walked       | `posture_context_to_endpoint` and the default branch hard-code `unix:///var/run/docker.sock`; with no context selected, a rootless host is bound to a socket it does not serve and the command fails. Fail-closed, functional only    | Findings record decides                                                                                           |
-| EC-N3 | `restore.sh` with a missing backup file above `development`                                      | Pass (as built)  | `restore.sh:89-90` exits 2 before the guard; the operator sees the argument error, not the refusal. No security effect                                                                                                                | No                                                                                                                |
-| EC-N4 | Hostile override or context name containing terminal escapes                                     | Pass             | `posture_quote` (`printf %q`) on every caller- or config-supplied value in a refusal                                                                                                                                                  | No                                                                                                                |
-| EC-N5 | `COMPOSE_PROJECT_NAME` set to a declared name Compose normalises (an unrendered slug token)      | Pass (after fix) | **Was a false success** (F-018, found walking PERM-07): permitted, then `down --volumes` printed success while Compose acted on a different, empty project. Fixed on this branch 15/11/2026: refused at 4 as not a valid Compose name | Done — folded back as eleven H `F018-*` cases                                                                     |
+| ID    | Scenario                                                                                                     | Result           | Evidence                                                                                                                                                                                                                                                                                                                                                                                       | Fold back?                                                                                                        |
+| ----- | ------------------------------------------------------------------------------------------------------------ | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| EC-N1 | `server.sh up --seed` with an unverifiable Docker target, or a `staging` carrier and no override             | Pass (after fix) | **Was Fail** (pre-guard `compose up -d` and password sync). Fixed on this branch 15/11/2026 (F-001): manual `REFUSE-05` (zero daemon events) and `TARGET-01`, `TARGET-03` (no pre-guard calls)                                                                                                                                                                                                 | Done — folded back as S `21-seed-guard-first-in-block`, `F001-seed-bound-before-up`, `F001-up-d-on-compose-array` |
+| EC-N2 | Default context on a rootless-Docker host                                                                    | Not walked       | `posture_context_to_endpoint` and the default branch hard-code `unix:///var/run/docker.sock`; with no context selected, a rootless host is bound to a socket it does not serve and the command fails. Fail-closed, functional only                                                                                                                                                             | Findings record decides                                                                                           |
+| EC-N3 | `restore.sh` with a missing backup file above `development`                                                  | Pass (as built)  | `restore.sh:89-90` exits 2 before the guard; the operator sees the argument error, not the refusal. No security effect                                                                                                                                                                                                                                                                         | No                                                                                                                |
+| EC-N4 | Hostile override or context name containing terminal escapes                                                 | Pass             | `posture_quote` (`printf %q`) on every caller- or config-supplied value in a refusal                                                                                                                                                                                                                                                                                                           | No                                                                                                                |
+| EC-N5 | `COMPOSE_PROJECT_NAME` set to a declared name Compose normalises (an unrendered slug token)                  | Pass (after fix) | **Was a false success** (F-018, found walking PERM-07): permitted, then `down --volumes` printed success while Compose acted on a different, empty project. Fixed on this branch 15/11/2026: refused at 4 as not a valid Compose name                                                                                                                                                          | Done — folded back as eleven H `F018-*` cases                                                                     |
+| EC-N6 | `COMPOSE_PROJECT_NAME` naming another project set only in the `--env-file`, shell unset                      | Pass (after fix) | **Was a pass-through** (F-020, review R-001): the check read the shell only. Now refused at 4 with the project repair, including the `=`/`:` spellings, BOM, NBSP, quoting forms and NUL byte the re-checks found (a commented mention refuses too — an accepted, documented fail-closed residual); H `R001-*`, B `B-envfile-name-refused`, `B-envfile-name-matches`, `B-envfile-test-refused` | Done — folded back as H `R001-*` and two B cases                                                                  |
+| EC-N7 | Carrier key written as `? DEPLOYMENT_POSTURE`, tagged, anchored, escaped, or followed by a continuation line | Pass (after fix) | **Was a misread** (F-021, review R-002): could read `development` where PyYAML reads `production`. Now `unrecognised`, refused at 4 — and, after the re-checks, a key hidden after a lone CR, NEL, U+2028 or U+2029 (refused as a duplicate); H `R002-*`                                                                                                                                       | Done — folded back as H `R002-*`                                                                                  |
+| EC-N8 | `restore.sh` with a relative backup path, run from outside the repository root                               | Pass (after fix) | **Was data loss, pre-existing** (F-023, review R-004): the database was dropped, then the read failed. Now resolved before the `cd` and opened before the DROP; B `B-restore-relative-path`, `B-restore-relative-dropped-once`, `B-restore-missing-path`                                                                                                                                       | Done — bug report filed, status fixed                                                                             |
 
 ## 6. Deferred scenarios
 
@@ -168,14 +194,16 @@ pasteable re-run (`posture_rerun`) or the concrete repair. Read as an operator w
   The four QA-visible constraints the plan named: carrier-only read (case 13), ordering (case 12),
   damaged-carrier verdict (cases 04–10, 17) and presence (S `7.8-presence-*`; negative walked as
   `PRESENCE-01`). ES-07/EC-N1 is the security record's TM-N1 / F-001 (LOW), resolved on this branch
-  15/11/2026; EC-N5 is F-018, fixed under TM-01 the same day. No CRITICAL or HIGH.
+  15/11/2026; EC-N5 is F-018, fixed under TM-01 the same day. EC-N6 and EC-N7 are the security
+  records' TM-N3 (F-020) and TM-N4 (F-021), both LOW, mitigated 15/11/2026; the workflow 23
+  security pass is recorded there as the independent review. No CRITICAL or HIGH.
 
 ## Sign-off checklist
 
 - [x] Every plan scenario (HP/ES/EC/PA) addressed — every one Pass, with the row named
 - [x] Acceptance-criteria gaps closed or carried forward with evidence
 - [x] Deviations from the plan justified — the precedence departure (F-002) and the harness move (F-005) recorded as plan errata 15/11/2026
-- [x] New edge cases recorded (EC-N1 fixed and folded back)
+- [x] New edge cases recorded (EC-N1, EC-N5 to EC-N8 fixed and folded back)
 - [x] Accessibility observations confirmed against the build — N/A recorded
 - [x] GDPR & security observations confirmed — N/A for GDPR
 - [x] Coverage floors met for all modules in scope — N/A: no pytest, no coverage figure (plan Section 6)
@@ -188,9 +216,10 @@ pasteable re-run (`posture_rerun`) or the concrete repair. Read as an operator w
 
 - `../PLANNING/QA-PLAN-US006-POSTURE-GUARD.md` — the pre-development plan verified here
 - `../../02-STORIES/US006.md` — the story under review
-- `../../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-001, F-002, F-005, F-018
+- `../../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-001, F-002, F-005, F-018, and the workflow 23 review's F-020 to F-026
+- `../../21-BUGS/BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md` — F-023 / EC-N8
 - `../../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md` — the 09/10/2026 target decision and the Key Decisions cited in Section 4
 - `../../18-TESTS/AUTOMATED/US006-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US006-MANUAL-TESTING.md` — downstream test records
-- `../../10-SECURITY/THREAT-MODEL/IMPLEMENTATION/THREAT-MODEL-IMPL-US006-POSTURE-GUARD-15-11-2026.md` — TM-N1 and TM-N2
+- `../../10-SECURITY/THREAT-MODEL/IMPLEMENTATION/THREAT-MODEL-IMPL-US006-POSTURE-GUARD-15-11-2026.md` — TM-N1 to TM-N4
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `code/docs/GATE-REPORTING.md` — why "pending walk" is never written as Pass

@@ -125,7 +125,7 @@ if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then usage; exit 0; fi
 # pinned to it; on an unverified one the guard has said so and the existing selection stands —
 # no local fallback is invented and no earlier endpoint is reused (the guard clears its outputs).
 COMPOSE_NAME="$(posture_compose_name "$COMPOSE_FILE" "$OVERRIDE_DEV_FILE")"
-posture_guard "$PROJECT_ROOT" warn "" "$COMPOSE_NAME" \
+posture_guard "$PROJECT_ROOT" warn "" "$COMPOSE_NAME" "$ENV_FILE" \
   bash code/src/scripts/database/migrate.sh "$@" || exit "$?"
 if [[ "${posture_target_valid-}" == 1 ]]; then
   posture_docker_bind || exit "$?"

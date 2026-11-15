@@ -312,11 +312,28 @@ Findings raised by the walk, in `../../20-FINDINGS/FINDING-US006-POSTURE-GUARD-1
 - **F-018 — resolved 15/11/2026,** fixed on this branch. The compose-name allowlist compared the
   raw declared `name:` while Compose normalises it, so with an unrendered slug token a permitted
   `down --volumes` could print success and remove nothing. It now compares the normalised name and
-  refuses a name Compose would reject; eleven `F018-*` self-test cases, 186 of 186, in `0a6db24`.
+  refuses a name Compose would reject; eleven `F018-*` self-test cases, 186 of 186 in `0a6db24`
+  (250 of 250 after the workflow 23 review fixes).
   PERM-07 was amended to name the normalised form (trail in its _Notes_) and walked `Pass`.
 - **F-019 — routed 15/11/2026** to `../../21-BUGS/BUG-TEST-SERVER-WORKTREE-URL-PORT-15-11-2026.md`,
   not fixed in US006. `tests/server.sh up` prints the worktree URL on port 6081 while the us006
   test override binds 3081. Not a row failure; no row asserts the URL.
+- **F-020 to F-026 — resolved 15/11/2026,** raised by workflow 23's review after this walk and
+  fixed on this branch, F-020 to F-023 widened after an independent re-check; self-test 250 of 250. **No row was amended and none re-walked:** no row's Expected outcome or recorded line quotes
+  the compose-project refusal or warning (F-022 changed only those texts; every socket refusal
+  quoted in TARGET-01, TARGET-03 and PERM-03, and every socket warning in TARGET-05, is unchanged);
+  no walked carrier used a spelling or a line break F-021 now refuses (the scratch carriers were
+  single `DEPLOYMENT_POSTURE:` lines, each damaged variant the form its row names, and DAMAGED-04's two canonical keys still read as duplicated);
+  and F-020 reads `COMPOSE_PROJECT_NAME` from the env-file only when the shell sets
+  none — PERM-07 sets it in the shell, the tracked `.env.*.example` files the fixture rows were built
+  from set none, and on the stack rows `server.sh status` confirmed the us006 project, which
+  Compose would not have used had the env file named another. **One accepted residual, recorded rather than re-walked:** F-020's final form also refuses an env-file that merely _mentions_ the key — a
+  commented-out `# COMPOSE_PROJECT_NAME=` line included — when the shell sets none. The tracked
+  `.env.*.example` files mention it nowhere; the gitignored env file the stack rows ran on was not
+  read by this closeout, so whether it does is unverified. If it does, the guarded stack rows would
+  now refuse at 4 and need re-walking. F-023 (pre-existing in
+  `restore.sh`) changes a relative backup path and when the file is opened, not what a successful
+  restore does; the restore rows used a backup taken to `/tmp`, an absolute path.
 
 ---
 
@@ -349,7 +366,7 @@ Filled at the walk. The story requires a tester **other than the author** to sig
 
 - `../../02-STORIES/US006.md` — the story under test; its _QA Acceptance Criteria — Manual_ is the bar this guide is judged against, and its proof-case list numbers the cases cited above
 - `../../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md` — the implementation plan this guide was authored beside; its proof-case table marks which cases are walked by hand
-- `../AUTOMATED/US006-TEST-STATUS.md` — the paired automated-test record, written at `22-implementation-documentation` Step 4 (self-test 186 of 186 after the F-001 and F-018 fixes)
+- `../AUTOMATED/US006-TEST-STATUS.md` — the paired automated-test record, written at `22-implementation-documentation` Step 4 (self-test 186 of 186 at `0a6db24`; 250 of 250 after the workflow 23 review fixes)
 - `../../11-QA/PLANNING/QA-PLAN-US006-POSTURE-GUARD.md` — where the `QA` column's scenario IDs are defined
 - `../../11-QA/IMPLEMENTATION/` — the QA implementation review, written at `22`: whether the specified scenarios were met
 - `../../05-USER-FLOW/` — no consolidated flow covers this story; its User Flow flag reads `N/A`, so every `Flow` cell is `—`

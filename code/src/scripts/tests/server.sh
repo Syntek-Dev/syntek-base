@@ -114,7 +114,7 @@ DOCKER=(docker)
 # Above the env-file check, so an operator with no .env.test still sees the posture refusal.
 # A permit pins the compose array below to the target the guard validated.
 if [[ "$COMMAND" == down ]] && $VOLUMES; then
-  posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+  posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" "$ENV_FILE" \
     bash code/src/scripts/tests/server.sh "${ORIG_ARGS[@]}" || exit "$?"
   posture_docker_bind || exit "$?"
   DOCKER=("${posture_docker[@]}")

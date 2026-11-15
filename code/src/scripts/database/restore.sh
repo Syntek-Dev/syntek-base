@@ -88,6 +88,11 @@ done
 
 [[ -z "$BACKUP_FILE" ]] && die "No backup file specified. Usage: restore.sh <backup-file>"
 [[ -f "$BACKUP_FILE" ]] || die "Backup file not found: $BACKUP_FILE"
+[[ -r "$BACKUP_FILE" ]] || die "Backup file is not readable: $BACKUP_FILE"
+# Resolved where the operator typed it, now: the script moves to the repository root below, and
+# a relative path read after that names a different file — read only after the DROP, so a typo'd
+# relative path used to empty the database and then fail (review R-004).
+BACKUP_FILE="$(CDPATH='' cd -- "$(dirname -- "$BACKUP_FILE")" && pwd)/$(basename -- "$BACKUP_FILE")"
 
 case "$FORMAT" in
   custom|plain) ;;
@@ -101,7 +106,7 @@ cd "$PROJECT_ROOT"
 # down. A refusal ends the run at 4; a permit pins every Docker call below to the one target
 # the guard validated.
 COMPOSE_NAME="$(posture_compose_name "$COMPOSE_FILE" "$OVERRIDE_DEV_FILE")"
-posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" "$ENV_FILE" \
   bash code/src/scripts/database/restore.sh "${ORIG_ARGS[@]}" || exit "$?"
 posture_docker_bind || exit "$?"
 DOCKER=("${posture_docker[@]}")
@@ -139,6 +144,12 @@ if ! $YES; then
 fi
 
 # ── Restore ───────────────────────────────────────────────────────────────────
+# The last moment the restore can stop with nothing lost. The file is OPENED here, before the
+# DROP, and read from that descriptor afterwards — so a file removed or replaced in between can
+# no longer leave an empty database behind (review, independent re-check).
+if [[ ! -f "$BACKUP_FILE" || ! -r "$BACKUP_FILE" ]] || ! exec 3<"$BACKUP_FILE"; then
+  die "Backup file is no longer readable: $BACKUP_FILE — nothing was dropped."
+fi
 bold "  Dropping and recreating '$DB_NAME'…"
 "${DC[@]}" exec -T db \
   psql -U "$DB_USER" -c "DROP DATABASE IF EXISTS \"$DB_NAME\";" postgres
@@ -149,10 +160,10 @@ log ""
 bold "  Restoring from backup…"
 if [[ "$FORMAT" == "custom" ]]; then
   "${DC[@]}" exec -T db \
-    pg_restore -U "$DB_USER" -d "$DB_NAME" --no-owner --role "$DB_USER" < "$BACKUP_FILE"
+    pg_restore -U "$DB_USER" -d "$DB_NAME" --no-owner --role "$DB_USER" <&3
 else
   "${DC[@]}" exec -T db \
-    psql -U "$DB_USER" -d "$DB_NAME" < "$BACKUP_FILE"
+    psql -U "$DB_USER" -d "$DB_NAME" <&3
 fi
 
 log ""

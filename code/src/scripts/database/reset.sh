@@ -97,7 +97,7 @@ cd "$PROJECT_ROOT"
 # down. A refusal ends the run at 4; a permit pins every Docker call below to the one target
 # the guard validated.
 COMPOSE_NAME="$(posture_compose_name "$COMPOSE_FILE" "$OVERRIDE_DEV_FILE")"
-posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" "$ENV_FILE" \
   bash code/src/scripts/database/reset.sh "${ORIG_ARGS[@]}" || exit "$?"
 posture_docker_bind || exit "$?"
 DOCKER=("${posture_docker[@]}")

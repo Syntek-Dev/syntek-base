@@ -9,5 +9,19 @@
         }
       }
     }
-  }
+  },
+  "private_files": [
+    "**/.env*",
+    "**/.env.dev",
+    "**/.env.test",
+    "**/.env.testing",
+    "**/.env.staging",
+    "**/.env.prod",
+    "**/.env.production",
+    "**/*.pem",
+    "**/*.key",
+    "**/*.cert",
+    "**/*.crt",
+    "**/secrets.yml"
+  ]
 }

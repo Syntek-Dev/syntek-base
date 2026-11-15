@@ -94,7 +94,7 @@ cd "$PROJECT_ROOT"
 # Before the first Docker call, preflight included. Run from server.sh up --seed this sees the
 # parent's validated socket as DOCKER_HOST, with DOCKER_CONTEXT cleared, and validates it again.
 COMPOSE_NAME="$(posture_compose_name "$COMPOSE_FILE" "$OVERRIDE_DEV_FILE")"
-posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" "$ENV_FILE" \
   bash code/src/scripts/database/seed-dev.sh "${ORIG_ARGS[@]}" || exit "$?"
 posture_docker_bind || exit "$?"
 DOCKER=("${posture_docker[@]}")

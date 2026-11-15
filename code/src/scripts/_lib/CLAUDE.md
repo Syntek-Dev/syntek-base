@@ -31,7 +31,7 @@ invoke directly. Full inventory: `CONTEXT.md`.
   was the one running where it mattered. Adding a third caller means sourcing it, never
   reproducing the regex.
 - **`posture-guard.sh` is the one caller contract here that returns a verdict, not output.**
-  `posture_guard ROOT MODE OVERRIDE COMPOSE_NAME [INVOCATION...]` returns `0` to permit and `4`
+  `posture_guard ROOT MODE OVERRIDE COMPOSE_NAME ENV_FILE [INVOCATION...]` returns `0` to permit and `4`
   to refuse, writes any refusal to stderr prefixed `posture-guard: refused —`, and never calls
   `exit` — a new return contract for `_lib/`, whose other helpers return `0` and signal on
   stdout. Its contract block in the file header is authoritative; these are the caller's duties:
@@ -48,8 +48,11 @@ invoke directly. Full inventory: `CONTEXT.md`.
     `posture_docker_bind`, never a bare `docker`, so the target cannot be re-resolved after the
     check; across a shell-out the child gets `posture_endpoint` as its only Docker selection.
   - **`COMPOSE_NAME` comes from `posture_compose_name`** over the caller's full compose set.
+  - **`ENV_FILE` is the file the caller hands Compose as `--env-file`** (`""` when none), so a
+    `COMPOSE_PROJECT_NAME` set there is checked exactly as one set in the shell.
   - **A new guarded caller joins the self-test's wiring assertions** in
-    `database/_migrate-self-test.sh`, and `migrate.sh --self-test` must stay green.
+    `database/_migrate-self-test.sh` — its structural assertions, and a behavioural case that runs
+    it against the fixture repository — and `migrate.sh --self-test` must stay green.
 - Secrets via environment only.
 
 ## Output & naming
