@@ -3,14 +3,18 @@
 # server.sh — Manage the development Docker Compose stack.
 #
 # Usage:
-#   server.sh up       [--build] [--watch] [--service SERVICE]
-#   server.sh down     [--volumes]
+#   server.sh up       [--build] [--watch] [--seed] [--service SERVICE] [--force-posture POSTURE]
+#   server.sh down     [--volumes] [--force-posture POSTURE]
 #   server.sh restart  [--service SERVICE]
 #   server.sh build    [--service SERVICE]
 #   server.sh status
 #   server.sh --help
 #
+# The posture guard (_lib/posture-guard.sh) binds two paths only: `down --volumes` and
+# `up --seed`. --force-posture is accepted everywhere and inert on every other path.
+#
 # Exit codes:  0 = success   1 = command failed   2 = script error
+#              4 = refused by the posture guard (_lib/posture-guard.sh)
 #
 set -euo pipefail
 
@@ -18,6 +22,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.dev.yml"
 ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
+ORIG_ARGS=("$@")
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 die()  { printf 'server.sh error: %s\n' "$*" >&2; exit 2; }
@@ -46,6 +51,12 @@ Options (down):
   --volumes          Also remove named volumes (wipes database data)
   --clean-hosts [N]  Remove /etc/hosts entries for story N (defaults to current us### branch)
 
+Options (all commands):
+  --force-posture POSTURE
+                     Name the posture the project is at now (staging or production) to
+                     run a guarded path above development: `down --volumes`, and
+                     `up --seed` (forwarded to seed-dev.sh). Inert everywhere else.
+
 Options (stop, restart, build):
   --service SERVICE  Target a single service
 
@@ -55,6 +66,7 @@ down readiness probe through this script — `restart` returns the service faste
 probe interval, so the outage is never observed (how-to/docs/HEALTH-PROBES.md).
 
 Exit codes:  0 = success   1 = command failed   2 = script error
+             4 = refused by the posture guard (posture-guard: refused —)
 EOF
 }
 
@@ -79,6 +91,7 @@ VOLUMES=false
 CLEAN_HOSTS=false
 CLEAN_HOSTS_NUM=""
 SERVICE=""
+FORCE_POSTURE=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -90,6 +103,7 @@ while [[ $# -gt 0 ]]; do
                         if [[ "${2:-}" =~ ^[0-9]+$ ]]; then CLEAN_HOSTS_NUM="$2"; shift; fi
                         shift ;;
     --service)          require_arg "$@"; SERVICE="$2"; shift 2 ;;
+    --force-posture)    require_arg "$@"; FORCE_POSTURE="$2"; shift 2 ;;
     --help|-h)          usage; exit 0 ;;
     *)                  die "Unknown option '$1'. Use --help for usage." ;;
   esac
@@ -97,16 +111,33 @@ done
 
 cd "$PROJECT_ROOT"
 
-[[ -f "$ENV_FILE" ]] || die "Env file not found: $ENV_FILE"
-
-# Auto-detect worktree: if branch is us###/*, apply matching compose override.
+# Auto-detect worktree: if branch is us###/*, apply matching compose override. Sourced ahead
+# of the env-file check because the posture guard needs the override's declared name.
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/posture-guard.sh
+source "$SCRIPT_DIR/../_lib/posture-guard.sh"
+COMPOSE_NAME="$(posture_compose_name "$COMPOSE_FILE" "$OVERRIDE_DEV_FILE")"
+DOCKER=(docker)
+
+# ── Posture guard: down --volumes ─────────────────────────────────────────────
+# Above the env-file check, so an operator with no .env.dev still sees the posture refusal.
+# A permit pins the compose array below to the target the guard validated.
+if [[ "$COMMAND" == down ]] && $VOLUMES; then
+  posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+    bash code/src/scripts/development/server.sh "${ORIG_ARGS[@]}" || exit "$?"
+  posture_docker_bind || exit "$?"
+  DOCKER=("${posture_docker[@]}")
+fi
+
+[[ -f "$ENV_FILE" ]] || die "Env file not found: $ENV_FILE"
+
 # shellcheck source=code/src/scripts/_lib/env-file.sh
 source "$SCRIPT_DIR/../_lib/env-file.sh"
 
-# Base docker compose command with env file — all subcommands use this array.
-DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+# Base docker compose command with env file — all subcommands use this array. DOCKER is the
+# plain CLI on every unguarded path and the validated binding on `down --volumes`.
+DC=("${DOCKER[@]}" compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
     ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
 
 # ── Internal helpers ──────────────────────────────────────────────────────────
@@ -146,7 +177,13 @@ case "$COMMAND" in
     if $SEED; then
       log ""
       bold "  Seeding dev data…"
-      bash "$SCRIPT_DIR/../database/seed-dev.sh"
+      # Guarded here and not at the head of `up`: `up --build` stays unbound at every posture.
+      # The child is handed the override verbatim and the validated socket as its only Docker
+      # selection, and validates both through its own guard before it touches anything.
+      posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+        bash code/src/scripts/development/server.sh "${ORIG_ARGS[@]}" || exit "$?"
+      posture_docker_bind || exit "$?"
+      env -u DOCKER_CONTEXT DOCKER_HOST="$posture_endpoint" bash "$SCRIPT_DIR/../database/seed-dev.sh" ${FORCE_POSTURE:+--force-posture "$FORCE_POSTURE"} || exit "$?"
     fi
     log ""
     bold "✓ Stack is up."

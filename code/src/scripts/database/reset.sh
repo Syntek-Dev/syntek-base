@@ -3,9 +3,10 @@
 # reset.sh — Drop and recreate the development database, then run all migrations.
 #            ⚠  DESTRUCTIVE — irreversibly destroys all dev data.
 #
-# Usage: reset.sh [--seed] [--yes] [--help]
+# Usage: reset.sh [--seed] [--yes] [--force-posture POSTURE] [--help]
 #
 # Exit codes:  0 = success   1 = command failed   2 = script error
+#              4 = refused by the posture guard (_lib/posture-guard.sh)
 #
 set -euo pipefail
 
@@ -16,8 +17,11 @@ ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
-DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
-    ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
+# shellcheck source=code/src/scripts/_lib/posture-guard.sh
+source "$SCRIPT_DIR/../_lib/posture-guard.sh"
+# The compose array is built only after the posture guard has validated and pinned the Docker
+# target (below), so not even the container preflight can reach a different daemon.
+ORIG_ARGS=("$@")
 
 # Read DB credentials from env file when not set in the shell environment.
 if [[ -f "$ENV_FILE" ]]; then
@@ -37,12 +41,14 @@ DB_USER="${DB_USER:-<%PROJECT_SLUG%>}"
 # ── Defaults ──────────────────────────────────────────────────────────────────
 SEED=false
 YES=false
+FORCE_POSTURE=""
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 die()  { printf 'reset.sh error: %s\n' "$*" >&2; exit 2; }
 bold() { printf '\033[1m%s\033[0m\n' "$*"; }
 log()  { printf '%s\n' "$*"; }
 warn() { printf '\033[33m%s\033[0m\n' "$*"; }
+require_arg() { [[ $# -gt 1 ]] || die "$1 requires a value"; }
 
 usage() {
   cat <<'EOF'
@@ -53,7 +59,10 @@ reset.sh — Drop and recreate the development database
 Usage:
   reset.sh             Drop DB, recreate, run all migrations
   reset.sh --seed      Also load fixtures and create dev user accounts
-  reset.sh --yes       Skip confirmation prompt (for scripted use)
+  reset.sh --yes       Skip confirmation prompt (for scripted use; ignored above development)
+  reset.sh --force-posture POSTURE
+                       Run above development, naming the posture the project is at now
+                       (staging or production). Without it the posture guard refuses.
 
 Environment (all read from .env.dev):
   POSTGRES_DB                 Database name (default: <%PROJECT_SLUG%>_dev)
@@ -66,6 +75,7 @@ Environment (all read from .env.dev):
   SEED_STAFF_PASSWORD         Staff user password (--seed only)
 
 Exit codes:  0 = success   1 = command failed   2 = script error
+             4 = refused by the posture guard (posture-guard: refused —)
 EOF
 }
 
@@ -74,12 +84,31 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --seed)     SEED=true; shift ;;
     --yes)      YES=true; shift ;;
+    --force-posture) require_arg "$@"; FORCE_POSTURE="$2"; shift 2 ;;
     --help|-h)  usage; exit 0 ;;
     *)          die "Unknown option '$1'. Use --help for usage." ;;
   esac
 done
 
 cd "$PROJECT_ROOT"
+
+# ── Posture guard ─────────────────────────────────────────────────────────────
+# Above the container preflight, so a refusal is what the operator sees even with the stack
+# down. A refusal ends the run at 4; a permit pins every Docker call below to the one target
+# the guard validated.
+COMPOSE_NAME="$(posture_compose_name "$COMPOSE_FILE" "$OVERRIDE_DEV_FILE")"
+posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+  bash code/src/scripts/database/reset.sh "${ORIG_ARGS[@]}" || exit "$?"
+posture_docker_bind || exit "$?"
+DOCKER=("${posture_docker[@]}")
+DC=("${DOCKER[@]}" compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+    ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
+
+# --yes is a convenience, not an authorisation: above development the prompt always runs.
+if $YES && posture_above_development; then
+  warn "  --yes is ignored at '$posture_resolved' — confirm at the prompt."
+  YES=false
+fi
 
 # Check containers. `ps --services` prints service names only, so `grep -qx` matches
 # exactly — a substring grep over the full `ps` table also matches image names.
@@ -97,8 +126,14 @@ log ""
 
 if ! $YES; then
   printf '  Type "yes" to continue: '
+  REPLY=""
   read -r REPLY || true
-  [[ "$REPLY" == "yes" ]] || { log "  Aborted."; exit 0; }
+  if [[ "$REPLY" != "yes" ]]; then
+    # Nothing read (no terminal, nothing piped): above development that is a refusal at 4,
+    # never an abort at 0 that a scripted caller would read as success.
+    [[ -n "$REPLY" ]] || posture_unconfirmed || exit "$?"
+    log "  Aborted."; exit 0
+  fi
   log ""
 fi
 

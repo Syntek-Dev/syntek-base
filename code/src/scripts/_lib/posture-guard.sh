@@ -26,6 +26,21 @@
 #     posture_docker        array — filled only by posture_docker_bind
 #   A refusal in refuse mode also clears the binding: a refused verdict hands out nothing.
 #
+#   posture_compose_name FILE...
+#     Prints the compose project name the caller's compose set declares, for COMPOSE_NAME.
+#     Compose merges its files in order and a later top-level `name:` replaces an earlier one,
+#     so the last declaring file wins — the worktree override over the base. Prints "" when
+#     none declares one, which fails any COMPOSE_PROJECT_NAME comparison closed. Returns 0.
+#
+#   posture_above_development
+#     Succeeds when the last guard call read staging or production: where a prompting caller's
+#     --yes goes inert. A template or development run is not above development.
+#
+#   posture_unconfirmed
+#     A prompting caller's empty read. Above development it refuses (return 4, the prefix):
+#     with --yes inert, an unanswered prompt is a scripted run that authorised nothing, and an
+#     exit-0 abort would report success for work never done (TM-06). Elsewhere returns 0.
+#
 #   posture_docker_bind
 #     Fills posture_docker with a docker invocation pinned to posture_endpoint — explicit
 #     --host, DOCKER_CONTEXT and DOCKER_HOST removed from its environment — so the caller's
@@ -363,4 +378,35 @@ posture_docker_bind() {
   fi
   # shellcheck disable=SC2034  # an output: the caller expands it, this file never does
   posture_docker=(env -u DOCKER_CONTEXT -u DOCKER_HOST docker --host "$posture_endpoint")
+}
+
+posture_compose_name() {
+  local f line value name=""
+  for f in "$@"; do
+    [[ -n "$f" && -f "$f" && -r "$f" ]] || continue
+    value=""
+    while IFS= read -r line || [[ -n "$line" ]]; do
+      line="${line%$'\r'}"
+      [[ "$line" =~ ^name:[[:space:]]*(.*)$ ]] || continue
+      value="${BASH_REMATCH[1]}"
+      if [[ "$value" =~ ^\"([^\"]*)\" || "$value" =~ ^\'([^\']*)\' ]]; then
+        value="${BASH_REMATCH[1]}"
+      else
+        value="${value%%[[:space:]]#*}"
+        value="${value%"${value##*[![:space:]]}"}"
+      fi
+    done <"$f"
+    [[ -n "$value" ]] && name="$value"
+  done
+  printf '%s' "$name"
+}
+
+posture_above_development() {
+  [[ "${posture_resolved-}" == staging || "${posture_resolved-}" == production ]]
+}
+
+posture_unconfirmed() {
+  posture_above_development || return 0
+  posture_say refused "no confirmation was read at the prompt, and this project is at '$posture_resolved'. An unanswered prompt is a refusal here, not an abort; answer it, or pipe 'yes' to it from a script that also names the live posture with --force-posture"
+  return 4
 }

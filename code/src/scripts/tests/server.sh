@@ -4,7 +4,7 @@
 #
 # Usage:
 #   server.sh up       [--build] [--service SERVICE]
-#   server.sh down     [--volumes]
+#   server.sh down     [--volumes] [--force-posture POSTURE]
 #   server.sh restart  [--service SERVICE]
 #   server.sh build    [--service SERVICE]
 #   server.sh status
@@ -15,7 +15,11 @@
 # "server.sh build" followed by "server.sh up" to pick up the changes before
 # running backend.sh or backend-coverage.sh.
 #
+# The posture guard (_lib/posture-guard.sh) binds `down --volumes` only. --force-posture is
+# accepted everywhere and inert on every other path.
+#
 # Exit codes:  0 = success   1 = command failed   2 = script error
+#              4 = refused by the posture guard (_lib/posture-guard.sh)
 #
 set -euo pipefail
 
@@ -23,6 +27,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 COMPOSE_FILE="$PROJECT_ROOT/code/src/docker/docker-compose.test.yml"
 ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.test"
+ORIG_ARGS=("$@")
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 die()  { printf 'server.sh error: %s\n' "$*" >&2; exit 2; }
@@ -48,6 +53,11 @@ Options (up):
 Options (down):
   --volumes          Also remove named volumes (wipes test database data)
 
+Options (all commands):
+  --force-posture POSTURE
+                     Name the posture the project is at now (staging or production) to
+                     run `down --volumes` above development. Inert everywhere else.
+
 Options (restart, build):
   --service SERVICE  Target a single service
 
@@ -55,6 +65,7 @@ NOTE: The django-test image bakes source code in at build time.
       Run "up --build" after any code changes.
 
 Exit codes:  0 = success   1 = command failed   2 = script error
+             4 = refused by the posture guard (posture-guard: refused —)
 EOF
 }
 
@@ -75,12 +86,14 @@ esac
 BUILD=false
 VOLUMES=false
 SERVICE=""
+FORCE_POSTURE=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --build)    BUILD=true; shift ;;
     --volumes)  VOLUMES=true; shift ;;
     --service)  require_arg "$@"; SERVICE="$2"; shift 2 ;;
+    --force-posture) require_arg "$@"; FORCE_POSTURE="$2"; shift 2 ;;
     --help|-h)  usage; exit 0 ;;
     *)          die "Unknown option '$1'. Use --help for usage." ;;
   esac
@@ -88,14 +101,30 @@ done
 
 cd "$PROJECT_ROOT"
 
-[[ -f "$ENV_FILE" ]] || die "Env file not found: $ENV_FILE"
-
-# Auto-detect worktree: if branch is us###/*, apply matching compose override.
+# Auto-detect worktree: if branch is us###/*, apply matching compose override. Sourced ahead
+# of the env-file check because the posture guard needs the override's declared name.
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/posture-guard.sh
+source "$SCRIPT_DIR/../_lib/posture-guard.sh"
+COMPOSE_NAME="$(posture_compose_name "$COMPOSE_FILE" "$OVERRIDE_TEST_FILE")"
+DOCKER=(docker)
 
-# Base docker compose command — all subcommands use this array.
-DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+# ── Posture guard: down --volumes ─────────────────────────────────────────────
+# Above the env-file check, so an operator with no .env.test still sees the posture refusal.
+# A permit pins the compose array below to the target the guard validated.
+if [[ "$COMMAND" == down ]] && $VOLUMES; then
+  posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+    bash code/src/scripts/tests/server.sh "${ORIG_ARGS[@]}" || exit "$?"
+  posture_docker_bind || exit "$?"
+  DOCKER=("${posture_docker[@]}")
+fi
+
+[[ -f "$ENV_FILE" ]] || die "Env file not found: $ENV_FILE"
+
+# Base docker compose command — all subcommands use this array. DOCKER is the plain CLI on
+# every unguarded path and the validated binding on `down --volumes`.
+DC=("${DOCKER[@]}" compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
     ${OVERRIDE_TEST_FILE:+-f "$OVERRIDE_TEST_FILE"})
 
 # ── Commands ──────────────────────────────────────────────────────────────────

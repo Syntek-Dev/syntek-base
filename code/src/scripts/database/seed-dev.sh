@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 #
-# seed-dev.sh — Load seed data for dev and staging environments.
+# seed-dev.sh — Load seed data into the development environment.
 #               Creates dev user accounts (superuser + staff) from .env.dev, then runs
 #               whatever project seed commands SEED_COMMANDS names — none at baseline.
+#               Bound by the posture guard: above development it refuses unless
+#               --force-posture names the posture the project is at now.
 #
-# Usage: seed-dev.sh [--help]
+# Usage: seed-dev.sh [--force-posture POSTURE] [--help]
 #
 # Exit codes:  0 = success   1 = command failed   2 = script error
+#              4 = refused by the posture guard (_lib/posture-guard.sh)
 #
 set -euo pipefail
 
@@ -19,23 +22,31 @@ ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
 # shellcheck source=code/src/scripts/_lib/env-file.sh
 source "$SCRIPT_DIR/../_lib/env-file.sh"
-DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
-    ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
+# shellcheck source=code/src/scripts/_lib/posture-guard.sh
+source "$SCRIPT_DIR/../_lib/posture-guard.sh"
+# The compose array is built only after the posture guard has validated and pinned the Docker
+# target (below), so not even the container preflight can reach a different daemon.
+ORIG_ARGS=("$@")
+FORCE_POSTURE=""
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 die()  { printf 'seed-dev.sh error: %s\n' "$*" >&2; exit 2; }
 bold() { printf '\033[1m%s\033[0m\n' "$*"; }
 log()  { printf '%s\n' "$*"; }
+require_arg() { [[ $# -gt 1 ]] || die "$1 requires a value"; }
 
 usage() {
   cat <<'EOF'
-seed-dev.sh — Load seed data for dev and staging environments
+seed-dev.sh — Load seed data into the development environment
 
 Idempotently seeds the dev user accounts (superuser + staff), then runs each
 management command named in SEED_COMMANDS. Safe to run multiple times.
 
 Usage:
   seed-dev.sh            Seed dev users, then any project seed commands
+  seed-dev.sh --force-posture POSTURE
+                         Run above development, naming the posture the project is at
+                         now (staging or production). Without it the guard refuses.
   seed-dev.sh --help     Show this help
 
 Environment (read from .env.dev):
@@ -62,18 +73,33 @@ Notes:
     failure — a silent skip would hide a typo in the seed chain.
 
 Exit codes:  0 = success   1 = command failed   2 = script error
+             4 = refused by the posture guard (posture-guard: refused —)
 EOF
 }
 
 # ── Argument parsing ──────────────────────────────────────────────────────────
+# --force-posture is parsed ahead of the unknown-option die: server.sh up --seed forwards it,
+# and a forwarded override must arrive as an override, not as a script error.
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --force-posture) require_arg "$@"; FORCE_POSTURE="$2"; shift 2 ;;
     --help|-h) usage; exit 0 ;;
     *) die "Unknown option '$1'. Use --help for usage." ;;
   esac
 done
 
 cd "$PROJECT_ROOT"
+
+# ── Posture guard ─────────────────────────────────────────────────────────────
+# Before the first Docker call, preflight included. Run from server.sh up --seed this sees the
+# parent's validated socket as DOCKER_HOST, with DOCKER_CONTEXT cleared, and validates it again.
+COMPOSE_NAME="$(posture_compose_name "$COMPOSE_FILE" "$OVERRIDE_DEV_FILE")"
+posture_guard "$PROJECT_ROOT" refuse "$FORCE_POSTURE" "$COMPOSE_NAME" \
+  bash code/src/scripts/database/seed-dev.sh "${ORIG_ARGS[@]}" || exit "$?"
+posture_docker_bind || exit "$?"
+DOCKER=("${posture_docker[@]}")
+DC=("${DOCKER[@]}" compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+    ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
 
 # `ps --services` prints service names only, so `grep -qx` matches exactly.
 "${DC[@]}" ps --services --status running 2>/dev/null | grep -qx "django" \
