@@ -237,6 +237,17 @@ An absent selection means Docker's default context; an unreadable or malformed c
 unknown context, failed inspection or missing endpoint is **unknown**, never a local fallback.
 Context resolution/inspection reads local metadata only; it must not contact a daemon.
 
+**Erratum 15/11/2026 — with both selectors set, `DOCKER_HOST` wins, not `DOCKER_CONTEXT`.** The
+precedence above follows the CLI reference, which still says `DOCKER_CONTEXT` "overrides
+`DOCKER_HOST`" (re-read 15/11/2026). The installed CLI does the opposite. Measured on Docker
+29.9.2, 15/11/2026: with `DOCKER_CONTEXT=nope` and `DOCKER_HOST` naming a socket, `docker context
+show` prints `default` and a daemon call dials the `DOCKER_HOST` socket; with `DOCKER_CONTEXT=nope`
+alone, it prints `nope`. The shipped guard therefore treats both selectors set and disagreeing as
+**unknown** and fails the target check, whichever one the CLI honours. Both set and naming the same
+endpoint passes. So the control holds under either precedence, and the reference page and the CLI
+cannot pull it in different directions. Recorded in
+`../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` (decided by <%DEVELOPER_NAME%>, 15/11/2026).
+
 A target passes only with one unambiguous `unix:///absolute/path` endpoint and with
 `COMPOSE_PROJECT_NAME` absent/empty or equal to the caller's last compose file's declared name.
 Named local contexts are permitted. SSH, TCP (including loopback), unsupported transports,
@@ -244,6 +255,13 @@ relative/empty socket paths and unknown endpoints fail the check. Posture overri
 template exemption cannot waive this check. A Unix socket proves a local transport, not the
 identity of a daemon behind a deliberately configured proxy; that remains outside this guard's
 operator-error threat model.
+
+**Erratum 15/11/2026 — names are compared as Compose sees them (F-018).** Compose normalises a
+declared `name:` (lower-cased, characters outside `a-z 0-9 _ -` dropped, leading `_`/`-` trimmed)
+but refuses an explicit `COMPOSE_PROJECT_NAME` not already in that form. So the guard compares
+`COMPOSE_PROJECT_NAME` with the **normalised** declared name, refuses one Compose would reject, and
+fails closed on a declared name that normalises to empty. Fixed on this branch, decided by
+<%DEVELOPER_NAME%>; `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-018.
 
 On success the helper supplies a `posture_`-prefixed validated endpoint and an explicit validity
 indicator, cleared at entry to prevent stale reuse. Each caller binds **every subsequent Docker
@@ -341,6 +359,11 @@ comment and its usage heredoc — twelve lines across six files. Per script:
 | `code/src/scripts/development/server.sh` | refuse | On the `down --volumes` path **above the env-file check**, and inside the `up` case's `--seed` branch — never at its head | Forwards `--force-posture <posture>` verbatim across the shell-out to `seed-dev.sh`; the flag is global and inert elsewhere |
 | `code/src/scripts/tests/server.sh`       | refuse | On the `down --volumes` path, above the env-file check                                                                    | Flag global and inert elsewhere                                                                                             |
 | `code/src/scripts/database/migrate.sh`   | warn   | **At entry, before argument dispatch** — the one script in which "before the first destructive command" would be vacuous  | Hosts the `--self-test`; prints the posture and the expand-then-contract obligation at every posture; exits 0 on success    |
+
+**Erratum 15/11/2026 — the `up --seed` guard is its own block, not inside the `--seed` branch
+(F-001).** It now runs, with its bind, in a block ahead of `compose up -d` on the `--seed` path, so
+no daemon call precedes it. Still bound on `--seed` only — case 21 unchanged. Decided by
+<%DEVELOPER_NAME%>; `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-001.
 
 "Before the first destructive command" is the firing point in the five refusing scripts; the two
 `server.sh` scripts have an env-file preflight but no container preflight, and the guard precedes
@@ -553,6 +576,14 @@ reserves for a citation that is right and merely unprovable downstream.
 | The committed CI literal's form                       | A hard literal, `development` in this template, hand-maintained, with the owner and trigger in a comment beside it                                                                      | Rendering the posture answer into the workflow through a Copier token at generation               | The template's own CI runs the same workflow unrendered, where a token is not a legal posture and step 1 of the helper would refuse the template's own teardown — the one checkout the `copier.yml` proof exists to keep unimpeded. A hand literal is the expiring form the override ADR chose, and the comment is what keeps it maintained | `ADR-US006-OVERRIDE-NAMES-THE-LIVE-POSTURE` -> _Consequences_ · TM-10 |
 | Who writes the records and the register entries       | `22-implementation-documentation`                                                                                                                                                       | This story                                                                                        | `REFERENCES.md`'s ownership table gives them to `22`; a story that writes its own register entry produces two owners for one file                                                                                                                                                                                                           | `REFERENCES.md` -> _Ownership boundaries_                             |
 | How this plan names what does not exist yet           | Double quotes                                                                                                                                                                           | Backticks; a `template-only` marker                                                               | The citation gate reads backticked tokens; the marker is for a citation that is right and unprovable downstream, not for a dangling one                                                                                                                                                                                                     | `code/docs/FORWARD-VOICE.md` · AC-GAP-12 of US005's QA plan           |
+
+**Erratum 15/11/2026 — the harness body lives in a sourced file, not in `migrate.sh` itself.**
+The entry point is unchanged: `bash code/src/scripts/database/migrate.sh --self-test`, dispatched at
+entry, with no `docker`. Its body moved at P2 to `code/src/scripts/database/_migrate-self-test.sh`,
+which `migrate.sh` sources only for that arm. Two reasons. Kept inline, `migrate.sh` would have
+reached about 680 of the 750-line source limit. And the structural checks would have read their own
+search strings back out of the file they inspect. Reported at P2 and approved by <%DEVELOPER_NAME%>
+with it, 15/11/2026; finding F-005 of `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md`.
 
 <!-- UPDATED 03/11/2026 (US002 QA L-1): the "Where the proof lives" row's Why read "in a file with almost no headroom that US002 owns", undated and false once US002 ships; the figure is now dated history. The rejection stands on the harness pattern, which holds at any headroom. -->
 
