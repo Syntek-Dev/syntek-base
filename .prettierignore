@@ -80,6 +80,9 @@ code/src/scripts/audits/fixtures/toolchain-pins/**/.github/
 # one-line flow list and `flowvol-multiline` the shape Prettier reflows it into; formatting the
 # first turns it into the second and silently drops a case (16/11/2026).
 code/src/scripts/audits/fixtures/dev-static/flowvol/
+# `merge-key` spells the merge key `<< :` on purpose: Prettier would close the gap, and the closed
+# form contains Copier's block opener, which breaks every generation (finding F-037).
+code/src/scripts/audits/fixtures/dev-static/merge-key/
 
 # Cold walk-test evidence — a captured prompt, a walker's verbatim answer, and the transcript
 # of every tool call it made. Reformatting them edits the record the folder exists to hold, and

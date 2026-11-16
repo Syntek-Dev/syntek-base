@@ -1,16 +1,16 @@
 # BUG: US008 — a per-story dev stack on `:3080` cannot submit any form
 
-| Field            | Value                                                                                                                     |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| **Story**        | US008 — host-only `__Host-` cookies (surfaced by its walk; **not caused by it** — no Django setting was changed by US008) |
-| **Story doc**    | `../02-STORIES/US008.md`                                                                                                  |
-| **Story plan**   | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`                                                              |
-| **Severity**     | Medium — every state-changing request on every worktree dev stack fails; dev-only                                         |
-| **Date found**   | 16/11/2026                                                                                                                |
-| **Last Updated** | 16/11/2026                                                                                                                |
-| **Status**       | Open                                                                                                                      |
-| **Found during** | Manual walk — the dev-stack cookie rows of `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md`, on a us008 story stack           |
-| **Reporter**     | Claude (`22-implementation-documentation` Step 5), from finding F-034                                                     |
+| Field            | Value                                                                                                                               |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**        | US008 — host-only `__Host-` cookies (surfaced by its walk; **not caused by it** — no Django setting was changed by US008)           |
+| **Story doc**    | `../02-STORIES/US008.md`                                                                                                            |
+| **Story plan**   | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`                                                                        |
+| **Severity**     | Medium — every state-changing request on every worktree dev stack fails; dev-only                                                   |
+| **Date found**   | 16/11/2026                                                                                                                          |
+| **Last Updated** | 16/11/2026                                                                                                                          |
+| **Status**       | Verified 16/11/2026 — fixed in `40ce928` on `us008/story-stack-csrf-origin`, merged `8d6a5ac`; live sign-in on `127.0.0.8:3080` 302 |
+| **Found during** | Manual walk — the dev-stack cookie rows of `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md`, on a us008 story stack                     |
+| **Reporter**     | Claude (`22-implementation-documentation` Step 5), from finding F-034                                                               |
 
 ---
 
@@ -59,14 +59,14 @@ the published host and port without any matching setting.
 | `code/src/docker/docker-compose.usXXX.dev.yml.example` | 16, 31  | Worktree stacks publish `127.0.0.NNN:3080:80` and advertise `dev-usNNN.<slug>.localhost:3080`          |
 | `code/src/scripts/development/server.sh`               | 210-215 | Prints the worktree URL on `:3080` — the origin the browser then sends                                 |
 
-`TODO(verify)` — inferred, not traced through Django's `CsrfViewMiddleware` source: dev nginx
+**Confirmed live 16/11/2026** (was `TODO(verify)`): dev nginx
 forwards `Host $host` (`code/src/docker/nginx/dev.conf:18`), which carries no port, so on `:3080`
 the browser's `Origin` names a port the request host does not, the same-origin check fails, and the
 trusted list is the only remaining way through. On `:80` the default port makes the two agree.
 
 ## 6. The fix
 
-Not applied — recorded only.
+**Applied 16/11/2026** through the `bugfix` skill on `us008/story-stack-csrf-origin` (cut from `testing`), on Sam's ruling to use an environment value the worktree overlay sets — the `$http_host` alternative was not taken, so nginx and the edge contract are unchanged. Variable: `DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA`, comma-separated `scheme://host[:port]` origins appended to the `:81` defaults; a wildcard or any malformed entry raises `ImproperlyConfigured` naming it. The overlay example sets the advertised name and the IP on `:3080`; setting it in `.env.dev` has no effect.
 
 **Approach (smallest):** derive the trusted origins from the stack rather than a literal — read an
 environment variable the worktree overlay sets (the published scheme, host and port) and append it
@@ -83,9 +83,9 @@ weigh it against the staging/production edge contract before choosing.
 
 ## 7. Regression test (write the failing test FIRST — TDD)
 
-| Test                                                       | Location                                               | Asserts                                                                                                    |
-| ---------------------------------------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
-| A settings test for the derived origin `TODO(verify)` name | `code/src/django/config/` tests, or `apps/core/tests/` | With the worktree origin set in the environment, `CSRF_TRUSTED_ORIGINS` contains it and the `:81` defaults |
+| Test                                                                                                                                                                           | Location                                                    | Asserts                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `config/tests/test_dev_settings.py` (21 cases, each importing `config.settings.dev` in a fresh interpreter) and `audits/worktree-overlay.sh` (CI `audit-worktree-overlay.yml`) | `code/src/django/config/tests/`, `code/src/scripts/audits/` | With the worktree origin set in the environment, `CSRF_TRUSTED_ORIGINS` contains it and the `:81` defaults |
 
 - **Red:** the origin is absent from the list against the current `dev.py`.
 - **Green:** present after the change; a manual POST on a `:3080` stack returns 200/302.
@@ -106,10 +106,10 @@ weigh it against the staging/production edge contract before choosing.
 
 **Sign-off:**
 
-- [ ] Regression test written **first**, seen to fail, now passing
-- [ ] `bash code/src/scripts/tests/all.sh` green
-- [ ] Root cause identified (symptom fix rejected)
-- [ ] Fix merged; **Status** flipped to `Fixed`, then `Verified` post-merge
+- [x] Regression test written **first**, seen to fail (16 red, overlay audit 2 violations), now passing
+- [x] `bash code/src/scripts/tests/backend.sh` green on the merged branch (71 unit, 22 integration); docs, template and audit gates green
+- [x] Root cause identified (symptom fix rejected) — confirmed live: portless origins pass, port-carrying ones fail unless trusted
+- [x] Fix merged; **Status** `Verified` — independent QA on a disposable stack at `127.0.0.8:3080`: sign-in and admin password change 302; `Origin: http://evil.example:3080` with a valid token 403, as do port, case, `null` and trailing-slash variants
 
 ---
 

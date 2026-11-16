@@ -48,6 +48,8 @@ any module in the authentication, session or permission path.
 | ---------- | --------------- | ----- | ------------------- | ---------- |
 | **Totals** |                 | **0** | **0 Pass / 0 Fail** | **100.0%** |
 
+_Not run, or produced no artefact: E2E and accessibility, API (Bruno). An absent suite is not a zero — say why in Section 3._
+
 _No test declares `US008`. Either none has been written yet, or the marker is missing — `bash code/src/scripts/audits/story-markers.sh` tells you which._
 
 ### 1.2 Coverage vs floors
@@ -130,6 +132,25 @@ record the only untracked file), run by an independent tester who wrote none of 
 | `audits/story-markers.sh`       | Exit 0 (warn-only): "Scanned 9 test module(s) and 7 Bruno request(s). 0 carry a story marker; 72 do not." None of the 72 is a US008 test, because the story wrote none                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `tests/test-record.sh US008`    | Exit 0, `wrote 0 test rows`, reading `code/src/scripts/tests/reports` as written by the `all.sh` run above. The block in Section 1 is its output, unedited                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 
+### 2.1 Added after closeout — two dev-stack fixes PR'd with US008 (16/11/2026)
+
+Both bugs surfaced by the US008 walk were fixed test-first on their own `us008/` branches and
+merged here. Measured on `us008/host-only-cookies` after the second merge (`8d6a5ac`):
+
+| Check                                                       | Result                                                                                                                                                        |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `audits/dev-static.sh --self-test`                          | **Exit 0**, 23 cases — the dev `/static/` guard (`1c750c5`, hardened over two QA rounds, Copier-safe at `e34b4be`). Red first: 3 findings on the unfixed tree |
+| `audits/dev-static.sh`                                      | **Exit 0** on the real tree                                                                                                                                   |
+| `config/tests/test_dev_settings.py`                         | **21 Pass**, marked `story("US008")` — the story-stack trusted origins (`40ce928`). Red first: 16 failed                                                      |
+| `audits/worktree-overlay.sh`                                | **Exit 0** — the overlay sets `DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA`. Red first: 2 violations                                                                    |
+| `tests/all.sh --coverage`                                   | **Exit 0** — backend 71 unit + 22 integration, mobile 16; floors met                                                                                          |
+| `check-template-tokens.sh`, `shipped-readme.sh`, docs gates | **Exit 0**; a `template-render.sh` render (1581 files) runs `dev-static.sh` green inside the generated project                                                |
+
+**The 21 marked tests are absent from the generated block above**, and that is a reporting
+defect, not missing tests: `conftest.py` rewrites `story-map.json` at every pytest session, and
+`backend-coverage.sh` runs the integration session second with the unit tests deselected, so it
+writes an empty map over the unit session's (finding F-039).
+
 ---
 
 ## 3. Outstanding gaps and flaky tests
@@ -143,6 +164,7 @@ record the only untracked file), run by an independent tester who wrote none of 
 | What the gate cannot see                                  | Documented limit         | Listed in `code/docs/security/CRYPTO-AND-DATA.md`; a computed `SECURE` value turns its module TLS and is held to `__Host-` names                                                                       |
 | Cookie attributes in a real browser (PA-01, PA-02, ES-06) | Out of scope             | Need two hosts and a TLS-serving environment; the manual guide, not this record, owns them — `../MANUAL/US008-MANUAL-TESTING.md`                                                                       |
 | The migration's versioned filename                        | Deferred to `24-release` | `host-only-cookies.sh` ships `when: false`, unversioned; the rename and its tag are written at release                                                                                                 |
+| Story map overwritten by the second pytest session        | Pre-existing defect      | `conftest.py` writes `story-map.json` per session; the integration run's empty map replaces the unit run's, so `test-record.sh` attributes 0 of the 21 US008 tests. Finding F-039                      |
 | `story-markers.sh --path` guard                           | Pre-existing defect      | Owned by `code/src/scripts/audits/CLAUDE.md`; not exercised here (the run was unscoped)                                                                                                                |
 
 **Unmarked tests are invisible here.** The generator selects on the story marker; `story-markers.sh`
@@ -153,6 +175,8 @@ was read (Section 2), and none of the 72 unmarked tests belongs to this story.
 ## 4. Status line
 
 **Green** — 0 attributed tests (none by design); the story's proof, `negative-space.sh --self-test`, passes under gawk, mawk and BusyBox awk; unscoped gate, `check.sh`, `lint.sh` and the regression suite (72 backend, 100% coverage, floors met) all exit 0; ShellCheck run, findings pre-existing only · verified 16/11/2026.
+
+**Green, re-measured 16/11/2026 at `8d6a5ac`** — the two merged dev-stack fixes add 21 passing US008 tests (unattributed in the block, F-039) and two green audits; `all.sh --coverage` exits 0.
 
 ---
 
