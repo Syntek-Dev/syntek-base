@@ -23,7 +23,9 @@
 # for a stop-start one, and what else matches these cookies by name are all operator
 # decisions. It prints for every project crossing the release, whatever its settings say,
 # because the invalidation is true of all of them — the reason this is a version-keyed
-# entry and not a state-gated one.
+# entry and not a state-gated one. The one exemption is a project with no
+# code/src/django/config/settings/ at all: it serves no Django cookies from this template's
+# settings, so there is nothing to invalidate and the entry exits silently.
 #
 # Runs automatically as a copier `_migrations` entry when an update crosses the release
 # that activates it. Safe to run by hand; read-only, prints the same notice every time.
