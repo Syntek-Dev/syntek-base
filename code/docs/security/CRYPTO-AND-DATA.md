@@ -168,27 +168,44 @@ This section owns cookie-scope doctrine; every other guide that names a cookie s
   default storage falls back to a cookie that stays unprefixed and subdomain-writable, as would
   any language cookie. Neither is covered by this rule.
 - **What the gate can and cannot see.** `code/src/scripts/audits/negative-space.sh` reads every
-  `*.py` under `code/src/django/config/settings/`, symlinks followed, and evaluates the **code
-  part** of each line — a trailing comment neither hides an assignment nor satisfies one. It sees
-  plain, indented, annotated (`NAME: str = …`), chained (`A = NAME = …`) and augmented (`NAME +=
-…`) assignments, and **the last assignment in a module wins**: a later plain name, a later
-  `*_COOKIE_SECURE = False`, or a `CSRF_COOKIE_HTTPONLY` left anything but `True` in **any**
-  module is a finding naming that module. Presence still needs an unconditional, column-0
-  compliant line; an indented one alone is not presence. The TLS modules it holds to the
-  `__Host-` rule are `staging.py`, `production.py` and **any other module assigning
-  `SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE` or `CSRF_COOKIE_SECURE = True`**. A `Domain` of
-  `None` and a `Path` of exactly `"/"` (`'/'`, `r"/"`) are host-only, not findings. The copier
-  migration `cookie-domain-conflict.sh` carries the same detector, and the self-test proves the
-  two report the same settings. **A green run proves that directory, not a global rule.** It is
-  line-based, not a parser, so these remain invisible or misread:
+  `*.py` under `code/src/django/config/settings/`, packages and symlinks included, and evaluates
+  the **code part** of each line — a trailing comment neither hides an assignment nor satisfies
+  one, string contents (multi-line strings and docstrings too) are never read as code, and a
+  CRLF line ending changes nothing. It recognises plain, indented, annotated (`NAME: str = …`),
+  chained (`A = NAME = …`) and augmented (`NAME += …`) assignments, and **the last occurrence in
+  a module wins**: a later plain name, a later `*_COOKIE_SECURE = False`, or a
+  `CSRF_COOKIE_HTTPONLY` left anything but `True` in **any** module is a finding naming that
+  module. Presence still needs an unconditional, column-0 compliant line; an indented one alone
+  is not presence. The TLS modules it holds to the `__Host-` rule are `staging.py` and
+  `production.py` (or `staging/__init__.py` and `production/__init__.py` when they are
+  packages) and **any other module assigning `SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE` or
+  `CSRF_COOKIE_SECURE = True`**. A `Domain` of `None` and a `Path` of exactly `"/"` (`'/'`,
+  `r"/"`) are host-only, not findings.
+  - **It fails closed.** Any other whole-token occurrence of a cookie setting name in code — after
+    a semicolon, in tuple unpacking, `del`, a walrus, a parenthesised, `for` or `import … as`
+    target, a subscript-first chain — is an **unrecognised occurrence**: it never counts as
+    presence and always counts as an override or a widened scope. **A read is one too**:
+    `X = SESSION_COOKIE_SECURE` or `if CSRF_COOKIE_HTTPONLY:` in a settings module is a finding.
+    The remedy is to read `django.conf.settings` from the code that needs the value, never from
+    inside a settings module, and to write each setting as one plain assignment. There is no
+    suppression annotation, by design.
+  - **A module it cannot read is a finding** naming that module, never a silent pass.
+  - The copier migration `cookie-domain-conflict.sh` carries the same detector, byte for byte,
+    names unreadable modules the same way, and the self-test proves the two report the same
+    settings.
+
+  **A green run proves that directory, not a global rule.** It is line-based, not a parser, so
+  these remain invisible or misread:
   - a runtime write to `django.conf.settings` — an `AppConfig.ready()` is the canonical place;
   - an environment-driven value — `env("X")` is read as "not compliant", never as what it holds;
   - any settings module outside `code/src/django/config/settings/`, and anything reaching the
-    directory through `from … import *`, `setattr` or `globals()`;
-  - an assignment spread over several lines (a value in brackets, a backslash continuation), or a
-    value built by concatenation or a variable, which reads as "not compliant";
-  - text that looks like code: a docstring or string line reading exactly `NAME = True` counts
-    as the setting, and a keyword argument on its own line (`NAME=…,`) reads as an assignment;
+    directory through `from … import *`, `setattr`, `globals()`, `exec` or a name built at
+    runtime — none of them spells the setting as a token;
+  - an identifier spelt with fullwidth or other NFKC-equivalent characters, which Python folds
+    to the setting's name and the scanner does not, and a name inside an f-string's braces;
+  - a multi-line value, or one built by concatenation or a variable, which reads as "not
+    compliant" — a false finding, never a false pass;
+  - a keyword argument on its own line inside a call (`NAME=True,`), which reads as an assignment;
   - control flow: an unconditional line after an `if` block wins whether or not the block ran.
 
 ### Libraries that write to client storage by default

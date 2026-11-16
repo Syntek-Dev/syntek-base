@@ -37,7 +37,7 @@
 #
 # Working directory is the project being updated.
 #
-# Exit codes:  0 = always (advisory)
+# Exit codes:  0 = always (advisory), an unreadable module included
 #
 set -euo pipefail
 
@@ -47,22 +47,33 @@ SETTINGS_DIR="code/src/django/config/settings"
 
 # The same detector as cookie-scope-widened in audits/negative-space.sh, so the two report the
 # same (module, setting) pairs. It reads the CODE part of each line (a trailing comment is
-# cut) and sees plain, indented, annotated, chained and augmented assignments; a Domain of
-# None and a Path of exactly "/" are host-only, not findings. Records carry no value.
+# cut; string contents, multi-line strings included, are ignored; a trailing CR is trimmed)
+# and sees plain, indented, annotated, chained and augmented assignments; a Domain of None and
+# a Path of exactly "/" are host-only, not findings. It fails closed: any other occurrence of
+# a Domain or Path name in code (unpacking, del, a read) is reported too. A module it cannot
+# read is named as such, never passed. Records carry no value.
 # TWIN: code/src/scripts/audits/_lib/negative-space-cookies.sh carries this same program and
 # pattern (COOKIE_AWK, COOKIE_WIDE) — change both. Self-contained: the lib is not shipped here.
 # shellcheck disable=SC2016  # an awk program: its $ fields are awk's, never the shell's
 COOKIE_AWK='
-function strip(s,   i, c, q, out) {
-  q = ""; out = ""
-  for (i = 1; i <= length(s); i++) {
+function scan(s,   i, c, d, n) {
+  code = ""; mask = ""; n = length(s)
+  for (i = 1; i <= n; i++) {
     c = substr(s, i, 1)
-    if (q != "") { if (c == "\\") { out = out c substr(s, i + 1, 1); i++; continue } if (c == q) q = "" }
-    else if (c == "#") break
-    else if (c == "\"" || c == sq) q = c
-    out = out c
+    if (q != "") {
+      if (c == "\\") { code = code c substr(s, i + 1, 1); i++; continue }
+      d = (length(q) == 3) ? substr(s, i, 3) : c
+      if (d == q) { code = code d; mask = mask d; i += length(q) - 1; q = ""; continue }
+      code = code c; continue
+    }
+    if (c == "#") break
+    if (c == "\"" || c == sq) {
+      d = substr(s, i, 3); q = (d == c c c) ? d : c
+      code = code q; mask = mask q; i += length(q) - 1; continue
+    }
+    code = code c; mask = mask c
   }
-  return out
+  if (length(q) == 1 && substr(s, n, 1) != "\\") q = ""
 }
 function classify(v) {
   if (v == "True") return "true"
@@ -72,9 +83,10 @@ function classify(v) {
   return "other"
 }
 {
-  s = strip($0); ind = (s ~ /^[ \t]/) ? 1 : 0; sub(/^[ \t]+/, "", s); sub(/[ \t]+$/, "", s)
-  n = 0; aug = 0
-  while (match(s, /^[A-Za-z_][A-Za-z0-9_]*/)) {
+  sub(/\r$/, ""); open = (q != ""); scan($0)
+  s = code; ind = (s ~ /^[ \t]/) ? 1 : 0; sub(/^[ \t]+/, "", s); sub(/[ \t]+$/, "", s)
+  n = 0; aug = 0; split("", seen)
+  while (!open && match(s, /^[A-Za-z_][A-Za-z0-9_]*/)) {
     id = substr(s, 1, RLENGTH); r = substr(s, RLENGTH + 1); sub(/^[ \t]+/, "", r)
     if (r ~ /^:[^=]/ || r == ":") { p = index(r, "="); if (!p || substr(r, p + 1, 1) == "=") break; r = substr(r, p + 1) }
     else if (match(r, /^(\*\*|\/\/|<<|>>|[-+*\/%@&|^])=/)) { r = substr(r, RLENGTH + 1); aug = 1 }
@@ -85,24 +97,44 @@ function classify(v) {
   }
   cls = aug ? "aug" : classify(s)
   for (i = 1; i <= n; i++)
-    if (t[i] ~ /^((SESSION|CSRF)_COOKIE_(DOMAIN|PATH|NAME|SECURE|HTTPONLY)|SECURE_SSL_REDIRECT)$/)
-      print NR, ind, t[i], cls
+    if (t[i] ~ /^((SESSION|CSRF)_COOKIE_(DOMAIN|PATH|NAME|SECURE|HTTPONLY)|SECURE_SSL_REDIRECT)$/) {
+      print NR, ind, t[i], cls; seen[t[i]]++
+    }
+  m = mask
+  while (match(m, /[A-Za-z_][A-Za-z0-9_]*/)) {
+    id = substr(m, RSTART, RLENGTH); m = substr(m, RSTART + RLENGTH)
+    if (id !~ /^((SESSION|CSRF)_COOKIE_(DOMAIN|PATH|NAME|SECURE)|CSRF_COOKIE_HTTPONLY)$/) continue
+    if (seen[id] > 0) seen[id]--; else print NR, ind, id, "unrec"
+  }
 }'
 # shellcheck disable=SC2016  # awk, as above
 COOKIE_WIDE='$3 ~ /_COOKIE_DOMAIN$/ && $4 != "none" || $3 ~ /_COOKIE_PATH$/ && $4 != "root"'
 
-declare -a HITS=()
+declare -a HITS=() UNREAD=()
 while IFS= read -r -d '' file; do
+  # A module awk cannot read is named, never passed as clean (code/docs/GATE-REPORTING.md).
+  if [[ ! -r "$file" ]] || ! awk -v sq="'" "$COOKIE_AWK" "$file" > /dev/null 2>&1; then
+    UNREAD+=("$file"); continue
+  fi
   while read -r line name; do
     [[ -n "$line" ]] || continue
     HITS+=("$(printf '%s:%s  %s' "$file" "$line" "$name")")
   done < <(awk -v sq="'" "$COOKIE_AWK" "$file" 2>/dev/null | awk "$COOKIE_WIDE"' { print $1, $3 }' || true)
 done < <(find -L "$SETTINGS_DIR" -type f -name '*.py' -print0 2>/dev/null | sort -z || true)
 
-[[ ${#HITS[@]} -gt 0 ]] || exit 0
+[[ ${#HITS[@]} -gt 0 || ${#UNREAD[@]} -gt 0 ]] || exit 0
+
+if [[ ${#UNREAD[@]} -gt 0 ]]; then
+  printf '\n▸ Cookie scope — %d settings module(s) could not be read\n\n' "${#UNREAD[@]}"
+  for u in "${UNREAD[@]}"; do printf '    %s could not be read — its cookie settings were not checked\n' "$u"; done
+  printf '\n  Make each readable and run this check again:  bash code/src/scripts/audits/negative-space.sh\n'
+fi
+
+[[ ${#HITS[@]} -gt 0 ]] || { printf '\n'; exit 0; }
 
 printf '\n▸ Cookie scope — %d setting(s) the __Host- prefix forbids\n\n' "${#HITS[@]}"
-printf '  These settings modules assign a cookie Domain, or a Path other than "/":\n\n'
+printf '  These settings modules assign a cookie Domain, or a Path other than "/" — or name\n'
+printf '  one in a way this check cannot evaluate (unpacking, del, a read), which counts too:\n\n'
 for h in "${HITS[@]}"; do printf '    %s\n' "$h"; done
 
 cat <<'ADVICE'

@@ -8,33 +8,48 @@
 #   BROKEN_BODY, point_scopes_at, run_all and st_fail.
 #
 # csrf-cookie-httponly-absent  base.py does not leave CSRF_COOKIE_HTTPONLY = True, or any
-#                              module's last CSRF_COOKIE_HTTPONLY assignment is not True
-# cookie-host-prefix-absent    a TLS module (staging.py, production.py, and any module that
-#                              assigns SECURE_SSL_REDIRECT / *_COOKIE_SECURE = True) does not
-#                              leave a __Host- SESSION_COOKIE_NAME or CSRF_COOKIE_NAME, or the
-#                              SECURE = True line it depends on
+#                              module's last CSRF_COOKIE_HTTPONLY record is not True
+# cookie-host-prefix-absent    a TLS module (staging.py, production.py — or staging/__init__.py,
+#                              production/__init__.py when the module is a package — and any
+#                              module that assigns SECURE_SSL_REDIRECT / *_COOKIE_SECURE = True)
+#                              does not leave a __Host- SESSION_COOKIE_NAME or CSRF_COOKIE_NAME,
+#                              or the SECURE = True line it depends on
 # cookie-scope-widened         any *.py in the directory assigns a *_COOKIE_DOMAIN other than
-#                              None, or a *_COOKIE_PATH other than "/"
-# Owner: code/docs/security/CRYPTO-AND-DATA.md, Browser Storage Policy. Scope: *.py in the
-# directory (symlinks followed), never CONTEXT.md beside them.
+#                              None, or a *_COOKIE_PATH other than "/"; and any *.py awk cannot
+#                              read, which is "could not look", never clean
+# Owner: code/docs/security/CRYPTO-AND-DATA.md, Browser Storage Policy. Scope: *.py under the
+# directory, packages included (symlinks followed), never CONTEXT.md beside them.
 #
-# COOKIE_AWK reads one module and prints one record per assignment of a cookie setting:
+# COOKIE_AWK reads one module and prints one record per occurrence of a cookie setting:
 # `<line> <indented 0|1> <SETTING> <class>`, class one of true | none | root | host | aug |
-# other. It reads the CODE part of the line (a trailing comment is cut, quote-aware), and sees
-# plain, indented, annotated, chained and augmented assignments. It never prints a value.
+# other | unrec. It reads the CODE part of each line (a trailing comment is cut, quote-aware;
+# string contents, multi-line strings and docstrings included, are tracked across lines and
+# ignored; a trailing CR is trimmed) and recognises plain, indented, annotated, chained and
+# augmented assignments. It FAILS CLOSED: any other whole-token occurrence of a tracked name —
+# a semicolon, unpacking, del, walrus, a loop or import target, a read — is an `unrec` record,
+# which never satisfies presence and always counts as an override or a widened scope. There is
+# no suppression annotation, by design. It never prints a value.
 # TWIN: .copier/migrations/cookie-domain-conflict.sh carries this same program — change both.
 # shellcheck disable=SC2016  # an awk program: its $ fields are awk's, never the shell's
 COOKIE_AWK='
-function strip(s,   i, c, q, out) {
-  q = ""; out = ""
-  for (i = 1; i <= length(s); i++) {
+function scan(s,   i, c, d, n) {
+  code = ""; mask = ""; n = length(s)
+  for (i = 1; i <= n; i++) {
     c = substr(s, i, 1)
-    if (q != "") { if (c == "\\") { out = out c substr(s, i + 1, 1); i++; continue } if (c == q) q = "" }
-    else if (c == "#") break
-    else if (c == "\"" || c == sq) q = c
-    out = out c
+    if (q != "") {
+      if (c == "\\") { code = code c substr(s, i + 1, 1); i++; continue }
+      d = (length(q) == 3) ? substr(s, i, 3) : c
+      if (d == q) { code = code d; mask = mask d; i += length(q) - 1; q = ""; continue }
+      code = code c; continue
+    }
+    if (c == "#") break
+    if (c == "\"" || c == sq) {
+      d = substr(s, i, 3); q = (d == c c c) ? d : c
+      code = code q; mask = mask q; i += length(q) - 1; continue
+    }
+    code = code c; mask = mask c
   }
-  return out
+  if (length(q) == 1 && substr(s, n, 1) != "\\") q = ""
 }
 function classify(v) {
   if (v == "True") return "true"
@@ -44,9 +59,10 @@ function classify(v) {
   return "other"
 }
 {
-  s = strip($0); ind = (s ~ /^[ \t]/) ? 1 : 0; sub(/^[ \t]+/, "", s); sub(/[ \t]+$/, "", s)
-  n = 0; aug = 0
-  while (match(s, /^[A-Za-z_][A-Za-z0-9_]*/)) {
+  sub(/\r$/, ""); open = (q != ""); scan($0)
+  s = code; ind = (s ~ /^[ \t]/) ? 1 : 0; sub(/^[ \t]+/, "", s); sub(/[ \t]+$/, "", s)
+  n = 0; aug = 0; split("", seen)
+  while (!open && match(s, /^[A-Za-z_][A-Za-z0-9_]*/)) {
     id = substr(s, 1, RLENGTH); r = substr(s, RLENGTH + 1); sub(/^[ \t]+/, "", r)
     if (r ~ /^:[^=]/ || r == ":") { p = index(r, "="); if (!p || substr(r, p + 1, 1) == "=") break; r = substr(r, p + 1) }
     else if (match(r, /^(\*\*|\/\/|<<|>>|[-+*\/%@&|^])=/)) { r = substr(r, RLENGTH + 1); aug = 1 }
@@ -57,8 +73,15 @@ function classify(v) {
   }
   cls = aug ? "aug" : classify(s)
   for (i = 1; i <= n; i++)
-    if (t[i] ~ /^((SESSION|CSRF)_COOKIE_(DOMAIN|PATH|NAME|SECURE|HTTPONLY)|SECURE_SSL_REDIRECT)$/)
-      print NR, ind, t[i], cls
+    if (t[i] ~ /^((SESSION|CSRF)_COOKIE_(DOMAIN|PATH|NAME|SECURE|HTTPONLY)|SECURE_SSL_REDIRECT)$/) {
+      print NR, ind, t[i], cls; seen[t[i]]++
+    }
+  m = mask
+  while (match(m, /[A-Za-z_][A-Za-z0-9_]*/)) {
+    id = substr(m, RSTART, RLENGTH); m = substr(m, RSTART + RLENGTH)
+    if (id !~ /^((SESSION|CSRF)_COOKIE_(DOMAIN|PATH|NAME|SECURE)|CSRF_COOKIE_HTTPONLY)$/) continue
+    if (seen[id] > 0) seen[id]--; else print NR, ind, id, "unrec"
+  }
 }'
 COOKIE_CLAUSES=(csrf-cookie-httponly-absent cookie-host-prefix-absent cookie-scope-widened)
 # Scope-widening classes: a Domain other than None, a Path other than the root.
@@ -66,16 +89,21 @@ COOKIE_CLAUSES=(csrf-cookie-httponly-absent cookie-host-prefix-absent cookie-sco
 COOKIE_WIDE='$3 ~ /_COOKIE_DOMAIN$/ && $4 != "none" || $3 ~ /_COOKIE_PATH$/ && $4 != "root"'
 
 cookie_scan() { awk -v sq="'" "$COOKIE_AWK" "$1"; }
-# cookie_state RECORDS SETTING CLASS — `ok` when the last assignment has CLASS and some
-# column-0 (unconditional) assignment has it too; `override:<line>` when the last does not;
-# `absent` otherwise. The last assignment wins, at any indentation.
+# Finding wording for a record that is not a recognised assignment.
+COOKIE_UNREC="unrecognised occurrence (an assignment or a read the gate cannot evaluate)"
+# cookie_state RECORDS SETTING CLASS — `ok` when the last record has CLASS and some column-0
+# (unconditional) assignment has it too; `override:<line>` when the last does not, and
+# `unrec:<line>` when that last record is an unrecognised occurrence; `absent` otherwise.
+# The last record wins, at any indentation.
 cookie_state() {
   awk -v n="$2" -v w="$3" '$3 == n { last = $1; cls = $4; if ($2 == 0 && $4 == w) root = 1 }
-    END { if (last != "" && cls != w) print "override:" last; else if (root) print "ok"; else print "absent" }' <<< "$1"
+    END { if (last != "" && cls == "unrec") print "unrec:" last
+          else if (last != "" && cls != w) print "override:" last
+          else if (root) print "ok"; else print "absent" }' <<< "$1"
 }
 
 run_cookie_clauses() {
-  local dir="$1" f kind missing st recs name want shown spec
+  local dir="$1" f kind missing st recs name want shown spec cls m
   local -a mods=() tls=()
   if [[ ! -d "$dir" ]]; then
     skip "csrf-cookie-httponly-absent: no $dir — reads base.py, and every *.py for overrides"
@@ -83,26 +111,39 @@ run_cookie_clauses() {
     skip "cookie-scope-widened: no $dir — reads every *.py in it"
     return 0
   fi
-  while IFS= read -r -d '' f; do mods+=("$f"); done < <(find -L "$dir" -type f -name '*.py' -print0 | sort -z)
+  # A module awk cannot read is "could not look" (code/docs/GATE-REPORTING.md): a finding
+  # naming it, never a silent pass, and it is read by no other clause.
+  while IFS= read -r -d '' f; do
+    if [[ -r "$f" ]] && cookie_scan "$f" > /dev/null 2>&1; then mods+=("$f")
+    else fail cookie-scope-widened "$f — could not be read, so its cookie settings were not checked"; fi
+  done < <(find -L "$dir" -type f -name '*.py' -print0 | sort -z)
+  cookie_readable() { local x; for x in "${mods[@]}"; do [[ "$x" == "$1" ]] && return 0; done; return 1; }
 
   # HttpOnly: present unconditionally in base.py, and never left anything but True anywhere.
   f="$dir/base.py"
   if [[ ! -f "$f" ]]; then skip "csrf-cookie-httponly-absent: no $f — reads base.py for presence"
-  else
+  elif cookie_readable "$f"; then
     st=$(cookie_state "$(cookie_scan "$f")" CSRF_COOKIE_HTTPONLY true)
     [[ "$st" != absent ]] || fail csrf-cookie-httponly-absent "$f — no CSRF_COOKIE_HTTPONLY = True assignment"
   fi
   for f in "${mods[@]}"; do
-    st=$(awk '$3 == "CSRF_COOKIE_HTTPONLY" { l = $1; c = $4 } END { if (l != "" && c != "true") print l }' <<< "$(cookie_scan "$f")")
-    [[ -z "$st" ]] || fail csrf-cookie-httponly-absent "$f:$st — the last CSRF_COOKIE_HTTPONLY assignment is not True"
+    st=""; cls=""; read -r st cls < <(awk '$3 == "CSRF_COOKIE_HTTPONLY" { l = $1; c = $4 } END { if (l != "" && c != "true") print l, c }' <<< "$(cookie_scan "$f")") || true
+    [[ -n "$st" ]] || continue
+    if [[ "$cls" == unrec ]]; then fail csrf-cookie-httponly-absent "$f:$st — the last CSRF_COOKIE_HTTPONLY record is an $COOKIE_UNREC"
+    else fail csrf-cookie-httponly-absent "$f:$st — the last CSRF_COOKIE_HTTPONLY assignment is not True"; fi
   done
 
-  # __Host- names and the SECURE lines they depend on, each in the SAME module, in every TLS module.
-  for f in "$dir/staging.py" "$dir/production.py"; do
-    if [[ -f "$f" ]]; then tls+=("$f"); else skip "cookie-host-prefix-absent: no $f — reads staging.py, production.py and any *.py turning on TLS"; fi
+  # __Host- names and the SECURE lines they depend on, each in the SAME module, in every TLS
+  # module. staging and production may be packages: <name>/__init__.py stands in for <name>.py.
+  local -a named=()
+  for m in staging production; do
+    if [[ -f "$dir/$m.py" ]]; then f="$dir/$m.py"
+    elif [[ -f "$dir/$m/__init__.py" ]]; then f="$dir/$m/__init__.py"
+    else skip "cookie-host-prefix-absent: no $dir/$m.py (or $m/__init__.py) — reads staging.py, production.py and any *.py turning on TLS"; continue; fi
+    named+=("$f"); cookie_readable "$f" && tls+=("$f")
   done
   for f in "${mods[@]}"; do
-    [[ "$f" == "$dir/staging.py" || "$f" == "$dir/production.py" ]] && continue
+    [[ " ${named[*]} " == *" $f "* ]] && continue
     awk '$3 ~ /^(SECURE_SSL_REDIRECT|(SESSION|CSRF)_COOKIE_SECURE)$/ && $4 == "true" { hit = 1 } END { exit !hit }' \
       <<< "$(cookie_scan "$f")" && tls+=("$f")
   done
@@ -115,6 +156,7 @@ run_cookie_clauses() {
         case "$st" in
           absent) missing="$missing $name=$shown" ;;
           override:*) missing="$missing $name=$shown (overridden at line ${st#override:})" ;;
+          unrec:*) missing="$missing $name=$shown (overridden by an $COOKIE_UNREC at line ${st#unrec:})" ;;
         esac
       done
     done
@@ -123,10 +165,14 @@ run_cookie_clauses() {
 
   # Absence: no Domain at all, and no Path other than "/". Names the setting, never its value.
   for f in "${mods[@]}"; do
-    while read -r st name; do
+    while read -r st name cls; do
       [[ -n "$st" ]] || continue
-      fail cookie-scope-widened "$f:$st — assigns $name (host-only means no Domain, Path \"/\")"
-    done < <(awk "$COOKIE_WIDE"' { print $1, $3 }' <<< "$(cookie_scan "$f")")
+      if [[ "$cls" == unrec ]]; then
+        fail cookie-scope-widened "$f:$st — an $COOKIE_UNREC of $name (host-only means no Domain, Path \"/\")"
+      else
+        fail cookie-scope-widened "$f:$st — assigns $name (host-only means no Domain, Path \"/\")"
+      fi
+    done < <(awk "$COOKIE_WIDE"' { print $1, $3, $4 }' <<< "$(cookie_scan "$f")")
   done
 }
 
