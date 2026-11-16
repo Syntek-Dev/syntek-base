@@ -1283,6 +1283,7 @@ table ever falls behind it.
 | `skill-conformance.sh` | Every skill matches the Agent Skills spec and the six keys this project authors                |
 | `routing-skills.sh`    | Every skill named in routing frontmatter exists, and gated names co-vary with their flag       |
 | `mcp-parity.sh`        | `.mcp.json` and `.codex/config.toml` declare the same MCP servers, commands and arguments      |
+| `env-read-deny.sh`     | Claude, Codex and Zed each deny AI reads of the six live `.env.*` files                        |
 | `playwright-pin.sh`    | Eight sites declare the Playwright pin - checks they agree with each other, never the host     |
 | `toolchain-pins.sh`    | Every Node, Python, uv, pnpm and Rust pin agrees with its one source of truth                  |
 | `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                           |
