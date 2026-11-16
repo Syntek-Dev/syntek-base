@@ -11,8 +11,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 5     |
-| In Progress       | 1     |
-| In Review         | 1     |
+| In Progress       | 0     |
+| In Review         | 2     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
 | Customer Accepted | 5     |
@@ -38,15 +38,14 @@ _None._
 
 ## In Progress
 
-| Plan                | Story                           | Title                                                                                        | Status      | File                                                                         |
-| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------------------- |
-| 07-STORY-PLAN-US006 | [US006](../02-STORIES/US006.md) | The destructive dev scripts read the deployment posture, and refuse to run above development | In Progress | [07-STORY-PLAN-US006-POSTURE-GUARD.md](07-STORY-PLAN-US006-POSTURE-GUARD.md) |
+_None._
 
 ## In Review
 
-| Plan                | Story                           | Title                                                                          | Status    | File                                                                                                     |
-| ------------------- | ------------------------------- | ------------------------------------------------------------------------------ | --------- | -------------------------------------------------------------------------------------------------------- |
-| 06-STORY-PLAN-US005 | [US005](../02-STORIES/US005.md) | Exactly one layer decides to retry, and every budget says how long it may take | In Review | [06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md](06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md) |
+| Plan                | Story                           | Title                                                                                        | Status    | File                                                                                                     |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------- |
+| 06-STORY-PLAN-US005 | [US005](../02-STORIES/US005.md) | Exactly one layer decides to retry, and every budget says how long it may take               | In Review | [06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md](06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md) |
+| 07-STORY-PLAN-US006 | [US006](../02-STORIES/US006.md) | The destructive dev scripts read the deployment posture, and refuse to run above development | In Review | [07-STORY-PLAN-US006-POSTURE-GUARD.md](07-STORY-PLAN-US006-POSTURE-GUARD.md)                             |
 
 ## Accepted
 
