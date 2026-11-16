@@ -145,6 +145,19 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# An unguarded failure is a script error, so it exits 2 like every other — never the 1 that
+# means an expectation failed, nor whatever status the failing command happened to return.
+# Bash already skips ERR in conditions and `||`/`&&` lists; the errexit test below also skips
+# it inside the `set +e` blocks, whose non-zero status is read on purpose, and inside command
+# substitutions, which do not inherit errexit and whose failure reaches the caller's ERR anyway.
+# shellcheck disable=SC2329  # invoked by the ERR trap
+on_err() {
+  [[ $- == *e* ]] || return 0
+  die "unexpected failure at line $1: $2"
+}
+set -E
+trap 'on_err "$LINENO" "$BASH_COMMAND"' ERR
+
 case "$CASE" in
   shipped-advisories|missing-ref|domain-report|pending-key|release-crossing|subsequent-update) ;;
   "") die "--case is required. Use --help for the list." ;;
