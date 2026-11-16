@@ -1,0 +1,2 @@
+# nginx volumes in YAML flow form ([...]) — the stdlib walk reads block sequences only; fails closed (here it also hides a /staticfiles mount).
+compose-volumes-unparseable

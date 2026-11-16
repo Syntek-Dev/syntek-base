@@ -1,0 +1,2 @@
+# A longer prefix (/static/admin/) wins nginx's longest-match and serves a subtree from disk.
+static-alias

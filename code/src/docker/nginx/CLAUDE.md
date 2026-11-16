@@ -13,7 +13,8 @@ single `django` upstream.
 ## How to work here
 
 - **Routing:** proxy work → `cicd` skill (Opus). Edit `dev.conf` and `test.conf` together;
-  they differ only in the upstream service name.
+  they differ only in the upstream service name and in `/static/` (`CONTEXT.md` → _Path
+  routing_).
 - **Model:** Opus.
 - **Concrete steps:** add the `location` → bring the stack up → verify with
   `docker compose exec nginx nginx -t` before relying on it → check the route end to end.
@@ -29,6 +30,8 @@ single `django` upstream.
   URLconf, not the proxy — that coupling is what made the previous config impossible to
   reuse across projects.
 - **Keep `dev.conf` and `test.conf` in step.** A route added to one belongs in the other.
+  The one exception is `/static/`: dev proxies it to Django and never serves it from disk,
+  because nothing in dev collects static. `audits/dev-static.sh` fails if that changes.
 - **Long-lived streaming routes need `proxy_buffering off`** plus raised
   `proxy_read_timeout`/`proxy_send_timeout`, and a `limit_conn` cap — an uncapped
   per-connection stream is a trivial resource-exhaustion vector.

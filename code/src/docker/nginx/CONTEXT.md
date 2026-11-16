@@ -30,16 +30,26 @@ no per-story Nginx variants to generate.
 
 ## Path routing (dev & test)
 
-| Path        | Upstream                           | Notes                               |
-| ----------- | ---------------------------------- | ----------------------------------- |
-| `/static/`  | Nginx, from the staticfiles volume | `alias`, not proxied                |
-| `/media/`   | `django:8000`                      |                                     |
-| `/health/`  | `django:8000`                      | Liveness and readiness probes       |
-| `/control/` | `django:8000`                      | Django's built-in admin             |
-| `/`         | `django:8000`                      | Catch-all — every application route |
+| Path        | Upstream                            | Notes                               |
+| ----------- | ----------------------------------- | ----------------------------------- |
+| `/static/`  | dev: `django:8000`; test: from disk | dev proxies; test `alias`es         |
+| `/media/`   | `django:8000`                       |                                     |
+| `/health/`  | `django:8000`                       | Liveness and readiness probes       |
+| `/control/` | `django:8000`                       | Django's built-in admin             |
+| `/`         | `django:8000`                       | Catch-all — every application route |
 
 `test.conf` uses `django-test` as the upstream name, matching the service in
 `docker-compose.test.yml`.
+
+**`/static/` is the one deliberate difference between the two.** Dev runs no `collectstatic`:
+Django serves the finders live under `DEBUG`, so `dev.conf` proxies and mounts nothing. Test
+collects into the `staticfiles_test` volume and `test.conf` serves it from disk, as the server
+Nginx does. Gate: `code/src/scripts/audits/dev-static.sh`.
+
+**Two consequences.** Dev `/static/` depends on `DEBUG=true`: with it off, `staticfiles_urlpatterns()`
+adds no route and every asset 404s with no error. And the gate reads `dev.conf` and the base
+`docker-compose.dev.yml` only, so a worktree override (`docker-compose.us###.dev.yml`) that mounts
+a collected tree back in goes unseen.
 
 ## Upstream resolution
 

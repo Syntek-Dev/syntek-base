@@ -76,6 +76,11 @@ code/src/django/apps/content/tests/fixtures/
 # `prettier --check .` saw it (11/11/2026); format.sh's yaml and json legs (12/11/2026) now read it too.
 code/src/scripts/audits/fixtures/toolchain-pins/**/.github/
 
+# dev-static self-test compose files — their YAML layout IS the test input. `flowvol` carries a
+# one-line flow list and `flowvol-multiline` the shape Prettier reflows it into; formatting the
+# first turns it into the second and silently drops a case (16/11/2026).
+code/src/scripts/audits/fixtures/dev-static/flowvol/
+
 # Cold walk-test evidence — a captured prompt, a walker's verbatim answer, and the transcript
 # of every tool call it made. Reformatting them edits the record the folder exists to hold, and
 # the first run's value is partly in HOW the walker wrote what it got wrong. The authored result

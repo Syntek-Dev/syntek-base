@@ -1,0 +1,2 @@
+# Fails closed: a compose file with no nginx service is a finding.
+nginx-service-missing
