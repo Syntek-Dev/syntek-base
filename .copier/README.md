@@ -179,6 +179,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-template-orphans.yml   ← artefacts a `copier update` stranded
 │       ├── audit-template-slop.yml      ← the AI-slop family, markup half
 │       ├── audit-toolchain-pins.yml     ← every Node/Python/uv/pnpm/Rust pin against its source — no path filter
+│       ├── audit-worktree-overlay.yml   ← the worktree dev overlay trusts its own :3080 CSRF origins
 │       ├── claude.yml                   ← Claude Code GitHub Actions integration
 │       ├── clickup-sync.yml             ← CLICKUP-ONLY — pushes story exports to ClickUp (push/PR)
 │       ├── pm-boards.yml                ← PM boards current and archive/ frozen; stale-status warnings
@@ -1284,6 +1285,7 @@ table ever falls behind it.
 | `routing-skills.sh`    | Every skill named in routing frontmatter exists, and gated names co-vary with their flag       |
 | `mcp-parity.sh`        | `.mcp.json` and `.codex/config.toml` declare the same MCP servers, commands and arguments      |
 | `env-read-deny.sh`     | Claude, Codex and Zed each deny AI reads of the six live `.env.*` files                        |
+| `worktree-overlay.sh`  | The worktree dev overlay trusts its own `:3080` origins, so story-stack POSTs pass CSRF        |
 | `playwright-pin.sh`    | Eight sites declare the Playwright pin - checks they agree with each other, never the host     |
 | `toolchain-pins.sh`    | Every Node, Python, uv, pnpm and Rust pin agrees with its one source of truth                  |
 | `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                           |

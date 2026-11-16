@@ -121,6 +121,13 @@ add the matching `/etc/hosts` entry (`127.0.0.NNN`). Keep worktree IPs at `127.0
 `127.0.0.1` is the main stack. The Nginx configs are `server_name _` catch-alls, so a
 worktree stack reuses them unchanged.
 
+The overlay also sets `DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA` on the `django` service, naming the
+stack's advertised `http://dev-usNNN.<%PROJECT_SLUG%>.localhost:3080` and its
+`http://127.0.0.NNN:3080` origins. Dev nginx forwards `Host` without the port, so the browser's
+`:3080` `Origin` never matches the request host and Django would refuse every form POST with a
+CSRF 403; `config/settings/dev.py` appends these origins to its `:81` defaults and refuses a
+wildcard or a malformed entry. `audits/worktree-overlay.sh` checks the example still sets it.
+
 ## Cross-references
 
 - `code/src/django/CONTEXT.md` — the Django project and its settings

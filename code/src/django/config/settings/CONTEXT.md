@@ -20,13 +20,13 @@ config/settings/
 
 ## Settings Module Map
 
-| File            | `DJANGO_SETTINGS_MODULE`     | Key overrides                                                              |
-| --------------- | ---------------------------- | -------------------------------------------------------------------------- |
-| `base.py`       | _(never used directly)_      | Apps, middleware, DB, cache, i18n, static — all shared                     |
-| `dev.py`        | `config.settings.dev`        | `DEBUG` from env, `ALLOWED_HOSTS=["*"]`, file logging, `string_if_invalid` |
-| `staging.py`    | `config.settings.staging`    | `DEBUG=False`, env `ALLOWED_HOSTS`, secure cookies                         |
-| `production.py` | `config.settings.production` | As staging, plus HSTS                                                      |
-| `test.py`       | `config.settings.test`       | MD5 hasher, in-memory cache and email, `string_if_invalid`                 |
+| File            | `DJANGO_SETTINGS_MODULE`     | Key overrides                                                                                                                                                                            |
+| --------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `base.py`       | _(never used directly)_      | Apps, middleware, DB, cache, i18n, static — all shared                                                                                                                                   |
+| `dev.py`        | `config.settings.dev`        | `DEBUG` from env, `ALLOWED_HOSTS=["*"]`, `:81` CSRF origins plus `DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA` (worktree overlay; wildcard or malformed raises), file logging, `string_if_invalid` |
+| `staging.py`    | `config.settings.staging`    | `DEBUG=False`, env `ALLOWED_HOSTS`, secure cookies                                                                                                                                       |
+| `production.py` | `config.settings.production` | As staging, plus HSTS                                                                                                                                                                    |
+| `test.py`       | `config.settings.test`       | MD5 hasher, in-memory cache and email, `string_if_invalid`                                                                                                                               |
 
 ## Critical Settings (base.py)
 
