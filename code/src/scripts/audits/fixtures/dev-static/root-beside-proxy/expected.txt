@@ -1,0 +1,2 @@
+# proxy_pass present but a root beside it still serves from disk.
+static-root

@@ -20,31 +20,37 @@ config/settings/
 
 ## Settings Module Map
 
-| File            | `DJANGO_SETTINGS_MODULE`     | Key overrides                                                              |
-| --------------- | ---------------------------- | -------------------------------------------------------------------------- |
-| `base.py`       | _(never used directly)_      | Apps, middleware, DB, cache, i18n, static — all shared                     |
-| `dev.py`        | `config.settings.dev`        | `DEBUG` from env, `ALLOWED_HOSTS=["*"]`, file logging, `string_if_invalid` |
-| `staging.py`    | `config.settings.staging`    | `DEBUG=False`, env `ALLOWED_HOSTS`, secure cookies                         |
-| `production.py` | `config.settings.production` | As staging, plus HSTS                                                      |
-| `test.py`       | `config.settings.test`       | MD5 hasher, in-memory cache and email, `string_if_invalid`                 |
+| File            | `DJANGO_SETTINGS_MODULE`     | Key overrides                                                                                                                                                                            |
+| --------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `base.py`       | _(never used directly)_      | Apps, middleware, DB, cache, i18n, static — all shared                                                                                                                                   |
+| `dev.py`        | `config.settings.dev`        | `DEBUG` from env, `ALLOWED_HOSTS=["*"]`, `:81` CSRF origins plus `DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA` (worktree overlay; wildcard or malformed raises), file logging, `string_if_invalid` |
+| `staging.py`    | `config.settings.staging`    | `DEBUG=False`, env `ALLOWED_HOSTS`, secure, `__Host-`-named cookies                                                                                                                      |
+| `production.py` | `config.settings.production` | As staging, plus HSTS                                                                                                                                                                    |
+| `test.py`       | `config.settings.test`       | MD5 hasher, in-memory cache and email, `string_if_invalid`                                                                                                                               |
 
 ## Critical Settings (base.py)
 
-| Setting                 | Value                                   | Notes                                                                                                                 |
-| ----------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `SECRET_KEY`            | `os.environ["SECRET_KEY"]`              | Required — the process fails to start if it is missing                                                                |
-| `DATABASES`             | `dj_database_url` ← `DATABASE_URL`      | PostgreSQL; `conn_max_age=600`, health checks on                                                                      |
-| `CACHES`                | `django_valkey.cache.ValkeyCache`       | `IGNORE_EXCEPTIONS` — a cache outage degrades to a miss                                                               |
-| `REDIS_URL`             | env, default `redis://cache:6379/0`     | Compose service name                                                                                                  |
-| `INSTALLED_APPS`        | `django.contrib.*` only                 | No third-party apps at baseline                                                                                       |
-| `MIDDLEWARE`            | Django defaults + `RequestIDMiddleware` | No third-party middleware; the one local entry stamps `X-Request-ID` on every response                                |
-| `string_if_invalid`     | _absent from `base.py`_                 | `dev.py` and `test.py` only — a non-empty value stops filters applying to invalid variables, so it never ships onward |
-| `AUTH_USER_MODEL`       | _(unset — `auth.User`)_                 | **Decide before the first migration**                                                                                 |
-| `DJANGO_ADMIN_PATH`     | `control/` (env-overridable)            | Django admin never mounts at `/admin/`                                                                                |
-| `LANGUAGE_CODE`         | `en-gb`                                 | British English throughout                                                                                            |
-| `TIME_ZONE`             | `Europe/London`                         | `USE_TZ=True`                                                                                                         |
-| `DEBUG`                 | _absent_                                | Each environment module reads it from the `DEBUG` env var                                                             |
-| `SESSION_COOKIE_SECURE` | _absent_                                | `staging.py` and `production.py` set `True`; dev inherits Django's `False`, which is correct for localhost over HTTP  |
+| Setting                   | Value                                   | Notes                                                                                                                                                      |
+| ------------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SECRET_KEY`              | `os.environ["SECRET_KEY"]`              | Required — the process fails to start if it is missing                                                                                                     |
+| `DATABASES`               | `dj_database_url` ← `DATABASE_URL`      | PostgreSQL; `conn_max_age=600`, health checks on                                                                                                           |
+| `CACHES`                  | `django_valkey.cache.ValkeyCache`       | `IGNORE_EXCEPTIONS` — a cache outage degrades to a miss                                                                                                    |
+| `REDIS_URL`               | env, default `redis://cache:6379/0`     | Compose service name                                                                                                                                       |
+| `INSTALLED_APPS`          | `django.contrib.*` only                 | No third-party apps at baseline                                                                                                                            |
+| `MIDDLEWARE`              | Django defaults + `RequestIDMiddleware` | No third-party middleware; the one local entry stamps `X-Request-ID` on every response                                                                     |
+| `string_if_invalid`       | _absent from `base.py`_                 | `dev.py` and `test.py` only — a non-empty value stops filters applying to invalid variables, so it never ships onward                                      |
+| `AUTH_USER_MODEL`         | _(unset — `auth.User`)_                 | **Decide before the first migration**                                                                                                                      |
+| `DJANGO_ADMIN_PATH`       | `control/` (env-overridable)            | Django admin never mounts at `/admin/`                                                                                                                     |
+| `LANGUAGE_CODE`           | `en-gb`                                 | British English throughout                                                                                                                                 |
+| `TIME_ZONE`               | `Europe/London`                         | `USE_TZ=True`                                                                                                                                              |
+| `DEBUG`                   | _absent_                                | Each environment module reads it from the `DEBUG` env var                                                                                                  |
+| `SESSION_COOKIE_HTTPONLY` | `True`                                  | Shared — the session cookie is never readable from page script                                                                                             |
+| `SESSION_COOKIE_SAMESITE` | `"Lax"`                                 | Shared — Django's default, stated explicitly                                                                                                               |
+| `SESSION_COOKIE_SECURE`   | _absent_                                | `staging.py` and `production.py` set `True`; dev inherits Django's `False`, which is correct for localhost over HTTP                                       |
+| `CSRF_COOKIE_SECURE`      | _absent_                                | Same shape as `SESSION_COOKIE_SECURE`: `staging.py` and `production.py` set `True`; dev inherits Django's `False`                                          |
+| `CSRF_COOKIE_HTTPONLY`    | `True`                                  | Shared — the CSRF cookie is never readable from page script; the token reaches a form through `{% csrf_token %}`                                           |
+| `SESSION_COOKIE_NAME`     | _absent_                                | `staging.py` and `production.py` set `"__Host-sessionid"`; dev inherits Django's plain `sessionid`, because a browser rejects an insecure `__Host-` cookie |
+| `CSRF_COOKIE_NAME`        | _absent_                                | `staging.py` and `production.py` set `"__Host-csrftoken"`; dev inherits Django's plain `csrftoken`, for the same reason                                    |
 
 ## Not yet configured
 

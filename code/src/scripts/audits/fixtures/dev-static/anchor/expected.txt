@@ -1,0 +1,2 @@
+# nginx volumes via a YAML alias (*vols) cannot be resolved without a YAML parser; fails closed (the anchor hides a /staticfiles mount).
+compose-volumes-unparseable

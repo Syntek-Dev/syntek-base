@@ -146,8 +146,9 @@ If a slug collision occurs, append a short numeric suffix: `my-project-2`.
 
 - **Phase 1:** Single domain — cookies are `SameSite=Lax`, and no CORS configuration is needed
   between the admin and portal surfaces.
-- **Phase 2:** Cross-subdomain cookies must use `SESSION_COOKIE_DOMAIN = ".<%PRIMARY_DOMAIN%>"` and
-  `CSRF_COOKIE_DOMAIN = ".<%PRIMARY_DOMAIN%>"`. Admin and portal sessions remain separate — a portal login
+- **Phase 2:** Cookie scope is owned by `code/docs/security/CRYPTO-AND-DATA.md`, _Browser
+  Storage Policy_; a second host, if one is ever routed, gets its own host-only cookies rather than
+  a shared one. Admin and portal sessions remain separate — a portal login
   does not grant admin access. Implement subdomain migration only after explicit security review.
   Where a real cross-origin caller exists, `CORS_ALLOWED_ORIGINS` must be an explicit allowlist —
   never `*` in production.

@@ -51,15 +51,21 @@ separate frontend container.
 
 ## Path routing (Nginx — dev / test)
 
-Every route resolves to the django upstream. `/static/` is served from disk by Nginx.
+Every route resolves to the django upstream, with one test-only exception: `/static/`.
 
-| Path        | Upstream                           |
-| ----------- | ---------------------------------- |
-| `/static/`  | Nginx, from the staticfiles volume |
-| `/media/`   | `django`                           |
-| `/health/`  | `django` — liveness and readiness  |
-| `/control/` | `django` — Django's built-in admin |
-| `/`         | `django` — catch-all               |
+| Path        | Upstream                                                                    |
+| ----------- | --------------------------------------------------------------------------- |
+| `/static/`  | dev: `django`, live from the finders · test: Nginx, from the collected tree |
+| `/media/`   | `django`                                                                    |
+| `/health/`  | `django` — liveness and readiness                                           |
+| `/control/` | `django` — Django's built-in admin                                          |
+| `/`         | `django` — catch-all                                                        |
+
+**Why the two differ.** Dev runs no `collectstatic`, so Django serves every finder live under
+`DEBUG` (`staticfiles_urlpatterns()` in `config/urls.py`) and an edit shows on refresh. Test
+collects into a shared volume and Nginx serves it, as the server Nginx will. A dev Nginx that
+served from disk would serve an empty folder: every asset 404'd that way until 16/11/2026.
+`audits/dev-static.sh` holds the dev half.
 
 > Django's built-in admin is at `/control/`, **never `/admin/`**. See
 > `code/docs/URL-STRATEGY.md`.
@@ -120,6 +126,13 @@ with the first. Copy `docker-compose.usXXX.dev.yml.example`, replace `NNN` throu
 add the matching `/etc/hosts` entry (`127.0.0.NNN`). Keep worktree IPs at `127.0.0.2`+;
 `127.0.0.1` is the main stack. The Nginx configs are `server_name _` catch-alls, so a
 worktree stack reuses them unchanged.
+
+The overlay also sets `DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA` on the `django` service, naming the
+stack's advertised `http://dev-usNNN.<%PROJECT_SLUG%>.localhost:3080` and its
+`http://127.0.0.NNN:3080` origins. Dev nginx forwards `Host` without the port, so the browser's
+`:3080` `Origin` never matches the request host and Django would refuse every form POST with a
+CSRF 403; `config/settings/dev.py` appends these origins to its `:81` defaults and refuses a
+wildcard or a malformed entry. `audits/worktree-overlay.sh` checks the example still sets it.
 
 ## Cross-references
 

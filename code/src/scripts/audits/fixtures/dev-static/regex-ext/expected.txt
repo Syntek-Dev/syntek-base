@@ -1,0 +1,2 @@
+# Rule: the dev nginx serves nothing from disk. A regex extension location (~* \.(css|js)$) never names /static/ yet still serves assets via root.
+static-root

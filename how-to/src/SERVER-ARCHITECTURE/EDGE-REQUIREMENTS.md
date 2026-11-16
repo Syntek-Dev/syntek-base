@@ -141,6 +141,17 @@ frontend upstream to size or route.
   `X-Forwarded-For`/`X-Real-IP` on proxy; the app's `.env` `TRUSTED_PROXIES` must name
   exactly the Nginx hop the backend sees (bridge-side address) — an empty or wrong
   value silently degrades per-IP rate-limit keying and audit IP hashing.
+- **Deploy repo must implement — the scheme header:** the edge must **strip** any
+  `X-Forwarded-Proto` arriving from a client and set the value itself, from the connection
+  it actually terminated; the app container must be reachable only through that edge.
+  **Source:** `code/src/django/config/settings/staging.py:19` and `production.py:19` —
+  `SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")`, so `request.is_secure()` and
+  with it `SECURE_SSL_REDIRECT` trust that header. A plain-HTTP request carrying a
+  client-supplied `X-Forwarded-Proto: https` skips the redirect and is served over HTTP, and the
+  browser then discards the `__Host-` session and CSRF cookies (doctrine:
+  `code/docs/security/CRYPTO-AND-DATA.md`, _Browser Storage Policy_) — no error, no log, an
+  anonymous request and a login that never completes. **Current status:** a contract term, not a
+  verified control — no gate in this repository can see whether an edge strips a header.
 
 ## 7. Cloudflare + CF Tunnel
 
@@ -320,34 +331,38 @@ frontend upstream to size or route.
 ## Post-deploy verification — the contract's acceptance checks
 
 After any deploy, verify the contract end-to-end **through the tunnel** (the public
-path — service-level `systemctl`/`docker` checks are the deploy repo's own workflows):
+path — service-level `systemctl`/`docker` checks are the deploy repo's own workflows). **One
+exception, the scheme header:** Cloudflare redirects `http://` before the request reaches the
+origin, so through the tunnel that check passes whether or not the edge strips the header. It is
+sent to the origin hop directly, bypassing Cloudflare:
 
-| Check            | Path                                                | Expect                                                   |
-| ---------------- | --------------------------------------------------- | -------------------------------------------------------- |
-| Liveness         | `https://<%PRIMARY_DOMAIN%>/health/`                | `200`; CSP + `X-Frame-Options` headers present (entry 1) |
-| Readiness        | `https://<%PRIMARY_DOMAIN%>/health/ready/`          | `200`, `status: operational` (`HEALTH-CONTRACT.md`)      |
-| API              | `GET https://<%PRIMARY_DOMAIN%>/api/…` health route | `200` JSON from the Django Ninja API                     |
-| Marketing        | `https://<%PRIMARY_DOMAIN%>/`                       | `200` served by **Django** (entry 5)                     |
-| Metrics lockdown | `/metrics/` from a public client                    | denied (`403`) — loopback-only (entry 8)                 |
-| Workers          | `worker` + `beat` alongside `django` — once wired   | entry 11 — neither container ships at baseline           |
+| Check            | Path                                                                                                   | Expect                                                                                                                  |
+| ---------------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Liveness         | `https://<%PRIMARY_DOMAIN%>/health/`                                                                   | `200`; CSP + `X-Frame-Options` headers present (entry 1)                                                                |
+| Readiness        | `https://<%PRIMARY_DOMAIN%>/health/ready/`                                                             | `200`, `status: operational` (`HEALTH-CONTRACT.md`)                                                                     |
+| API              | `GET https://<%PRIMARY_DOMAIN%>/api/…` health route                                                    | `200` JSON from the Django Ninja API                                                                                    |
+| Marketing        | `https://<%PRIMARY_DOMAIN%>/`                                                                          | `200` served by **Django** (entry 5)                                                                                    |
+| Metrics lockdown | `/metrics/` from a public client                                                                       | denied (`403`) — loopback-only (entry 8)                                                                                |
+| Scheme header    | plain-HTTP request **to the origin hop, not the tunnel**, carrying a forged `X-Forwarded-Proto: https` | redirected to `https://`, or refused — never served over plain HTTP; a pass through the tunnel proves nothing (entry 6) |
+| Workers          | `worker` + `beat` alongside `django` — once wired                                                      | entry 11 — neither container ships at baseline                                                                          |
 
 ---
 
 ## Status summary
 
-| #   | Requirement                     | App side (by design)              | Deploy side (per deployment — TBD)               |
-| --- | ------------------------------- | --------------------------------- | ------------------------------------------------ |
-| 1   | Security headers/CSP at edge    | None in-app (edge owns it)        | Baseline + per-app `cspDirectives`               |
-| 2   | CSP nonce mechanism             | Dormant contract                  | Implement when a nonce surface exists            |
-| 3   | CSP media hosts                 | Media surfaces render signed URLs | Add `img-src`/`media-src` allowances             |
-| 4   | `client_max_body_size`          | In-app upload caps                | Set vhost limits (1 MiB default otherwise)       |
-| 5   | Routing carve                   | Single Django app + Ninja `/api/` | Mirror `dev.conf` location set                   |
-| 6   | TLS + `TRUSTED_PROXIES`         | Fail-safe proxy trust             | CF TLS; env value per deployment                 |
-| 7   | CF Tunnel + edge rate rule      | In-app rate budget                | Tunnel + edge rate rule                          |
-| 8   | Health/metrics (Gatus + scrape) | Endpoints shipped                 | Gatus + single `<%ORG_SLUG%>-backend` scrape job |
-| 9   | Cloudinary token auth           | Ready                             | Account add-on + env var                         |
-| 10  | Object-store public host        | boto3/presign                     | Public vhost matching endpoint URL               |
-| 11  | Cache bust + worker/beat        | Cache bust only — Celery unwired  | Restart-after-migrate; worker/beat once wired    |
-| 12  | Outbound mail relay             | SMTP env contract                 | SMTP path + SPF/DKIM/DMARC DNS + creds           |
-| 13  | Request correlation ID          | Reads inbound, mints a fallback   | Set `X-Request-ID`, log it, never strip it       |
-| 14  | The 503 page                    | None — Django cannot serve it     | Static `503` doc, `Retry-After`, never cached    |
+| #   | Requirement                             | App side (by design)                                        | Deploy side (per deployment — TBD)                                                          |
+| --- | --------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| 1   | Security headers/CSP at edge            | None in-app (edge owns it)                                  | Baseline + per-app `cspDirectives`                                                          |
+| 2   | CSP nonce mechanism                     | Dormant contract                                            | Implement when a nonce surface exists                                                       |
+| 3   | CSP media hosts                         | Media surfaces render signed URLs                           | Add `img-src`/`media-src` allowances                                                        |
+| 4   | `client_max_body_size`                  | In-app upload caps                                          | Set vhost limits (1 MiB default otherwise)                                                  |
+| 5   | Routing carve                           | Single Django app + Ninja `/api/`                           | Mirror `dev.conf` location set                                                              |
+| 6   | TLS + `TRUSTED_PROXIES` + scheme header | Fail-safe proxy trust; `__Host-` cookies rest on the scheme | CF TLS; env value per deployment; edge strips a client `X-Forwarded-Proto` and sets its own |
+| 7   | CF Tunnel + edge rate rule              | In-app rate budget                                          | Tunnel + edge rate rule                                                                     |
+| 8   | Health/metrics (Gatus + scrape)         | Endpoints shipped                                           | Gatus + single `<%ORG_SLUG%>-backend` scrape job                                            |
+| 9   | Cloudinary token auth                   | Ready                                                       | Account add-on + env var                                                                    |
+| 10  | Object-store public host                | boto3/presign                                               | Public vhost matching endpoint URL                                                          |
+| 11  | Cache bust + worker/beat                | Cache bust only — Celery unwired                            | Restart-after-migrate; worker/beat once wired                                               |
+| 12  | Outbound mail relay                     | SMTP env contract                                           | SMTP path + SPF/DKIM/DMARC DNS + creds                                                      |
+| 13  | Request correlation ID                  | Reads inbound, mints a fallback                             | Set `X-Request-ID`, log it, never strip it                                                  |
+| 14  | The 503 page                            | None — Django cannot serve it                               | Static `503` doc, `Retry-After`, never cached                                               |

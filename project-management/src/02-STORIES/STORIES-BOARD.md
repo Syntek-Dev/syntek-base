@@ -10,9 +10,9 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 5     |
+| Pending           | 4     |
 | In Progress       | 0     |
-| In Review         | 2     |
+| In Review         | 3     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
 | Customer Accepted | 5     |
@@ -30,7 +30,6 @@ _None._
 
 | ID    | Title                                                                                                                      | Status  | File                 |
 | ----- | -------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
-| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                     | Pending | [US008.md](US008.md) |
 | US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true                            | Pending | [US009.md](US009.md) |
 | US010 | The seven register indexes are born seeded, and the map index leaves the file that ships                                   | Pending | [US010.md](US010.md) |
 | US012 | A seeded file that never lands is reported, and the gate's header claim becomes true                                       | Pending | [US012.md](US012.md) |
@@ -42,10 +41,11 @@ _None._
 
 ## In Review
 
-| ID    | Title                                                                                        | Status    | File                 |
-| ----- | -------------------------------------------------------------------------------------------- | --------- | -------------------- |
-| US005 | Exactly one layer decides to retry, and every budget says how long it may take               | In Review | [US005.md](US005.md) |
-| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development | In Review | [US006.md](US006.md) |
+| ID    | Title                                                                                                  | Status    | File                 |
+| ----- | ------------------------------------------------------------------------------------------------------ | --------- | -------------------- |
+| US005 | Exactly one layer decides to retry, and every budget says how long it may take                         | In Review | [US005.md](US005.md) |
+| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development           | In Review | [US006.md](US006.md) |
+| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | In Review | [US008.md](US008.md) |
 
 ## Accepted
 

@@ -204,21 +204,28 @@ wrote.** Copier tracks only what it generated, so a renumbered directory takes i
 the new path and strands every hand-written artefact, with no conflict and no error
 (`14-UPDATING.md`).
 
-| Version   | What it does                                                                                                                                                                                                         |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `v7.0.0`  | Renumbers `project-management/src/` again to open `14-LOGGING`, shifting `14-DECISIONS` and everything after it up by one. **Acts**, and never overwrites — a name present on both sides is reported and left alone. |
-| `v2.0.0`  | The first such renumber, carrying your stories, ADRs and sprint records with it. **Acts**, on the same terms.                                                                                                        |
-| `v3.0.0`  | Reports any agent definition you wrote yourself in the now-deleted agents directory. **Advisory.**                                                                                                                   |
-| `v4.0.0`  | Restores `pyproject.toml`'s `[project] name` to your slug after an update rewrote it to the template's. **Acts** — the alternative is a broken build.                                                                |
-| `v5.0.0`  | Reports citations you wrote at a section of the old single-file `GIT-GUIDE.md`, now split into `docs/git/`. **Advisory.** Keyed at both `v4.0.0` and `v5.0.0`, deliberately.                                         |
-| `v6.0.0`  | Reports work stranded by the `feature` → `implement-story` / `feature-map` renames. **Advisory.**                                                                                                                    |
-| _(every)_ | `rm -rf .copier` — the staging directory is not project content, and `_tasks` do not run on an update to clear it.                                                                                                   |
+| Version                | What it does                                                                                                                                                                                                                                                                                                   |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `v7.0.0`               | Renumbers `project-management/src/` again to open `14-LOGGING`, shifting `14-DECISIONS` and everything after it up by one. **Acts**, and never overwrites — a name present on both sides is reported and left alone.                                                                                           |
+| `v2.0.0`               | The first such renumber, carrying your stories, ADRs and sprint records with it. **Acts**, on the same terms.                                                                                                                                                                                                  |
+| `v3.0.0`               | Reports any agent definition you wrote yourself in the now-deleted agents directory. **Advisory.**                                                                                                                                                                                                             |
+| `v4.0.0`               | Restores `pyproject.toml`'s `[project] name` to your slug after an update rewrote it to the template's. **Acts** — the alternative is a broken build.                                                                                                                                                          |
+| `v5.0.0`               | Reports citations you wrote at a section of the old single-file `GIT-GUIDE.md`, now split into `docs/git/`. **Advisory.** Keyed at both `v4.0.0` and `v5.0.0`, deliberately.                                                                                                                                   |
+| `v6.0.0`               | Reports work stranded by the `feature` → `implement-story` / `feature-map` renames. **Advisory.**                                                                                                                                                                                                              |
+| _(every, state-gated)_ | Reports any settings module that sets a session or CSRF cookie Domain, or a Path other than `/`, which the `__Host-` cookie names forbid — file, line and setting, never a value. Silent when it finds nothing. No version key: the combination is wrong whenever it holds. **Advisory.**                      |
+| _(pending — inactive)_ | The one-time `__Host-` cutover notice: the first deploy logs every user out, a rollback does it again, a rolling deploy is unsafe, and anything matching the cookies by name must be repointed. **Inactive until the release that ships it** assigns its version and activates it in one commit. **Advisory.** |
+| _(every)_              | `rm -rf .copier` — the staging directory is not project content, and `_tasks` do not run on an update to clear it.                                                                                                                                                                                             |
 
 **Order is declaration order, not version order**, which is why `v7.0.0` is declared first: it must <!-- doc-references: template-only -->
 not run before the `v2.0.0` pass has settled an older project's tree.
 
 The last entry has no `version:` on purpose: it must hold for every future release that stages a
 file that way, and `rm -rf` on a normally-absent directory is a no-op.
+
+Two more forms carry no version, for different reasons. A **state-gated** entry runs on every
+update because what it reports is wrong whatever release produced it, and stays silent until it
+finds something. A **pending** entry belongs to a release not yet cut: it ships switched off, and
+that release assigns its version and switches it on in the commit it tags — never before.
 
 **Advisory versus acting is a deliberate split.** A migration acts only where exactly one correct
 value exists and a human left to do it would be left behind a success message — `v4.0.0`'s manifest

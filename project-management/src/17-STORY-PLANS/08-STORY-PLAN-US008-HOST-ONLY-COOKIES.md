@@ -260,7 +260,7 @@ type and no transaction to describe.
 
 **The gate comes before the settings, and that is not a preference.** The story's discriminating
 comparison is the **new** script run over the settings modules as they stand _before_ the change —
-reporting all three clauses — and then over the modules after P2, reporting none
+reporting the two presence clauses — and then over the modules after P2, reporting none
 (`../02-STORIES/US008.md` -> _QA Acceptance Criteria — Automated_). The clauses must therefore
 exist while the modules are still un-edited, so P1 precedes P2 and the capture happens at P1's
 close. **There is no comparison the other way round**: the old script has no clause for a fixture
@@ -388,7 +388,8 @@ filters (`:34-39` on push, `:43-48` on pull request) already include `code/src/d
 script and its fixtures, and the job runs `--self-test` first (`:60`) and the audit second (`:63`).
 
 **P1 closes with the pre-change capture**: the new script over the settings modules as they stand,
-reporting all three clauses. Recorded, with `HEAD` beside it.
+reporting the two presence clauses as three findings, `cookie-scope-widened` running clean.
+Recorded, with `HEAD` beside it. <!-- CORRECTED 16/11/2026 (settled 16/11/2026, /implement-story US008 P1 ruling Q1): read "reporting all three clauses" until then. Measured at P1's close (cd0b591): HEAD assigns no cookie Domain or Path, so cookie-scope-widened runs and correctly finds nothing over the un-edited modules; its discrimination is proved by broken/settings/ alone. Three findings, two clauses. -->
 
 ### The three gate clauses, and what each asserts
 
@@ -1054,8 +1055,9 @@ claim is made over the three edited modules; they are configuration with no bran
 
 ### The discriminating comparison — recorded, and one-directional
 
-- The **new** script over the settings modules **before** P2 reports all three clauses (captured at
-  P1's close).
+- The **new** script over the settings modules **before** P2 reports the two presence clauses —
+  three findings — and `cookie-scope-widened` runs clean, there being no Domain or Path to find; its
+  discrimination is the fixture's (captured at P1's close). <!-- CORRECTED 16/11/2026 (settled 16/11/2026, /implement-story US008 P1 ruling Q1): read "reports all three clauses" until then. Measured at P1's close (cd0b591): HEAD assigns no cookie Domain or Path, so cookie-scope-widened runs and correctly finds nothing over the un-edited modules; its discrimination is proved by broken/settings/ alone. Three findings, two clauses. -->
 - The **new** script over the modules **after** P2 reports none.
 - **There is no comparison the other way round**, and the plan says so explicitly so it is never
   claimed: the old script has no clause for a fixture to fail against.

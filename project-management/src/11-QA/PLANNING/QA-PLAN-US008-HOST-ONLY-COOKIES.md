@@ -474,8 +474,9 @@ never reported as the gate passing.
 - **There is no reverse comparison, and the story is right to say so.** The old script has no
   clause for a fixture to fail against, so the "fixture fails against the pre-change script" form
   US004 uses does not apply. The discriminating comparison runs one way only: the **new** script
-  over the **pre-change** modules reports all three clauses, over the post-change modules reports
-  none. Record both halves.
+  over the **pre-change** modules reports the two presence clauses (three findings), over the
+  post-change modules reports none; `cookie-scope-widened` has nothing to find in either and is
+  proved by `broken/settings/`. Record both halves. <!-- CORRECTED 16/11/2026 (settled 16/11/2026, /implement-story US008 P1 ruling Q1): read "reports all three clauses" until then. Measured at P1's close (cd0b591): HEAD assigns no cookie Domain or Path, so cookie-scope-widened runs and correctly finds nothing over the un-edited modules; its discrimination is proved by broken/settings/ alone. Three findings, two clauses. -->
 - **The citation gate is inherited red and this story's criterion is the scoped run.**
   `--path code/docs` must exit 0 with "Clean — every citation resolves." The whole-tree figure is
   captured before the first edit and at close, recorded with HEAD and detector hash, and
