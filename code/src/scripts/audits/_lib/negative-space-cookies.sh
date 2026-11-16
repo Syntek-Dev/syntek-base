@@ -312,6 +312,7 @@ cookie_self_test_bypasses() {
   cookie_self_test_variants
   cookie_self_test_fallback
   cookie_self_test_surfaces
+  cookie_self_test_tls_discovery
   cookie_self_test_parity
 }
 
@@ -480,6 +481,44 @@ cookie_self_test_surfaces() {
   done
 }
 
+# ── The final review, round 3 (16/11/2026) ───────────────────────────────────
+# QA3-01 (ruled 16/11/2026: fix, fail closed): TLS-module discovery must not need a
+# RECOGNISED `= True`. Any unrecognised occurrence of SECURE_SSL_REDIRECT,
+# SESSION_COOKIE_SECURE or CSRF_COOKIE_SECURE makes a module a TLS module, held to
+# cookie-host-prefix-absent. R3-06: the augmented-assignment flag is pinned on a root-looking
+# right-hand side, where only the flag stands between it and a pass.
+cookie_self_test_tls_discovery() {
+  local dir body pair module label
+  local plain='SESSION_COOKIE_NAME = "sessionid"\nCSRF_COOKIE_NAME = "csrftoken"\n'
+
+  # QA3-01: one variant per trigger form, each a third module with plain names.
+  for pair in "semi-redirect|X = 1; SECURE_SSL_REDIRECT = True|SECURE_SSL_REDIRECT after a semicolon" \
+              "semi-secure|X = 1; SESSION_COOKIE_SECURE = True|SESSION_COOKIE_SECURE after a semicolon" \
+              "unpack-secure|SESSION_COOKIE_SECURE, CSRF_COOKIE_SECURE = True, True|tuple-unpacked *_COOKIE_SECURE" \
+              "chain-redirect|A = SECURE_SSL_REDIRECT = (True)|chained SECURE_SSL_REDIRECT = (True)"; do
+    IFS='|' read -r module body label <<< "$pair"
+    dir=$(cookie_variant "tls-$module")
+    printf '%s\n%b' "$body" "$plain" > "$dir/uat.py"
+    cookie_expect "$(cookie_findings "$dir")" cookie-host-prefix-absent uat.py SESSION_COOKIE_NAME \
+      "QA3-01 uat.py turned TLS by $label, plain session name"
+  done
+  # ...and the guard: no TLS trigger at all, or a recognised non-True SECURE line, is not TLS.
+  dir=$(cookie_variant tls-none)
+  printf 'DEBUG = True\n%b' "$plain" > "$dir/devlike.py"
+  printf 'SESSION_COOKIE_SECURE = False\n%b' "$plain" > "$dir/devsecure.py"
+  body=$(cookie_findings "$dir")
+  cookie_expect_none "$body" devlike.py "QA3-01 guard: plain names with no TLS trigger"
+  cookie_expect_none "$body" devsecure.py "QA3-01 guard: plain names beside a recognised SESSION_COOKIE_SECURE = False"
+
+  # R3-06: augmented assignments are findings even when the operand looks compliant.
+  dir=$(cookie_variant aug-root)
+  printf '%s\n' 'SESSION_COOKIE_PATH += "/"' > "$dir/augpath.py"
+  printf '%s\n' 'CSRF_COOKIE_HTTPONLY |= True' >> "$dir/base.py"
+  body=$(cookie_findings "$dir")
+  cookie_expect "$body" cookie-scope-widened augpath.py SESSION_COOKIE_PATH "R3-06 SESSION_COOKIE_PATH += a root Path"
+  cookie_expect "$body" csrf-cookie-httponly-absent base.py CSRF_COOKIE_HTTPONLY "R3-06 CSRF_COOKIE_HTTPONLY |= True"
+}
+
 # The scanner's text in FILE: the COOKIE_AWK block (its opening line to the line `}'`) and the
 # COOKIE_WIDE line. The gate and the migration must carry these byte-identical (QA2-03).
 cookie_twin_text() {
@@ -504,7 +543,7 @@ cookie_migration_pairs() {
 # Parity (Q11): the copier migration reports exactly what cookie-scope-widened reports. It
 # lives in .copier/, which generation removes — absent, the check is SKIPPED with a note.
 cookie_self_test_parity() {
-  local migration="$PWD/.copier/migrations/cookie-domain-conflict.sh" tree proj gate mig
+  local migration="$PWD/.copier/migrations/cookie-domain-conflict.sh" tree proj gate mig out rc
   if [[ ! -f "$migration" ]]; then
     printf '%s\n' "  · parity: skipped — .copier/migrations/cookie-domain-conflict.sh is absent (a generated project); gate/migration agreement was not measured"
     return 0
@@ -523,7 +562,10 @@ cookie_self_test_parity() {
     mkdir -p "$proj/code/src/django/config/settings"
     cp -R "$FIXTURES_DIR/$tree/settings/." "$proj/code/src/django/config/settings/"
     gate=$(cookie_gate_pairs "$(cookie_findings "$proj/code/src/django/config/settings")")
-    mig=$(cookie_migration_pairs "$(cd "$proj" && bash "$migration" 2>&1)")
+    # QA3-05: the migration is advisory — exit 0 on the clean path and the findings path alike.
+    rc=0; out=$(cd "$proj" && bash "$migration" 2>&1) || rc=$?
+    [[ "$rc" -eq 0 ]] || st_fail "QA3-05 the migration exited $rc on $tree/settings — it is advisory and must exit 0"
+    mig=$(cookie_migration_pairs "$out")
     if [[ "$gate" != "$mig" ]]; then
       st_fail "parity on $tree/settings: the migration and cookie-scope-widened disagree (< gate, > migration)" \
         "$(diff <(printf '%s\n' "$gate") <(printf '%s\n' "$mig") | grep -E '^[<>]' || true)"
