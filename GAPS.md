@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 15/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 16/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -1228,3 +1228,49 @@ Findings in "project-management/src/20-FINDINGS/FINDING-US005-RETRY-OWNERSHIP-AN
 a presence assertion and probe for the export README. Add a comment above the first artefact-tree
 entry. Reword the template-guide pair to the general `_exclude` rule; that pair is a protected
 path (`.claude/hooks/CONTEXT.md`). No map or story claims this entry.
+
+---
+
+## 16/11/2026 — the audits register has no entry for `_lib/negative-space-cookies.sh`, and its `negative-space.sh` row predates the split
+
+**Type:** Active gap
+**Summary:** US008 moved the three cookie clauses, their helpers and their self-test out of
+`code/src/scripts/audits/negative-space.sh` into `code/src/scripts/audits/_lib/negative-space-cookies.sh`
+(sourced by the gate). `code/src/scripts/audits/CONTEXT.md` was not updated: its tree carries no
+`_lib/` entry, and its `negative-space.sh` row still lists twelve `[gate: fail]` clauses with no
+cookie clause and no mention of the split. Story decision Q3 forbade editing that file inside
+US008, because US002 owns its headroom. Finding F-028 (round 2 review F5) in
+"project-management/src/20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md".
+**Blocked by / Action:** Blocked by the Q3 hold on `code/src/scripts/audits/CONTEXT.md`. When it
+lifts, add the `_lib/` entry to the tree and refresh the `negative-space.sh` row (the cookie
+clauses, and where they now live), measuring the file with `audits/docs-length.sh` first. No map
+or story claims this entry.
+
+---
+
+## 16/11/2026 — the template guide's migrations register lacks rows for three declared migrations
+
+**Type:** Active gap
+**Summary:** `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md` → _Migrations — what runs on `update`
+instead_ is the operator's register of every `_migrations` entry. `copier.yml` declares
+`split-18-tests.sh`, `v7.7.0-pm-boards.sh` and `v7.8.0-leaked-adr.sh`, and the register has no row
+for any of them. This is separate from the `shared-ai-symlinks.sh` gap in the next entry. Finding
+F-029 in "project-management/src/20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Add one row per declared migration, in declaration
+order, each saying whether it acts or advises. The file is a protected path
+(`.claude/hooks/CONTEXT.md`), so the edit goes through that rule. No map or story claims this
+entry.
+
+---
+
+## 16/11/2026 — the migrations register has no row for `shared-ai-symlinks.sh`
+
+**Type:** Active gap
+**Summary:** The same register in `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md` has no row for the
+`shared-ai-symlinks.sh` migration `copier.yml` declares. The row has been owed since 17/09/2026, the
+date `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` claims
+it; US008's story places this entry on its `22-implementation-documentation` pass (story Script
+Tasks, last row). It is recorded here on 16/11/2026, not backdated. It is not US008's repair.
+Finding F-030 in "project-management/src/20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Add the row in declaration order, alongside the three
+in the previous entry, through the protected-path rule. No map or story claims this entry.
