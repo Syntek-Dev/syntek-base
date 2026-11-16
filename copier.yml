@@ -49,6 +49,10 @@ _exclude:
   # generated project never holds, so it would only ever refuse to run there. Its sibling
   # template-update.sh ships, because updating FROM a template is a generated project's job.
   - /code/src/scripts/development/template-render.sh
+  # US008's preview fixture generates a project FROM this template's tags and history, and its
+  # P5 cases read this copier.yml's `_migrations:`. A generated project holds neither, so it
+  # could only ever fail there. Test-only and template-only, settled 16/11/2026.
+  - /code/src/scripts/tests/cookie-preview-fixture.sh
   # toolchain-pins.sh's held register names PIN S-01 in MAP-PIN-DETECT-MOVE, and
   # /project-management/src/** below excludes that map. Shipped, it would hold the unpinned uv
   # class in every generated project against an owner that is not there and a release condition
@@ -1044,6 +1048,37 @@ _migrations:
   - version: v7.8.0
     command: bash "<% _copier_conf.src_path %>/.copier/migrations/v7.8.0-leaked-adr.sh"
     when: "<% _stage == 'after' %>"
+
+  # The __Host- cookie names (staging and production) refuse a cookie carrying a Domain, or a
+  # Path other than "/". A project that added SESSION_COOKIE_DOMAIN or CSRF_COOKIE_DOMAIN to its
+  # own settings keeps that line through the merge, cleanly, and every login then fails behind
+  # an update that reported success. That combination is wrong WHENEVER it holds, whatever
+  # release produced it, so this entry is gated on project STATE, not on a version: it runs on
+  # every update, as shared-ai-symlinks.sh does, and no mis-keyed version can suppress it. It
+  # reads only config/settings/*.py, reports file, line and setting name — never a value — is
+  # SILENT when it finds nothing (an entry that runs forever must cost nothing when it has
+  # nothing to say), and always exits 0: a Domain kept deliberately is the project's call.
+  - command: bash "<% _copier_conf.src_path %>/.copier/migrations/cookie-domain-conflict.sh"
+    when: "<% _stage == 'after' %>"
+
+  # PENDING, AND DISABLED. The one-time cutover notice for the same rename: the first deploy
+  # invalidates every live session and open CSRF token, a rollback does it again, a rolling
+  # deploy is unsafe, and anything matching the cookies by name must be repointed. That is an
+  # EVENT at one crossing, so unlike the entry above it needs a version key — and the key is
+  # DERIVED AT RELEASE, never at design: it names the release this doctrine ships in, and a
+  # number written here before that tag exists is the unverified claim the v6.0.0 entry's
+  # comment records this file making before. Copier runs an entry with no `version:` on every
+  # update, so until then it is switched off with a YAML boolean rather than left keyless.
+  #
+  # AT RELEASE, IN ONE COMMIT, THEN TAG THAT COMMIT: derive the key with
+  # `git tag --sort=-v:refname | head -1` (--sort is load-bearing: a bare `git tag` sorts
+  # lexically), take the release being cut, add it as `version:`, rename the script to
+  # v<RELEASE>-host-only-cookies.sh, and replace `when: false` with the after-stage predicate
+  # the entries above carry. Never tag a partially activated state. It will be a MINOR key, as
+  # the v7.7.0 and v7.8.0 entries already are: a key names the release a change shipped in,
+  # whatever that release's semver tier. 24-release/CHECKLIST.md carries the obligation.
+  - command: bash "<% _copier_conf.src_path %>/.copier/migrations/host-only-cookies.sh"
+    when: false
 
   # .copier/ is a staging directory, not project content. The _task that empties it and
   # removes it is gated to `copy`, so on an `update` the staged seeds land in the project

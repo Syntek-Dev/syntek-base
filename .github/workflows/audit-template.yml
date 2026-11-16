@@ -209,6 +209,7 @@ jobs:
                      .github/PULL_REQUEST_TEMPLATE.md .github/scripts \
                      .github/workflows/audit-template.yml \
                      code/src/scripts/development/template-render.sh \
+                     code/src/scripts/tests/cookie-preview-fixture.sh \
                      .copier; do
               if [ -e "$f" ]; then
                 echo "::error::INCLUDE_MOBILE=$mobile — $f leaked into the generated project"

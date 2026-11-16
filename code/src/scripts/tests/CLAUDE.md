@@ -11,7 +11,8 @@ file → `reports/`.
 The test-suite entry point — `backend.sh`, `backend-coverage.sh`, `api.sh`, `e2e-py.sh`,
 `mutmut.sh`, `open-coverage.sh`, `server.sh`, the `all.sh` orchestrator, `test-record.sh`,
 which turns what a run produced into a story's test record, and the test-only
-`cookie-preview-fixture.sh`, which builds US008's generated scratch project for its preview proof.
+`cookie-preview-fixture.sh`, which builds US008's generated scratch project for its preview proof, <!-- doc-references: template-only -->
+and which `copier.yml` excludes, so a generated project never receives it. <!-- doc-references: template-only -->
 
 ## How to work here
 

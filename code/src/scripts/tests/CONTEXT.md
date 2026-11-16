@@ -51,18 +51,18 @@ code/src/scripts/tests/
 
 ## Scripts
 
-| Script                      | Tool                | Pattern | Stack required      | Default output dir                                                          |
-| --------------------------- | ------------------- | ------- | ------------------- | --------------------------------------------------------------------------- |
-| `all.sh`                    | orchestrator        | both    | Depends on flags    | (delegates to sub-scripts)                                                  |
-| `api.sh`                    | Bruno CLI           | host    | Test stack up       | `reports/api/`                                                              |
-| `backend.sh`                | pytest              | exec    | Full test stack up  | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml) |
-| `backend-coverage.sh`       | pytest + cov        | exec    | Full test stack up  | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)         |
-| `cookie-preview-fixture.sh` | Copier + git        | host    | None (needs Copier) | N/A (console output; scratch removed on exit)                               |
-| `e2e-py.sh`                 | pytest + playwright | host    | Dev stack up (:81)  | `reports/a11y/` + `reports/e2e/results.xml`                                 |
-| `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                        |
-| `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                         |
-| `server.sh`                 | docker compose      | host    | N/A                 | N/A                                                                         |
-| `test-record.sh`            | report parser       | host    | None (reads files)  | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**          |
+| Script                      | Tool                | Pattern | Stack required      | Default output dir                                                                   |
+| --------------------------- | ------------------- | ------- | ------------------- | ------------------------------------------------------------------------------------ |
+| `all.sh`                    | orchestrator        | both    | Depends on flags    | (delegates to sub-scripts)                                                           |
+| `api.sh`                    | Bruno CLI           | host    | Test stack up       | `reports/api/`                                                                       |
+| `backend.sh`                | pytest              | exec    | Full test stack up  | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml)          |
+| `backend-coverage.sh`       | pytest + cov        | exec    | Full test stack up  | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)                  |
+| `cookie-preview-fixture.sh` | Copier + git        | host    | None (needs Copier) | N/A (console output; scratch removed on exit) <!-- doc-references: template-only --> |
+| `e2e-py.sh`                 | pytest + playwright | host    | Dev stack up (:81)  | `reports/a11y/` + `reports/e2e/results.xml`                                          |
+| `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                                 |
+| `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                                  |
+| `server.sh`                 | docker compose      | host    | N/A                 | N/A                                                                                  |
+| `test-record.sh`            | report parser       | host    | None (reads files)  | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**                   |
 
 `backend.sh`, `backend-coverage.sh`, and `api.sh` fall back to `.env.test.example` when
 `.env.test` is absent — every value in it has a working default in
@@ -120,12 +120,15 @@ so three limits hold it:
   carries none. The attribution rule and the record's own conventions:
   `project-management/src/18-TESTS/AUTOMATED/CLAUDE.md`.
 
-## cookie-preview-fixture.sh — test-only, for one story's preview proof
+## cookie-preview-fixture.sh — test-only, for one story's preview proof <!-- doc-references: template-only -->
 
 ```bash
 bash code/src/scripts/tests/cookie-preview-fixture.sh --case shipped-advisories \
   --template-source "$PWD" --story-ref HEAD
 ```
+
+**Template-only:** `copier.yml` excludes it (settled 16/11/2026), because it generates from this <!-- doc-references: template-only -->
+template's own tags and history and reads its `_migrations:`, none of which a generated project holds.
 
 Exists for US008's preview rows (PREVIEW-01 to PREVIEW-04) and its P4/P5 proofs.
 `development/template-update.sh` refuses to run in the template, so the proof needs a
