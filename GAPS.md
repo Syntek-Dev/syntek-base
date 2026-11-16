@@ -1233,6 +1233,10 @@ path (`.claude/hooks/CONTEXT.md`). No map or story claims this entry.
 
 ## 16/11/2026 — the audits register has no entry for `_lib/negative-space-cookies.sh`, and its `negative-space.sh` row predates the split
 
+✅ CLOSED 16/11/2026 — fixed in US008 once Sam lifted the Q3 hold (US002 done, 16/11/2026 in
+session): the tree carries `_lib/`, the `negative-space.sh` row lists fifteen clauses and the
+split. Measured first: 247 code lines before, 253 after, under the 270 ratchet.
+
 **Type:** Active gap
 **Summary:** US008 moved the three cookie clauses, their helpers and their self-test out of
 `code/src/scripts/audits/negative-space.sh` into `code/src/scripts/audits/_lib/negative-space-cookies.sh`
