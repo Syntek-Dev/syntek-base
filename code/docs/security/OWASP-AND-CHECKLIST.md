@@ -47,10 +47,14 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = "DENY"
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 ```
+
+Cookie names (`__Host-` in the TLS environments) and cookie scope are owned by
+[`CRYPTO-AND-DATA.md`, _Browser Storage Policy_](CRYPTO-AND-DATA.md#browser-storage-policy).
 
 **Never disable CSRF protection on views (or HTMX fragments) that handle state-changing requests.**
 Django Ninja endpoints authenticated by session cookie are CSRF-protected — keep it enabled. HTMX

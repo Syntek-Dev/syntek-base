@@ -119,10 +119,64 @@ and XSS payloads. Store data in the most restrictive location appropriate.
   with a key derived from user authentication.
 - `SameSite=Lax` is the minimum for all cookies. Use `SameSite=Strict` where the cookie does not
   need to be sent on cross-site navigations.
-- Set an explicit `Path` and `Domain` on cookies to prevent them being sent more broadly than
-  intended.
+- **Cookies are host-only, and the session and CSRF cookies take `__Host-` names in every
+  environment that serves TLS.** **[gate: fail]** (`csrf-cookie-httponly-absent`,
+  `cookie-host-prefix-absent`, `cookie-scope-widened`) Never set `SESSION_COOKIE_DOMAIN` or
+  `CSRF_COOKIE_DOMAIN`: with no `Domain` a cookie is sent only to the host that issued it, so a
+  subdomain cannot _read_ it. Omitting `Domain` does not stop a subdomain _writing_ a cookie the
+  apex accepts — the `__Host-` prefix does. So each TLS-serving settings module assigns
+  `SESSION_COOKIE_NAME = "__Host-sessionid"` and `CSRF_COOKIE_NAME = "__Host-csrftoken"` beside
+  its `SESSION_COOKIE_SECURE = True` and `CSRF_COOKIE_SECURE = True` (`staging.py:21-24`,
+  `production.py:21-24`); `dev.py` keeps Django's plain names, because a `__Host-` cookie cannot
+  be set over HTTP. `base.py` assigns `CSRF_COOKIE_HTTPONLY = True` once, for every environment
+  (`base.py:159-164`).
+  - **The prefix's three preconditions**, each checked by the browser before it stores the
+    cookie: `Secure` (the bullet below); `Path=/`, Django's default, so `SESSION_COOKIE_PATH` and
+    `CSRF_COOKIE_PATH` are never set to anything else; and no `Domain`. Break one and the browser
+    discards the cookie silently — no error, no log, just an anonymous request.
+  - **Three limits.** Protection is **per cookie name**: only the two named cookies carry it. A
+    **browser without prefix support** accepts a prefixed cookie unconditionally, so the prefix is
+    defence in depth over the settings, never a substitute for them. And **`CSRF_COOKIE_HTTPONLY`
+    does not defend the CSRF token against XSS**: `{% csrf_token %}` renders it into the DOM and
+    `hx-headers` into a `<body>` attribute, both readable by injected script. It stops a script
+    reading the _cookie_, and that is all.
 - Set `Secure` on all cookies. There is no valid reason for a cookie to be sent over HTTP in
   production.
+
+### Cookie scope — what the rule rests on, and what it reaches
+
+This section owns cookie-scope doctrine; every other guide that names a cookie setting defers here.
+
+- **Client code takes the CSRF token from the page, never from the cookie.** With `HttpOnly` set,
+  `document.cookie` cannot see it, and the cookie's name differs by environment anyway. Any
+  JavaScript or HTMX request reads the token from `{% csrf_token %}` or the `hx-headers` attribute.
+- **Development and the TLS environments name the cookies differently** — `sessionid` and
+  `csrftoken` in dev, `__Host-sessionid` and `__Host-csrftoken` in staging and production. A
+  fixture, Playwright selector, monitoring rule or edge config matching `sessionid` literally
+  passes in dev and fails in production; match on `settings.SESSION_COOKIE_NAME` or
+  `settings.CSRF_COOKIE_NAME` instead.
+- **The edge is a precondition.** `__Host-` requires the cookie to have been set over a genuinely
+  secure connection. Django emits the `Secure` attribute from the setting, so that half is this
+  repository's and is gated. `SECURE_SSL_REDIRECT` is not: it trusts `request.is_secure()`, which
+  `SECURE_PROXY_SSL_HEADER` (`staging.py:19`, `production.py:19`) derives from
+  `X-Forwarded-Proto`. A plain-HTTP request carrying a client-supplied `X-Forwarded-Proto: https`
+  skips the redirect, is served over HTTP, and the browser discards the prefixed cookie. The edge
+  must strip any client-supplied value and set its own —
+  `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` Section 6. No gate covers it: whether an
+  edge strips a header is not a property of this tree.
+- **Scope: the session and CSRF cookies only.** `django.contrib.messages` is installed, and its
+  default storage falls back to a cookie that stays unprefixed and subdomain-writable, as would
+  any language cookie. Neither is covered by this rule.
+- **What the gate can and cannot see.** `code/src/scripts/audits/negative-space.sh` reads
+  `code/src/django/config/settings/*.py`, and its presence clauses name the modules they read
+  (`base.py`; `staging.py` and `production.py`) — a further TLS-serving module is unchecked until
+  the clause names it. **A green run proves that directory, not a global rule.** Four things are
+  invisible to it:
+  - a runtime write to `django.conf.settings` — an `AppConfig.ready()` is the canonical place;
+  - an environment-driven value, which never appears as an anchorable assignment;
+  - any settings module outside `code/src/django/config/settings/`;
+  - the difference between an assignment and text: matching is line-anchored, not a parser, so a
+    docstring or string line reading exactly `NAME = True` is indistinguishable from the setting.
 
 ### Libraries that write to client storage by default
 
