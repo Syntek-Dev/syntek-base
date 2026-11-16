@@ -7,7 +7,7 @@ services:
     volumes:
       - ../django:/app
   nginx:
-    <<: *ng
+    << : *ng
     image: nginx:mainline
     depends_on:
       - django

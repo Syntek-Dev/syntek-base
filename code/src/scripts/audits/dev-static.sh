@@ -29,7 +29,7 @@
 #                            on the key line (a flow list [...] or a *alias), a child line that is
 #                            neither a `- ` item nor a long-syntax key of one (a flow list Prettier
 #                            reflowed below the key), an item that is itself a flow node / alias,
-#                            or a `<<:` merge key in the nginx service (it may carry volumes)
+#                            or the `<<` merge key in the nginx service (it may carry volumes)
 #     compose-missing / nginx-service-missing   (the key may be quoted or carry a # comment)
 #
 # FAILS CLOSED. A missing file, a dev.conf with no /static/ block, unbalanced braces, an include,
@@ -252,7 +252,8 @@ else:
         for k, l in enumerate(nginx):
             if indent(l) != ki: continue
             # A merge key pulls keys (volumes among them) from an anchor this walk cannot resolve.
-            if re.match(r"""(<<|"<<"|'<<'):""", l.strip()):
+            # Spelt <{2}, never literally: the merge-key token contains Copier's block delimiter.
+            if re.match(r"""(?:<{2}|"<{2}"|'<{2}')\s*:""", l.strip()):
                 f("compose-volumes-unparseable", f"docker-compose.dev.yml: nginx `{l.strip()}` merges keys from an anchor — inline the nginx service instead")
                 continue
             m = re.match(r"volumes:(.*)$", l.strip())

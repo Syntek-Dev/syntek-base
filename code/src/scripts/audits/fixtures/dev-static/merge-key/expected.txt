@@ -1,2 +1,2 @@
-# A YAML merge key (<<: *ng) in the nginx service pulls in volumes the stdlib walk cannot resolve (here a /staticfiles mount); fails closed.
+# A YAML merge key (the `<<` key, here `<< : *ng`) in the nginx service pulls in volumes the stdlib walk cannot resolve (here a /staticfiles mount); fails closed.
 compose-volumes-unparseable
