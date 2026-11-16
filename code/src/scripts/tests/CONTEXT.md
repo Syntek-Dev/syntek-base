@@ -34,6 +34,7 @@ code/src/scripts/tests/
 ├── backend-coverage.sh       ← pytest + coverage; writes HTML, Cobertura XML, JUnit XML
 ├── CLAUDE.md                 ← operating rules
 ├── CONTEXT.md                ← this file
+├── cookie-preview-fixture.sh ← test-only: US008's generated scratch project + template-update preview proof
 ├── e2e-py.sh                 ← playwright-python browser suite (host; needs a running stack)
 ├── mutmut.sh                 ← Python mutation testing (local-only; dev stack required)
 ├── open-coverage.sh          ← opens the backend coverage HTML in a browser
@@ -50,17 +51,18 @@ code/src/scripts/tests/
 
 ## Scripts
 
-| Script                | Tool                | Pattern | Stack required     | Default output dir                                                          |
-| --------------------- | ------------------- | ------- | ------------------ | --------------------------------------------------------------------------- |
-| `all.sh`              | orchestrator        | both    | Depends on flags   | (delegates to sub-scripts)                                                  |
-| `api.sh`              | Bruno CLI           | host    | Test stack up      | `reports/api/`                                                              |
-| `backend.sh`          | pytest              | exec    | Full test stack up | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml) |
-| `backend-coverage.sh` | pytest + cov        | exec    | Full test stack up | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)         |
-| `e2e-py.sh`           | pytest + playwright | host    | Dev stack up (:81) | `reports/a11y/` + `reports/e2e/results.xml`                                 |
-| `mutmut.sh`           | mutmut              | exec    | Dev stack up       | N/A (console output)                                                        |
-| `open-coverage.sh`    | xdg-open / open     | host    | None               | N/A                                                                         |
-| `server.sh`           | docker compose      | host    | N/A                | N/A                                                                         |
-| `test-record.sh`      | report parser       | host    | None (reads files) | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**          |
+| Script                      | Tool                | Pattern | Stack required      | Default output dir                                                          |
+| --------------------------- | ------------------- | ------- | ------------------- | --------------------------------------------------------------------------- |
+| `all.sh`                    | orchestrator        | both    | Depends on flags    | (delegates to sub-scripts)                                                  |
+| `api.sh`                    | Bruno CLI           | host    | Test stack up       | `reports/api/`                                                              |
+| `backend.sh`                | pytest              | exec    | Full test stack up  | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml) |
+| `backend-coverage.sh`       | pytest + cov        | exec    | Full test stack up  | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)         |
+| `cookie-preview-fixture.sh` | Copier + git        | host    | None (needs Copier) | N/A (console output; scratch removed on exit)                               |
+| `e2e-py.sh`                 | pytest + playwright | host    | Dev stack up (:81)  | `reports/a11y/` + `reports/e2e/results.xml`                                 |
+| `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                        |
+| `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                         |
+| `server.sh`                 | docker compose      | host    | N/A                 | N/A                                                                         |
+| `test-record.sh`            | report parser       | host    | None (reads files)  | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**          |
 
 `backend.sh`, `backend-coverage.sh`, and `api.sh` fall back to `.env.test.example` when
 `.env.test` is absent — every value in it has a working default in
@@ -117,6 +119,40 @@ so three limits hold it:
   from the table rather than an error; `bash code/src/scripts/audits/story-markers.sh` lists what
   carries none. The attribution rule and the record's own conventions:
   `project-management/src/18-TESTS/AUTOMATED/CLAUDE.md`.
+
+## cookie-preview-fixture.sh — test-only, for one story's preview proof
+
+```bash
+bash code/src/scripts/tests/cookie-preview-fixture.sh --case shipped-advisories \
+  --template-source "$PWD" --story-ref HEAD
+```
+
+Exists for US008's preview rows (PREVIEW-01 to PREVIEW-04) and its P4/P5 proofs.
+`development/template-update.sh` refuses to run in the template, so the proof needs a
+**generated** project old enough to cross the migrations under test. This script owns the Copier
+calls a tester would otherwise make by hand: it clones `--template-source` into a scratch
+directory (the source is never written, tagged or fetched into), generates a project at a ref
+below `v3.0.0` (`--from-ref`, default `v2.3.1`, the newest that still generates) with fixed
+non-secret answers, copies `--story-ref`'s `template-update.sh` and the library it sources into
+it, plants the case's triggers, commits, prints a fixture record (source SHA, Copier version,
+answers, refs), then runs the real wrapper from the generated root and asserts the case. Copier
+reaches the wrapper through a recording shim, and the wrapper's `TMPDIR` is a directory the script
+owns, so "Copier ran" and "cleanup ran" are observed rather than inferred. `--story-ref WORKTREE`
+snapshots the uncommitted working tree into the clone only — for a proof taken before the
+story's commit exists; the record says so, and the proof is re-run against the commit.
+
+| Case                 | Phase | Proves                                                                                                         |
+| -------------------- | ----- | -------------------------------------------------------------------------------------------------------------- |
+| `shipped-advisories` | P4    | The three pre-US008 print-only advisories (four banners) replayed once, before the preview-only line, exit `0` |
+| `missing-ref`        | P4/P5 | A nonexistent target ref: Copier ran and failed, the tail printed once, exit `2`, scratch removed              |
+| `domain-report`      | P5    | The state-gated Domain advisory names file and setting and never prints the value                              |
+| `pending-key`        | P5    | The `when: false` cutover entry prints nothing                                                                 |
+| `release-crossing`   | P5    | Activated in a scratch commit and tagged in the clone only, the cutover notice prints once                     |
+| `subsequent-update`  | P5    | An update from at or above that fixture release does not print it again                                        |
+
+Exit codes extend the folder's contract by one: `0` every expectation held, `1` an expectation
+failed, `2` script error, **`3` unmeasured** — Copier absent, generation failed, or the P5
+entries missing at `--story-ref`. A `3` is never a pass (`code/docs/GATE-REPORTING.md`).
 
 ## --output flag
 

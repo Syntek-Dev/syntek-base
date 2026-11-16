@@ -16,6 +16,9 @@
 #   2. what is deleted
 #   3. what would be ORPHANED — your artefacts left in a folder nothing references
 #
+# It also replays, in full, everything the update printed — including every report a
+# template migration made while it ran, which would otherwise be discarded with the log.
+#
 # Default is preview only. Nothing touches your project until --apply.
 #
 # Usage: template-update.sh [--apply] [--ref REF] [--keep-scratch] [--help]
@@ -186,6 +189,27 @@ if [[ "$CONFLICTS" -gt 0 ]]; then
   log "  Conflicts are the loud failure and they are fine — you resolve them by hand."
   log ""
 fi
+
+# ── What the update printed ───────────────────────────────────────────────────
+# The template's migrations run inside the update above, and some only REPORT: they print a
+# finding and exit 0, because a migration that fails an update leaves a project half-upgraded.
+# The whole update is captured in $UPDATE_LOG, which is tailed only on failure and removed by
+# `cleanup` at exit — so without this block a print-only advisory that fired would reach
+# nobody, under a "Preview only" line implying there was nothing to read.
+#
+# The capture is replayed COMPLETE and exactly once: every advisory body and its guidance, plus
+# Copier's own progress lines. Never filtered to banners and never truncated — a banner without
+# its file, line and remedy is not the report, and the progress lines are the accepted price of
+# not inventing a second channel every migration would have to speak.
+# Success path only: the failure branch above has already printed its tail and exited 2.
+bold "── What the update printed (migrations and advisories, in full) ──"
+if [[ -s "$UPDATE_LOG" ]]; then
+  cat "$UPDATE_LOG"
+else
+  log "  (the update printed nothing)"
+fi
+bold "── End of the update's output ──"
+log ""
 
 # ── The quiet failures ────────────────────────────────────────────────────────
 # There are two, and they fail identically: no conflict, no error, `copier update`
