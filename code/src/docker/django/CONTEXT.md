@@ -63,7 +63,9 @@ the hook that lets a future worker or one-off task container reuse the same imag
 ## Static files
 
 `collectstatic` runs in test, staging, and production. It is deliberately skipped in dev,
-where Django serves static from the finders so edits appear without a rebuild.
+where Django serves static from the finders (`staticfiles_urlpatterns()` under `DEBUG`) so edits
+appear without a rebuild. The dev Nginx proxies `/static/` here for that reason; see
+`../nginx/CONTEXT.md`.
 
 ## Cross-references
 

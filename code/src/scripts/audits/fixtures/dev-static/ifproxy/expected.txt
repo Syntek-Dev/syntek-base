@@ -1,0 +1,2 @@
+# The only proxy_pass sits inside if(); unconditionally the block returns 404. A conditional proxy is no proxy.
+static-no-proxy

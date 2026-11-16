@@ -1,0 +1,2 @@
+# The long volume syntax is read too.
+staticfiles-mount

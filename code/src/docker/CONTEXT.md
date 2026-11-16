@@ -51,15 +51,21 @@ separate frontend container.
 
 ## Path routing (Nginx — dev / test)
 
-Every route resolves to the django upstream. `/static/` is served from disk by Nginx.
+Every route resolves to the django upstream, with one test-only exception: `/static/`.
 
-| Path        | Upstream                           |
-| ----------- | ---------------------------------- |
-| `/static/`  | Nginx, from the staticfiles volume |
-| `/media/`   | `django`                           |
-| `/health/`  | `django` — liveness and readiness  |
-| `/control/` | `django` — Django's built-in admin |
-| `/`         | `django` — catch-all               |
+| Path        | Upstream                                                                    |
+| ----------- | --------------------------------------------------------------------------- |
+| `/static/`  | dev: `django`, live from the finders · test: Nginx, from the collected tree |
+| `/media/`   | `django`                                                                    |
+| `/health/`  | `django` — liveness and readiness                                           |
+| `/control/` | `django` — Django's built-in admin                                          |
+| `/`         | `django` — catch-all                                                        |
+
+**Why the two differ.** Dev runs no `collectstatic`, so Django serves every finder live under
+`DEBUG` (`staticfiles_urlpatterns()` in `config/urls.py`) and an edit shows on refresh. Test
+collects into a shared volume and Nginx serves it, as the server Nginx will. A dev Nginx that
+served from disk would serve an empty folder: every asset 404'd that way until 16/11/2026.
+`audits/dev-static.sh` holds the dev half.
 
 > Django's built-in admin is at `/control/`, **never `/admin/`**. See
 > `code/docs/URL-STRATEGY.md`.

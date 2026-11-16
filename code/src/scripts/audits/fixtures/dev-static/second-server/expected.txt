@@ -1,0 +1,2 @@
+# Rule: the dev nginx serves nothing from disk. A second default_server block with root serves from disk whatever the first block does.
+static-root

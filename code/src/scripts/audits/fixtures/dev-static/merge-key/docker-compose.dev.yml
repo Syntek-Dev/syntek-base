@@ -1,0 +1,15 @@
+x-ng: &ng
+  volumes:
+    - ../django/staticfiles:/staticfiles:ro
+services:
+  django:
+    image: example
+    volumes:
+      - ../django:/app
+  nginx:
+    <<: *ng
+    image: nginx:mainline
+    depends_on:
+      - django
+volumes:
+  data:
