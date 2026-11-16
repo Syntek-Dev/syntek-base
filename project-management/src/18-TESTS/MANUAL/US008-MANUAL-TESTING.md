@@ -86,13 +86,60 @@ which supersedes `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09
 the walker pastes the close half at the walk. Each captured set is a fenced block beneath this
 table. Every figure carries its date. Nothing here carries a `Result`.
 
-| Evidence                                                                         | Baseline — P0 | Close — the walk | Read by                    |
-| -------------------------------------------------------------------------------- | ------------- | ---------------- | -------------------------- |
-| Whole-tree `doc-references.sh` set by identity, detector hash, HEAD, index state |               |                  | CITE-01 to CITE-03         |
-| `doc-references.sh --path code/docs` — exit code and count                       |               |                  | CITE-04                    |
-| The seven bystander guides and the Wagtail note                                  | —             |                  | DOCS-08, DOCS-09           |
-| Advisory output, each state and pending/crossing/later fixture refs              | —             |                  | ADVISORY-01 to ADVISORY-05 |
-| The route taken to the scratch generated project, and the preview output         | —             |                  | PREVIEW-01 to PREVIEW-04   |
+| Evidence                                                                         | Baseline — P0                                      | Close — the walk | Read by                    |
+| -------------------------------------------------------------------------------- | -------------------------------------------------- | ---------------- | -------------------------- |
+| Whole-tree `doc-references.sh` set by identity, detector hash, HEAD, index state | 18, exit 1 — block P0-1, 16/11/2026                |                  | CITE-01 to CITE-03         |
+| `doc-references.sh --path code/docs` — exit code and count                       | Clean, 0 findings, exit 0 — block P0-2, 16/11/2026 |                  | CITE-04                    |
+| The seven bystander guides and the Wagtail note                                  | —                                                  |                  | DOCS-08, DOCS-09           |
+| Advisory output, each state and pending/crossing/later fixture refs              | —                                                  |                  | ADVISORY-01 to ADVISORY-05 |
+| The route taken to the scratch generated project, and the preview output         | —                                                  |                  | PREVIEW-01 to PREVIEW-04   |
+
+**P0-1 — whole-tree baseline, captured 16/11/2026 before the first source edit.** HEAD
+`6fb7824ac21c3c41d9774c82eb11da99238ecca1` on `us008/host-only-cookies`; detector
+`git hash-object code/src/scripts/audits/doc-references.sh` = `12e81359308e194bcb607eb04b30583b3ab5089b`.
+Index state: `git add -N .` run first; no untracked file; six tracked files modified, all the
+`completion` status move (`US008.md`, `SPRINT-05.md` and four `*-BOARD.md`). 18 findings, exit 1,
+all `dangling path` in PM artefacts of other stories. Set by identity `(file | kind | token)`,
+line dropped, multiplicity kept:
+
+```text
+project-management/src/02-STORIES/US014.md | dangling path | code/src/django/apps/core/observability.py
+project-management/src/02-STORIES/US014.md | dangling path | code/src/django/apps/core/observability.py
+project-management/src/02-STORIES/US014.md | dangling path | code/src/django/apps/core/tests/unit/test_observability.py
+project-management/src/02-STORIES/US014.md | dangling path | code/src/django/apps/core/tests/unit/test_observability.py
+project-management/src/03-SPRINTS/SPRINT-03.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US014-JSON-LOGGING-REQUEST-ID.md | dangling path | code/src/django/apps/core/observability.py
+project-management/src/11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md | dangling path | project-management/src/21-BUGS/BUG-INDEX.md
+project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md | dangling path | project-management/src/21-BUGS/BUG-INDEX.md
+project-management/src/11-QA/PLANNING/QA-PLAN-US014-STRUCTURED-JSON-LOGGING.md | dangling path | code/src/django/apps/core/tests/unit/test_observability.py
+project-management/src/15-DECISIONS/ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/16-SPRINT-PLANS/03-SPRINT-PLAN-03.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/16-SPRINT-PLANS/03-SPRINT-PLAN-03.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md
+```
+
+**The plan's inherited 253/259 are not comparable** — the detector has changed since
+(Check 3 narrowed, 12/11/2026), so this block is the branch's baseline and the close is diffed
+against it alone.
+
+**P0-2 — `doc-references.sh --path code/docs`, 16/11/2026:** `Clean — every citation resolves.`,
+exit 0.
+
+**P0-3 — lengths, 16/11/2026** (`wc -l` / `docs-length.sh` code lines, limit 300, ratchet 270):
+`security/CRYPTO-AND-DATA.md` 185/143 · `URL-STRATEGY.md` 156/117 ·
+`api-design/AUTH-STRATEGY.md` 188/144 · `security/AUTH-AND-AUTHZ.md` 210/154 ·
+`security/OWASP-AND-CHECKLIST.md` 194/153 · `code/src/scripts/audits/CONTEXT.md` 284/**247** (the
+plan's 299 is stale: the file was rewritten 15/11/2026; it is still not touched by this story) ·
+`config/settings/CONTEXT.md` 62/51 · `workflows/24-release/CHECKLIST.md` 57/41. Whole run:
+808 files, exit 0, three approaching the limit, none of them this story's.
+
+**P0-4 — ShellCheck, 16/11/2026:** present, `/run/current-system/sw/bin/shellcheck`, version
+0.11.0. To be run directly over the edited scripts and recorded as run — never as a `lint.sh` pass.
 
 ---
 

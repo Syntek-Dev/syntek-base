@@ -1,6 +1,6 @@
 # SPRINT-05
 
-**Last Updated**: 31/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 16/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -30,7 +30,7 @@ moment nobody chose.
      (Subdomain Routing and Gate Parity), which is the ordinary shape here: SPRINT-01, SPRINT-02
      and SPRINT-04 each span two. -->
 
-**Status:** Planned
+**Status:** In Progress — US008 started 16/11/2026, its first story
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
