@@ -178,8 +178,9 @@ This section owns cookie-scope doctrine; every other guide that names a cookie s
   module. Presence still needs an unconditional, column-0 compliant line; an indented one alone
   is not presence. The TLS modules it holds to the `__Host-` rule are `staging.py` and
   `production.py` (or `staging/__init__.py` and `production/__init__.py` when they are
-  packages) and **any other module assigning `SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE` or
-  `CSRF_COOKIE_SECURE = True`**. A `Domain` of `None` and a `Path` of exactly `"/"` (`'/'`,
+  packages) and **any other module where `SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE` or
+  `CSRF_COOKIE_SECURE` occurs other than as a plain `= False` or `= None`** — a recognised
+  `= True`, an unrecognised occurrence, or a value it cannot read all make a module TLS. A `Domain` of `None` and a `Path` of exactly `"/"` (`'/'`,
   `r"/"`) are host-only, not findings.
   - **It fails closed.** Any other whole-token occurrence of a cookie setting name in code — after
     a semicolon, in tuple unpacking, `del`, a walrus, a parenthesised, `for` or `import … as`
@@ -206,7 +207,16 @@ This section owns cookie-scope doctrine; every other guide that names a cookie s
   - a multi-line value, or one built by concatenation or a variable, which reads as "not
     compliant" — a false finding, never a false pass;
   - a keyword argument on its own line inside a call (`NAME=True,`), which reads as an assignment;
-  - control flow: an unconditional line after an `if` block wins whether or not the block ran.
+  - control flow: an unconditional line after an `if` block wins whether or not the block ran;
+  - an unreadable sub-directory under `settings/`, which is skipped rather than reported — the
+    gate names an unreadable file, never a directory. Git cannot record that permission state,
+    and Python could not import from it either;
+  - `staging.py` beside a `staging/` package (or `production.py` beside `production/`): the gate
+    holds the `.py` file to the presence rule, while Python imports the package;
+  - a Python 3.12+ f-string reusing its own quote inside its braces, which can desynchronise the
+    string tracking and hide the rest of the module;
+  - a lone CR (a classic-Mac line ending) after a comment, which hides the next line — CRLF is
+    handled.
 
 ### Libraries that write to client storage by default
 

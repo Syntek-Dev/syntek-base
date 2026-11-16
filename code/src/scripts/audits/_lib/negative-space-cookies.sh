@@ -11,7 +11,9 @@
 #                              module's last CSRF_COOKIE_HTTPONLY record is not True
 # cookie-host-prefix-absent    a TLS module (staging.py, production.py — or staging/__init__.py,
 #                              production/__init__.py when the module is a package — and any
-#                              module that assigns SECURE_SSL_REDIRECT / *_COOKIE_SECURE = True)
+#                              module with a SECURE_SSL_REDIRECT / *_COOKIE_SECURE record that is
+#                              not a recognised False or None: fails closed, so an unrecognised
+#                              occurrence or value turns a module TLS)
 #                              does not leave a __Host- SESSION_COOKIE_NAME or CSRF_COOKIE_NAME,
 #                              or the SECURE = True line it depends on
 # cookie-scope-widened         any *.py in the directory assigns a *_COOKIE_DOMAIN other than
@@ -21,8 +23,8 @@
 # directory, packages included (symlinks followed), never CONTEXT.md beside them.
 #
 # COOKIE_AWK reads one module and prints one record per occurrence of a cookie setting:
-# `<line> <indented 0|1> <SETTING> <class>`, class one of true | none | root | host | aug |
-# other | unrec. It reads the CODE part of each line (a trailing comment is cut, quote-aware;
+# `<line> <indented 0|1> <SETTING> <class>`, class one of true | false | none | root | host |
+# aug | other | unrec. It reads the CODE part of each line (a trailing comment is cut, quote-aware;
 # string contents, multi-line strings and docstrings included, are tracked across lines and
 # ignored; a trailing CR is trimmed) and recognises plain, indented, annotated, chained and
 # augmented assignments. It FAILS CLOSED: any other whole-token occurrence of a tracked name —
@@ -53,6 +55,7 @@ function scan(s,   i, c, d, n) {
 }
 function classify(v) {
   if (v == "True") return "true"
+  if (v == "False") return "false"
   if (v == "None") return "none"
   if (v ~ ("^[rRuU]?(\"/\"|" sq "/" sq ")$")) return "root"
   if (v ~ ("^[rRuU]?(\"__Host-[^\"" sq "]*\"|" sq "__Host-[^\"" sq "]*" sq ")$")) return "host"
@@ -79,7 +82,7 @@ function classify(v) {
   m = mask
   while (match(m, /[A-Za-z_][A-Za-z0-9_]*/)) {
     id = substr(m, RSTART, RLENGTH); m = substr(m, RSTART + RLENGTH)
-    if (id !~ /^((SESSION|CSRF)_COOKIE_(DOMAIN|PATH|NAME|SECURE)|CSRF_COOKIE_HTTPONLY)$/) continue
+    if (id !~ /^((SESSION|CSRF)_COOKIE_(DOMAIN|PATH|NAME|SECURE)|CSRF_COOKIE_HTTPONLY|SECURE_SSL_REDIRECT)$/) continue
     if (seen[id] > 0) seen[id]--; else print NR, ind, id, "unrec"
   }
 }'
@@ -144,7 +147,8 @@ run_cookie_clauses() {
   done
   for f in "${mods[@]}"; do
     [[ " ${named[*]} " == *" $f "* ]] && continue
-    awk '$3 ~ /^(SECURE_SSL_REDIRECT|(SESSION|CSRF)_COOKIE_SECURE)$/ && $4 == "true" { hit = 1 } END { exit !hit }' \
+    # Fail closed (QA3-01): any record but a recognised False or None turns the module TLS.
+    awk '$3 ~ /^(SECURE_SSL_REDIRECT|(SESSION|CSRF)_COOKIE_SECURE)$/ && $4 != "false" && $4 != "none" { hit = 1 } END { exit !hit }' \
       <<< "$(cookie_scan "$f")" && tls+=("$f")
   done
   for f in "${tls[@]}"; do

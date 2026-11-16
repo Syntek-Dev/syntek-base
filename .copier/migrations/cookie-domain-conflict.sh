@@ -77,6 +77,7 @@ function scan(s,   i, c, d, n) {
 }
 function classify(v) {
   if (v == "True") return "true"
+  if (v == "False") return "false"
   if (v == "None") return "none"
   if (v ~ ("^[rRuU]?(\"/\"|" sq "/" sq ")$")) return "root"
   if (v ~ ("^[rRuU]?(\"__Host-[^\"" sq "]*\"|" sq "__Host-[^\"" sq "]*" sq ")$")) return "host"
@@ -103,7 +104,7 @@ function classify(v) {
   m = mask
   while (match(m, /[A-Za-z_][A-Za-z0-9_]*/)) {
     id = substr(m, RSTART, RLENGTH); m = substr(m, RSTART + RLENGTH)
-    if (id !~ /^((SESSION|CSRF)_COOKIE_(DOMAIN|PATH|NAME|SECURE)|CSRF_COOKIE_HTTPONLY)$/) continue
+    if (id !~ /^((SESSION|CSRF)_COOKIE_(DOMAIN|PATH|NAME|SECURE)|CSRF_COOKIE_HTTPONLY|SECURE_SSL_REDIRECT)$/) continue
     if (seen[id] > 0) seen[id]--; else print NR, ind, id, "unrec"
   }
 }'
