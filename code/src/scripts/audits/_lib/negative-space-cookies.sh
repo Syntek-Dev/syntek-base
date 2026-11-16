@@ -264,6 +264,8 @@ cookie_self_test_bypasses() {
   fi
 
   cookie_self_test_variants
+  cookie_self_test_fallback
+  cookie_self_test_surfaces
   cookie_self_test_parity
 }
 
@@ -327,6 +329,119 @@ cookie_self_test_variants() {
   cookie_expect "$(cookie_findings "$dir")" cookie-scope-widened cookie:scope.py CSRF_COOKIE_DOMAIN "QA-06 module name with a colon"
 }
 
+# ── The delta review, round 2 (16/11/2026) ───────────────────────────────────
+# QA2-01 / QA2-02: the scanner fails CLOSED. A tracked setting name in the code part of a
+# line (comment cut, string contents ignored) that it did not read as a recognised
+# assignment becomes an unrecognised (`other`) record, so a binding the parser cannot
+# follow still trips the clause it would breach. A READ is such an occurrence too, and fires.
+cookie_self_test_fallback() {
+  local dir body clean pair module setting
+  local host='SESSION_COOKIE_SECURE = True\nCSRF_COOKIE_SECURE = True\nSESSION_COOKIE_NAME = "__Host-sessionid"\nCSRF_COOKIE_NAME = "__Host-csrftoken"\n'
+
+  dir=$(cookie_variant semicolon)
+  printf '%s\n' 'DEBUG = False; CSRF_COOKIE_HTTPONLY = False' >> "$dir/base.py"
+  cookie_expect "$(cookie_findings "$dir")" csrf-cookie-httponly-absent base.py CSRF_COOKIE_HTTPONLY "QA2-01 CSRF_COOKIE_HTTPONLY = False after a semicolon"
+  dir=$(cookie_variant unpack-domain)
+  printf '%s\n' 'SESSION_COOKIE_DOMAIN, X = ".example.com", 1' > "$dir/unpack.py"
+  cookie_expect "$(cookie_findings "$dir")" cookie-scope-widened unpack.py SESSION_COOKIE_DOMAIN "QA2-01 tuple-unpacked Domain"
+  dir=$(cookie_variant unpack-name)
+  printf '%bSESSION_COOKIE_NAME, _u = "sessionid", None\n' "$host" > "$dir/staging.py"
+  cookie_expect "$(cookie_findings "$dir")" cookie-host-prefix-absent staging.py SESSION_COOKIE_NAME "QA2-01 tuple-unpacked plain SESSION_COOKIE_NAME"
+  dir=$(cookie_variant del-name)
+  printf '%bdel CSRF_COOKIE_NAME\n' "$host" > "$dir/staging.py"
+  cookie_expect "$(cookie_findings "$dir")" cookie-host-prefix-absent staging.py CSRF_COOKIE_NAME "QA2-01 del CSRF_COOKIE_NAME after the __Host- name"
+  # A read is an unrecognised occurrence, and fails closed (the rule as ruled, 16/11/2026).
+  dir=$(cookie_variant read-secure)
+  printf '%bX = SESSION_COOKIE_SECURE\n' "$host" > "$dir/staging.py"
+  cookie_expect "$(cookie_findings "$dir")" cookie-host-prefix-absent staging.py SESSION_COOKIE_SECURE "QA2-01 a read of SESSION_COOKIE_SECURE after its assignment"
+  dir=$(cookie_variant read-httponly)
+  printf '%s\n' 'if CSRF_COOKIE_HTTPONLY:' '    pass' >> "$dir/base.py"
+  cookie_expect "$(cookie_findings "$dir")" csrf-cookie-httponly-absent base.py CSRF_COOKIE_HTTPONLY "QA2-01 a read of CSRF_COOKIE_HTTPONLY in a condition"
+  # ...and the guard: a name only inside a string (one line or several) or a comment, or
+  # inside a longer identifier, is not an occurrence (clean/settings/mentions.py).
+  clean=$(cookie_findings "$FIXTURES_DIR/clean/settings")
+  cookie_expect_none "$clean" mentions.py "QA2-01 setting names only in strings, docstrings, comments and longer identifiers"
+
+  # QA2-02: binding forms the assignment parser does not follow, one module each.
+  dir=$(cookie_variant forms-round2)
+  printf '%s\n' '(SESSION_COOKIE_DOMAIN := ".example.com")' > "$dir/walrus.py"
+  printf '%s\n' '(SESSION_COOKIE_DOMAIN) = ".example.com"' > "$dir/paren.py"
+  printf '%s\n' 'for SESSION_COOKIE_PATH in ["/app"]: pass' > "$dir/loop.py"
+  printf '%s\n' 'from x import y as CSRF_COOKIE_DOMAIN' > "$dir/alias.py"
+  printf '%s\n' 'd = {}' 'd["k"] = SESSION_COOKIE_DOMAIN = ".example.com"' > "$dir/subscript.py"
+  printf '\f    SESSION_COOKIE_DOMAIN = ".example.com"\n' > "$dir/formfeed.py"
+  body=$(cookie_findings "$dir")
+  for pair in "walrus.py SESSION_COOKIE_DOMAIN" "paren.py SESSION_COOKIE_DOMAIN" \
+              "loop.py SESSION_COOKIE_PATH" "alias.py CSRF_COOKIE_DOMAIN" \
+              "subscript.py SESSION_COOKIE_DOMAIN" "formfeed.py SESSION_COOKIE_DOMAIN"; do
+    read -r module setting <<< "$pair"
+    cookie_expect "$body" cookie-scope-widened "$module" "$setting" "QA2-02 ${module%.py} binding"
+  done
+
+  # QA2-03 (b): the compliant spellings in clean/settings/spellings.py stay clean.
+  cookie_expect_none "$clean" spellings.py "QA2-03 single quotes, trailing comments and a hash inside a string on compliant lines"
+}
+
+# QA2-04..06: module surfaces the scanner reads wrongly — unreadable, a package, CRLF.
+cookie_self_test_surfaces() {
+  local dir body proj out rc module
+  local migration="$PWD/.copier/migrations/cookie-domain-conflict.sh"
+
+  # QA2-04: an unreadable module is "could not look", never clean (code/docs/GATE-REPORTING.md).
+  if [[ "$(id -u)" -eq 0 ]]; then
+    printf '%s\n' "  · QA2-04: skipped — running as root, where chmod 000 cannot deny a read; an unreadable module was not measured"
+  else
+    dir=$(cookie_variant unreadable)
+    printf '%s\n' 'SESSION_COOKIE_DOMAIN = ".example.com"' > "$dir/locked.py"
+    chmod 000 "$dir/locked.py"
+    body=$(cookie_findings "$dir" 2>/dev/null)
+    printf '%s\n' "$body" | grep -E "^($(IFS='|'; printf '%s' "${COOKIE_CLAUSES[*]}")): .*/settings/locked\.py(:[0-9]+)? — " |
+      grep -qiE 'could not (be )?read' ||
+      st_fail "QA2-04 an unreadable settings module read as clean: expected a cookie finding naming locked.py that says it could not be read"
+    if [[ -f "$migration" ]]; then
+      proj="$COOKIE_TMP/unreadable-proj"
+      mkdir -p "$proj/code/src/django/config/settings"
+      cp -R "$FIXTURES_DIR/clean/settings/." "$proj/code/src/django/config/settings/"
+      printf '%s\n' 'SESSION_COOKIE_DOMAIN = ".example.com"' > "$proj/code/src/django/config/settings/locked.py"
+      chmod 000 "$proj/code/src/django/config/settings/locked.py"
+      rc=0; out=$(cd "$proj" && bash "$migration" 2>&1) || rc=$?
+      [[ "$rc" -eq 0 ]] || st_fail "QA2-04 the migration exited $rc over an unreadable module — it is advisory and must exit 0"
+      printf '%s\n' "$out" | grep -iE 'could not (be )?read' | grep -qF -- "locked.py" ||
+        st_fail "QA2-04 the migration was silent about an unreadable module: expected a line naming locked.py that says it could not be read"
+    else
+      printf '%s\n' "  · QA2-04 migration half: skipped — .copier/migrations/cookie-domain-conflict.sh is absent (a generated project)"
+    fi
+  fi
+
+  # QA2-05: a staging/ or production/ PACKAGE is the TLS module when no staging.py is there.
+  for module in staging production; do
+    dir=$(cookie_variant "$module-package")
+    rm -f "$dir/$module.py"; mkdir -p "$dir/$module"
+    printf '%s\n' 'SESSION_COOKIE_NAME = "sessionid"' 'CSRF_COOKIE_NAME = "csrftoken"' > "$dir/$module/__init__.py"
+    body=$(cookie_findings "$dir")
+    cookie_expect "$body" cookie-host-prefix-absent "$module/__init__.py" SESSION_COOKIE_NAME "QA2-05 $module/__init__.py package, plain session name"
+    cookie_expect "$body" cookie-host-prefix-absent "$module/__init__.py" CSRF_COOKIE_NAME "QA2-05 $module/__init__.py package, plain CSRF name"
+  done
+
+  # QA2-06: CRLF line endings on a compliant tree change nothing. Built here, never committed.
+  dir=$(cookie_variant crlf)
+  for module in "$dir"/*.py; do
+    awk '{ printf "%s\r\n", $0 }' "$module" > "$module.crlf" && mv "$module.crlf" "$module"
+  done
+  body=$(cookie_findings "$dir")
+  for module in base.py staging.py production.py host_only.py spellings.py; do
+    cookie_expect_none "$body" "$module" "QA2-06 CRLF-terminated compliant $module"
+  done
+}
+
+# The scanner's text in FILE: the COOKIE_AWK block (its opening line to the line `}'`) and the
+# COOKIE_WIDE line. The gate and the migration must carry these byte-identical (QA2-03).
+cookie_twin_text() {
+  awk -v sq="'" 'index($0, "COOKIE_AWK=" sq) == 1 { on = 1 }
+    on { print } on && $0 == "}" sq { on = 0 }
+    index($0, "COOKIE_WIDE=") == 1 { print }' "$1"
+}
+
 # (module, setting) pairs, sorted, one per line: from the gate's scope findings, and from the
 # copier migration's report.
 cookie_gate_pairs() {
@@ -347,6 +462,15 @@ cookie_self_test_parity() {
   if [[ ! -f "$migration" ]]; then
     printf '%s\n' "  · parity: skipped — .copier/migrations/cookie-domain-conflict.sh is absent (a generated project); gate/migration agreement was not measured"
     return 0
+  fi
+  # Text parity (QA2-03): behaviour on two fixture trees cannot see a twin that differs only
+  # on input neither tree holds, so the program text itself is compared, byte for byte.
+  gate=$(cookie_twin_text "${BASH_SOURCE[0]}"); mig=$(cookie_twin_text "$migration")
+  if [[ -z "$gate" || -z "$mig" ]]; then
+    st_fail "text parity: COOKIE_AWK/COOKIE_WIDE could not be extracted from the gate or the migration — the twins were not compared"
+  elif [[ "$gate" != "$mig" ]]; then
+    st_fail "text parity: COOKIE_AWK/COOKIE_WIDE differ between the gate and the migration (< gate, > migration)" \
+      "$(diff <(printf '%s\n' "$gate") <(printf '%s\n' "$mig") | grep -E '^[<>]' | head -5 || true)"
   fi
   for tree in broken clean; do
     proj="$COOKIE_TMP/parity-$tree"
