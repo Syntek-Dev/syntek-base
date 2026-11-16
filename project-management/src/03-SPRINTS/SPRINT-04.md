@@ -1,6 +1,6 @@
 # SPRINT-04
 
-**Last Updated**: 31/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 15/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -18,7 +18,7 @@ the operator names the live posture out loud.
      US003. The goal is written in build order — US005 then US006 — on SPRINT-02's convention for a
      sprint with two subjects. -->
 
-**Status:** In Progress — US005 started 11/11/2026, its first story
+**Status:** In Progress — US005 started 11/11/2026, its first story; US006 started 15/11/2026
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->

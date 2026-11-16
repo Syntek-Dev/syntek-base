@@ -129,6 +129,10 @@ All scripts resolve this path automatically. Run commands from any directory.
 
 ## Notes
 
+- `server.sh` pins the Compose project with `-p`, taken from the `name:` the dev compose files
+  declare (the `us###` override included; `_lib/posture-guard.sh` `posture_compose_project`), so
+  a `COMPOSE_PROJECT_NAME` in the shell or in `.env.dev` is ignored. Compose files declaring no
+  usable `name:` stop it at exit `2`.
 - `server.sh down --volumes` wipes all named volumes including the PostgreSQL data.
   Use `database/reset.sh` for a targeted database reset that keeps volumes intact.
 - Scripts use `exec docker compose …` for interactive commands (`shell.sh`, `logs --follow`)

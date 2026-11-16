@@ -66,6 +66,13 @@ code/src/scripts/tests/
 `.env.test` is absent — every value in it has a working default in
 `docker-compose.test.yml`, so a fresh clone runs the suite without copying anything.
 
+`backend.sh`, `backend-coverage.sh`, `api.sh` and `server.sh` pin the Compose project with `-p`,
+taken from the `name:` the test compose files declare (`_lib/posture-guard.sh`
+`posture_compose_project`). A `COMPOSE_PROJECT_NAME` in the shell or in `.env.test` is ignored, and
+compose files declaring no usable `name:` stop the script at exit `2`. `e2e-py.sh` reads
+`.env.test` only inside the subshell that runs pytest, so a key there never overrides
+`E2E_BASE_URL` or any other script variable.
+
 `api.sh` exits `0` without starting the stack when the Bruno collection holds no
 requests, and skips fixture-user seeding when `seed_api_test_user` is not a registered
 management command.

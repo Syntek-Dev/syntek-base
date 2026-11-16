@@ -1,12 +1,40 @@
 # Keep model choice in the user's configuration so the template does not pin a provider release.
 approval_policy = "on-request"
-sandbox_mode = "workspace-write"
+
+# Sandbox: the named profile below, not legacy `sandbox_mode` — a profile is the only syntax
+# that can deny reads. A per-run `--sandbox`/`-s`, `-c sandbox_mode=...` or the bypass flag
+# still overrides it and drops the carve-outs, so never pass one in this repository.
+default_permissions = "workspace-no-env"
 
 # Existing scoped manuals stay discoverable while shared instructions are adopted.
 project_doc_fallback_filenames = ["CLAUDE.md"]
 
-[sandbox_workspace_write]
-network_access = false
+# The built-in `:workspace` profile — what `workspace-write` meant: read everywhere, write the
+# workspace roots and tmp, .git/.codex/.agents read-only — plus deny-read carve-outs, so no Codex
+# process can read a live env file (`.claude/CLAUDE.md` Section 6). `.env.*.example` stays
+# readable. The six names are held in step with `.claude/settings.json` and `.zed/settings.json`
+# by `code/src/scripts/audits/env-read-deny.sh`. Tested on codex-cli 0.166.0 (15/11/2026).
+[permissions.workspace-no-env]
+description = "Workspace write, network off, live .env files unreadable"
+extends = ":workspace"
+
+# Linux expands `**` globs into bubblewrap masks with a depth-capped scan at each sandbox
+# launch; code/src/docker/.env.* is 4 path components deep, so 8 leaves headroom. macOS
+# Seatbelt matches the globs natively.
+[permissions.workspace-no-env.filesystem]
+glob_scan_max_depth = 8
+
+[permissions.workspace-no-env.filesystem.":workspace_roots"]
+"**/.env.dev" = "deny"
+"**/.env.test" = "deny"
+"**/.env.testing" = "deny"
+"**/.env.staging" = "deny"
+"**/.env.prod" = "deny"
+"**/.env.production" = "deny"
+
+# Network stays off, as `network_access = false` did.
+[permissions.workspace-no-env.network]
+enabled = false
 
 [mcp_servers.code-review-graph]
 command = "uvx"

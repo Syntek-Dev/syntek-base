@@ -130,6 +130,13 @@ jobs:
           if-no-files-found: ignore
           retention-days: 30
 
+      # `down --volumes` is posture-guarded, so CI names the posture it expects explicitly.
+      # `development` is a hard literal, not a rendered answer: the template's own CI runs
+      # this file unrendered, where a token is not a legal posture. <%DEVELOPER_NAME%> owns
+      # it, and it is updated in the same commit that raises DEPLOYMENT_POSTURE in
+      # .copier-answers.yml — and by hand right after generation, for a project generated above
+      # development, since nothing renders it. No `|| true`: a literal gone stale fails the job
+      # loudly rather than skipping teardown silently.
       - name: Tear down
         if: always() && steps.detect.outputs.present == 'true'
-        run: bash code/src/scripts/development/server.sh down --volumes || true
+        run: bash code/src/scripts/development/server.sh down --volumes --force-posture development

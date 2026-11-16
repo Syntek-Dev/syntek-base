@@ -94,20 +94,20 @@ mitigation text and the promotion triggers.
 | ID    | STRIDE | OWASP | NIST  | Trust Boundary | Threat Description                                                        | Severity | Planned Mitigation                                                                 |
 | ----- | ------ | ----- | ----- | -------------- | ------------------------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------- |
 | TM-01 | S      | A01   | PR.PS | TB3            | Guard authenticates the repository; the `DROP` follows ambient Docker     | MEDIUM   | Resolve and bind the effective local target (7.12), preserving migration warn mode |
-| TM-02 | T      | A02   | PR.DS | TB2            | A commented carrier key reads as a live posture                           | MEDIUM   | Anchored, comment-rejecting match (§7.2)                                           |
-| TM-03 | T      | A02   | DE.CM | TB4            | No presence test — deleting the guard call is unnoticed                   | MEDIUM   | Assert the call site, not only the function (§7.8)                                 |
-| TM-05 | E      | A01   | PR.AA | TB2            | A stray root `copier.yml` silently disables the whole control             | MEDIUM   | Carrier evaluated first (§7.4)                                                     |
-| TM-06 | D      | A06   | PR.PS | TB1            | Closed stdin turns an authorised run into a silent `exit 0`               | MEDIUM   | No tty above `development` refuses at 4 (§7.6)                                     |
-| TM-07 | D      | A06   | RC.RP | TB2            | A damaged carrier has no statable recovery                                | MEDIUM   | Validate the flag before reading the carrier (§7.5)                                |
-| TM-08 | T      | A02   | PR.DS | TB6            | A `copier update` conflict duplicates the key; the design assumes absence | MEDIUM   | Conflicted carrier is its own refuse state (§7.2)                                  |
-| TM-09 | E      | A01   | PR.AA | TB1            | `up --seed` unbound; `seed-dev.sh` advertises staging                     | MEDIUM   | Bind both (§7.9)                                                                   |
-| TM-10 | E      | A05   | PR.PS | TB5            | CI commits a standing override behind `\|\| true`                         | MEDIUM   | Drop `\|\| true`; name the literal's owner (§7.10)                                 |
-| TM-04 | S      | A01   | PR.PS | TB3            | An exported shell variable shadows the carrier                            | LOW      | Carrier-only read, asserted with the variable set (§7.1)                           |
-| TM-11 | S      | A05   | PR.PS | TB2            | A cwd-relative probe reads the operator's directory                       | LOW      | `$PROJECT_ROOT`-anchored test (§7.3)                                               |
+| TM-02 | T      | A02   | PR.DS | TB2            | A commented carrier key reads as a live posture                           | MEDIUM   | Anchored, comment-rejecting match (Section 7.2)                                    |
+| TM-03 | T      | A02   | DE.CM | TB4            | No presence test — deleting the guard call is unnoticed                   | MEDIUM   | Assert the call site, not only the function (Section 7.8)                          |
+| TM-05 | E      | A01   | PR.AA | TB2            | A stray root `copier.yml` silently disables the whole control             | MEDIUM   | Carrier evaluated first (Section 7.4)                                              |
+| TM-06 | D      | A06   | PR.PS | TB1            | Closed stdin turns an authorised run into a silent `exit 0`               | MEDIUM   | No tty above `development` refuses at 4 (Section 7.6)                              |
+| TM-07 | D      | A06   | RC.RP | TB2            | A damaged carrier has no statable recovery                                | MEDIUM   | Validate the flag before reading the carrier (Section 7.5)                         |
+| TM-08 | T      | A02   | PR.DS | TB6            | A `copier update` conflict duplicates the key; the design assumes absence | MEDIUM   | Conflicted carrier is its own refuse state (Section 7.2)                           |
+| TM-09 | E      | A01   | PR.AA | TB1            | `up --seed` unbound; `seed-dev.sh` advertises staging                     | MEDIUM   | Bind both (Section 7.9)                                                            |
+| TM-10 | E      | A05   | PR.PS | TB5            | CI commits a standing override behind `\|\| true`                         | MEDIUM   | Drop `\|\| true`; name the literal's owner (Section 7.10)                          |
+| TM-04 | S      | A01   | PR.PS | TB3            | An exported shell variable shadows the carrier                            | LOW      | Carrier-only read, asserted with the variable set (Section 7.1)                    |
+| TM-11 | S      | A05   | PR.PS | TB2            | A cwd-relative probe reads the operator's directory                       | LOW      | `$PROJECT_ROOT`-anchored test (Section 7.3)                                        |
 | TM-12 | S      | A08   | PR.DS | TB2            | `migrate.sh fake` is not non-destructive                                  | LOW      | Recorded against N-003's premise; warn-only held knowingly                         |
-| TM-13 | D      | A06   | PR.PS | TB4            | A wrapped call site suspends `set -e`                                     | LOW      | Explicit branch and exit in every caller (§7.7)                                    |
+| TM-13 | D      | A06   | PR.PS | TB4            | A wrapped call site suspends `set -e`                                     | LOW      | Explicit branch and exit in every caller (Section 7.7)                             |
 | TM-14 | D      | A06   | PR.PS | TB1            | Three unguarded routes wipe the test volumes                              | LOW      | Residual — test volumes are disposable by design                                   |
-| TM-15 | I      | A01   | PR.DS | TB2            | Five scripts gain a read of every generation answer                       | LOW      | Extract one key; never echo the file (§7.11)                                       |
+| TM-15 | I      | A01   | PR.DS | TB2            | Five scripts gain a read of every generation answer                       | LOW      | Extract one key; never echo the file (Section 7.11)                                |
 | TM-17 | I      | A09   | DE.CM | TB4            | "Before the preflight" is vacuous in two of the five scripts              | LOW      | Restate as "before the first destructive command"                                  |
 | TM-16 | R      | A09   | DE.AE | TB1            | The override is the authorisation and is written nowhere                  | INFO     | Accepted residual, named rather than assumed                                       |
 | TM-18 | R      | A09   | DE.AE | TB4            | Refusal and operator-decline distinguishable only by exit code            | INFO     | Exit 4 plus a greppable message prefix                                             |
@@ -120,36 +120,70 @@ absence is a recorded outcome rather than an unrun check.
 Twelve constraints, each checkable by reading the shipped helper and its callers. Each becomes a
 US006 acceptance criterion; the implementation assessment closes it with code evidence.
 
-- [ ] **7.1** The guard reads the carrier only — no `${DEPLOYMENT_POSTURE:-…}` construction exists
-      in it, and the self-test proves the exported variable is ignored (A01, TM-04)
+- [ ] **7.1** The guard reads the carrier only — no `${DEPLOYMENT_POSTURE:-…}` construction
+      exists in it, and the self-test proves an exported variable of that name is ignored. The
+      house idiom a few lines away (the `DB_NAME` read in `database/reset.sh`) lets the
+      environment win, which would silently re-open the second override channel the design bans
+      (TM-04)
 - [ ] **7.2** The carrier match is anchored on `^DEPLOYMENT_POSTURE:`, quote-tolerant and
-      comment-rejecting; a duplicate or conflict-marked key is a refuse state (A02, TM-02/TM-08)
+      comment-rejecting; a duplicate or conflict-marked key is a refuse state. The shipped
+      `.copier-answers.yml` already carries seven comment lines, so a commented key is likely,
+      not exotic (TM-02, TM-08)
 - [ ] **7.3** `copier.yml` is tested `$PROJECT_ROOT`-anchored, resolved from `BASH_SOURCE`, never
-      cwd-relative (A05, TM-11)
-- [ ] **7.4** The carrier is evaluated **before** the template proof — a legal posture beats a
+      cwd-relative — three spellings exist in the tree and they disagree (TM-11)
+- [ ] **7.4** The carrier is evaluated **before** the template proof: a legal posture beats a
       present `copier.yml`, so the exemption is unreachable in any project holding an answer
-      (A01, TM-05)
-- [ ] **7.5** `--force-posture` is validated against the literal posture set **before** the carrier
-      is consulted, and cannot authorise any damaged or unrecognised carrier state (A06, TM-07)
-- [ ] **7.6** Above `development`, the prompting callers reset/restore terminate an empty-read path
-      at 4 with the guard prefix, never 0; a valid override still satisfies the guard without a tty
-      (A10, TM-06; story 7.6)
-- [ ] **7.7** Every bound script explicitly branches on the guard status and terminates a refusal;
-      suspending shell constructs must not allow fall-through (A10, TM-13; story 7.7)
-- [ ] **7.8** Each bound script's guard call is asserted **present**, before its first destructive
-      command — a tested function is not an enforced control (A02, TM-03)
-- [ ] **7.9** `development/server.sh up --seed` and `database/seed-dev.sh` are bound (A01, TM-09)
-- [ ] **7.10** The CI caller carries no `|| true` on the guarded call, and the story names who
-      updates its `--force-posture` literal when the posture rises (A05, TM-10)
-- [ ] **7.11** The refusal prints the readable posture and re-run command; where unreadable, it names
-      the reason and concrete carrier/key/three-value repair, never carrier contents (A01, TM-15)
+      (TM-05)
+- [ ] **7.5** `--force-posture` is validated against the literal posture set **before** the
+      carrier is consulted, so the guard's answer in a damaged carrier is a specific refusal
+      rather than a parse error (TM-07). **It is not honoured there:** in all five damaged states
+      **and in the unrecognised-value state** the override cannot name "the posture the project is
+      at now", so the run refuses and the refusal names the repair, not an override (AC-GAP-4,
+      and the sixth state added by the artefact review as AC-GAP-22)
+- [ ] **7.6** Above `development`, in a script carrying a confirmation prompt — `reset.sh` and
+      `restore.sh`, the only two — absence of a tty is a refusal at exit 4 with the guard prefix,
+      never an abort at exit 0 (TM-06). A valid `--force-posture` naming the live posture
+      satisfies the guard whether or not a tty is present: the override carries the
+      authorisation, the terminal does not (AC-GAP-1). As shipped, the prompt itself still needs
+      `yes` on stdin: with the override and nothing piped, the empty read exits 4, and `--yes` is
+      ignored above `development`. Case 19's "permits" is the guard's own verdict; a scripted
+      caller pipes its answer — the story plan's Key Decision "Where the no-tty refusal fires"
+- [ ] **7.7** Every bound script branches on the guard's returned status explicitly and
+      terminates on a refusal — no call site discards the status or lets execution continue past
+      it (TM-13). The `set -e` interaction is an implementation note, not a ban: under
+      `set -euo pipefail` every construct that observes a non-zero return without aborting first
+      is a suspending context, so banning them bans the criterion (AC-GAP-8)
+- [ ] **7.8** Each bound script's guard call is asserted **present** — a line-order comparison,
+      the literal call token appearing at a lower line number than that script's first
+      destructive command, or than its argument dispatch in `migrate.sh` — because a tested
+      function is not an enforced control (TM-03, AC-GAP-10)
+- [ ] **7.9** `development/server.sh up --seed` and `database/seed-dev.sh` are bound (TM-09), and
+      `server.sh` forwards `--force-posture` verbatim across the `up --seed` shell-out to
+      `seed-dev.sh` in `development/server.sh`, so the bound path has an open state (AC-GAP-3)
+- [ ] **7.10** The CI caller carries no `|| true` on the guarded call, and <%DEVELOPER_NAME%>
+      owns its `--force-posture` literal — updated in the same commit that raises the carrier,
+      with that owner and trigger written beside the literal (TM-10, AC-GAP-13)
+- [ ] **7.11** The refusal prints the live posture **where one is readable** and the re-run
+      command, and nothing else from the carrier; where no posture is readable it prints the
+      reason it is not and **names the repair concretely** — the file, the key, and the three
+      legal values: `set DEPLOYMENT_POSTURE in .copier-answers.yml to one of development,
+staging or production`. Not a pointer to a procedure: `how-to/src/DEPLOYMENT-POSTURE.md`
+      is the per-surface register and carries no repair steps, so a refusal deferring to it
+      would send the operator to a document that does not answer the question (TM-15, AC-GAP-4)
+- [ ] **7.12** Resolve the effective Docker target from local configuration including persisted
+      context and environment, without contacting a daemon (TM-01). Apply the allowlist
+      and precedence in the story plan's 09/10/2026 decision. Named local Unix-socket contexts
+      pass; remote/unknown/failed inspection fails. Check at every posture, with no posture
+      override or template exemption bypass. On success output a fresh validated endpoint and
+      bind every guarded-path Docker/Compose call and seed shell-out to it. The five refusing
+      callers exit 4 before daemon operations on failure. `migrate.sh` warns and proceeds under
+      its existing selection on failure, with cleared binding outputs and no local fallback;
+      on success it binds the validated socket. Migration locality remains an accepted residual.
 
-- [ ] **7.12** Resolve the effective endpoint from local Docker configuration including saved
-      context and selector precedence, with no daemon contact. Named local Unix-socket contexts
-      pass; remote/unknown/inspection failure fails. On success bind every subsequent guarded-path
-      Docker/Compose call, preflight and seed shell-out to the validated socket; clear stale outputs
-      on failure. Five callers refuse at 4; migration warns and proceeds under existing selection
-      on failure, with no fallback, and binds on success (A01, TM-01; story 7.12).
+**15/11/2026 amendment:** the twelve above are restated in `../../../02-STORIES/US006.md`'s
+_Security Acceptance Criteria_ wording — 7.5, 7.6 and 7.7 as amended at gate 11 (05/09/2026), and
+7.12 as added there — so this record and the story no longer disagree (`US006` P4). Each item's
+OWASP and NIST mapping is unchanged and sits against its finding in the Section 6 table.
 
 **09/10/2026 amendment:** user-confirmed Q3 option 1 replaces the environment-only target design.
 Case 14 subcases and QA HP-07/ES-07/ES-08/ES-09 specify the proof; no runtime result is claimed.

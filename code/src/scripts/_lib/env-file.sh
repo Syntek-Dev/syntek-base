@@ -85,6 +85,13 @@ env_value() {
   _env_strip "${line#*=}" "$key" "$file"
 }
 
+# env_has KEY FILE — succeed when the file assigns KEY at all, even to an empty value. The one
+# question env_value cannot answer, because it prints nothing for an absent key and an empty one
+# alike; a caller whose precedence turns on "is it set in the file" asks this first.
+env_has() {
+  [[ -f "$2" ]] && grep -qE "^[[:space:]]*(export[[:space:]]+)?${1}=" -- "$2"
+}
+
 # env_export FILE — export every assignment in the file into the current shell.
 # For the caller that needs the whole environment rather than two named keys.
 env_export() {

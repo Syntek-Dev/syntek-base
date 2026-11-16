@@ -546,7 +546,9 @@ fi
 section "Docker dev stack (build + up)"
 log ""
 
-docker compose --env-file "$ENV_DIR/.env.dev" -f "$COMPOSE_DEV" up -d --build
+# Through server.sh, never a raw `compose up`: it applies the worktree override, re-syncs the
+# database password from .env.dev against a reused volume, and prints the live URL.
+bash "$PROJECT_ROOT/code/src/scripts/development/server.sh" up --build
 log ""
 ok "Dev stack started"
 
@@ -559,8 +561,18 @@ log "  Waiting for containers to be ready..."
 MAX_WAIT=120
 elapsed=0
 
+# The probe acts on the stack server.sh just started: the same compose set (the us### worktree
+# override included, from the same detection) and the same project, pinned with -p through the
+# same helper — so neither a worktree stack nor a COMPOSE_PROJECT_NAME in .env.dev can send it
+# to a different project, where it would wait out MAX_WAIT on containers that never appear.
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$PROJECT_ROOT/code/src/scripts/_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/posture-guard.sh
+source "$PROJECT_ROOT/code/src/scripts/_lib/posture-guard.sh"
+COMPOSE_PROJECT="$(posture_compose_project "$COMPOSE_DEV" "$OVERRIDE_DEV_FILE")" || exit 2
+
 running_services() {
-  docker compose --env-file "$ENV_DIR/.env.dev" -f "$COMPOSE_DEV" ps --services --status running 2>/dev/null
+  docker compose -p "$COMPOSE_PROJECT" --env-file "$ENV_DIR/.env.dev" -f "$COMPOSE_DEV" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} ps --services --status running 2>/dev/null
 }
 
 while true; do
@@ -571,7 +583,7 @@ while true; do
 
   if [[ "$elapsed" -ge "$MAX_WAIT" ]]; then
     err "Containers did not become ready within ${MAX_WAIT}s."
-    err "Check logs with: docker compose -f code/src/docker/docker-compose.dev.yml logs"
+    err "Check logs with: bash code/src/scripts/development/logs.sh"
     exit 2
   fi
 

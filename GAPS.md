@@ -848,7 +848,9 @@ story claims this entry.
 
 **Type:** Active gap
 **Summary:** US004 repaired every class it owns, but `code/src/scripts/audits/doc-references.sh`
-still exits 1 on 28 forward references owned by US005, US006, US010 and US014. The baseline-diff
+still exits 1 on 28 forward references owned by US005, US006, US010 and US014 (re-measured
+15/11/2026 on `us006/posture-guard`: 18, owned by US005 (9), US014 (7) and US011 (2); US006
+now owns none). The baseline-diff
 regime of
 `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`
 retires only when `S-06` lands **and** the gate goes green, so it stays in force, and so does
