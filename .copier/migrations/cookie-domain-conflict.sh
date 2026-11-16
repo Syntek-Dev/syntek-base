@@ -6,7 +6,7 @@
 # cookies with the `__Host-` prefix, and no settings module sets a cookie Domain. A browser
 # accepts a `__Host-` cookie only when it carries Secure, Path=/ and NO Domain attribute, and
 # silently drops any other. So a settings module that still assigns SESSION_COOKIE_DOMAIN or
-# CSRF_COOKIE_DOMAIN — or a SESSION/CSRF_COOKIE_PATH other than "/" — beside those names means
+# CSRF_COOKIE_DOMAIN (other than None) — or a SESSION/CSRF_COOKIE_PATH other than "/" — beside those names means
 # the browser refuses the cookie: every login and every CSRF-protected write fails, behind an
 # update that reported success. Owner of the rule: code/docs/security/CRYPTO-AND-DATA.md.
 #
@@ -45,21 +45,59 @@ SETTINGS_DIR="code/src/django/config/settings"
 
 [[ -d "$SETTINGS_DIR" ]] || exit 0
 
-ASSIGN='^[[:space:]]*(SESSION|CSRF)_COOKIE_(DOMAIN|PATH)[[:space:]]*='
-ROOT_PATH='_PATH[[:space:]]*=[[:space:]]*(["'"'"'])/\1[[:space:]]*(#.*)?$'
+# The same detector as cookie-scope-widened in audits/negative-space.sh, so the two report the
+# same (module, setting) pairs. It reads the CODE part of each line (a trailing comment is
+# cut) and sees plain, indented, annotated, chained and augmented assignments; a Domain of
+# None and a Path of exactly "/" are host-only, not findings. Records carry no value.
+# TWIN: code/src/scripts/audits/_lib/negative-space-cookies.sh carries this same program and
+# pattern (COOKIE_AWK, COOKIE_WIDE) — change both. Self-contained: the lib is not shipped here.
+# shellcheck disable=SC2016  # an awk program: its $ fields are awk's, never the shell's
+COOKIE_AWK='
+function strip(s,   i, c, q, out) {
+  q = ""; out = ""
+  for (i = 1; i <= length(s); i++) {
+    c = substr(s, i, 1)
+    if (q != "") { if (c == "\\") { out = out c substr(s, i + 1, 1); i++; continue } if (c == q) q = "" }
+    else if (c == "#") break
+    else if (c == "\"" || c == sq) q = c
+    out = out c
+  }
+  return out
+}
+function classify(v) {
+  if (v == "True") return "true"
+  if (v == "None") return "none"
+  if (v ~ ("^[rRuU]?(\"/\"|" sq "/" sq ")$")) return "root"
+  if (v ~ ("^[rRuU]?(\"__Host-[^\"" sq "]*\"|" sq "__Host-[^\"" sq "]*" sq ")$")) return "host"
+  return "other"
+}
+{
+  s = strip($0); ind = (s ~ /^[ \t]/) ? 1 : 0; sub(/^[ \t]+/, "", s); sub(/[ \t]+$/, "", s)
+  n = 0; aug = 0
+  while (match(s, /^[A-Za-z_][A-Za-z0-9_]*/)) {
+    id = substr(s, 1, RLENGTH); r = substr(s, RLENGTH + 1); sub(/^[ \t]+/, "", r)
+    if (r ~ /^:[^=]/ || r == ":") { p = index(r, "="); if (!p || substr(r, p + 1, 1) == "=") break; r = substr(r, p + 1) }
+    else if (match(r, /^(\*\*|\/\/|<<|>>|[-+*\/%@&|^])=/)) { r = substr(r, RLENGTH + 1); aug = 1 }
+    else if (r ~ /^=/ && r !~ /^==/) r = substr(r, 2)
+    else break
+    t[++n] = id; sub(/^[ \t]+/, "", r); s = r
+    if (aug) break
+  }
+  cls = aug ? "aug" : classify(s)
+  for (i = 1; i <= n; i++)
+    if (t[i] ~ /^((SESSION|CSRF)_COOKIE_(DOMAIN|PATH|NAME|SECURE|HTTPONLY)|SECURE_SSL_REDIRECT)$/)
+      print NR, ind, t[i], cls
+}'
+# shellcheck disable=SC2016  # awk, as above
+COOKIE_WIDE='$3 ~ /_COOKIE_DOMAIN$/ && $4 != "none" || $3 ~ /_COOKIE_PATH$/ && $4 != "root"'
 
 declare -a HITS=()
-while IFS= read -r hit; do
-  [[ -n "$hit" ]] || continue
-  file="${hit%%:*}"
-  rest="${hit#*:}"
-  line="${rest%%:*}"
-  code="${rest#*:}"
-  # A Path of exactly "/" is what the prefix requires — not a finding.
-  grep -qE -- "$ROOT_PATH" <<<"$code" && continue
-  name="$(grep -oE '(SESSION|CSRF)_COOKIE_(DOMAIN|PATH)' <<<"$code" | head -1)"
-  HITS+=("$(printf '%s:%s  %s' "$file" "$line" "$name")")
-done < <(find "$SETTINGS_DIR" -type f -name '*.py' -exec grep -nHE -- "$ASSIGN" {} + 2>/dev/null | sort || true)
+while IFS= read -r -d '' file; do
+  while read -r line name; do
+    [[ -n "$line" ]] || continue
+    HITS+=("$(printf '%s:%s  %s' "$file" "$line" "$name")")
+  done < <(awk -v sq="'" "$COOKIE_AWK" "$file" 2>/dev/null | awk "$COOKIE_WIDE"' { print $1, $3 }' || true)
+done < <(find -L "$SETTINGS_DIR" -type f -name '*.py' -print0 2>/dev/null | sort -z || true)
 
 [[ ${#HITS[@]} -gt 0 ]] || exit 0
 

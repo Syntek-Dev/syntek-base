@@ -167,16 +167,29 @@ This section owns cookie-scope doctrine; every other guide that names a cookie s
 - **Scope: the session and CSRF cookies only.** `django.contrib.messages` is installed, and its
   default storage falls back to a cookie that stays unprefixed and subdomain-writable, as would
   any language cookie. Neither is covered by this rule.
-- **What the gate can and cannot see.** `code/src/scripts/audits/negative-space.sh` reads
-  `code/src/django/config/settings/*.py`, and its presence clauses name the modules they read
-  (`base.py`; `staging.py` and `production.py`) — a further TLS-serving module is unchecked until
-  the clause names it. **A green run proves that directory, not a global rule.** Four things are
-  invisible to it:
+- **What the gate can and cannot see.** `code/src/scripts/audits/negative-space.sh` reads every
+  `*.py` under `code/src/django/config/settings/`, symlinks followed, and evaluates the **code
+  part** of each line — a trailing comment neither hides an assignment nor satisfies one. It sees
+  plain, indented, annotated (`NAME: str = …`), chained (`A = NAME = …`) and augmented (`NAME +=
+…`) assignments, and **the last assignment in a module wins**: a later plain name, a later
+  `*_COOKIE_SECURE = False`, or a `CSRF_COOKIE_HTTPONLY` left anything but `True` in **any**
+  module is a finding naming that module. Presence still needs an unconditional, column-0
+  compliant line; an indented one alone is not presence. The TLS modules it holds to the
+  `__Host-` rule are `staging.py`, `production.py` and **any other module assigning
+  `SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE` or `CSRF_COOKIE_SECURE = True`**. A `Domain` of
+  `None` and a `Path` of exactly `"/"` (`'/'`, `r"/"`) are host-only, not findings. The copier
+  migration `cookie-domain-conflict.sh` carries the same detector, and the self-test proves the
+  two report the same settings. **A green run proves that directory, not a global rule.** It is
+  line-based, not a parser, so these remain invisible or misread:
   - a runtime write to `django.conf.settings` — an `AppConfig.ready()` is the canonical place;
-  - an environment-driven value, which never appears as an anchorable assignment;
-  - any settings module outside `code/src/django/config/settings/`;
-  - the difference between an assignment and text: matching is line-anchored, not a parser, so a
-    docstring or string line reading exactly `NAME = True` is indistinguishable from the setting.
+  - an environment-driven value — `env("X")` is read as "not compliant", never as what it holds;
+  - any settings module outside `code/src/django/config/settings/`, and anything reaching the
+    directory through `from … import *`, `setattr` or `globals()`;
+  - an assignment spread over several lines (a value in brackets, a backslash continuation), or a
+    value built by concatenation or a variable, which reads as "not compliant";
+  - text that looks like code: a docstring or string line reading exactly `NAME = True` counts
+    as the setting, and a keyword argument on its own line (`NAME=…,`) reads as an assignment;
+  - control flow: an unconditional line after an `if` block wins whether or not the block ran.
 
 ### Libraries that write to client storage by default
 
