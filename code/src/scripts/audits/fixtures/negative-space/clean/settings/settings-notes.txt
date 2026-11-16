@@ -1,0 +1,3 @@
+Fixture for negative-space.sh --self-test (US008). The cookie clauses read *.py only, so the
+assignment-shaped line below, in a file that is not a module, must not fire.
+SESSION_COOKIE_DOMAIN = ".example.com"
