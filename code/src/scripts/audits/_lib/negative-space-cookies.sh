@@ -252,7 +252,7 @@ cookie_self_test_variants() {
 # (module, setting) pairs, sorted, one per line: from the gate's scope findings, and from the
 # copier migration's report.
 cookie_gate_pairs() {
-  printf '%s\n' "$1" | grep -E '^cookie-scope-widened: ' | while IFS= read -r line; do
+  printf '%s\n' "$1" | { grep -E '^cookie-scope-widened: ' || true; } | while IFS= read -r line; do
     local path="${line#cookie-scope-widened: }"; path="${path%% — *}"; path="${path%:[0-9]*}"
     printf '%s %s\n' "${path##*/}" "$(grep -oE '(SESSION|CSRF)_COOKIE_(DOMAIN|PATH)' <<< "${line#* — }" | head -1)"
   done | sort
