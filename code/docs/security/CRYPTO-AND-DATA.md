@@ -180,7 +180,10 @@ This section owns cookie-scope doctrine; every other guide that names a cookie s
   `production.py` (or `staging/__init__.py` and `production/__init__.py` when they are
   packages) and **any other module where `SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE` or
   `CSRF_COOKIE_SECURE` occurs other than as a plain `= False` or `= None`** — a recognised
-  `= True`, an unrecognised occurrence, or a value it cannot read all make a module TLS. A `Domain` of `None` and a `Path` of exactly `"/"` (`'/'`,
+  `= True`, an unrecognised occurrence, or a value it cannot read all make a module TLS. So a
+  computed value — `SESSION_COOKIE_SECURE = env.bool(...)` in `base.py` — makes that module TLS
+  and asks it for `__Host-` names; set the `SECURE` lines literally, `True` or `False`, in each
+  environment module, as the template does. A `Domain` of `None` and a `Path` of exactly `"/"` (`'/'`,
   `r"/"`) are host-only, not findings.
   - **It fails closed.** Any other whole-token occurrence of a cookie setting name in code — after
     a semicolon, in tuple unpacking, `del`, a walrus, a parenthesised, `for` or `import … as`
