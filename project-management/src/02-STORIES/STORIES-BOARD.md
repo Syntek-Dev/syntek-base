@@ -11,8 +11,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 4     |
-| In Progress       | 1     |
-| In Review         | 2     |
+| In Progress       | 0     |
+| In Review         | 3     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
 | Customer Accepted | 5     |
@@ -37,16 +37,15 @@ _None._
 
 ## In Progress
 
-| ID    | Title                                                                                                  | Status      | File                 |
-| ----- | ------------------------------------------------------------------------------------------------------ | ----------- | -------------------- |
-| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | In Progress | [US008.md](US008.md) |
+_None._
 
 ## In Review
 
-| ID    | Title                                                                                        | Status    | File                 |
-| ----- | -------------------------------------------------------------------------------------------- | --------- | -------------------- |
-| US005 | Exactly one layer decides to retry, and every budget says how long it may take               | In Review | [US005.md](US005.md) |
-| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development | In Review | [US006.md](US006.md) |
+| ID    | Title                                                                                                  | Status    | File                 |
+| ----- | ------------------------------------------------------------------------------------------------------ | --------- | -------------------- |
+| US005 | Exactly one layer decides to retry, and every budget says how long it may take                         | In Review | [US005.md](US005.md) |
+| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development           | In Review | [US006.md](US006.md) |
+| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | In Review | [US008.md](US008.md) |
 
 ## Accepted
 

@@ -170,10 +170,23 @@ module (`CRYPTO-AND-DATA.md:183-186`, ruling Q18).
 - The cutover migration ships `when: false`, unversioned, filename renamed at release.
 - The edge scheme-header check targets the origin hop; the release checklist line is generic and
   template-only.
-- Observed outside US008, not findings of this story: story stacks on `:3080` fail form POSTs
-  (`CSRF_TRUSTED_ORIGINS` in `dev.py` lists only `:81`), and `doc-references.sh` exits 0 with
+- Observed outside US008, not findings of this story: ~~story stacks on `:3080` fail form POSTs
+  (`CSRF_TRUSTED_ORIGINS` in `dev.py` lists only `:81`)~~ — fixed after this audit, see the
+  addendum below; and `doc-references.sh` exits 0 with
   "Nothing to check" outside a git repository — the second is a could-not-look reported as clean
   (`code/docs/GATE-REPORTING.md`) and belongs to the citation gate's owner.
+
+### Addendum 16/11/2026 — the story-stack CSRF fix merged after `43acdf5`
+
+The branch gained one CSRF control after this audit's walk: `40ce928` (merged `8d6a5ac`) adds
+`DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA`, read by `config/settings/dev.py` **only**, and appends its
+origins to the three `:81` defaults. A wildcard, a missing scheme, a path, a query, userinfo or a
+bad port raises `ImproperlyConfigured`; `staging.py` and `production.py` are untouched and keep
+their own list. Independent QA on a disposable stack at `127.0.0.8:3080`: sign-in and the admin
+password change 302; a foreign origin with a valid token 403, as do port, case, `null` and
+trailing-slash variants. Residual (finding record, Q15 Low): an entry that passes the parser but
+can never match a browser `Origin` (upper case, a leading-zero port or octet, an empty `?`/`#`)
+fails closed as a silent 403 rather than a startup error. The verdict above stands.
 
 ## 8. Sign-off
 

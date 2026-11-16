@@ -68,10 +68,10 @@ trusted list is the only remaining way through. On `:80` the default port makes 
 
 **Applied 16/11/2026** through the `bugfix` skill on `us008/story-stack-csrf-origin` (cut from `testing`), on Sam's ruling to use an environment value the worktree overlay sets — the `$http_host` alternative was not taken, so nginx and the edge contract are unchanged. Variable: `DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA`, comma-separated `scheme://host[:port]` origins appended to the `:81` defaults; a wildcard or any malformed entry raises `ImproperlyConfigured` naming it. The overlay example sets the advertised name and the IP on `:3080`; setting it in `.env.dev` has no effect.
 
-**Approach (smallest):** derive the trusted origins from the stack rather than a literal — read an
+**Superseded by the applied fix above — kept as the original proposal.** **Approach (smallest):** derive the trusted origins from the stack rather than a literal — read an
 environment variable the worktree overlay sets (the published scheme, host and port) and append it
 to the `:81` defaults in `dev.py`, so both stacks are trusted without widening to a wildcard.
-`.env.dev.example` gains the variable's name with a placeholder. `TODO(verify)` alternative: have
+`.env.dev.example` gains the variable's name with a placeholder. Alternative (not taken): have
 nginx forward `$http_host` (host **with** port) so Django's same-origin check succeeds on its own;
 weigh it against the staging/production edge contract before choosing.
 
@@ -79,7 +79,7 @@ weigh it against the staging/production edge contract before choosing.
 
 - `code/src/django/config/settings/dev.py` — trusted origins extended from an env value
 - `code/src/docker/docker-compose.usXXX.dev.yml.example` — sets that value per worktree
-- `.env.dev.example` — documents the variable name, never a live value
+- `code/src/docker/.env.dev.example` — documents the variable name, never a live value
 
 ## 7. Regression test (write the failing test FIRST — TDD)
 
