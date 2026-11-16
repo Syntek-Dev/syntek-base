@@ -15,7 +15,7 @@ code/src/
 ├── CLAUDE.md                 ← operating rules for the source root
 ├── django/                   ← the Django project — at baseline, no application code yet
 │   ├── apps/                 ← Django apps — `core` ships; domain modules are added per project
-│   ├── config/               ← settings/, urls.py, asgi.py, wsgi.py
+│   ├── config/               ← settings/, tests/, urls.py, asgi.py, wsgi.py
 │   ├── static/               ← static asset source (the global HTMX error handler only)
 │   ├── templates/            ← project template directory (the 500 page only)
 │   └── CONTEXT.md            ← stack, layout, entry points

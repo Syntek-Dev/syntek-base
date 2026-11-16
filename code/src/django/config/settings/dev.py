@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
+
+from django.core.exceptions import ImproperlyConfigured
 
 from .base import *  # noqa: F403
 
@@ -11,12 +14,59 @@ DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
 
 ALLOWED_HOSTS = ["*"]
 
-# The browser reaches the dev stack through nginx on host port 81, never Django's
+_EXTRA_ORIGINS_VAR = "DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA"
+
+
+def _parse_extra_origins(raw: str) -> tuple[str, ...]:
+    """Parse a comma-separated list of full origins (``scheme://host[:port]``).
+
+    Whitespace is stripped and empty items ignored, so unset or blank yields nothing. A
+    wildcard or anything that is not exactly an http(s) origin raises rather than being
+    dropped or loosened: a trusted-origin list must never widen silently.
+    """
+    origins: list[str] = []
+    for item in (part.strip() for part in raw.split(",")):
+        if not item:
+            continue
+        if "*" in item:
+            msg = f"{_EXTRA_ORIGINS_VAR}: wildcards are not allowed ({item!r})"
+            raise ImproperlyConfigured(msg)
+        try:
+            parts = urlsplit(item)
+            port = parts.port
+        except ValueError as exc:
+            msg = f"{_EXTRA_ORIGINS_VAR}: {item!r} is not a valid origin"
+            raise ImproperlyConfigured(msg) from exc
+        is_origin = (
+            parts.scheme in {"http", "https"}
+            and bool(parts.hostname)
+            and parts.username is None
+            and parts.path == ""
+            and not parts.query
+            and not parts.fragment
+            and not any(char.isspace() for char in item)
+            and (port is not None or not parts.netloc.endswith(":"))
+        )
+        if not is_origin:
+            msg = (
+                f"{_EXTRA_ORIGINS_VAR}: {item!r} is not an origin of the form scheme://host[:port]"
+            )
+            raise ImproperlyConfigured(msg)
+        origins.append(item)
+    return tuple(origins)
+
+
+# The browser reaches the main dev stack through nginx on host port 81, never Django's
 # container port 8000 — which is unpublished, so an origin naming it can never match.
+# A worktree story stack is published on 127.0.0.NNN:3080 and dev nginx forwards Host
+# without the port, so its origins never match the request host either: the overlay
+# (docker-compose.usXXX.dev.yml.example) supplies them through
+# DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA, appended here after the defaults.
 CSRF_TRUSTED_ORIGINS = [
     "http://dev.<%PROJECT_SLUG%>.localhost:81",
     "http://127.0.0.1:81",
     "http://localhost:81",
+    *_parse_extra_origins(os.environ.get(_EXTRA_ORIGINS_VAR, "")),
 ]
 
 # MAILERS, not EMAIL_BACKEND: Django 6.1 deprecates the whole EMAIL_* family with a
