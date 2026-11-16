@@ -362,7 +362,7 @@ if [[ "$CASE" == "domain-report" ]]; then
   PLANTS=("$STAGING")
 fi
 "${GIT_SCRATCH[@]}" -C "$PROJECT" add -A
-"${GIT_SCRATCH[@]}" -C "$PROJECT" commit --quiet --no-verify -m "fixture: the story's wrapper and the case's plants"
+"${GIT_SCRATCH[@]}" -C "$PROJECT" commit --quiet --no-verify --allow-empty -m "fixture: the story's wrapper and the case's plants"
 
 # ── Prerequisites ────────────────────────────────────────────────────────────
 grep -q '^_commit:' "$PROJECT/.copier-answers.yml" 2>/dev/null \
