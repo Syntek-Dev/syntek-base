@@ -212,7 +212,8 @@ cd "$PROJECT_ROOT"
 
 TMP_FAIL=$(mktemp); TMP_WARN=$(mktemp); TMP_ROWS=$(mktemp)
 TMP_CONSTRAINTS=$(mktemp); TMP_KEYS=$(mktemp)
-trap 'rm -f "$TMP_FAIL" "$TMP_WARN" "$TMP_ROWS" "$TMP_CONSTRAINTS" "$TMP_KEYS"' EXIT
+COOKIE_TMP=""   # the cookie self-test's variant trees (_lib/negative-space-cookies.sh)
+trap 'rm -f "$TMP_FAIL" "$TMP_WARN" "$TMP_ROWS" "$TMP_CONSTRAINTS" "$TMP_KEYS"; [[ -z "$COOKIE_TMP" ]] || rm -rf "$COOKIE_TMP"' EXIT
 
 TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
