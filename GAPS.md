@@ -1307,3 +1307,17 @@ F-026 (with F-025 on the ADR's stale counts) in
 first by quoted text rather than by these line counts. The root `package.json` `postinstall`
 (the `--notice` line) is the one lifecycle script this repository now relies on, so suppressing
 it on a developer-facing channel removes the notice there. No map or story claims this entry.
+
+## 17/11/2026 — `doc-references.sh` does not read shipped YAML or JSON files
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` scans only `*.md` and `*.sh` files
+(`candidates()` filters `repo_files` on `\.(md|sh)$`), so a shipped `*.yaml`, `*.yml` or `*.json`
+file is never read. A template-only citation in a shipped config therefore passes unchecked and
+dies in every generated project. Found as review `CR-01` on US009 at `23-pr-and-review`
+(17/11/2026): the `allowBuilds` comment in `pnpm-workspace.yaml` named US009's ADR, a decision
+record copier excludes, and the gate stayed green. Story: "project-management/src/02-STORIES/US009.md".
+**Blocked by / Action:** Nothing blocks it. The next story touching `doc-references.sh` decides
+whether the scan widens to comment lines in shipped `*.yaml` / `*.yml` (JSON carries no comments,
+so only its string values could cite) and adds a fixture for a dead citation in each, or records
+why config files stay out of scope. No map or story claims this entry.

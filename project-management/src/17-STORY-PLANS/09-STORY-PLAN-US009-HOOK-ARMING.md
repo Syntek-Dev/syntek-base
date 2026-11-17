@@ -55,8 +55,8 @@ describes is happening anyway — at a moment nobody chose.**
 
 Two halves, and the story is only worth 5 SP because they are one change:
 
-1. **The absence.** `.copier/README.md:442` tells a reader that `bash install.sh` "runs
-   `lefthook install`, which registers the pre-commit hooks". The root `install.sh` writes nothing
+1. **The absence.** `.copier/README.md:450` tells a reader that `bash install.sh` "runs
+   `lefthook install`, which registers the pre-commit hooks". <!-- RE-POINTED 17/11/2026 (F-023, ../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md), by quoted text: cited `.copier/README.md:442` until then. The claim sentence sits at :450, its text unchanged; drift from other stories' commits had moved it to :449 by a0ca304, and US009's own e5b3426 (red phase) moved it one more line --> The root `install.sh` writes nothing
    under `.git/` — measured 18/09/2026, its only git references are a prerequisite check at `:371`
    and a version print at `:383`. `how-to/src/CONTRIBUTING.md:155` makes the same claim in four
    words: "Hooks are installed by `bash install.sh`." Both are false today.
@@ -224,7 +224,9 @@ commit on `us009/hook-arming` from P0 onward would bypass all seven, silently, f
 branch, and this plan forbids running `install.sh` here to re-arm. **The clearing is a probe-time
 act performed in the scratch fixture**, where an absent hook is the starting state by construction.
 The working tree's hook is recorded as evidence and left armed; if it is ever cleared by accident,
-`pnpm exec lefthook install` puts it back.
+`pnpm exec lefthook install` puts it back. (Corrected 17/11/2026, review QA-01, workflow 23:
+`node_modules/.bin/lefthook install`, run directly, puts it back without `pnpm exec`'s dependency
+check, which can install over a stale `node_modules`.)
 
 | Baseline                                  | How it is taken                                                                                                            |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
@@ -239,17 +241,17 @@ The working tree's hook is recorded as evidence and left armed; if it is ever cl
 
 The whole of the arming logic, in one file that needs no docker, no sudo and no secrets.
 
-| Requirement                      | Shape                                                                                                                                                                                                       | Criterion             |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
-| The guard                        | `git rev-parse --git-dir`, never `[ -d .git ]` — a `git worktree add` checkout has `.git` as a **file**, and this project creates such checkouts                                                            | ST07, Section 7.3     |
-| On no repository                 | `warn` that hook installation was skipped because there is no git repository, and return 0 — the install continues, the exit code is unaffected                                                             | ST07, Section 7.14    |
-| The binary                       | `pnpm exec lefthook install` — the house idiom — **23 occurrences across 14 files, of which 20 across 13 are executable invocations** (three are comments), re-measured 18/09/2026. Never a bare `lefthook` | ST03, Section 7.4     |
-| On failure of `lefthook install` | `err` naming `lefthook install`, then `exit 2` — see the exit-code note below                                                                                                                               | ST03, Section 7.5     |
-| On the binary being **absent**   | A distinct failure naming the **missing binary**, never a bare `command not found` from `pnpm exec`. ES-04, and a different state from the row above                                                        | AC-GAP-4              |
-| Arguments                        | A header comment block, a `usage()`, `--help`/`-h`, and a `die` on an unknown option — `code/src/scripts/CLAUDE.md:29-30`, which all three siblings honour                                                  | `scripts/CLAUDE.md`   |
-| Output helpers                   | The script **defines its own** `bold` / `log` / `ok` / `warn` / `err`, of the same shape as the caller's. They cannot be inherited — see below                                                              | —                     |
-| The third-claimant report        | The step states it wrote `.git/hooks/pre-commit` and what it replaced, rather than overwriting in silence                                                                                                   | Section 7.7, AC-GAP-7 |
-| The blast radius                 | No network fetch, no credential read, no write outside `.git/hooks/`                                                                                                                                        | ST05, Section 7.13    |
+| Requirement                      | Shape                                                                                                                                                                                                                                                                                                                                | Criterion             |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------- |
+| The guard                        | `git rev-parse --git-dir`, never `[ -d .git ]` — a `git worktree add` checkout has `.git` as a **file**, and this project creates such checkouts                                                                                                                                                                                     | ST07, Section 7.3     |
+| On no repository                 | `warn` that hook installation was skipped because there is no git repository, and return 0 — the install continues, the exit code is unaffected                                                                                                                                                                                      | ST07, Section 7.14    |
+| The binary                       | `pnpm exec lefthook install` — the house idiom — **23 occurrences across 14 files, of which 20 across 13 are executable invocations** (three are comments), re-measured 18/09/2026. Never a bare `lefthook` (corrected 17/11/2026, review QA-01, workflow 23: run directly as `node_modules/.bin/lefthook`, not through `pnpm exec`) | ST03, Section 7.4     |
+| On failure of `lefthook install` | `err` naming `lefthook install`, then `exit 2` — see the exit-code note below                                                                                                                                                                                                                                                        | ST03, Section 7.5     |
+| On the binary being **absent**   | A distinct failure naming the **missing binary**, never a bare `command not found` from `pnpm exec`. ES-04, and a different state from the row above (corrected 17/11/2026, review QA-01, workflow 23: run directly as `node_modules/.bin/lefthook`, not through `pnpm exec`)                                                        | AC-GAP-4              |
+| Arguments                        | A header comment block, a `usage()`, `--help`/`-h`, and a `die` on an unknown option — `code/src/scripts/CLAUDE.md:29-30`, which all three siblings honour                                                                                                                                                                           | `scripts/CLAUDE.md`   |
+| Output helpers                   | The script **defines its own** `bold` / `log` / `ok` / `warn` / `err`, of the same shape as the caller's. They cannot be inherited — see below                                                                                                                                                                                       | —                     |
+| The third-claimant report        | The step states it wrote `.git/hooks/pre-commit` and what it replaced, rather than overwriting in silence                                                                                                                                                                                                                            | Section 7.7, AC-GAP-7 |
+| The blast radius                 | No network fetch, no credential read, no write outside `.git/hooks/`                                                                                                                                                                                                                                                                 | ST05, Section 7.13    |
 
 **The helpers cannot be inherited, and an earlier draft of this plan said they could.**
 `install.sh` defines seven helpers at `:27-34` — `bold`, `log`, `ok`, `warn`, `err`, `die`,
@@ -504,6 +506,21 @@ tick while walking straight past it. **Each assertion names its own single line 
 on that line only.** `MAP-BUN-TOPOLOGY.md`'s N-024 / S-01 note (the `GAPS.md` row of 11/09/2026
 until 01/11/2026) owns the defect; US009 does not fix it (Section 7.6, TM-06).
 
+> **Correction 17/11/2026 (F-024, `../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md`):** the
+> block above is **not live**. It was fixed upstream in `8dceffb` (14/10/2026), before this story's
+> build began: the `--local` branch of `code/src/scripts/development/install-frontend.sh` now
+> removes an array of targets, which cannot dangle a `\`. Every `install-frontend.sh:79-81` reading
+> in this plan — _What this story is not_, this phase, _Dependencies_ item 2 (its "Re-confirmed live
+> 18/09/2026" was true that day), the Security constraint table's 7.6 row, the manual-testing note
+> and the _Deferred Items_ row — describes the pre-`8dceffb` file, and the three asserted lines
+> `:67`, `:84`, `:93` are now `:71`, `:104`, `:113`. The per-line, found-by-content form this phase
+> requires is what shipped, so the obligation was met against the fixed file.
+>
+> **And the owner named above has not recorded the fix.** Read 17/11/2026:
+> `../01-FEATURE-MAPS/MAP-BUN-TOPOLOGY.md`'s N-024 / S-01 note still describes the dangling `\` at
+> `:79-81` as the open defect, and its register row still reads "**Conditional** — `bugfix` first".
+> Neither names `8dceffb`. That map belongs to `01-feature-map`; it is not edited here.
+
 **Do not stage that defect to test it.** Planting a file named `log` or `Removed.` at the project
 root to prove the finding would have it deleted as root. The assertion's **form** is what is
 confirmed, by reading it.
@@ -514,8 +531,10 @@ confirmed, by reading it.
 
 | Claim                            | Reads                                                            | After |
 | -------------------------------- | ---------------------------------------------------------------- | ----- |
-| `.copier/README.md:442`          | "…runs `lefthook install`, which registers the pre-commit hooks" | True  |
+| `.copier/README.md:450`          | "…runs `lefthook install`, which registers the pre-commit hooks" | True  |
 | `how-to/src/CONTRIBUTING.md:155` | "Hooks are installed by `bash install.sh`."                      | True  |
+
+<!-- RE-POINTED 17/11/2026, the `.copier/README.md` row above (F-023, ../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md), by quoted text: cited `.copier/README.md:442` until then. The claim sentence sits at :450, its text unchanged; drift from other stories' commits had moved it to :449 by a0ca304, and US009's own e5b3426 (red phase) moved it one more line -->
 
 Both are re-read against the changed script and both are confirmed **unmodified in the diff**. The
 story names only the first; the second is the same claim in four words and is found by this plan —
@@ -690,38 +709,40 @@ closed: it is pre-existing, raised here rather than absorbed.
 **fourteen** constraints, 7.1 to 7.14. Each is an acceptance criterion; the implementation
 assessment closes it with evidence.
 
-| Section | Constraint                                                                                                  | Built in | Proved in — and the TM / AC-GAP it closes                                                                                                                               |
-| ------- | ----------------------------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 7.1     | `prepare` is settled, not merely preserved                                                                  | P3       | P4's manifest assertion — **TM-01, AC-GAP-1**                                                                                                                           |
-| 7.2     | `--ignore-scripts` asserted on three lines, **with its scope stated**                                       | P4       | Three per-line assertions **plus the register row, which is owed** — **TM-02, AC-GAP-3**                                                                                |
-| 7.3     | The guard tests for a repository, not a directory                                                           | P1       | P4's worktree probe, fixture A — **TM-03, AC-GAP-2**                                                                                                                    |
-| 7.4     | The binary comes from `node_modules` by `pnpm exec`, never `PATH`                                           | P1       | Read the shipped line; EC-02 plants a host-global binary — **TM-04, AC-GAP-4**                                                                                          |
-| 7.5     | The step's position is justified against its failure mode                                                   | P2       | The step sits between `:522` and `:524`; nothing follows a hard fail — **TM-05, AC-GAP-5**                                                                              |
-| 7.6     | The assertions neither depend on nor mask `install-frontend.sh:79-81`                                       | P4       | Read the assertion's form — per line, never a block — **TM-06**                                                                                                         |
-| 7.7     | The step reports what it wrote into `.git/hooks/` and what it replaced                                      | P1       | P4's EC-03 and EC-05; `lefthook.yml:73-76` names the contest — **TM-07, AC-GAP-7**                                                                                      |
-| 7.8     | ST03's wording corrected — the lockfile pins, the manifest ranges                                           | P0       | Recorded at baseline: `^2.1.10` against `pnpm-lock.yaml:54-56` — **TM-08, AC-GAP-8**                                                                                    |
-| 7.9     | The generation job's criterion is what it can do — grep, not execute                                        | P4       | The grep inside `audit-template.yml:151-163`'s loop — **TM-09, AC-GAP-6**                                                                                               |
-| 7.10    | The renumbering names Phase 2 as well as Phase 1                                                            | P2       | `usage()`, both Phase 2 body headers and the new one, in one edit — **TM-10, AC-GAP-9**                                                                                 |
-| 7.11    | The unborn-HEAD case is covered, or the assumption written down                                             | P4       | **Covered** — Decision 3, fixture B. A probe, not an assumption — **TM-11**                                                                                             |
-| 7.12    | The step runs after dependency installation                                                                 | P2       | Its position, last in Phase 1, is after Step 4 by construction — **ST04**                                                                                               |
-| 7.13    | No new network fetch, credential read, or write outside `.git/hooks/` **of the repository the script arms** | P1       | Diff each fixture before and after — **ST05**. The scoping is P4's, and it is what makes this achievable                                                                |
-| 7.14    | The guard tests for a repository and nothing else                                                           | P1       | Read the guard — it never becomes a general try/ignore. **ST06's surviving half**; ST06 itself is retired by the ADR, the lifecycle script it reasoned about being gone |
+| Section | Constraint                                                                                                                                                                                 | Built in | Proved in — and the TM / AC-GAP it closes                                                                                                                               |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 7.1     | `prepare` is settled, not merely preserved                                                                                                                                                 | P3       | P4's manifest assertion — **TM-01, AC-GAP-1**                                                                                                                           |
+| 7.2     | `--ignore-scripts` asserted on three lines, **with its scope stated**                                                                                                                      | P4       | Three per-line assertions **plus the register row, which is owed** — **TM-02, AC-GAP-3**                                                                                |
+| 7.3     | The guard tests for a repository, not a directory                                                                                                                                          | P1       | P4's worktree probe, fixture A — **TM-03, AC-GAP-2**                                                                                                                    |
+| 7.4     | The binary comes from `node_modules` by `pnpm exec`, never `PATH` (corrected 17/11/2026, review QA-01, workflow 23: run directly as `node_modules/.bin/lefthook`, not through `pnpm exec`) | P1       | Read the shipped line; EC-02 plants a host-global binary — **TM-04, AC-GAP-4**                                                                                          |
+| 7.5     | The step's position is justified against its failure mode                                                                                                                                  | P2       | The step sits between `:522` and `:524`; nothing follows a hard fail — **TM-05, AC-GAP-5**                                                                              |
+| 7.6     | The assertions neither depend on nor mask `install-frontend.sh:79-81`                                                                                                                      | P4       | Read the assertion's form — per line, never a block — **TM-06**                                                                                                         |
+| 7.7     | The step reports what it wrote into `.git/hooks/` and what it replaced                                                                                                                     | P1       | P4's EC-03 and EC-05; `lefthook.yml:73-76` names the contest — **TM-07, AC-GAP-7**                                                                                      |
+| 7.8     | ST03's wording corrected — the lockfile pins, the manifest ranges                                                                                                                          | P0       | Recorded at baseline: `^2.1.10` against `pnpm-lock.yaml:54-56` — **TM-08, AC-GAP-8**                                                                                    |
+| 7.9     | The generation job's criterion is what it can do — grep, not execute                                                                                                                       | P4       | The grep inside `audit-template.yml:151-163`'s loop — **TM-09, AC-GAP-6**                                                                                               |
+| 7.10    | The renumbering names Phase 2 as well as Phase 1                                                                                                                                           | P2       | `usage()`, both Phase 2 body headers and the new one, in one edit — **TM-10, AC-GAP-9**                                                                                 |
+| 7.11    | The unborn-HEAD case is covered, or the assumption written down                                                                                                                            | P4       | **Covered** — Decision 3, fixture B. A probe, not an assumption — **TM-11**                                                                                             |
+| 7.12    | The step runs after dependency installation                                                                                                                                                | P2       | Its position, last in Phase 1, is after Step 4 by construction — **ST04**                                                                                               |
+| 7.13    | No new network fetch, credential read, or write outside `.git/hooks/` **of the repository the script arms**                                                                                | P1       | Diff each fixture before and after — **ST05**. The scoping is P4's, and it is what makes this achievable                                                                |
+| 7.14    | The guard tests for a repository and nothing else                                                                                                                                          | P1       | Read the guard — it never becomes a general try/ignore. **ST06's surviving half**; ST06 itself is retired by the ADR, the lifecycle script it reasoned about being gone |
 
 **Section 7's opening line reads "Eleven constraints" and the list runs to fourteen.** The item
 count is **fourteen**; the section's own closing sentence agrees ("None of the fourteen…").
 Correcting the opening line belongs to `10-security-checks`, not to this plan — see _Measured
-divergences_.
+divergences_. **Resolved 28/09/2026** (corrected 17/11/2026, F-020 of
+`../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md`): the assessment was amended at sign-off,
+and Section 7 now opens "Fourteen constraints" (`ASSESSMENT-PLAN-US009-HOOK-ARMING.md:252`).
 
 ### The trust boundaries this story moves
 
-| TB  | Boundary                                         | What this story does to it                                                                                                 |
-| --- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| TB1 | Operator shell → `install.sh`                    | **Changed.** The guard stops reading `.git`'s _shape_ and asks git whether this is a repository                            |
-| TB2 | `install.sh` → the lefthook binary               | **Narrowed.** `pnpm exec` fixes resolution to the project's own `node_modules`, never `PATH`                               |
-| TB3 | The pnpm lifecycle → `.git/hooks/`               | **Closed.** P3 deletes the only script that crossed it — the one boundary this story removes                               |
-| TB4 | `install.sh` → `.git/hooks/pre-commit`           | **Opened.** `install.sh` writes nothing under `.git/` today and after this story it does, which is why 7.7's report exists |
-| TB5 | This template → a generated project              | **Exercised, not changed.** HP-07's grep and EC-04's unborn-HEAD probe are its tests                                       |
-| TB6 | The npm dependency graph → the host / the runner | **Untouched and named** — TM-02, and the register row that is owed                                                         |
+| TB  | Boundary                                         | What this story does to it                                                                                                                                                                                            |
+| --- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TB1 | Operator shell → `install.sh`                    | **Changed.** The guard stops reading `.git`'s _shape_ and asks git whether this is a repository                                                                                                                       |
+| TB2 | `install.sh` → the lefthook binary               | **Narrowed.** `pnpm exec` fixes resolution to the project's own `node_modules`, never `PATH` (corrected 17/11/2026, review QA-01, workflow 23: run directly as `node_modules/.bin/lefthook`, not through `pnpm exec`) |
+| TB3 | The pnpm lifecycle → `.git/hooks/`               | **Closed.** P3 deletes the only script that crossed it — the one boundary this story removes                                                                                                                          |
+| TB4 | `install.sh` → `.git/hooks/pre-commit`           | **Opened.** `install.sh` writes nothing under `.git/` today and after this story it does, which is why 7.7's report exists                                                                                            |
+| TB5 | This template → a generated project              | **Exercised, not changed.** HP-07's grep and EC-04's unborn-HEAD probe are its tests                                                                                                                                  |
+| TB6 | The npm dependency graph → the host / the runner | **Untouched and named** — TM-02, and the register row that is owed                                                                                                                                                    |
 
 ---
 
@@ -744,7 +765,9 @@ oversight.
 **All four are `N/A`, and each for its own reason rather than as a block.**
 
 - **Performance** — the step runs once, at install, and adds one `pnpm exec` invocation to a script
-  that already runs two dependency installs. There is no request path and no query.
+  that already runs two dependency installs. There is no request path and no query. (Corrected
+  17/11/2026, review QA-01, workflow 23: one direct `node_modules/.bin/lefthook` invocation, not
+  `pnpm exec`.)
 - **Rendering** — no template, no component, no HTMX or Alpine surface. The `Frontend` flag is `N/A`.
 - **Responsive** — no rendered screen.
 - **Accessibility** — no rendered screen, so WCAG 2.2 AA has no subject. **One
@@ -870,7 +893,10 @@ probes run against a scratch `git init` on the runner, with no service of any ki
 1. **`pnpm exec lefthook install` inside the shipped script.** `.claude/CLAUDE.md` Section 6 bans a
    raw `pnpm` invocation. This is not one: it is the house idiom at 23 occurrences across 14 files, 20 of them executable,
    it is what `lefthook.yml` itself uses, and it is the content of a project script rather than a
-   command run instead of one.
+   command run instead of one. (Corrected 17/11/2026, review QA-01, workflow 23: the exception is
+   no longer used. The shipped script runs `node_modules/.bin/lefthook` directly, which is not a
+   raw `pnpm` invocation, because `pnpm exec`'s dependency check can install over a stale
+   `node_modules`.)
 2. **ShellCheck, run by hand.** No project script wraps it. Running it directly is the only way to
    run it at all, and the alternative — not running it — leaves the story's entire diff unlinted.
 
@@ -911,7 +937,9 @@ rather than left blank.** There is no Python in this diff.
 | HP-01, HP-03        | Clean clone → `bash install.sh` → a throwaway `git commit`; the pre-commit legs observed running                                                                                                  |
 | HP-04, EC-06        | The same clone re-run through `bash install.sh`; no duplication, no error, the hook byte-identical                                                                                                |
 | ES-01, ES-02, ES-03 | A broken `lefthook install`: reported in the `err` idiom naming it, exit 2, never swallowed                                                                                                       |
-| HP-06               | `.copier/README.md:442` and `how-to/src/CONTRIBUTING.md:155` re-read against the changed script and confirmed true, with the re-reads recorded and both files confirmed unmodified at those lines |
+| HP-06               | `.copier/README.md:450` and `how-to/src/CONTRIBUTING.md:155` re-read against the changed script and confirmed true, with the re-reads recorded and both files confirmed unmodified at those lines |
+
+<!-- RE-POINTED 17/11/2026, the HP-06 row above (F-023, ../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md), by quoted text: cited `.copier/README.md:442` until then. The claim sentence sits at :450, its text unchanged; drift from other stories' commits had moved it to :449 by a0ca304, and US009's own e5b3426 (red phase) moved it one more line -->
 
 The rows a person walks are in `../18-TESTS/MANUAL/US009-MANUAL-TESTING.md`, authored from this
 plan before code (backfilled 30/09/2026) and walked, not written, at `22`.
@@ -1015,14 +1043,14 @@ hand.
 
 ## Deferred Items
 
-| Deferred                                                                       | To                                                                                                       | Why                                                                                                                                                          |
-| ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| The eleven unsuppressed `pnpm install` invocations                             | A later story — **but the `GAPS.md` row does not exist yet**; `22-implementation-documentation` opens it | TM-02. Eleven edits across six files for a control whose only consumer this story deletes. Section 7.2's second limb is unsatisfied until the row is written |
-| `install-frontend.sh:79-81`'s `sudo rm -rf`                                    | `MAP-BUN-TOPOLOGY.md` N-024 / S-01 (from `GAPS.md`, 11/09/2026)                                          | Not this story's defect. This story must not mask it, which is a different obligation from fixing it                                                         |
-| Whether Step 4 should use `--frozen-lockfile`                                  | A dependency-management story                                                                            | TM-08. `install-frontend.sh:84` carries `--ignore-scripts` but **not** `--frozen-lockfile`, so Step 4 may resolve a newer 2.x and rewrite the lockfile       |
-| Persisting whether the hooks were armed for a commit                           | **Nothing — accepted residual**                                                                          | TM-12, `INFO`. A setup script is not the audit trail                                                                                                         |
-| `../01-FEATURE-MAPS/MAP-GATE-PARITY.md`'s `S-03` retained half (N-006 + N-017) | After `S-05`, which lands the shared `_lib/template-tree.sh`                                             | Cutting it now writes three ad-hoc guards `S-05` then rewrites                                                                                               |
-| Section 7's "Eleven constraints" opening line                                  | `10-security-checks`                                                                                     | The assessment owns its own header; a story plan does not correct a gate's text                                                                              |
+| Deferred                                                                       | To                                                                                                       | Why                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The eleven unsuppressed `pnpm install` invocations                             | A later story — **but the `GAPS.md` row does not exist yet**; `22-implementation-documentation` opens it | TM-02. Eleven edits across six files for a control whose only consumer this story deletes. Section 7.2's second limb is unsatisfied until the row is written (corrected 17/11/2026, F-025 / F-026 of `../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md`: re-measured, the tree holds **18** invocations, **6** suppressed and **12** not, and the row exists — `GAPS.md`, "17/11/2026 — twelve `pnpm install` invocations still run dependency lifecycle scripts" — so 7.2's second limb is satisfied from that date) |
+| `install-frontend.sh:79-81`'s `sudo rm -rf`                                    | `MAP-BUN-TOPOLOGY.md` N-024 / S-01 (from `GAPS.md`, 11/09/2026)                                          | Not this story's defect. This story must not mask it, which is a different obligation from fixing it                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Whether Step 4 should use `--frozen-lockfile`                                  | A dependency-management story                                                                            | TM-08. `install-frontend.sh:84` carries `--ignore-scripts` but **not** `--frozen-lockfile`, so Step 4 may resolve a newer 2.x and rewrite the lockfile                                                                                                                                                                                                                                                                                                                                                                      |
+| Persisting whether the hooks were armed for a commit                           | **Nothing — accepted residual**                                                                          | TM-12, `INFO`. A setup script is not the audit trail                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `../01-FEATURE-MAPS/MAP-GATE-PARITY.md`'s `S-03` retained half (N-006 + N-017) | After `S-05`, which lands the shared `_lib/template-tree.sh`                                             | Cutting it now writes three ad-hoc guards `S-05` then rewrites                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| Section 7's "Eleven constraints" opening line                                  | `10-security-checks`                                                                                     | The assessment owns its own header; a story plan does not correct a gate's text. **Resolved 28/09/2026** (corrected 17/11/2026, F-020): the assessment was amended at sign-off and Section 7 now opens "Fourteen constraints"                                                                                                                                                                                                                                                                                               |
 
 **Nothing here is deferred _by_ this story in the `DEFERRED.md` sense** — each row is work that was
 already someone else's, named so it is not absorbed. `DEFERRED.md` gains no entry.
@@ -1086,15 +1114,15 @@ database.
 **Seven live claims in a sibling artefact that the tree does not support, each with its owner.**
 None is corrected by this plan; a plan is not the writer of the record it reads.
 
-| Divergence                                                                                                               | Measured                                                                                                                                                                   | Owner                                              |
-| ------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| **`lefthook.yml:66-69`** — cited by `../02-STORIES/US009.md`, the threat model, the assessment **and the QA plan**       | The block is at **`:73-76`** at HEAD `f045aac`. It was at **`:66-69`** at `1e00a4b`, where all four measured it — **every one of them was right**                          | This plan cites `:73-76`; the four artefacts stand |
-| **`.copier/README.md:441`** — the claim the story makes true                                                             | The claim is at **`:442`** at `f045aac`; it was at `:441` at `1e00a4b` — **again right when measured**                                                                     | This plan cites `:442`                             |
-| **`audit-template.yml:151-161`** — the story's first QA criterion                                                        | The generation step is **`:151-163`**, two lines longer; the story's range truncates the `done`. AC-GAP-6 already found this on 17/09/2026                                 | The QA plan has it right; the story does not       |
-| **`lefthook.yml:222-236`** — the `template-integrity` leg, cited by `../02-STORIES/US009.md`                             | The leg is at **`:229-242`** at `f045aac`. Same commit, same class as the two above                                                                                        | This plan cites `:229-242`                         |
-| **`how-to/src/CONTRIBUTING.md:155`** — "Hooks are installed by `bash install.sh`"                                        | **False today**, and made true by this story without being edited. **No artefact names it** — the story, the QA plan and the assessment all name `.copier/README.md` alone | Found at this gate; carried in P5                  |
-| **Assessment Section 7 opens "Eleven constraints"** and lists **fourteen** (7.1 to 7.14), closing "None of the fourteen" | The item count is **fourteen**                                                                                                                                             | `10-security-checks`                               |
-| **The assessment and QA plan headers read "3 of 11 SP"**                                                                 | The story is **5 SP** and SPRINT-05 is **13 / 11 at grace**, both since the re-estimate of 17/09/2026                                                                      | `10-security-checks` and `11-qa-checks`            |
+| Divergence                                                                                                               | Measured                                                                                                                                                                   | Owner                                                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`lefthook.yml:66-69`** — cited by `../02-STORIES/US009.md`, the threat model, the assessment **and the QA plan**       | The block is at **`:73-76`** at HEAD `f045aac`. It was at **`:66-69`** at `1e00a4b`, where all four measured it — **every one of them was right**                          | This plan cites `:73-76`; the four artefacts stand                                                                                                                                                                                                                             |
+| **`.copier/README.md:441`** — the claim the story makes true                                                             | The claim is at **`:442`** at `f045aac`; it was at `:441` at `1e00a4b` — **again right when measured**                                                                     | This plan cites `:442` (corrected 17/11/2026, F-023: `:450` today, its text unchanged; the plan's four live citations are re-pointed)                                                                                                                                          |
+| **`audit-template.yml:151-161`** — the story's first QA criterion                                                        | The generation step is **`:151-163`**, two lines longer; the story's range truncates the `done`. AC-GAP-6 already found this on 17/09/2026                                 | The QA plan has it right; the story does not                                                                                                                                                                                                                                   |
+| **`lefthook.yml:222-236`** — the `template-integrity` leg, cited by `../02-STORIES/US009.md`                             | The leg is at **`:229-242`** at `f045aac`. Same commit, same class as the two above                                                                                        | This plan cites `:229-242`                                                                                                                                                                                                                                                     |
+| **`how-to/src/CONTRIBUTING.md:155`** — "Hooks are installed by `bash install.sh`"                                        | **False today**, and made true by this story without being edited. **No artefact names it** — the story, the QA plan and the assessment all name `.copier/README.md` alone | Found at this gate; carried in P5                                                                                                                                                                                                                                              |
+| **Assessment Section 7 opens "Eleven constraints"** and lists **fourteen** (7.1 to 7.14), closing "None of the fourteen" | The item count is **fourteen**                                                                                                                                             | `10-security-checks`; **Resolved 28/09/2026** (corrected 17/11/2026, F-020): amended at sign-off, Section 7 now opens "Fourteen constraints"                                                                                                                                   |
+| **The assessment and QA plan headers read "3 of 11 SP"**                                                                 | The story is **5 SP** and SPRINT-05 is **13 / 11 at grace**, both since the re-estimate of 17/09/2026                                                                      | `10-security-checks` and `11-qa-checks`; **Superseded** (corrected 17/11/2026, F-021): both headers read "5 of 13 SP" from 20/09/2026, and the story is now **8 SP** with SPRINT-05 at **16 / 11** since the re-estimate of 17/11/2026; each header carries a dated correction |
 
 **One citation of a citation is also off by one, and it is in the bullet about line drift.**
 `../02-STORIES/US009.md` reports the map's `.copier/README.md:436` reference as sitting at
@@ -1107,7 +1135,7 @@ the Playwright-pin change of 18/09/2026 — edited both `lefthook.yml` and `.cop
 story's citations were **correct at the commit it measured against**, which is the whole reason
 `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`'s rule exists: **re-resolve
 by quoted text, never trust the number**. This plan carries the numbers as at `f045aac` and expects
-them to move again. Re-measured 30/09/2026 against the tree committed together with the 18-TESTS split: `lefthook.yml:73-76`, `lefthook.yml:229-242` and `.copier/README.md:442` hold, and this plan's other `.copier/README.md` and `copier.yml` numbers are re-pointed in place, each beside a dated comment. The story's own copies of the first, third and fourth rows, its tasks' `:441` and its map `:326` were re-pointed in `../02-STORIES/US009.md` the same day at the 16-sprint-plans gate; its Gherkin keeps `:441` by the decision recorded beneath that scenario.
+them to move again. Re-measured 30/09/2026 against the tree committed together with the 18-TESTS split: `lefthook.yml:73-76`, `lefthook.yml:229-242` and `.copier/README.md:442` hold, and this plan's other `.copier/README.md` and `copier.yml` numbers are re-pointed in place, each beside a dated comment. The story's own copies of the first, third and fourth rows, its tasks' `:441` and its map `:326` were re-pointed in `../02-STORIES/US009.md` the same day at the 16-sprint-plans gate; its Gherkin keeps `:441` by the decision recorded beneath that scenario. **Re-measured 17/11/2026 (F-023):** `.copier/README.md:442` no longer holds — the claim sentence is at `:450`, its text unchanged, and this plan's four live citations of it are re-pointed beside dated comments; the `:442` in this paragraph and the row above is the 30/09/2026 reading, kept.
 
 ---
 
@@ -1144,7 +1172,7 @@ them to move again. Re-measured 30/09/2026 against the tree committed together w
 
 - [ ] "code/src/scripts/development/install-hooks.sh" exists, guards on `git rev-parse --git-dir`,
       runs `pnpm exec lefthook install`, reports what it wrote and what it replaced, and exits 2 on
-      a genuine failure
+      a genuine failure (corrected 17/11/2026, review QA-01, workflow 23: run directly as `node_modules/.bin/lefthook`, not through `pnpm exec`)
 - [ ] The root `install.sh` calls it as the **last** step of Phase 1, between `:522` and `:524` <!-- CORRECTED 17/11/2026 (/implement-story grilling Q2): read "after `:517`" until then, the looser placement P2 already superseded -->
 - [ ] `usage()` prints Phase 1 as steps 1–9 and Phase 2 as **10 and 11**, with the body headers at
       `:540` and `:580` agreeing — the pre-existing collision gone, not recorded
@@ -1153,8 +1181,8 @@ them to move again. Re-measured 30/09/2026 against the tree committed together w
 - [ ] `--ignore-scripts` confirmed on `install-frontend.sh:67`, `:84` and `:93` — **three of
       sixteen, and the assertion says so**; `install-frontend.sh` otherwise unchanged
 - [ ] The three assertions are written per line and **neither depend on nor mask** `:79-81`
-- [ ] `.copier/README.md:442` and `how-to/src/CONTRIBUTING.md:155` re-read and confirmed true, the
-      re-reads recorded, and **neither line edited**
+- [ ] `.copier/README.md:450` and `how-to/src/CONTRIBUTING.md:155` re-read and confirmed true, the
+      re-reads recorded, and **neither line edited** <!-- RE-POINTED 17/11/2026 (F-023, ../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md), by quoted text: cited `.copier/README.md:442` until then. The claim sentence sits at :450, its text unchanged; drift from other stories' commits had moved it to :449 by a0ca304, and US009's own e5b3426 (red phase) moved it one more line -->
 - [ ] `.copier/README.md:1091`'s `pnpm prepare` replaced, so removing the script does not leave a
       shipped instruction naming a command that no longer exists, and the Development-scripts table at `:1096-1109` carries an "install-hooks.sh" row (P3) <!-- RE-POINTED 30/09/2026: read "`.copier/README.md:1085`'s" until then; see the comment closing P3. CORRECTED 30/09/2026: the line ended "naming a command that no longer exists" until then, naming one half of P3's README edit; the table row is the other, recorded in P3 since 18/09/2026 -->
 - [ ] "code/src/scripts/development/install-hooks.sh" carries a header, a `usage()`, `--help`/`-h`
@@ -1261,7 +1289,9 @@ Settled with <%DEVELOPER_NAME%> after the independent code review returned Reque
 - **Only the `install-failure` job is path-filtered**, on the files it depends on; the fast probes
   job runs on every push and pull request. Both jobs carry `timeout-minutes`.
 - **The lefthook binary must be the project's own** (`node_modules`), never a `PATH` fallback
-  through `pnpm exec` — constraint 7.4 as written, not a new decision.
+  through `pnpm exec` — constraint 7.4 as written, not a new decision. (Corrected 17/11/2026,
+  review QA-01, workflow 23: `pnpm exec` is no longer used at all; the checked binary is run
+  directly, and pnpm is no longer required.)
 
 ### Review, security and QA answers — 17/11/2026
 

@@ -5,14 +5,14 @@
 > The earlier channel and dual-gate ADRs are Superseded; citations below retain their history.
 > The dated acceptance/specification correction at the end governs the repaired behaviour.
 
-| Field          | Value                                                                                                          |
-| -------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Story**      | US008 — Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule |
-| **Date**       | 17/09/2026                                                                                                     |
-| **Author**     | Claude Code — `security` skill, Opus · reviewed by <%DEVELOPER_NAME%>                                          |
-| **Sprint**     | SPRINT-05 — this story is its `Must`, 8 SP of 13 / 11 (grace taken)                                            |
-| **Status**     | Signed off · **corrected in place 28/09/2026** — see below                                                     |
-| **Frameworks** | STRIDE · OWASP Top 10 (A01–A10, 2025) · NIST CSF 2.0 (GV/ID/PR/DE/RS/RC)                                       |
+| Field          | Value                                                                                                                                                                                                                                        |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**      | US008 — Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                                                                                                                               |
+| **Date**       | 17/09/2026                                                                                                                                                                                                                                   |
+| **Author**     | Claude Code — `security` skill, Opus · reviewed by <%DEVELOPER_NAME%>                                                                                                                                                                        |
+| **Sprint**     | SPRINT-05 — this story is its `Must`, 8 SP of 13 / 11 (grace taken) (corrected 17/11/2026, F-022 of `FINDING-US009-HOOK-ARMING-17-11-2026.md`: SPRINT-05 is **16 / 11**, over grace, since US009's re-estimate from 5 to 8 SP on 17/11/2026) |
+| **Status**     | Signed off · **corrected in place 28/09/2026** — see below                                                                                                                                                                                   |
+| **Frameworks** | STRIDE · OWASP Top 10 (A01–A10, 2025) · NIST CSF 2.0 (GV/ID/PR/DE/RS/RC)                                                                                                                                                                     |
 
 > This assessment establishes the security **baseline** for the story before any code is
 > written. It synthesises the story's STRIDE threat model and maps overall posture against

@@ -2,7 +2,7 @@
 
 _The manual testing guide for US009 — the walks a tester follows step by step in a scratch clone, and, once walked, whether each step passed. Authored from the specs at `17-story-plans` Step 7.2 as a backfill on 30/09/2026; walked at `22-implementation-documentation` Step 4._
 
-**Last Updated**: 17/11/2026 · **Story**: US009 · **Status**: Walked in part 17/11/2026 — 22 of 36 rows Pass, 0 Fail, 14 not yet walked (the real-install, CI-only and sign-off rows)
+**Last Updated**: 17/11/2026 · **Story**: US009 · **Status**: Walked in part 17/11/2026 — 22 of 36 rows Pass, 0 Fail, 14 not yet walked (the real-install, CI-only and sign-off rows) — corrected 17/11/2026: walked and signed 17/11/2026, 33 Pass, 0 Fail, 3 awaiting CI (FAIL-01 to FAIL-03), per the _Outcome_ row
 
 - **Story:** `../../02-STORIES/US009.md` — the git hooks arm on purpose at install, and the README claim that they already do becomes true
 - **Story plan:** `../../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md` — the code master this guide was authored beside
@@ -117,7 +117,9 @@ binary-provenance  fixture lefthook 1.13.0 executable sha256 44b49b62674b93a9788
 CI-only and `audit-hook-arming.yml` has not run.
 
 **The two setup claims, re-read 17/11/2026** against `install.sh` at `97821a8`, whose Step 9
-(`:536-542`) calls `install-hooks.sh`, which runs `pnpm exec lefthook install`:
+(`:536-542`) calls `install-hooks.sh`, which runs `pnpm exec lefthook install` (corrected
+17/11/2026, review QA-01, workflow 23: it now runs `node_modules/.bin/lefthook install` directly,
+not through `pnpm exec`; the claim re-read below is unaffected):
 
 ```text
 .copier/README.md:450-452
