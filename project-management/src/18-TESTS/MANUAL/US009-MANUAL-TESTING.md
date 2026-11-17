@@ -252,9 +252,9 @@ column holds is this folder's `CONTEXT.md`; how each is filled is its `CLAUDE.md
 
 ### Close
 
-| ID       | Action                                            | Expected outcome                                            | Flow | QA  | Result | Notes                                                                     |
-| -------- | ------------------------------------------------- | ----------------------------------------------------------- | ---- | --- | ------ | ------------------------------------------------------------------------- |
-| CLOSE-01 | Read _Tester sign-off_ against the story's author | The tester who signs is not the author of the story's edits | —    | —   |        | Not walked 17/11/2026 — the sign-off needs a tester other than the author |
+| ID       | Action                                            | Expected outcome                                            | Flow | QA  | Result | Notes                                                                                                                                                                                                                          |
+| -------- | ------------------------------------------------- | ----------------------------------------------------------- | ---- | --- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| CLOSE-01 | Read _Tester sign-off_ against the story's author | The tester who signs is not the author of the story's edits | —    | —   | Pass   | Signed 17/11/2026 by <%DEVELOPER_NAME%>, who walked INSTALL-01 to REPO-02 and made none of the story's edits (those were made by dispatched agents); the agent-walked rows were walked by an agent that authored none of them. |
 
 ---
 
@@ -276,13 +276,13 @@ _Tester sign-off_ → **Blockers**, and an unwalked row is never a pass.
 
 Filled at the walk.
 
-| Field        | Value                                                                                                                                                                                                        |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Tester**   | Not yet signed — the rows marked 17/11/2026 were walked by an independent Claude agent (`qa-tester` skill, workflow 22 Step 4) that authored none of the story's edits; CLOSE-01 asks for the signing tester |
-| **Date**     | 17/11/2026 (partial walk)                                                                                                                                                                                    |
-| **Browsers** | N/A — CLI surface; no browser is opened                                                                                                                                                                      |
-| **Outcome**  | Incomplete — 32 Pass, 0 Fail, 4 not walked; one row amended (INSTALL-05, finding F-027)                                                                                                                      |
-| **Blockers** | FAIL-01 to -03 (CI-only, `audit-hook-arming.yml` not yet run — read on the PR into `testing`); CLOSE-01 (sign-off)                                                                                           |
+| Field        | Value                                                                                                                                                                                                              |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Tester**   | <%DEVELOPER_NAME%> (rows INSTALL-01 to REPO-02 and CLOSE-01); the rows marked earlier on 17/11/2026 by an independent Claude agent (`qa-tester` skill, workflow 22 Step 4) that authored none of the story's edits |
+| **Date**     | 17/11/2026                                                                                                                                                                                                         |
+| **Browsers** | N/A — CLI surface; no browser is opened                                                                                                                                                                            |
+| **Outcome**  | 33 Pass, 0 Fail, 3 awaiting CI; one row amended (INSTALL-05, finding F-027)                                                                                                                                        |
+| **Blockers** | FAIL-01 to -03 only — CI-only, read from `audit-hook-arming.yml` on the PR into `testing` (workflow 23)                                                                                                            |
 
 - [ ] Every row carries a `Pass` or a `Fail`, a retired stub excepted — an empty `Result` is an unrun step, never a pass
 - [ ] Every _Recorded during the build_ slot filled at its moment, or recorded as missed — never reconstructed
