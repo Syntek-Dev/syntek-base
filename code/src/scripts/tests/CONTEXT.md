@@ -36,6 +36,7 @@ code/src/scripts/tests/
 ├── CONTEXT.md                ← this file
 ├── cookie-preview-fixture.sh ← test-only: US008's generated scratch project + template-update preview proof
 ├── e2e-py.sh                 ← playwright-python browser suite (host; needs a running stack)
+├── hook-arming.sh            ← US009 probes: install-hooks.sh, its --notice mode, the manifest edits
 ├── mutmut.sh                 ← Python mutation testing (local-only; dev stack required)
 ├── open-coverage.sh          ← opens the backend coverage HTML in a browser
 ├── server.sh                 ← start or manage the test stack containers
@@ -46,6 +47,7 @@ code/src/scripts/tests/
     ├── backend/              ← output from backend.sh
     ├── backend-coverage/     ← output from backend-coverage.sh
     ├── e2e/                  ← JUnit XML from e2e-py.sh (created on demand)
+    ├── hook-arming/          ← per-fixture evidence from hook-arming.sh (created on demand)
     └── story-map.json        ← story markers, written at collection by django/conftest.py
 ```
 
@@ -59,6 +61,7 @@ code/src/scripts/tests/
 | `backend-coverage.sh`       | pytest + cov        | exec    | Full test stack up  | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)                  |
 | `cookie-preview-fixture.sh` | Copier + git        | host    | None (needs Copier) | N/A (console output; scratch removed on exit) <!-- doc-references: template-only --> |
 | `e2e-py.sh`                 | pytest + playwright | host    | Dev stack up (:81)  | `reports/a11y/` + `reports/e2e/results.xml`                                          |
+| `hook-arming.sh`            | git + pnpm + strace | host    | None                | `reports/hook-arming/<fixture>/` (evidence; scratch fixtures removed on exit)        |
 | `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                                 |
 | `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                                  |
 | `server.sh`                 | docker compose      | host    | N/A                 | N/A                                                                                  |
@@ -156,6 +159,30 @@ story's commit exists; the record says so, and the proof is re-run against the c
 Exit codes extend the folder's contract by one: `0` every expectation held, `1` an expectation
 failed, `2` script error, **`3` unmeasured** — Copier absent, generation failed, or the P5
 entries missing at `--story-ref`. A `3` is never a pass (`code/docs/GATE-REPORTING.md`).
+
+## hook-arming.sh — US009's arming probes
+
+```bash
+bash code/src/scripts/tests/hook-arming.sh --fixture A      # one fixture; default is all
+```
+
+Proves "development/install-hooks.sh" (the arming step `install.sh` calls last in Phase 1), its
+read-only `--notice` mode (the `package.json` `postinstall`), and the manifest and installer
+edits around them. Each fixture is a **snapshot of a checkout of this repository** — tracked and
+untracked-but-not-ignored files as on disk, never a `.env.*` file — with its own `lefthook.yml`,
+`package.json` and an installed `node_modules`, in a scratch directory outside it, with git
+isolated from the host's own configuration. Never a bare `git init`, which arms nothing.
+`--source DIR` snapshots another checkout instead. Evidence (transcripts, hashes, traces, never
+file contents) lands under `reports/hook-arming/`; `--help` lists every fixture and what each
+proves. CI runs it from `.github/workflows/audit-hook-arming.yml`, one step per fixture.
+
+`install-failure` runs root `install.sh` in its disposable clone, so it needs a docker daemon, uv
+and `sudo tee -a /etc/hosts`: it runs under GitHub Actions and is refused elsewhere, reported
+unmeasured, unless `--allow-install-sh` is given. `binary-provenance` fetches lefthook `1.13.0`
+from the registry and traces with `strace`; `graph-reclaim` runs the real `code-review-graph` at
+the script's pinned version. Exit codes extend the folder's contract by one: `0`, `1`, `2`, and
+**`3` unmeasured** — a fixture that could not look, which is never a pass
+(`code/docs/GATE-REPORTING.md`).
 
 ## --output flag
 
@@ -271,16 +298,17 @@ to read; `2` a script error — a story that is not `US###`, an unknown flag, or
 
 ## CI
 
-These scripts are used by three GitHub Actions workflows. `test.yml` was renamed from
+These scripts are used by four GitHub Actions workflows. `test.yml` was renamed from
 `test-backend.yml` when the mobile surface arrived — one stack-neutral workflow now holds both
 job sets, with the mobile jobs guarded at **step** level so they report success rather than
 "skipped" on a web-only project:
 
-| Workflow                         | Trigger                                      | Scripts used                                                |
-| -------------------------------- | -------------------------------------------- | ----------------------------------------------------------- |
-| `.github/workflows/test.yml`     | Every push/PR (no path filter)               | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh` |
-| `.github/workflows/test-api.yml` | Push/PR on `.py` or Bruno collection changes | `api.sh`                                                    |
-| `.github/workflows/test-e2e.yml` | Push/PR on Django or Docker changes          | `e2e-py.sh`                                                 |
+| Workflow                                  | Trigger                                      | Scripts used                                                |
+| ----------------------------------------- | -------------------------------------------- | ----------------------------------------------------------- |
+| `.github/workflows/test.yml`              | Every push/PR (no path filter)               | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh` |
+| `.github/workflows/test-api.yml`          | Push/PR on `.py` or Bruno collection changes | `api.sh`                                                    |
+| `.github/workflows/test-e2e.yml`          | Push/PR on Django or Docker changes          | `e2e-py.sh`                                                 |
+| `.github/workflows/audit-hook-arming.yml` | Every push/PR (no path filter)               | `hook-arming.sh`, one step per fixture                      |
 
 Mutation testing (`mutmut.sh`) is intentionally excluded from CI — it is too slow for standard
 gates and is run on-demand locally against the dev stack.

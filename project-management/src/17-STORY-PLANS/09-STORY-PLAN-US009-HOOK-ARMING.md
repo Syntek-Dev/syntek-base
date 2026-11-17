@@ -1219,6 +1219,24 @@ Missing runner/dependency is unmeasured; do not substitute a guessed tool hook o
   default hook while the effective redirected hook is absent. Only the effective executable
   lefthook hook silences the notice. A throwaway commit must actually run its pre-commit legs.
 
+### Red-phase answers — 17/11/2026
+
+Settled with <%DEVELOPER_NAME%> after the red phase measured three things this plan did not
+know (/implement-story grilling, round 2). The lockfile now pins **lefthook 2.2.2**, not the
+2.1.10 _Dependencies_ records; 2.2.2 refuses any `core.hooksPath` unless given `--force`.
+
+- **A custom `core.hooksPath` is armed with `lefthook install --force`.** The 09/10/2026 answer
+  already requires arming the effective path; `--force` is only the mechanism 2.2.2 demands, and
+  it is passed only when a hooks path is configured.
+- **`core.hooksPath=/dev/null` is a deliberate opt-out**: the step warns that hooks are disabled
+  by that setting, arms nothing and exits 0. The `--notice` mode still prints. Any other
+  unresolvable path remains a failure, exit 2.
+- **Section 7.13's boundary is widened by one named file**: the effective hook directory plus
+  lefthook's own `.git/info/lefthook.checksum`, which every `lefthook install` writes. Nothing
+  else outside the hook directory may change.
+- **A missing lefthook binary exits 1**, `install.sh`'s "requirement missing"; a failed
+  `lefthook install` stays exit 2.
+
 README verification checks both required P3 edits separately: replace the removed `pnpm prepare`
 setup command with `bash install.sh`, and add the `install-hooks.sh` Development-scripts row.
 The existing claim sentence stays unchanged. This implements HP-06, not new scope.

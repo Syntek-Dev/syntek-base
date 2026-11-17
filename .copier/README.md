@@ -171,6 +171,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-mcp-parity.yml         ← `.mcp.json` and `.codex/config.toml` declare the same servers
 │       ├── audit-dev-static.yml         ← dev Nginx proxies /static/ to Django, never serves it from disk
 │       ├── audit-env-read-deny.yml      ← Claude, Codex and Zed each deny reading the live env files
+│       ├── audit-hook-arming.yml        ← install.sh arms the git hooks; the postinstall only announces
 │       ├── audit-playwright-pin.yml     ← eight sites declare the Playwright pin; all must name one release
 │       ├── audit-seam-contract.yml      ← the build/operate seam in the server contract
 │       ├── audit-secrets.yml            ← scans for accidentally committed secrets
