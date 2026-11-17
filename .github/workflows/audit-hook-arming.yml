@@ -17,12 +17,19 @@
 # THE PROBES JOB IS UNFILTERED. The arming path spans install.sh, package.json, lefthook.yml, the
 # lockfile and the installer scripts; a path filter would be a hand-kept copy of that set.
 #
-# ONLY install-failure IS FILTERED, at job level (settled 17/11/2026, Q3): it runs the whole of
-# root install.sh — uv sync, pnpm, docker, sudo — so it runs when a file on that path changes.
-# A workflow-level `paths:` would filter both jobs, so the `changes` job below diffs the event's
-# range and the job is gated on its output. It fails OPEN: a manual run, a new branch (no
-# `before`), or a base it cannot read all run the fixture. A skipped job reports "skipped",
-# which is why this job must never be a required status check.
+# ONLY install-failure IS FILTERED, at job level, and the filter is INVERTED (settled
+# 17/11/2026, round 4): it is skipped only when EVERY changed file is documentation or PM —
+# `*.md`, `project-management/**`, `research/**`, `handoffs/**` — and runs otherwise. A
+# dependency list of the install path was tried first and three review passes found it
+# incomplete; a deny-list of what cannot matter is the shape that stays true. A workflow-level
+# `paths:` would filter both jobs, so the `changes` job below diffs the event's range and the
+# job is gated on its output. It fails OPEN: a manual run, a new branch (no `before`), an empty
+# diff or a base it cannot read all run the fixture. A skipped job reports "skipped", which is
+# why this job must never be a required status check.
+#
+# Every checkout sets `persist-credentials: false` (SEC-05): the fixtures run real installers
+# and git hooks, and none of them needs the token. The pnpm cache key carries a `hook-arming`
+# prefix so this job never shares an entry with claude.yml's.
 #
 # Exit 3 from the script is UNMEASURED and fails the step: a fixture that could not look is
 # never reported clean (code/docs/GATE-REPORTING.md).
@@ -49,6 +56,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
 
@@ -62,8 +71,8 @@ jobs:
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-pnpm-
+          key: ${{ runner.os }}-pnpm-hook-arming-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-hook-arming-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -143,27 +152,28 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+          persist-credentials: false
 
-      - name: Diff the event's range against the install path
+      - name: Skip install-failure only when every changed file is docs or PM
         id: diff
         env:
           EVENT: ${{ github.event_name }}
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
-          paths=(install.sh
-                 code/src/scripts/development/install-hooks.sh
-                 code/src/scripts/development/install-frontend.sh
-                 package.json pnpm-lock.yaml lefthook.yml
-                 code/src/scripts/tests/hook-arming.sh
-                 .github/workflows/audit-hook-arming.yml)
           if [ "$EVENT" = workflow_dispatch ] || [ -z "$BASE" ] ||
              [ "$BASE" = 0000000000000000000000000000000000000000 ] ||
              ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
-            echo "install=true" >> "$GITHUB_OUTPUT"; echo "range unknown — running install-failure"
-          elif git diff --name-only "$BASE" HEAD -- "${paths[@]}" | grep -q .; then
-            echo "install=true" >> "$GITHUB_OUTPUT"; git diff --name-only "$BASE" HEAD -- "${paths[@]}"
+            echo "install=true" >> "$GITHUB_OUTPUT"; echo "range unknown — running install-failure"; exit 0
+          fi
+          changed="$(git diff --name-only "$BASE" HEAD)"
+          if [ -z "$changed" ]; then
+            echo "install=true" >> "$GITHUB_OUTPUT"; echo "empty diff — running install-failure"; exit 0
+          fi
+          other="$(printf '%s\n' "$changed" | grep -vE '\.md$|^project-management/|^research/|^handoffs/' || true)"
+          if [ -n "$other" ]; then
+            echo "install=true" >> "$GITHUB_OUTPUT"; printf 'not docs/PM only:\n%s\n' "$other"
           else
-            echo "install=false" >> "$GITHUB_OUTPUT"; echo "no install-path file changed — skipping install-failure"
+            echo "install=false" >> "$GITHUB_OUTPUT"; echo "docs and PM only — skipping install-failure"
           fi
 
   install-failure:
@@ -177,6 +187,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
 

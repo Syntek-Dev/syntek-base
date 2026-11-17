@@ -59,7 +59,13 @@ and which `copier.yml` excludes, so a generated project never receives it. <!-- 
 - **`e2e-py.sh` needs a running stack and says so.** It exits `2` with instructions
   rather than failing obscurely; keep that pre-flight check when editing it.
 - `--output DIR` must stay within the project root (it is bind-mounted into the
-  container).
+  container). **One exception: `hook-arming.sh`** runs on the host and bind-mounts nothing, so its
+  `--output` may be any directory outside its own scratch tree. It also extends the exit-code
+  contract by **`3` unmeasured** — a fixture that could not look — which is never a pass.
+- **`hook-arming.sh` never shares anything from the checkout with a fixture** — no symlink,
+  bind or shared `node_modules`; each fixture gets its own install. A fixture that reached the
+  live tree would rewrite it, so the script trips (exit `2`) if this checkout's `node_modules`
+  changed during a run. Never weaken that tripwire to make a run pass.
 
 ## Output & naming
 

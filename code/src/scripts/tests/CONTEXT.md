@@ -178,12 +178,17 @@ proves. CI runs it from `.github/workflows/audit-hook-arming.yml`, one step per 
 
 `install-failure` runs root `install.sh` in its disposable clone, so it needs a docker daemon, uv
 and `sudo tee -a /etc/hosts`: it runs under GitHub Actions and is refused elsewhere, reported
-unmeasured, unless `--allow-install-sh` is given. In CI it is the one job filtered by path — it runs
-when the event changed a file on the install path, and always on a manual run. `binary-provenance` fetches lefthook `1.13.0`
+unmeasured, unless `--allow-install-sh` is given. In CI it is the one job filtered by path, and
+the filter is inverted: it is skipped only when every changed file is documentation or PM
+(`*.md`, `project-management/**`, `research/**`, `handoffs/**`), and runs otherwise — and always
+on a manual run or a range it cannot read. `binary-provenance` fetches lefthook `1.13.0`
 from the registry and traces with `strace`; `graph-reclaim` runs the real `code-review-graph` at
 the script's pinned version. Exit codes extend the folder's contract by one: `0`, `1`, `2`, and
 **`3` unmeasured** — a fixture that could not look, which is never a pass
-(`code/docs/GATE-REPORTING.md`).
+(`code/docs/GATE-REPORTING.md`). Its `--output` is the one exception to the rule below: it runs
+on the host and bind-mounts nothing, so the directory may sit anywhere outside its scratch tree.
+Nothing from this checkout is ever linked into a fixture, and a tripwire exits `2` if this
+checkout's `node_modules` changes during a run.
 
 ## --output flag
 
@@ -290,6 +295,7 @@ instruments nothing — counting it would inflate the figure without testing a l
 - `0` — all tests passed (coverage floor met where applicable)
 - `1` — test failures or coverage below threshold
 - `2` — script error (bad arguments, container not running, invalid `--output` path)
+- `3` — `hook-arming.sh` only: unmeasured — a fixture could not look; never a pass
 
 **`test-record.sh` reads that contract differently**, because it decides no test outcome — a red
 suite and a green one both record. Measured against the script on 09/09/2026: `0` it wrote the
@@ -304,12 +310,12 @@ These scripts are used by four GitHub Actions workflows. `test.yml` was renamed 
 job sets, with the mobile jobs guarded at **step** level so they report success rather than
 "skipped" on a web-only project:
 
-| Workflow                                  | Trigger                                                                     | Scripts used                                                |
-| ----------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| `.github/workflows/test.yml`              | Every push/PR (no path filter)                                              | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh` |
-| `.github/workflows/test-api.yml`          | Push/PR on `.py` or Bruno collection changes                                | `api.sh`                                                    |
-| `.github/workflows/test-e2e.yml`          | Push/PR on Django or Docker changes                                         | `e2e-py.sh`                                                 |
-| `.github/workflows/audit-hook-arming.yml` | Every push/PR; `install-failure` job only when an install-path file changed | `hook-arming.sh`, one step per fixture                      |
+| Workflow                                  | Trigger                                                                       | Scripts used                                                |
+| ----------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `.github/workflows/test.yml`              | Every push/PR (no path filter)                                                | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh` |
+| `.github/workflows/test-api.yml`          | Push/PR on `.py` or Bruno collection changes                                  | `api.sh`                                                    |
+| `.github/workflows/test-e2e.yml`          | Push/PR on Django or Docker changes                                           | `e2e-py.sh`                                                 |
+| `.github/workflows/audit-hook-arming.yml` | Every push/PR; `install-failure` skipped only when the change is docs/PM only | `hook-arming.sh`, one step per fixture                      |
 
 Mutation testing (`mutmut.sh`) is intentionally excluded from CI — it is too slow for standard
 gates and is run on-demand locally against the dev stack.

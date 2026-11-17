@@ -18,12 +18,19 @@
 # The snapshot is the source's tracked files plus untracked-but-not-ignored ones, as on disk,
 # so the probe can run before the story's commit exists. No `.env.*` file is ever copied.
 #
-# "Armed" is ONE predicate, the same one install-hooks.sh and `--notice` must use: the path
-# `git rev-parse --path-format=absolute --git-path hooks/pre-commit` names, resolved from the
-# checkout root, is a readable, executable regular file carrying lefthook's generated marker
+# "Armed" is ONE predicate, the same one install-hooks.sh and `--notice` must use: the file
+# `pre-commit` in the hooks DIRECTORY `git rev-parse --path-format=absolute --git-path hooks`
+# names, resolved from the checkout root (never the hook file itself, whose resolution follows a
+# symlink), is a readable, executable regular file carrying lefthook's generated marker
 # — the line `call_lefthook run "pre-commit"` — and NOT carrying code-review-graph's appended
 # block (`>>> code-review-graph pre-commit hook >>>`), which swallows lefthook's exit status
-# (settled 17/11/2026, S-M1). A marker without the executable bit is unarmed.
+# (settled 17/11/2026, S-M1). A marker without the executable bit is unarmed, and a SYMLINKED
+# hook is foreign, never armed, whatever it points at (SEC-02).
+#
+# SAFETY: nothing from the source checkout is ever symlinked, bound or shared into a fixture —
+# above all not its node_modules. Every fixture gets its own install; the PATH filter skips any
+# PATH entry inside the source; and a tripwire compares the source's node_modules before and
+# after the run, exiting 2 if a fixture reached it.
 #
 # Fixtures (--fixture NAME; default `all`):
 #   manifest           No fixture. ST01 (each of install-frontend.sh's pnpm install lines,
@@ -54,6 +61,14 @@
 #                      timestamped name before lefthook runs, reported, and neither its content
 #                      nor the replaced hook's is lost — default path and core.hooksPath
 #                      (--force). A merely non-executable lefthook hook claims no `.old`.
+#                      R3-S-m1: the move is reported even when lefthook then fails (exit 2).
+#                      SEC-02/QA-01: a symlinked pre-commit is foreign — the link itself is
+#                      replaced, its target and the target's directory are never touched.
+#   repo-shapes        Round 4: a global core.hooksPath is refused (exit 2, names the scope and
+#                      `git config --local core.hooksPath`); a project nested in an unrelated
+#                      repository skips (QA-02); GIT_DIR/GIT_WORK_TREE in the environment are
+#                      ignored (QA-03); a present but broken repository exits 2 (SEC-03); an
+#                      empty core.hooksPath exits 2 (QA-04). --notice's hint for each.
 #   write-boundary     Full-tree manifests (path, type, mode, link target, SHA-256; ignored and
 #                      untracked included) around the arming step alone. Negative control EC-17.
 #   graph-reclaim      The real, pinned `code-review-graph install` writes the hook first; the
@@ -104,8 +119,8 @@ Usage:
                  [--quiet]          Print failures, unmeasured checks and the summary only
                  [--help]
 
-Fixtures: manifest A B C notice notice-streams hook-paths old-backup write-boundary
-          graph-reclaim binary-provenance install-failure all
+Fixtures: manifest A B C notice notice-streams hook-paths old-backup repo-shapes
+          write-boundary graph-reclaim binary-provenance install-failure all
 
 Exit codes: 0 all held · 1 an expectation failed · 2 script error · 3 unmeasured (never a pass)
 EOF
@@ -128,7 +143,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-ALL_FIXTURES="manifest A B C notice notice-streams hook-paths old-backup write-boundary graph-reclaim binary-provenance install-failure"
+ALL_FIXTURES="manifest A B C notice notice-streams hook-paths old-backup repo-shapes write-boundary graph-reclaim binary-provenance install-failure"
 case " $ALL_FIXTURES all " in *" $FIXTURE "*) ;; *) die "Unknown fixture '$FIXTURE'. Use --help." ;; esac
 
 SOURCE="$(cd "$SOURCE" 2>/dev/null && pwd)" || die "--source is not a directory"
@@ -153,6 +168,24 @@ OUTPUT="$(cd "$OUTPUT" && pwd)"
 # fixture. The child under test inherits this, which is the point.
 export GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL="$SCRATCH/gitconfig"
 printf '[user]\n\tname = Hook Arming Probe\n\temail = probe@example.invalid\n[init]\n\tdefaultBranch = main\n[commit]\n\tgpgsign = false\n' > "$GIT_CONFIG_GLOBAL"
+
+# Tripwire: the source checkout's node_modules must be exactly as it was when the run ends.
+nm_state() {   # root — the link status, real path and install record of root/node_modules
+  local nm="$1/node_modules"
+  [[ -e "$nm" || -L "$nm" ]] || { printf 'absent\n'; return; }
+  printf '%s|%s|%s\n' "$([[ -L "$nm" ]] && readlink "$nm" || printf dir)" "$(realpath "$nm")" \
+    "$(sha256sum "$nm/.modules.yaml" 2>/dev/null | cut -d' ' -f1)"
+}
+NM_ROOTS="$(printf '%s\n%s\n' "$SOURCE" "$PROJECT_ROOT" | sort -u)"
+NM_BEFORE="$(while IFS= read -r r; do nm_state "$r"; done <<< "$NM_ROOTS")"
+tripwire() {
+  local now; now="$(while IFS= read -r r; do nm_state "$r"; done <<< "$NM_ROOTS")"
+  if [[ "$now" != "$NM_BEFORE" ]]; then
+    printf 'hook-arming.sh error: TRIPWIRE — the source checkout'"'"'s node_modules changed during the run\n  before: %s\n  after:  %s\n' \
+      "$NM_BEFORE" "$now" >&2
+    exit 2
+  fi
+}
 
 PASSES=0; FAILS=0; UNMEASURED=0
 pass()  { PASSES=$((PASSES + 1)); $QUIET || printf '  \033[32mPASS\033[0m  [%s] %s\n' "$1" "$2"; }
@@ -198,6 +231,7 @@ filtered_path() {  # dir names… — a PATH directory with every host executabl
   local IFS=:
   for p in $PATH; do
     [[ -d "$p" ]] || continue
+    case "$(realpath "$p")/" in "$SOURCE"/*|"$PROJECT_ROOT"/*) continue ;; esac   # never link into the source
     for f in "$p"/*; do
       n="${f##*/}"; [[ -x "$f" && ! -d "$f" && ! -e "$dir/$n" ]] || continue
       skip=0; for x in "$@"; do case "$n" in "$x"|"$x"-*) skip=1 ;; esac; done
@@ -207,10 +241,16 @@ filtered_path() {  # dir names… — a PATH directory with every host executabl
 }
 
 # ── The predicate, the runners and the oracles ────────────────────────────────
-eff_hook() { (cd "$1" && git rev-parse --path-format=absolute --git-path hooks/pre-commit 2>/dev/null); }
+# The hook DIRECTORY is resolved, then /pre-commit appended: resolving the hook FILE with
+# --path-format=absolute follows a symlinked pre-commit to its target (measured 17/11/2026),
+# which would make a link "the hook" and its target's directory "the hooks dir" (SEC-02).
+eff_hook() {
+  local hd; hd="$(cd "$1" && git rev-parse --path-format=absolute --git-path hooks 2>/dev/null)" || return 1
+  [[ -n "$hd" ]] || return 1; printf '%s/pre-commit\n' "$hd"
+}
 is_armed() {
   local p; p="$(eff_hook "$1")" || return 1
-  [[ -f "$p" && -r "$p" && -x "$p" ]] && grep -qF "$MARKER" "$p" && ! grep -qF "$GRAPH_MARKER" "$p"
+  [[ -f "$p" && ! -L "$p" && -r "$p" && -x "$p" ]] && grep -qF "$MARKER" "$p" && ! grep -qF "$GRAPH_MARKER" "$p"
 }
 unarmed() { ! is_armed "$1"; }
 ut_present() { [[ -f "$1/$UNDER_TEST" ]]; }
@@ -303,6 +343,8 @@ fx_manifest() {
       const life=[\"preinstall\",\"install\",\"postinstall\",\"preprepare\",\"prepare\",\"postprepare\",\"prepublish\",\"prepublishOnly\",\"prepack\",\"postpack\",\"dependencies\"];
       process.exit(life.some(k=>s[k]&&/lefthook +install|\.git\b|hooksPath/.test(s[k]))?1:0)"' _ "$s"
   check ST02b "postinstall calls install-hooks.sh --notice" "postinstall absent or does not call it" postinstall_wired "$s"
+  check QA-05 "pnpm-workspace.yaml allowBuilds keeps 'lefthook: false' (its own installer never runs)" "absent" \
+    bash -c 'awk "/^allowBuilds:/{f=1;next} f&&/^[^[:space:]#]/{f=0} f" "$1" | grep -qE "^[[:space:]]+lefthook:[[:space:]]*false\b"' _ "$s/pnpm-workspace.yaml"
 
   local ut="$s/$UNDER_TEST"
   if [[ ! -f "$ut" ]]; then
@@ -318,8 +360,9 @@ fx_manifest() {
       bash -c 'head -5 "$1" | grep -q "^# install-hooks.sh —"' _ "$ut"
     check P1 "header declares exit code 2 (install.sh's 'install failed')" "no exit-code line naming 2" \
       bash -c 'head -40 "$1" | grep -iE "exit code" | grep -q 2' _ "$ut"
-    check ST03 "a non-comment line invokes 'pnpm exec lefthook'" "no executable pnpm exec lefthook call" \
-      bash -c 'grep -vE "^[[:space:]]*#" "$1" | grep -qE "pnpm exec lefthook"' _ "$ut"
+    check ST03 "the install invocation is 'args=(install' run as 'pnpm exec lefthook \"\${args'" \
+      "the non-comment args=(install / pnpm exec lefthook \"\${args[@]}\" pair is absent" \
+      bash -c 'c="$(grep -vE "^[[:space:]]*#" "$1")"; grep -qE "args=\(install" <<< "$c" && grep -qF "pnpm exec lefthook \"\${args" <<< "$c"' _ "$ut"
     check ST07 "guards with 'git rev-parse --git-dir'" "guard absent" grep -qF 'git rev-parse --git-dir' "$ut"
     check ST07 "never tests '[ -d .git ]'" "a directory test on .git is present" \
       bash -c '! grep -vE "^[[:space:]]*#" "$1" | grep -qE "\[\[? +-d +\"?[^ ]*\.git\"? *\]"' _ "$ut"
@@ -490,6 +533,12 @@ fx_notice() {
 
   pnpm_fresh "$d" "$e/no-git-path" env -u CI PATH="$(filtered_path "$SCRATCH/path-no-git" git; printf '%s' "$SCRATCH/path-no-git")"
   check ES-06 "git absent from PATH, in a repository: pnpm install exits 0" "exit $RC" rc_is 0
+  quiet_case ES-06 "git absent from PATH, in a repository: pnpm install prints no notice" "$e/no-git-path"
+  if ut_present "$d"; then
+    run_ut "$d" "$e/no-git-direct" env -u CI PATH="$SCRATCH/path-no-git" -- --notice
+    check ES-06 "git absent from PATH: --notice itself is silent (stdout and stderr empty), exit 0" "it spoke or failed" \
+      notice_silent "$e/no-git-direct"
+  fi
 
   if ut_present "$d"; then
     run_ut "$d" "$e/arm" --
@@ -504,6 +553,7 @@ fx_notice() {
   quiet_case EC-11 "no repository: pnpm install exits 0 and is silent" "$e/nogit"
   pnpm_fresh "$c" "$e/nogit-nogitbin" env -u CI PATH="$SCRATCH/path-no-git"
   check ES-06 "no repository and git absent from PATH: pnpm install exits 0" "exit $RC" rc_is 0
+  quiet_case ES-06 "no repository and git absent from PATH: pnpm install prints no notice" "$e/nogit-nogitbin"
 
   local f; new_fixture f notice-wt-base commit
   add_worktree wt "$f" notice-wt bare
@@ -671,6 +721,8 @@ fx_hook_paths() {
   notice "$d" "$e/unresolvable.n"
   check P3 "unresolvable core.hooksPath: --notice still exits 0" "exit $(cat "$e/unresolvable.n.rc")" \
     bash -c '[[ $(cat "$1") == 0 ]]' _ "$e/unresolvable.n.rc"
+  check R3-N3 "unresolvable core.hooksPath: --notice's stdout hint names core.hooksPath, stderr empty" \
+    "hint names only bash install.sh, or stderr written" notice_says "$e/unresolvable.n" 'core.hooksPath'
   run_ut "$d" "$e/unresolvable.arm" --
   check P3 "unresolvable core.hooksPath: the step fails with exit 2" "exit $RC" rc_is 2
   check P3 "unresolvable core.hooksPath: the failure is an err-idiom 'error:' line" "no 'error:' line on stderr" \
@@ -710,6 +762,152 @@ fx_old_backup() {
     bash -c '[[ $1 == 0 ]]' _ "$RC"
   check Q2 "non-executable lefthook hook: the output claims no .old was kept" "it mentions a .old" \
     bash -c '! sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF ".old"' _ "$e/nonexec"
+
+  # R3-S-m1: the move is reported even when lefthook then fails. lefthook.yml is made invalid
+  # YAML — `lefthook version` still runs, `lefthook install` fails.
+  new_fixture d ob-failure commit; p="$(eff_hook "$d")"; hd="${p%/*}"
+  printf '#!/bin/sh\necho hand-written hook\n' > "$p"; chmod +x "$p"
+  printf 'the original pre-commit.old, which must survive\n' > "$hd/pre-commit.old"
+  ho="$(sha256sum "$hd/pre-commit.old" | cut -d' ' -f1)"
+  printf 'pre-commit: [\n' > "$d/lefthook.yml"
+  run_ut "$d" "$e/failure" --
+  moved="$(cd "$hd" && compgen -G 'pre-commit.old.?*' | head -1)"
+  check R3-S-m1 "a lefthook install failure after the move exits 2" "exit $RC" rc_is 2
+  check R3-S-m1 "the failure output names the moved .old's new name" "output does not name ${moved:-a pre-commit.old.<…> file}" \
+    bash -c '[[ -n $2 ]] && sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF "$2"' _ "$e/failure" "$moved"
+  check R3-S-m1 "the original .old content survives the failure" "its hash is gone" \
+    bash -c 'hook_dir_hashes() { find "$1" -maxdepth 1 -type f -exec sha256sum {} + | cut -d" " -f1; }; hook_dir_hashes "$2" | grep -qxF "$1"' _ "$ho" "$hd"
+
+  # SEC-02 / QA-01: a symlinked pre-commit is foreign. Three targets outside the hooks dir: a
+  # foreign script; the same with a decoy pre-commit.old beside the target and a REAL one in the
+  # hooks dir; and a genuine lefthook hook, which a symlink must not make "armed".
+  local case tdir tgt
+  for case in foreign with-old lefthook-target; do
+    new_fixture d "ob-sym-$case" commit; p="$(eff_hook "$d")"; hd="${p%/*}"
+    tdir="$SCRATCH/sym-target-$case"; mkdir -p "$tdir"; tgt="$tdir/pre-commit-target"
+    if [[ $case == lefthook-target ]]; then
+      (cd "$d" && pnpm exec lefthook install) >/dev/null 2>&1; cp "$p" "$tgt"; rm -f "$p"
+    else
+      printf '#!/bin/sh\necho foreign symlink target\n' > "$tgt"
+    fi
+    chmod +x "$tgt"; ln -s "$tgt" "$p"
+    ho=""
+    if [[ $case == with-old ]]; then
+      printf 'decoy beside the target — must not move\n' > "$tdir/pre-commit.old"
+      printf 'the real pre-commit.old in the hooks dir\n' > "$hd/pre-commit.old"
+      ho="$(sha256sum "$hd/pre-commit.old" | cut -d' ' -f1)"
+    fi
+    manifest "$tdir" "$e/sym-$case.target.before" || die "manifest of the symlink target dir failed"
+    notice "$d" "$e/sym-$case.n"
+    check SEC-02 "$case: a symlinked hook is unarmed — --notice prints on stdout only" "it stayed silent" notice_valid "$e/sym-$case.n"
+    run_ut "$d" "$e/sym-$case" --
+    manifest "$tdir" "$e/sym-$case.target.after" || die "manifest of the symlink target dir failed"
+    check SEC-02 "$case: the step exits 0" "exit $RC" rc_is 0
+    check SEC-02 "$case: the effective hook is armed" "unarmed" is_armed "$d"
+    check SEC-02 "$case: the symlink itself was replaced by a regular file" "the hook is still a symlink" \
+      bash -c '[[ ! -L "$1" && -f "$1" ]]' _ "$p"
+    check SEC-02 "$case: the replacement is reported" "no 'replac…' in the output" says "$e/sym-$case" 'replac'
+    check SEC-02 "$case: it is not reported as already armed" "it printed 'already armed'" \
+      bash -c '! grep -qi "already armed" "$1.out" "$1.err"' _ "$e/sym-$case"
+    check SEC-02 "$case: the target and its directory are untouched (path/type/mode/hash)" \
+      "changed: $(changed_paths "$e/sym-$case.target.before" "$e/sym-$case.target.after" | head -3 | paste -sd' ' -)" \
+      cmp -s "$e/sym-$case.target.before" "$e/sym-$case.target.after"
+    if [[ -n "$ho" ]]; then
+      moved="$(cd "$hd" && compgen -G 'pre-commit.old.?*' | head -1)"
+      check SEC-02 "$case: the hooks dir's real pre-commit.old was moved to a timestamped name" "no such file" test -n "$moved"
+      check SEC-02 "$case: its content survives in the hooks dir" "its hash is gone" \
+        bash -c 'find "$2" -maxdepth 1 -type f -exec sha256sum {} + | cut -d" " -f1 | grep -qxF "$1"' _ "$ho" "$hd"
+    fi
+  done
+}
+
+# ── repo-shapes — the repositories install-hooks.sh must refuse, skip or see through ──
+fx_repo_shapes() {
+  bold "▸ repo-shapes — global hooksPath, nested project, GIT_DIR, broken repo, empty hooksPath"
+  local e="$OUTPUT/repo-shapes" d g gcfg o x gh
+  # 1 — a core.hooksPath from GLOBAL scope is refused, exit 2 (settled 17/11/2026).
+  new_fixture d rs-global commit
+  if ! ut_present "$d"; then fail RS "$UNDER_TEST absent in the fixture — nothing to probe"; return; fi
+  g="$SCRATCH/rs-global-hooks"; mkdir -p "$g"
+  printf '#!/bin/sh\necho a machine-wide hook\n' > "$g/pre-commit"; chmod +x "$g/pre-commit"
+  gcfg="$SCRATCH/gitconfig-global-hookspath"; cp "$GIT_CONFIG_GLOBAL" "$gcfg"
+  git config --file "$gcfg" core.hooksPath "$g"
+  gh="$(sha256sum "$g/pre-commit" | cut -d' ' -f1)"
+  manifest "$g" "$e/global.dir.before" || die "manifest failed"
+  run_ut "$d" "$e/global" env GIT_CONFIG_GLOBAL="$gcfg" --
+  manifest "$g" "$e/global.dir.after" || die "manifest failed"
+  check GLOBAL "a global core.hooksPath is refused: exit 2" "exit $RC" rc_is 2
+  check GLOBAL "the error: line names the global scope" "no '^error:' line containing 'global'" \
+    says "$e/global" '^error:.*global'
+  check GLOBAL "the output names the remedy 'git config --local core.hooksPath'" "remedy absent" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF "git config --local core.hooksPath"' _ "$e/global"
+  check GLOBAL "the global hook's hash is unchanged" "it changed" \
+    bash -c '[[ "$(sha256sum "$1" | cut -d" " -f1)" == "$2" ]]' _ "$g/pre-commit" "$gh"
+  check GLOBAL "nothing in the global hooks dir changed, and no lefthook hook appeared there" \
+    "changed: $(changed_paths "$e/global.dir.before" "$e/global.dir.after" | head -3 | paste -sd' ' -)" \
+    bash -c 'cmp -s "$1" "$2" && ! grep -rqF "$4" "$3"' _ "$e/global.dir.before" "$e/global.dir.after" "$g" "$MARKER"
+  run_ut "$d" "$e/global.n" env -u CI GIT_CONFIG_GLOBAL="$gcfg" -- --notice
+  check GLOBAL "--notice: exit 0, stdout hint names core.hooksPath, stderr empty" "hint absent or stderr written" \
+    notice_says "$e/global.n" 'core.hooksPath'
+
+  # 3 — a project nested in an unrelated repository, its own .git removed (QA-02): skip.
+  o="$SCRATCH/rs-outer"; mkdir -p "$o"; git -C "$o" init -q; printf 'outer\n' > "$o/OUTER.txt"
+  if ! { git -C "$o" add OUTER.txt && git -C "$o" commit -q -m outer; }; then die "outer repo setup failed"; fi
+  snapshot "$o/inner"; provision "$o/inner"
+  manifest "$o/.git/hooks" "$e/nested.hooks.before" || die "manifest failed"
+  run_ut "$o/inner" "$e/nested" --
+  manifest "$o/.git/hooks" "$e/nested.hooks.after" || die "manifest failed"
+  check QA-02 "nested in an unrelated repository: the step exits 0" "exit $RC" rc_is 0
+  check QA-02 "it reports a skip because the project is not the repository's root" "no 'skip' with 'root'/'nested'" \
+    bash -c 'o="$(sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err")"; grep -qi skip <<< "$o" && grep -qiE "root|nested" <<< "$o"' _ "$e/nested"
+  check QA-02 "the outer repository's hooks dir is unchanged" \
+    "changed: $(changed_paths "$e/nested.hooks.before" "$e/nested.hooks.after" | head -3 | paste -sd' ' -)" \
+    cmp -s "$e/nested.hooks.before" "$e/nested.hooks.after"
+  check QA-02 "no file was written into the outer repository's root (lefthook creates a lefthook.yml there)" \
+    "lefthook.yml appeared in the outer repository" test ! -e "$o/lefthook.yml"
+  notice "$o/inner" "$e/nested.n"
+  check QA-02 "nested: --notice is silent and exits 0" "it spoke or failed" notice_silent "$e/nested.n"
+
+  # 4 — GIT_DIR / GIT_WORK_TREE pointing at another repository (QA-03): ignored.
+  new_fixture d rs-gitdir commit
+  x="$SCRATCH/rs-other"; mkdir -p "$x"; git -C "$x" init -q
+  manifest "$x/.git/hooks" "$e/gitdir.other.before" || die "manifest failed"
+  run_ut "$d" "$e/gitdir" env GIT_DIR="$x/.git" GIT_WORK_TREE="$x" --
+  manifest "$x/.git/hooks" "$e/gitdir.other.after" || die "manifest failed"
+  check QA-03 "GIT_DIR/GIT_WORK_TREE set elsewhere: the step exits 0" "exit $RC" rc_is 0
+  check QA-03 "the project's own checkout is armed" "unarmed" is_armed "$d"
+  check QA-03 "the other repository's hooks are unchanged" \
+    "changed: $(changed_paths "$e/gitdir.other.before" "$e/gitdir.other.after" | head -3 | paste -sd' ' -)" \
+    cmp -s "$e/gitdir.other.before" "$e/gitdir.other.after"
+  check QA-03 "no file was written into the other repository's root" "lefthook.yml appeared there" test ! -e "$x/lefthook.yml"
+
+  # 5 — a present but broken repository (SEC-03): exit 2 with git's error; --notice hints.
+  local variant
+  for variant in corrupt-head unreadable-config; do
+    new_fixture d "rs-$variant" commit
+    if [[ $variant == corrupt-head ]]; then printf 'not a ref\n' > "$d/.git/HEAD"
+    else
+      chmod 000 "$d/.git/config"
+      if [[ -r "$d/.git/config" ]]; then unmeasured SEC-03 "$variant: config stayed readable after chmod 000 (root?)"; chmod 644 "$d/.git/config"; continue; fi
+    fi
+    run_ut "$d" "$e/$variant" --
+    check SEC-03 "$variant: the step exits 2" "exit $RC" rc_is 2
+    check SEC-03 "$variant: an error: line, with git's own error in the output" "no '^error:' line or no git error text" \
+      bash -c 'o="$(sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err")"; grep -q "^error:" <<< "$o" && grep -qiE "fatal|not a git repository|unable to access|permission denied" <<< "$o"' _ "$e/$variant"
+    notice "$d" "$e/$variant.n"
+    check SEC-03 "$variant: --notice exits 0 with a stdout hint and stderr empty" "silent, failed or stderr written" \
+      bash -c '[[ $(cat "$1.rc") == 0 && -s "$1.out" && ! -s "$1.err" ]]' _ "$e/$variant.n"
+    chmod 644 "$d/.git/config" 2>/dev/null
+  done
+
+  # 6 — an empty core.hooksPath (QA-04): git resolves it to /pre-commit. Exit 2, named.
+  new_fixture d rs-empty commit; git -C "$d" config core.hooksPath ""
+  run_ut "$d" "$e/empty" --
+  check QA-04 "an empty core.hooksPath: the step exits 2" "exit $RC" rc_is 2
+  check QA-04 "the error: line names core.hooksPath" "no '^error:' line naming core.hooksPath" says "$e/empty" '^error:.*core\.hookspath'
+  notice "$d" "$e/empty.n"
+  check QA-04 "--notice's stdout hint names core.hooksPath, stderr empty" "hint absent or stderr written" \
+    notice_says "$e/empty.n" 'core.hooksPath'
 }
 
 # ── write-boundary — the arming step writes only into the effective hook dir ──
@@ -899,7 +1097,7 @@ run_one() {
   rm -rf "${OUTPUT:?}/$1"; mkdir -p "$OUTPUT/$1"
   case "$1" in
     manifest) fx_manifest ;; A) fx_A ;; B) fx_B ;; C) fx_C ;; notice) fx_notice ;;
-    notice-streams) fx_notice_streams ;; hook-paths) fx_hook_paths ;; old-backup) fx_old_backup ;;
+    notice-streams) fx_notice_streams ;; hook-paths) fx_hook_paths ;; old-backup) fx_old_backup ;; repo-shapes) fx_repo_shapes ;;
     write-boundary) fx_write_boundary ;;
     graph-reclaim) fx_graph_reclaim ;; binary-provenance) fx_binary_provenance ;; install-failure) fx_install_failure ;;
   esac
@@ -907,6 +1105,7 @@ run_one() {
 bold "▸ hook-arming.sh — source $SOURCE ($(git -C "$SOURCE" rev-parse --short HEAD 2>/dev/null || printf unborn))"
 if [[ "$FIXTURE" == all ]]; then for f in $ALL_FIXTURES; do run_one "$f"; done; else run_one "$FIXTURE"; fi
 
+tripwire
 log ""
 bold "Summary: $PASSES passed · $FAILS failed · $UNMEASURED unmeasured   (evidence: $OUTPUT)"
 if (( FAILS > 0 )); then exit 1; elif (( UNMEASURED > 0 )); then exit 3; fi

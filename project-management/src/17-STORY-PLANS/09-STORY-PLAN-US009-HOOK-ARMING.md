@@ -1219,6 +1219,10 @@ Missing runner/dependency is unmeasured; do not substitute a guessed tool hook o
   default hook while the effective redirected hook is absent. Only the effective executable
   lefthook hook silences the notice. A throwaway commit must actually run its pre-commit legs.
 
+README verification checks both required P3 edits separately: replace the removed `pnpm prepare`
+setup command with `bash install.sh`, and add the `install-hooks.sh` Development-scripts row.
+The existing claim sentence stays unchanged. This implements HP-06, not new scope.
+
 ### Red-phase answers — 17/11/2026
 
 Settled with <%DEVELOPER_NAME%> after the red phase measured three things this plan did not
@@ -1254,6 +1258,24 @@ Settled with <%DEVELOPER_NAME%> after the independent code review returned Reque
 - **The lefthook binary must be the project's own** (`node_modules`), never a `PATH` fallback
   through `pnpm exec` — constraint 7.4 as written, not a new decision.
 
-README verification checks both required P3 edits separately: replace the removed `pnpm prepare`
-setup command with `bash install.sh`, and add the `install-hooks.sh` Development-scripts row.
-The existing claim sentence stays unchanged. This implements HP-06, not new scope.
+### Review, security and QA answers — 17/11/2026
+
+Settled with <%DEVELOPER_NAME%> after the second review pass and the parallel security and QA
+passes (/implement-story grilling, round 4).
+
+- **A `core.hooksPath` from global or system scope is refused, exit 2.** The step names the scope
+  and the remedy (`git config --local core.hooksPath .git/hooks`) and arms nothing. Only a local or
+  worktree-scoped value is armed, with `--force`. Forcing a global hooks directory would replace a
+  machine-wide hook for every repository; this narrows the red-phase `--force` answer.
+- **The `install-failure` job's path filter is inverted**: it is skipped only when every changed
+  file is documentation or PM (`*.md`, `project-management/**`, `research/**`, `handoffs/**`),
+  and runs otherwise. Narrows the code-review answer's dependency list, which three passes found
+  incomplete.
+- **Implementation corrections, not decisions**: the hook directory is resolved rather than the
+  hook file, and a symlinked hook is foreign; a project nested in an unrelated repository skips;
+  `GIT_DIR` and `GIT_WORK_TREE` are cleared in arming mode; a present but unreadable repository
+  exits 2; the `.old` move is reported when it happens.
+
+<!-- MOVED 17/11/2026: the "README verification" paragraph closed the 09/10/2026 section and was
+     split from it when the red-phase answers were appended below it; it is restored to its
+     section (R3-N2). -->
