@@ -39,8 +39,10 @@
 #                      network call or credential read (strace). Negative control EC-18.
 #   hook-paths         Effective-path states: ordinary, unborn, linked worktree, relative and
 #                      absolute core.hooksPath (clone and worktree), stale marked default hook,
-#                      raw graph hook, marked non-executable hook, core.hooksPath=/dev/null.
-#                      EC-15, EC-16; a throwaway commit runs its legs.
+#                      raw graph hook, marked non-executable hook. EC-15, EC-16; a throwaway
+#                      commit runs its legs. core.hooksPath=/dev/null is a deliberate opt-out:
+#                      the step warns hooks are disabled, arms nothing, exits 0, and --notice
+#                      still prints. Any other unresolvable hooks path exits 2 with an error:.
 #   write-boundary     Full-tree manifests (path, type, mode, link target, SHA-256; ignored and
 #                      untracked included) around the arming step alone. Negative control EC-17.
 #   graph-reclaim      The real, pinned `code-review-graph install` writes the hook first; the
@@ -388,7 +390,7 @@ fx_A() {
     unmeasured ES-04 "could not remove lefthook from PATH"
   else
     run_ut "$d" "$e/no-binary" env PATH="$SCRATCH/path-no-lefthook" --
-    check ES-04 "with lefthook absent the step fails" "exit $RC" rc_nonzero
+    check ES-04 "with lefthook absent the step exits 1 (requirement missing)" "exit $RC" rc_is 1
     check ES-04 "the failure is an err line naming the missing lefthook binary" \
       "no 'error: … lefthook … not found/missing/absent' line" \
       says "$e/no-binary" '^error:.*lefthook.*(not found|missing|absent|not installed|cannot find|can.t find)|^error:.*(not found|missing|absent|not installed|cannot find|can.t find).*lefthook'
@@ -579,12 +581,39 @@ fx_hook_paths() {
     fi
   fi
 
+  # core.hooksPath=/dev/null is a deliberate opt-out (plan, Red-phase answers — 17/11/2026): the
+  # step warns that hooks are disabled, arms nothing and exits 0; --notice still prints.
   new_fixture d hp-devnull commit; git -C "$d" config core.hooksPath /dev/null
+  manifest "$d/.git/hooks" "$e/devnull.hooks.before" || die "manifest of .git/hooks failed"
   notice "$d" "$e/devnull.n"
-  check P3 "core.hooksPath=/dev/null (unresolvable): --notice still exits 0" "exit $(cat "$e/devnull.n.rc")" \
-    bash -c '[[ $(cat "$1") == 0 ]]' _ "$e/devnull.n.rc"
+  check P3 "core.hooksPath=/dev/null: --notice still prints on stdout only and exits 0" "oracle rejected it" \
+    notice_valid "$e/devnull.n"
   run_ut "$d" "$e/devnull.arm" --
-  check P3 "core.hooksPath=/dev/null: the step reports a resolution failure and exits 2" "exit $RC" rc_is 2
+  check P3 "core.hooksPath=/dev/null: the step is an opt-out and exits 0" "exit $RC" rc_is 0
+  check P3 "core.hooksPath=/dev/null: the step says hooks are disabled by that setting" \
+    "no 'disabled' together with 'hooksPath' or '/dev/null' in the output" \
+    bash -c 'o="$(sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err")"; grep -qi disabled <<< "$o" && grep -qiE "hookspath|/dev/null" <<< "$o"' _ "$e/devnull.arm"
+  check P3 "core.hooksPath=/dev/null: the setting is left in place" "it was changed" \
+    bash -c '[[ "$(git -C "$1" config --get core.hooksPath)" == /dev/null ]]' _ "$d"
+  manifest "$d/.git/hooks" "$e/devnull.hooks.after" || die "manifest of .git/hooks failed"
+  check P3 "core.hooksPath=/dev/null: nothing under the default .git/hooks changed" \
+    "changed: $(changed_paths "$e/devnull.hooks.before" "$e/devnull.hooks.after" | head -3 | paste -sd' ' -)" \
+    cmp -s "$e/devnull.hooks.before" "$e/devnull.hooks.after"
+  check P3 "core.hooksPath=/dev/null: no lefthook hook was written to the default path" "one was" \
+    bash -c '! grep -qsF "$2" "$1/.git/hooks/pre-commit"' _ "$d" "$MARKER"
+
+  # Any OTHER unresolvable path stays a failure: a hooks path whose parent is a regular file.
+  new_fixture d hp-unresolvable commit; printf 'not a directory\n' > "$d/hooks-blocker"
+  git -C "$d" config core.hooksPath "$d/hooks-blocker/hooks"
+  check P3 "unresolvable core.hooksPath: git itself cannot resolve the hook path" "git resolved it" \
+    bash -c '! (cd "$1" && git rev-parse --path-format=absolute --git-path hooks/pre-commit >/dev/null 2>&1)' _ "$d"
+  notice "$d" "$e/unresolvable.n"
+  check P3 "unresolvable core.hooksPath: --notice still exits 0" "exit $(cat "$e/unresolvable.n.rc")" \
+    bash -c '[[ $(cat "$1") == 0 ]]' _ "$e/unresolvable.n.rc"
+  run_ut "$d" "$e/unresolvable.arm" --
+  check P3 "unresolvable core.hooksPath: the step fails with exit 2" "exit $RC" rc_is 2
+  check P3 "unresolvable core.hooksPath: the failure is an err-idiom 'error:' line" "no 'error:' line on stderr" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.err" | grep -q "^error:"' _ "$e/unresolvable.arm"
 }
 
 # ── write-boundary — the arming step writes only into the effective hook dir ──
