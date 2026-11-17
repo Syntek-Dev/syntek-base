@@ -187,8 +187,12 @@ the script's pinned version. Exit codes extend the folder's contract by one: `0`
 **`3` unmeasured** — a fixture that could not look, which is never a pass
 (`code/docs/GATE-REPORTING.md`). Its `--output` is the one exception to the rule below: it runs
 on the host and bind-mounts nothing, so the directory may sit anywhere outside its scratch tree.
-Nothing from this checkout is ever linked into a fixture, and a tripwire exits `2` if this
-checkout's `node_modules` changes during a run.
+Nothing from this checkout is ever linked into a fixture, and a tripwire, run from the exit
+handler on every exit path, exits `2` if this checkout's `node_modules` changes during a run.
+
+`--needs-install-failure BASE` is a second, fixture-free mode: it prints `true` or `false` for
+whether `BASE..HEAD` needs the `install-failure` job, and is what the workflow's `changes` job
+runs. The `change-filter` fixture tests that decision offline against a scratch repository.
 
 ## --output flag
 

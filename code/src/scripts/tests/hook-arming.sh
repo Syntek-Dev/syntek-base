@@ -18,14 +18,19 @@
 # The snapshot is the source's tracked files plus untracked-but-not-ignored ones, as on disk,
 # so the probe can run before the story's commit exists. No `.env.*` file is ever copied.
 #
-# "Armed" is ONE predicate, the same one install-hooks.sh and `--notice` must use: the file
+# "Armed" is ONE predicate that install-hooks.sh and `--notice` must apply; this probe's oracle
+# is an independent implementation of the same predicate, never a copy of the script's: the file
 # `pre-commit` in the hooks DIRECTORY `git rev-parse --path-format=absolute --git-path hooks`
 # names, resolved from the checkout root (never the hook file itself, whose resolution follows a
 # symlink), is a readable, executable regular file carrying lefthook's generated marker
 # — the line `call_lefthook run "pre-commit"` — and NOT carrying code-review-graph's appended
 # block (`>>> code-review-graph pre-commit hook >>>`), which swallows lefthook's exit status
-# (settled 17/11/2026, S-M1). A marker without the executable bit is unarmed, and a SYMLINKED
-# hook is foreign, never armed, whatever it points at (SEC-02).
+# (settled 17/11/2026, S-M1) — AND carrying the string `LEFTHOOK`, which is lefthook 2.2.2's own
+# ownership test (`isLefthookFile`, measured 17/11/2026: case-sensitive; a hook carrying it is
+# overwritten with no pre-commit.old; a hook without it is renamed to pre-commit.old, or refused
+# when one exists). A marker without the executable bit is unarmed, and a SYMLINKED hook is
+# foreign, never armed, whatever it points at (SEC-02). The hooks directory's REAL path must lie
+# inside the repository's git common directory (settled 17/11/2026, round 5).
 #
 # SAFETY: nothing from the source checkout is ever symlinked, bound or shared into a fixture —
 # above all not its node_modules. Every fixture gets its own install; the PATH filter skips any
@@ -64,11 +69,19 @@
 #                      R3-S-m1: the move is reported even when lefthook then fails (exit 2).
 #                      SEC-02/QA-01: a symlinked pre-commit is foreign — the link itself is
 #                      replaced, its target and the target's directory are never touched.
-#   repo-shapes        Round 4: a global core.hooksPath is refused (exit 2, names the scope and
-#                      `git config --local core.hooksPath`); a project nested in an unrelated
-#                      repository skips (QA-02); GIT_DIR/GIT_WORK_TREE in the environment are
-#                      ignored (QA-03); a present but broken repository exits 2 (SEC-03); an
-#                      empty core.hooksPath exits 2 (QA-04). --notice's hint for each.
+#                      R4-QA-01/03: a foreign hook carrying `LEFTHOOK` keeps its content; a
+#                      marker without `LEFTHOOK` is not armed, and a .old beside it survives.
+#   repo-shapes        A hooks directory whose real path is outside the git common directory
+#                      is refused (exit 2), by every route: global, system, GIT_CONFIG,
+#                      GIT_CONFIG_COUNT, a local include.path, a symlinked .git/hooks, a local
+#                      absolute path — with a remedy hint per source. A project nested in an
+#                      unrelated repository skips (QA-02); GIT_DIR/GIT_WORK_TREE are ignored
+#                      (QA-03); a broken or bare-configured repository exits 2 (SEC-03, R4-03,
+#                      R4-QA-06); an empty core.hooksPath exits 2 (QA-04). --notice hints.
+#   change-filter      No project fixture. The install-failure job's change filter (the
+#                      --needs-install-failure mode) against a scratch repository: docs/PM-only
+#                      ranges skip, a rename out of code counts both sides, a non-ASCII PM path
+#                      is still PM, and every doubtful range runs the job (R4-SEC-03).
 #   write-boundary     Full-tree manifests (path, type, mode, link target, SHA-256; ignored and
 #                      untracked included) around the arming step alone. Negative control EC-17.
 #   graph-reclaim      The real, pinned `code-review-graph install` writes the hook first; the
@@ -85,6 +98,9 @@
 #
 # Usage: hook-arming.sh [--fixture NAME] [--source DIR] [--output DIR] [--keep-scratch]
 #                       [--allow-install-sh] [--quiet] [--help]
+#        hook-arming.sh --needs-install-failure BASE
+#                       CI's change filter: prints `true` or `false` for the range BASE..HEAD of
+#                       --source; `true` on any doubt. Prints nothing else on stdout; exit 0.
 #
 # Exit codes:  0 = every expectation held   1 = an expectation failed   2 = script error
 #              3 = unmeasured — a fixture could not look (missing tool, refused host effects,
@@ -118,16 +134,18 @@ Usage:
                                     (sudo /etc/hosts, docker, uv). Implied under GitHub Actions
                  [--quiet]          Print failures, unmeasured checks and the summary only
                  [--help]
+  hook-arming.sh --needs-install-failure BASE
+                                    Print true/false: does BASE..HEAD need the install-failure job?
 
 Fixtures: manifest A B C notice notice-streams hook-paths old-backup repo-shapes
-          write-boundary graph-reclaim binary-provenance install-failure all
+          change-filter write-boundary graph-reclaim binary-provenance install-failure all
 
 Exit codes: 0 all held · 1 an expectation failed · 2 script error · 3 unmeasured (never a pass)
 EOF
 }
 
 FIXTURE="all"; SOURCE="$PROJECT_ROOT"; OUTPUT="$PROJECT_ROOT/code/src/scripts/tests/reports/hook-arming"
-KEEP=false; QUIET=false; ALLOW_INSTALL=false
+KEEP=false; QUIET=false; ALLOW_INSTALL=false; NIF=false; NIF_BASE=""
 [[ "${GITHUB_ACTIONS:-}" == "true" ]] && ALLOW_INSTALL=true
 
 while [[ $# -gt 0 ]]; do
@@ -138,26 +156,53 @@ while [[ $# -gt 0 ]]; do
     --keep-scratch)     KEEP=true; shift ;;
     --allow-install-sh) ALLOW_INSTALL=true; shift ;;
     --quiet)            QUIET=true; shift ;;
+    --needs-install-failure) [[ $# -ge 2 ]] || die "--needs-install-failure needs a BASE (may be empty)"
+                        NIF=true; NIF_BASE="$2"; shift 2 ;;
     --help|-h)          usage; exit 0 ;;
     *)                  die "Unknown option '$1'. Use --help for usage." ;;
   esac
 done
 
-ALL_FIXTURES="manifest A B C notice notice-streams hook-paths old-backup repo-shapes write-boundary graph-reclaim binary-provenance install-failure"
+ALL_FIXTURES="manifest A B C notice notice-streams hook-paths old-backup repo-shapes change-filter write-boundary graph-reclaim binary-provenance install-failure"
 case " $ALL_FIXTURES all " in *" $FIXTURE "*) ;; *) die "Unknown fixture '$FIXTURE'. Use --help." ;; esac
 
 SOURCE="$(cd "$SOURCE" 2>/dev/null && pwd)" || die "--source is not a directory"
 git -C "$SOURCE" rev-parse --show-toplevel >/dev/null 2>&1 || die "--source is not a git checkout: $SOURCE"
+# The install-failure job's change filter. Skipped ONLY when every file the range touched is
+# docs or PM; `true` on any doubt — an empty or all-zero BASE (a manual run, a new branch), a
+# BASE that is not a readable commit, a failing diff, an empty diff. --no-renames makes BOTH
+# sides of a rename count (R4-SEC-03); core.quotePath=false keeps a non-ASCII path unquoted so
+# the patterns still match it.
+needs_install_failure() {   # repo base — prints true|false
+  local repo="$1" base="$2" changed other
+  if [[ -z "$base" || "$base" =~ ^0+$ ]] || ! git -C "$repo" cat-file -e "$base^{commit}" 2>/dev/null; then
+    printf 'true\n'; return
+  fi
+  changed="$(git -C "$repo" -c core.quotePath=false diff --no-renames --name-only "$base" HEAD 2>/dev/null)" ||
+    { printf 'true\n'; return; }
+  [[ -n "$changed" ]] || { printf 'true\n'; return; }
+  other="$(printf '%s\n' "$changed" | grep -vE '\.md$|^project-management/|^research/|^handoffs/' || true)"
+  if [[ -n "$other" ]]; then printf 'true\n'; else printf 'false\n'; fi
+}
+if $NIF; then needs_install_failure "$SOURCE" "$NIF_BASE"; exit 0; fi
+
 for t in git pnpm node tar find sha256sum sort join cmp realpath; do
   command -v "$t" >/dev/null 2>&1 || die "'$t' not found — the probe needs it"
 done
 
 SCRATCH="$(mktemp -d "${TMPDIR:-/tmp}/hook-arming.XXXXXX")" || die "cannot create a scratch directory"
-# shellcheck disable=SC2329  # invoked by trap
 cleanup() {
   if $KEEP; then log "Scratch kept: $SCRATCH"; else chmod -R u+w "$SCRATCH" 2>/dev/null; rm -rf "$SCRATCH"; fi
 }
-trap cleanup EXIT
+# Every exit path — pass, fail, die, a signal — runs the tripwire, then the cleanup. The trap is
+# cleared first so an exit inside the handler cannot re-enter it.
+on_exit() {
+  local rc=$?; trap - EXIT
+  if [[ -n "${NM_BEFORE+x}" ]] && ! tripwire_ok; then rc=2; fi
+  cleanup
+  exit "$rc"
+}
+trap on_exit EXIT
 # A fixture with no .git must not find one above it.
 if git -C "$SCRATCH" rev-parse --git-dir >/dev/null 2>&1; then die "scratch $SCRATCH is inside a git repository"; fi
 case "$OUTPUT/" in "$SCRATCH"/*) die "--output must not be inside the scratch tree" ;; esac
@@ -178,12 +223,12 @@ nm_state() {   # root — the link status, real path and install record of root/
 }
 NM_ROOTS="$(printf '%s\n%s\n' "$SOURCE" "$PROJECT_ROOT" | sort -u)"
 NM_BEFORE="$(while IFS= read -r r; do nm_state "$r"; done <<< "$NM_ROOTS")"
-tripwire() {
+tripwire_ok() {
   local now; now="$(while IFS= read -r r; do nm_state "$r"; done <<< "$NM_ROOTS")"
   if [[ "$now" != "$NM_BEFORE" ]]; then
     printf 'hook-arming.sh error: TRIPWIRE — the source checkout'"'"'s node_modules changed during the run\n  before: %s\n  after:  %s\n' \
       "$NM_BEFORE" "$now" >&2
-    exit 2
+    return 1
   fi
 }
 
@@ -250,7 +295,8 @@ eff_hook() {
 }
 is_armed() {
   local p; p="$(eff_hook "$1")" || return 1
-  [[ -f "$p" && ! -L "$p" && -r "$p" && -x "$p" ]] && grep -qF "$MARKER" "$p" && ! grep -qF "$GRAPH_MARKER" "$p"
+  [[ -f "$p" && ! -L "$p" && -r "$p" && -x "$p" ]] && grep -qF "$MARKER" "$p" && grep -qF 'LEFTHOOK' "$p" &&
+    ! grep -qF "$GRAPH_MARKER" "$p"
 }
 unarmed() { ! is_armed "$1"; }
 ut_present() { [[ -f "$1/$UNDER_TEST" ]]; }
@@ -343,6 +389,19 @@ fx_manifest() {
       const life=[\"preinstall\",\"install\",\"postinstall\",\"preprepare\",\"prepare\",\"postprepare\",\"prepublish\",\"prepublishOnly\",\"prepack\",\"postpack\",\"dependencies\"];
       process.exit(life.some(k=>s[k]&&/lefthook +install|\.git\b|hooksPath/.test(s[k]))?1:0)"' _ "$s"
   check ST02b "postinstall calls install-hooks.sh --notice" "postinstall absent or does not call it" postinstall_wired "$s"
+  local wf="$s/.github/workflows/audit-hook-arming.yml" fx job missing=""
+  if [[ -f "$wf" ]]; then
+    job="$(awk '/^  probes:/{f=1;print;next} f&&/^  [a-z][a-z-]*:$/{f=0} f' "$wf")"
+    for fx in $ALL_FIXTURES; do
+      [[ $fx == install-failure ]] && continue
+      grep -qE -- "--fixture $fx([^a-zA-Z-]|\$)" <<< "$job" || missing+=" $fx"
+    done
+    check R4-01 "the probes job has a step for every fixture except install-failure" "missing:$missing" test -z "$missing"
+    check R4-SEC-03 "the changes job decides through hook-arming.sh --needs-install-failure (the tested filter)" \
+      "the workflow does not call it" grep -qF -- '--needs-install-failure' "$wf"
+  else
+    unmeasured R4-01 "no .github/workflows/audit-hook-arming.yml in the source"
+  fi
   check QA-05 "pnpm-workspace.yaml allowBuilds keeps 'lefthook: false' (its own installer never runs)" "absent" \
     bash -c 'awk "/^allowBuilds:/{f=1;next} f&&/^[^[:space:]#]/{f=0} f" "$1" | grep -qE "^[[:space:]]+lefthook:[[:space:]]*false\b"' _ "$s/pnpm-workspace.yaml"
 
@@ -653,8 +712,10 @@ fx_hook_paths() {
     (cd "$d" && pnpm exec lefthook install) >"$e/$mode.stale" 2>&1   # a genuine, soon-stale default hook
     check EC-15 "$mode: a lefthook-marked default hook exists before redirection" "staging failed" \
       bash -c 'grep -qF "$2" "$1/.git/hooks/pre-commit"' _ "$d" "$MARKER"
-    if [[ $mode == relative ]]; then git -C "$d" config core.hooksPath .githooks
-    else ext="$SCRATCH/hp-absolute-hooks"; git -C "$d" config core.hooksPath "$ext"; fi
+    # Inside the git common directory, so the round-5 rule still arms them; the outside-the-
+    # repository cases are repo-shapes' (refused).
+    if [[ $mode == relative ]]; then git -C "$d" config core.hooksPath .git/custom-hooks
+    else ext="$d/.git/abs-hooks"; git -C "$d" config core.hooksPath "$ext"; fi
     p="$(eff_hook "$d")"
     check EC-15 "$mode: the effective hook ($p) is absent while the stale default exists" "effective path exists" test ! -e "$p"
     states_case EC-15 "$mode" "$d"
@@ -662,10 +723,11 @@ fx_hook_paths() {
       commit_runs_legs "$d" "$e/$mode"
   done
 
-  new_fixture d hp-wt-rel-base commit; git -C "$d" config core.hooksPath .githooks
+  # A linked worktree's .git is a file, so a hooks path inside the common directory is absolute.
+  new_fixture d hp-wt-rel-base commit; git -C "$d" config core.hooksPath "$d/.git/custom-hooks"
   add_worktree wt "$d" hp-wt-rel
-  states_case EC-15 worktree-relative "$wt"
-  check EC-15 "worktree-relative: a throwaway commit runs the legs" "no lefthook summary" commit_runs_legs "$wt" "$e/worktree-relative"
+  states_case EC-15 worktree-common-dir "$wt"
+  check EC-15 "worktree-common-dir: a throwaway commit runs the legs" "no lefthook summary" commit_runs_legs "$wt" "$e/worktree-common-dir"
 
   new_fixture d hp-nonexec commit; run_ut "$d" "$e/nonexec.arm" --; p="$(eff_hook "$d")"
   chmod -x "$p"
@@ -737,7 +799,7 @@ fx_old_backup() {
   for variant in default hookspath; do
     new_fixture d "ob-$variant" commit
     if ! ut_present "$d"; then fail Q2 "$variant: $UNDER_TEST absent in the fixture — nothing to arm with"; return; fi
-    [[ $variant == hookspath ]] && git -C "$d" config core.hooksPath .githooks
+    [[ $variant == hookspath ]] && git -C "$d" config core.hooksPath .git/custom-hooks
     p="$(eff_hook "$d")"; hd="${p%/pre-commit}"; mkdir -p "$hd"
     printf '#!/bin/sh\necho hand-written hook %s\n' "$variant" > "$p"; chmod +x "$p"
     printf 'the original pre-commit.old (%s), which must survive\n' "$variant" > "$hd/pre-commit.old"
@@ -762,6 +824,38 @@ fx_old_backup() {
     bash -c '[[ $1 == 0 ]]' _ "$RC"
   check Q2 "non-executable lefthook hook: the output claims no .old was kept" "it mentions a .old" \
     bash -c '! sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF ".old"' _ "$e/nonexec"
+
+  # R4-QA-01/R4-QA-03 — the ownership signal is lefthook's own: the string LEFTHOOK.
+  # (1) A FOREIGN hook that merely mentions LEFTHOOK: lefthook would overwrite it with no .old.
+  local hfh
+  new_fixture d ob-own-mention commit; p="$(eff_hook "$d")"; hd="${p%/*}"
+  printf '#!/bin/sh\n# a foreign hook; set LEFTHOOK=0 to skip it\necho foreign hook\n' > "$p"; chmod +x "$p"
+  hfh="$(sha256sum "$p" | cut -d' ' -f1)"
+  notice "$d" "$e/own-mention.n"
+  check R4-QA-01 "a foreign hook mentioning LEFTHOOK is unarmed: --notice prints" "it stayed silent" notice_valid "$e/own-mention.n"
+  run_ut "$d" "$e/own-mention" --
+  hook_dir_hashes "$hd" > "$e/own-mention.hashes"
+  check R4-QA-01 "the step exits 0" "exit $RC" rc_is 0
+  check R4-QA-01 "the effective hook is armed" "unarmed" is_armed "$d"
+  check R4-QA-01 "the foreign hook's content survives in the hooks dir" "its hash is gone — overwritten in place" \
+    grep -qxF "$hfh" "$e/own-mention.hashes"
+  check R4-QA-01 "the report is truthful: any pre-commit.old it names holds that content" \
+    "it names a pre-commit.old that does not hold the replaced hook" \
+    bash -c 'o="$(sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err")"; grep -q "pre-commit\.old" <<< "$o" || exit 0
+             for hf in "$2"/pre-commit.old*; do [[ -f $hf && "$(sha256sum "$hf" | cut -d" " -f1)" == "$3" ]] && exit 0; done; exit 1' \
+    _ "$e/own-mention" "$hd" "$hfh"
+  # (2) lefthook's marker WITHOUT the LEFTHOOK string, with a pre-commit.old beside it.
+  new_fixture d ob-own-marker commit; p="$(eff_hook "$d")"; hd="${p%/*}"
+  printf '#!/bin/sh\ncall_lefthook() { :; }\ncall_lefthook run "pre-commit" "$@"\n' > "$p"; chmod +x "$p"
+  printf 'the pre-commit.old beside a marker-only hook\n' > "$hd/pre-commit.old"
+  ho="$(sha256sum "$hd/pre-commit.old" | cut -d' ' -f1)"
+  notice "$d" "$e/own-marker.n"
+  check R4-QA-03 "a marker without LEFTHOOK is not armed: --notice prints" "it stayed silent" notice_valid "$e/own-marker.n"
+  run_ut "$d" "$e/own-marker" --
+  check R4-QA-03 "the step exits 0" "exit $RC" rc_is 0
+  check R4-QA-03 "the effective hook is armed" "unarmed" is_armed "$d"
+  check R4-QA-03 "the existing pre-commit.old survives" "its hash is gone" \
+    bash -c 'find "$2" -maxdepth 1 -type f -exec sha256sum {} + | cut -d" " -f1 | grep -qxF "$1"' _ "$ho" "$hd"
 
   # R3-S-m1: the move is reported even when lefthook then fails. lefthook.yml is made invalid
   # YAML — `lefthook version` still runs, `lefthook install` fails.
@@ -821,11 +915,59 @@ fx_old_backup() {
   done
 }
 
+# One route to a hooks directory outside the git common directory. Refused (exit 2) with an
+# error: line naming the directory as outside the repository; nothing written there; --notice
+# hints; and a remedy hint shaped by where the setting came from.
+shared_route() {   # route label
+  local route="$1" label="$2" e="$OUTPUT/repo-shapes" d sh cfg run_dir pre=() hint_re hint_desc
+  new_fixture d "rs-route-$route" commit
+  sh="$SCRATCH/rs-shared-$route"; mkdir -p "$sh"
+  printf '#!/bin/sh\necho a shared hook\n' > "$sh/pre-commit"; chmod +x "$sh/pre-commit"
+  cfg="$SCRATCH/rs-cfg-$route"; printf '[core]\n\thooksPath = %s\n' "$sh" > "$cfg"
+  run_dir="$d"
+  case "$route" in
+    system)    pre=(env -u GIT_CONFIG_NOSYSTEM GIT_CONFIG_SYSTEM="$cfg")
+               hint_re='git config --system --unset core\.hooksPath'; hint_desc="'git config --system --unset core.hooksPath'" ;;
+    gitconfig) pre=(env GIT_CONFIG="$cfg")
+               hint_re='GIT_CONFIG([^_A-Z]|$)'; hint_desc="GIT_CONFIG" ;;
+    count)     pre=(env GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.hooksPath GIT_CONFIG_VALUE_0="$sh")
+               hint_re='GIT_CONFIG_COUNT|GIT_CONFIG_PARAMETERS|environment'; hint_desc="GIT_CONFIG_COUNT, GIT_CONFIG_PARAMETERS or 'environment'" ;;
+    include)   git -C "$d" config include.path "$cfg"
+               hint_re="$cfg"; hint_desc="the included file $cfg" ;;
+    symlink)   rm -rf "$d/.git/hooks"; ln -s "$sh" "$d/.git/hooks"
+               hint_re='symlink'; hint_desc="'symlink'" ;;
+    local)     git -C "$d" config core.hooksPath "$sh"
+               hint_re='git config --local'; hint_desc="'git config --local'" ;;
+    local-wt)  git -C "$d" config core.hooksPath "$sh"; add_worktree run_dir "$d" "rs-route-local-wt-wt"
+               hint_re="git config --local core\.hooksPath \"?$(realpath "$d/.git")/hooks"
+               hint_desc="'git config --local core.hooksPath $(realpath "$d/.git")/hooks' (absolute)" ;;
+  esac
+  manifest "$sh" "$e/route-$route.shared.before" || die "manifest failed"
+  run_ut "$run_dir" "$e/route-$route" "${pre[@]}" --
+  manifest "$sh" "$e/route-$route.shared.after" || die "manifest failed"
+  check R5 "$label: refused, exit 2" "exit $RC" rc_is 2
+  check R5 "$label: an error: line names the hooks dir as outside the repository" \
+    "no '^error:' line with 'outside' and $(realpath "$sh")" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.err" | grep -i "^error:.*outside" | grep -qF "$2"' _ "$e/route-$route" "$(realpath "$sh")"
+  check R5 "$label: nothing in the shared dir changed, and no lefthook hook appeared there" \
+    "changed: $(changed_paths "$e/route-$route.shared.before" "$e/route-$route.shared.after" | head -3 | paste -sd' ' -)" \
+    bash -c 'cmp -s "$1" "$2" && ! grep -rqF "$4" "$3"' _ "$e/route-$route.shared.before" "$e/route-$route.shared.after" "$sh" "$MARKER"
+  check R5-hint "$label: the remedy names $hint_desc" "absent" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qE -- "$2"' _ "$e/route-$route" "$hint_re"
+  if [[ $route == local-wt ]]; then
+    check R5-hint "$label: the remedy is not the literal relative .git/hooks" "it says core.hooksPath .git/hooks" \
+      bash -c '! sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qE "core\.hooksPath \"?\.git/hooks"' _ "$e/route-$route"
+  fi
+  run_ut "$run_dir" "$e/route-$route.n" env -u CI "${pre[@]:1}" -- --notice
+  check R5 "$label: --notice exits 0 with a stdout hint, stderr empty" "silent, failed or stderr written" \
+    bash -c '[[ $(cat "$1.rc") == 0 && -s "$1.out" && ! -s "$1.err" ]]' _ "$e/route-$route.n"
+}
+
 # ── repo-shapes — the repositories install-hooks.sh must refuse, skip or see through ──
 fx_repo_shapes() {
   bold "▸ repo-shapes — global hooksPath, nested project, GIT_DIR, broken repo, empty hooksPath"
-  local e="$OUTPUT/repo-shapes" d g gcfg o x gh
-  # 1 — a core.hooksPath from GLOBAL scope is refused, exit 2 (settled 17/11/2026).
+  local e="$OUTPUT/repo-shapes" d g gcfg o x gh key
+  # 1 — a core.hooksPath from GLOBAL scope is refused, exit 2.
   new_fixture d rs-global commit
   if ! ut_present "$d"; then fail RS "$UNDER_TEST absent in the fixture — nothing to probe"; return; fi
   g="$SCRATCH/rs-global-hooks"; mkdir -p "$g"
@@ -839,8 +981,8 @@ fx_repo_shapes() {
   check GLOBAL "a global core.hooksPath is refused: exit 2" "exit $RC" rc_is 2
   check GLOBAL "the error: line names the global scope" "no '^error:' line containing 'global'" \
     says "$e/global" '^error:.*global'
-  check GLOBAL "the output names the remedy 'git config --local core.hooksPath'" "remedy absent" \
-    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF "git config --local core.hooksPath"' _ "$e/global"
+  check R4-QA-04 "global: the remedy names 'git config --global --unset core.hooksPath'" "remedy absent" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF "git config --global --unset core.hooksPath"' _ "$e/global"
   check GLOBAL "the global hook's hash is unchanged" "it changed" \
     bash -c '[[ "$(sha256sum "$1" | cut -d" " -f1)" == "$2" ]]' _ "$g/pre-commit" "$gh"
   check GLOBAL "nothing in the global hooks dir changed, and no lefthook hook appeared there" \
@@ -849,6 +991,20 @@ fx_repo_shapes() {
   run_ut "$d" "$e/global.n" env -u CI GIT_CONFIG_GLOBAL="$gcfg" -- --notice
   check GLOBAL "--notice: exit 0, stdout hint names core.hooksPath, stderr empty" "hint absent or stderr written" \
     notice_says "$e/global.n" 'core.hooksPath'
+
+  # 2 — every other route to a hooks directory outside the git common directory: refused.
+  shared_route system  "system scope"
+  shared_route gitconfig "GIT_CONFIG"
+  shared_route count   "GIT_CONFIG_COUNT"
+  shared_route include "a local include.path"
+  shared_route symlink "a symlinked .git/hooks"
+  shared_route local   "a local absolute core.hooksPath"
+  shared_route local-wt "a local absolute core.hooksPath, from a linked worktree"
+  # R5-AMB: the literal settled rule ("inside the git common directory") also refuses a hooks
+  # directory in the working tree outside .git. Flagged for confirmation, not yet settled.
+  new_fixture d rs-worktree-hooks commit; git -C "$d" config core.hooksPath .githooks
+  run_ut "$d" "$e/worktree-hooks" --
+  check R5-AMB "a hooks dir in the working tree but outside .git (.githooks) is refused: exit 2" "exit $RC" rc_is 2
 
   # 3 — a project nested in an unrelated repository, its own .git removed (QA-02): skip.
   o="$SCRATCH/rs-outer"; mkdir -p "$o"; git -C "$o" init -q; printf 'outer\n' > "$o/OUTER.txt"
@@ -900,7 +1056,40 @@ fx_repo_shapes() {
     chmod 644 "$d/.git/config" 2>/dev/null
   done
 
-  # 6 — an empty core.hooksPath (QA-04): git resolves it to /pre-commit. Exit 2, named.
+  # 6 — a bare-configured repository at the project root (R4-03): exit 2, never "nested".
+  for variant in bare worktree-elsewhere; do
+    new_fixture d "rs-$variant" commit
+    if [[ $variant == bare ]]; then git -C "$d" config core.bare true; key=core.bare
+    else mkdir -p "$SCRATCH/rs-elsewhere"; git -C "$d" config core.worktree "$SCRATCH/rs-elsewhere"; key=core.worktree; fi
+    run_ut "$d" "$e/$variant" --
+    check R4-03 "$variant: the step exits 2" "exit $RC" rc_is 2
+    check R4-03 "$variant: the error: line names $key" "no '^error:' line naming $key" says "$e/$variant" "^error:.*${key/./\\.}"
+    check R4-03 "$variant: it is not reported as nested" "it says nested" bash -c '! grep -qi nested "$1.out" "$1.err"' _ "$e/$variant"
+    notice "$d" "$e/$variant.n"
+    check R4-03 "$variant: --notice exits 0 with a stdout hint, stderr empty" "silent, failed or stderr written" \
+      bash -c '[[ $(cat "$1.rc") == 0 && -s "$1.out" && ! -s "$1.err" ]]' _ "$e/$variant.n"
+  done
+
+  # 7 — the project's own .git is BROKEN inside a healthy outer repository (R4-QA-06). git
+  # climbs past the broken .git to the outer one (measured), so the step must look itself.
+  o="$SCRATCH/rs-outer2"; mkdir -p "$o"; git -C "$o" init -q; printf 'outer\n' > "$o/OUTER.txt"
+  if ! { git -C "$o" add OUTER.txt && git -C "$o" commit -q -m outer; }; then die "outer repo setup failed"; fi
+  snapshot "$o/inner"; provision "$o/inner"; git -C "$o/inner" init -q; printf 'not a ref\n' > "$o/inner/.git/HEAD"
+  manifest "$o/.git/hooks" "$e/broken-inner.hooks.before" || die "manifest failed"
+  run_ut "$o/inner" "$e/broken-inner" --
+  manifest "$o/.git/hooks" "$e/broken-inner.hooks.after" || die "manifest failed"
+  check R4-QA-06 "a broken .git inside a healthy outer repo: the step exits 2" "exit $RC" rc_is 2
+  check R4-QA-06 "it is classified broken: an error: line with git's error, never 'nested'" "no git error, or it says nested" \
+    bash -c 'o="$(sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err")"; grep -q "^error:" <<< "$o" && grep -qiE "fatal|not a git repository|invalid|broken" <<< "$o" && ! grep -qi nested <<< "$o"' _ "$e/broken-inner"
+  check R4-QA-06 "the outer repository's hooks dir is unchanged" \
+    "changed: $(changed_paths "$e/broken-inner.hooks.before" "$e/broken-inner.hooks.after" | head -3 | paste -sd' ' -)" \
+    cmp -s "$e/broken-inner.hooks.before" "$e/broken-inner.hooks.after"
+  check R4-QA-06 "no lefthook.yml written into the outer repository" "one appeared" test ! -e "$o/lefthook.yml"
+  notice "$o/inner" "$e/broken-inner.n"
+  check R4-QA-06 "--notice exits 0 with a stdout hint, stderr empty" "silent, failed or stderr written" \
+    bash -c '[[ $(cat "$1.rc") == 0 && -s "$1.out" && ! -s "$1.err" ]]' _ "$e/broken-inner.n"
+
+  # 8 — an empty core.hooksPath (QA-04): git resolves it to /pre-commit. Exit 2, named.
   new_fixture d rs-empty commit; git -C "$d" config core.hooksPath ""
   run_ut "$d" "$e/empty" --
   check QA-04 "an empty core.hooksPath: the step exits 2" "exit $RC" rc_is 2
@@ -908,6 +1097,41 @@ fx_repo_shapes() {
   notice "$d" "$e/empty.n"
   check QA-04 "--notice's stdout hint names core.hooksPath, stderr empty" "hint absent or stderr written" \
     notice_says "$e/empty.n" 'core.hooksPath'
+}
+
+# ── change-filter — the install-failure job's filter, offline (R4-SEC-03) ─────
+fx_change_filter() {
+  bold "▸ change-filter — --needs-install-failure against a scratch repository"
+  local r="$SCRATCH/cf" c0 got
+  mkdir -p "$r/code" "$r/project-management" "$r/research" "$r/handoffs" "$r/docs"
+  git -C "$r" init -q
+  printf 'echo code\n' > "$r/code/run.sh"; printf 'pm\n' > "$r/project-management/a.txt"
+  printf 'r\n' > "$r/research/r.txt"; printf 'h\n' > "$r/handoffs/h.txt"; printf '# A\n' > "$r/docs/A.md"
+  if ! { git -C "$r" add -A && git -C "$r" commit -q -m base; }; then die "change-filter setup failed"; fi
+  c0="$(git -C "$r" rev-parse HEAD)"
+  cf_case() {   # id expected label — commits what the caller staged, classifies parent..HEAD
+    local id="$1" want="$2" label="$3" base
+    base="$(git -C "$r" rev-parse HEAD)"
+    git -C "$r" commit -q -m "$label" --allow-empty || die "change-filter commit failed"
+    got="$(bash "$SCRIPT_DIR/hook-arming.sh" --source "$r" --needs-install-failure "$base")"
+    check R4-SEC-03 "$label → $want" "got '$got'" test "$got" == "$want"
+  }
+  printf '# A edited\n' > "$r/docs/A.md"; git -C "$r" add -A; cf_case CF "false" "a markdown file only"
+  printf 'pm2\n' >> "$r/project-management/a.txt"; printf 'r2\n' >> "$r/research/r.txt"; printf 'h2\n' >> "$r/handoffs/h.txt"
+  git -C "$r" add -A; cf_case CF "false" "project-management/, research/ and handoffs/ only"
+  printf 'x\n' > "$r/project-management/ünïcødé dir with spaces.txt"; git -C "$r" add -A
+  cf_case CF "false" "a non-ASCII path with spaces under project-management/ (core.quotePath=false)"
+  git -C "$r" mv code/run.sh docs/run.md; cf_case CF "true" "a rename from code/ to a .md (--no-renames: the deleted side counts)"
+  printf 'echo again\n' > "$r/code/new.sh"; git -C "$r" add -A; cf_case CF "true" "a code file"
+  cf_case CF "true" "an empty diff (fail open)"
+  got="$(bash "$SCRIPT_DIR/hook-arming.sh" --source "$r" --needs-install-failure "")"
+  check R4-SEC-03 "an empty BASE (manual run) → true" "got '$got'" test "$got" == "true"
+  got="$(bash "$SCRIPT_DIR/hook-arming.sh" --source "$r" --needs-install-failure 0000000000000000000000000000000000000000)"
+  check R4-SEC-03 "an all-zero BASE (new branch) → true" "got '$got'" test "$got" == "true"
+  got="$(bash "$SCRIPT_DIR/hook-arming.sh" --source "$r" --needs-install-failure deadbeefdeadbeefdeadbeefdeadbeefdeadbeef)"
+  check R4-SEC-03 "a BASE that is not a readable commit → true" "got '$got'" test "$got" == "true"
+  got="$(bash "$SCRIPT_DIR/hook-arming.sh" --source "$r" --needs-install-failure "$c0")"
+  check R4-SEC-03 "the whole range from the first commit (code touched) → true" "got '$got'" test "$got" == "true"
 }
 
 # ── write-boundary — the arming step writes only into the effective hook dir ──
@@ -936,10 +1160,10 @@ fx_write_boundary() {
   printf 'synthetic ignored file\n' > "$d/$ig"; chmod 644 "$d/$igd"
 
   if ! ut_present "$d"; then fail ST05 "$UNDER_TEST absent in the fixture — no step to measure"; return; fi
-  for variant in default external; do
+  for variant in default redirected; do
     out="$e/$variant"
-    if [[ $variant == external ]]; then
-      rm -f "$d/.git/hooks/pre-commit"; git -C "$d" config core.hooksPath "$SCRATCH/wb-external-hooks"
+    if [[ $variant == redirected ]]; then   # inside the common dir: an outside one is refused (repo-shapes)
+      rm -f "$d/.git/hooks/pre-commit"; git -C "$d" config core.hooksPath .git/wb-redirected
     fi
     hookrel="$(eff_hook "$d")"; hookrel="${hookrel%/pre-commit}"
     case "$hookrel" in "$d"/*) hookrel="./${hookrel#"$d"/}" ;; *) hookrel="" ;; esac
@@ -955,8 +1179,8 @@ fx_write_boundary() {
     if grep -qxF "$ck" "$out.changed"; then
       log "        note: lefthook's own state file $ck changed — allowed by this probe (lefthook writes it on every install)"
     fi
-    if [[ $variant == external ]]; then
-      check ST05 "external: the hook landed at the redirected path" "unarmed" is_armed "$d"
+    if [[ $variant == redirected ]]; then
+      check ST05 "redirected: the hook landed at the redirected path" "unarmed" is_armed "$d"
     fi
   done
 }
@@ -1097,7 +1321,7 @@ run_one() {
   rm -rf "${OUTPUT:?}/$1"; mkdir -p "$OUTPUT/$1"
   case "$1" in
     manifest) fx_manifest ;; A) fx_A ;; B) fx_B ;; C) fx_C ;; notice) fx_notice ;;
-    notice-streams) fx_notice_streams ;; hook-paths) fx_hook_paths ;; old-backup) fx_old_backup ;; repo-shapes) fx_repo_shapes ;;
+    notice-streams) fx_notice_streams ;; hook-paths) fx_hook_paths ;; old-backup) fx_old_backup ;; repo-shapes) fx_repo_shapes ;; change-filter) fx_change_filter ;;
     write-boundary) fx_write_boundary ;;
     graph-reclaim) fx_graph_reclaim ;; binary-provenance) fx_binary_provenance ;; install-failure) fx_install_failure ;;
   esac
@@ -1105,7 +1329,6 @@ run_one() {
 bold "▸ hook-arming.sh — source $SOURCE ($(git -C "$SOURCE" rev-parse --short HEAD 2>/dev/null || printf unborn))"
 if [[ "$FIXTURE" == all ]]; then for f in $ALL_FIXTURES; do run_one "$f"; done; else run_one "$FIXTURE"; fi
 
-tripwire
 log ""
 bold "Summary: $PASSES passed · $FAILS failed · $UNMEASURED unmeasured   (evidence: $OUTPUT)"
 if (( FAILS > 0 )); then exit 1; elif (( UNMEASURED > 0 )); then exit 3; fi

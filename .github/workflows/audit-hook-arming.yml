@@ -115,9 +115,17 @@ jobs:
         if: success() || failure()
         run: bash code/src/scripts/tests/hook-arming.sh --fixture hook-paths
 
-      - name: An existing pre-commit.old is moved aside, never lost (Q2)
+      - name: An existing pre-commit.old is moved aside, never lost (Q2, SEC-02, R4-QA-01/03)
         if: success() || failure()
         run: bash code/src/scripts/tests/hook-arming.sh --fixture old-backup
+
+      - name: Repository shapes — shared hooks dirs, nested, GIT_DIR, broken and bare repos
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture repo-shapes
+
+      - name: The install-failure change filter, offline (R4-SEC-03)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture change-filter
 
       - name: Write boundary (ST05, EC-17)
         if: success() || failure()
@@ -154,27 +162,17 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      # The filter lives in hook-arming.sh (--needs-install-failure), where the change-filter
+      # fixture tests it offline: `git -c core.quotePath=false diff --no-renames --name-only`, so
+      # both sides of a rename count and a non-ASCII path still matches. `true` on any doubt.
       - name: Skip install-failure only when every changed file is docs or PM
         id: diff
         env:
-          EVENT: ${{ github.event_name }}
-          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          BASE: ${{ github.event_name != 'workflow_dispatch' && (github.event.pull_request.base.sha || github.event.before) || '' }}
         run: |
-          if [ "$EVENT" = workflow_dispatch ] || [ -z "$BASE" ] ||
-             [ "$BASE" = 0000000000000000000000000000000000000000 ] ||
-             ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
-            echo "install=true" >> "$GITHUB_OUTPUT"; echo "range unknown — running install-failure"; exit 0
-          fi
-          changed="$(git diff --name-only "$BASE" HEAD)"
-          if [ -z "$changed" ]; then
-            echo "install=true" >> "$GITHUB_OUTPUT"; echo "empty diff — running install-failure"; exit 0
-          fi
-          other="$(printf '%s\n' "$changed" | grep -vE '\.md$|^project-management/|^research/|^handoffs/' || true)"
-          if [ -n "$other" ]; then
-            echo "install=true" >> "$GITHUB_OUTPUT"; printf 'not docs/PM only:\n%s\n' "$other"
-          else
-            echo "install=false" >> "$GITHUB_OUTPUT"; echo "docs and PM only — skipping install-failure"
-          fi
+          install="$(bash code/src/scripts/tests/hook-arming.sh --needs-install-failure "$BASE")"
+          echo "install=$install" >> "$GITHUB_OUTPUT"
+          echo "install-failure needed: $install (base: ${BASE:-none})"
 
   install-failure:
     name: Hook-install failure stops install.sh (ES-01 to ES-03)

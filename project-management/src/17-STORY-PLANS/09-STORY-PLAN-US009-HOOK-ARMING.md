@@ -1304,3 +1304,7 @@ and raised a smaller set of new ones (/implement-story grilling, round 5).
   a new fixture family and a second CI job with its change filter. SPRINT-05 becomes 16 / 11 SP
   and is reconciled at its close, US009 completing there in full (<%DEVELOPER_NAME%>, 17/11/2026: no
   carry into SPRINT-06); the overrun is recorded as a finding at workflow 22.
+- **A `core.hooksPath` inside the working tree but outside `.git` is refused, exit 2** (for
+  example a tracked `.githooks/`). Only a directory under the git common directory is armed, so
+  arming can never rewrite a committed file; the hint names `.git/hooks`. Settled 17/11/2026
+  (round 5, R5-AMB), over arming anything in the repository and arming only an untracked one.
