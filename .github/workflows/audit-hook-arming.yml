@@ -14,8 +14,15 @@
 # one of the notice's silent clauses. The probe's printing cases therefore run with `env -u CI`
 # inside the script; a probe that inherited CI would pass against the suppressed state.
 #
-# UNFILTERED. The arming path spans install.sh, package.json, lefthook.yml, the lockfile and the
-# installer scripts; a path filter would be a hand-kept copy of that set.
+# THE PROBES JOB IS UNFILTERED. The arming path spans install.sh, package.json, lefthook.yml, the
+# lockfile and the installer scripts; a path filter would be a hand-kept copy of that set.
+#
+# ONLY install-failure IS FILTERED, at job level (settled 17/11/2026, Q3): it runs the whole of
+# root install.sh — uv sync, pnpm, docker, sudo — so it runs when a file on that path changes.
+# A workflow-level `paths:` would filter both jobs, so the `changes` job below diffs the event's
+# range and the job is gated on its output. It fails OPEN: a manual run, a new branch (no
+# `before`), or a base it cannot read all run the fixture. A skipped job reports "skipped",
+# which is why this job must never be a required status check.
 #
 # Exit 3 from the script is UNMEASURED and fails the step: a fixture that could not look is
 # never reported clean (code/docs/GATE-REPORTING.md).
@@ -35,6 +42,11 @@ jobs:
   probes:
     name: Hook-arming probes
     runs-on: ubuntu-latest
+    # Measured 17/11/2026 on a workstation with a warm pnpm store: every fixture but
+    # install-failure, run back to back, took 4 min 18 s, most of it hook-paths and graph-reclaim
+    # (several real pre-commit runs each). 20 is about 4x that, for a cold store, the
+    # lefthook 1.13.0 fetch and a slower runner.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -90,15 +102,19 @@ jobs:
         if: success() || failure()
         run: bash code/src/scripts/tests/hook-arming.sh --fixture notice-streams
 
-      - name: Effective hook paths (EC-14 to EC-16)
+      - name: Effective hook paths (EC-14 to EC-16, S-m2)
         if: success() || failure()
         run: bash code/src/scripts/tests/hook-arming.sh --fixture hook-paths
+
+      - name: An existing pre-commit.old is moved aside, never lost (Q2)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture old-backup
 
       - name: Write boundary (ST05, EC-17)
         if: success() || failure()
         run: bash code/src/scripts/tests/hook-arming.sh --fixture write-boundary
 
-      - name: Graph reclaim (EC-05)
+      - name: Graph reclaim (EC-05, S-M1)
         if: success() || failure()
         run: bash code/src/scripts/tests/hook-arming.sh --fixture graph-reclaim
 
@@ -117,9 +133,48 @@ jobs:
   # Its own job because root install.sh needs what the probes job does not: a docker daemon, uv,
   # and passwordless `sudo tee -a /etc/hosts`. A GitHub-hosted runner has all three; the script
   # refuses this fixture on any other host unless --allow-install-sh is given.
+  changes:
+    name: Does install-failure need to run?
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      install: ${{ steps.diff.outputs.install }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Diff the event's range against the install path
+        id: diff
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          paths=(install.sh
+                 code/src/scripts/development/install-hooks.sh
+                 code/src/scripts/development/install-frontend.sh
+                 package.json pnpm-lock.yaml lefthook.yml
+                 code/src/scripts/tests/hook-arming.sh
+                 .github/workflows/audit-hook-arming.yml)
+          if [ "$EVENT" = workflow_dispatch ] || [ -z "$BASE" ] ||
+             [ "$BASE" = 0000000000000000000000000000000000000000 ] ||
+             ! git cat-file -e "$BASE^{commit}" 2>/dev/null; then
+            echo "install=true" >> "$GITHUB_OUTPUT"; echo "range unknown — running install-failure"
+          elif git diff --name-only "$BASE" HEAD -- "${paths[@]}" | grep -q .; then
+            echo "install=true" >> "$GITHUB_OUTPUT"; git diff --name-only "$BASE" HEAD -- "${paths[@]}"
+          else
+            echo "install=false" >> "$GITHUB_OUTPUT"; echo "no install-path file changed — skipping install-failure"
+          fi
+
   install-failure:
     name: Hook-install failure stops install.sh (ES-01 to ES-03)
+    needs: changes
+    if: needs.changes.outputs.install == 'true'
     runs-on: ubuntu-latest
+    # uv sync of the full project, a pnpm install and the hooks step; well under 10 minutes on a
+    # GitHub runner by the shape of the work. This fixture was not run locally (CI-only), so the
+    # figure is an estimate with headroom, not a measurement.
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 

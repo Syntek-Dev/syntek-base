@@ -21,7 +21,9 @@
 # "Armed" is ONE predicate, the same one install-hooks.sh and `--notice` must use: the path
 # `git rev-parse --path-format=absolute --git-path hooks/pre-commit` names, resolved from the
 # checkout root, is a readable, executable regular file carrying lefthook's generated marker
-# — the line `call_lefthook run "pre-commit"`. A marker without the executable bit is unarmed.
+# — the line `call_lefthook run "pre-commit"` — and NOT carrying code-review-graph's appended
+# block (`>>> code-review-graph pre-commit hook >>>`), which swallows lefthook's exit status
+# (settled 17/11/2026, S-M1). A marker without the executable bit is unarmed.
 #
 # Fixtures (--fixture NAME; default `all`):
 #   manifest           No fixture. ST01 (each of install-frontend.sh's pnpm install lines,
@@ -30,23 +32,35 @@
 #                      calls install-hooks.sh --notice), ST03/ST07 and the script's own
 #                      Definition of done, the install.sh numbering (P2), the README edits.
 #   A                  A committed checkout. HP-02, HP-03, HP-04/EC-06, EC-03, EC-07 (--spec),
-#                      EC-01 (a `git worktree add` checkout), ES-04 (binary absent).
+#                      EC-01 (a `git worktree add` checkout), ES-04 (binary absent), and S-M2:
+#                      a fake lefthook first on PATH with none in node_modules is never run —
+#                      the step exits 1 naming the missing project binary (7.4: never PATH).
 #   B                  `git init`, no commits — an unborn HEAD. EC-04.
 #   C                  No `.git` at all. ES-05.
 #   notice             The postinstall through a real `pnpm install`: HP-08, EC-09 to EC-12,
 #                      ES-06 (no repository; git absent from PATH). Positive cases `env -u CI`.
 #   notice-streams     `--notice` stdout/stderr captured separately; nothing written; no
 #                      network call or credential read (strace). Negative control EC-18.
+#                      T-n2: --notice exits 0 on an unknown extra option and when the
+#                      checkout root cannot be entered.
 #   hook-paths         Effective-path states: ordinary, unborn, linked worktree, relative and
 #                      absolute core.hooksPath (clone and worktree), stale marked default hook,
 #                      raw graph hook, marked non-executable hook. EC-15, EC-16; a throwaway
 #                      commit runs its legs. core.hooksPath=/dev/null is a deliberate opt-out:
 #                      the step warns hooks are disabled, arms nothing, exits 0, and --notice
-#                      still prints. Any other unresolvable hooks path exits 2 with an error:.
+#                      prints `git config --unset-all core.hooksPath` (S-m2). Any other
+#                      unresolvable hooks path exits 2 with an error:.
+#   old-backup         Q2: a `pre-commit.old` already beside a non-lefthook hook is moved to a
+#                      timestamped name before lefthook runs, reported, and neither its content
+#                      nor the replaced hook's is lost — default path and core.hooksPath
+#                      (--force). A merely non-executable lefthook hook claims no `.old`.
 #   write-boundary     Full-tree manifests (path, type, mode, link target, SHA-256; ignored and
 #                      untracked included) around the arming step alone. Negative control EC-17.
 #   graph-reclaim      The real, pinned `code-review-graph install` writes the hook first; the
-#                      arming step reclaims and reports it. EC-05.
+#                      arming step reclaims and reports it. EC-05. S-M1: run AFTER arming, the
+#                      tool appends its block to lefthook's hook, which swallows a failing leg;
+#                      that hook is UNARMED, the step removes the block, and a failing leg
+#                      blocks the commit again.
 #   binary-provenance  lefthook 1.13.0 first on PATH; strace proves the project's locked 2.x
 #                      executable did the install. EC-02. Needs registry access and strace.
 #   install-failure    `bash install.sh` in a disposable clone whose hooks directory is a
@@ -90,8 +104,8 @@ Usage:
                  [--quiet]          Print failures, unmeasured checks and the summary only
                  [--help]
 
-Fixtures: manifest A B C notice notice-streams hook-paths write-boundary graph-reclaim
-          binary-provenance install-failure all
+Fixtures: manifest A B C notice notice-streams hook-paths old-backup write-boundary
+          graph-reclaim binary-provenance install-failure all
 
 Exit codes: 0 all held · 1 an expectation failed · 2 script error · 3 unmeasured (never a pass)
 EOF
@@ -114,7 +128,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-ALL_FIXTURES="manifest A B C notice notice-streams hook-paths write-boundary graph-reclaim binary-provenance install-failure"
+ALL_FIXTURES="manifest A B C notice notice-streams hook-paths old-backup write-boundary graph-reclaim binary-provenance install-failure"
 case " $ALL_FIXTURES all " in *" $FIXTURE "*) ;; *) die "Unknown fixture '$FIXTURE'. Use --help." ;; esac
 
 SOURCE="$(cd "$SOURCE" 2>/dev/null && pwd)" || die "--source is not a directory"
@@ -194,7 +208,10 @@ filtered_path() {  # dir names… — a PATH directory with every host executabl
 
 # ── The predicate, the runners and the oracles ────────────────────────────────
 eff_hook() { (cd "$1" && git rev-parse --path-format=absolute --git-path hooks/pre-commit 2>/dev/null); }
-is_armed() { local p; p="$(eff_hook "$1")" || return 1; [[ -f "$p" && -r "$p" && -x "$p" ]] && grep -qF "$MARKER" "$p"; }
+is_armed() {
+  local p; p="$(eff_hook "$1")" || return 1
+  [[ -f "$p" && -r "$p" && -x "$p" ]] && grep -qF "$MARKER" "$p" && ! grep -qF "$GRAPH_MARKER" "$p"
+}
 unarmed() { ! is_armed "$1"; }
 ut_present() { [[ -f "$1/$UNDER_TEST" ]]; }
 RC=0
@@ -205,6 +222,7 @@ run_ut() {     # dir evidence-prefix [env-prefix…] -- [args…]
   printf '%s\n' "$RC" > "$o.rc"
 }
 rc_is() { [[ "$RC" == "$1" ]]; }
+not_() { ! "$@"; }
 rc_nonzero() { [[ "$RC" != "0" ]]; }
 says() { strip "$1.out" "$1.err" | grep -qiE "$2"; }
 reports_path() {   # evidence-prefix dir — names the effective hook, absolutely or root-relative
@@ -213,6 +231,14 @@ reports_path() {   # evidence-prefix dir — names the effective hook, absolutel
 }
 ok_line() { strip "$1.out" | grep -q '✓'; }
 notice_valid()  { [[ "$(cat "$1.rc")" == 0 ]] && grep -qF 'bash install.sh' "$1.out" && [[ ! -s "$1.err" ]]; }
+notice_says()   { [[ "$(cat "$1.rc")" == 0 ]] && grep -qF -- "$2" "$1.out" && [[ ! -s "$1.err" ]]; }   # prefix text
+commit_blocked() {   # dir evidence-prefix — a staged markdownlint failure (MD018) must stop the commit
+  local h name="hook-arming-probe-$RANDOM.md"; h="$(git -C "$1" rev-parse HEAD)"
+  printf '#no space after the hash\n' > "$1/$name"; git -C "$1" add "$name"
+  (cd "$1" && git commit -m "hook-arming probe: must be blocked") >"$2.commit" 2>&1 </dev/null; local rc=$?
+  printf '%s\n' "$rc" > "$2.commit.rc"
+  [[ $rc != 0 && "$(git -C "$1" rev-parse HEAD)" == "$h" ]]
+}
 notice_silent() { [[ "$(cat "$1.rc")" == 0 && ! -s "$1.out" && ! -s "$1.err" ]]; }
 notice() {     # dir evidence-prefix [env-prefix…] — CI is unset unless the prefix sets it
   local d="$1" o="$2"; shift 2
@@ -292,7 +318,8 @@ fx_manifest() {
       bash -c 'head -5 "$1" | grep -q "^# install-hooks.sh —"' _ "$ut"
     check P1 "header declares exit code 2 (install.sh's 'install failed')" "no exit-code line naming 2" \
       bash -c 'head -40 "$1" | grep -iE "exit code" | grep -q 2' _ "$ut"
-    check ST03 "arms through 'pnpm exec lefthook install'" "the house idiom is absent" grep -qF 'pnpm exec lefthook install' "$ut"
+    check ST03 "a non-comment line invokes 'pnpm exec lefthook'" "no executable pnpm exec lefthook call" \
+      bash -c 'grep -vE "^[[:space:]]*#" "$1" | grep -qE "pnpm exec lefthook"' _ "$ut"
     check ST07 "guards with 'git rev-parse --git-dir'" "guard absent" grep -qF 'git rev-parse --git-dir' "$ut"
     check ST07 "never tests '[ -d .git ]'" "a directory test on .git is present" \
       bash -c '! grep -vE "^[[:space:]]*#" "$1" | grep -qE "\[\[? +-d +\"?[^ ]*\.git\"? *\]"' _ "$ut"
@@ -394,6 +421,21 @@ fx_A() {
     check ES-04 "the failure is an err line naming the missing lefthook binary" \
       "no 'error: … lefthook … not found/missing/absent' line" \
       says "$e/no-binary" '^error:.*lefthook.*(not found|missing|absent|not installed|cannot find|can.t find)|^error:.*(not found|missing|absent|not installed|cannot find|can.t find).*lefthook'
+
+    # S-M2 (constraint 7.4 — the project's binary, never PATH): a fake lefthook first on PATH and
+    # none in node_modules. The fake records every execution to a file outside the fixture.
+    local fake="$SCRATCH/fake-lefthook-bin" ran="$SCRATCH/fake-lefthook.ran"
+    mkdir -p "$fake"; rm -f "$ran"
+    printf '#!/bin/sh\necho "fake lefthook $*" >> "%s"\ncase "$1" in version) echo 2.2.2 ;; *) echo "sync hooks: done" ;; esac\nexit 0\n' "$ran" > "$fake/lefthook"
+    chmod +x "$fake/lefthook"
+    check S-M2 "the trap is set: plain 'lefthook' on the child PATH is the fake" "it is not" \
+      bash -c '[[ "$(PATH="$1" command -v lefthook)" == "$2" ]]' _ "$fake:$SCRATCH/path-no-lefthook" "$fake/lefthook"
+    rm -f "$ran"
+    run_ut "$d" "$e/path-lefthook" env PATH="$fake:$SCRATCH/path-no-lefthook" --
+    check S-M2 "with lefthook only on PATH the step exits 1 (requirement missing)" "exit $RC" rc_is 1
+    check S-M2 "an error: line names the missing project binary (node_modules)" "no 'error: … node_modules' line" \
+      says "$e/path-lefthook" '^error:.*node_modules'
+    check S-M2 "the PATH lefthook was never executed" "it ran: $(head -2 "$ran" 2>/dev/null | paste -sd'; ' -)" test ! -e "$ran"
   fi
 }
 
@@ -511,6 +553,24 @@ fx_notice_streams() {
   fi
   run_ut "$d" "$e/ci" env CI=true -- --notice
   check EC-10 "--notice with CI set is silent and exits 0" "it spoke or failed" notice_silent "$e/ci"
+
+  # T-n2: the postinstall must never be what fails an install.
+  run_ut "$d" "$e/bogus" env -u CI -- --notice --bogus
+  check T-n2 "--notice --bogus exits 0 with stderr empty" "exit $RC or stderr written" \
+    bash -c '[[ $1 == 0 && ! -s "$2" ]]' _ "$RC" "$e/bogus.err"
+  # A root it cannot enter: the script's own directory is reachable through the working
+  # directory, but its checkout root (four levels up) has no search permission.
+  local nx="$SCRATCH/notice-noroot"; mkdir -p "$nx/code/src/scripts/development"
+  cp "$d/$UNDER_TEST" "$nx/$UNDER_TEST"
+  (cd "$nx/code/src/scripts" && chmod 000 "$nx" &&
+    if (cd "$nx" 2>/dev/null); then exit 99; fi
+    env -u CI bash development/install-hooks.sh --notice) >"$e/noroot.out" 2>"$e/noroot.err" </dev/null; RC=$?
+  chmod 755 "$nx"
+  if [[ $RC == 99 ]]; then
+    unmeasured T-n2 "the checkout root stayed enterable after chmod 000 (running as root?)"
+  else
+    check T-n2 "--notice exits 0 when the checkout root cannot be entered" "exit $RC" rc_is 0
+  fi
 }
 
 # ── hook-paths — the effective path, every way it can be redirected ───────────
@@ -586,8 +646,9 @@ fx_hook_paths() {
   new_fixture d hp-devnull commit; git -C "$d" config core.hooksPath /dev/null
   manifest "$d/.git/hooks" "$e/devnull.hooks.before" || die "manifest of .git/hooks failed"
   notice "$d" "$e/devnull.n"
-  check P3 "core.hooksPath=/dev/null: --notice still prints on stdout only and exits 0" "oracle rejected it" \
-    notice_valid "$e/devnull.n"
+  check S-m2 "core.hooksPath=/dev/null: --notice prints 'git config --unset-all core.hooksPath' on stdout only, exit 0" \
+    "hint absent, stderr written or non-zero exit" notice_says "$e/devnull.n" 'git config --unset-all core.hooksPath'
+
   run_ut "$d" "$e/devnull.arm" --
   check P3 "core.hooksPath=/dev/null: the step is an opt-out and exits 0" "exit $RC" rc_is 0
   check P3 "core.hooksPath=/dev/null: the step says hooks are disabled by that setting" \
@@ -614,6 +675,41 @@ fx_hook_paths() {
   check P3 "unresolvable core.hooksPath: the step fails with exit 2" "exit $RC" rc_is 2
   check P3 "unresolvable core.hooksPath: the failure is an err-idiom 'error:' line" "no 'error:' line on stderr" \
     bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.err" | grep -q "^error:"' _ "$e/unresolvable.arm"
+}
+
+# ── old-backup — a pre-commit.old already present is never lost (Q2) ─────────
+hook_dir_hashes() { find "$1" -maxdepth 1 -type f -exec sha256sum {} + 2>/dev/null | cut -d' ' -f1 | LC_ALL=C sort; }
+fx_old_backup() {
+  bold "▸ old-backup — an existing pre-commit.old is moved aside, never overwritten"
+  local e="$OUTPUT/old-backup" d variant p hd ho hh moved
+  for variant in default hookspath; do
+    new_fixture d "ob-$variant" commit
+    if ! ut_present "$d"; then fail Q2 "$variant: $UNDER_TEST absent in the fixture — nothing to arm with"; return; fi
+    [[ $variant == hookspath ]] && git -C "$d" config core.hooksPath .githooks
+    p="$(eff_hook "$d")"; hd="${p%/pre-commit}"; mkdir -p "$hd"
+    printf '#!/bin/sh\necho hand-written hook %s\n' "$variant" > "$p"; chmod +x "$p"
+    printf 'the original pre-commit.old (%s), which must survive\n' "$variant" > "$hd/pre-commit.old"
+    ho="$(sha256sum "$hd/pre-commit.old" | cut -d' ' -f1)"; hh="$(sha256sum "$p" | cut -d' ' -f1)"
+    run_ut "$d" "$e/$variant" --
+    hook_dir_hashes "$hd" > "$e/$variant.hashes"
+    moved="$(cd "$hd" && compgen -G 'pre-commit.old.?*' | head -1)"
+    check Q2 "$variant: the step exits 0 with a pre-commit.old already present" "exit $RC" rc_is 0
+    check Q2 "$variant: the effective hook is armed" "unarmed" is_armed "$d"
+    check Q2 "$variant: the existing .old was moved to a timestamped pre-commit.old.<…> in the same dir" "no such file" \
+      test -n "$moved"
+    check Q2 "$variant: the move is reported" "output names neither ${moved:-the new name} nor 'timestamp'/'moved'" \
+      bash -c 'o="$(sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err")"; { [[ -n $2 ]] && grep -qF "$2" <<< "$o"; } || grep -qiE "timestamp|moved" <<< "$o"' _ "$e/$variant" "$moved"
+    check Q2 "$variant: the original .old content survives in the hook dir" "its hash is gone" grep -qxF "$ho" "$e/$variant.hashes"
+    check Q2 "$variant: the replaced hook's content survives in the hook dir" "its hash is gone" grep -qxF "$hh" "$e/$variant.hashes"
+  done
+
+  new_fixture d ob-nonexec commit
+  run_ut "$d" "$e/nonexec.arm" --; p="$(eff_hook "$d")"; chmod -x "$p"
+  run_ut "$d" "$e/nonexec" --
+  check Q2 "non-executable lefthook hook: the step exits 0 and re-arms" "exit $RC or unarmed" \
+    bash -c '[[ $1 == 0 ]]' _ "$RC"
+  check Q2 "non-executable lefthook hook: the output claims no .old was kept" "it mentions a .old" \
+    bash -c '! sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF ".old"' _ "$e/nonexec"
 }
 
 # ── write-boundary — the arming step writes only into the effective hook dir ──
@@ -697,6 +793,29 @@ fx_graph_reclaim() {
   check EC-05 "lefthook reclaims the effective hook" "unarmed" is_armed "$d"
   check EC-05 "the graph block is gone from the hook" "graph marker still present" bash -c '! grep -qF "$2" "$1"' _ "$p" "$GRAPH_MARKER"
   check EC-05 "the reclaim is reported" "no 'replac…' in the output" says "$e/arm" 'replac'
+
+  # S-M1 (settled 17/11/2026): the graph tool run AFTER arming appends its block to lefthook's
+  # hook. The marker and the executable bit survive, but the block's `|| true` tail swallows
+  # lefthook's exit status, so a failing leg no longer blocks. Such a hook is UNARMED.
+  $crg install --repo "$d" -y --platform claude >"$e/graph.append" 2>&1 </dev/null
+  if ! { grep -qF "$GRAPH_MARKER" "$p" && grep -qF "$MARKER" "$p" && [[ -x "$p" ]]; } 2>/dev/null; then
+    unmeasured S-M1 "code-review-graph install did not append its block to lefthook's executable hook"
+    return
+  fi
+  pass S-M1 "precondition: the graph block is appended to lefthook's hook, marker and executable bit intact"
+  check S-M1 "precondition: with the block appended, a failing leg does NOT block the commit" \
+    "the commit was blocked — the case's premise does not hold here" not_ commit_blocked "$d" "$e/appended"
+  notice "$d" "$e/appended.n"
+  check S-M1 "appended hook is unarmed: --notice prints on stdout only, exit 0" "oracle rejected it" notice_valid "$e/appended.n"
+  run_ut "$d" "$e/appended.arm" --
+  check S-M1 "the step exits 0 over the appended hook" "exit $RC" rc_is 0
+  check S-M1 "it reports removing the code-review-graph block" "no 'code-review-graph' with 'removed'/'reclaim' in the output" \
+    bash -c 'o="$(sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err")"; grep -qi code-review-graph <<< "$o" && grep -qiE "removed|reclaim" <<< "$o"' _ "$e/appended.arm"
+  check S-M1 "it does not claim the hook was already armed" "it printed 'already armed'" \
+    bash -c '! grep -qi "already armed" "$1.out" "$1.err"' _ "$e/appended.arm"
+  check S-M1 "afterwards the effective hook is armed (shared predicate)" "unarmed" is_armed "$d"
+  check S-M1 "afterwards no graph marker remains" "graph marker still present" bash -c '! grep -qF "$2" "$1"' _ "$p" "$GRAPH_MARKER"
+  check S-M1 "afterwards a failing leg blocks the commit again" "the commit went through" commit_blocked "$d" "$e/rearmed"
 }
 
 # ── binary-provenance — a different lefthook first on PATH ────────────────────
@@ -780,7 +899,8 @@ run_one() {
   rm -rf "${OUTPUT:?}/$1"; mkdir -p "$OUTPUT/$1"
   case "$1" in
     manifest) fx_manifest ;; A) fx_A ;; B) fx_B ;; C) fx_C ;; notice) fx_notice ;;
-    notice-streams) fx_notice_streams ;; hook-paths) fx_hook_paths ;; write-boundary) fx_write_boundary ;;
+    notice-streams) fx_notice_streams ;; hook-paths) fx_hook_paths ;; old-backup) fx_old_backup ;;
+    write-boundary) fx_write_boundary ;;
     graph-reclaim) fx_graph_reclaim ;; binary-provenance) fx_binary_provenance ;; install-failure) fx_install_failure ;;
   esac
 }

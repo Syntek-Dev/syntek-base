@@ -1237,6 +1237,23 @@ know (/implement-story grilling, round 2). The lockfile now pins **lefthook 2.2.
 - **A missing lefthook binary exits 1**, `install.sh`'s "requirement missing"; a failed
   `lefthook install` stays exit 2.
 
+### Code-review answers — 17/11/2026
+
+Settled with <%DEVELOPER_NAME%> after the independent code review returned Request changes
+(/implement-story grilling, round 3).
+
+- **A lefthook hook carrying code-review-graph's appended block is unarmed.** Re-running
+  `code-review-graph install` on an armed checkout appends a block whose `|| true` becomes the
+  hook's exit status, so the commit checks stop blocking commits. The armed predicate now also requires the
+  absence of that block; `--notice` reminds, and the step reports that it removed the block. This
+  amends the 09/10/2026 predicate.
+- **An existing `pre-commit.old` is moved to a timestamped name** in the same directory before
+  lefthook runs, and reported, so lefthook neither fails on it nor overwrites it under `--force`.
+- **Only the `install-failure` job is path-filtered**, on the files it depends on; the fast probes
+  job runs on every push and pull request. Both jobs carry `timeout-minutes`.
+- **The lefthook binary must be the project's own** (`node_modules`), never a `PATH` fallback
+  through `pnpm exec` — constraint 7.4 as written, not a new decision.
+
 README verification checks both required P3 edits separately: replace the removed `pnpm prepare`
 setup command with `bash install.sh`, and add the `install-hooks.sh` Development-scripts row.
 The existing claim sentence stays unchanged. This implements HP-06, not new scope.
