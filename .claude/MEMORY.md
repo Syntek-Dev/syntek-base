@@ -44,6 +44,19 @@ an env value; one that does is a defect to fix, not a script to hand over. The c
 each env-using script lives in `.claude/CLAUDE.md` Section 6 and the `.claude/settings.json` deny
 list. A deny rule that blocks a read is the rule working; never work around it.
 
+### Never share a checkout's node_modules, or any working-tree path, into a scratch copy — 17/11/2026
+
+During US009's review (11:22, 17/11/2026) a workflow verifier symlinked the live `node_modules`
+into a scratch copy to save an install; that copy's `pnpm install` rewrote the shared tree to
+point into its own `/tmp` directory, which was then deleted, and lefthook and the lint legs broke
+in the working tree until `install-frontend.sh --local` repaired it (SEC-06, QA-08; F-003 in
+`project-management/src/20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md`). A scratch copy is
+made with `git archive HEAD | tar -x` into a `mktemp -d` directory and provisions its **own**
+dependencies; nothing in it — `node_modules`, `.git`, `.venv`, a hooks directory — may be a
+symlink, bind mount or shared path back into a checkout, and a subagent brief that creates scratch
+copies says so in terms. `code/src/scripts/tests/hook-arming.sh` now carries a tripwire on the live
+`node_modules`; other scratch-making procedures have none.
+
 ---
 
 ## Project Patterns

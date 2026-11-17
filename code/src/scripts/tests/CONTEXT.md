@@ -181,9 +181,11 @@ and `sudo tee -a /etc/hosts`: it runs under GitHub Actions and is refused elsewh
 unmeasured, unless `--allow-install-sh` is given. In CI it is the one job filtered by path, and
 the filter is inverted: it is skipped only when every changed file is documentation or PM
 (`*.md`, `project-management/**`, `research/**`, `handoffs/**`), and runs otherwise — and always
-on a manual run or a range it cannot read. `binary-provenance` fetches lefthook `1.13.0`
-from the registry and traces with `strace`; `graph-reclaim` runs the real `code-review-graph` at
-the script's pinned version. Exit codes extend the folder's contract by one: `0`, `1`, `2`, and
+on a manual run or a range it cannot read. `machine-spec` is the one fixture outside hook arming:
+it puts a healthy fake of every host probe `install.sh --spec` reads first on `PATH`, breaks one
+per case, and requires exit `0` with a written spec — Linux only, unmeasured elsewhere.
+`binary-provenance` fetches lefthook `1.13.0` from the registry and traces with `strace`;
+`graph-reclaim` runs the real `code-review-graph` at the script's pinned version. Exit codes extend the folder's contract by one: `0`, `1`, `2`, and
 **`3` unmeasured** — a fixture that could not look, which is never a pass
 (`code/docs/GATE-REPORTING.md`). Its `--output` is the one exception to the rule below: it runs
 on the host and bind-mounts nothing, so the directory may sit anywhere outside its scratch tree.

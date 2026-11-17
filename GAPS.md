@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 16/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 17/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -1278,3 +1278,32 @@ Tasks, last row). It is recorded here on 16/11/2026, not backdated. It is not US
 Finding F-030 in "project-management/src/20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. Add the row in declaration order, alongside the three
 in the previous entry, through the protected-path rule. No map or story claims this entry.
+
+---
+
+## 17/11/2026 — twelve `pnpm install` invocations still run dependency lifecycle scripts
+
+**Type:** Active gap
+**Summary:** US009 removed `package.json`'s `prepare` script, so no `pnpm install` arms the git
+hooks any more ("project-management/src/15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md").
+The ADR declined its Option D, `--ignore-scripts` on every other invocation, and left the surface
+open: TM-02 in "project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US009-HOOK-ARMING.md",
+whose assessment Section 7.2 required this register entry as its second limb. The ADR's follow-on
+said this file carried it from 17/09/2026; it did not until today (measured 18/09, 28/09, 30/09
+and 17/11/2026). **The sweep re-measured 17/11/2026: 18 executable `pnpm install` invocations,
+6 carrying `--ignore-scripts`, 12 not.** The suppressed six are `install-frontend.sh` (3),
+`code/src/scripts/mobile/install.sh` (2, mobile-only) and `code/src/scripts/dependencies/audit.sh`
+(1). The unsuppressed twelve are `.claude/hooks/lib/check-lockfiles.sh` (1),
+`.github/workflows/claude.yml` (5), `syntax-js-ts.yml` (2), `syntax-markdown.yml` (1),
+`audit-deps.yml` (1), `test-api.yml` (1) and US009's own `audit-hook-arming.yml` (1, its CI
+setup step, which the story plan named in advance). Each runs every dependency's lifecycle scripts. They
+arm nothing now, but the surface is open for the next lifecycle script anyone adds. The probe runner's
+fixture install (`hook-arming.sh`) runs unsuppressed on purpose in a disposable clone and is not
+counted. Finding
+F-026 (with F-025 on the ADR's stale counts) in
+"project-management/src/20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. A later story decides per invocation whether to add
+`--ignore-scripts` or to record why that invocation needs lifecycle scripts, and re-runs the sweep
+first by quoted text rather than by these line counts. The root `package.json` `postinstall`
+(the `--notice` line) is the one lifecycle script this repository now relies on, so suppressing
+it on a developer-facing channel removes the notice there. No map or story claims this entry.

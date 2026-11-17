@@ -10,7 +10,9 @@ by copying it; nothing else lives here until a bug is filed.
 project-management/src/21-BUGS/
 ├── CONTEXT.md              ← this file (orientation)
 ├── CLAUDE.md               ← operating rules
-└── BUG-US000-TEMPLATE.md   ← copy this to file a bug report
+├── BUG-US000-TEMPLATE.md   ← copy this to file a bug report
+├── BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md ← a bug a story found, filed under the story that found it
+└── BUG-<DESCRIPTOR>-DD-MM-YYYY.md       ← a bug found outside any story's build
 ```
 
 ## Where this sits — the record tier

@@ -1,0 +1,261 @@
+# QA Implementation Review — US009 The git hooks arm on purpose at install
+
+| Field        | Value                                                                                                                                                                                                                                                                                                                                               |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**    | US009 — The git hooks arm on purpose at install, and the README claim that they already do becomes true                                                                                                                                                                                                                                             |
+| **Date**     | 17/11/2026                                                                                                                                                                                                                                                                                                                                          |
+| **Sprint**   | SPRINT-05 — the sprint's stretch `Should`, re-estimated 5 to 8 SP; the sprint at 16 / 11 SP, reconciled at its close                                                                                                                                                                                                                                |
+| **Reviewer** | Independent Claude agent (`qa-tester` skill, Opus), `22-implementation-documentation` Steps 3 and 4. It authored none of the story's edits                                                                                                                                                                                                          |
+| **Branch**   | `us009/hook-arming` at `97821a8`. The story's last commit is `fd11604`; `97821a8` is the CI fix outside the story (F-004)                                                                                                                                                                                                                           |
+| **Plan doc** | `../PLANNING/QA-PLAN-US009-HOOK-ARMING.md`                                                                                                                                                                                                                                                                                                          |
+| **Outcome**  | **Blocked**: 35 plan scenarios. 24 Pass, 7 Pass for the step only (their `install.sh` leg not yet walked) and 4 unmeasured (ES-01 to ES-03 CI-only, EC-13 not yet walked). 9 story security criteria: 8 Pass (ST05 with a ruled deviation) and 1 N/A (ST06, retired). Nothing failed: the block is the unmeasured work. Deviations are in Section 4 |
+
+---
+
+## 1. Scope
+
+**What was built and reviewed:**
+
+- **`code/src/scripts/development/install-hooks.sh`, new.** It has two modes:
+  - an **arming mode**, which `install.sh` runs as Phase 1 Step 9;
+  - a read-only **`--notice`** mode, which the `package.json` `postinstall` runs.
+- **`install.sh` changes:**
+  - Step 9 calls the script with `|| exit $?`;
+  - the usage list runs 1 to 9, with Phase 2 as 10 and 11;
+  - the header names the hooks;
+  - `generate_machine_spec` is now best-effort. This fixes a pre-existing defect (F-002).
+- **Manifest changes:**
+  - `package.json` loses `prepare` and gains the `postinstall`;
+  - `pnpm-workspace.yaml` has a comment on `allowBuilds` `lefthook: false`.
+- **The probe runner and its CI:**
+  - `code/src/scripts/tests/hook-arming.sh`, new, with 15 fixtures;
+  - `.github/workflows/audit-hook-arming.yml`, new;
+  - the HP-07 grep in `audit-template.yml`.
+- **Documentation:** the README edits and the layer docs.
+
+There is no backend, API or frontend.
+
+**What changed against the plan.** The scope matches the plan. Six rounds of red, review and
+verification widened the hook-location rules and the definition of "armed". Each ruling is
+recorded in the plan's closing answer sections and listed in Section 4. One fixture sits outside
+hook arming: `machine-spec`, the regression test for F-002.
+
+**Evidence, in order of preference:**
+
+1. **Probe check IDs** — the bracketed IDs `hook-arming.sh` prints, such as `[EC-15]`. This
+   reviewer ran `bash code/src/scripts/tests/hook-arming.sh --fixture all --output /tmp/us009-qa-walk-17-11/reports`
+   on 17/11/2026 at `97821a8`, against the working tree, and read every result line:
+   - **371 passed, 0 failed, 1 unmeasured** (`[ES-01]`), exit `3`;
+   - the tripwire on this checkout's `node_modules` did not fire.
+
+   The earlier runs this record does not re-derive are in the automated record,
+   `../../18-TESTS/AUTOMATED/US009-TEST-STATUS.md`.
+
+2. **Manual row IDs** — from `../../18-TESTS/MANUAL/US009-MANUAL-TESTING.md`, walked in part on
+   17/11/2026: 22 rows Pass, 0 Fail and 14 not yet walked. The unwalked rows are every row that
+   needs:
+   - the real `bash install.sh` in a clean clone (sudo `/etc/hosts`, docker, uv);
+   - CI;
+   - a signing tester other than the author.
+3. **CI** — run `44135924803`, "Audit — Template Integrity", on the push of `97821a8`.
+   `audit-hook-arming.yml` has **never run**; it triggers on pull requests and on pushes to the
+   four promotion branches (F-005).
+
+A step-only pass is never reported as an `install.sh` pass (`code/docs/GATE-REPORTING.md`). The
+probe fixtures run `install-hooks.sh` on its own, and run `install.sh --spec` and
+`install.sh --help` only. Neither runs a full install.
+
+## 2. Acceptance-criteria gaps closed
+
+All nine gaps were `[RESOLVED] 17/09/2026` into the story. Each is closed here against the
+shipped change.
+
+| Gap                                                      | Status                                 | Evidence                                                                                                                                                                                                                                                                                                                                                                               |
+| -------------------------------------------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AC-GAP-1 — `prepare` armed at unchosen moments           | Resolved                               | `prepare` is gone and no lifecycle script runs `lefthook install` or touches `.git` (`[ST02]`, SUPPLY-02). A real `pnpm install --frozen-lockfile` without `--ignore-scripts` writes nothing under `.git/` and leaves the hook unarmed (`[HP-08]`, `[ST02]` in the `notice` fixture). `allowBuilds` keeps lefthook's own installer from running (`[QA-05]`). PA-01 and PA-02 are below |
+| AC-GAP-2 — `[ -d .git ]` false in a worktree             | Resolved                               | The guard is `git rev-parse --git-dir`, never `[ -d .git ]` (`[ST07]` ×2). In a `git worktree add` checkout the step arms, and a throwaway commit there runs the legs (`[EC-01]` ×6). The notice prints in an unarmed worktree (`[EC-12]`)                                                                                                                                             |
+| AC-GAP-3 — the `--ignore-scripts` assertion's scope      | Resolved                               | Exactly three `install-frontend.sh` invocations, each asserted on its own line (`[ST01]` ×4, SUPPLY-04). The repository-wide count has moved: **this walk measured 18 invocations, 6 suppressed and 12 not**, while the findings record states 17 / 6 / 11. The difference is `.github/workflows/audit-hook-arming.yml:78`, which this story added. See Section 5                      |
+| AC-GAP-4 — the binary had no mechanism                   | Resolved                               | With `lefthook` 1.13.0 first on the child `PATH`, the traced install ran only the project's locked 2.2.2 executable (`[EC-02]` ×6). A `PATH` lefthook with none in `node_modules` is never run, and the step exits 1 naming the missing project binary (`[S-M2]` ×4, `[ES-04]`). The invocation is `pnpm exec lefthook` (`[ST03]`)                                                     |
+| AC-GAP-5 — a hard fail abandoned later steps             | Resolved by design; runtime unmeasured | Step 9 sits after Step 8 and before the Phase 2 banner (`[P2]`, FLAGS-01). ES-03, the proof that Steps 5 to 8 ran before a failure, is CI-only and unmeasured                                                                                                                                                                                                                          |
+| AC-GAP-6 — the probe was put in a job that cannot run it | Resolved; CI half unmeasured           | The generation job keeps only the grep. It passed on both answer sets in run `44135924803` (HP-07, CI-01). The probes have their own workflow, with one step per fixture (`[R4-01]`), which has never run (F-005)                                                                                                                                                                      |
+| AC-GAP-7 — overwriting another tool's hook silently      | Resolved                               | A hand-written hook is replaced and reported (`[EC-03]`). A raw code-review-graph hook is reclaimed and reported (`[EC-05]`, STAGE-02). An existing `pre-commit.old` is moved to a timestamped name, and neither file's content is lost (`[Q2]` ×14). A symlinked hook is foreign: its target is never touched (`[SEC-02]` ×23)                                                        |
+| AC-GAP-8 — `^2.1.10` is a range, not a pin               | Resolved; stale text owed              | The lockfile pins 2.2.2, and the traced executable is the locked 2.2.2 (`[EC-02]`, STAGE-03). The story's ST03 and assessment 7.8 still cite 2.1.10 (F-019)                                                                                                                                                                                                                            |
+| AC-GAP-9 — Phase 1 and Phase 2 numbers collided          | Resolved                               | `usage()` lists Phase 1 as 1 to 9 and Phase 2 as 10 and 11. The body headers read `Phase 2 · Step 10` and `Step 11` (`[P2]` ×7, FLAGS-01, executed in a scratch clone)                                                                                                                                                                                                                 |
+
+## 3. Scenario verification
+
+Each result is marked against the build at `97821a8`. **"Pass — step"** means the probe proved
+the scenario for `install-hooks.sh` on its own. Its `install.sh` leg is a manual row that has not
+been walked; Section 6 carries that leg.
+
+### Happy Path
+
+| ID    | Scenario (from plan)                                                      | Result      | Evidence                                                                                                                                                                                          |
+| ----- | ------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| HP-01 | The last step of Phase 1 runs `lefthook install` and prints its `ok` line | Pass — step | `[HP-01]` ×2: the `✓` line names the hook path it wrote. Step 9 is the last Phase 1 step (`[P2]`). The full `install.sh` run is INSTALL-01, not walked                                            |
+| HP-02 | The hook is lefthook's, by the effective-path predicate                   | Pass — step | `[HP-02]` ×2: the step reads the effective hook as readable, executable and lefthook's generated layout. INSTALL-03 is not walked                                                                 |
+| HP-03 | A throwaway commit runs the pre-commit legs                               | Pass — step | `[HP-03]`. A commit through a redirected hook passes `[EC-15]`. INSTALL-04, a person's commit after a real install, is not walked                                                                 |
+| HP-04 | A re-run completes, still lefthook's, not duplicated                      | Pass — step | `[HP-04]` ×2 and `[EC-06]`. RERUN-01 and RERUN-02 are not walked                                                                                                                                  |
+| HP-05 | `--ignore-scripts` on the three lines; no `prepare`                       | Pass        | `[ST01]` ×4 and `[ST02]` ×3; SUPPLY-01 and SUPPLY-02. The lines are now `:71`, `:104` and `:113`                                                                                                  |
+| HP-06 | The README sentence is unmodified and true, plus the two P3 edits         | Pass        | `[HP-06]` ×3; CLAIM-01 to CLAIM-05. The sentence is at `.copier/README.md:450` and untouched by the three diff hunks                                                                              |
+| HP-07 | The generated `install.sh` carries the step on both poles                 | Pass        | CI-01: run `44135924803`, `[3/4] Template Generation` success, "the generated install.sh carries the git-hooks step" for `INCLUDE_MOBILE=false` and `true`. This was a push run: no PR exists yet |
+| HP-08 | The unarmed notice names `bash install.sh`, writes nothing, exits 0       | Pass        | `notice` `[HP-08]` ×3 through a real `pnpm install`, with `CI` unset                                                                                                                              |
+
+### Error States
+
+| ID    | Scenario (from plan)                                        | Result      | Evidence                                                                                                                                                                              |
+| ----- | ----------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ES-01 | A failing `lefthook install` is reported in the `err` idiom | Unmeasured  | `install-failure` printed `[ES-01]` UNMEASURED: it is CI-only and needs docker, uv and `sudo tee -a /etc/hosts`. FAIL-01 is not walked; `audit-hook-arming.yml` has never run (F-005) |
+| ES-02 | The installer's exit code is 2                              | Unmeasured  | As ES-01 (FAIL-02). An unresolvable hooks path does fail the step with exit 2 in the err idiom (`[P3]`), but that is the step, not the installer                                      |
+| ES-03 | Steps 5 to 8 had already run                                | Unmeasured  | As ES-01 (FAIL-03). The design half is under AC-GAP-5                                                                                                                                 |
+| ES-04 | No `lefthook`: the message names the missing binary         | Pass        | `[ES-04]` ×2 and `[S-M2]` ×4; FAIL-04. Exit 1 ("requirement missing"), per the red-phase answers (Section 4)                                                                          |
+| ES-05 | No `.git`: the skip is reported and the install continues   | Pass — step | `[ES-05]` ×4: exit 0, the skip is named, no `.git` is created. REPO-01, the overall `install.sh` exit code, is not walked                                                             |
+| ES-06 | A notice that cannot evaluate never fails `pnpm install`    | Pass        | `[ES-06]` ×5: with no repository, with `git` absent from `PATH`, and with both, the install exits 0 and prints no notice                                                              |
+
+### Edge Cases
+
+| ID    | Scenario (from plan)                                         | Result      | Evidence                                                                                                                          |
+| ----- | ------------------------------------------------------------ | ----------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| EC-01 | A `git worktree add` checkout arms                           | Pass — step | `[EC-01]` ×6, including a throwaway commit in the worktree. REPO-02 runs `install.sh` there and is not walked                     |
+| EC-02 | The project binary is used over a different-major `PATH` one | Pass        | `[EC-02]` ×6 (strace `execve`); STAGE-03                                                                                          |
+| EC-03 | A hand-written hook is replaced, and the developer is told   | Pass — step | `[EC-03]` ×3: "Replaced a hook lefthook does not manage … (kept as pre-commit.old)". STAGE-01 runs `install.sh` and is not walked |
+| EC-04 | An unborn HEAD arms                                          | Pass        | `[EC-04]` ×3; REPO-03                                                                                                             |
+| EC-05 | lefthook reclaims a code-review-graph hook, and says so      | Pass        | `[EC-05]` ×4, using the real `code-review-graph` 2.3.9; STAGE-02                                                                  |
+| EC-06 | Two runs leave a byte-identical hook                         | Pass        | `[EC-06]`                                                                                                                         |
+| EC-07 | `install.sh --spec` arms nothing                             | Pass        | `[EC-07]` ×3; FLAGS-02. `machine-spec` (`[MS-*]`, 17 cases × 3) proves `--spec` exits 0 under every failing host probe            |
+| EC-08 | `--help` lists the step, contiguous                          | Pass        | `[P2]`; FLAGS-01, executed                                                                                                        |
+| EC-09 | Armed: the notice is silent                                  | Pass        | `[EC-09]`                                                                                                                         |
+| EC-10 | `CI` set: silent, with the printing case run with `CI` unset | Pass        | `[EC-10]` ×2. The printing cases (`[HP-08]`, `[EC-12]`) run under `env -u CI` (the script's `notice` fixture)                     |
+| EC-11 | No `.git`: silent, exit 0                                    | Pass        | `[EC-11]`                                                                                                                         |
+| EC-12 | An unarmed worktree prints the notice; armed, it is silent   | Pass        | `[EC-12]` ×3                                                                                                                      |
+| EC-13 | No notice during Step 4 of a real `install.sh`               | Unmeasured  | INSTALL-02 is not walked: it needs the real install. No probe covers it                                                           |
+| EC-14 | A raw code-review-graph hook still prints the notice         | Pass        | `[EC-14]`                                                                                                                         |
+| EC-15 | Only the effective path arms or silences                     | Pass        | `[EC-15]` ×33 across the ordinary, unborn, worktree, relative, absolute and worktree-common-dir cases; REPO-04                    |
+| EC-16 | A marked but non-executable hook is unarmed                  | Pass        | `[EC-16]` ×4; REPO-05                                                                                                             |
+| EC-17 | An ignored-file change fails the manifest oracle             | Pass        | `[EC-17]`; SUPPLY-06                                                                                                              |
+| EC-18 | A stderr-only notice fails the stream oracle                 | Pass        | `[EC-18]`; SUPPLY-07                                                                                                              |
+
+### Permission and Access
+
+| ID    | Scenario (from plan)                                                  | Result | Evidence                                                                                                                                                                                                                                                                                                                                                                                     |
+| ----- | --------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| PA-01 | `gh pr create`'s `pnpm install` (no `--ignore-scripts`) arms nothing  | Pass   | Shown by running the same command, `pnpm install --frozen-lockfile` with lifecycle scripts enabled, in a real checkout: nothing is written under `.git/` and the hook stays unarmed (`[HP-08]`, `[ST02]`). The `check-lockfiles.sh:147` wrapper itself was not run, because `gh pr create` raises a real PR. On that channel the notice is swallowed by `2>&1`: an accepted residual (F-016) |
+| PA-02 | CI's `pnpm install` arms nothing, and the notice is silent under `CI` | Pass   | The same invocation arms nothing (`[ST02]`), and it is silent and exits 0 with `CI` set (`[EC-10]`). **On a real runner it is unmeasured**: the probes job has never run (F-005)                                                                                                                                                                                                             |
+| PA-03 | The `postinstall` only prints to stdout                               | Pass   | `[PA-03]` ×5: stdout only, stderr empty, no file write, no network connection, no credential file opened (strace). SUPPLY-03 read the body                                                                                                                                                                                                                                                   |
+
+### Security acceptance criteria (story `ST`)
+
+| ID    | Criterion                                                                   | Result               | Evidence                                                                                                                                                                                                                                                                                                                                                            |
+| ----- | --------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ST01  | `--ignore-scripts` on the three `install-frontend.sh` lines                 | Pass                 | `[ST01]` ×4; SUPPLY-01. Three of 18 invocations measured on 17/11/2026, which is not a statement about the repository's posture                                                                                                                                                                                                                                     |
+| ST02  | No `prepare`; no lifecycle script writes under `.git/`                      | Pass                 | `[ST02]` ×3; SUPPLY-02                                                                                                                                                                                                                                                                                                                                              |
+| ST02b | The `postinstall` announces and arms nothing, and is silent where specified | Pass                 | `[ST02b]` ×2, `[PA-03]`, `[EC-09]`, `[EC-10]`, `[EC-11]`                                                                                                                                                                                                                                                                                                            |
+| ST03  | The project's own binary, through `pnpm exec`                               | Pass                 | `[ST03]`, `[EC-02]`, `[S-M2]`                                                                                                                                                                                                                                                                                                                                       |
+| ST04  | The step runs after dependency installation                                 | Pass                 | Step 9 follows Step 4 and Step 8 (`[P2]`)                                                                                                                                                                                                                                                                                                                           |
+| ST05  | No new fetch, no credential read, no write outside the boundary             | Pass, with deviation | `write-boundary` `[ST05]` ×5: the default case changed only `.git/hooks/pre-commit` and `.git/info/lefthook.checksum`. The boundary is the effective hook directory plus that file, per the red-phase answers (Section 4). There is no fetch or credential read in `--notice` (`[PA-03]`). The arming mode has no network trace; TODO(verify) whether one is needed |
+| ST06  | Retired 17/09/2026                                                          | N/A                  | No subject: `prepare` is removed                                                                                                                                                                                                                                                                                                                                    |
+| ST07  | The guard is `git rev-parse --git-dir`                                      | Pass                 | `[ST07]` ×2, `[EC-01]`                                                                                                                                                                                                                                                                                                                                              |
+| ST08  | The assertions neither depend on nor mask `:79-81`                          | Pass                 | SUPPLY-04: each assertion is found by content and checks one line. The `sudo rm -rf` defect it guards was fixed upstream in `8dceffb` before this story began. The artefacts still calling it live are F-024                                                                                                                                                        |
+
+## 4. Deviations from plan
+
+Each departure follows a ruling with the developer recorded in
+`../../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`.
+
+| Deviation                                                                                                                 | Justification                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The ST05 / 7.13 boundary is the effective hook directory plus `.git/info/lefthook.checksum`                               | _Red-phase answers — 17/11/2026_: every `lefthook install` writes that file. Manual row INSTALL-05 was amended at the walk to match, with finding F-027 owed. ST05 and 7.13's stale text is F-018                                                                     |
+| A configured `core.hooksPath` inside the git common directory is armed with `--force`; `/dev/null` is an opt-out (exit 0) | Red-phase answers: lefthook 2.2.2 refuses a `core.hooksPath` without `--force`. Probed by `[P3]` ×9                                                                                                                                                                   |
+| A missing binary exits 1, not 2                                                                                           | Red-phase answers: this is `install.sh`'s "requirement missing". ES-02's exit 2 still holds for a failed `lefthook install`                                                                                                                                           |
+| A hooks directory whose real path is outside the git common directory is refused with exit 2, whatever the config scope   | Review-security-QA and confirmation-round answers: global and system values, `GIT_CONFIG`, `include.path`, a symlinked `.git/hooks` and a worktree-root `.githooks` are all refused. Probed by `[GLOBAL]`, `repo-shapes` (`[R4-03]`, `[R5]`, `[R5-AMB]`, `[R5-hint]`) |
+| "Armed" is lefthook 2.2.2's generated layout, with nothing after its last line                                            | Code-review and targeted-verification answers: an appended tail swallows the exit status. Probed by `[S-M1]`, `[R5-QA-01]` and `[R5-QA-02]`. A lefthook upgrade fails loudly (F-006)                                                                                  |
+| The plan's "16 invocations" now reads 18 / 6 / 12                                                                         | Not a ruling: the repository moved. See Section 5                                                                                                                                                                                                                     |
+
+## 5. New edge cases discovered
+
+| ID                                         | Scenario                                                                                                                                                                          | Result     | Evidence                                                                                                                                                                                                                         | Fold back?                                                                                                                                     |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| S-M1                                       | `code-review-graph install` re-run on an armed checkout appends a block that lets a failing leg through                                                                           | Pass       | `[S-M1]` ×9: the hook reads unarmed, the step removes the block, and a failing leg blocks the commit again                                                                                                                       | Yes, already in the plan's code-review answers                                                                                                 |
+| Q2 / R3-S-m1                               | An existing `pre-commit.old` is moved to a timestamped name, even when lefthook then fails                                                                                        | Pass       | `[Q2]` ×14, `[R3-S-m1]` ×3                                                                                                                                                                                                       | Yes, plan; accumulation is F-007                                                                                                               |
+| SEC-02                                     | A symlinked `pre-commit` is foreign, and its target is never touched                                                                                                              | Pass       | `[SEC-02]` ×23                                                                                                                                                                                                                   | Yes, plan                                                                                                                                      |
+| QA-02 / QA-03                              | A project nested in an unrelated repository skips; `GIT_DIR` and `GIT_WORK_TREE` are ignored                                                                                      | Pass       | `[QA-02]` ×5, `[QA-03]` ×4                                                                                                                                                                                                       | Yes, plan                                                                                                                                      |
+| SEC-03 / R4-03 / R4-QA-06                  | A broken or bare repository exits 2                                                                                                                                               | Pass       | `[SEC-03]` ×6, `[R4-03]` ×8, `[R4-QA-06]` ×5                                                                                                                                                                                     | Yes, plan                                                                                                                                      |
+| R4-SEC-03                                  | The install-failure change filter: docs or PM only skips, a rename out of code counts both sides, and any doubt runs the job                                                      | Pass       | `[R4-SEC-03]` ×11. The GitHub BASE expression is reviewed, not run (F-014)                                                                                                                                                       | Yes, plan                                                                                                                                      |
+| MS-*                                       | `install.sh --spec` survives any failing host probe                                                                                                                               | Pass       | `machine-spec`, 17 cases × 3; F-002 is the bug                                                                                                                                                                                   | Yes, `../../21-BUGS/BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md`                                                                          |
+| `pnpm install` sweep                       | The story added one unsuppressed invocation, `.github/workflows/audit-hook-arming.yml:78`, so this walk counts 18 / 6 / 12. The findings record (F-025, F-026) states 17 / 6 / 11 | Recorded   | `git grep -n 'pnpm install'` on 17/11/2026, comment and help lines excluded, along with the probe runner's own scratch invocation. settled 17/11/2026: the `GAPS.md` row of 17/11/2026 carries 18 / 6 / 12 (finding F-025/F-026) | Yes: a finding owed to `../../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md` after F-027, and the `GAPS.md` row of 17/11/2026 re-counted |
+| INSTALL-05, SUPPLY-04, SUPPLY-05, CLAIM-03 | Manual rows with `QA` `—`: the write-boundary manifests, the assertion form, the unchanged `install-frontend.sh`, and `CONTRIBUTING.md`                                           | Pass       | The manual rows of those IDs                                                                                                                                                                                                     | No — ST05, ST08 and HP-06 already cover them                                                                                                   |
+| INSTALL-06, CLOSE-01                       | Manual rows with `QA` `—`: colour-independent output, and the independent sign-off                                                                                                | Not walked | INSTALL-06 is read from a real install's output, and CLOSE-01 needs the signing tester                                                                                                                                           | No                                                                                                                                             |
+
+## 6. Deferred scenarios
+
+| Scenario                                                                                                                                        | Reason                                                                                                                                       | When to address                                                          |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ES-01, ES-02, ES-03 (FAIL-01 to FAIL-03)                                                                                                        | `install-failure` needs docker, uv and `sudo tee -a /etc/hosts`, so it runs under GitHub Actions only; `audit-hook-arming.yml` has never run | The US009 PR, at `23-pr-and-review` (F-005); read both jobs before merge |
+| The `install.sh` legs of HP-01 to HP-04, ES-05, EC-01, EC-03 and EC-13 (INSTALL-01 to -04, -06, RERUN-01, RERUN-02, STAGE-01, REPO-01, REPO-02) | The real `bash install.sh` in a clean clone writes `/etc/hosts` with sudo and generates `.env.dev` secrets. An agent may not run it          | The developer's walk, before `23-pr-and-review`                          |
+| PA-02 on a real runner                                                                                                                          | The probes job has never run                                                                                                                 | The US009 PR (F-005)                                                     |
+| PA-01's notice on the PR-creation channel                                                                                                       | Swallowed by `check-lockfiles.sh:147` `2>&1`: an accepted residual                                                                           | The next story touching that hook (F-016)                                |
+| The manual guide's sign-off (CLOSE-01)                                                                                                          | It needs a tester other than the author                                                                                                      | The developer's walk                                                     |
+
+## 7. Accessibility observations
+
+**N/A**: there is no rendered screen (plan Section 3), so axe, keyboard order and equal-weight
+actions have no subject. The one property the plan names is that no output line relies on colour
+alone. The step's output, read with colour stripped from this walk's transcripts, carries:
+
+- `✓ Git hooks armed …`
+- `⚠ Replaced …`
+- `error: lefthook not found …`
+
+So `err` carries a word without a glyph, as `install.sh`'s own `err` helper does. INSTALL-06
+reads this from a real install and has not been walked, so the property is observed, not signed.
+
+## 8. GDPR & security observations
+
+- **PII at rest** — N/A. No personal data is processed. The `.env.*` files are never copied into
+  a fixture (runner header), and no value from one appears in any record of this walk.
+- **PII in responses** — N/A.
+- **Rights paths** — N/A.
+- **Security gate** — there are no endpoints. The supply-chain boundary is the gate:
+  - the `postinstall` cannot write, fetch or read a credential (`[PA-03]`);
+  - no lifecycle script arms the hooks (`[ST02]`);
+  - the arming step writes only inside its boundary (`[ST05]`);
+  - it refuses any hooks directory outside the git common directory (`[GLOBAL]`, `repo-shapes`).
+
+  The probe runner's tripwire did not fire. The incident of 11:22 on 17/11/2026 (F-003) is why it
+  exists. The security verdict itself is the audit record's,
+  `../../10-SECURITY/AUDITS/IMPLEMENTATION/AUDIT-IMPL-US009-HOOK-ARMING-17-11-2026.md`.
+
+## Sign-off checklist
+
+- [x] Every plan scenario (HP/ES/EC/PA) addressed. Each is Pass, or unmeasured with a reason in
+      Section 6
+- [x] Acceptance-criteria gaps closed or carried forward with evidence
+- [x] Deviations from the plan justified, each against a recorded ruling
+- [x] New edge cases recorded; the sweep re-count is owed to the findings record
+- [ ] Accessibility observations confirmed against the build. The colour-independence property is
+      observed in the probe transcripts; INSTALL-06 is not walked
+- [x] GDPR & security observations confirmed. GDPR is N/A
+- [x] Coverage floors met for all modules in scope. N/A: no Python in the diff, and the probe
+      runner is the automated proof
+- [ ] Manual testing sign-off. `../../18-TESTS/MANUAL/US009-MANUAL-TESTING.md` is walked in part:
+      22 Pass, 0 Fail, 14 not walked
+- [ ] Reviewer approval. **Blocks merge**: ES-01 to ES-03 are unmeasured and 14 manual rows are
+      not walked
+
+---
+
+## Cross-references
+
+- `../PLANNING/QA-PLAN-US009-HOOK-ARMING.md` — the pre-development plan verified here
+- `../../02-STORIES/US009.md` — the story under review
+- `../../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md` — the closing answer sections every
+  deviation in Section 4 cites
+- `../../18-TESTS/AUTOMATED/US009-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US009-MANUAL-TESTING.md`
+  — the downstream test records
+- `../../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md` — F-002 to F-026. F-027 (the
+  INSTALL-05 amendment) and the sweep re-count are owed to it
+- `../../15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md` — the decision
+  AC-GAP-1 rests on
+- `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
+- `code/docs/GATE-REPORTING.md` — why a step-only pass and an unmeasured fixture are never
+  reported as an `install.sh` pass
