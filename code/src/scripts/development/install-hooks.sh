@@ -31,21 +31,23 @@
 # "Armed" is one predicate, shared by both modes and by tests/hook-arming.sh: `pre-commit` in
 # the hooks DIRECTORY `git rev-parse --path-format=absolute --git-path hooks` names (never the
 # hook file resolved directly, which follows a symlink to its target) is a readable,
-# executable regular file — not a symlink — carrying lefthook's generated marker, the line
-# `call_lefthook run "pre-commit"`, plus the case-sensitive string `LEFTHOOK` (lefthook
-# 2.2.2's own ownership test, isLefthookFile), and NOT carrying code-review-graph's appended block
-# (`>>> code-review-graph pre-commit hook >>>`) — that block's `|| true` tail becomes the
-# hook's exit status, so the checks stop blocking commits. A marker without the executable bit
-# is unarmed too. A symlinked hook is foreign: the link itself is moved aside, its target and
-# the target's directory are never touched. A foreign hook that merely mentions LEFTHOOK would
-# be overwritten in place by lefthook, so it is copied to pre-commit.old first.
+# executable regular file — not a symlink — in lefthook 2.2.2's GENERATED LAYOUT: line 1 is
+# `#!/bin/sh`; `call_lefthook()` is defined and `LEFTHOOK` used on non-comment lines; and its
+# last non-blank line is exactly `call_lefthook run "pre-commit" "$@"`, with nothing after it.
+# Any appended tail — code-review-graph's block (`>>> code-review-graph pre-commit hook >>>`)
+# or an arbitrary `|| true` — becomes the hook's exit status, so the checks stop blocking
+# commits: unarmed. A hook without the executable bit is unarmed too. A symlinked hook is
+# foreign: the link itself is moved aside, its target and the target's directory are never
+# touched. lefthook overwrites in place any hook carrying the string LEFTHOOK, so lefthook's
+# hook with a tail, and a foreign hook mentioning LEFTHOOK, are copied to pre-commit.old first.
 #
 # Which repository: the one whose root is this project's root, found from there with the GIT_*
 # repository-location variables cleared — GIT_DIR, GIT_WORK_TREE, GIT_COMMON_DIR,
 # GIT_INDEX_FILE, GIT_OBJECT_DIRECTORY and GIT_NAMESPACE. A project nested inside an unrelated
 # repository (no .git of its own) skips, exit 0. A .git at the root that git cannot read — or
-# that git climbs past to an outer repository — exits 2 with git's own error, as do
-# core.bare=true and a core.worktree pointing elsewhere.
+# that git climbs past to an outer repository — exits 2 with git's own error, as does a
+# repository git itself reports as bare (`rev-parse --is-bare-repository`) or whose work tree
+# (`rev-parse --show-toplevel`) is elsewhere — git's effective answers, never one config scope.
 #
 # Where: the hooks directory's REAL path must lie inside the repository's git common directory
 # (`git rev-parse --git-common-dir`), checked for both what git resolves and what core.hooksPath
@@ -87,7 +89,6 @@ if $NOTICE; then
   trap 'exit 0' EXIT
 fi
 
-MARKER='call_lefthook run "pre-commit"'
 GRAPH_MARKER='>>> code-review-graph pre-commit hook >>>'
 
 # ── Helpers — install.sh's shape (glyph + colour), defined here because it exports none ──
@@ -110,9 +111,11 @@ Usage:
                               or with git absent. Always exits 0, whatever else is passed
 
 Skips (exit 0) with no git repository or when nested inside another repository, and arms
-nothing when core.hooksPath=/dev/null — that setting is a deliberate opt-out. A local or
-worktree core.hooksPath is armed with --force; a global or system one is refused. Only the
-project's own lefthook (node_modules) is ever run. A symlinked hook is replaced as a link.
+nothing when core.hooksPath=/dev/null — that setting is a deliberate opt-out. The hooks
+directory must lie inside this repository's git directory (its git common directory, .git);
+one outside it — shared, machine-wide or in the working tree — is refused, and a redirected
+one inside it is armed with --force. Only the project's own lefthook (node_modules) is ever
+run. A symlinked hook is replaced as a link.
 An existing pre-commit.old beside a hook lefthook does not manage is moved to
 pre-commit.old.<timestamp> first.
 
@@ -138,14 +141,30 @@ cd "$PROJECT_ROOT" || die "cannot enter the checkout root $PROJECT_ROOT"
 # so the project's own checkout is always found from its root and nothing else.
 unset GIT_DIR GIT_WORK_TREE GIT_COMMON_DIR GIT_INDEX_FILE GIT_OBJECT_DIRECTORY GIT_NAMESPACE
 
-has_marker()   { grep -qF "$MARKER" "$1" 2>/dev/null; }
 has_graph()    { grep -qF "$GRAPH_MARKER" "$1" 2>/dev/null; }
 # lefthook 2.2.2's own ownership test (isLefthookFile): the case-sensitive string LEFTHOOK.
 # A hook carrying it is overwritten in place with no pre-commit.old; one without it is renamed.
 has_lefthook() { grep -qF 'LEFTHOOK' "$1" 2>/dev/null; }
+# Lefthook's own hook is recognised by lefthook 2.2.2's GENERATED LAYOUT, never by substrings:
+# line 1 is `#!/bin/sh`; `call_lefthook()` is defined and `LEFTHOOK` used on non-comment lines;
+# and the last non-blank line is exactly `call_lefthook run "pre-commit" "$@"`. lefthook_body
+# is the same without the last-line rule — lefthook's hook, possibly with a tail appended.
+LAST_LINE='call_lefthook run "pre-commit" "$@"'
+lefthook_body() {
+  local code
+  [[ "$(head -n 1 "$1" 2>/dev/null)" == '#!/bin/sh' ]] || return 1
+  code="$(grep -vE '^[[:space:]]*#' "$1" 2>/dev/null)" || return 1
+  grep -qF 'LEFTHOOK' <<< "$code" && grep -qE '^[[:space:]]*call_lefthook\(\)' <<< "$code" &&
+    grep -qxF "$LAST_LINE" <<< "$code"
+}
+lefthook_layout() {
+  lefthook_body "$1" && [[ "$(grep -v '^[[:space:]]*$' "$1" 2>/dev/null | tail -n 1)" == "$LAST_LINE" ]]
+}
 # A symlinked hook is foreign whatever it points at: git runs the target, which nothing here owns.
+# Any tail after lefthook's last line — code-review-graph's block or an arbitrary `|| true` —
+# becomes the hook's exit status, so the checks stop blocking commits: unarmed.
 is_armed() {
-  [[ -f "$1" && ! -L "$1" && -r "$1" && -x "$1" ]] && has_marker "$1" && has_lefthook "$1" && ! has_graph "$1"
+  [[ -f "$1" && ! -L "$1" && -r "$1" && -x "$1" ]] && lefthook_layout "$1" && ! has_graph "$1"
 }
 
 # The real path of a directory or file that may not exist yet: the nearest existing ancestor
@@ -166,27 +185,31 @@ real_path() {
 # directory test on .git: a `git worktree add` checkout has .git as a FILE.
 repo_state="absent"; git_msg=""; repo_top=""
 detect_repo() {
-  local gd own="$PROJECT_ROOT/.git" want wt
+  local gd own="$PROJECT_ROOT/.git" want
   if [[ -e "$own" || -L "$own" ]]; then
     if ! git_msg="$(git rev-parse --git-dir 2>&1 >/dev/null)"; then repo_state="broken"; return; fi
     gd="$(git rev-parse --path-format=absolute --git-dir 2>/dev/null)" || gd=""
-    if [[ -f "$own" ]]; then want="$(sed -n 's/^gitdir: *//p' "$own" 2>/dev/null | head -1)"
+    if [[ -f "$own" ]]; then
+      # A gitfile's value, with the trailing CR and whitespace git itself tolerates removed.
+      want="$(sed -n 's/^gitdir: *//p' "$own" 2>/dev/null | head -1 | tr -d '\r' | sed 's/[[:space:]]*$//')"
       [[ "$want" == /* ]] || want="$PROJECT_ROOT/$want"
     else want="$own"
     fi
     if [[ -z "$gd" || ! "$gd" -ef "$want" ]]; then
       git_msg="$(git --git-dir="$own" rev-parse --git-dir 2>&1 >/dev/null)" || true
-      git_msg="${git_msg:-fatal: invalid repository} (git resolved ${gd:-nothing} instead of $own)"
+      git_msg="${git_msg:-fatal: invalid repository}"$'\n'"(this script's diagnosis: git resolved ${gd:-no git directory}, not $want, which $own names)"
       repo_state="broken"; return
     fi
-    if [[ "$(git config --bool --get core.bare 2>/dev/null)" == "true" ]]; then repo_state="bare"; return; fi
-    if wt="$(git config --get core.worktree 2>/dev/null)" && [[ -n "$wt" ]]; then
-      [[ "$wt" == /* ]] || wt="$want/$wt"
-      if [[ ! "$wt" -ef "$PROJECT_ROOT" ]]; then repo_top="$wt"; repo_state="worktree-elsewhere"; return; fi
-    fi
+    # git's EFFECTIVE answers, never a config value read across every scope: a core.bare or
+    # core.worktree that only an unrelated scope sets does not change this repository.
+    if [[ "$(git rev-parse --is-bare-repository 2>/dev/null)" == "true" ]]; then repo_state="bare"; return; fi
     repo_top="$(git rev-parse --show-toplevel 2>/dev/null)" || repo_top=""
-    if [[ -n "$repo_top" && "$repo_top" -ef "$PROJECT_ROOT" ]]; then repo_state="ok"; else
-      git_msg="fatal: the work tree resolves to ${repo_top:-nothing}, not $PROJECT_ROOT"; repo_state="broken"; fi
+    if [[ -n "$repo_top" && "$repo_top" -ef "$PROJECT_ROOT" ]]; then repo_state="ok"
+    elif [[ -n "$repo_top" ]]; then repo_state="worktree-elsewhere"
+    else
+      git_msg="fatal: no work tree (this script's diagnosis: git rev-parse --show-toplevel failed for $PROJECT_ROOT)"
+      repo_state="broken"
+    fi
     return
   fi
   if git_msg="$(git rev-parse --git-dir 2>&1 >/dev/null)"; then
@@ -195,6 +218,16 @@ detect_repo() {
   else
     repo_state="absent"
   fi
+}
+
+# `git config --<scope> --unset-all <key>`, in the scope the effective value came from.
+unset_in_scope() {
+  local key="$1" sc
+  sc="$(git config --show-scope --get "$key" 2>/dev/null | cut -f1)" || sc=""
+  case "$sc" in
+    local|worktree|global|system) printf 'git config --%s --unset-all %s' "$sc" "$key" ;;
+    *) printf 'git config --local --unset-all %s' "$key" ;;
+  esac
 }
 
 # core.hooksPath: whether it is set, its value, scope and origin. Read through `git config`,
@@ -243,42 +276,57 @@ resolve_hook() {
 # GIT_CONFIG, GIT_CONFIG_COUNT/PARAMETERS or included value, a symlinked .git/hooks, and a
 # local path outside the repository — and a working-tree path such as a tracked .githooks/, so
 # arming can never rewrite a committed file. out_dir names the offending real path.
-common_dir=""; out_dir=""
+common_dir=""; out_dir=""; out_is_common=false
 hooks_outside() {
-  local c r
+  local c r p
   c="$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)" || return 1
   common_dir="$(real_path "$c")" || common_dir="$c"
-  local p
+  out_is_common=false
   for p in "$hook_dir" "$cfg_dir"; do
     [[ -n "$p" ]] || continue
     r="$(real_path "$p")" || r="$p"
-    case "$r" in "$common_dir"/*) ;; *) out_dir="$r"; return 0 ;; esac
+    case "$r" in
+      "$common_dir"/*) ;;
+      "$common_dir") out_dir="$r"; out_is_common=true; return 0 ;;   # the git dir itself
+      *) out_dir="$r"; return 0 ;;
+    esac
   done
   return 1
 }
 
-# The remedy, by where the setting came from. Never the literal relative `.git/hooks`: from a
-# linked worktree that names the worktree's own .git FILE.
+# The default hooks directory as written, symlinks NOT resolved — what a symlinked .git/hooks
+# looks like before --path-format=absolute follows it.
+lexical_hooks() {
+  local c
+  c="$(git rev-parse --git-common-dir 2>/dev/null)" || return 1
+  [[ "$c" == /* ]] || c="$PROJECT_ROOT/$c"
+  printf '%s/hooks\n' "${c%/}"
+}
+
+# The remedy, chosen by where the effective core.hooksPath came from (its scope and origin)
+# and by nothing else in the environment. Claims a core.hooksPath source only when one is set.
+# Never the literal relative `.git/hooks`: from a linked worktree that names the worktree's own
+# .git FILE. Local and worktree values may be multi-valued, hence --unset-all.
 remedy() {
-  local f fr
-  if [[ -n "${GIT_CONFIG:-}" ]] && git config --file "$GIT_CONFIG" --get core.hooksPath >/dev/null 2>&1; then
-    printf 'it comes from the GIT_CONFIG file %s — unset GIT_CONFIG or remove core.hooksPath from that file' "$GIT_CONFIG"; return
-  fi
-  if [[ "$hp_origin" == "command line:" || -n "${GIT_CONFIG_PARAMETERS:-}" ]] ||
-     { [[ -n "${GIT_CONFIG_COUNT:-}" ]] && [[ "$hp_scope" == "command" ]]; }; then
-    printf 'it comes from the environment (GIT_CONFIG_COUNT / GIT_CONFIG_KEY_<n> or GIT_CONFIG_PARAMETERS) — unset those variables'; return
-  fi
+  local f fr lex
   if ! $hp_set; then
-    if [[ -L "$hook_dir" ]]; then
-      printf '%s is a symlink to %s — replace the symlink with a real directory: rm %s && mkdir %s' "$hook_dir" "$out_dir" "$hook_dir" "$hook_dir"
+    lex="$(lexical_hooks)" || lex=""
+    if [[ -n "$lex" && -L "$lex" ]]; then
+      printf '%s is a symlink to %s — replace the symlink with a real directory: rm %s && mkdir %s' "$lex" "$out_dir" "$lex" "$lex"
     else
-      printf 'the hooks directory %s resolves outside the repository — replace any symlink on that path with a real directory' "$hook_dir"
+      printf 'the hooks directory %s resolves to %s — replace any symlink on that path with a real directory' "$hook_dir" "$out_dir"
     fi
     return
   fi
   case "$hp_scope" in
     global) printf 'remove the global setting: git config --global --unset core.hooksPath' ;;
     system) printf 'remove the system setting: git config --system --unset core.hooksPath' ;;
+    command)
+      if [[ "$hp_origin" == file:* ]]; then
+        printf 'it comes from the GIT_CONFIG file %s — unset GIT_CONFIG or remove core.hooksPath from that file' "${hp_origin#file:}"
+      else
+        printf 'it comes from the environment (GIT_CONFIG_COUNT / GIT_CONFIG_KEY_<n> or GIT_CONFIG_PARAMETERS) — unset those variables'
+      fi ;;
     local|worktree)
       # An included file, rather than the repository's own config or config.worktree.
       f="${hp_origin#file:}"; [[ "$f" == /* ]] || f="$PROJECT_ROOT/$f"
@@ -286,12 +334,15 @@ remedy() {
       if [[ "$hp_origin" == file:* && "$fr" != "$common_dir/config" && "$fr" != "$common_dir"/*config.worktree ]]; then
         printf 'it comes from %s, included by this repository'"'"'s config — remove core.hooksPath there' "$f"
       else
-        printf 'point it inside the repository: git config --%s core.hooksPath %s/hooks (or git config --%s --unset core.hooksPath)' \
-          "$hp_scope" "$common_dir" "$hp_scope"
+        printf 'point it at a directory inside the repository: git config --%s --unset-all core.hooksPath && git config --%s core.hooksPath %s/hooks (or just the --unset-all)' \
+          "$hp_scope" "$hp_scope" "$common_dir"
       fi ;;
-    *) printf 'it comes from %s config — remove it there, or git config --local core.hooksPath %s/hooks' "$hp_scope" "$common_dir" ;;
+    *) printf 'remove it where it is set, or: git config --local --unset-all core.hooksPath && git config --local core.hooksPath %s/hooks' "$common_dir" ;;
   esac
 }
+
+# Where the refused setting came from, for the refusal line — only when one is set.
+hp_source() { $hp_set && printf ' (core.hooksPath from %s config)' "${hp_scope:-unknown}"; return 0; }
 
 # ── --notice — the postinstall. Reads only; every path out is exit 0 ─────────────
 say() { printf '  \033[33m⚠\033[0m  %s\n' "$*"; }   # stdout: the notice's only channel
@@ -303,9 +354,9 @@ if $NOTICE; then
     absent|nested) exit 0 ;;
     broken) say "This checkout's git repository cannot be read, so its hooks cannot be checked — run: bash install.sh to see git's error"
             exit 0 ;;
-    bare) say "This checkout's repository has core.bare=true, so no hook can be armed — fix it: git config --unset core.bare && bash install.sh"
+    bare) say "This checkout's repository has core.bare=true, so no hook can be armed — fix it: $(unset_in_scope core.bare) && bash install.sh"
           exit 0 ;;
-    worktree-elsewhere) say "This checkout's core.worktree points elsewhere (${repo_top:-unknown}), so no hook can be armed — fix it: git config --unset core.worktree && bash install.sh"
+    worktree-elsewhere) say "This checkout's core.worktree points elsewhere (${repo_top:-unknown}), so no hook can be armed — fix it: $(unset_in_scope core.worktree) && bash install.sh"
           exit 0 ;;
   esac
   read_hooks_path
@@ -327,7 +378,11 @@ if $NOTICE; then
     exit 0
   fi
   if hooks_outside; then
-    say "Git hooks are not armed: the hooks directory $out_dir is outside this repository (core.hooksPath / .git/hooks) — $(remedy), then run: bash install.sh"
+    if $out_is_common; then
+      say "Git hooks are not armed: the hooks directory$(hp_source) is the git directory $common_dir itself; it must be a subdirectory of it — $(remedy), then run: bash install.sh"
+    else
+      say "Git hooks are not armed: the hooks directory $out_dir$(hp_source) is outside this repository's git directory $common_dir — $(remedy), then run: bash install.sh"
+    fi
     exit 0
   fi
   is_armed "$hook" && exit 0
@@ -351,10 +406,10 @@ case "$repo_state" in
     err "the git repository at $PROJECT_ROOT is broken or cannot be read — git said: $(printf '%s' "$git_msg" | grep -m1 -E 'fatal|error' || printf '%s' "$git_msg" | head -1)"
     exit 2 ;;
   bare)
-    err "core.bare=true in the repository at $PROJECT_ROOT — a bare repository has no work tree to arm; nothing armed (fix: git config --unset core.bare)"
+    err "core.bare=true in the repository at $PROJECT_ROOT — a bare repository has no work tree to arm; nothing armed (fix: $(unset_in_scope core.bare))"
     exit 2 ;;
   worktree-elsewhere)
-    err "core.worktree points at ${repo_top:-another directory}, not $PROJECT_ROOT — nothing armed (fix: git config --unset core.worktree)"
+    err "core.worktree points the work tree at ${repo_top:-another directory}, not $PROJECT_ROOT — nothing armed (fix: $(unset_in_scope core.worktree))"
     exit 2 ;;
 esac
 
@@ -375,7 +430,11 @@ if ! resolve_hook; then
 fi
 
 if hooks_outside; then
-  err "the hooks directory $out_dir${hp_set:+ (core.hooksPath from ${hp_scope:-unknown} config)} is outside this repository's git directory $common_dir — refusing to arm a hooks directory beyond this repository; nothing armed"
+  if $out_is_common; then
+    err "the hooks directory$(hp_source) is the git directory $common_dir itself — it must be a subdirectory of $common_dir; nothing armed"
+  else
+    err "the hooks directory $out_dir$(hp_source) is outside this repository's git directory $common_dir — refusing to arm a hooks directory beyond this repository; nothing armed"
+  fi
   err "  $(remedy)"
   exit 2
 fi
@@ -393,27 +452,30 @@ if ! lh_version="$(pnpm exec lefthook version 2>/dev/null)" || [[ -z "$lh_versio
   exit 1
 fi
 
-# The third-claimant report: classify what is there before anything changes it, in lefthook's
-# own terms. A hook carrying LEFTHOOK is overwritten in place — lefthook's own (marker present)
-# needs nothing kept, but anyone else's is copied to pre-commit.old first. A hook without it is
-# renamed to pre-commit.old by lefthook. A symlink is moved aside HERE, as a link, so lefthook
-# never writes through it into its target.
+# The third-claimant report: classify what is there before anything changes it. lefthook
+# itself overwrites IN PLACE any hook carrying the string LEFTHOOK (its isLefthookFile) and
+# renames any other to pre-commit.old. So: lefthook's own generated hook, merely
+# non-executable, is rewritten with nothing to keep; lefthook's hook with a tail appended, and a
+# foreign hook that merely mentions LEFTHOOK (even only in a comment), are COPIED to
+# pre-commit.old first, because lefthook would keep nothing; anything else lefthook renames. A
+# symlink is moved aside HERE, as a link, so lefthook never writes through it into its target.
 state="absent"
-if [[ -L "$hook" ]]; then                                            state="symlink"
+if [[ -L "$hook" ]]; then                                  state="symlink"
 elif [[ -e "$hook" ]]; then
-  if has_lefthook "$hook" && has_marker "$hook" && has_graph "$hook"; then state="graph-appended"
-  elif is_armed "$hook";                                       then state="armed"
-  elif has_lefthook "$hook" && has_marker "$hook";             then state="lefthook-unarmed"
-  elif has_lefthook "$hook";                                   then state="claims-lefthook"
-  elif has_graph "$hook";                                      then state="graph-raw"
-  else                                                              state="foreign"
+  if lefthook_body "$hook" && has_graph "$hook";  then state="graph-appended"
+  elif is_armed "$hook";                          then state="armed"
+  elif lefthook_layout "$hook";                   then state="lefthook-unarmed"
+  elif lefthook_body "$hook";                     then state="tail-appended"
+  elif has_lefthook "$hook";                      then state="claims-lefthook"
+  elif has_graph "$hook";                         then state="graph-raw"
+  else                                                 state="foreign"
   fi
 fi
 
 # An existing pre-commit.old in the hooks dir — never beside a symlink's target — is moved to
 # a timestamped name first, and reported at once, so the report survives a later failure.
 case "$state" in
-  symlink|claims-lefthook|graph-raw|foreign)
+  symlink|graph-appended|tail-appended|claims-lefthook|graph-raw|foreign)
     if [[ -e "$hook_dir/pre-commit.old" || -L "$hook_dir/pre-commit.old" ]]; then
       stamp="$(date +%Y%m%d%H%M%S)"; moved_old="$hook_dir/pre-commit.old.$stamp"; n=1
       while [[ -e "$moved_old" || -L "$moved_old" ]]; do moved_old="$hook_dir/pre-commit.old.$stamp-$n"; n=$((n + 1)); done
@@ -428,7 +490,7 @@ if [[ "$state" == "symlink" ]]; then
   if ! mv -n -- "$hook" "$hook_dir/pre-commit.old" || [[ -e "$hook" || -L "$hook" ]]; then
     die "cannot move the symlinked hook $hook aside — nothing armed"
   fi
-elif [[ "$state" == "claims-lefthook" ]]; then
+elif [[ "$state" == "graph-appended" || "$state" == "tail-appended" || "$state" == "claims-lefthook" ]]; then
   # lefthook would overwrite it in place, keeping nothing: keep a copy first.
   cp -p -- "$hook" "$hook_dir/pre-commit.old" || die "cannot copy the existing hook $hook aside — nothing armed"
 fi
@@ -454,11 +516,13 @@ fi
 case "$state" in
   absent)           ok "Git hooks armed → $hook (lefthook $lh_version)" ;;
   armed)            ok "Git hooks already armed — refreshed $hook (lefthook $lh_version)" ;;
-  graph-appended)   warn "Removed the code-review-graph block appended to lefthook's hook at $hook — it made the hook's checks non-blocking"
+  graph-appended)   warn "Removed the code-review-graph block appended to lefthook's hook at $hook — it made the hook's checks non-blocking; the hook as it was is kept as pre-commit.old"
+                    ok "Git hooks re-armed → $hook (lefthook $lh_version)" ;;
+  tail-appended)    warn "Removed a tail appended after lefthook's last line at $hook — it made the hook's checks non-blocking; the hook as it was is kept as pre-commit.old"
                     ok "Git hooks re-armed → $hook (lefthook $lh_version)" ;;
   lefthook-unarmed) warn "Restored lefthook's non-executable hook at $hook in place"
                     ok "Git hooks armed → $hook (lefthook $lh_version)" ;;
-  claims-lefthook)  warn "Replaced a hook lefthook does not manage at $hook — it mentions LEFTHOOK, so lefthook overwrites it in place; a copy was kept as pre-commit.old"
+  claims-lefthook)  warn "Replaced a hook lefthook does not manage at $hook — it mentions LEFTHOOK, which lefthook takes as its own and overwrites in place; a copy was kept as pre-commit.old"
                     ok "Git hooks armed → $hook (lefthook $lh_version)" ;;
   symlink)          warn "Replaced a symlinked hook at $hook — the link itself, kept as pre-commit.old; its target was not touched"
                     ok "Git hooks armed → $hook (lefthook $lh_version)" ;;
