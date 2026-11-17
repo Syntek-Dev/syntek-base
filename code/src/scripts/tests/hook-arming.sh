@@ -1575,10 +1575,15 @@ fx_write_boundary() {
     "it fired $(grep -c . "$ran" 2>/dev/null) time(s)" test ! -e "$ran"
   check QA-01 "stale node_modules: nothing outside the hooks dir changed (node_modules, lockfile included)" \
     "changed: $(head -3 "$e/stale.outside" | paste -sd' ' -)" test ! -s "$e/stale.outside"
-  # The premise, measured last because it mutates the fixture: here `pnpm exec` DOES install.
+  # The premise, measured last because it mutates the fixture: here `pnpm exec` DOES attempt an
+  # install. Two signals, because pnpm's verify-deps install honours CI: with CI set it runs
+  # frozen, refuses the stale manifest before any postinstall, and says so; without CI it
+  # installs and the postinstall fires. Either one proves the step would have triggered it.
   (cd "$d" && pnpm exec lefthook version) >"$e/stale.control" 2>&1 </dev/null
   if [[ -s "$ran" ]]; then
     pass QA-01 "control: in the same stale fixture 'pnpm exec lefthook version' runs an install (the postinstall fired)"
+  elif grep -qF 'The install that runs before scripts failed' "$e/stale.control"; then
+    pass QA-01 "control: in the same stale fixture 'pnpm exec lefthook version' attempts an install (frozen under CI, refused)"
   else
     unmeasured QA-01 "control: 'pnpm exec' did not install here, so the stale premise was not demonstrated"
   fi
