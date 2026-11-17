@@ -80,8 +80,9 @@ verifiers. Most severe first.
 
 - [x] Backend coverage — N/A, no Python changed in the story's surface.
 - [x] Template and HTMX-partial tests — N/A.
-- [ ] Full suite green — `bash code/src/scripts/tests/hook-arming.sh` on the final working tree:
-      **429 passed · 0 failed · 1 unmeasured** (was 371 · 0 · 1 before workflow 23). ES-01 (`install-failure`) is **unmeasured** until CI runs; exit 3 is not a pass.
+- [x] Full suite green — `bash code/src/scripts/tests/hook-arming.sh` on the final working tree:
+      **429 passed · 0 failed · 1 unmeasured** (was 371 · 0 · 1 before workflow 23). ES-01 (`install-failure`) is **unmeasured** until CI runs; exit 3 is not a pass. CI run `44174073751` on `160c730`:
+      probes 429 / 0 / 0 and `install-failure` 7 / 0 / 0 — nothing unmeasured.
 - [x] Every acceptance criterion tested — traced criterion by criterion in Step 2; every workflow
       23 fix has a probe that was red before it and, mutated back in a scratch copy, red again.
 
@@ -106,11 +107,11 @@ verifiers. Most severe first.
 
 ## 4. Required actions before merge
 
-| Action                                                                                        | Finding      | Owner  | Status          |
-| --------------------------------------------------------------------------------------------- | ------------ | ------ | --------------- |
-| Read both `audit-hook-arming.yml` jobs on the PR — ES-01, the change filter's BASE expression | F-005, F-014 | Claude | Open            |
-| Fill FAIL-01 to FAIL-03 in the manual guide and Sections 2–4 of the automated record from CI  | F-005        | Claude | Open            |
-| Developer sign-off on the three security implementation records                               | —            | Sam    | Done 17/11/2026 |
+| Action                                                                                        | Finding      | Owner  | Status                                            |
+| --------------------------------------------------------------------------------------------- | ------------ | ------ | ------------------------------------------------- |
+| Read both `audit-hook-arming.yml` jobs on the PR — ES-01, the change filter's BASE expression | F-005, F-014 | Claude | Done 17/11/2026 — CI run `44174073751`, all green |
+| Fill FAIL-01 to FAIL-03 in the manual guide and Sections 2–4 of the automated record from CI  | F-005        | Claude | Done 17/11/2026 — CI run `44174073751`, all green |
+| Developer sign-off on the three security implementation records                               | —            | Sam    | Done 17/11/2026                                   |
 
 Every review finding (R-001 to R-008) is fixed; R-009 to R-013 are documented limits.
 

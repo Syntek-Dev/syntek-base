@@ -2,7 +2,7 @@
 
 _The automated-test record for US009: what each automated check proves and whether it passed. Written at `22-implementation-documentation` Step 4. The story ships Bash, manifest lines, a CI workflow and documentation, with no Python in the diff (the story plan's Testing section). So no pytest or Bruno test declares it, and its automated proof is the probe runner `code/src/scripts/tests/hook-arming.sh`. The generator has no source for that runner. Sections 2 and 3 carry its results instead of leaving the record empty (the Guardrails of this folder's `CLAUDE.md`)._
 
-**Last Updated**: 17/11/2026 · **Story**: US009 · **Status**: Partial
+**Last Updated**: 17/11/2026 · **Story**: US009 · **Status**: Green
 
 - **Story:** `../../02-STORIES/US009.md` — the git hooks arm on purpose at install, and the README claim that they already do becomes true
 - **Story plan:** `../../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md` — the code master this record closes the loop on
@@ -120,33 +120,36 @@ recorded as run, never as a `lint.sh` pass:
 shellcheck code/src/scripts/development/install-hooks.sh code/src/scripts/tests/hook-arming.sh install.sh
 ```
 
-**The run of record: 17/11/2026, 17:20:15 to 17:29:20 GMT**, on `us009/hook-arming` at `fd11604`,
-with a private `--output` directory. The runner snapshots tracked plus untracked, non-ignored
-files **as on disk**. The tree also held uncommitted edits by parallel closeout sessions
-(`.github/scripts/shipped-ai.py` staged; `development/CONTEXT.md` and `tests/CONTEXT.md`
-modified) and this record, so what the run measured is `fd11604` plus those edits.
+**The run of record: 17/11/2026, at workflow 23**, on `us009/hook-arming` at `160c730` with a
+clean working tree and a private `--output` directory, and the CI re-run on the same commit.
+This replaces the closeout's run of record (17:20:15 to 17:29:20 GMT at `fd11604` plus parallel
+sessions' uncommitted edits, 371 / 0 / 1); the review fixes between them added the QA-01, QA-02,
+CR-01 to CR-05 probes.
 
-> **Summary: 371 passed · 0 failed · 1 unmeasured** (runner exit 3: unmeasured, nothing failed,
-> never a pass; `code/docs/GATE-REPORTING.md`). The tripwire did not fire.
+> **Summary (local, `160c730`, 17/11/2026): 429 passed · 0 failed · 1 unmeasured** (runner exit 3;
+> the one unmeasured is `install-failure`, CI-only). **In CI (CI run `44174073751` on PR #37 at `160c730`): 429 passed · 0 failed ·
+> 0 unmeasured in the probes job, and `install-failure` 7 passed · 0 failed · 0 unmeasured** — every
+> fixture measured. The tripwire did not fire. Re-run at workflow 23 after the review fixes; the
+> closeout reading at `fd11604` was 371 / 0 / 1.
 
-| Fixture             | Pass | Fail | Unmeasured | Covers                                                                                                      |
-| ------------------- | ---- | ---- | ---------- | ----------------------------------------------------------------------------------------------------------- |
-| `manifest`          | 34   | 0    | 0          | ST01 to ST03, ST02b, ST07, the `install.sh` numbering, the README edits                                     |
-| `A`                 | 26   | 0    | 0          | HP-02, HP-03, HP-04 / EC-06, EC-03, EC-07 (`--spec`), EC-01 worktree, ES-04, S-M2 (never a `PATH` lefthook) |
-| `B`                 | 3    | 0    | 0          | EC-04, unborn HEAD                                                                                          |
-| `C`                 | 4    | 0    | 0          | ES-05, no `.git`                                                                                            |
-| `notice`            | 16   | 0    | 0          | HP-08, EC-09 to EC-12, ES-06, through a real `pnpm install`                                                 |
-| `notice-streams`    | 9    | 0    | 0          | `--notice` stdout only, no write, no network or credential read; EC-18 control; T-n2                        |
-| `hook-paths`        | 49   | 0    | 0          | EC-14 to EC-16, the `core.hooksPath` states, the `/dev/null` opt-out (S-m2)                                 |
-| `old-backup`        | 62   | 0    | 0          | The `.old` move, SEC-02 / QA-01 symlinked hook, R4-QA-01 / 03, R5-QA-01 / 02 tails                          |
-| `repo-shapes`       | 91   | 0    | 0          | Hooks dir outside the git common dir refused by every route; nested, bare, broken; the round-6 items        |
-| `change-filter`     | 10   | 0    | 0          | The install-failure job's `--needs-install-failure` filter (R4-SEC-03)                                      |
-| `machine-spec`      | 42   | 0    | 0          | `generate_machine_spec` best-effort under each failing or absent host probe                                 |
-| `write-boundary`    | 6    | 0    | 0          | Full-tree manifests around the arming step; EC-17 control                                                   |
-| `graph-reclaim`     | 13   | 0    | 0          | EC-05 with the real pinned `code-review-graph` 2.3.9; S-M1 appended block removed                           |
-| `binary-provenance` | 6    | 0    | 0          | EC-02, lefthook 1.13.0 first on `PATH`, the project's 2.x proven by `strace`                                |
-| `install-failure`   | 0    | 0    | 1          | ES-01 to ES-03. CI-only; reported unmeasured (Section 3)                                                    |
-| **Total**           | 371  | 0    | 1          |                                                                                                             |
+| Fixture             | Pass               | Fail | Unmeasured     | Covers                                                                                                       |
+| ------------------- | ------------------ | ---- | -------------- | ------------------------------------------------------------------------------------------------------------ |
+| `manifest`          | 39                 | 0    | 0              | ST01 to ST03, ST02b, ST07, the `install.sh` numbering, the README edits; CR-01, CR-03, CR-05, QA-01 manifest |
+| `A`                 | 26                 | 0    | 0              | HP-02, HP-03, HP-04 / EC-06, EC-03, EC-07 (`--spec`), EC-01 worktree, ES-04, S-M2 (never a `PATH` lefthook)  |
+| `B`                 | 3                  | 0    | 0              | EC-04, unborn HEAD                                                                                           |
+| `C`                 | 4                  | 0    | 0              | ES-05, no `.git`                                                                                             |
+| `notice`            | 16                 | 0    | 0              | HP-08, EC-09 to EC-12, ES-06, through a real `pnpm install`                                                  |
+| `notice-streams`    | 9                  | 0    | 0              | `--notice` stdout only, no write, no network or credential read; EC-18 control; T-n2                         |
+| `hook-paths`        | 78                 | 0    | 0              | EC-14 to EC-16, the `core.hooksPath` states, the `/dev/null` opt-out (S-m2); CR-04 scoped remedies           |
+| `old-backup`        | 81                 | 0    | 0              | The `.old` move, SEC-02 / QA-01 symlinked hook, R4-QA-01 / 03, R5-QA-01 / 02 tails; QA-02 / QA-02b restore   |
+| `repo-shapes`       | 91                 | 0    | 0              | Hooks dir outside the git common dir refused by every route; nested, bare, broken; the round-6 items         |
+| `change-filter`     | 10                 | 0    | 0              | The install-failure job's `--needs-install-failure` filter (R4-SEC-03)                                       |
+| `machine-spec`      | 42                 | 0    | 0              | `generate_machine_spec` best-effort under each failing or absent host probe                                  |
+| `write-boundary`    | 11                 | 0    | 0              | Full-tree manifests around the arming step; EC-17 control; QA-01 stale `node_modules` and its control        |
+| `graph-reclaim`     | 13                 | 0    | 0              | EC-05 with the real pinned `code-review-graph` 2.3.9; S-M1 appended block removed                            |
+| `binary-provenance` | 6                  | 0    | 0              | EC-02, lefthook 1.13.0 first on `PATH`, the project's 2.x proven by `strace`                                 |
+| `install-failure`   | 7 (CI)             | 0    | 1 (local)      | ES-01 to ES-03 — measured in CI only (Section 3)                                                             |
+| **Total**           | 429 local · 436 CI | 0    | 1 local · 0 CI |                                                                                                              |
 
 Other readings from this pass:
 
@@ -166,20 +169,20 @@ each time was EC-07, the `df` defect fixed at `fd11604`), then 371 / 0 / 1 at `f
 
 ## 3. Outstanding gaps and flaky tests
 
-| Item                                                       | Type                  | Reason / owner                                                                                                                                                                                                                                                                                                                                                                           |
-| ---------------------------------------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| pytest / Bruno attribution                                 | Out of scope          | No Python or API surface in the diff (story plan, _Testing_), so the generated table is empty and correctly so                                                                                                                                                                                                                                                                           |
-| Bash probe results absent from the generated block         | Tooling gap           | `test-record.sh` has no source for a Bash runner, and `story-markers.sh` cannot see one. A Bash-only story's automated proof is invisible to the generator and the audit, so it is written by hand in Section 2. Finding candidate for workflow 22 Step 5                                                                                                                                |
-| Coverage figures in Section 1                              | Misleading by design  | Whole-project figures from a 16/11/2026 `coverage.xml`, unrelated to this story. Existing defect `../../21-BUGS/BUG-TEST-RECORD-CLAIMS-PROJECT-COVERAGE-FOR-UNTESTED-STORY-02-11-2026.md`                                                                                                                                                                                                |
-| ES-01 to ES-03 (`install-failure`)                         | Unmeasured            | CI-only: the root `install.sh` needs a Docker daemon, `uv` and `sudo`, so it is refused locally. Measured only when `audit-hook-arming.yml` runs                                                                                                                                                                                                                                         |
-| `.github/workflows/audit-hook-arming.yml`                  | Unmeasured            | **Never run.** It triggers on pull requests into `testing`, and none has been raised. Both jobs, their timeouts, the cache key and the change filter wiring are unmeasured                                                                                                                                                                                                               |
-| actionlint over both changed workflows                     | Unmeasured            | Not installed on this host                                                                                                                                                                                                                                                                                                                                                               |
-| CI at `fd11604`                                            | Red, not this story   | "Audit - Template Integrity" [3/4] Template Generation failed in `.github/scripts/shipped-ai.py` ("Forwarded MCP environment variable names differ: context7"). Attributed by the closeout brief to commit `2950392`, the developer's context7 change, not US009. Decision pending with Sam. The HP-07 grep in `audit-template.yml` is therefore unmeasured in CI                        |
-| Shared evidence directory under concurrent runs            | Flaky (environmental) | Two full runs into the default `reports/hook-arming/` overlap. One reads a file the other is rewriting, and EC-15 `absolute` failed once (Section 2). Alone, with a private `--output`, the same tree passed 371 / 0. TODO(verify): the clobber mechanism is inferred from timing and the missing-file message, not traced. Finding candidate: no lock, and no per-run default directory |
-| macOS / Windows `generate_machine_spec`, `/etc/os-release` | Unmeasured            | Only the Linux branch runs on this host                                                                                                                                                                                                                                                                                                                                                  |
-| Accepted residuals                                         | Documented limit      | The armed check is tied to lefthook 2.2.2's template (a bump fails loudly, exit 2; re-measure then); timestamped `.old` copies are never pruned; `--notice` hides its own errors by design; npm and yarn unsupported. The full list and its dispositions: `../../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md`                                                                    |
-| HP-01, HP-04 / EC-06, HP-06 end to end                     | Manual                | Need a real clone through `bash install.sh`; owned by `../MANUAL/US009-MANUAL-TESTING.md`, not this record                                                                                                                                                                                                                                                                               |
-| API (Bruno), E2E, accessibility suites                     | Out of scope          | No endpoint, route or rendered screen                                                                                                                                                                                                                                                                                                                                                    |
+| Item                                                       | Type                  | Reason / owner                                                                                                                                                                                                                                                                                                                                                                                    |
+| ---------------------------------------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| pytest / Bruno attribution                                 | Out of scope          | No Python or API surface in the diff (story plan, _Testing_), so the generated table is empty and correctly so                                                                                                                                                                                                                                                                                    |
+| Bash probe results absent from the generated block         | Tooling gap           | `test-record.sh` has no source for a Bash runner, and `story-markers.sh` cannot see one. A Bash-only story's automated proof is invisible to the generator and the audit, so it is written by hand in Section 2. Finding candidate for workflow 22 Step 5                                                                                                                                         |
+| Coverage figures in Section 1                              | Misleading by design  | Whole-project figures from a 16/11/2026 `coverage.xml`, unrelated to this story. Existing defect `../../21-BUGS/BUG-TEST-RECORD-CLAIMS-PROJECT-COVERAGE-FOR-UNTESTED-STORY-02-11-2026.md`                                                                                                                                                                                                         |
+| ES-01 to ES-03 (`install-failure`)                         | Measured in CI        | Refused locally (Docker, `uv`, `sudo`); **passed in CI, 7 / 0 / 0**, on both runs of PR #37 (CI run `44174073751` on PR #37 at `160c730`; first run `44171354359`)                                                                                                                                                                                                                                |
+| `.github/workflows/audit-hook-arming.yml`                  | Measured              | First run on PR #37 (`44171354359`): every fixture passed but the QA-01 control was unmeasured — under `CI` pnpm's verify-deps install runs frozen and refuses before any postinstall; fixed at `160c730`, and the re-run (CI run `44174073751` on PR #37 at `160c730`) is fully green. The `changes` job's BASE expression worked on both runs (F-014)                                           |
+| actionlint over both changed workflows                     | Unmeasured            | Not installed on this host                                                                                                                                                                                                                                                                                                                                                                        |
+| Other CI on PR #37                                         | Red, not this story   | Dependency audit and `[8/8] Security`: GHSA-fc5q-39xc-vjpf (`picomatch`, no patched version, via `markdownlint-cli2`), published after `main` last passed; ClickUp sync: US001's `Customer Accepted` is not a status on the ClickUp list; Citations resolve: the 18 pre-existing dangling citations, none in US009. Each routed to Sam. Template Integrity (incl. HP-07) is green since `97821a8` |
+| Shared evidence directory under concurrent runs            | Flaky (environmental) | Two full runs into the default `reports/hook-arming/` overlap. One reads a file the other is rewriting, and EC-15 `absolute` failed once (Section 2). Alone, with a private `--output`, the same tree passed 371 / 0. TODO(verify): the clobber mechanism is inferred from timing and the missing-file message, not traced. Finding candidate: no lock, and no per-run default directory          |
+| macOS / Windows `generate_machine_spec`, `/etc/os-release` | Unmeasured            | Only the Linux branch runs on this host                                                                                                                                                                                                                                                                                                                                                           |
+| Accepted residuals                                         | Documented limit      | The armed check is tied to lefthook 2.2.2's template (a bump fails loudly, exit 2; re-measure then); timestamped `.old` copies are never pruned; `--notice` hides its own errors by design; npm and yarn unsupported. The full list and its dispositions: `../../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md`                                                                             |
+| HP-01, HP-04 / EC-06, HP-06 end to end                     | Manual                | Need a real clone through `bash install.sh`; owned by `../MANUAL/US009-MANUAL-TESTING.md`, not this record                                                                                                                                                                                                                                                                                        |
+| API (Bruno), E2E, accessibility suites                     | Out of scope          | No endpoint, route or rendered screen                                                                                                                                                                                                                                                                                                                                                             |
 
 **No flaky test inside a single isolated run is known.** The one non-deterministic result seen is
 the concurrent-run interference above.
@@ -191,9 +194,10 @@ and Bruno only, so its silence says nothing about the Bash suite.
 
 ## 4. Status line
 
-**Partial**: 0 attributed tests (none possible); `hook-arming.sh` 371 passed, 0 failed, 1
-unmeasured (ES-01, CI-only), exit 3. ShellCheck clean on both new scripts. `audit-hook-arming.yml`
-never run, actionlint absent, and CI at `fd11604` red on an unrelated check · verified 17/11/2026.
+**Green**: 0 attributed tests (none possible); `hook-arming.sh` 429 passed, 0 failed locally (1
+unmeasured, `install-failure`, CI-only) and 436 passed, 0 failed, 0 unmeasured in CI (CI run `44174073751` on PR #37 at `160c730`).
+ShellCheck clean on both scripts. actionlint absent locally; the failing PR checks are not this
+story (Section 3) · verified 17/11/2026.
 
 ---
 
@@ -206,6 +210,6 @@ never run, actionlint absent, and CI at `fd11604` red on an unrelated check · v
 - `../../15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md`: install is the sole arming path
 - `code/src/scripts/tests/hook-arming.sh`: the probe runner, its fixtures and exit codes
 - `code/src/scripts/development/install-hooks.sh`: the arming step under test
-- `.github/workflows/audit-hook-arming.yml`: the CI workflow that runs the probes (not yet run)
+- `.github/workflows/audit-hook-arming.yml`: the CI workflow that runs the probes (first run on PR #37, 17/11/2026)
 - `code/docs/GATE-REPORTING.md`: why an unmeasured result is never reported as a pass
 - `code/src/scripts/tests/CLAUDE.md`: the runners, their exit-code contract, and the generator
