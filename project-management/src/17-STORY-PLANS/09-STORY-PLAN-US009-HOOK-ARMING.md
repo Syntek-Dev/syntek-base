@@ -1308,3 +1308,17 @@ and raised a smaller set of new ones (/implement-story grilling, round 5).
   example a tracked `.githooks/`). Only a directory under the git common directory is armed, so
   arming can never rewrite a committed file; the hint names `.git/hooks`. Settled 17/11/2026
   (round 5, R5-AMB), over arming anything in the repository and arming only an untracked one.
+
+### Targeted-verification answers — 17/11/2026
+
+Settled with <%DEVELOPER_NAME%> after the round-5 targeted verification closed every round-4
+finding (/implement-story grilling, round 6).
+
+- **Lefthook's hook is recognised by its generated layout, not by substrings.** A hook is
+  lefthook's only when it carries lefthook's structure with nothing after its final
+  `call_lefthook run "pre-commit" "$@"` line, the marker and `LEFTHOOK` outside comments. Any
+  appended tail, not only code-review-graph's, makes it unarmed; the step copies it aside before
+  lefthook rewrites it (R5-QA-01, R5-QA-02).
+- **Round 6 also fixes the seven Low items** (effective bare and worktree reads, scoped remedies,
+  `--unset-all`/`--replace-all`, truthful refusal wording, gitfile whitespace, `--help` text), and
+  is verified by the probe suite alone: no further review pass before workflow 22.

@@ -22,15 +22,16 @@
 # is an independent implementation of the same predicate, never a copy of the script's: the file
 # `pre-commit` in the hooks DIRECTORY `git rev-parse --path-format=absolute --git-path hooks`
 # names, resolved from the checkout root (never the hook file itself, whose resolution follows a
-# symlink), is a readable, executable regular file carrying lefthook's generated marker
-# — the line `call_lefthook run "pre-commit"` — and NOT carrying code-review-graph's appended
-# block (`>>> code-review-graph pre-commit hook >>>`), which swallows lefthook's exit status
-# (settled 17/11/2026, S-M1) — AND carrying the string `LEFTHOOK`, which is lefthook 2.2.2's own
-# ownership test (`isLefthookFile`, measured 17/11/2026: case-sensitive; a hook carrying it is
-# overwritten with no pre-commit.old; a hook without it is renamed to pre-commit.old, or refused
-# when one exists). A marker without the executable bit is unarmed, and a SYMLINKED hook is
-# foreign, never armed, whatever it points at (SEC-02). The hooks directory's REAL path must lie
-# inside the repository's git common directory (settled 17/11/2026, round 5).
+# symlink), is a readable, executable regular file in lefthook's GENERATED LAYOUT (settled
+# 17/11/2026, round 6), measured against lefthook 2.2.2's own template: its first line is
+# `#!/bin/sh`; it defines `call_lefthook()` outside a comment; it uses `LEFTHOOK` outside a comment
+# (the template reads $LEFTHOOK / $LEFTHOOK_VERBOSE / $LEFTHOOK_BIN — lefthook's own ownership test,
+# `isLefthookFile`, is that case-sensitive string); and its last non-blank line is exactly
+# `call_lefthook run "pre-commit" "$@"`, with NOTHING after it. Any appended tail — code-review-
+# graph's block or an arbitrary `|| true` — swallows lefthook's exit status, so it is unarmed. A
+# hook without the executable bit is unarmed, and a SYMLINKED hook is foreign, never armed,
+# whatever it points at (SEC-02). The hooks directory's REAL path must lie inside the
+# repository's git common directory (settled 17/11/2026, round 5).
 #
 # SAFETY: nothing from the source checkout is ever symlinked, bound or shared into a fixture —
 # above all not its node_modules. Every fixture gets its own install; the PATH filter skips any
@@ -71,6 +72,8 @@
 #                      replaced, its target and the target's directory are never touched.
 #                      R4-QA-01/03: a foreign hook carrying `LEFTHOOK` keeps its content; a
 #                      marker without `LEFTHOOK` is not armed, and a .old beside it survives.
+#                      R5-QA-01/02: an arbitrary tail after lefthook's last line, and a marker
+#                      or `LEFTHOOK` only in comments, are unarmed; each is copied aside.
 #   repo-shapes        A hooks directory whose real path is outside the git common directory
 #                      is refused (exit 2), by every route: global, system, GIT_CONFIG,
 #                      GIT_CONFIG_COUNT, a local include.path, a symlinked .git/hooks, a local
@@ -78,6 +81,10 @@
 #                      unrelated repository skips (QA-02); GIT_DIR/GIT_WORK_TREE are ignored
 #                      (QA-03); a broken or bare-configured repository exits 2 (SEC-03, R4-03,
 #                      R4-QA-06); an empty core.hooksPath exits 2 (QA-04). --notice hints.
+#                      Round 6: core.bare/core.worktree only in an unrelated scope arm; remedies
+#                      for worktree scope, an unrelated GIT_CONFIG_PARAMETERS and a multi-valued
+#                      core.hooksPath; core.hooksPath = the common dir is "a subdirectory";
+#                      a CR-terminated gitfile arms.
 #   change-filter      No project fixture. The install-failure job's change filter (the
 #                      --needs-install-failure mode) against a scratch repository: docs/PM-only
 #                      ranges skip, a rename out of code counts both sides, a non-ASCII PM path
@@ -293,10 +300,16 @@ eff_hook() {
   local hd; hd="$(cd "$1" && git rev-parse --path-format=absolute --git-path hooks 2>/dev/null)" || return 1
   [[ -n "$hd" ]] || return 1; printf '%s/pre-commit\n' "$hd"
 }
+lefthook_layout() {   # file — lefthook's generated layout, nothing after its final line
+  local f="$1" code
+  [[ "$(head -n 1 "$f" 2>/dev/null)" == '#!/bin/sh' ]] || return 1
+  [[ "$(grep -v '^[[:space:]]*$' "$f" | tail -n 1)" == 'call_lefthook run "pre-commit" "$@"' ]] || return 1
+  code="$(grep -vE '^[[:space:]]*#' "$f")"
+  grep -qF 'LEFTHOOK' <<< "$code" && grep -qE '^[[:space:]]*call_lefthook\(\)' <<< "$code"
+}
 is_armed() {
   local p; p="$(eff_hook "$1")" || return 1
-  [[ -f "$p" && ! -L "$p" && -r "$p" && -x "$p" ]] && grep -qF "$MARKER" "$p" && grep -qF 'LEFTHOOK' "$p" &&
-    ! grep -qF "$GRAPH_MARKER" "$p"
+  [[ -f "$p" && ! -L "$p" && -r "$p" && -x "$p" ]] && lefthook_layout "$p" && ! grep -qF "$GRAPH_MARKER" "$p"
 }
 unarmed() { ! is_armed "$1"; }
 ut_present() { [[ -f "$1/$UNDER_TEST" ]]; }
@@ -431,6 +444,9 @@ fx_manifest() {
     (cd "$s" && bash "$UNDER_TEST" --help) >"$h/help.out" 2>&1; local hr=$?
     check P1 "--help exits 0 and documents --notice" "exit $hr or --notice undocumented" \
       bash -c '[[ $1 == 0 ]] && grep -qF -- --notice "$2"' _ "$hr" "$h/help.out"
+    check R5-REV-02 "--help describes the location rule (the git directory / outside), with no 'scope' refusal wording" \
+      "it mentions neither 'git directory' nor 'outside', or it still speaks of scope" \
+      bash -c 'grep -qiE "git (common )?directory|outside" "$1" && ! grep -qi scope "$1"' _ "$h/help.out"
     (cd "$s" && bash "$UNDER_TEST" -h) >/dev/null 2>&1; hr=$?
     check P1 "-h exits 0" "exit $hr" [ "$hr" -eq 0 ]
     (cd "$s" && bash "$UNDER_TEST" --no-such-option) >/dev/null 2>&1; hr=$?
@@ -857,6 +873,44 @@ fx_old_backup() {
   check R4-QA-03 "the existing pre-commit.old survives" "its hash is gone" \
     bash -c 'find "$2" -maxdepth 1 -type f -exec sha256sum {} + | cut -d" " -f1 | grep -qxF "$1"' _ "$ho" "$hd"
 
+  # R5-QA-01 — an armed lefthook hook with an ARBITRARY appended tail (not code-review-graph's).
+  new_fixture d ob-tail commit; run_ut "$d" "$e/tail.arm0" --; p="$(eff_hook "$d")"; hd="${p%/*}"
+  printf 'echo "an appended tail" || true\n' >> "$p"
+  hfh="$(sha256sum "$p" | cut -d' ' -f1)"
+  check R5-QA-01 "precondition: with the tail appended, a failing leg does NOT block the commit" \
+    "the commit was blocked — the case's premise does not hold here" not_ commit_blocked "$d" "$e/tail.pre"
+  notice "$d" "$e/tail.n"
+  check R5-QA-01 "a lefthook hook with an appended tail is unarmed: --notice reminds" "it stayed silent" notice_valid "$e/tail.n"
+  run_ut "$d" "$e/tail" --
+  check R5-QA-01 "the step exits 0" "exit $RC" rc_is 0
+  check R5-QA-01 "it reports the appended tail removed — and not as code-review-graph's" \
+    "no 'appended' + 'removed', or it blames code-review-graph" \
+    bash -c 'o="$(sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err")"; grep -qi appended <<< "$o" && grep -qi removed <<< "$o" && ! grep -qi code-review-graph <<< "$o"' _ "$e/tail"
+  check R5-QA-01 "it does not claim the hook was already armed" "it printed 'already armed'" \
+    bash -c '! grep -qi "already armed" "$1.out" "$1.err"' _ "$e/tail"
+  check R5-QA-01 "the original hook, tail included, survives as a copy in the hooks dir" "its hash is gone" \
+    bash -c 'find "$2" -maxdepth 1 -type f -exec sha256sum {} + | cut -d" " -f1 | grep -qxF "$1"' _ "$hfh" "$hd"
+  check R5-QA-01 "afterwards the effective hook is armed" "unarmed" is_armed "$d"
+  check R5-QA-01 "afterwards a failing leg blocks the commit again" "the commit went through" commit_blocked "$d" "$e/tail.post"
+
+  # R5-QA-02 — a hand-written hook whose marker and LEFTHOOK appear only in comments.
+  new_fixture d ob-comments commit; p="$(eff_hook "$d")"; hd="${p%/*}"
+  printf '#!/bin/sh\n# Modelled on lefthook'"'"'s: call_lefthook run "pre-commit" "$@"\n# Set LEFTHOOK=0 to skip it.\necho hand-written hook\n' > "$p"
+  chmod +x "$p"; hfh="$(sha256sum "$p" | cut -d' ' -f1)"
+  notice "$d" "$e/comments.n"
+  check R5-QA-02 "marker and LEFTHOOK only in comments: unarmed, --notice prints" "it stayed silent" notice_valid "$e/comments.n"
+  run_ut "$d" "$e/comments" --
+  check R5-QA-02 "the step exits 0" "exit $RC" rc_is 0
+  check R5-QA-02 "the hand-written hook's content survives in the hooks dir" "its hash is gone — overwritten in place" \
+    bash -c 'find "$2" -maxdepth 1 -type f -exec sha256sum {} + | cut -d" " -f1 | grep -qxF "$1"' _ "$hfh" "$hd"
+  check R5-QA-02 "afterwards the effective hook is armed" "unarmed" is_armed "$d"
+  check R5-QA-02 "the report is truthful: not 'already armed', and any pre-commit.old it names holds the hook" \
+    "it says 'already armed', or names a pre-commit.old that does not hold the hook" \
+    bash -c 'o="$(sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err")"; ! grep -qi "already armed" <<< "$o" || exit 1
+             grep -q "pre-commit\.old" <<< "$o" || exit 0
+             for hf in "$2"/pre-commit.old*; do [[ -f $hf && "$(sha256sum "$hf" | cut -d" " -f1)" == "$3" ]] && exit 0; done; exit 1' \
+    _ "$e/comments" "$hd" "$hfh"
+
   # R3-S-m1: the move is reported even when lefthook then fails. lefthook.yml is made invalid
   # YAML — `lefthook version` still runs, `lefthook install` fails.
   new_fixture d ob-failure commit; p="$(eff_hook "$d")"; hd="${p%/*}"
@@ -954,6 +1008,11 @@ shared_route() {   # route label
     bash -c 'cmp -s "$1" "$2" && ! grep -rqF "$4" "$3"' _ "$e/route-$route.shared.before" "$e/route-$route.shared.after" "$sh" "$MARKER"
   check R5-hint "$label: the remedy names $hint_desc" "absent" \
     bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qE -- "$2"' _ "$e/route-$route" "$hint_re"
+  if [[ $route == symlink ]]; then
+    check R5-QA-06 "$label, no core.hooksPath set: the refusal names the symlink and claims no core.hooksPath source" \
+      "no 'symlink', or it claims a core.hooksPath source" \
+      bash -c 'o="$(sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err")"; grep -qi symlink <<< "$o" && ! grep -qiE "core\.hooksPath is set|core\.hooksPath (comes )?from|(local|global|system|command|worktree) config" <<< "$o"' _ "$e/route-$route"
+  fi
   if [[ $route == local-wt ]]; then
     check R5-hint "$label: the remedy is not the literal relative .git/hooks" "it says core.hooksPath .git/hooks" \
       bash -c '! sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qE "core\.hooksPath \"?\.git/hooks"' _ "$e/route-$route"
@@ -966,7 +1025,7 @@ shared_route() {   # route label
 # ── repo-shapes — the repositories install-hooks.sh must refuse, skip or see through ──
 fx_repo_shapes() {
   bold "▸ repo-shapes — global hooksPath, nested project, GIT_DIR, broken repo, empty hooksPath"
-  local e="$OUTPUT/repo-shapes" d g gcfg o x gh key
+  local e="$OUTPUT/repo-shapes" d g gcfg o x gh key wt
   # 1 — a core.hooksPath from GLOBAL scope is refused, exit 2.
   new_fixture d rs-global commit
   if ! ut_present "$d"; then fail RS "$UNDER_TEST absent in the fixture — nothing to probe"; return; fi
@@ -1089,7 +1148,68 @@ fx_repo_shapes() {
   check R4-QA-06 "--notice exits 0 with a stdout hint, stderr empty" "silent, failed or stderr written" \
     bash -c '[[ $(cat "$1.rc") == 0 && -s "$1.out" && ! -s "$1.err" ]]' _ "$e/broken-inner.n"
 
-  # 8 — an empty core.hooksPath (QA-04): git resolves it to /pre-commit. Exit 2, named.
+  # 8 — R5-QA-03: core.bare / core.worktree set only in an UNRELATED scope (global) on a healthy
+  # repository. git's effective answer (rev-parse --is-bare-repository / --show-toplevel) is
+  # healthy — the repository's own core.bare=false wins and a global core.worktree is ignored
+  # (measured) — so the step arms normally.
+  local gc2 variant2
+  for variant2 in bare worktree; do
+    new_fixture d "rs-global-$variant2" commit
+    gc2="$SCRATCH/gitconfig-global-$variant2"; cp "$GIT_CONFIG_GLOBAL" "$gc2"
+    if [[ $variant2 == bare ]]; then git config --file "$gc2" core.bare true
+    else mkdir -p "$SCRATCH/rs-global-elsewhere"; git config --file "$gc2" core.worktree "$SCRATCH/rs-global-elsewhere"; fi
+    run_ut "$d" "$e/global-$variant2" env GIT_CONFIG_GLOBAL="$gc2" --
+    check R5-QA-03 "core.$variant2 only in global scope, repository healthy: the step exits 0" "exit $RC" rc_is 0
+    check R5-QA-03 "core.$variant2 only in global scope: the hook is armed" "unarmed" is_armed "$d"
+  done
+
+  # 9 — R5-QA-04: core.bare=true at WORKTREE scope (extensions.worktreeConfig): the remedy names
+  # --worktree, the scope it came from.
+  new_fixture d rs-wtbare commit; add_worktree wt "$d" rs-wtbare-wt
+  git -C "$d" config extensions.worktreeConfig true; git -C "$wt" config --worktree core.bare true
+  run_ut "$wt" "$e/wtbare" --
+  check R5-QA-04 "worktree-scope core.bare: the step exits 2" "exit $RC" rc_is 2
+  check R5-QA-04 "worktree-scope core.bare: the remedy names 'git config --worktree'" "no 'git config --worktree' in the output" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF "git config --worktree"' _ "$e/wtbare"
+
+  # 10 — R5-QA-05: an unrelated GIT_CONFIG_PARAMETERS while core.hooksPath comes from GLOBAL.
+  new_fixture d rs-params commit
+  g="$SCRATCH/rs-params-hooks"; mkdir -p "$g"; printf '#!/bin/sh\necho shared\n' > "$g/pre-commit"; chmod +x "$g/pre-commit"
+  gcfg="$SCRATCH/gitconfig-global-params"; cp "$GIT_CONFIG_GLOBAL" "$gcfg"; git config --file "$gcfg" core.hooksPath "$g"
+  run_ut "$d" "$e/params" env GIT_CONFIG_GLOBAL="$gcfg" GIT_CONFIG_PARAMETERS="'user.name'='Unrelated Override'" --
+  check R5-QA-05 "global core.hooksPath + an unrelated GIT_CONFIG_PARAMETERS: exit 2" "exit $RC" rc_is 2
+  check R5-QA-05 "the remedy is the global one ('git config --global --unset core.hooksPath')" "absent" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF "git config --global --unset core.hooksPath"' _ "$e/params"
+  check R5-QA-05 "the remedy does not blame the environment" "it names GIT_CONFIG_PARAMETERS/GIT_CONFIG_COUNT/environment" \
+    bash -c '! sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qiE "GIT_CONFIG_PARAMETERS|GIT_CONFIG_COUNT|environment"' _ "$e/params"
+
+  # 11 — R5-REV-04: a MULTI-VALUED local core.hooksPath (the last value, outside, wins).
+  new_fixture d rs-multi commit
+  g="$SCRATCH/rs-multi-hooks"; mkdir -p "$g"
+  git -C "$d" config --add core.hooksPath .git/custom-hooks; git -C "$d" config --add core.hooksPath "$g"
+  run_ut "$d" "$e/multi" --
+  check R5-REV-04 "multi-valued local core.hooksPath, last outside: exit 2" "exit $RC" rc_is 2
+  check R5-REV-04 "the remedy uses --unset-all or --replace-all" "neither in the output" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qE -- "--unset-all|--replace-all"' _ "$e/multi"
+
+  # 12 — R5-REV-03: core.hooksPath equal to the git common directory itself.
+  new_fixture d rs-commondir commit; git -C "$d" config core.hooksPath .git
+  run_ut "$d" "$e/commondir" --
+  check R5-REV-03 "core.hooksPath = the git common dir itself: exit 2" "exit $RC" rc_is 2
+  check R5-REV-03 "the message says it must be a subdirectory, not 'outside'" "no 'subdirectory', or it says 'outside'" \
+    bash -c 'o="$(sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err")"; grep -qi subdirectory <<< "$o" && ! grep -qi outside <<< "$o"' _ "$e/commondir"
+
+  # 13 — R5-QA-07: a linked worktree's .git gitfile ending in CR, which git reads (measured;
+  # a trailing SPACE git itself rejects, so it is not this case).
+  new_fixture d rs-gitfile commit; add_worktree wt "$d" rs-gitfile-wt
+  printf 'gitdir: %s\r\n' "$(sed -n 's/^gitdir: //p' "$wt/.git" | tr -d '\r')" > "$wt/.git.cr" && mv "$wt/.git.cr" "$wt/.git"
+  check R5-QA-07 "precondition: git reads the CR-terminated gitfile" "git rejects it here" \
+    bash -c 'cd "$1" && git rev-parse --git-dir >/dev/null 2>&1' _ "$wt"
+  run_ut "$wt" "$e/gitfile-cr" --
+  check R5-QA-07 "CR-terminated gitfile: the step arms, exit 0 (not 'broken')" "exit $RC" rc_is 0
+  check R5-QA-07 "CR-terminated gitfile: the hook is armed" "unarmed" is_armed "$wt"
+
+  # 14 — an empty core.hooksPath (QA-04): git resolves it to /pre-commit. Exit 2, named.
   new_fixture d rs-empty commit; git -C "$d" config core.hooksPath ""
   run_ut "$d" "$e/empty" --
   check QA-04 "an empty core.hooksPath: the step exits 2" "exit $RC" rc_is 2
