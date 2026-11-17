@@ -89,6 +89,13 @@
 #                      --needs-install-failure mode) against a scratch repository: docs/PM-only
 #                      ranges skip, a rename out of code counts both sides, a non-ASCII PM path
 #                      is still PM, and every doubtful range runs the job (R4-SEC-03).
+#   machine-spec       install.sh's generate_machine_spec is best-effort: `bash install.sh --spec`
+#                      exits 0, writes the spec and arms nothing when any of its Linux probes
+#                      fails or is absent. Every probe gets a healthy fake first on PATH and each
+#                      case breaks one: df (with and without a table), lscpu, nproc, free,
+#                      lspci (failing, and matching no display), uname -r, nvidia-smi, docker;
+#                      lscpu, lspci and nvidia-smi absent. An all-healthy baseline is the
+#                      control. Bug found in US009 (a stale FUSE mount made the host's df exit 1).
 #   write-boundary     Full-tree manifests (path, type, mode, link target, SHA-256; ignored and
 #                      untracked included) around the arming step alone. Negative control EC-17.
 #   graph-reclaim      The real, pinned `code-review-graph install` writes the hook first; the
@@ -145,7 +152,7 @@ Usage:
                                     Print true/false: does BASE..HEAD need the install-failure job?
 
 Fixtures: manifest A B C notice notice-streams hook-paths old-backup repo-shapes
-          change-filter write-boundary graph-reclaim binary-provenance install-failure all
+          change-filter machine-spec write-boundary graph-reclaim binary-provenance install-failure all
 
 Exit codes: 0 all held · 1 an expectation failed · 2 script error · 3 unmeasured (never a pass)
 EOF
@@ -170,7 +177,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-ALL_FIXTURES="manifest A B C notice notice-streams hook-paths old-backup repo-shapes change-filter write-boundary graph-reclaim binary-provenance install-failure"
+ALL_FIXTURES="manifest A B C notice notice-streams hook-paths old-backup repo-shapes change-filter machine-spec write-boundary graph-reclaim binary-provenance install-failure"
 case " $ALL_FIXTURES all " in *" $FIXTURE "*) ;; *) die "Unknown fixture '$FIXTURE'. Use --help." ;; esac
 
 SOURCE="$(cd "$SOURCE" 2>/dev/null && pwd)" || die "--source is not a directory"
@@ -1254,6 +1261,69 @@ fx_change_filter() {
   check R4-SEC-03 "the whole range from the first commit (code touched) → true" "got '$got'" test "$got" == "true"
 }
 
+# ── machine-spec — install.sh --spec survives every failing host probe ─────────
+fx_machine_spec() {
+  bold "▸ machine-spec — install.sh --spec is best-effort whatever its host probes return"
+  local e="$OUTPUT/machine-spec" d spec real_uname fb
+  if [[ "$(uname -s)" != Linux ]]; then
+    unmeasured MS "generate_machine_spec's Linux branch only; this host is $(uname -s)"; return
+  fi
+  new_fixture d ms commit
+  spec="$d/code/docs/MACHINE-SPEC.md"; real_uname="$(command -v uname)"
+  # Host-independent: every probe the function runs gets a HEALTHY fake first on PATH, and each
+  # case breaks exactly one of them. Without this, one failing host probe (this host's df, a
+  # runner without lspci) would turn every case red for the same reason.
+  local base="$SCRATCH/ms-baseline"; mkdir -p "$base"
+  ms_put() { printf '#!/bin/sh\n%s\n' "$3" > "$1/$2"; chmod +x "$1/$2"; }   # dir name body
+  ms_put "$base" df 'printf "Filesystem  Size  Used Avail Use%% Mounted on\n/dev/sda1   100G   50G   50G  50%% /\n"'
+  ms_put "$base" lscpu 'printf "Model name:          Example CPU\nCore(s) per socket:  4\n"'
+  ms_put "$base" nproc 'echo 8'
+  ms_put "$base" free 'if [ "$1" = -g ]; then echo "Mem: 16 8 4 1 4 8"; else echo "Mem: 16Gi 8Gi 4Gi 1Gi 4Gi 8Gi"; fi'
+  ms_put "$base" lspci 'echo "01:00.0 VGA compatible controller: Example GPU"'
+  ms_put "$base" nvidia-smi 'echo "Example GPU"'
+  ms_put "$base" docker 'echo /var/lib/docker'
+  ms_variant() {   # case [name body] — a copy of the baseline with at most one probe replaced
+    fb="$SCRATCH/ms-fake-$1"; rm -rf "$fb"; cp -a "$base" "$fb"
+    [[ $# -ge 3 ]] && ms_put "$fb" "$2" "$3"
+    return 0
+  }
+  ms_case() {   # case label env-prefix… — run --spec and assert the three outcomes
+    local c="$1" label="$2"; shift 2
+    rm -f "$spec"
+    (cd "$d" && "$@" bash install.sh --spec) >"$e/$c.out" 2>"$e/$c.err" </dev/null; RC=$?
+    check "MS-$c" "$label: install.sh --spec exits 0" "exit $RC" rc_is 0
+    check "MS-$c" "$label: MACHINE-SPEC.md is written" "absent, empty or without its heading" \
+      bash -c '[[ -s "$1" ]] && grep -q "^# Machine Specification" "$1"' _ "$spec"
+    check "MS-$c" "$label: no hook is armed" "a hook was armed" unarmed "$d"
+  }
+  ms_variant baseline;  ms_case baseline "control: every probe healthy" env PATH="$fb:$PATH"
+  ms_variant df-table df 'printf "Filesystem  Size  Used Avail Use%% Mounted on\n/dev/sda1   100G   50G   50G  50%% /\n"
+echo "df: /run/user/1000/gvfs: Transport endpoint is not connected" >&2; exit 1'
+  ms_case df-table "df prints a table and exits 1 (the stale-mount case)" env PATH="$fb:$PATH"
+  ms_variant df-empty df 'exit 1';        ms_case df-empty "df prints nothing and exits 1" env PATH="$fb:$PATH"
+  ms_variant lscpu lscpu 'exit 1';        ms_case lscpu "lscpu exits 1" env PATH="$fb:$PATH"
+  ms_variant nproc nproc 'exit 1';        ms_case nproc "nproc exits 1" env PATH="$fb:$PATH"
+  ms_variant free free 'exit 1';          ms_case free "free exits 1" env PATH="$fb:$PATH"
+  ms_variant lspci lspci 'exit 1';        ms_case lspci "lspci exits 1" env PATH="$fb:$PATH"
+  ms_variant lspci-nodisplay lspci 'echo "00:00.0 Host bridge: Example Corp Host Bridge"'
+  ms_case lspci-nodisplay "lspci lists no display device (grep matches nothing; nvidia-smi healthy)" env PATH="$fb:$PATH"
+  ms_variant uname-r uname "case \"\$1\" in -r) exit 1 ;; esac; exec $real_uname \"\$@\""
+  ms_case uname-r "uname -r exits 1" env PATH="$fb:$PATH"
+  ms_variant nvidia nvidia-smi 'exit 1'; ms_put "$fb" lspci 'echo "00:00.0 Host bridge: Example Corp"'
+  ms_case nvidia "no display from lspci and nvidia-smi exits 1" env PATH="$fb:$PATH"
+  ms_variant docker docker 'exit 1';      ms_case docker "docker info exits 1 (already guarded — a control)" env PATH="$fb:$PATH"
+  local absent
+  for absent in lscpu lspci nvidia-smi; do
+    ms_variant "no-$absent"; rm -f "$fb/$absent"
+    [[ $absent == nvidia-smi ]] && ms_put "$fb" lspci 'echo "00:00.0 Host bridge: Example Corp"'
+    filtered_path "$SCRATCH/ms-path-no-$absent" "$absent"
+    if PATH="$fb:$SCRATCH/ms-path-no-$absent" command -v "$absent" >/dev/null 2>&1; then
+      unmeasured "MS-no-$absent" "could not remove $absent from PATH"; continue
+    fi
+    ms_case "no-$absent" "$absent absent from PATH" env PATH="$fb:$SCRATCH/ms-path-no-$absent"
+  done
+}
+
 # ── write-boundary — the arming step writes only into the effective hook dir ──
 fx_write_boundary() {
   bold "▸ write-boundary — full-tree manifests around the arming step"
@@ -1441,7 +1511,7 @@ run_one() {
   rm -rf "${OUTPUT:?}/$1"; mkdir -p "$OUTPUT/$1"
   case "$1" in
     manifest) fx_manifest ;; A) fx_A ;; B) fx_B ;; C) fx_C ;; notice) fx_notice ;;
-    notice-streams) fx_notice_streams ;; hook-paths) fx_hook_paths ;; old-backup) fx_old_backup ;; repo-shapes) fx_repo_shapes ;; change-filter) fx_change_filter ;;
+    notice-streams) fx_notice_streams ;; hook-paths) fx_hook_paths ;; old-backup) fx_old_backup ;; repo-shapes) fx_repo_shapes ;; change-filter) fx_change_filter ;; machine-spec) fx_machine_spec ;;
     write-boundary) fx_write_boundary ;;
     graph-reclaim) fx_graph_reclaim ;; binary-provenance) fx_binary_provenance ;; install-failure) fx_install_failure ;;
   esac

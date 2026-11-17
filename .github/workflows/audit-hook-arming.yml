@@ -127,6 +127,10 @@ jobs:
         if: success() || failure()
         run: bash code/src/scripts/tests/hook-arming.sh --fixture change-filter
 
+      - name: install.sh --spec survives every failing host probe (US009 machine-spec bug)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture machine-spec
+
       - name: Write boundary (ST05, EC-17)
         if: success() || failure()
         run: bash code/src/scripts/tests/hook-arming.sh --fixture write-boundary
