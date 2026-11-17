@@ -1,6 +1,6 @@
 # SPRINT-06
 
-**Last Updated**: 31/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 17/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -39,7 +39,12 @@
 admission, holding a reservation**: `project-management/src/03-SPRINTS/SPRINT-05.md` reserves
 US009's 5 SP `Should` carry to this record, and if it lands this sprint is **13 / 11 SP** and at
 grace. The grace is deliberately available for that carry and for nothing else
-(<%DEVELOPER_NAME%>'s call at `03-sprint-planning`, 20/09/2026). See Notes.
+(<%DEVELOPER_NAME%>'s call at `03-sprint-planning`, 20/09/2026). See Notes. **Since 17/11/2026 the
+reserved carry is 8 SP**, US009 having been re-estimated from 5 to 8 mid-implementation (settled
+with <%DEVELOPER_NAME%>, /implement-story grilling round 5): if it lands this record would stand at
+**16 / 11, 3 SP past grace**, which the 20/09/2026 licence above does not cover. Nothing here is
+decided on that account — SPRINT-05 is re-planned at its close, and that re-plan disposes of the
+carry. The 5 SP figures elsewhere in this record are as of 20/09/2026.
 
 <!-- FLAGS — the union of the member stories' flags. Recompute this table on every story
      admitted, never edit it directly.
@@ -167,7 +172,9 @@ grace. The grace is deliberately available for that carry and for nothing else
 
 **Total:** 8 SP — all committed, no stretch tier at opening. **US009's 5 SP `Should` carry is
 reserved to this record from `project-management/src/03-SPRINTS/SPRINT-05.md`**; if it arrives the
-total is 13 SP, 8 committed and 5 stretch. It is not counted until it does.
+total is 13 SP, 8 committed and 5 stretch. It is not counted until it does. **Since 17/11/2026
+the carry is 8 SP** (US009 re-estimated from 5 mid-implementation), so a landed carry would total
+16 SP, 8 committed and 8 stretch — see the capacity line above.
 
 <!-- US010 is added to this table rather than referenced from it because
      project-management/docs/planning/SPRINTS.md computes the flag union and the capacity FROM this
@@ -358,8 +365,8 @@ SPRINT-05 — until that day it stood in three records only, four rows long, and
 | `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11 — closed                                             |
 | `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
 | `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed                                  |
-| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
-| `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 8, stretch)             | 16 / 11 — over grace, closed; re-planned at its close       |
+| `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 8 SP carry if it slips | 8 / 11 — closed, holding a reservation; 16 / 11 if it lands |
 | `SPRINT-07` | US012 (`Must`, 2) then US011 (`Should`, 8, stretch)             | 10 / 11 — closed                                            |
 | `SPRINT-08` | US013 (`Must`, 3) then US014 (`Must`, 8)                        | 11 / 11 — at capacity, open                                 |
 
@@ -368,6 +375,14 @@ capacity change is written into every copy in the same change. It is maintained 
 reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
 `project-management/docs/planning/SPRINTS.md`. Obligation:
 `project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- TWO ROWS CHANGED, 17/11/2026, on US009's re-estimate from 5 to 8 SP during implementation
+     (settled with <%DEVELOPER_NAME%>, /implement-story grilling round 5). The `SPRINT-05` row read
+     "US009 (`Should`, 5, stretch)" and "13 / 11 — at grace, closed", and the `SPRINT-06` row
+     "US009's reserved 5 SP carry" and "13 / 11 if it lands", from 20/09/2026 until that day.
+     SPRINT-05 is re-planned at its close rather than now, and no membership moved. Checked against
+     each record's own capacity line as well as against the other copies, per
+     project-management/src/03-SPRINTS/CLAUDE.md. -->
 
 <!-- ONE ROW ADDED, 31/10/2026 at 03-sprint-planning. `SPRINT-08` opened that day with its first
      admitted story, US013 (`Must`, 3), cut the same day from

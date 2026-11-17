@@ -1,7 +1,7 @@
 # SPRINT-PLAN-06 — The seven register indexes are born seeded, and the map index leaves the file that ships
 
-**Last Updated**: 03/10/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
-**Source sprint:** `../03-SPRINTS/SPRINT-06.md` · **Capacity:** 8 / 11 — 13 / 11 if US009's reserved carry lands · **Stories:** 1, plus one reservation
+**Last Updated**: 17/11/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
+**Source sprint:** `../03-SPRINTS/SPRINT-06.md` · **Capacity:** 8 / 11 — 16 / 11 if US009's reserved carry lands (13 / 11 until US009's 17/11/2026 re-estimate to 8 SP) · **Stories:** 1, plus one reservation
 
 <!-- Written 03/10/2026 by a `16-sprint-plans` run. The title is US010's, the sole member, on the
      precedent ./03-SPRINT-PLAN-03.md set for a record with one member.
@@ -166,6 +166,13 @@ _None committed._ **US009's 5 SP `Should` carry is reserved into this plan from 
 this section holds that reservation rather than a member. `../03-SPRINTS/SPRINT-05.md` ->
 _Definition of Done_ reserves it here if US009 is dropped rather than delivered, and the record
 holds it from this side.
+
+**Since 17/11/2026 the reserved carry is 8 SP, not 5.** US009 was re-estimated from 5 to 8 during
+implementation (settled with <%DEVELOPER_NAME%>, /implement-story grilling round 5), so a landed
+carry would stand this plan at **16 / 11 — 8 `Must` + 8 `Should`, 3 SP past grace** — which the
+20/09/2026 grace licence below does not cover. The table and paragraph below are as of 20/09/2026
+and are kept as written; SPRINT-05 is re-planned at its close, and that re-plan disposes of the
+carry, not this plan.
 
 **The all-`Must` weakness stands, and the reservation is its only contingent repair.** US010 alone is
 a single all-`Must` member — the shape `../../docs/planning/SPRINTS.md` warns has no give, where the

@@ -1,7 +1,7 @@
 # SPRINT-PLAN-05 — The cookie doctrine lands with its advisory reaching a real operator, and the git hooks arm on purpose
 
-**Last Updated**: 30/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
-**Source sprint:** `../03-SPRINTS/SPRINT-05.md` · **Capacity:** 8 SP Must + 5 SP Should = 13 / 11 — at the grace ceiling, the full 2 SP taken on 17/09/2026, **CLOSED** · **Stories:** 2
+**Last Updated**: 17/11/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
+**Source sprint:** `../03-SPRINTS/SPRINT-05.md` · **Capacity:** 8 SP Must + 8 SP Should = 16 / 11 — 3 SP over the grace ceiling since US009's re-estimate from 5 to 8 SP on 17/11/2026 (13 / 11, at grace, from 17/09/2026), re-planned at the sprint's close, **CLOSED** · **Stories:** 2
 
 <!-- Written 17/09/2026 by a `16-sprint-plans` run, immediately after `15-decisions` closed for
      both members. The record said on 09/09/2026 that this plan stayed absent deliberately because
@@ -122,7 +122,12 @@ the plan.
 
 | ID    | Title                                                                                           | Phases touched                   | SP  | Story plan                                             | Git branch          |
 | ----- | ----------------------------------------------------------------------------------------------- | -------------------------------- | --- | ------------------------------------------------------ | ------------------- |
-| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true | Script + manifest — no code lane | 5   | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md` | `us009/hook-arming` |
+| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true | Script + manifest — no code lane | 8   | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md` | `us009/hook-arming` |
+
+<!-- 17/11/2026: US009's SP cell read 5 from 17/09/2026 until that day, when it was re-estimated
+     to 8 during implementation (settled with <%DEVELOPER_NAME%>, /implement-story grilling round
+     5) — the threshold its story plan named in advance. ../03-SPRINTS/SPRINT-05.md stands at
+     16 / 11 and is re-planned at its close; this plan mirrors it and is not re-planned now. -->
 
 <!-- 18/09/2026, `17-story-plans` Step 10 for US009: BOTH ROWS ARE NOW FILLED and this comment is
      fully discharged. US009's plan was written later the same day, and its `Branch` row fixes
@@ -173,8 +178,9 @@ _None._
   17/09/2026, but never filed, measured 28/09/2026; US008's `22-implementation-documentation` pass
   opens the row. US008 establishes the **form** a row with no version takes, because its own
   unversioned entry needs one; it does not backfill the earlier entry's row.
-- **Admitting a third story.** The record is at 13 / 11, the hard ceiling, and CLOSED. Anything
-  arriving is refused on arithmetic before it is argued.
+- **Admitting a third story.** The record is at 16 / 11 since 17/11/2026 — past the hard ceiling,
+  on US009's re-estimate — and CLOSED. Anything arriving is refused on arithmetic before it is
+  argued.
 
 <!-- AMENDED 28/09/2026. The bullets on the eleven invocations and on `shared-ai-symlinks.sh` ended
      "and `GAPS.md` carries it from 17/09/2026" and "and filed as a `GAPS.md` row of 17/09/2026"
@@ -421,7 +427,7 @@ four artefacts then read `Draft`, each not yet reviewed by <%DEVELOPER_NAME%>, a
 story counts towards a sprint plan. <%DEVELOPER_NAME%> signed all four off on 28/09/2026 (settled
 28/09/2026, 16-sprint-plans grilling round 1 Q1), and the stale text in each was corrected in place
 in the same change rather than superseded (round 2 Q5): no finding, ID or severity moved. The count
-this plan was written on — both members, 13 SP — is unchanged, and its honest date is 30/09/2026,
+this plan was written on — both members, 13 SP — held until US009's 17/11/2026 re-estimate made it 16 SP with the same members, and its honest date is 30/09/2026,
 when gate `11` closed last (see _QA_ below); `../03-SPRINTS/SPRINT-05.md` -> _Notes_ records that
 order rather than re-dating it. Reported as found, on the precedent of the QA paragraph under
 _Sprint Reference Documents_.

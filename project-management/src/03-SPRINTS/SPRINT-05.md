@@ -1,6 +1,6 @@
 # SPRINT-05
 
-**Last Updated**: 16/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 17/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -35,12 +35,16 @@ moment nobody chose.
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
 
-**Timeline:** TBD · **Capacity:** **8 SP Must + 5 SP Should = 13 / 11 SP** — at the **grace
-ceiling**, two members, a stretch tier, **the full 2 SP of grace taken**, and **CLOSED to further
-admission**. See Notes. Recomputed 17/09/2026 on US009's re-estimate from 3 to 5 SP; the record
-stood at `11 / 11 SP, no grace taken` from 17/09/2026 until that gate closed the same day.
+**Timeline:** TBD · **Capacity:** **8 SP Must + 8 SP Should = 16 / 11 SP** — **over the grace
+ceiling by 3 SP**, two members, a stretch tier, and **CLOSED to further admission**. See Notes.
+**Recomputed 17/11/2026, mid-implementation**, on US009's re-estimate from 5 to 8 SP — the
+threshold its own story plan named in advance (settled with <%DEVELOPER_NAME%>, /implement-story
+grilling round 5). No member moves: this record is **re-planned at its close**, not now, and the
+overrun is recorded as a finding at workflow `22`. The record stood at `13 / 11 SP, at grace` from
+17/09/2026 until that day, on US009's earlier re-estimate from 3 to 5 SP, and at
+`11 / 11 SP, no grace taken` from its admission until that gate closed the same day.
 `.claude/skills/sprint/SKILL.md` notes that a sprint **habitually** running to grace means the
-ceiling is wrong — this is the first, and a second is the signal rather than this one.
+ceiling is wrong — this was the first to take it, and it is now the first to overrun it.
 
 <!-- FLAGS — the union of the member stories' flags. Recompute this table on every story
      admitted, never edit it directly.
@@ -139,10 +143,18 @@ ceiling is wrong — this is the first, and a second is the signal rather than t
 | ID    | Title                                                                                                  | MoSCoW      | SP  |
 | ----- | ------------------------------------------------------------------------------------------------------ | ----------- | --- |
 | US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Must Have   | 8   |
-| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Should Have | 5   |
+| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Should Have | 8   |
 
-**Total:** 13 SP — **8 committed, 5 stretch.** Rows listed in build order. The all-`Must` shape
+**Total:** 16 SP — **8 committed, 8 stretch.** Rows listed in build order. The all-`Must` shape
 this record opened with on 09/09/2026 is repaired rather than inherited; see Notes.
+
+<!-- RECOMPUTED 17/11/2026, during implementation. US009 moved 5 -> 8 SP (settled with
+     <%DEVELOPER_NAME%>, /implement-story grilling round 5): four TDD rounds, a repository-shapes
+     fixture family and a second CI job behind a change filter crossed the threshold its story plan
+     named in advance. The row read 5 and the Total "13 SP — 8 committed, 5 stretch" from
+     17/09/2026 until that day. This record therefore moves from 13 / 11 to 16 / 11, 3 SP past the
+     grace ceiling, and the capacity line above is updated with it. It is re-planned at its close
+     rather than now, and no member moves. -->
 
 <!-- RECOMPUTED 17/09/2026 at `15-decisions`. US009 moved 3 -> 5 SP: its AC-GAP-1 found the story
      as specified did not deliver its own User Story, and
@@ -322,8 +334,8 @@ SPRINT-05 — until that day it stood in three records only, four rows long, and
 | `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11 — closed                                             |
 | `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
 | `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed                                  |
-| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
-| `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 8, stretch)             | 16 / 11 — over grace, closed; re-planned at its close       |
+| `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 8 SP carry if it slips | 8 / 11 — closed, holding a reservation; 16 / 11 if it lands |
 | `SPRINT-07` | US012 (`Must`, 2) then US011 (`Should`, 8, stretch)             | 10 / 11 — closed                                            |
 | `SPRINT-08` | US013 (`Must`, 3) then US014 (`Must`, 8)                        | 11 / 11 — at capacity, open                                 |
 
@@ -332,6 +344,14 @@ capacity change is written into every copy in the same change. It is maintained 
 reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
 `project-management/docs/planning/SPRINTS.md`. Obligation:
 `project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- TWO ROWS CHANGED, 17/11/2026, on US009's re-estimate from 5 to 8 SP during implementation
+     (settled with <%DEVELOPER_NAME%>, /implement-story grilling round 5). The `SPRINT-05` row read
+     "US009 (`Should`, 5, stretch)" and "13 / 11 — at grace, closed", and the `SPRINT-06` row
+     "US009's reserved 5 SP carry" and "13 / 11 if it lands", from 20/09/2026 until that day.
+     SPRINT-05 is re-planned at its close rather than now, and no membership moved. Checked against
+     each record's own capacity line as well as against the other copies, per
+     project-management/src/03-SPRINTS/CLAUDE.md. -->
 
 <!-- ONE ROW ADDED, 31/10/2026 at 03-sprint-planning. `SPRINT-08` opened that day with its first
      admitted story, US013 (`Must`, 3), cut the same day from
@@ -453,6 +473,14 @@ moved, from 8 to 13, on US009's admission and its re-estimate the same day. Ther
 to call out as under-capacity: `SPRINTS.md` -> _Capacity_ asks that an under-filled record explain
 itself rather than pad, and this one is past full.
 
+**Capacity since 17/11/2026: 16 / 11 — 3 SP over the grace ceiling, 8 committed and 8 stretch.**
+US009 was re-estimated from 5 to 8 SP during implementation, on the threshold its story plan named
+in advance (settled with <%DEVELOPER_NAME%>, /implement-story grilling round 5). The paragraph
+above is that figure's history and is kept as written. Grace is a hard ceiling for **admission**;
+this overrun is a member's re-estimate after admission, so nothing is refused and no member
+moves. **The record is re-planned at its close**, and the overrun is recorded as a finding at
+workflow `22`.
+
 <!-- CORRECTED 20/09/2026 (Q3). Read "**Capacity: 11 / 11 — at capacity, no grace taken, 8
      committed and 3 stretch (17/09/2026).**" and "only the used side has moved, from 8 to 11" from
      17/09/2026 until that day — against a header capacity line that had been recomputed to 13 / 11
@@ -484,6 +512,11 @@ runs to it means the capacity figure is wrong". This record is the second to tak
 SPRINT-04; a third is the signal that the ceiling is wrong rather than the exception. Closed by
 arithmetic and by decision both, on SPRINT-01's precedent of 07/09/2026 and SPRINT-03's of
 05/09/2026 — a ledger is closed by a call, not only by a ceiling.
+
+<!-- 17/11/2026: "It now stands at 13 / 11 with **nothing above it**" was true from 17/09/2026
+     until US009's re-estimate from 5 to 8 SP that day, which took the record to 16 / 11, 3 SP past
+     the grace ceiling. The record stays CLOSED and is re-planned at its close; see the capacity
+     paragraph above. -->
 
 <!-- CORRECTED 20/09/2026 (Q3). Read, from 17/09/2026: "at capacity and with the stretch tier
      filled ... US009 is 3 SP and went in inside capacity. The record now stands at 11 / 11 with 2
@@ -575,11 +608,11 @@ trigger (`project-management/docs/planning/CADENCE.md` -> _Sprint capacity — t
 capacity, "the sprint is full. Stop planning stories; plan the sprint"), and the plan followed
 within the day.
 
-- **The ledger counts every admitted story: 13.** `project-management/docs/planning/SPRINTS.md` ->
+- **The ledger counts every admitted story: 16, since 17/11/2026 (13 before).** `project-management/docs/planning/SPRINTS.md` ->
   _Two artefacts, two moments_ makes the record "the running ledger — it accumulates stories with
   their points", opened early, and `CADENCE.md`'s per-story loop runs gate `03` second, so a story
   is admitted at cutting and the ledger moves then.
-- **The plan counts only stories that have cleared the specify tier: 13, since 30/09/2026.**
+- **The plan counts only stories that have cleared the specify tier: 16 since 17/11/2026, 13 from 30/09/2026.**
   `CADENCE.md` -> _When a sprint plan is written_ names the prerequisites that must hold for
   **every story in the filling sprint** — `15-decisions` cleared, GDPR review, security threat
   model and assessment, a QA plan with no unresolved `AC-GAP`, an SEO plan or `SEO: N/A` with a
@@ -604,7 +637,11 @@ within the day.
      AMENDED 30/09/2026 at gate 11's close. The count is dated 30/09/2026 and not from gate 10's
      sign-off of 28/09/2026: gate 11 closes only at Signed off, and it closed on 30/09/2026, the
      last prerequisite to hold for either member (settled 30/09/2026, 16-sprint-plans grilling
-     round 3 Q9). The count still does not move. -->
+     round 3 Q9). The count still does not move.
+     AMENDED 17/11/2026, mid-implementation. Both counts read 13 until US009's re-estimate from 5
+     to 8 SP that day (settled with <%DEVELOPER_NAME%>, /implement-story grilling round 5). The
+     membership did not move and US009's specify-tier clearance stands, so both counts move
+     together to 16; the record is re-planned at its close. -->
 
 `project-management/src/16-SPRINT-PLANS/CLAUDE.md` forbids a plan without a matching record — "do
 not create an orphan plan" — and nothing forbids a record without a plan; that is a record's
@@ -1365,16 +1402,22 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       (`project-management/docs/planning/SPRINTS.md` -> _MoSCoW_), and dropping it does **not**
       fail the sprint
 - [ ] **If US009 is dropped rather than delivered**, it is recorded here with its reason and
-      carried into `project-management/src/03-SPRINTS/SPRINT-06.md` with its **5 SP** reserved
+      carried into `project-management/src/03-SPRINTS/SPRINT-06.md` with its **8 SP** reserved
       there — the six-artefact discipline SPRINT-03 set on 05/09/2026 for US003, and the backlog
       register in the Notes is updated in every copy in the same change. That record's own
       Definition of Done receives the reservation from this side, and its capacity line already
-      licenses the 13 / 11 the carry would produce
+      licenses the 13 / 11 the carry would produce — **since 17/11/2026 the carry is 8 SP and would
+      take that record to 16 / 11, past grace**, which its 20/09/2026 licence does not cover; the
+      carry, if one arises, is disposed of in this record's close re-plan
+- [ ] **This record is re-planned at its close** on US009's 17/11/2026 re-estimate from 5 to 8 SP,
+      which took it to 16 / 11, 3 SP past the grace ceiling (settled with <%DEVELOPER_NAME%>,
+      /implement-story grilling round 5), and the overrun is recorded as a finding at workflow `22`
 
 <!-- 20/09/2026, on the Definition of Done row above: it read "carried into the next record with
      its 3 SP reserved there ... updated in all five records" until SPRINT-06 existed to be named.
      The 3 was stale from US009's 17/09/2026 re-estimate; "the next record" was written when there
-     was none. The note is lifted OUT of the list item because Prettier re-indents a comment's
+     was none. The 5 read there from 20/09/2026 until 17/11/2026, when US009 was re-estimated to
+     8 SP mid-implementation. The note is lifted OUT of the list item because Prettier re-indents a comment's
      continuation lines inside one on every pass and never converges — the blocking pre-commit
      format gate then fails on a file nothing else is wrong with. -->
 

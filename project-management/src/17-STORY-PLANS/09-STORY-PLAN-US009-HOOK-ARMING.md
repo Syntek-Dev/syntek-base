@@ -158,6 +158,7 @@ probe therefore runs against a checkout of this repository** — its own `leftho
 2. **It carries a CI cost the story never priced** — a workflow that sets up node and pnpm, which
    `.github/workflows/audit-template.yml` does not. P4 names the file and the steps.
 3. **The estimate does not move.** US009 stays at **5 SP as a stated wide 5** — see _Key Decisions_.
+   **Superseded 17/11/2026: re-estimated to 8 SP** — see _Confirmation-round answers_.
 
 **`code/src/scripts/development/CONTEXT.md:6` is NOT edited, and an earlier draft of this plan was
 wrong to say it was.** That line reads "the three `install-*.sh` scripts run on the host, because
@@ -568,6 +569,10 @@ left blank and never satisfied by an invented edit (`code/docs/GATE-REPORTING.md
      same day (see the writing-convention note under the header). -->
 
 ### The estimate is a wide 5, and saying so is the point
+
+<!-- SUPERSEDED 17/11/2026: US009 was re-estimated to 8 SP during implementation, on the
+     threshold this section names (settled with <%DEVELOPER_NAME%>; see _Confirmation-round
+     answers — 17/11/2026_). The reasoning below is kept as the record of the 18/09/2026 call. -->
 
 **US009 stays at 5 SP.** Beyond the story's task list this plan adds: the extracted script and its
 two `CONTEXT.md` edits (Decision 1); a new CI workflow and a probe script (Decision 7); four
@@ -1279,3 +1284,22 @@ passes (/implement-story grilling, round 4).
 <!-- MOVED 17/11/2026: the "README verification" paragraph closed the 09/10/2026 section and was
      split from it when the red-phase answers were appended below it; it is restored to its
      section (R3-N2). -->
+
+### Confirmation-round answers — 17/11/2026
+
+Settled with <%DEVELOPER_NAME%> after the round-4 confirmation pass closed every earlier finding
+and raised a smaller set of new ones (/implement-story grilling, round 5).
+
+- **The hooks directory's real location decides, not the config scope.** After resolution, the
+  step refuses with exit 2 unless the hooks directory's real path lies inside this repository's git
+  common directory. The scope reading only shapes the remedy hint (local, worktree, global,
+  system, or the environment). This one rule covers a global or system value, `GIT_CONFIG`, a
+  local `include.path`, a symlinked `.git/hooks` and `GIT_CONFIG_COUNT`/`GIT_CONFIG_PARAMETERS`.
+  It narrows the round-4 answer: a local `core.hooksPath` naming a directory outside the
+  repository is refused too.
+- **Round 5 fixes every confirmed item** (R4-01 CI step, R4-QA-01 and R4-QA-03 ownership signal,
+  R4-SEC-03 rename detection, R4-03 and R4-QA-06 broken or bare classification, the remedy hints,
+  R4-04 and R4-05), followed by one targeted verification rather than another three-pass round.
+- **US009 is re-estimated from 5 to 8 SP**, the threshold _Key Decisions_ named: four TDD rounds,
+  a new fixture family and a second CI job with its change filter. SPRINT-05 becomes 16 / 11 SP
+  and is re-planned at its close; the overrun is recorded as a finding at workflow 22.
