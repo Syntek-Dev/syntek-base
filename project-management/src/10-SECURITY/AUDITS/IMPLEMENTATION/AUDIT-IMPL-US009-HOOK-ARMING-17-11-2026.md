@@ -171,10 +171,10 @@ plan's 7.1-7.14 are closed in the assessment record's Section 6.
 
 ## 8. Sign-off
 
-| Auditor                                                    | Role                         | Date       |
-| ---------------------------------------------------------- | ---------------------------- | ---------- |
-| Claude Code (independent recorder, `security` skill, Opus) | Post-build security audit    | 17/11/2026 |
-| <%DEVELOPER_NAME%>                                         | Developer sign-off — pending | —          |
+| Auditor                                                    | Role                                                     | Date       |
+| ---------------------------------------------------------- | -------------------------------------------------------- | ---------- |
+| Claude Code (independent recorder, `security` skill, Opus) | Post-build security audit                                | 17/11/2026 |
+| <%DEVELOPER_NAME%>                                         | Developer sign-off — given at `23-pr-and-review`, PR #37 | 17/11/2026 |
 
 ---
 

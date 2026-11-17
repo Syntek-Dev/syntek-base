@@ -117,10 +117,10 @@ the build are closed in the audit record; those below are what remains.
 
 ## 6. Sign-off
 
-| Reviewer                                                   | Role                              | Date       |
-| ---------------------------------------------------------- | --------------------------------- | ---------- |
-| Claude Code (independent recorder, `security` skill, Opus) | Post-implementation STRIDE review | 17/11/2026 |
-| <%DEVELOPER_NAME%>                                         | Developer sign-off — pending      | —          |
+| Reviewer                                                   | Role                                                     | Date       |
+| ---------------------------------------------------------- | -------------------------------------------------------- | ---------- |
+| Claude Code (independent recorder, `security` skill, Opus) | Post-implementation STRIDE review                        | 17/11/2026 |
+| <%DEVELOPER_NAME%>                                         | Developer sign-off — given at `23-pr-and-review`, PR #37 | 17/11/2026 |
 
 **Overall verdict:** no CRITICAL or HIGH was planned or introduced; ten of twelve planned threats
 are mitigated or moot with probe evidence, TM-02 and TM-12 are the residuals the plan already

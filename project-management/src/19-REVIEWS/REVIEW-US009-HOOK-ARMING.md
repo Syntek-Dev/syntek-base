@@ -106,11 +106,11 @@ verifiers. Most severe first.
 
 ## 4. Required actions before merge
 
-| Action                                                                                        | Finding      | Owner  | Status |
-| --------------------------------------------------------------------------------------------- | ------------ | ------ | ------ |
-| Read both `audit-hook-arming.yml` jobs on the PR — ES-01, the change filter's BASE expression | F-005, F-014 | Claude | Open   |
-| Fill FAIL-01 to FAIL-03 in the manual guide and Sections 2–4 of the automated record from CI  | F-005        | Claude | Open   |
-| Developer sign-off on the three security implementation records                               | —            | Sam    | Open   |
+| Action                                                                                        | Finding      | Owner  | Status          |
+| --------------------------------------------------------------------------------------------- | ------------ | ------ | --------------- |
+| Read both `audit-hook-arming.yml` jobs on the PR — ES-01, the change filter's BASE expression | F-005, F-014 | Claude | Open            |
+| Fill FAIL-01 to FAIL-03 in the manual guide and Sections 2–4 of the automated record from CI  | F-005        | Claude | Open            |
+| Developer sign-off on the three security implementation records                               | —            | Sam    | Done 17/11/2026 |
 
 Every review finding (R-001 to R-008) is fixed; R-009 to R-013 are documented limits.
 

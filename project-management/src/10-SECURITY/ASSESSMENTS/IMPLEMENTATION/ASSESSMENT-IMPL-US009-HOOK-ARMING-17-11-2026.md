@@ -132,10 +132,10 @@ Findings of this review. Review-round findings and their closures are the audit 
 
 ## 8. Sign-off
 
-| Reviewer                                                   | Role                           | Date       |
-| ---------------------------------------------------------- | ------------------------------ | ---------- |
-| Claude Code (independent recorder, `security` skill, Opus) | Post-implementation assessment | 17/11/2026 |
-| <%DEVELOPER_NAME%>                                         | Developer sign-off — pending   | —          |
+| Reviewer                                                   | Role                                                     | Date       |
+| ---------------------------------------------------------- | -------------------------------------------------------- | ---------- |
+| Claude Code (independent recorder, `security` skill, Opus) | Post-implementation assessment                           | 17/11/2026 |
+| <%DEVELOPER_NAME%>                                         | Developer sign-off — given at `23-pr-and-review`, PR #37 | 17/11/2026 |
 
 **Overall verdict:** the story meets the baseline's posture targets for arming. It introduces no
 CRITICAL or HIGH. A03 stays PARTIAL on TM-02, whose register row is owed. The new workflow's CI
