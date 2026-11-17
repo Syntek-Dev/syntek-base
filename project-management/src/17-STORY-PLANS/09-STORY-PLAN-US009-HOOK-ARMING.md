@@ -1302,4 +1302,5 @@ and raised a smaller set of new ones (/implement-story grilling, round 5).
   R4-04 and R4-05), followed by one targeted verification rather than another three-pass round.
 - **US009 is re-estimated from 5 to 8 SP**, the threshold _Key Decisions_ named: four TDD rounds,
   a new fixture family and a second CI job with its change filter. SPRINT-05 becomes 16 / 11 SP
-  and is re-planned at its close; the overrun is recorded as a finding at workflow 22.
+  and is reconciled at its close, US009 completing there in full (<%DEVELOPER_NAME%>, 17/11/2026: no
+  carry into SPRINT-06); the overrun is recorded as a finding at workflow 22.

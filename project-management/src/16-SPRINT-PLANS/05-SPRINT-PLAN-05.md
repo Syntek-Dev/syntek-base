@@ -1,7 +1,7 @@
 # SPRINT-PLAN-05 — The cookie doctrine lands with its advisory reaching a real operator, and the git hooks arm on purpose
 
 **Last Updated**: 17/11/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
-**Source sprint:** `../03-SPRINTS/SPRINT-05.md` · **Capacity:** 8 SP Must + 8 SP Should = 16 / 11 — 3 SP over the grace ceiling since US009's re-estimate from 5 to 8 SP on 17/11/2026 (13 / 11, at grace, from 17/09/2026), re-planned at the sprint's close, **CLOSED** · **Stories:** 2
+**Source sprint:** `../03-SPRINTS/SPRINT-05.md` · **Capacity:** 8 SP Must + 8 SP Should = 16 / 11 — 3 SP over the grace ceiling since US009's re-estimate from 5 to 8 SP on 17/11/2026 (13 / 11, at grace, from 17/09/2026), reconciled at the sprint's close, US009 completing here in full, **CLOSED** · **Stories:** 2
 
 <!-- Written 17/09/2026 by a `16-sprint-plans` run, immediately after `15-decisions` closed for
      both members. The record said on 09/09/2026 that this plan stayed absent deliberately because
@@ -127,7 +127,10 @@ the plan.
 <!-- 17/11/2026: US009's SP cell read 5 from 17/09/2026 until that day, when it was re-estimated
      to 8 during implementation (settled with <%DEVELOPER_NAME%>, /implement-story grilling round
      5) — the threshold its story plan named in advance. ../03-SPRINTS/SPRINT-05.md stands at
-     16 / 11 and is re-planned at its close; this plan mirrors it and is not re-planned now. -->
+     16 / 11 and is re-planned at its close; this plan mirrors it and is not re-planned now.
+     Later the same day <%DEVELOPER_NAME%> settled "Keep all of US009 on SPRINT-05 as we are
+     implementing": US009 completes here in full, the SPRINT-06 carry is released, and the record
+     is now reconciled at its close rather than re-planned. The header reads so. -->
 
 <!-- 18/09/2026, `17-story-plans` Step 10 for US009: BOTH ROWS ARE NOW FILLED and this comment is
      fully discharged. US009's plan was written later the same day, and its `Branch` row fixes
@@ -208,9 +211,10 @@ honouring the sprint number give the same answer and both segments read `05`. A 
 `05` on both should know it was checked rather than assumed.
 
 **US008 builds first because it is the `Must`**, on `../../docs/planning/CADENCE.md`'s
-one-story-at-a-time rule. US009 is the stretch tier and **the first work dropped if US008
-overruns**; dropping it does not fail the sprint, which is the give this record has and SPRINT-04
-did not.
+one-story-at-a-time rule. US009 is the stretch tier and **completes in this sprint in full**
+(<%DEVELOPER_NAME%>, 17/11/2026: "Keep all of US009 on SPRINT-05 as we are implementing"). Until
+that call it was "the first work dropped if US008 overruns; dropping it does not fail the sprint,
+which is the give this record has and SPRINT-04 did not" — the give is now spent, not held.
 
 **One dependency looks blocking and is not.** US008's whole-tree citation criterion would block on
 US004 (SPRINT-03, Open), which is why `../15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`
@@ -602,9 +606,11 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 
 - [ ] **The `Must` story is Completed — US008.** Its plan's own DoD complete and verified by a
       reviewer — `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`, written 18/09/2026
-- [ ] **US009 is Completed, or is dropped with its reason recorded in both records.** It is the
+- [ ] **US009 is Completed in this sprint, in full** — settled 17/11/2026 ("Keep all of US009 on
+      SPRINT-05 as we are implementing"), the SPRINT-06 carry released. Until then the row read
+      "US009 is Completed, or is dropped with its reason recorded in both records. It is the
       stretch tier and the first work dropped if US008 overruns; dropping it does not fail the
-      sprint. This is the give SPRINT-04 did not have
+      sprint. This is the give SPRINT-04 did not have"
 - [ ] **`v7.6.0` is tagged at `16aac54`, and US008's migration key was derived against `git tag`
       at the moment it was written** — not carried from any record, including the one that settled
       the rule. See _The tag this sprint waits on_

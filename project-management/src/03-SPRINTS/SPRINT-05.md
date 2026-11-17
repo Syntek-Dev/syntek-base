@@ -39,8 +39,12 @@ moment nobody chose.
 ceiling by 3 SP**, two members, a stretch tier, and **CLOSED to further admission**. See Notes.
 **Recomputed 17/11/2026, mid-implementation**, on US009's re-estimate from 5 to 8 SP — the
 threshold its own story plan named in advance (settled with <%DEVELOPER_NAME%>, /implement-story
-grilling round 5). No member moves: this record is **re-planned at its close**, not now, and the
-overrun is recorded as a finding at workflow `22`. The record stood at `13 / 11 SP, at grace` from
+grilling round 5). No member moves: this record is **reconciled at its close** — its capacity
+accounting squared against what shipped — and the overrun is recorded as a finding at workflow
+`22`. **US009 completes here in full** (<%DEVELOPER_NAME%>, 17/11/2026: "Keep all of US009 on
+SPRINT-05 as we are implementing"), so no carry leaves this record. This line read "re-planned at
+its close, not now" earlier the same day, until that call removed the only thing a re-plan could
+move; `project-management/docs/planning/SPRINTS.md` requires no re-plan of a record over grace. The record stood at `13 / 11 SP, at grace` from
 17/09/2026 until that day, on US009's earlier re-estimate from 3 to 5 SP, and at
 `11 / 11 SP, no grace taken` from its admission until that gate closed the same day.
 `.claude/skills/sprint/SKILL.md` notes that a sprint **habitually** running to grace means the
@@ -334,8 +338,8 @@ SPRINT-05 — until that day it stood in three records only, four rows long, and
 | `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11 — closed                                             |
 | `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
 | `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed                                  |
-| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 8, stretch)             | 16 / 11 — over grace, closed; re-planned at its close       |
-| `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 8 SP carry if it slips | 8 / 11 — closed, holding a reservation; 16 / 11 if it lands |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 8, stretch)             | 16 / 11 — over grace, closed; reconciled at its close       |
+| `SPRINT-06` | US010 (`Must`, 8)                                               | 8 / 11 — closed                                             |
 | `SPRINT-07` | US012 (`Must`, 2) then US011 (`Should`, 8, stretch)             | 10 / 11 — closed                                            |
 | `SPRINT-08` | US013 (`Must`, 3) then US014 (`Must`, 8)                        | 11 / 11 — at capacity, open                                 |
 
@@ -351,7 +355,14 @@ reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
      "US009's reserved 5 SP carry" and "13 / 11 if it lands", from 20/09/2026 until that day.
      SPRINT-05 is re-planned at its close rather than now, and no membership moved. Checked against
      each record's own capacity line as well as against the other copies, per
-     project-management/src/03-SPRINTS/CLAUDE.md. -->
+     project-management/src/03-SPRINTS/CLAUDE.md.
+     THE SAME TWO ROWS CHANGED AGAIN LATER ON 17/11/2026, on <%DEVELOPER_NAME%>'s call "Keep all of
+     US009 on SPRINT-05 as we are implementing". US009 completes in SPRINT-05 and the carry
+     reserved into SPRINT-06 is released: the `SPRINT-06` row read "US010 (`Must`, 8), plus
+     US009's reserved 8 SP carry if it slips" and "8 / 11 — closed, holding a reservation; 16 / 11
+     if it lands", and the `SPRINT-05` row "re-planned at its close", earlier that day. SPRINT-05
+     is now reconciled at its close. No membership moved; checked against each record's own
+     capacity line as well as against the other copies. -->
 
 <!-- ONE ROW ADDED, 31/10/2026 at 03-sprint-planning. `SPRINT-08` opened that day with its first
      admitted story, US013 (`Must`, 3), cut the same day from
@@ -478,8 +489,11 @@ US009 was re-estimated from 5 to 8 SP during implementation, on the threshold it
 in advance (settled with <%DEVELOPER_NAME%>, /implement-story grilling round 5). The paragraph
 above is that figure's history and is kept as written. Grace is a hard ceiling for **admission**;
 this overrun is a member's re-estimate after admission, so nothing is refused and no member
-moves. **The record is re-planned at its close**, and the overrun is recorded as a finding at
-workflow `22`.
+moves. **The record is reconciled at its close**, and the overrun is recorded as a finding at
+workflow `22`. US009 completes here in full, settled the same day (<%DEVELOPER_NAME%>: "Keep all
+of US009 on SPRINT-05 as we are implementing"), so the stretch tier is no longer droppable work:
+the give the 17/09/2026 repair bought is spent rather than held. This paragraph read "re-planned
+at its close" until that call.
 
 <!-- CORRECTED 20/09/2026 (Q3). Read "**Capacity: 11 / 11 — at capacity, no grace taken, 8
      committed and 3 stretch (17/09/2026).**" and "only the used side has moved, from 8 to 11" from
@@ -1397,23 +1411,27 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 ## Definition of Done
 
 - [ ] **Every `Must Have` story** in the Story Summary is individually marked **Completed** (its
-      own DoD complete) — US008 alone. US009 is the `Should Have` stretch tier: it is included in
-      the plan and is the first thing dropped if US008 overruns
-      (`project-management/docs/planning/SPRINTS.md` -> _MoSCoW_), and dropping it does **not**
-      fail the sprint
-- [ ] **If US009 is dropped rather than delivered**, it is recorded here with its reason and
-      carried into `project-management/src/03-SPRINTS/SPRINT-06.md` with its **8 SP** reserved
-      there — the six-artefact discipline SPRINT-03 set on 05/09/2026 for US003, and the backlog
-      register in the Notes is updated in every copy in the same change. That record's own
-      Definition of Done receives the reservation from this side, and its capacity line already
-      licenses the 13 / 11 the carry would produce — **since 17/11/2026 the carry is 8 SP and would
-      take that record to 16 / 11, past grace**, which its 20/09/2026 licence does not cover; the
-      carry, if one arises, is disposed of in this record's close re-plan
-- [ ] **This record is re-planned at its close** on US009's 17/11/2026 re-estimate from 5 to 8 SP,
+      own DoD complete) — US008 alone
+- [ ] **US009 is Completed in this record, in full.** It is the `Should Have` stretch tier, but
+      since 17/11/2026 it is not dropped and does not carry: <%DEVELOPER_NAME%> settled "Keep all of
+      US009 on SPRINT-05 as we are implementing", and the carry reserved into
+      `project-management/src/03-SPRINTS/SPRINT-06.md` is released in every record in the same
+      change
+- [ ] **This record is reconciled at its close** on US009's 17/11/2026 re-estimate from 5 to 8 SP,
       which took it to 16 / 11, 3 SP past the grace ceiling (settled with <%DEVELOPER_NAME%>,
       /implement-story grilling round 5), and the overrun is recorded as a finding at workflow `22`
 
-<!-- 20/09/2026, on the Definition of Done row above: it read "carried into the next record with
+<!-- AMENDED 17/11/2026, on <%DEVELOPER_NAME%>'s call that US009 stays here in full. Until then the
+     first row above continued "US009 is the `Should Have` stretch tier: it is included in the plan
+     and is the first thing dropped if US008 overruns (SPRINTS.md -> _MoSCoW_), and dropping it does
+     **not** fail the sprint"; a second row read "**If US009 is dropped rather than delivered**, it is
+     recorded here with its reason and carried into SPRINT-06 with its **8 SP** reserved there — the
+     six-artefact discipline SPRINT-03 set on 05/09/2026 for US003 ... its capacity line already
+     licenses the 13 / 11 the carry would produce — since 17/11/2026 the carry is 8 SP and would take
+     that record to 16 / 11, past grace"; and the reconcile row read "re-planned at its close".
+     The carry figure history is in the comment below. -->
+
+<!-- 20/09/2026, on the carry-reservation Definition of Done row (retired 17/11/2026, quoted above): it read "carried into the next record with
      its 3 SP reserved there ... updated in all five records" until SPRINT-06 existed to be named.
      The 3 was stale from US009's 17/09/2026 re-estimate; "the next record" was written when there
      was none. The 5 read there from 20/09/2026 until 17/11/2026, when US009 was re-estimated to

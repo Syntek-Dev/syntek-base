@@ -1,7 +1,7 @@
 # SPRINT-PLAN-06 — The seven register indexes are born seeded, and the map index leaves the file that ships
 
 **Last Updated**: 17/11/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
-**Source sprint:** `../03-SPRINTS/SPRINT-06.md` · **Capacity:** 8 / 11 — 16 / 11 if US009's reserved carry lands (13 / 11 until US009's 17/11/2026 re-estimate to 8 SP) · **Stories:** 1, plus one reservation
+**Source sprint:** `../03-SPRINTS/SPRINT-06.md` · **Capacity:** 8 / 11 — the US009 carry reservation released 17/11/2026 (it read "13 / 11 if US009's reserved carry lands" until US009's re-estimate to 8 SP that day, then 16 / 11) · **Stories:** 1
 
 <!-- Written 03/10/2026 by a `16-sprint-plans` run. The title is US010's, the sole member, on the
      precedent ./03-SPRINT-PLAN-03.md set for a record with one member.
@@ -162,7 +162,10 @@ SPRINT-07 has nothing to edit until the seven files exist. A slip here stalls al
 
 ### Should
 
-_None committed._ **US009's 5 SP `Should` carry is reserved into this plan from SPRINT-05**, and
+_None committed, and nothing reserved since 17/11/2026._ **The US009 carry is RELEASED**:
+<%DEVELOPER_NAME%> settled "Keep all of US009 on SPRINT-05 as we are implementing", so US009
+completes in `../03-SPRINTS/SPRINT-05.md` and the carry future below is closed. Until that day:
+**US009's 5 SP `Should` carry is reserved into this plan from SPRINT-05**, and
 this section holds that reservation rather than a member. `../03-SPRINTS/SPRINT-05.md` ->
 _Definition of Done_ reserves it here if US009 is dropped rather than delivered, and the record
 holds it from this side.
@@ -171,8 +174,9 @@ holds it from this side.
 implementation (settled with <%DEVELOPER_NAME%>, /implement-story grilling round 5), so a landed
 carry would stand this plan at **16 / 11 — 8 `Must` + 8 `Should`, 3 SP past grace** — which the
 20/09/2026 grace licence below does not cover. The table and paragraph below are as of 20/09/2026
-and are kept as written; SPRINT-05 is re-planned at its close, and that re-plan disposes of the
-carry, not this plan.
+and are kept as written. Later the same day the reservation was released, so the second row of
+that table no longer describes a possible future: this plan stands at **8 / 11, all `Must`**, the
+first row's reading, and the grace licence has no subject.
 
 **The all-`Must` weakness stands, and the reservation is its only contingent repair.** US010 alone is
 a single all-`Must` member — the shape `../../docs/planning/SPRINTS.md` warns has no give, where the
