@@ -22,6 +22,9 @@ allowBuilds:
   # ERR_PNPM_IGNORED_BUILDS (first seen in CI on 11/11/2026).
   "@parcel/watcher": false
   esbuild: false
+  # Keeps lefthook's own postinstall from arming the git hooks on every install: under
+  # ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026, `bash install.sh` (its
+  # install-hooks.sh step) is the only thing that arms them. Never flip this to true.
   lefthook: false
   msw: false
   protobufjs: false
