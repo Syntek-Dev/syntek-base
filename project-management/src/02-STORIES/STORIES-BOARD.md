@@ -11,8 +11,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 3     |
-| In Progress       | 1     |
-| In Review         | 2     |
+| In Progress       | 0     |
+| In Review         | 3     |
 | Accepted          | 1     |
 | Customer Review   | 0     |
 | Customer Accepted | 5     |
@@ -36,16 +36,15 @@ _None._
 
 ## In Progress
 
-| ID    | Title                                                                                           | Status      | File                 |
-| ----- | ----------------------------------------------------------------------------------------------- | ----------- | -------------------- |
-| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true | In Progress | [US009.md](US009.md) |
+_None._
 
 ## In Review
 
-| ID    | Title                                                                                        | Status    | File                 |
-| ----- | -------------------------------------------------------------------------------------------- | --------- | -------------------- |
-| US005 | Exactly one layer decides to retry, and every budget says how long it may take               | In Review | [US005.md](US005.md) |
-| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development | In Review | [US006.md](US006.md) |
+| ID    | Title                                                                                           | Status    | File                 |
+| ----- | ----------------------------------------------------------------------------------------------- | --------- | -------------------- |
+| US005 | Exactly one layer decides to retry, and every budget says how long it may take                  | In Review | [US005.md](US005.md) |
+| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development    | In Review | [US006.md](US006.md) |
+| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true | In Review | [US009.md](US009.md) |
 
 ## Accepted
 
