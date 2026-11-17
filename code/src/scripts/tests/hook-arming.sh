@@ -14,7 +14,7 @@
 # Every fixture is a SNAPSHOT of a checkout of this repository — its own lefthook.yml,
 # package.json and an installed node_modules — copied into a scratch directory outside it.
 # Never a bare `git init`: lefthook then installs no pre-commit hook, writes a lefthook.yml
-# into the tree, and `pnpm exec` cannot resolve the binary (story plan, Architecture Decision).
+# into the tree, and the project's lefthook binary is absent (story plan, Architecture Decision).
 # The snapshot is the source's tracked files plus untracked-but-not-ignored ones, as on disk,
 # so the probe can run before the story's commit exists. No `.env.*` file is ever copied.
 #
@@ -61,7 +61,10 @@
 #                      raw graph hook, marked non-executable hook. EC-15, EC-16; a throwaway
 #                      commit runs its legs. core.hooksPath=/dev/null is a deliberate opt-out:
 #                      the step warns hooks are disabled, arms nothing, exits 0, and --notice
-#                      prints `git config --unset-all core.hooksPath` (S-m2). Any other
+#                      prints `git config --<scope> --unset-all core.hooksPath` in the scope the
+#                      value came from (S-m2, CR-04: local and global); a value from
+#                      GIT_CONFIG_COUNT or a GIT_CONFIG file is named in words, never
+#                      --local (CR-04). Any other
 #                      unresolvable hooks path exits 2 with an error:.
 #   old-backup         Q2: a `pre-commit.old` already beside a non-lefthook hook is moved to a
 #                      timestamped name before lefthook runs, reported, and neither its content
@@ -74,6 +77,9 @@
 #                      marker without `LEFTHOOK` is not armed, and a .old beside it survives.
 #                      R5-QA-01/02: an arbitrary tail after lefthook's last line, and a marker
 #                      or `LEFTHOOK` only in comments, are unarmed; each is copied aside.
+#                      QA-02: a symlinked hook moved aside is put back when lefthook then fails.
+#                      QA-02b: the same when lefthook install exits 0 but arms nothing — put
+#                      back, or, where lefthook wrote a file there, the `mv -f` restore printed.
 #   repo-shapes        A hooks directory whose real path is outside the git common directory
 #                      is refused (exit 2), by every route: global, system, GIT_CONFIG,
 #                      GIT_CONFIG_COUNT, a local include.path, a symlinked .git/hooks, a local
@@ -98,6 +104,8 @@
 #                      control. Bug found in US009 (a stale FUSE mount made the host's df exit 1).
 #   write-boundary     Full-tree manifests (path, type, mode, link target, SHA-256; ignored and
 #                      untracked included) around the arming step alone. Negative control EC-17.
+#                      QA-01: over a stale node_modules no install runs and nothing outside the
+#                      hooks dir changes; a control shows `pnpm exec` would have installed.
 #   graph-reclaim      The real, pinned `code-review-graph install` writes the hook first; the
 #                      arming step reclaims and reports it. EC-05. S-M1: run AFTER arming, the
 #                      tool appends its block to lefthook's hook, which swallows a failing leg;
@@ -330,7 +338,7 @@ run_ut() {     # dir evidence-prefix [env-prefix…] -- [args…]
 rc_is() { [[ "$RC" == "$1" ]]; }
 not_() { ! "$@"; }
 rc_nonzero() { [[ "$RC" != "0" ]]; }
-says() { strip "$1.out" "$1.err" | grep -qiE "$2"; }
+says() { strip "$1.out" "$1.err" | grep -qiE -- "$2"; }
 reports_path() {   # evidence-prefix dir — names the effective hook, absolutely or root-relative
   local abs rel; abs="$(eff_hook "$2")"; rel="${abs#"$2"/}"
   strip "$1.out" "$1.err" | grep -qF -e "$abs" -e "$rel"
@@ -417,11 +425,18 @@ fx_manifest() {
       grep -qE -- "--fixture $fx([^a-zA-Z-]|\$)" <<< "$job" || missing+=" $fx"
     done
     check R4-01 "the probes job has a step for every fixture except install-failure" "missing:$missing" test -z "$missing"
+    check CR-03 "the workflow names no story, QA-plan row or excluded file" "a US###, AC-GAP or audit-template.yml mention remains" \
+      bash -c '! grep -qE "US[0-9]{3}|AC-GAP|audit-template\.yml" "$1"' _ "$wf"
+    check CR-05 "the install-failure comment sits directly above 'install-failure:', not above 'changes:'" \
+      "the 'docker daemon' comment is not in the block above install-failure:" \
+      bash -c 'awk "/^  [a-z-]+:\$/{if(\$1==\"install-failure:\"&&blk~/docker daemon/)ok=1; blk=\"\"; next} /^  #/{blk=blk \$0; next} {blk=\"\"} END{exit ok?0:1}" "$1"' _ "$wf"
     check R4-SEC-03 "the changes job decides through hook-arming.sh --needs-install-failure (the tested filter)" \
       "the workflow does not call it" grep -qF -- '--needs-install-failure' "$wf"
   else
     unmeasured R4-01 "no .github/workflows/audit-hook-arming.yml in the source"
   fi
+  check CR-01 "pnpm-workspace.yaml cites no decision record (project-management/ is excluded from a generated project)" \
+    "it names an ADR-... identifier" bash -c '! grep -qE "ADR-[A-Z0-9]" "$1"' _ "$s/pnpm-workspace.yaml"
   check QA-05 "pnpm-workspace.yaml allowBuilds keeps 'lefthook: false' (its own installer never runs)" "absent" \
     bash -c 'awk "/^allowBuilds:/{f=1;next} f&&/^[^[:space:]#]/{f=0} f" "$1" | grep -qE "^[[:space:]]+lefthook:[[:space:]]*false\b"' _ "$s/pnpm-workspace.yaml"
 
@@ -439,9 +454,17 @@ fx_manifest() {
       bash -c 'head -5 "$1" | grep -q "^# install-hooks.sh —"' _ "$ut"
     check P1 "header declares exit code 2 (install.sh's 'install failed')" "no exit-code line naming 2" \
       bash -c 'head -40 "$1" | grep -iE "exit code" | grep -q 2' _ "$ut"
-    check ST03 "the install invocation is 'args=(install' run as 'pnpm exec lefthook \"\${args'" \
-      "the non-comment args=(install / pnpm exec lefthook \"\${args[@]}\" pair is absent" \
-      bash -c 'c="$(grep -vE "^[[:space:]]*#" "$1")"; grep -qE "args=\(install" <<< "$c" && grep -qF "pnpm exec lefthook \"\${args" <<< "$c"' _ "$ut"
+    # QA-01: the binary checked is the binary executed. `pnpm exec` runs pnpm's
+    # verify-deps-before-run first, which over a stale node_modules silently runs a full
+    # install, lifecycle scripts included — so lefthook is executed directly, never via pnpm.
+    check ST03 "the install invocation is 'args=(install' run as '\"\$lh_bin\" \"\${args[@]}\"' (the checked binary, directly)" \
+      "the non-comment args=(install / \"\$lh_bin\" \"\${args[@]}\" pair is absent" \
+      bash -c 'c="$(grep -vE "^[[:space:]]*#" "$1")"; grep -qE "args=\(install" <<< "$c" && grep -qF "\"\$lh_bin\" \"\${args[@]}\"" <<< "$c"' _ "$ut"
+    check QA-01 "no non-comment line runs lefthook through 'pnpm exec' (it can trigger an implicit install)" \
+      "a non-comment 'pnpm exec' remains" \
+      bash -c '! grep -vE "^[[:space:]]*#" "$1" | grep -qF "pnpm exec"' _ "$ut"
+    check CR-03 "install-hooks.sh carries no review-round or plan-constraint labels" "a 'round N' or 'constraint 7.4' label remains" \
+      bash -c '! grep -qE "round [0-9]|constraint [0-9]+\.[0-9]+" "$1"' _ "$ut"
     check ST07 "guards with 'git rev-parse --git-dir'" "guard absent" grep -qF 'git rev-parse --git-dir' "$ut"
     check ST07 "never tests '[ -d .git ]'" "a directory test on .git is present" \
       bash -c '! grep -vE "^[[:space:]]*#" "$1" | grep -qE "\[\[? +-d +\"?[^ ]*\.git\"? *\]"' _ "$ut"
@@ -482,7 +505,14 @@ fx_manifest() {
   check P2 "install.sh's header comment names the hooks" "header (first 10 lines) silent on hooks" \
     bash -c 'head -10 "$1" | grep -qi hook' _ "$i"
 
-  local r="$s/.copier/README.md"; [[ -f "$r" ]] || r="$s/README.md"
+  # HP-06 pins the TEMPLATE's README seed wording, so it runs only where that seed exists. In a
+  # generated project .copier/ is gone and README.md is the project's own prose: an absent
+  # surface, noted and never failed, and never a fallback to the project's README (CR-02).
+  local r="$s/.copier/README.md"
+  if [[ ! -f "$r" ]]; then
+    log "  n/a   [HP-06] not applicable — no .copier/README.md (a generated project); the project's own README is not pinned"
+    return 0
+  fi
   check HP-06 "the README claim 'runs \`lefthook install\`, which registers the' (line-wrapped) stands" "sentence gone" \
     grep -qF 'runs `lefthook install`, which registers the' "$r"
   check HP-06 "the README no longer instructs 'pnpm prepare'" "a pnpm prepare line remains" \
@@ -781,8 +811,8 @@ fx_hook_paths() {
   new_fixture d hp-devnull commit; git -C "$d" config core.hooksPath /dev/null
   manifest "$d/.git/hooks" "$e/devnull.hooks.before" || die "manifest of .git/hooks failed"
   notice "$d" "$e/devnull.n"
-  check S-m2 "core.hooksPath=/dev/null: --notice prints 'git config --unset-all core.hooksPath' on stdout only, exit 0" \
-    "hint absent, stderr written or non-zero exit" notice_says "$e/devnull.n" 'git config --unset-all core.hooksPath'
+  check S-m2 "core.hooksPath=/dev/null: --notice prints 'git config --local --unset-all core.hooksPath' on stdout only, exit 0" \
+    "hint absent, unscoped, stderr written or non-zero exit" notice_says "$e/devnull.n" 'git config --local --unset-all core.hooksPath'
 
   run_ut "$d" "$e/devnull.arm" --
   check P3 "core.hooksPath=/dev/null: the step is an opt-out and exits 0" "exit $RC" rc_is 0
@@ -797,6 +827,76 @@ fx_hook_paths() {
     cmp -s "$e/devnull.hooks.before" "$e/devnull.hooks.after"
   check P3 "core.hooksPath=/dev/null: no lefthook hook was written to the default path" "one was" \
     bash -c '! grep -qsF "$2" "$1/.git/hooks/pre-commit"' _ "$d" "$MARKER"
+  check CR-04 "core.hooksPath=/dev/null (local): the step's re-enable command is scoped --local" \
+    "no 'git config --local --unset-all core.hooksPath' in the output" says "$e/devnull.arm" 'git config --local --unset-all core\.hooksPath'
+
+  # CR-04: a GLOBAL /dev/null opt-out. An unscoped --unset-all touches only the local scope and
+  # would leave the hooks disabled, so both modes must print the --global command.
+  local gcfg="$SCRATCH/gitconfig-devnull"
+  cp "$GIT_CONFIG_GLOBAL" "$gcfg"; printf '[core]\n\thooksPath = /dev/null\n' >> "$gcfg"
+  new_fixture d hp-devnull-global commit
+  notice "$d" "$e/devnull-global.n" GIT_CONFIG_GLOBAL="$gcfg"
+  check CR-04 "global core.hooksPath=/dev/null: --notice prints 'git config --global --unset-all core.hooksPath'" \
+    "hint absent, not --global, stderr written or non-zero exit" notice_says "$e/devnull-global.n" 'git config --global --unset-all core.hooksPath'
+  run_ut "$d" "$e/devnull-global.arm" env GIT_CONFIG_GLOBAL="$gcfg" --
+  check CR-04 "global core.hooksPath=/dev/null: the step is an opt-out and exits 0" "exit $RC" rc_is 0
+  check CR-04 "global core.hooksPath=/dev/null: the step prints 'git config --global --unset-all core.hooksPath'" \
+    "no --global command in the output" says "$e/devnull-global.arm" 'git config --global --unset-all core\.hooksPath'
+  check CR-04 "global core.hooksPath=/dev/null: nothing armed" "a hook was armed" unarmed "$d"
+
+  # CR-04 residual: a /dev/null from the COMMAND scope (git --show-scope says `command`) has no
+  # `git config --<scope>` that removes it, and `--local` would do nothing. Both modes must name
+  # the source in words: the environment variables, or the GIT_CONFIG file. Same fixture: the
+  # value lives only in the environment of each run.
+  local fcfg="$SCRATCH/gitconfig-devnull-file" src pre_c re_c desc_c
+  printf '[core]\n\thooksPath = /dev/null\n' > "$fcfg"
+  for src in count file; do
+    if [[ $src == count ]]; then
+      pre_c=(GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.hooksPath GIT_CONFIG_VALUE_0=/dev/null)
+      re_c='environment.*GIT_CONFIG_COUNT.*unset those variables'; desc_c="the environment variables and 'unset those variables'"
+    else
+      pre_c=(GIT_CONFIG="$fcfg")
+      re_c="GIT_CONFIG file $fcfg.*unset GIT_CONFIG or remove core\.hooksPath from that file"; desc_c="the GIT_CONFIG file $fcfg and 'unset GIT_CONFIG or remove core.hooksPath from that file'"
+    fi
+    notice "$d" "$e/devnull-$src.n" "${pre_c[@]}"
+    check CR-04 "command-scope core.hooksPath=/dev/null ($src): --notice names $desc_c, exit 0, stderr empty" \
+      "wording absent, stderr written or non-zero exit" \
+      bash -c '[[ $(cat "$1.rc") == 0 && ! -s "$1.err" ]] && grep -qE -- "$2" "$1.out"' _ "$e/devnull-$src.n" "$re_c"
+    check CR-04 "command-scope core.hooksPath=/dev/null ($src): --notice offers no '--local' command" "it does" \
+      bash -c '! grep -qF -- "--local" "$1.out"' _ "$e/devnull-$src.n"
+    run_ut "$d" "$e/devnull-$src.arm" env "${pre_c[@]}" --
+    check CR-04 "command-scope core.hooksPath=/dev/null ($src): the step is an opt-out and exits 0" "exit $RC" rc_is 0
+    check CR-04 "command-scope core.hooksPath=/dev/null ($src): the step names $desc_c" "wording absent" \
+      says "$e/devnull-$src.arm" "$re_c"
+    check CR-04 "command-scope core.hooksPath=/dev/null ($src): the step offers no '--local' command" "it does" \
+      not_ says "$e/devnull-$src.arm" '--local'
+    check CR-04 "command-scope core.hooksPath=/dev/null ($src): nothing armed" "a hook was armed" unarmed "$d"
+  done
+
+  # CR-04 include: git reports an INCLUDED value (include.path / includeIf) under the scope of the
+  # file that includes it, so `git config --<scope> --unset-all` exits 5 and leaves it in force.
+  # Both modes must name the included file in words and offer no --unset-all. Same fixture, no
+  # local value of its own: global include first, then a local include.path.
+  local icfg="$SCRATCH/gitconfig-devnull-include" isc want_i pre_i
+  cp "$GIT_CONFIG_GLOBAL" "$icfg"; printf '[include]\n\tpath = %s\n' "$fcfg" >> "$icfg"
+  for isc in global local; do
+    pre_i=(); [[ $isc == global ]] && pre_i=(GIT_CONFIG_GLOBAL="$icfg")
+    [[ $isc == local ]] && git -C "$d" config include.path "$fcfg"
+    want_i="it comes from $fcfg, included from your $isc config — remove core.hooksPath from that file"
+    notice "$d" "$e/devnull-inc-$isc.n" "${pre_i[@]}"
+    check CR-04 "$isc include of core.hooksPath=/dev/null: --notice names the included file in words, exit 0, stderr empty" \
+      "wording absent, stderr written or non-zero exit" notice_says "$e/devnull-inc-$isc.n" "$want_i"
+    check CR-04 "$isc include of core.hooksPath=/dev/null: --notice offers no '--unset-all' command" "it does" \
+      bash -c '! grep -qF -- "--unset-all" "$1.out"' _ "$e/devnull-inc-$isc.n"
+    run_ut "$d" "$e/devnull-inc-$isc.arm" env "${pre_i[@]}" --
+    check CR-04 "$isc include of core.hooksPath=/dev/null: the step is an opt-out and exits 0" "exit $RC" rc_is 0
+    check CR-04 "$isc include of core.hooksPath=/dev/null: the step names the included file in words" "wording absent" \
+      bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF -- "$2"' _ "$e/devnull-inc-$isc.arm" "$want_i"
+    check CR-04 "$isc include of core.hooksPath=/dev/null: the step offers no '--unset-all' command" "it does" \
+      not_ says "$e/devnull-inc-$isc.arm" '--unset-all'
+    check CR-04 "$isc include of core.hooksPath=/dev/null: nothing armed" "a hook was armed" unarmed "$d"
+  done
+  git -C "$d" config --unset include.path
 
   # Any OTHER unresolvable path stays a failure: a hooks path whose parent is a regular file.
   new_fixture d hp-unresolvable commit; printf 'not a directory\n' > "$d/hooks-blocker"
@@ -974,6 +1074,81 @@ fx_old_backup() {
         bash -c 'find "$2" -maxdepth 1 -type f -exec sha256sum {} + | cut -d" " -f1 | grep -qxF "$1"' _ "$ho" "$hd"
     fi
   done
+
+  # QA-02: the symlinked hook is moved aside BEFORE lefthook runs. When lefthook then fails, the
+  # developer's link must be put back — or, if it cannot be, the exact restore command printed.
+  # lefthook.yml is made invalid YAML, so `lefthook install` fails after the move.
+  new_fixture d ob-sym-failure commit; p="$(eff_hook "$d")"; hd="${p%/*}"
+  tdir="$SCRATCH/sym-target-failure"; mkdir -p "$tdir"; tgt="$tdir/pre-commit-target"
+  printf '#!/bin/sh\necho the developer'"'"'s own hook\n' > "$tgt"; chmod +x "$tgt"; ln -s "$tgt" "$p"
+  printf 'pre-commit: [\n' > "$d/lefthook.yml"
+  manifest "$tdir" "$e/sym-failure.target.before" || die "manifest of the symlink target dir failed"
+  run_ut "$d" "$e/sym-failure" --
+  manifest "$tdir" "$e/sym-failure.target.after" || die "manifest of the symlink target dir failed"
+  check QA-02 "symlinked hook + failing lefthook install: the step exits 2" "exit $RC" rc_is 2
+  check QA-02 "the developer's symlink is back at the hook path, pointing at its target" \
+    "the hook path is not the original link$(  [[ -e "$hd/pre-commit.old" || -L "$hd/pre-commit.old" ]] && printf ' (pre-commit.old is still there)')" \
+    bash -c '[[ -L "$1" && "$(readlink "$1")" == "$2" ]]' _ "$p" "$tgt"
+  check QA-02 "no stray pre-commit.old is left in the hooks dir" "a pre-commit.old remains" \
+    bash -c '[[ ! -e "$1/pre-commit.old" && ! -L "$1/pre-commit.old" ]]' _ "$hd"
+  check QA-02 "the restore is reported" "no 'restored' in the output" says "$e/sym-failure" 'restored'
+  check QA-02 "the link's target and its directory are untouched" \
+    "changed: $(changed_paths "$e/sym-failure.target.before" "$e/sym-failure.target.after" | head -3 | paste -sd' ' -)" \
+    cmp -s "$e/sym-failure.target.before" "$e/sym-failure.target.after"
+
+  # QA-02b: lefthook install EXITS 0 but leaves the hook unarmed, after the symlinked hook was
+  # moved aside. The fixture's own node_modules/.bin/lefthook (never the source's) is replaced by
+  # a fake that answers `version` and exits 0 on `install`. Leg 1 writes nothing, so the link is
+  # put back; leg 2 writes a non-armed regular file at the hook path, so the link cannot go back
+  # without overwriting it and the exact `mv -f` restore is printed instead.
+  local fake leg
+  new_fixture d ob-sym-unarmed commit; p="$(eff_hook "$d")"; hd="${p%/*}"
+  fake="$d/node_modules/.bin/lefthook"
+  case "$(realpath -m "$fake")" in "$SCRATCH"/*) ;; *) die "the fixture's lefthook resolves outside the scratch tree" ;; esac
+  tdir="$SCRATCH/sym-target-unarmed"; mkdir -p "$tdir"; tgt="$tdir/pre-commit-target"
+  printf '#!/bin/sh\necho the developer'"'"'s own hook\n' > "$tgt"; chmod +x "$tgt"; ln -s "$tgt" "$p"
+  manifest "$tdir" "$e/sym-unarmed.target.before" || die "manifest of the symlink target dir failed"
+  for leg in nothing-written foreign-written; do
+    rm -f "$fake"
+    { printf '#!/bin/sh\n[ "$1" = version ] && { echo 2.2.2-fake; exit 0; }\n'
+      [[ $leg == foreign-written ]] &&
+        printf 'h="$(git rev-parse --path-format=absolute --git-path hooks)/pre-commit"\nprintf "#!/bin/sh\\necho not lefthook\\n" > "$h"\n'
+      printf 'exit 0\n'; } > "$fake"
+    chmod +x "$fake"
+    run_ut "$d" "$e/sym-unarmed-$leg" --
+    check QA-02b "$leg: lefthook install exits 0 but arms nothing — the step exits 2" "exit $RC" rc_is 2
+    check QA-02b "$leg: the failure says the effective hook was not armed" "no 'did not arm'" says "$e/sym-unarmed-$leg" 'did not arm'
+    check QA-02b "$leg: the effective hook is unarmed" "it is armed" unarmed "$d"
+  done
+  # Leg 1's restore is what leg 2 starts from, so leg 1 is judged from its own transcript.
+  check QA-02b "nothing-written: the restore is reported" "no 'restored' in the output" says "$e/sym-unarmed-nothing-written" 'restored'
+  local want_mv; want_mv="mv -f -- $(printf '%q' "$hd/pre-commit.old") $(printf '%q' "$p")"
+  check QA-02b "foreign-written: the link cannot go back, so the exact restore command is printed" \
+    "no \"$want_mv\" in the output" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF -- "$2"' _ "$e/sym-unarmed-foreign-written" "$want_mv"
+  check QA-02b "foreign-written: the link is kept as pre-commit.old, still pointing at its target" "it is not" \
+    bash -c '[[ -L "$1" && "$(readlink "$1")" == "$2" ]]' _ "$hd/pre-commit.old" "$tgt"
+  check QA-02b "foreign-written: the file the fake wrote is not overwritten by the link" "the hook path is a link" \
+    bash -c '[[ -f "$1" && ! -L "$1" ]]' _ "$p"
+  manifest "$tdir" "$e/sym-unarmed.target.after" || die "manifest of the symlink target dir failed"
+  check QA-02b "the link's target and its directory are untouched" \
+    "changed: $(changed_paths "$e/sym-unarmed.target.before" "$e/sym-unarmed.target.after" | head -3 | paste -sd' ' -)" \
+    cmp -s "$e/sym-unarmed.target.before" "$e/sym-unarmed.target.after"
+
+  # QA-02b quote: the same foreign-written leg with a single quote and a space in the hooks
+  # path (a core.hooksPath inside the git common dir, so it is armed with --force). The printed
+  # restore must be shell-quoted, and running it as printed must put the link back.
+  local qhd="$d/.git/it's hooks" mvline
+  mkdir -p "$qhd"; ln -s "$tgt" "$qhd/pre-commit"; git -C "$d" config core.hooksPath "$qhd"
+  run_ut "$d" "$e/sym-unarmed-quote" --
+  check QA-02b "quoted path: lefthook install exits 0 but arms nothing — the step exits 2" "exit $RC" rc_is 2
+  want_mv="mv -f -- $(printf '%q' "$qhd/pre-commit.old") $(printf '%q' "$qhd/pre-commit")"
+  check QA-02b "quoted path: the restore command is printed shell-quoted" "no \"$want_mv\" in the output" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF -- "$2"' _ "$e/sym-unarmed-quote" "$want_mv"
+  mvline="$(strip "$e/sym-unarmed-quote.out" "$e/sym-unarmed-quote.err" | sed -n 's/^.*\(mv -f -- .*\)$/\1/p' | head -1)"
+  check QA-02b "quoted path: the printed command, run as printed, puts the link back" "it did not" \
+    bash -c '[[ -n $1 ]] && bash -c "$1" && [[ -L "$2" && "$(readlink "$2")" == "$3" && ! -e "$4" && ! -L "$4" ]]' \
+    _ "$mvline" "$qhd/pre-commit" "$tgt" "$qhd/pre-commit.old"
 }
 
 # One route to a hooks directory outside the git common directory. Refused (exit 2) with an
@@ -988,7 +1163,7 @@ shared_route() {   # route label
   run_dir="$d"
   case "$route" in
     system)    pre=(env -u GIT_CONFIG_NOSYSTEM GIT_CONFIG_SYSTEM="$cfg")
-               hint_re='git config --system --unset core\.hooksPath'; hint_desc="'git config --system --unset core.hooksPath'" ;;
+               hint_re='git config --system --unset-all core\.hooksPath'; hint_desc="'git config --system --unset-all core.hooksPath'" ;;
     gitconfig) pre=(env GIT_CONFIG="$cfg")
                hint_re='GIT_CONFIG([^_A-Z]|$)'; hint_desc="GIT_CONFIG" ;;
     count)     pre=(env GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=core.hooksPath GIT_CONFIG_VALUE_0="$sh")
@@ -1047,8 +1222,8 @@ fx_repo_shapes() {
   check GLOBAL "a global core.hooksPath is refused: exit 2" "exit $RC" rc_is 2
   check GLOBAL "the error: line names the global scope" "no '^error:' line containing 'global'" \
     says "$e/global" '^error:.*global'
-  check R4-QA-04 "global: the remedy names 'git config --global --unset core.hooksPath'" "remedy absent" \
-    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF "git config --global --unset core.hooksPath"' _ "$e/global"
+  check R4-QA-04 "global: the remedy names 'git config --global --unset-all core.hooksPath'" "remedy absent" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF "git config --global --unset-all core.hooksPath"' _ "$e/global"
   check GLOBAL "the global hook's hash is unchanged" "it changed" \
     bash -c '[[ "$(sha256sum "$1" | cut -d" " -f1)" == "$2" ]]' _ "$g/pre-commit" "$gh"
   check GLOBAL "nothing in the global hooks dir changed, and no lefthook hook appeared there" \
@@ -1185,8 +1360,8 @@ fx_repo_shapes() {
   gcfg="$SCRATCH/gitconfig-global-params"; cp "$GIT_CONFIG_GLOBAL" "$gcfg"; git config --file "$gcfg" core.hooksPath "$g"
   run_ut "$d" "$e/params" env GIT_CONFIG_GLOBAL="$gcfg" GIT_CONFIG_PARAMETERS="'user.name'='Unrelated Override'" --
   check R5-QA-05 "global core.hooksPath + an unrelated GIT_CONFIG_PARAMETERS: exit 2" "exit $RC" rc_is 2
-  check R5-QA-05 "the remedy is the global one ('git config --global --unset core.hooksPath')" "absent" \
-    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF "git config --global --unset core.hooksPath"' _ "$e/params"
+  check R5-QA-05 "the remedy is the global one ('git config --global --unset-all core.hooksPath')" "absent" \
+    bash -c 'sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qF "git config --global --unset-all core.hooksPath"' _ "$e/params"
   check R5-QA-05 "the remedy does not blame the environment" "it names GIT_CONFIG_PARAMETERS/GIT_CONFIG_COUNT/environment" \
     bash -c '! sed -E "s/\x1b\[[0-9;]*[A-Za-z]//g" "$1.out" "$1.err" | grep -qiE "GIT_CONFIG_PARAMETERS|GIT_CONFIG_COUNT|environment"' _ "$e/params"
 
@@ -1373,6 +1548,40 @@ fx_write_boundary() {
       check ST05 "redirected: the hook landed at the redirected path" "unarmed" is_armed "$d"
     fi
   done
+
+  # QA-01: a STALE node_modules — the committed manifest no longer matches the install, as after
+  # a `git pull`. `pnpm exec` would run pnpm's verify-deps-before-run, silently re-installing
+  # (lifecycle scripts included) and rewriting the lockfile. The step must run the installed
+  # binary as it is: exit 0, armed, no install, nothing outside the hooks dir. The postinstall
+  # is rewired to record every run to a file outside the fixture, so "no install" is observed.
+  local ran="$SCRATCH/wb-stale-postinstall.ran"; rm -f "$ran"
+  new_fixture d wb-stale commit
+  (cd "$d" && RAN="$ran" node -e '
+    const fs=require("fs"); const p=JSON.parse(fs.readFileSync("package.json","utf8"));
+    p.scripts.postinstall=`echo postinstall >> ${JSON.stringify(process.env.RAN)}; `+p.scripts.postinstall;
+    p.devDependencies.globals=p.devDependencies.globals.replace(/^\^/,">=");
+    fs.writeFileSync("package.json", JSON.stringify(p,null,2)+"\n")') || die "cannot make the wb-stale manifest stale"
+  git -C "$d" commit -qam "a manifest change node_modules has not seen" || die "commit of the stale manifest failed"
+  rm -f "$ran"
+  ck="$(cd "$d" && git rev-parse --git-common-dir)/info/lefthook.checksum"; [[ "$ck" == /* ]] || ck="./$ck"
+  manifest "$d" "$e/stale.before" || die "manifest failed"
+  run_ut "$d" "$e/stale.arm" --
+  manifest "$d" "$e/stale.after" || die "manifest failed"
+  changed_paths "$e/stale.before" "$e/stale.after" > "$e/stale.changed"
+  outside "$e/stale.changed" "./.git/hooks" "$ck" > "$e/stale.outside"
+  check QA-01 "stale node_modules: the step exits 0 with the installed lefthook" "exit $RC" rc_is 0
+  check QA-01 "stale node_modules: the effective hook is armed" "unarmed" is_armed "$d"
+  check QA-01 "stale node_modules: no install ran (the postinstall never fired)" \
+    "it fired $(grep -c . "$ran" 2>/dev/null) time(s)" test ! -e "$ran"
+  check QA-01 "stale node_modules: nothing outside the hooks dir changed (node_modules, lockfile included)" \
+    "changed: $(head -3 "$e/stale.outside" | paste -sd' ' -)" test ! -s "$e/stale.outside"
+  # The premise, measured last because it mutates the fixture: here `pnpm exec` DOES install.
+  (cd "$d" && pnpm exec lefthook version) >"$e/stale.control" 2>&1 </dev/null
+  if [[ -s "$ran" ]]; then
+    pass QA-01 "control: in the same stale fixture 'pnpm exec lefthook version' runs an install (the postinstall fired)"
+  else
+    unmeasured QA-01 "control: 'pnpm exec' did not install here, so the stale premise was not demonstrated"
+  fi
 }
 
 # ── graph-reclaim — the real graph tool writes first ──────────────────────────

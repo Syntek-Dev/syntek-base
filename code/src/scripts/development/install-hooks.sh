@@ -11,17 +11,18 @@
 # than overwriting in silence.
 #
 # Usage:
-#   install-hooks.sh            Arm the hooks (pnpm exec lefthook install)
+#   install-hooks.sh            Arm the hooks (node_modules/.bin/lefthook install, run directly)
 #   install-hooks.sh --notice   Print a one-line reminder if the hooks are unarmed; exit 0
 #   install-hooks.sh --help     Show this help
 #
 # Exit codes:  0 = success   1 = requirement missing   2 = install failed
 #   0 — armed, or skipped (no git repository; a project nested in another repository;
 #       core.hooksPath=/dev/null opt-out)
-#   1 — git, pnpm or the project's lefthook binary (node_modules) not found
+#   1 — git or the project's lefthook binary (node_modules) not found, or it does not run
 #   2 — the repository is broken, bare or its core.worktree points elsewhere; core.hooksPath
 #       is empty or unresolvable; the hooks directory lies outside the git common directory;
-#       a hook cannot be moved aside; `lefthook install` failed or did not arm the hook
+#       a hook cannot be moved aside; `lefthook install` failed or did not arm the hook (a
+#       symlinked hook moved aside is put back first, or the command that restores it printed)
 #
 # These follow root install.sh's exit-code contract DELIBERATELY, not this folder's
 # `1 = command failed, 2 = script error` (install-backend.sh, install-frontend.sh): this
@@ -57,25 +58,38 @@
 # rewrite a machine-wide hook or a committed file. The remedy names where the setting came from.
 # A redirected path inside the common directory is armed with --force.
 #
-# The lefthook binary is the project's own — $PROJECT_ROOT/node_modules/.bin/lefthook, run
-# through `pnpm exec` — never one found on PATH. Without it the step exits 1 having executed
-# no lefthook at all.
+# The lefthook binary is the project's own — $PROJECT_ROOT/node_modules/.bin/lefthook — and
+# the binary checked is the binary executed: it is run DIRECTLY, never through `pnpm exec` and
+# never found on PATH. `pnpm exec` first runs pnpm's verify-deps-before-run, which over a stale
+# node_modules (a manifest or lockfile changed since the install) silently runs a full install,
+# lifecycle scripts included, and rewrites the lockfile. Run directly, a stale node_modules is
+# used as it is: the installed lefthook arms the hook and nothing is installed. The hook and
+# lefthook.checksum it writes are byte-identical to what `pnpm exec lefthook install` writes in
+# the same checkout (measured 17/11/2026, lefthook 2.2.2, both orders; the hook embeds the
+# absolute path of the platform binary, so two checkouts differ). Without the binary the step
+# exits 1 having executed no lefthook at all.
 #
 # A `pre-commit.old` already beside a hook lefthook does not manage is moved to
 # `pre-commit.old.<YYYYmmddHHMMSS>` in the same directory first, because lefthook would
-# otherwise fail on it or, under --force, overwrite it.
+# otherwise fail on it or, under --force, overwrite it. A symlinked hook moved aside to
+# pre-commit.old is moved back if `lefthook install` then fails or does not arm the hook; if it
+# cannot be, the exact `mv` that restores it is printed.
 #
 # --notice is the package.json `postinstall`: it reads only, writes only to stdout, and
 # ALWAYS exits 0 with stderr empty — even on an unknown option, an unreachable checkout root
 # or any git error. It prints one line naming `bash install.sh` when the hooks are unarmed in a
-# git checkout (under core.hooksPath=/dev/null, the `git config --unset-all core.hooksPath`
-# that re-enables them), and nothing when they are armed, when CI is set, when there is no
-# repository, or when git is not on PATH. ANY non-empty CI silences it — `CI=false` included,
-# since the variable's presence, not its value, is the convention this follows. It never runs
-# lefthook, never writes a file, makes no network call and reads no credential.
+# git checkout (under core.hooksPath=/dev/null, the `git config --<scope> --unset-all
+# core.hooksPath` that re-enables them, in the scope the value came from — or, for a value from
+# the environment, a GIT_CONFIG file or a file a scope includes, which no `git config --<scope>
+# --unset-all` removes, that source in words), and nothing when they are armed, when CI is set,
+# when there is no repository, or when git is not on PATH. ANY non-empty CI silences it —
+# `CI=false` included, since the variable's presence, not its value, is the convention this
+# follows. It never runs lefthook, never writes a file, makes no network call and reads no
+# credential.
 #
 # Writes only under the effective hook directory, plus lefthook's own
-# .git/info/lefthook.checksum, which every `lefthook install` writes.
+# .git/info/lefthook.checksum, which every `lefthook install` writes. Never node_modules or the
+# lockfile: no package manager is run.
 #
 set -euo pipefail
 
@@ -104,7 +118,7 @@ usage() {
 install-hooks.sh — Arm the lefthook git hooks for this checkout
 
 Usage:
-  install-hooks.sh            Arm the effective pre-commit hook (pnpm exec lefthook install)
+  install-hooks.sh            Arm the effective pre-commit hook (the project's lefthook install)
   install-hooks.sh --notice   Read-only: print a reminder naming `bash install.sh` if the
                               hooks are unarmed. Silent when armed, when CI is set (any
                               non-empty value, CI=false included), with no git repository,
@@ -115,7 +129,8 @@ nothing when core.hooksPath=/dev/null — that setting is a deliberate opt-out. 
 directory must lie inside this repository's git directory (its git common directory, .git);
 one outside it — shared, machine-wide or in the working tree — is refused, and a redirected
 one inside it is armed with --force. Only the project's own lefthook (node_modules) is ever
-run. A symlinked hook is replaced as a link.
+run, directly — never through pnpm, so a stale node_modules is never re-installed. A symlinked
+hook is replaced as a link, and put back if lefthook then fails.
 An existing pre-commit.old beside a hook lefthook does not manage is moved to
 pre-commit.old.<timestamp> first.
 
@@ -220,14 +235,51 @@ detect_repo() {
   fi
 }
 
-# `git config --<scope> --unset-all <key>`, in the scope the effective value came from.
+# A value from the command scope — GIT_CONFIG_COUNT / GIT_CONFIG_KEY_<n> / GIT_CONFIG_VALUE_<n>,
+# GIT_CONFIG_PARAMETERS, or a GIT_CONFIG file — has no `git config --<scope>` that removes it, so
+# its source is named in words. Origin is git's --show-origin field (`file:<path>` for a file).
+command_scope_fix() {   # key origin
+  if [[ "$2" == file:* ]]; then
+    printf 'it comes from the GIT_CONFIG file %s — unset GIT_CONFIG or remove %s from that file' "${2#file:}" "$1"
+  else
+    printf 'it comes from the environment (GIT_CONFIG_COUNT / GIT_CONFIG_KEY_<n> or GIT_CONFIG_PARAMETERS) — unset those variables'
+  fi
+}
+
+# A value git reports under a scope but that lives in a file that scope's config INCLUDES
+# (include.path / includeIf): `git config --<scope> --unset-all` exits 5 and leaves it in force,
+# so the included file is named in words. The value is the scope's own when its origin is the
+# origin `--no-includes` reports for that scope; otherwise this prints and returns 0.
+included_fix() {   # key scope origin
+  local own=""
+  [[ "$3" == file:* ]] || return 1
+  own="$(git config --"$2" --no-includes --show-origin --get "$1" 2>/dev/null)" || own=""
+  [[ "${own%%$'\t'*}" == "$3" ]] && return 1
+  printf 'it comes from %s, included from your %s config — remove %s from that file' "${3#file:}" "$2" "$1"
+}
+
+# `git config --<scope> --unset-all <key>`, in the scope the effective value came from; for an
+# included value or the command scope, the words above — never a command that would exit 5 or
+# leave the value in force.
 unset_in_scope() {
-  local key="$1" sc
-  sc="$(git config --show-scope --get "$key" 2>/dev/null | cut -f1)" || sc=""
+  local key="$1" line="" sc="" origin=""
+  if line="$(git config --show-scope --show-origin --get "$key" 2>/dev/null)"; then
+    sc="${line%%$'\t'*}"; origin="${line#*$'\t'}"; origin="${origin%%$'\t'*}"
+  fi
   case "$sc" in
-    local|worktree|global|system) printf 'git config --%s --unset-all %s' "$sc" "$key" ;;
+    local|worktree|global|system)
+      included_fix "$key" "$sc" "$origin" || printf 'git config --%s --unset-all %s' "$sc" "$key" ;;
+    command) command_scope_fix "$key" "$origin" ;;
     *) printf 'git config --local --unset-all %s' "$key" ;;
   esac
+}
+
+# The fix followed by the install: chained with && when it is a command, as a sentence when not.
+fix_then_install() {   # key
+  local f; f="$(unset_in_scope "$1")"
+  if [[ "$f" == "git config "* ]]; then printf '%s && bash install.sh' "$f"
+  else printf '%s, then run: bash install.sh' "$f"
+  fi
 }
 
 # core.hooksPath: whether it is set, its value, scope and origin. Read through `git config`,
@@ -271,7 +323,7 @@ resolve_hook() {
   fi
 }
 
-# The location rule (settled 17/11/2026, round 5): the hooks directory's REAL path must lie
+# The location rule: the hooks directory's REAL path must lie
 # inside this repository's git common directory. That one rule refuses a global, system,
 # GIT_CONFIG, GIT_CONFIG_COUNT/PARAMETERS or included value, a symlinked .git/hooks, and a
 # local path outside the repository — and a working-tree path such as a tracked .githooks/, so
@@ -308,7 +360,7 @@ lexical_hooks() {
 # Never the literal relative `.git/hooks`: from a linked worktree that names the worktree's own
 # .git FILE. Local and worktree values may be multi-valued, hence --unset-all.
 remedy() {
-  local f fr lex
+  local lex
   if ! $hp_set; then
     lex="$(lexical_hooks)" || lex=""
     if [[ -n "$lex" && -L "$lex" ]]; then
@@ -318,25 +370,17 @@ remedy() {
     fi
     return
   fi
+  # An included file (include.path / includeIf), in any file scope: named in words, once.
   case "$hp_scope" in
-    global) printf 'remove the global setting: git config --global --unset core.hooksPath' ;;
-    system) printf 'remove the system setting: git config --system --unset core.hooksPath' ;;
-    command)
-      if [[ "$hp_origin" == file:* ]]; then
-        printf 'it comes from the GIT_CONFIG file %s — unset GIT_CONFIG or remove core.hooksPath from that file' "${hp_origin#file:}"
-      else
-        printf 'it comes from the environment (GIT_CONFIG_COUNT / GIT_CONFIG_KEY_<n> or GIT_CONFIG_PARAMETERS) — unset those variables'
-      fi ;;
+    local|worktree|global|system) included_fix core.hooksPath "$hp_scope" "$hp_origin" && return ;;
+  esac
+  case "$hp_scope" in
+    global) printf 'remove the global setting: git config --global --unset-all core.hooksPath' ;;
+    system) printf 'remove the system setting: git config --system --unset-all core.hooksPath' ;;
+    command) command_scope_fix core.hooksPath "$hp_origin" ;;
     local|worktree)
-      # An included file, rather than the repository's own config or config.worktree.
-      f="${hp_origin#file:}"; [[ "$f" == /* ]] || f="$PROJECT_ROOT/$f"
-      fr="$(real_path "$f")" || fr="$f"
-      if [[ "$hp_origin" == file:* && "$fr" != "$common_dir/config" && "$fr" != "$common_dir"/*config.worktree ]]; then
-        printf 'it comes from %s, included by this repository'"'"'s config — remove core.hooksPath there' "$f"
-      else
-        printf 'point it at a directory inside the repository: git config --%s --unset-all core.hooksPath && git config --%s core.hooksPath %s/hooks (or just the --unset-all)' \
-          "$hp_scope" "$hp_scope" "$common_dir"
-      fi ;;
+      printf 'point it at a directory inside the repository: git config --%s --unset-all core.hooksPath && git config --%s core.hooksPath %s/hooks (or just the --unset-all)' \
+        "$hp_scope" "$hp_scope" "$common_dir" ;;
     *) printf 'remove it where it is set, or: git config --local --unset-all core.hooksPath && git config --local core.hooksPath %s/hooks' "$common_dir" ;;
   esac
 }
@@ -354,24 +398,24 @@ if $NOTICE; then
     absent|nested) exit 0 ;;
     broken) say "This checkout's git repository cannot be read, so its hooks cannot be checked — run: bash install.sh to see git's error"
             exit 0 ;;
-    bare) say "This checkout's repository has core.bare=true, so no hook can be armed — fix it: $(unset_in_scope core.bare) && bash install.sh"
+    bare) say "This checkout's repository has core.bare=true, so no hook can be armed — fix it: $(fix_then_install core.bare)"
           exit 0 ;;
-    worktree-elsewhere) say "This checkout's core.worktree points elsewhere (${repo_top:-unknown}), so no hook can be armed — fix it: $(unset_in_scope core.worktree) && bash install.sh"
+    worktree-elsewhere) say "This checkout's core.worktree points elsewhere (${repo_top:-unknown}), so no hook can be armed — fix it: $(fix_then_install core.worktree)"
           exit 0 ;;
   esac
   read_hooks_path
   if $hp_set; then
     if [[ "$hp_val" == "/dev/null" ]]; then
-      say "Git hooks are disabled by core.hooksPath=/dev/null — to arm them: git config --unset-all core.hooksPath && bash install.sh"
+      say "Git hooks are disabled by core.hooksPath=/dev/null — to arm them: $(fix_then_install core.hooksPath)"
       exit 0
     elif [[ -z "$hp_val" ]]; then
-      say "core.hooksPath is set but empty, so no hook can run — fix it: git config --unset-all core.hooksPath && bash install.sh"
+      say "core.hooksPath is set but empty, so no hook can run — fix it: $(fix_then_install core.hooksPath)"
       exit 0
     fi
   fi
   if ! resolve_hook; then
     if $hp_set; then
-      say "Git hooks cannot be resolved from core.hooksPath=$hp_val — fix it (or git config --unset-all core.hooksPath), then run: bash install.sh"
+      say "Git hooks cannot be resolved from core.hooksPath=$hp_val — fix it (or $(unset_in_scope core.hooksPath)), then run: bash install.sh"
     else
       say "Git hooks cannot be resolved in this checkout — run: bash install.sh"
     fi
@@ -417,11 +461,11 @@ read_hooks_path
 if $hp_set; then
   if [[ "$hp_val" == "/dev/null" ]]; then
     warn "Git hooks are disabled by core.hooksPath=/dev/null — nothing armed. To arm them:"
-    warn "  git config --unset-all core.hooksPath && bash install.sh"
+    warn "  $(fix_then_install core.hooksPath)"
     exit 0
   fi
   [[ -n "$hp_val" ]] ||
-    die "core.hooksPath is set but empty ($hp_scope config) — no hook can run. Unset it: git config --unset-all core.hooksPath"
+    die "core.hooksPath is set but empty ($hp_scope config) — no hook can run. Fix it: $(unset_in_scope core.hooksPath)"
 fi
 
 if ! resolve_hook; then
@@ -439,15 +483,15 @@ if hooks_outside; then
   exit 2
 fi
 
-command -v pnpm >/dev/null 2>&1 || { err "pnpm not found — it is required to run lefthook"; exit 1; }
-# The project's binary or nothing: checked BEFORE any lefthook runs, so `pnpm exec` can never
-# fall back to a lefthook on PATH (constraint 7.4).
+# The project's binary or nothing, checked BEFORE any lefthook runs and then executed itself —
+# never resolved through PATH, and never through `pnpm exec`, whose dependency check can run an
+# install over a stale node_modules (header).
 lh_bin="$PROJECT_ROOT/node_modules/.bin/lefthook"
 if [[ ! -f "$lh_bin" || ! -x "$lh_bin" ]]; then
   err "lefthook not found in node_modules — $lh_bin is missing; a lefthook on PATH is never used (run: bash code/src/scripts/development/install-frontend.sh --local)"
   exit 1
 fi
-if ! lh_version="$(pnpm exec lefthook version 2>/dev/null)" || [[ -z "$lh_version" ]]; then
+if ! lh_version="$("$lh_bin" version 2>/dev/null)" || [[ -z "$lh_version" ]]; then
   err "lefthook in node_modules does not run — $lh_bin (run: bash code/src/scripts/development/install-frontend.sh --local)"
   exit 1
 fi
@@ -486,11 +530,28 @@ case "$state" in
     fi ;;
 esac
 
+link_moved=false
 if [[ "$state" == "symlink" ]]; then
   if ! mv -n -- "$hook" "$hook_dir/pre-commit.old" || [[ -e "$hook" || -L "$hook" ]]; then
     die "cannot move the symlinked hook $hook aside — nothing armed"
   fi
-elif [[ "$state" == "graph-appended" || "$state" == "tail-appended" || "$state" == "claims-lefthook" ]]; then
+  link_moved=true
+fi
+
+# On a failure after the symlinked hook was moved aside, put the link back — mv -n, so nothing
+# lefthook wrote is overwritten — or, where it cannot go back, print the command that restores it.
+restore_link() {
+  $link_moved || return 0
+  local old="$hook_dir/pre-commit.old"
+  if [[ -L "$old" && ! -e "$hook" && ! -L "$hook" ]] && mv -n -- "$old" "$hook" && [[ -L "$hook" && ! -L "$old" ]]; then
+    warn "Restored your symlinked hook at $hook — nothing armed"
+  else
+    warn "Your symlinked hook was moved to $old and could not be put back. Restore it with:"
+    warn "  mv -f -- $(printf '%q' "$old") $(printf '%q' "$hook")"
+  fi
+}
+
+if [[ "$state" == "graph-appended" || "$state" == "tail-appended" || "$state" == "claims-lefthook" ]]; then
   # lefthook would overwrite it in place, keeping nothing: keep a copy first.
   cp -p -- "$hook" "$hook_dir/pre-commit.old" || die "cannot copy the existing hook $hook aside — nothing armed"
 fi
@@ -500,9 +561,10 @@ fi
 args=(install)
 $hp_set && args+=(--force)
 
-if ! output="$(pnpm exec lefthook "${args[@]}" 2>&1)"; then
+if ! output="$("$lh_bin" "${args[@]}" 2>&1)"; then
   [[ -n "$output" ]] && printf '%s\n' "$output" | sed 's/^/    /' >&2
   err "lefthook install failed — the pre-commit hook at $hook is not armed"
+  restore_link
   exit 2
 fi
 
@@ -510,6 +572,7 @@ fi
 if ! is_armed "$hook"; then
   [[ -n "$output" ]] && printf '%s\n' "$output" | sed 's/^/    /' >&2
   err "lefthook install did not arm the effective pre-commit hook at $hook"
+  restore_link
   exit 2
 fi
 

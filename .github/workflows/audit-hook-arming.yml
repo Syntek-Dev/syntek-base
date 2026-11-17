@@ -1,4 +1,4 @@
-# Hook-arming probes — the CI half of code/src/scripts/tests/hook-arming.sh (US009).
+# Hook-arming probes — the CI half of code/src/scripts/tests/hook-arming.sh.
 #
 # The git hooks arm in exactly one place: install.sh's last Phase 1 step, which calls
 # code/src/scripts/development/install-hooks.sh. package.json carries no `prepare`; its
@@ -6,9 +6,9 @@
 # disposable checkouts of this repository — never a bare `git init` — and NEVER inlines an
 # assertion: every step below calls the script, which owns the fixtures and the oracles.
 #
-# Not in `[3/4] Template Generation` (audit-template.yml): that job sets up uv only and never
-# executes a generated install.sh. It keeps only the grep for the step's presence on both
-# INCLUDE_MOBILE poles (AC-GAP-6 of the US009 QA plan).
+# Not folded into a template-generation check: such a check sets up uv only and never executes
+# a generated install.sh, so at most it can grep for the step's presence on both INCLUDE_MOBILE
+# poles. Running the step is this workflow's job.
 #
 # CI IS SET ON EVERY RUNNER, and the `pnpm install` below fires the new postinstall under it —
 # one of the notice's silent clauses. The probe's printing cases therefore run with `env -u CI`
@@ -18,7 +18,7 @@
 # lockfile and the installer scripts; a path filter would be a hand-kept copy of that set.
 #
 # ONLY install-failure IS FILTERED, at job level, and the filter is INVERTED (settled
-# 17/11/2026, round 4): it is skipped only when EVERY changed file is documentation or PM —
+# 17/11/2026): it is skipped only when EVERY changed file is documentation or PM —
 # `*.md`, `project-management/**`, `research/**`, `handoffs/**` — and runs otherwise. A
 # dependency list of the install path was tried first and three review passes found it
 # incomplete; a deny-list of what cannot matter is the shape that stays true. A workflow-level
@@ -127,7 +127,7 @@ jobs:
         if: success() || failure()
         run: bash code/src/scripts/tests/hook-arming.sh --fixture change-filter
 
-      - name: install.sh --spec survives every failing host probe (US009 machine-spec bug)
+      - name: install.sh --spec survives every failing host probe (machine-spec)
         if: success() || failure()
         run: bash code/src/scripts/tests/hook-arming.sh --fixture machine-spec
 
@@ -151,9 +151,6 @@ jobs:
           path: code/src/scripts/tests/reports/hook-arming/
           if-no-files-found: ignore
 
-  # Its own job because root install.sh needs what the probes job does not: a docker daemon, uv,
-  # and passwordless `sudo tee -a /etc/hosts`. A GitHub-hosted runner has all three; the script
-  # refuses this fixture on any other host unless --allow-install-sh is given.
   changes:
     name: Does install-failure need to run?
     runs-on: ubuntu-latest
@@ -178,6 +175,9 @@ jobs:
           echo "install=$install" >> "$GITHUB_OUTPUT"
           echo "install-failure needed: $install (base: ${BASE:-none})"
 
+  # Its own job because root install.sh needs what the probes job does not: a docker daemon, uv,
+  # and passwordless `sudo tee -a /etc/hosts`. A GitHub-hosted runner has all three; the script
+  # refuses this fixture on any other host unless --allow-install-sh is given.
   install-failure:
     name: Hook-install failure stops install.sh (ES-01 to ES-03)
     needs: changes
