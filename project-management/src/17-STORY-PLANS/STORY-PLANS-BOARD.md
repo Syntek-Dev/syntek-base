@@ -10,8 +10,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 4     |
-| In Progress       | 0     |
+| Pending           | 3     |
+| In Progress       | 1     |
 | In Review         | 2     |
 | Accepted          | 1     |
 | Customer Review   | 0     |
@@ -30,14 +30,15 @@ _None._
 
 | Plan                | Story                           | Title                                                                                                                      | Status  | File                                                                                             |
 | ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
-| 09-STORY-PLAN-US009 | [US009](../02-STORIES/US009.md) | The git hooks arm on purpose at install, and the README claim that they already do becomes true                            | Pending | [09-STORY-PLAN-US009-HOOK-ARMING.md](09-STORY-PLAN-US009-HOOK-ARMING.md)                         |
 | 10-STORY-PLAN-US010 | [US010](../02-STORIES/US010.md) | The seven register indexes are born seeded, and the map index leaves the file that ships                                   | Pending | [10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md](10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md) |
 | 11-STORY-PLAN-US012 | [US012](../02-STORIES/US012.md) | A seeded file that never lands is reported, and the gate's header claim becomes true                                       | Pending | [11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md](11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md)           |
 | 13-STORY-PLAN-US013 | [US013](../02-STORIES/US013.md) | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Pending | [13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md](13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md) |
 
 ## In Progress
 
-_None._
+| Plan                | Story                           | Title                                                                                           | Status      | File                                                                     |
+| ------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------ |
+| 09-STORY-PLAN-US009 | [US009](../02-STORIES/US009.md) | The git hooks arm on purpose at install, and the README claim that they already do becomes true | In Progress | [09-STORY-PLAN-US009-HOOK-ARMING.md](09-STORY-PLAN-US009-HOOK-ARMING.md) |
 
 ## In Review
 

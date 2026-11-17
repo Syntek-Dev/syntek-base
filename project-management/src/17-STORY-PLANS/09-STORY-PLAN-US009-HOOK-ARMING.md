@@ -177,7 +177,7 @@ script table (`:46-49`) move.
 | Phase | Deliverable                                                                                                                                                                                                  | Blocked by          |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------- |
 | P0    | The baselines, captured **before any edit** — the citation figure by identity, the 16/5/11 sweep re-run, ShellCheck probed and recorded, the length figures, and `.git/hooks/pre-commit` cleared             | The branch existing |
-| P1    | "code/src/scripts/development/install-hooks.sh" — the guard, the resolved binary, the third-claimant report, the exit codes — plus its `CONTEXT.md` row, tree line and the stale "three" at `:6`             | P0                  |
+| P1    | "code/src/scripts/development/install-hooks.sh" — the guard, the resolved binary, the third-claimant report, the exit codes — plus its `CONTEXT.md` row and tree line; `:6` left alone                       | P0                  |
 | P2    | The root `install.sh` — the Phase 1 Step 9 section calling P1's script, and the numbering settled across `usage()` and both Phase 2 body headers                                                             | P1                  |
 | P3    | `package.json` — `prepare` removed, `postinstall` added with its three silence clauses                                                                                                                       | P0                  |
 | P4    | The probes and their new workflow — the three fixtures, the pre-commit probe against P1's script, the worktree and unborn-HEAD cases, the `postinstall` probe, PA-01/PA-02, and the four manifest assertions | P1, P2, P3          |
@@ -357,6 +357,11 @@ the new step's clean 9 as evidence the two lists are in exact correspondence.
   The installer verifies the effective path after lefthook runs; a write to an unused default
   path is a failure, not success. No repository remains a skip; a resolution/installation failure
   in a repository is reported and exits 2. Settled 09/10/2026.
+- **The `postinstall` calls `install-hooks.sh --notice`**, so the effective-path resolution and the
+  armed predicate exist once, in that script. The mode reads only, writes only to stdout, and always
+  exits 0 — including with no repository and with `git` absent from `PATH` (ES-06). A third scope
+  addition beyond the story's task list, counted against the wide 5. Settled 17/11/2026
+  (/implement-story grilling Q3), over an inline manifest one-liner and a separate notice script.
 - **One shipped line is made false by this edit and moves with it.** `.copier/README.md:1091` reads
   `pnpm prepare          # Install Lefthook git hooks (runs automatically after install.sh)`.
   Removing `prepare` turns that into a setup instruction naming a command that does not exist —
@@ -962,15 +967,20 @@ carries it until it is.
 
 | File                                      | Change                                                                                                                                                   |
 | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `code/src/scripts/development/CONTEXT.md` | **Three edits.** The tree block gains "install-hooks.sh"; the script table gains its row; and `:6`'s "the three `install-*.sh` scripts" becomes four     |
+| `code/src/scripts/development/CONTEXT.md` | **Two edits.** The tree block gains "install-hooks.sh" and the script table gains its row. `:6`'s "three" is left alone — it counts toolchain installers |
 | `code/src/scripts/development/CLAUDE.md`  | Read for a rule that must move with the new script; edited only if one is found                                                                          |
 | `../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md` | The US009 row in _Story Plans — the code master_, the `Should` table's two cells, and the branch reference — **Step 10 of this workflow, not the build** |
 | `../02-STORIES/US009.md`                  | The plan cited under _Decisions_, in the form US006 and US007 use — **Step 10**                                                                          |
 | `../17-STORY-PLANS/CONTEXT.md`            | **Nothing.** It ships and holds no index by recorded decision                                                                                            |
 
-**`code/src/scripts/development/CONTEXT.md:6` is the edit most likely to be missed**, because it is
-prose rather than a table row and no gate counts the members of an `install-*.sh` family against a
-word. It is named here so it is not found by a reviewer instead.
+**`code/src/scripts/development/CONTEXT.md:6` is the line most likely to be edited by mistake**,
+because it reads like a count of the `install-*.sh` files. It counts toolchain installers, so it
+stays at three; see _Architecture Decision_.
+
+<!-- CORRECTED 17/11/2026 (settled 17/11/2026, /implement-story grilling Q2): the P1 phase-table row,
+     the CONTEXT.md table row above and this paragraph said `:6`'s "three" becomes four until then,
+     contradicting _Architecture Decision_ and the Definition of Done, which leave it alone. The
+     later correction wins; no decision moves. -->
 
 ---
 
@@ -1130,7 +1140,7 @@ them to move again. Re-measured 30/09/2026 against the tree committed together w
 - [ ] "code/src/scripts/development/install-hooks.sh" exists, guards on `git rev-parse --git-dir`,
       runs `pnpm exec lefthook install`, reports what it wrote and what it replaced, and exits 2 on
       a genuine failure
-- [ ] The root `install.sh` calls it as the **last** step of Phase 1, after `:517`
+- [ ] The root `install.sh` calls it as the **last** step of Phase 1, between `:522` and `:524` <!-- CORRECTED 17/11/2026 (/implement-story grilling Q2): read "after `:517`" until then, the looser placement P2 already superseded -->
 - [ ] `usage()` prints Phase 1 as steps 1–9 and Phase 2 as **10 and 11**, with the body headers at
       `:540` and `:580` agreeing — the pre-existing collision gone, not recorded
 - [ ] `package.json` carries **no `prepare` script**, and its `postinstall` writes nothing outside
