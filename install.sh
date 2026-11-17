@@ -3,11 +3,12 @@
 # install.sh — Bootstrap the <%PROJECT_SLUG%> development environment.
 #
 # Installs all Python and JavaScript dependencies, copies missing .env.*
-# files from their examples, auto-generates dev secrets, and marks every
-# project script executable.
+# files from their examples, auto-generates dev secrets, marks every
+# project script executable, and arms the lefthook git hooks
+# (code/src/scripts/development/install-hooks.sh).
 #
 # Usage:
-#   bash install.sh           Phase 1 only (deps, env files, permissions)
+#   bash install.sh           Phase 1 only (deps, env files, permissions, git hooks)
 #   bash install.sh --full    Phase 1 + Phase 2 (Docker build, migrate)
 #   bash install.sh --spec    Only (re)generate code/docs/MACHINE-SPEC.md, then exit
 #   bash install.sh --help    Show this help
@@ -41,7 +42,7 @@ usage() {
 install.sh — Bootstrap the <%PROJECT_SLUG%> development environment
 
 Usage:
-  bash install.sh           Phase 1: deps, env files, permissions
+  bash install.sh           Phase 1: deps, env files, permissions, git hooks
   bash install.sh --full    Phase 1 + Phase 2: Docker build, migrations
   bash install.sh --spec    Only (re)generate code/docs/MACHINE-SPEC.md, then exit
   bash install.sh --help    Show this help
@@ -55,10 +56,11 @@ Phase 1 (always):
   6. Auto-generate dev secrets in .env.dev  (SECRET_KEY, ENCRYPTION_KEY, LEGAL_FIELD_HMAC_KEY, MFA_FIELD_KEY, POSTGRES_PASSWORD)
   7. Mark install.sh + all code/src/scripts/**/*.sh executable
   8. Generate a gitignored host profile  (code/docs/MACHINE-SPEC.md)
+  9. Arm the lefthook git hooks  (install-hooks.sh)
 
 Phase 2 (--full only):
-  7. Build and start Docker dev stack
-  8. Apply database migrations
+  10. Build and start Docker dev stack
+  11. Apply database migrations
 
 Requirements: git, openssl, uv, pnpm, docker with the compose v2 plugin.
   Checked for presence only, not version; Python and Node are not checked.
@@ -526,6 +528,14 @@ log ""
 generate_machine_spec
 ok "Host profile written → code/docs/MACHINE-SPEC.md  (gitignored — refresh with: bash install.sh --spec)"
 
+# ── Phase 1 · Step 9 — Git hooks ──────────────────────────────────────────────
+# Last in Phase 1 on purpose: a failure here abandons no earlier Phase 1 step. The script's
+# exit codes are this file's own (1 requirement missing, 2 install failed) and propagate as-is.
+section "Git hooks (lefthook)"
+log ""
+
+bash "$PROJECT_ROOT/code/src/scripts/development/install-hooks.sh" || exit $?
+
 # ── Phase 2 (--full only) ─────────────────────────────────────────────────────
 if [[ "$FULL" == "false" ]]; then
   printf '\n'
@@ -542,7 +552,7 @@ if [[ "$FULL" == "false" ]]; then
   exit 0
 fi
 
-# ── Phase 2 · Step 7 — Build and start Docker dev stack ───────────────────────
+# ── Phase 2 · Step 10 — Build and start Docker dev stack ──────────────────────
 section "Docker dev stack (build + up)"
 log ""
 
@@ -594,7 +604,7 @@ done
 printf '\n'
 ok "All containers running (${elapsed}s)"
 
-# ── Phase 2 · Step 8 — Migrations ─────────────────────────────────────────────
+# ── Phase 2 · Step 11 — Migrations ────────────────────────────────────────────
 section "Database migrations"
 log ""
 
