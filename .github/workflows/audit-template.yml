@@ -258,6 +258,9 @@ jobs:
                      project-management/src/03-SPRINTS/SPRINTS-BOARD.md \
                      project-management/src/16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md \
                      project-management/src/17-STORY-PLANS/STORY-PLANS-BOARD.md \
+                     project-management/src/15-DECISIONS/DECISIONS-BOARD.md \
+                     project-management/src/20-FINDINGS/FINDINGS-BOARD.md \
+                     project-management/src/21-BUGS/BUGS-BOARD.md \
                      how-to/src/CONTRIBUTING.md .github/workflows/claude.yml \
                      how-to/src/TEMPLATE-TOKENS.md \
                      how-to/src/TEMPLATE-GUIDE/GUIDE-TO-SKILLS.md \
