@@ -12,8 +12,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Open              | 0     |
 | Pending           | 2     |
 | In Progress       | 1     |
-| In Review         | 3     |
-| Accepted          | 1     |
+| In Review         | 0     |
+| Accepted          | 4     |
 | Customer Review   | 0     |
 | Customer Accepted | 5     |
 | Rejected          | 0     |
@@ -41,17 +41,16 @@ _None._
 
 ## In Review
 
-| Plan                | Story                           | Title                                                                                           | Status    | File                                                                                                     |
-| ------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------- |
-| 06-STORY-PLAN-US005 | [US005](../02-STORIES/US005.md) | Exactly one layer decides to retry, and every budget says how long it may take                  | In Review | [06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md](06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md) |
-| 07-STORY-PLAN-US006 | [US006](../02-STORIES/US006.md) | The destructive dev scripts read the deployment posture, and refuse to run above development    | In Review | [07-STORY-PLAN-US006-POSTURE-GUARD.md](07-STORY-PLAN-US006-POSTURE-GUARD.md)                             |
-| 09-STORY-PLAN-US009 | [US009](../02-STORIES/US009.md) | The git hooks arm on purpose at install, and the README claim that they already do becomes true | In Review | [09-STORY-PLAN-US009-HOOK-ARMING.md](09-STORY-PLAN-US009-HOOK-ARMING.md)                                 |
+_None._
 
 ## Accepted
 
-| Plan                | Story                           | Title                                                                                                  | Status   | File                                                                                 |
-| ------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------ | -------- | ------------------------------------------------------------------------------------ |
-| 08-STORY-PLAN-US008 | [US008](../02-STORIES/US008.md) | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Accepted | [08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md](08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md) |
+| Plan                | Story                           | Title                                                                                                  | Status   | File                                                                                                     |
+| ------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------ | -------- | -------------------------------------------------------------------------------------------------------- |
+| 06-STORY-PLAN-US005 | [US005](../02-STORIES/US005.md) | Exactly one layer decides to retry, and every budget says how long it may take                         | Accepted | [06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md](06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md) |
+| 07-STORY-PLAN-US006 | [US006](../02-STORIES/US006.md) | The destructive dev scripts read the deployment posture, and refuse to run above development           | Accepted | [07-STORY-PLAN-US006-POSTURE-GUARD.md](07-STORY-PLAN-US006-POSTURE-GUARD.md)                             |
+| 08-STORY-PLAN-US008 | [US008](../02-STORIES/US008.md) | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Accepted | [08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md](08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md)                     |
+| 09-STORY-PLAN-US009 | [US009](../02-STORIES/US009.md) | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Accepted | [09-STORY-PLAN-US009-HOOK-ARMING.md](09-STORY-PLAN-US009-HOOK-ARMING.md)                                 |
 
 ## Customer Review
 

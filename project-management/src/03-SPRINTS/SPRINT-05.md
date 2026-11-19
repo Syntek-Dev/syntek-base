@@ -1,6 +1,6 @@
 # SPRINT-05
 
-**Last Updated**: 17/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 19/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -30,7 +30,7 @@ moment nobody chose.
      (Subdomain Routing and Gate Parity), which is the ordinary shape here: SPRINT-01, SPRINT-02
      and SPRINT-04 each span two. -->
 
-**Status:** In Progress — US008 started 16/11/2026, its first story
+**Status:** Done — US008 and US009, both members, Accepted (PR #35, PR #37); nothing carried over
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
@@ -144,10 +144,10 @@ ceiling is wrong — this was the first to take it, and it is now the first to o
 
 ## Story Summary
 
-| ID    | Title                                                                                                  | MoSCoW      | SP  |
-| ----- | ------------------------------------------------------------------------------------------------------ | ----------- | --- |
-| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Must Have   | 8   |
-| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Should Have | 8   |
+| ID      | Title                                                                                                  | MoSCoW      | SP  |
+| ------- | ------------------------------------------------------------------------------------------------------ | ----------- | --- |
+| US008 ✓ | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Must Have   | 8   |
+| US009 ✓ | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Should Have | 8   |
 
 **Total:** 16 SP — **8 committed, 8 stretch.** Rows listed in build order. The all-`Must` shape
 this record opened with on 09/09/2026 is repaired rather than inherited; see Notes.
