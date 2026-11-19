@@ -57,6 +57,22 @@ symlink, bind mount or shared path back into a checkout, and a subagent brief th
 copies says so in terms. `code/src/scripts/tests/hook-arming.sh` now carries a tripwire on the live
 `node_modules`; other scratch-making procedures have none.
 
+### Map first, then cut; a number is allocated only on save — 19/11/2026
+
+During US010's re-cut a work item split off a story was cut straight into a new story (US021),
+and the number was skipped past provisional rows. Sam: features are **mapped before a story is
+cut** — new work goes onto a feature map through `wayfinder` and is cut from a slice — and
+`02-STORIES/CUT-PLAN.md` allocates a number only when a `US###.md` is saved, every `Settled`-row
+number being provisional, so the next free number is the lowest unsaved one. Check the cut plan's
+pause rules (P14) before cutting anything.
+
+### A status vocabulary is the completion skill's, never a template's — 19/11/2026
+
+US010's re-cut took `Triaged` from `FINDING-US000-TEMPLATE.md` and presented it as settled; the
+`completion` skill never owned it (Sam: "we don't have a triaged status"). Before a grilling round
+lists a status value as settled, read it in `.claude/skills/completion/SKILL.md`; a value found
+only in a template or an artefact is a question, not a fact.
+
 ---
 
 ## Project Patterns
