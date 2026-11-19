@@ -206,6 +206,21 @@ self_test() {
       "$real_copier" > "$tmp/reinclude.yml"
     COPIER="$tmp/reinclude.yml"; probe "check 1 fires when $lname is re-included" "re-includes a board (!/project-management/src/$lf/$lname)"
   done
+  # 1b. Negations a literal `^!.*BOARD` match never sees: other quote styles, a trailing
+  #     comment, a block-tag conditional around the entry, and globs that name no board by its
+  #     name yet match one under copier's glob semantics. One finding each.
+  local LT='<' neg
+  local negations=(
+    "  - '!/project-management/src/03-SPRINTS/SPRINTS-BOARD.md'"
+    "  - !/project-management/src/16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md  # re-included on purpose"
+    "  - \"${LT}: if INCLUDE_X :>!/project-management/src/17-STORY-PLANS/STORY-PLANS-BOARD.md${LT}: endif :>\""
+    "  - \"!/project-management/src/21-BUGS/BUGS-*.md\""
+    "  - \"!/project-management/src/**/*-B?ARD.md\""
+  )
+  for neg in "${negations[@]}"; do
+    awk -v l="$neg" '{print} /^_exclude:/{print l}' "$real_copier" > "$tmp/reinclude.yml"
+    COPIER="$tmp/reinclude.yml"; probe "check 1 fires on the negation $neg" "re-includes a board"
+  done
   COPIER="$real_copier"
 
   # 2. Drop a _tasks move.
