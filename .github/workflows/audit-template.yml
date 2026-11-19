@@ -402,6 +402,40 @@ jobs:
           fi
           echo "every shared file is byte-identical"
 
+      # A register's index is its generated *-BOARD.md, so no shipped instruction may still name
+      # a CONTEXT.md as a register's index, nor say a register has no index or that its index is
+      # deferred. Read as PARAGRAPHS, not lines, because the phrases this hunts wrap across line
+      # breaks in the prose that carries them; a dated HTML comment is a historical record of the
+      # wording a file once held, so one carrying a DD/MM/YYYY date is skipped, and nothing else
+      # is. The pattern is printed so a reader can judge it, and any hit fails the job.
+      - name: No shipped instruction may route a register's index to a CONTEXT.md
+        run: |
+          pattern='index row.{0,80}CONTEXT\.md|CONTEXT\.md.{0,40}(?:map index|register index|is the index|as the index)|row to .{0,40}\d\d-[A-Z-]+/CONTEXT\.md|\bno (?:folder-level |in-tree )?index\b|index (?:is |was )?deferred|register-index work|holds no index|carries no index'
+          echo "pattern (Perl, case-insensitive, over paragraphs): $pattern"
+          status=0
+          for mobile in false true; do
+            cd "$RUNNER_TEMP/gen-$mobile"
+            hits=$(find . -name .git -prune -o -type f -name '*.md' -print0 | sort -z |
+              xargs -0 perl -e '
+                my $re = shift @ARGV; $re = qr/$re/i;
+                for my $f (@ARGV) {
+                  open my $fh, "<", $f or next; local $/; my $t = <$fh>; close $fh;
+                  $t =~ s{<!--(.*?)-->}{ $1 =~ m{\b\d\d/\d\d/\d{4}\b} ? "" : $& }gse;
+                  for my $p (split /\n[ \t]*\n/, $t) {
+                    (my $j = $p) =~ s/\s*\n\s*/ /g;
+                    while ($j =~ /(.{0,80})($re)/g) { print "$f: ...$1\[$2]\n"; }
+                  }
+                }' "$pattern")
+            if [ -n "$hits" ]; then
+              echo "::error::INCLUDE_MOBILE=$mobile — a shipped instruction routes a register's index to a CONTEXT.md"
+              echo "$hits"
+              status=1
+            else
+              echo "INCLUDE_MOBILE=$mobile — 0 hits"
+            fi
+          done
+          exit $status
+
       # NOT CHECKED, deliberately: "a web-only project contains no reference to
       # scripts/mobile/". It does contain them — the CI workflows and the two script
       # aggregates name those paths behind a directory-existence guard, which is the
