@@ -338,6 +338,7 @@ self_test() {
   # ── 8. Add a GAPS entry ─────────────────────────────────────────────────────
   #
   # Shaped like the one v6.0.0 actually shipped, because that is the failure being gated.
+  # shellcheck disable=SC2016  # the backticks are literal Markdown, not a substitution
   { cat "$real_gaps"; printf '\n## 01/01/2030 — `main` has not been reconciled\n\n**Type:** Active gap\n'; } > "$tmpdir/an-entry.md"
   GAPS_SEED="$tmpdir/an-entry.md"; probe "check 8 fires when a GAPS entry is added" "carries an entry: 01/01/2030"
   GAPS_SEED="$real_gaps"
