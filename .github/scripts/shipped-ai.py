@@ -205,13 +205,19 @@ def check_links(project: Path, enabled: bool, *, updated: bool = False) -> None:
     require(not (project / ".copier").exists(), "Seed staging directory survived")
 
 
+SEED_MOVE = "mv .copier/README.md README.md"
+
+
+def seed_task(config: dict) -> dict:
+    """The copy-gated seed task: the one `_tasks` entry carrying the README move, exactly one."""
+    tasks = [task for task in config["_tasks"] if SEED_MOVE in task.get("command", "")]
+    require(len(tasks) == 1, f"{SEED_TASK_COUNT}; found {len(tasks)}")
+    return tasks[0]
+
+
 def seeded_boards(config: dict) -> dict[str, str]:
     """Map each board seed under .copier/ to its destination, read from the seed task itself."""
-    moves = {
-        seed: destination
-        for task in config["_tasks"]
-        for seed, destination in re.findall(r"mv \.copier/(\S+-BOARD\.md) (\S+)", task["command"])
-    }
+    moves = dict(re.findall(r"mv \.copier/(\S+-BOARD\.md) (\S+)", seed_task(config)["command"]))
     require(len(moves) >= 1, "The seed task moves no PM board")
     return moves
 
@@ -315,7 +321,7 @@ def self_test(directory: Path, config: dict) -> None:
     # moves every blank board seed over the project's own committed board. This runs the
     # whole copy/update exercise, because only the update path can see it.
     mutated = copy.deepcopy(config)
-    mutated["_tasks"][0].pop("when", None)
+    seed_task(mutated).pop("when", None)
     ungated = directory / "ungated-seed-task"
     ungated.mkdir()
     try:
@@ -397,14 +403,10 @@ def main() -> None:
     )
     args = parser.parse_args()
     config = yaml.safe_load((ROOT / "copier.yml").read_text())
-    config["_tasks"] = [
-        task
-        for task in config["_tasks"]
-        if "mv .copier/MEMORY.md .claude/MEMORY.md" in task["command"]
-    ]
+    config["_tasks"] = [seed_task(config)]
     require(
-        len(config["_tasks"]) == 1,
-        "The repository must provide exactly one project-memory seed task",
+        "mv .copier/MEMORY.md .claude/MEMORY.md" in config["_tasks"][0]["command"],
+        "The seed task must seed the project memory",
     )
     config["_migrations"] = [
         task
