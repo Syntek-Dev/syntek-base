@@ -31,6 +31,9 @@
 #              never read: a decoy Deprecated above the real Accepted line leaves the board
 #              filing Accepted, and pm-archive.sh --dry-run refusing.
 #   staged     --boards-for names the record boards a status edit moves.
+#   strays     --check fails on a .md (any case) in a boarded folder or its archive/ that is no
+#              instance, template, CONTEXT.md/CLAUDE.md pair or board — 02-STORIES/CUT-PLAN.md
+#              excepted — naming each.
 #
 # Usage: pm-boards.sh [--keep] [--help]
 #   --keep   Leave the fixture directory in place and print its path.
@@ -47,7 +50,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,39p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,42p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'pm-boards.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -251,6 +254,22 @@ probe_staged() {
   fgit checkout -q -- .
 }
 
+probe_strays() {
+  local out rc=0
+  echo "strays"
+  printf '# notes\n' > "$SRC/21-BUGS/BUG-US003-NOTES.MD"
+  printf '# draft\n' > "$SRC/15-DECISIONS/adr-draft.md"
+  printf '# cut plan\n' > "$SRC/02-STORIES/CUT-PLAN.md"
+  out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails when a boarded folder holds a .md that is no instance, template or pair" test "$rc" -eq 1
+  check "  and names a .MD stray in 21-BUGS/" grep -qF "21-BUGS/BUG-US003-NOTES.MD" <<< "$out"
+  check "  and names a stray that fails the ADR pattern in 15-DECISIONS/" grep -qF "15-DECISIONS/adr-draft.md" <<< "$out"
+  check "  but not 02-STORIES/CUT-PLAN.md, the cut plan the folder documents" bash -c '! grep -qF "CUT-PLAN.md" <<< "$1"' _ "$out"
+  rm -f "$SRC/21-BUGS/BUG-US003-NOTES.MD" "$SRC/15-DECISIONS/adr-draft.md"
+  check "--check passes again once the strays are gone" board --check --quiet --root "$FX"
+  rm -f "$SRC/02-STORIES/CUT-PLAN.md"
+}
+
 echo "pm-boards.sh — fixture at $FX"
 if ! build_fixture >/dev/null 2>&1; then
   fail "the fixture could not be built (pm-board.sh --write or the first commit failed)"
@@ -261,6 +280,7 @@ else
   probe_masked
   probe_archive
   probe_staged
+  probe_strays
 fi
 echo ""
 if [[ $FAILS -eq 0 ]]; then
