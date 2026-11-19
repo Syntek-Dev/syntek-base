@@ -327,6 +327,17 @@ is_armed() {
   [[ -f "$p" && ! -L "$p" && -r "$p" && -x "$p" ]] && lefthook_layout "$p" && ! grep -qF "$GRAPH_MARKER" "$p"
 }
 unarmed() { ! is_armed "$1"; }
+# The commit-msg hook lefthook.yml's commit-msg leg needs: the same layout, its own last line.
+msg_hook() { local p; p="$(eff_hook "$1")" || return 1; printf '%s\n' "${p%/pre-commit}/commit-msg"; }
+rearmed_msg() { [[ $1 == 0 ]] && msg_armed "$2"; }
+msg_armed() {
+  local p code; p="$(msg_hook "$1")" || return 1
+  [[ -f "$p" && ! -L "$p" && -r "$p" && -x "$p" ]] || return 1
+  [[ "$(head -n 1 "$p")" == '#!/bin/sh' ]] || return 1
+  [[ "$(grep -v '^[[:space:]]*$' "$p" | tail -n 1)" == 'call_lefthook run "commit-msg" "$@"' ]] || return 1
+  code="$(grep -vE '^[[:space:]]*#' "$p")"
+  grep -qF 'LEFTHOOK' <<< "$code" && grep -qE '^[[:space:]]*call_lefthook\(\)' <<< "$code"
+}
 ut_present() { [[ -f "$1/$UNDER_TEST" ]]; }
 RC=0
 run_ut() {     # dir evidence-prefix [env-prefix…] -- [args…]
@@ -546,6 +557,18 @@ fx_A() {
   check HP-04 "a second run exits 0" "exit $RC" rc_is 0
   check HP-04 "the hook is still lefthook's after a re-run" "unarmed" is_armed "$d"
   check EC-06 "the hook is byte-identical across runs" "it changed" cmp -s "$p" "$e/hook.before"
+
+  # The commit-msg leg is armed by the same step and counted by the same predicate (19/11/2026):
+  # a checkout armed before lefthook.yml grew that leg has no commit-msg hook, and --notice must
+  # say so rather than report it armed.
+  check R3-01 "the effective commit-msg hook is lefthook's too" "commit-msg unarmed after the step" msg_armed "$d"
+  rm -f "$(msg_hook "$d")"
+  notice "$d" "$e/no-commit-msg"
+  check R3-01 "with the commit-msg hook missing, --notice names bash install.sh" "it was silent" \
+    notice_valid "$e/no-commit-msg"
+  run_ut "$d" "$e/rearm-commit-msg" --
+  check R3-01 "the step re-arms a missing commit-msg hook" "exit $RC or commit-msg still unarmed" \
+    rearmed_msg "$RC" "$d"
 
   check HP-03 "a throwaway commit runs the lefthook pre-commit legs" "no lefthook summary in the commit output" \
     commit_runs_legs "$d" "$e/main"
