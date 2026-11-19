@@ -48,7 +48,9 @@ the value after the key), under
 edit and read as a diff, the baseline recorded in the manual testing guide). All three read
 `Accepted`, measured 03/10/2026. Nothing else binds:
 `../15-DECISIONS/ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL-08-09-2026.md` reads `Proposed`, its
-sign-off is the read-rule record's Follow-on, and this story does not edit it.
+sign-off is the read-rule record's Follow-on, and this story does not edit it. **Amended 19/11/2026
+(review CR-M1):** that reading is of 03/10/2026 and was stale before the build — Sam accepted the
+ADR on 05/11/2026, and it read `Accepted` at P0; the story edits only its header shape.
 
 > **Superseded 19/11/2026 — a plan carries no status since 7.7.0** (the row is removed above); the
 > paragraph is kept as the record.
