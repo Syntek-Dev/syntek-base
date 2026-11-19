@@ -38,6 +38,12 @@ verification, cross-linked to the `US###` it belongs to.
   credentials.** Redact any PII or token that appears in a repro.
 - **Fix the root cause, not the symptom** — a report whose fix only masks the symptom is not
   done.
+- **The index is `BUGS-BOARD.md`, and it is generated — never hand-edit it.** Run
+  `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` after any status flip and
+  commit the board with it; the vocabulary is the `completion` skill's. **Archive only through
+  `pm-archive.sh <ID>`**, and only once a report is `Verified`; it keeps that status in
+  `archive/`, which is frozen (`archive/CLAUDE.md`). Look a report up by ID across this folder and
+  `archive/`.
 - **Never rename or back-date a filed report** — the date is the discovery date and is
   load-bearing for the audit trail; supersede with a new report if needed.
 - **Every developer command is a project script** under `code/src/scripts/**/*.sh` — never
@@ -50,8 +56,9 @@ verification, cross-linked to the `US###` it belongs to.
 ## Output & naming
 
 - **Hand-written:** every `BUG-*.md` in this folder, from `BUG-US000-TEMPLATE.md`.
-- **Generated:** none — any client-facing PDF is regenerated one level up in
-  `project-management/export/`, never hand-edited here.
+- **Generated:** `BUGS-BOARD.md` (committed) and `bugs-board.json` / `.html` (gitignored), by
+  `pm-board.sh --write` — never hand-edit; `archive/` is written only by `pm-archive.sh`. Any
+  client-facing PDF is regenerated one level up in `project-management/export/`.
 - Filename `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md` (story-anchored, primary) or
   `BUG-<DESCRIPTOR>-DD-MM-YYYY.md` (cross-cutting fallback); descriptor in
   `SCREAMING-KEBAB-CASE`; stories `US###`; dates DD/MM/YYYY.

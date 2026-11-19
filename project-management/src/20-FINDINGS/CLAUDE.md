@@ -28,7 +28,9 @@ the smallest fix is, and which of those findings should shape the next story.
   Expensive) → set a disposition for every row → link the story
   (`../02-STORIES/US###.md`) and its plan
   (`../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md`) → carry the `Next story` rows into
-  the next plan.
+  the next plan → set `**Status:** Triaged` once every row carries a disposition, any prose on
+  the `**Status note:**` line → `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`
+  and commit the board with it.
 - **Definition of done:** file named to convention with a real `DD/MM/YYYY` completion date,
   every finding carrying a retrofit cost and a disposition, expensive-to-retrofit items
   called out separately, and a `Nothing found` record written explicitly if that is the
@@ -46,6 +48,10 @@ the smallest fix is, and which of those findings should shape the next story.
   cosmetic or additive findings — that split is what makes the record actionable.
 - **Documentation only — no code, diffs, secrets, `.env` content, or credentials.** Redact
   any PII or token appearing in a quoted snippet.
+- **The index is `FINDINGS-BOARD.md`, and it is generated — never hand-edit it.** The status
+  vocabulary is the `completion` skill's. **Archive only through `pm-archive.sh <ID>`**, and only
+  once a record is `Triaged`; it keeps that status in `archive/`, which is frozen
+  (`archive/CLAUDE.md`). Look a record up by ID across this folder and `archive/`.
 - **Never rename or back-date a filed record** — the date is the completion date and is
   load-bearing for the audit trail; supersede with a new record if needed.
 - Every developer command is a project script under `code/src/scripts/**/*.sh` — never raw
@@ -59,7 +65,9 @@ the smallest fix is, and which of those findings should shape the next story.
 
 - **Hand-written:** every `FINDING-*.md` in this folder, from `FINDING-US000-TEMPLATE.md`.
 - **Template:** `FINDING-US000-TEMPLATE.md` — the copy source; do not delete or repurpose.
-- **Generated:** none — nothing here is machine-produced.
+- **Generated:** `FINDINGS-BOARD.md` (committed) and `findings-board.json` / `.html`
+  (gitignored), by `pm-board.sh --write` — never hand-edit. `archive/` is written only by
+  `pm-archive.sh`.
 - Filename `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md` (story-anchored, primary) or
   `FINDING-<DESCRIPTOR>-DD-MM-YYYY.md` (cross-cutting fallback); descriptor in
   `SCREAMING-KEBAB-CASE`; stories `US###`; dates DD/MM/YYYY.
