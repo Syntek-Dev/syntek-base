@@ -115,7 +115,7 @@ Sam), and the new ADR,
 support in `pm-archive.sh`; `shipped-boards.sh` at eight boards with check 2 tightened; the board
 update probe in `shipped-ai.py`; three seeds, three `mv` lines, `SEEDED` and the completeness step;
 the content repairs and the map commit; the joined-line instruction search, last. **Out of scope
-now:** the 72-case matrix (US021, the matrix story, cut 19/11/2026), any hand-written index file, the
+now:** the 72-case matrix (MAP-GENERATION-COVERAGE S-01, charted 19/11/2026, uncut), any hand-written index file, the
 third `shipped-registers.sh` family, the literal grep and the link check.
 
 **Why this story exists.** `../02-STORIES/US010.md` is SPRINT-06's sole `Must`, cut from
@@ -726,9 +726,12 @@ status since 7.7.0 (`./CLAUDE.md`). The rest stand.
 **Re-cut 19/11/2026.** The table below is the record as of 03/10/2026; where it disagrees, this
 block is current. **US011 is absorbed**: its remaining criteria are this story's (round 2 Q1), and
 its `**Status:**` is left for a separate developer decision — it no longer waits on anything here.
-**US021, the matrix story (cut 19/11/2026),** owns the 72-case matrix, and **US012** records exhaustive
-coverage as unmeasured until it lands (round 4 Q1). **7.7.0** is the base built on. US009 has
-merged to `testing` and sits in this branch's base. **Blocked by:** none. **Blocks:** nothing hard.
+**MAP-GENERATION-COVERAGE** charts the 72-case matrix as its slice S-01, uncut (19/11/2026: the
+matrix moved from the withdrawn US021 to
+`project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md` (Sam: map first; CUT-PLAN P14;
+the number was not validly allocated)), and **US012** records exhaustive coverage as unmeasured
+until that slice is cut and lands (round 4 Q1). **7.7.0** is the base built on. US009 has merged to
+`testing` and sits in this branch's base. **Blocked by:** none. **Blocks:** nothing hard.
 
 | Story / Artefact                | Model / Feature                                                                                   | Required for                                                                               | Current state                                                                                  |
 | ------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
@@ -978,11 +981,15 @@ unmeasured and its full-coverage completion criterion cannot be ticked.
 **No pytest, no coverage figure, no migration check** — each recorded `N/A` with its reason. There
 is no application Python in this diff.
 
-### Every valid offered configuration — approved 09/10/2026 — moved 19/11/2026 to US021
+### Every valid offered configuration — approved 09/10/2026 — moved 19/11/2026 to MAP-GENERATION-COVERAGE
 
-**Moved 19/11/2026** (settled 19/11/2026, re-cut grilling round 4 Q1): this matrix is US021's (cut 19/11/2026), not this story's. The section is kept unchanged below as the
-approved case list that story inherits; nothing in it is a US010 criterion any more, and US012
-records exhaustive coverage as unmeasured until that story lands.
+**Moved 19/11/2026** (settled 19/11/2026, re-cut grilling round 4 Q1): this matrix is not this
+story's. 19/11/2026: the matrix moved from the withdrawn US021 to
+`project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md` (Sam: map first; CUT-PLAN P14;
+the number was not validly allocated); the map's N-001 and N-002 cite this section. The section is
+kept unchanged below as the approved case list that map's slice inherits; nothing in it is a US010
+criterion any more, and US012 records exhaustive coverage as unmeasured until the slice is cut and
+lands.
 
 **Q4 requires exhaustive coverage of finite configuration selectors.** Inspection of `copier.yml`
 on 09/10/2026 found five offered boolean flags: `INCLUDE_CLICKUP`, `INCLUDE_MOBILE`,
@@ -1164,10 +1171,11 @@ hand.
 
 ## Deferred Items
 
-**Re-cut 19/11/2026.** Added: **the 72-case matrix → US021, the matrix story (cut 19/11/2026)**.
-Changed: the four-register backfill row is gone (7.7.0 and the boards replace it); the TM-10
-window is now this story's gate-22 entry, absorbed from US011; `S-03`'s disposal is the map
-owner's. The other rows stand.
+**Re-cut 19/11/2026.** Added: **the 72-case matrix → MAP-GENERATION-COVERAGE S-01, charted
+19/11/2026 and uncut (`project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md`)**.
+Changed: the four-register backfill row is gone (7.7.0 and the boards replace it); the TM-10 window
+is now this story's gate-22 entry, absorbed from US011; `S-03`'s disposal is the map owner's. The
+other rows stand.
 
 | Deferred                                                                  | To                                        | Why                                                                                                 |
 | ------------------------------------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------- |

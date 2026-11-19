@@ -9,7 +9,7 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 
 | Column            | Items |
 | ----------------- | ----- |
-| Open              | 1     |
+| Open              | 0     |
 | Pending           | 2     |
 | In Progress       | 1     |
 | In Review         | 3     |
@@ -24,9 +24,7 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 
 ## Open
 
-| ID    | Title                                                                                             | Status | File                 |
-| ----- | ------------------------------------------------------------------------------------------------- | ------ | -------------------- |
-| US021 | Every valid offered configuration generates a complete, gated project: the 72-case `[3/4]` matrix | Open   | [US021.md](US021.md) |
+_None._
 
 ## Pending
 

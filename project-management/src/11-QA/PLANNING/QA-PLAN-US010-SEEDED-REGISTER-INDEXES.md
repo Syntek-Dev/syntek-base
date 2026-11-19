@@ -205,7 +205,10 @@
 >   `CONTEXT.md` names its board.
 > - **The generated-tree literal grep and the link check** — HP-01's grep half, HP-09's, ES-18 →
 >   dropped, byte-identity covering both (round 3 Q4). HP-18's joined-line search survives.
-> - **Every render path** — HP-01 → the 72-case matrix moves to US021, the matrix story (cut 19/11/2026).
+> - **Every render path** — HP-01 → the 72-case matrix moves to MAP-GENERATION-COVERAGE S-01,
+>   uncut. 19/11/2026: the matrix moved from the withdrawn US021 to
+>   `project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md` (Sam: map first;
+>   CUT-PLAN P14; the number was not validly allocated).
 > - **Map boxes** — HP-19 → the index-row box is removed, not ticked; HP-20 (Umbrella ADRs) stands.
 > - **Unchanged:** ES-19, EC-18 to EC-21, PA-01 to PA-04 (PA-01 and PA-04 re-read for boards).
 >
