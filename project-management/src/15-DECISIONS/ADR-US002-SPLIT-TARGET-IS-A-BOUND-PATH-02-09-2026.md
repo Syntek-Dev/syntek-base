@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US002-REGISTER-SPLITS-RATHER-THAN-RELOCATES-02-09-2026.md` <!-- doc-references: template-only -->
+**Supersedes:** `project-management/src/15-DECISIONS/ADR-US002-REGISTER-SPLITS-RATHER-THAN-RELOCATES-02-09-2026.md`
 **Superseded by:** None
 **Related:** US002
 

@@ -11,14 +11,15 @@
      skill owns the vocabulary). No bold, backticks or comment on the Status line itself; any
      prose (who accepted it, when) goes on the Status note line, which may be deleted if empty.
      pm-board.sh reads both supersession lines into the decisions board: each is a full ADR
-     filename or None, and a supersession is recorded on both records. -->
+     filename or None, and a supersession is recorded on both records. Several filenames on one
+     line are separated by ", " (comma, space) and nothing else; no comment on either line. -->
 
 **Status:** Proposed
 **Status note:** [optional — one line, e.g. "Accepted DD/MM/YYYY by <name> at <step>"]
 **Date:** DD/MM/YYYY
 **Deciders:** [name(s) who own this decision]
-**Supersedes:** None <!-- full filename of the ADR this record replaces, or None -->
-**Superseded by:** None <!-- full filename of the ADR that later replaced this, or None -->
+**Supersedes:** None
+**Superseded by:** None
 **Related:** [US###, or —] <!-- the story that drove or consumes the decision -->
 
 ---

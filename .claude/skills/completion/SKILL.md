@@ -109,6 +109,10 @@ on the area makes a new map. The status itself is advanced by `wayfinder`.
 immutable. **`Superseded`** — a later ADR replaced it. **`Deprecated`** — withdrawn with no
 successor. Every ADR also carries `**Supersedes:**` and `**Superseded by:**` — a full ADR filename
 or `None` each, cross-referenced both ways — which the decisions board shows as two columns.
+Several filenames on one line are separated by a comma and one space and nothing else, with no
+comment on the line.
+<!-- Separator rule added 19/11/2026. -->
+
 **Archive a `Deprecated` ADR only once no successor is expected**: a successor written later names
 an archived record that, frozen, can never name it back — so a chain into `archive/` owes no
 back-link, and the live record's line is the chain's record. <!-- Added 19/11/2026. -->

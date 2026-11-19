@@ -4,7 +4,7 @@
 **Status note:** Accepted 19/11/2026 by <%DEVELOPER_NAME%> at US010's re-cut grilling (round 2 Q4), in the same pass that settled the design it records
 **Date:** 19/11/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` · `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`
+**Supersedes:** `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`, `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`
 **Superseded by:** None
 **Related:** US010 · US011 (absorbed) · `project-management/src/02-STORIES/US010.md` (_Re-cut — 19/11/2026_) · `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` · `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` N-001, N-002, N-003
 
