@@ -18,7 +18,9 @@
 #                    `pm-board.sh --check` green rather than stale on day one.
 #
 #                    Five checks:
-#                      1. No copier.yml `_exclude` negation re-includes a `*-BOARD.md`.
+#                      1. No copier.yml `_exclude` negation re-includes a `*-BOARD.md`: each
+#                         negation, unquoted, comment and block tags stripped, is matched as a
+#                         glob against the eight landed board paths, not searched for a name.
 #                      2. The copy-gated `_tasks` entry — the one whose `when:` tests the copy
 #                         operation and which carries the README move — moves each of the
 #                         eight seeds into its folder. A move in any other task would run on
@@ -85,7 +87,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,50p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,52p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done
@@ -97,6 +99,7 @@ cd "$PROJECT_ROOT"
 command -v python3 >/dev/null 2>&1 || die "python3 is required"
 
 RENDER_DIR=""
+# shellcheck disable=SC2329  # invoked by the EXIT trap below
 cleanup() { [[ -n "$RENDER_DIR" ]] && rm -rf "$RENDER_DIR"; }
 trap cleanup EXIT
 
@@ -117,17 +120,72 @@ render() {
 FINDINGS=()
 finding() { FINDINGS+=("$1"); }
 
+# The `_exclude` negations, one per line, unquoted and stripped: the value after `- `, its
+# trailing ` # comment` dropped when unquoted, its quotes removed, every block tag (the copier
+# block delimiters, assembled from LT so no literal opener sits in this file) removed.
+negations() {
+  LT='<' python3 -I - "$1" <<'PYEOF'
+import os, re, sys
+lt = os.environ["LT"]
+block = re.compile(re.escape(lt + ":") + r".*?" + re.escape(":>"))
+on = False
+for line in open(sys.argv[1], encoding="utf-8"):
+    if re.match(r"^_exclude:", line):
+        on = True
+        continue
+    if on and re.match(r"^[A-Za-z_]+:", line):
+        break
+    m = re.match(r"^\s*-\s+(.*?)\s*$", line) if on else None
+    if not m:
+        continue
+    v = m.group(1)
+    if v[:1] in ("'", '"'):
+        q = v[0]
+        end = v.find(q, 1)
+        v = v[1:end] if end > 0 else v[1:]
+    else:
+        v = re.sub(r"\s+#.*$", "", v)
+    v = block.sub("", v).strip()
+    if v.startswith("!"):
+        print(v)
+PYEOF
+}
+
+# copier's _exclude glob shapes, as code/src/scripts/audits/doc-references.sh path_matches reads
+# them: `a/**` covers the tree, and `a/**/b` matches `a/b` as well as `a/x/b`.
+glob_matches() { # path glob
+  local p="$1" g="$2" g2
+  case "$g" in
+    */'**') g="${g%/**}"; [[ "$p" == "$g" || "$p" == "$g"/* ]] && return 0; return 1 ;;
+  esac
+  g2="${g//\/\*\*\//\/}"
+  # shellcheck disable=SC2053  # glob match is the point, not a string comparison
+  [[ "$p" == $g ]] && return 0
+  # shellcheck disable=SC2053
+  [[ "$p" == $g2 ]] && return 0
+  [[ "$p" == "$g" || "$p" == "$g"/* ]] && return 0
+  return 1
+}
+
 run_checks() {
   FINDINGS=()
-  local excluded tasks folder board seed
+  local tasks folder board seed
 
   # ── 1. Nothing re-includes a board ───────────────────────────────────────────
-  excluded=$(awk '/^_exclude:/{f=1;next} /^[a-zA-Z_]+:/{f=0} f && /^[[:space:]]*-/' "$COPIER" \
-    | sed 's/^[[:space:]]*-[[:space:]]*//' | sed 's/^"//;s/"$//' || true)
-  while read -r e; do
+  # Every `_exclude` negation, read as copier reads it — either quote style or none, a trailing
+  # comment dropped, a block-tag conditional around it stripped — then tested as a GLOB against
+  # each of the eight landed board paths. A name test (`BOARD` in the entry) misses a glob that
+  # matches a board without naming one. One finding per negating entry.
+  local e g hit
+  while IFS= read -r e; do
     [[ -z "$e" ]] && continue
-    finding "copier.yml _exclude re-includes a board ($e) — syntek-base's own rows would ship"
-  done < <(grep -E '^!.*BOARD' <<< "$excluded" || true)
+    g="${e#!}"; g="${g#/}"; hit=""
+    for b in "${BOARDS[@]}"; do
+      if glob_matches "project-management/src/${b%%|*}/${b##*|}" "$g"; then hit=1; break; fi
+    done
+    [[ -n "$hit" ]] \
+      && finding "copier.yml _exclude re-includes a board ($e) — syntek-base's own rows would ship"
+  done < <(negations "$COPIER")
 
   # The copy-gated task alone: _tasks split into its `  - ` entries, keeping the one that
   # both moves the README and carries `when: "<% _copier_operation == 'copy' %>"`.
