@@ -25,7 +25,7 @@
 #   tail       The decisions board carries Supersedes and Superseded by, read from each ADR's
 #              own two lines; --warn names a supersession that is not cross-referenced back.
 #   archive    pm-archive.sh <ID> archives an ADR only from Superseded or Deprecated, a findings
-#              record only from Triaged, a bug only from Verified, and refuses any other status
+#              record only from Resolved, a bug only from Verified, and refuses any other status
 #              with nothing moved; --check then passes, and fails on an edit to an archived file.
 #   staged     --boards-for names the record boards a status edit moves.
 #
@@ -100,7 +100,7 @@ build_fixture() {
   adr ADR-US003-RETIRED-04-01-2026 "A retired decision" Deprecated None None
   adr ADR-US004-ORPHAN-05-01-2026 "An orphaned supersession" Superseded None ADR-US001-NEW-WAY-02-01-2026
   finding FINDING-US000-TEMPLATE "{STORY TITLE}" Open
-  finding FINDING-US001-TRIAGED-01-01-2026 "The first record" Triaged
+  finding FINDING-US001-RESOLVED-01-01-2026 "The first record" Resolved
   finding FINDING-US002-OPEN-01-01-2026 "The second record" Open
   bug BUG-US000-TEMPLATE "US000 — {ONE-LINE DEFECT TITLE}" Open
   bug BUG-US001-TEMPLATE-RENDERS-BLANK-01-01-2026 "US001 — the template renders blank" Verified
@@ -133,14 +133,15 @@ probe_render() {
   check "BUGS-BOARD.md is written" test -f "$bugs"
   check "the decisions columns run Proposed, Accepted, Superseded, Deprecated" \
     in_order "$dec" "## Proposed" "## Accepted" "## Superseded" "## Deprecated"
-  check "the findings columns run Open, Triaged" in_order "$fin" "## Open" "## Triaged"
+  check "the findings columns run Open, Resolved" in_order "$fin" "## Open" "## Resolved"
+  check "the findings board has no Triaged column (the vocabulary is Open | Resolved)" lacks "$fin" "## Triaged"
   check "the bugs columns run Open, Fixed, Verified" in_order "$bugs" "## Open" "## Fixed" "## Verified"
   check "each board states its row ordering in its opening line" \
     bash -c 'for f; do grep -m1 "^One row per" "$f" | grep -qF "ID order" || exit 1; done' _ "$dec" "$fin" "$bugs"
   check "an ADR title is its H1 with the ADR-US### prefix cut" \
     bash -c 'grep -E "^\| ADR-US001-OLD-WAY-01-01-2026 +\| The old way +\|" "$1"' _ "$dec"
   check "a findings title is its H1 with the Findings — US### prefix cut" \
-    bash -c 'grep -E "^\| FINDING-US001-TRIAGED-01-01-2026 +\| The first record +\|" "$1"' _ "$fin"
+    bash -c 'grep -E "^\| FINDING-US001-RESOLVED-01-01-2026 +\| The first record +\|" "$1"' _ "$fin"
   check "no record lands in Unrecognised" \
     bash -c '! grep -q "^## Unrecognised" "$@"' _ "$dec" "$fin" "$bugs"
 }
@@ -192,7 +193,7 @@ probe_archive() {
   check "a refusal moves nothing" bash -c '[[ -z "$(git -C "$1" status --porcelain)" ]]' _ "$FX"
   check "a Superseded ADR is archived" archived ADR-US001-OLD-WAY-01-01-2026 15-DECISIONS
   check "a Deprecated ADR is archived" archived ADR-US003-RETIRED-04-01-2026 15-DECISIONS
-  check "a Triaged findings record is archived" archived FINDING-US001-TRIAGED-01-01-2026 20-FINDINGS
+  check "a Resolved findings record is archived" archived FINDING-US001-RESOLVED-01-01-2026 20-FINDINGS
   check "a Verified bug is archived" archived BUG-US001-TEMPLATE-RENDERS-BLANK-01-01-2026 21-BUGS
   check "an archived record keeps its end status" \
     grep -qx '\*\*Status:\*\* Superseded' "$SRC/15-DECISIONS/archive/ADR-US001-OLD-WAY-01-01-2026.md"
