@@ -790,7 +790,7 @@ if [ -f project-management/src/00-ASSETS/scripts/export-clickup-stories.sh ]; th
      project, so nothing above names a per-project story, map or plan — deliberately, and the same
      reason keeps the plans index out of the folder's `CONTEXT.md`. -->
 
-<!-- 08/09/2026, later the same day: the four "Plans Index" sites in this template were rewritten
+<!-- UPDATED 08/09/2026, later the same day: the four "Plans Index" sites in this template were rewritten
      to describe what exists, each in place — one line for one line — so that no line was added or
      removed ahead of the note above, and the live artefacts that cite this file by line number
      still resolve. Superseded text, preserved rather than deleted — the HOW TO USE block's copy
@@ -810,7 +810,7 @@ if [ -f project-management/src/00-ASSETS/scripts/export-clickup-stories.sh ]; th
      plan: the story that had scheduled two of these four sites for itself, and the map slice that
      claimed the other two, are cited from the plans in this folder, which do not ship. -->
 
-<!-- 31/10/2026 (7.7.0, the PM boards): five sites rewritten IN PLACE, one line for one line, so
+<!-- UPDATED 31/10/2026 (7.7.0, the PM boards): five sites rewritten IN PLACE, one line for one line, so
      every line-number citation of this template still resolves — the header-table `Status` row
      (now `Board`), the HOW TO USE "Status:" bullet, the dependency-matrix state list, the
      sprint-plan row of the CONTEXT.md & Index Updates table, and the Status Propagation section
@@ -821,7 +821,7 @@ if [ -f project-management/src/00-ASSETS/scripts/export-clickup-stories.sh ]; th
      lifecycle is owned by `.claude/skills/completion/SKILL.md`. The folder index the note above
      deferred now exists as the generated `STORY-PLANS-BOARD.md`. -->
 
-<!-- 19/11/2026: three sites rewritten IN PLACE, one line for one line, so every line-number
+<!-- UPDATED 19/11/2026: three sites rewritten IN PLACE, one line for one line, so every line-number
      citation of this template still resolves — the HOW TO USE copy step's closing clause, the
      Dependencies blockquote and the Docker & Nginx blockquote. Superseded: "17-STORY-PLANS/CONTEXT.md
      holds no index, by decision"; and both blockquotes' cross-reference to a cross-cutting

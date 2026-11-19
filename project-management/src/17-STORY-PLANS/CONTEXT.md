@@ -135,7 +135,7 @@ against its sprint in that sprint plan's _Story Plans — the code master_ table
      as paths. It is now described rather than named: the register-index work names its own file
      when it lands. -->
 
-<!-- 31/10/2026 (7.7.0): _The plans index_ rewritten. It recorded the index's absence as a decision
+<!-- UPDATED 31/10/2026 (7.7.0): _The plans index_ rewritten. It recorded the index's absence as a decision
      deferred to the register-index work, and ended "a plan's own status lives in its metadata
      table and in its story". Both are superseded: the PM-boards change generates
      `STORY-PLANS-BOARD.md` here, and a plan's status row was retired — the board mirrors the

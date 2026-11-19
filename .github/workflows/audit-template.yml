@@ -411,51 +411,16 @@ jobs:
 
       # A register's index is its generated *-BOARD.md, so no shipped instruction may still name
       # a CONTEXT.md as a register's index, nor say a register has no index, no board, or that its
-      # index is deferred. Read as PARAGRAPHS, not lines, because the phrases this hunts wrap
-      # across line breaks in the prose that carries them. Both orders are hunted — "index row
-      # in CONTEXT.md" and "CONTEXT.md as its index row" — and the possessives ("CONTEXT.md's
-      # index", "the register's index is … CONTEXT.md"). The bare "row to … CONTEXT.md", without
-      # a numbered-folder prefix, is a second pattern read only under project-management/: outside
-      # it the same words are the ordinary "add the script's row to CONTEXT.md" of a script or
-      # tag registry, which is not a register's index. A dated HTML comment is skipped only when
-      # it marks itself historical — `doc-references: template-only`, or SUPERSEDED, UPDATED,
-      # CORRECTED, RENAMED or AMENDED — so a live instruction cannot hide in a dated comment.
-      # Both patterns are printed so a reader can judge them, and any hit fails the job.
-      # Widened 19/11/2026; re-proved locally over both renders, 0 hits.
+      # index is deferred. The search — read as paragraphs, both orders and the possessives, the
+      # PM-only bare "row to … CONTEXT.md", and a dated comment exempt only when it OPENS with a
+      # historical marker — lives in .github/scripts/register-index-routes.sh, whose --self-test
+      # plants every intended form and the recorded false positives and fails on 0 hits, so a
+      # broken pattern can no longer pass as a clean tree. Moved into the script 19/11/2026.
+      - name: Prove the register-index route search (self-test against planted forms)
+        run: bash .github/scripts/register-index-routes.sh --self-test
+
       - name: No shipped instruction may route a register's index to a CONTEXT.md
-        run: |
-          pattern='index row.{0,80}CONTEXT\.md|CONTEXT\.md[^;.]{0,80}index row|CONTEXT\.md`?'"'"'?s (?:map |register )?index|CONTEXT\.md.{0,40}(?:map index|register index|is the index|as the index)|register'"'"'?s index.{0,40}CONTEXT\.md|CONTEXT\.md.{0,40}register'"'"'?s index|row to .{0,40}\d\d-[A-Z-]+/CONTEXT\.md|\bno (?:folder-level |in-tree )?index\b|\bno (?:board|generated index)\b|index (?:is |was )?deferred|register-index work|holds no index|carries no index'
-          pm_pattern='row to .{0,40}CONTEXT\.md'
-          echo "pattern (Perl, case-insensitive, over paragraphs): $pattern"
-          echo "project-management/ only: $pm_pattern"
-          status=0
-          for mobile in false true; do
-            cd "$RUNNER_TEMP/gen-$mobile"
-            hits=$(find . -name .git -prune -o -type f -name '*.md' -print0 | sort -z |
-              xargs -0 perl -e '
-                my $re = shift @ARGV; $re = qr/$re/i;
-                my $pm = shift @ARGV; $pm = qr/$pm/i;
-                my $hist = qr/doc-references:\s*template-only|\b(?:superseded|updated|corrected|renamed|amended)\b/i;
-                for my $f (@ARGV) {
-                  open my $fh, "<", $f or next; local $/; my $t = <$fh>; close $fh;
-                  $t =~ s{(<!--(.*?)-->)}{ my ($all, $in) = ($1, $2); ($in =~ m{\b\d\d/\d\d/\d{4}\b} && $in =~ $hist) ? "" : $all }gse;
-                  my $in_pm = $f =~ m{(?:^|/)project-management/};
-                  for my $p (split /\n[ \t]*\n/, $t) {
-                    (my $j = $p) =~ s/\s*\n\s*/ /g;
-                    while ($j =~ /(.{0,80})($re)/g) { print "$f: ...$1\[$2]\n"; }
-                    next unless $in_pm;
-                    while ($j =~ /(.{0,80})($pm)/g) { print "$f: ...$1\[$2]\n"; }
-                  }
-                }' "$pattern" "$pm_pattern")
-            if [ -n "$hits" ]; then
-              echo "::error::INCLUDE_MOBILE=$mobile — a shipped instruction routes a register's index to a CONTEXT.md"
-              echo "$hits"
-              status=1
-            else
-              echo "INCLUDE_MOBILE=$mobile — 0 hits"
-            fi
-          done
-          exit $status
+        run: bash .github/scripts/register-index-routes.sh "$RUNNER_TEMP/gen-false" "$RUNNER_TEMP/gen-true"
 
       # NOT CHECKED, deliberately: "a web-only project contains no reference to
       # scripts/mobile/". It does contain them — the CI workflows and the two script

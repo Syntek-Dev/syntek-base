@@ -95,7 +95,7 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
      This file ships, so it names no per-project artefact: the stories, maps and plans behind
      each statement above are cited from `../17-STORY-PLANS/`'s own plans, which do not. -->
 
-<!-- 08/09/2026, later the same day: every "Plans Index" instruction in this file was rewritten
+<!-- UPDATED 08/09/2026, later the same day: every "Plans Index" instruction in this file was rewritten
      to describe what exists, which reverses the "left standing" position the comment above
      records — that comment is kept as the record of the rename and of the position held at
      that hour. Superseded text, preserved rather than deleted — Concrete steps read "→ add the
@@ -110,7 +110,7 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
      number. The folder-level index is deferred to the register-index work charted in
      `../01-FEATURE-MAPS/`; no file is named for it because none exists yet. -->
 
-<!-- 31/10/2026 (7.7.0, the PM boards): four sites rewritten IN PLACE, line for line, so that
+<!-- UPDATED 31/10/2026 (7.7.0, the PM boards): four sites rewritten IN PLACE, line for line, so that
      dated line-number citations of this file keep their positions — Concrete steps (the Status
      cell), the "Status must be truthful" guardrail, the no-index guardrail and Output & naming.
      Superseded: "its Status cell filled as that plan's own section defines the column"; "Status
@@ -118,7 +118,7 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
      cleared"; and the deferral of the folder index to the register-index work. A plan now has no
      status (the board mirrors the parent story) and the index is the generated board. -->
 
-<!-- 19/11/2026: four sites rewritten IN PLACE, line for line. Superseded: the purpose line's "(plus
+<!-- UPDATED 19/11/2026: four sites rewritten IN PLACE, line for line. Superseded: the purpose line's "(plus
      cross-cutting `PLAN-<DESCRIPTOR>.md` programme plans)"; the guardrail opening "No index row
      goes into `CONTEXT.md` here."; Output & naming's "and `PLAN-<DESCRIPTOR>.md`", its "`CONTEXT.md`
      here carries no index", and its naming rule for unprefixed cross-cutting programme plans. Why:

@@ -14,7 +14,7 @@ model: opus
 
 ## Key references
 
-<!-- 08/09/2026: every "Plans Index" instruction in this file was rewritten to describe what
+<!-- UPDATED 08/09/2026: every "Plans Index" instruction in this file was rewritten to describe what
      exists. Superseded text, preserved rather than deleted — the Naming row read
      "src/17-STORY-PLANS/CONTEXT.md — the Plans Index, which is where build order is read";
      Step 2 item 4 ended "the Plans Index carries the row, and the file is added later at that

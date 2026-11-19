@@ -17,8 +17,10 @@
 # numbered-folder prefix, is a second pattern read only under project-management/: outside it the
 # same words are the ordinary "add the script's row to CONTEXT.md" of a script or tag registry.
 #
-# A dated HTML comment is skipped only when it marks itself historical: its text opens with
-# `doc-references: template-only` or one of SUPERSEDED, UPDATED, CORRECTED, RENAMED or AMENDED.
+# A dated HTML comment is skipped only when it marks itself historical: its text OPENS with
+# `doc-references: template-only` or one of SUPERSEDED, UPDATED, CORRECTED, RENAMED or AMENDED,
+# in capitals. A marker word anywhere else in the comment exempts nothing (narrowed 19/11/2026:
+# a live instruction could hide in any dated comment that happened to say "updated").
 #
 # --self-test plants every intended form, a marked dated comment and the recorded false positives
 # in a fixture tree, and requires exactly the intended forms to hit — 0 hits on the planted
@@ -33,7 +35,7 @@ set -euo pipefail
 
 PATTERN='index row.{0,80}CONTEXT\.md|CONTEXT\.md[^;.]{0,80}index row|CONTEXT\.md`?'"'"'?s (?:map |register )?index|CONTEXT\.md.{0,40}(?:map index|register index|is the index|as the index)|register'"'"'?s index.{0,40}CONTEXT\.md|CONTEXT\.md.{0,40}register'"'"'?s index|row to .{0,40}\d\d-[A-Z-]+/CONTEXT\.md|\bno (?:folder-level |in-tree )?index\b|\bno (?:board|generated index)\b|index (?:is |was )?deferred|register-index work|holds no index|carries no index'
 PM_PATTERN='row to .{0,40}CONTEXT\.md'
-HIST='doc-references:\s*template-only|\b(?:superseded|updated|corrected|renamed|amended)\b'
+HIST='^\s*(?:doc-references:\s*template-only|(?:SUPERSEDED|UPDATED|CORRECTED|RENAMED|AMENDED)\b)'
 
 die() { printf 'register-index-routes.sh: %s\n' "$*" >&2; exit 2; }
 command -v perl >/dev/null 2>&1 || die "perl is required"
@@ -44,7 +46,7 @@ search() {
     xargs -0 -r perl -e '
       my $re = shift @ARGV; $re = qr/$re/i;
       my $pm = shift @ARGV; $pm = qr/$pm/i;
-      my $hist = shift @ARGV; $hist = qr/$hist/i;
+      my $hist = shift @ARGV; $hist = qr/$hist/;
       for my $f (@ARGV) {
         open my $fh, "<", $f or next; local $/; my $t = <$fh>; close $fh;
         $t =~ s{(<!--(.*?)-->)}{ my ($all, $in) = ($1, $2); ($in =~ m{\b\d\d/\d\d/\d{4}\b} && $in =~ $hist) ? "" : $all }gse;

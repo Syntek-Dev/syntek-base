@@ -16,7 +16,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
      `STORY-PLAN-US###-*.md`; Output & naming named
      `STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`. -->
 
-<!-- 08/09/2026, later the same day: the two "Plans Index" mentions were rewritten, and a
+<!-- UPDATED 08/09/2026, later the same day: the two "Plans Index" mentions were rewritten, and a
      guardrail added. Superseded text, preserved rather than deleted — Model read "Opus for
      mechanical touches (status flips, Plans Index updates)"; Concrete steps ended "→ add its
      row to the Plans Index → satisfy `CHECKLIST.md`". Both pre-date today. Why: no Plans Index
@@ -125,7 +125,7 @@ testing guide in `src/18-TESTS/MANUAL/`.
      a plan shipped without its guide, which would leave 22 authoring it with the code already in
      front of it. -->
 
-<!-- 31/10/2026 (7.7.0, the PM boards): the dependency-callout guardrail and the no-index
+<!-- UPDATED 31/10/2026 (7.7.0, the PM boards): the dependency-callout guardrail and the no-index
      guardrail rewritten in place, line for line — as were the matching lines of `STEPS.md`
      (the Naming row, Step 2 item 4, Step 10 item 2), `CHECKLIST.md` (the sprint-plan row and the
      no-index row) and `CONTEXT.md` — so dated line-number citations of these files keep their
@@ -134,6 +134,6 @@ testing guide in `src/18-TESTS/MANUAL/`.
      deferral of the folder-level index to the register-index work. A plan now carries no status
      (the board mirrors its story), and the index is the generated `STORY-PLANS-BOARD.md`. -->
 
-<!-- 19/11/2026: the folder-index guardrail's opening rewritten in place, line for line. Superseded:
+<!-- UPDATED 19/11/2026: the folder-index guardrail's opening rewritten in place, line for line. Superseded:
      "No index row goes into `src/17-STORY-PLANS/CONTEXT.md`. The folder index is the generated" —
      a negative instruction naming the context file; the line now states what the index is. -->
