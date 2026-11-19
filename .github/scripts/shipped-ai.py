@@ -14,6 +14,7 @@ import argparse
 import copy
 import json
 import os
+import re
 import shutil
 import tempfile
 import tomllib
@@ -203,6 +204,17 @@ def check_links(project: Path, enabled: bool, *, updated: bool = False) -> None:
     require(not (project / ".copier").exists(), "Seed staging directory survived")
 
 
+def seeded_boards(config: dict) -> dict[str, str]:
+    """Map each board seed under .copier/ to its destination, read from the seed task itself."""
+    moves = {
+        seed: destination
+        for task in config["_tasks"]
+        for seed, destination in re.findall(r"mv \.copier/(\S+-BOARD\.md) (\S+)", task["command"])
+    }
+    require(len(moves) >= 1, "The seed task moves no PM board")
+    return moves
+
+
 def copy_project(template: Path, project: Path, enabled: bool) -> None:
     data = {**ANSWERS, **dict.fromkeys(OPTIONAL.values(), enabled)}
     run_copy(
@@ -214,13 +226,23 @@ def copy_project(template: Path, project: Path, enabled: bool) -> None:
 def exercise(directory: Path, config: dict) -> None:
     template = directory / "template"
     fixture(template, config)
+    boards = seeded_boards(config)
+    edited: dict[bool, dict[str, bytes]] = {}
     for enabled in (False, True):
         project = directory / f"project-{enabled}"
         copy_project(template, project, enabled)
         with (project / ".ai/MEMORY.md").open("a") as memory:
             memory.write(f"\n### Local knowledge\n\n{PROJECT_MEMORY}\n")
+        # The project's own board edits, committed: what a seed-once board must never lose.
+        edited[enabled] = {}
+        for destination in boards.values():
+            board = project / destination
+            require(board.is_file(), f"{destination} was not seeded by copier copy")
+            with board.open("a") as handle:
+                handle.write(f"\n| PROJECT-ROW | The project's own row in {board.name} |\n")
+            edited[enabled][destination] = board.read_bytes()
         git(project, "init", "--quiet", "--initial-branch=main")
-        commit(project, "Record generated project and its own memory")
+        commit(project, "Record generated project, its own memory and its own boards")
 
     with (template / ".claude/skills/global-workflow/SKILL.md").open("a") as skill:
         skill.write(f"\n{UPDATED_SKILL}\n")
@@ -228,7 +250,12 @@ def exercise(directory: Path, config: dict) -> None:
     # as preservation. It must never be present under either path in the project.
     with (template / ".claude/MEMORY.md").open("a") as memory:
         memory.write("An additional template-only entry.\n")
-    commit(template, "Update a shared skill and template memory")
+    # Every board seed changes too, so an update that re-seeds a board cannot hide behind an
+    # unchanged seed.
+    for seed in boards:
+        with (template / ".copier" / seed).open("a") as handle:
+            handle.write("\nA template-side change to the blank board seed.\n")
+    commit(template, "Update a shared skill, template memory and every board seed")
     git(template, "tag", "v1.1.0")
 
     for enabled in (False, True):
@@ -236,10 +263,16 @@ def exercise(directory: Path, config: dict) -> None:
         run_update(
             project, defaults=True, unsafe=True, overwrite=True, vcs_ref="v1.1.0", quiet=True
         )
+        for destination, contents in edited[enabled].items():
+            require(
+                (project / destination).is_file()
+                and (project / destination).read_bytes() == contents,
+                f"{destination} {BOARD_CHANGED}",
+            )
         check_links(project, enabled, updated=True)
         print(
-            f"PASS: copy/update with optional skills {enabled}; "
-            "aliases resolve and project memory survives"
+            f"PASS: copy/update with optional skills {enabled}; aliases resolve, project memory "
+            f"survives, and {len(edited[enabled])} edited boards are byte-identical"
         )
 
 
@@ -275,7 +308,7 @@ def self_test(directory: Path, config: dict) -> None:
         exercise(ungated, mutated)
     except (AssertionError, TaskError) as error:
         require(BOARD_CHANGED in str(error), f"Mutation failed for an unexpected reason: {error}")
-        print("PASS: detector rejects ungated-seed-task")
+        print(f"PASS: detector rejects ungated-seed-task — {error}")
     else:
         raise AssertionError("Detector accepted the broken ungated-seed-task fixture")
 
