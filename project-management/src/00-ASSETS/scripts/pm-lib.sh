@@ -522,7 +522,9 @@ def supersession_warnings():
                 if other is None:
                     out.append(f"{adr.id}: {label} names {other_id}, which is not in "
                                "15-DECISIONS/ or its archive/")
-                elif adr.id not in (getattr(other, back[field]) or []):
+                elif not other.archived and adr.id not in (getattr(other, back[field]) or []):
+                    # An archived target is frozen and can never be edited to answer, so it owes
+                    # no back-link; the live record's own line is the record of the chain.
                     out.append(f"{adr.id}: {label} names {other_id}, which does not name it back")
         if adr.status == "Superseded" and not adr.superseded_by:
             out.append(f"{adr.id} is Superseded but its **Superseded by:** line names no successor")
