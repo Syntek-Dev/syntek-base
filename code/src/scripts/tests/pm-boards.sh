@@ -26,7 +26,8 @@
 #              own two lines; --warn names a supersession that is not cross-referenced back.
 #   archive    pm-archive.sh <ID> archives an ADR only from Superseded or Deprecated, a findings
 #              record only from Resolved, a bug only from Verified, and refuses any other status
-#              with nothing moved; --check then passes, and fails on an edit to an archived file.
+#              with nothing moved; --check then passes, and fails on an edit to an archived file;
+#              an ADR naming an archived ADR raises no back-link warning, archive/ being frozen.
 #   chains     --warn names an ADR superseding itself, a supersession cycle, and a successor
 #              named by an ADR whose status is not Superseded.
 #   masked     A status or supersession line inside a fenced code block or an HTML comment is
@@ -54,7 +55,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,46p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,47p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'pm-boards.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -264,6 +265,11 @@ probe_archive() {
     fail "--check fails on an edit to an archived bug (no archived bug to edit)"
   fi
   fgit checkout -q -- .
+  adr ADR-US010-REVIVED-12-01-2026 "Revives a retired decision" Accepted ADR-US003-RETIRED-04-01-2026 None
+  check "an ADR naming an archived ADR in Supersedes raises no back-link warning (archive/ is frozen)" \
+    bash -c '! bash "$1" --warn --root "$2" | grep -q "ADR-US010-REVIVED-12-01-2026.*does not name it back"' _ \
+    "$SRC/00-ASSETS/scripts/pm-board.sh" "$FX"
+  rm -f "$SRC/15-DECISIONS/ADR-US010-REVIVED-12-01-2026.md"
 }
 
 probe_staged() {
