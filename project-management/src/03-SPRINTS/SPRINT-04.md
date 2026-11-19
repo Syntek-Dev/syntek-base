@@ -18,7 +18,7 @@ the operator names the live posture out loud.
      US003. The goal is written in build order — US005 then US006 — on SPRINT-02's convention for a
      sprint with two subjects. -->
 
-**Status:** Done — US005 and US006, both members, Accepted 19/11/2026 (PR #30, PR #34); nothing carried over
+**Status:** Done — US005 and US006, both members, Accepted 19/11/2026 (PR #30, PR #34); nothing carried over; Done confirmed by Sam 19/11/2026
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->

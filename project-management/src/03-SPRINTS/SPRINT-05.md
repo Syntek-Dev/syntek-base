@@ -30,7 +30,7 @@ moment nobody chose.
      (Subdomain Routing and Gate Parity), which is the ordinary shape here: SPRINT-01, SPRINT-02
      and SPRINT-04 each span two. -->
 
-**Status:** Done — US008 and US009, both members, Accepted (PR #35, PR #37); nothing carried over
+**Status:** Done — US008 and US009, both members, Accepted (PR #35, PR #37); nothing carried over; Done and US008's Story Summary tick confirmed by Sam 19/11/2026
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->

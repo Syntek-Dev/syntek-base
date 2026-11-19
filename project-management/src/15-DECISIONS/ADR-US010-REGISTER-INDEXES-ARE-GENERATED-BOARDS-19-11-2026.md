@@ -1,7 +1,7 @@
 # ADR-US010: Register indexes are generated boards, and a status line is a plain value plus a status note
 
 **Status:** Accepted
-**Status note:** Accepted 19/11/2026 by <%DEVELOPER_NAME%> at US010's re-cut grilling (round 2 Q4), in the same pass that settled the design it records
+**Status note:** Accepted 19/11/2026 by <%DEVELOPER_NAME%> at US010's re-cut grilling (round 2 Q4), in the same pass that settled the design it records. **Amended 19/11/2026 (D1, Sam):** the finding vocabulary is `Open | Resolved`, and `Resolved` is the archive trigger — owned by `.claude/skills/completion/SKILL.md`; `Triaged` leaked in from the findings template and was never that skill's. Option B's summary and Decision 6 carry the correction in place, each marked _(corrected 19/11/2026, D1 — see the Status note)_
 **Date:** 19/11/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`, `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`
@@ -60,7 +60,8 @@ hand-written files the story planned, or the boards 7.7.0 built for the other fi
   `SEEDED`, `shipped-boards.sh` and `--check`. Each register's status carrier becomes a plain
   `**Status:**` value plus a free-text `**Status note:**` line, the vocabulary owned by the
   `completion` skill: ADR `Proposed | Accepted | Superseded | Deprecated`; finding
-  `Open | Triaged`; bug `Open | Fixed | Verified`.
+  `Open | Resolved` _(corrected 19/11/2026, D1 — was `Open | Triaged`; see the Status note)_; bug
+  `Open | Fixed | Verified`.
 - **Pros:** one mechanism for all eight registers; no row is ever written by hand, so none drifts;
   the generator's own status reader replaces the bespoke read rule; the seed gate already exists
   and proves byte-identity with the generator.
@@ -94,7 +95,8 @@ grilling, rounds 1 to 4:
 5. **Board columns are ID · Title (H1) · Status · File**, plus the decisions board's two tail
    columns; no Summary and no Updated column (round 3 Q3).
 6. **The three kinds archive** through `pm-archive.sh <ID>`: an ADR once `Superseded` or
-   `Deprecated`, a finding once `Triaged`, a bug once `Verified`; `archive/` is frozen (round 2 Q3,
+   `Deprecated`, a finding once `Resolved` _(corrected 19/11/2026, D1 — was `Triaged`; see the
+   Status note)_, a bug once `Verified`; `archive/` is frozen (round 2 Q3,
    round 3 Q1).
 
 **It beat A because a hand-kept index is the failure this work began from**, and two mechanisms
