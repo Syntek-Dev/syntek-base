@@ -303,6 +303,12 @@ self_test() {
     awk -v l="$neg" '{print} /^_exclude:/{print l}' "$real_copier" > "$tmp/reinclude.yml"
     COPIER="$tmp/reinclude.yml"; probe "check 1 fires on the negation $neg" "re-includes a board"
   done
+  # 1c. Two gitignore shapes copier honours that a path glob misses: a pattern with no slash
+  #     matches the basename at any depth, and a trailing slash names a folder, re-including it.
+  awk '{print} /^_exclude:/{print "  - \"!SPRINTS-BOARD.md\""}' "$real_copier" > "$tmp/reinclude.yml"
+  COPIER="$tmp/reinclude.yml"; probe "check 1 fires on a slash-less basename negation" "re-includes a board"
+  awk '{print} /^_exclude:/{print "  - \"!/project-management/src/03-SPRINTS/\""}' "$real_copier" > "$tmp/reinclude.yml"
+  COPIER="$tmp/reinclude.yml"; probe "check 1 fires on a trailing-slash folder negation" "re-includes a board"
   COPIER="$real_copier"
 
   # 2. Drop a _tasks move.
@@ -320,6 +326,16 @@ self_test() {
   awk '{print} /^_tasks:/{print "  - command: mv .copier/STORIES-BOARD.md project-management/src/02-STORIES/STORIES-BOARD.md"}' \
     "$real_copier" > "$tmp/ungated.yml"
   COPIER="$tmp/ungated.yml"; probe "check 2 fires when a board move also sits in an ungated task" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
+  # 2d. The same ungated write in the shapes a literal `mv .copier/<board>` misses: a flag, a
+  #     copy rather than a move, and a ./ before the seed path.
+  local ung
+  for ung in "mv -f .copier/STORIES-BOARD.md|an ungated mv -f of a seed" \
+             "cp .copier/STORIES-BOARD.md|an ungated cp of a seed" \
+             "mv ./.copier/STORIES-BOARD.md|an ungated mv of a ./.copier/ seed"; do
+    awk -v l="  - command: ${ung%%|*} project-management/src/02-STORIES/STORIES-BOARD.md" '{print} /^_tasks:/{print l}' \
+      "$real_copier" > "$tmp/ungated.yml"
+    COPIER="$tmp/ungated.yml"; probe "check 2 fires on ${ung#*|}" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
+  done
   # 2c. A move line that names the board but is not a move: echoed, or commented out inside the
   #     folded command. A substring search reads both as wired; one finding each.
   sed 's#^      mv \.copier/SPRINTS-BOARD\.md #      echo mv .copier/SPRINTS-BOARD.md #' "$real_copier" > "$tmp/echoed.yml"
