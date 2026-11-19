@@ -182,7 +182,7 @@ one **Supersedes** filename and one driving story to each ADR (D).
   unchanged. That the regime retires when US004 lands is stated in force by
   `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`
   and
-  `project-management/src/15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`.
+  `project-management/src/15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`.
 - **Follow-on:** US003's implementation reads this record, not the superseded one. Its baseline
   goes in `project-management/src/18-TESTS/MANUAL/US003-MANUAL-TESTING.md`, whose
   `## Recorded during the build` section already carries the slot (`:61`, `:74`, `:79`), and the

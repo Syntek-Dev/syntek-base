@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 09/10/2026
 **Deciders:** <%DEVELOPER_NAME%> — approved remediation in this conversation
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`
+**Supersedes:** `project-management/src/15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`
 **Superseded by:** None
 **Related:** US004
 

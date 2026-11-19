@@ -65,7 +65,7 @@ the citing file's name, never `is_template_only()`) and
 name a class, with `###` translated to three digits exactly). Both were superseded on 30/09/2026,
 for the 18-TESTS split, by
 `../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md` and
-`../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`,
+`../15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restate them unchanged but for the 18-TESTS paths; this plan implements the two decisions
 as those successors state them. <!-- UPDATED 30/09/2026: the successors are added beside the two
 superseded records (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026,
