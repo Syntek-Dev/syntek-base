@@ -50,7 +50,9 @@
 #              them (files, directories, `.`; `--` ends options); the boards are printed
 #              relative to it. An unstaged status edit outside the named paths never reaches
 #              a board, exactly as under --staged. Filenames holding a newline are unsupported.
-#   --check    Exit 1 if any committed *-BOARD.md is stale or missing, or if the archive
+#   --check    Exit 1 if any committed *-BOARD.md is stale or missing; if a boarded folder or
+#              its archive/ holds a .md (any case) that is no instance, template, CONTEXT.md /
+#              CLAUDE.md, board or documented extra (02-STORIES/CUT-PLAN.md); or if the archive
 #              frozen rule is breached: a file already under */archive/ may differ from
 #              the version that first landed there ONLY by the reference-path rewrites
 #              pm-archive.sh makes (inserting `archive/`, adjusting `../` depth), and no
@@ -112,7 +114,7 @@ while [[ $# -gt 0 ]]; do
       [[ -n "${2:-}" && -d "${2:-}" ]] || die "--root needs an existing directory"
       PROJECT_ROOT="$(cd "$2" && pwd)"; shift 2 ;;
     --quiet|-q) QUIET=true; shift ;;
-    --help|-h) sed -n '2,80p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '2,82p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) die "unknown argument: '$1'. Use --help for usage." ;;
   esac
 done
@@ -347,6 +349,10 @@ if MODE == "check":
         elif read(md) != render_md(kind, cols, grouped):
             bad.append(f"{rel(md)} is stale — run {SCRIPT} --write and commit it")
     bad += frozen_breaches()
+    for k in ORDER:
+        for r in strays(KINDS[k]):
+            bad.append(f"{r} is in a boarded folder but is no {KINDS[k].noun}, template or pair "
+                       "file — rename it to the folder's pattern or move it out (it is on no board)")
     for w in all_warns:
         say(f"warning: {w}")
     if bad:

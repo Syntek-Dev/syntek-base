@@ -74,13 +74,14 @@ class Kind:
     there; the three record registers (decisions, findings, bugs) set `archive_from` instead —
     the end states a record may be archived from, and keeps, under archive/."""
     def __init__(self, key, folder, board, noun, plural, pattern, statuses, parent=None,
-                 template=None, title_prefix=None, archive_from=None, tail=False):
+                 template=None, title_prefix=None, archive_from=None, tail=False, extras=()):
         self.key, self.folder, self.board = key, folder, board
         self.noun, self.plural = noun, plural
         self.pattern = re.compile(pattern)
         self.statuses, self.parent = statuses, parent
         self.template, self.archive_from, self.tail = template, archive_from, tail
         self.title_prefix = re.compile(title_prefix) if title_prefix else None
+        self.extras = set(extras)
 
     def is_template(self, name):
         """By exact name for a record register; by `TEMPLATE` in the name for the other five."""
@@ -98,7 +99,7 @@ KINDS = {
     "maps": Kind("maps", "01-FEATURE-MAPS", "FEATURE-MAPS", "feature map", "feature maps",
                  r"^(MAP-(?!000)[A-Z0-9][A-Z0-9-]*)\.md$", MAP_STATUSES),
     "stories": Kind("stories", "02-STORIES", "STORIES", "story", "stories",
-                    r"^(US(?!000)\d{3})\.md$", STORY_STATUSES),
+                    r"^(US(?!000)\d{3})\.md$", STORY_STATUSES, extras=("CUT-PLAN.md",)),
     "sprints": Kind("sprints", "03-SPRINTS", "SPRINTS", "sprint", "sprints",
                     r"^(SPRINT-(?!00)\d{2})\.md$", SPRINT_STATUSES),
     "sprint-plans": Kind("sprint-plans", "16-SPRINT-PLANS", "SPRINT-PLANS", "sprint plan",
@@ -348,6 +349,26 @@ def scan(kind):
             if m:
                 items.append(Item(kind, p, m))
     return sorted(items, key=lambda i: (i.id, i.archived))
+
+PAIR = ("CONTEXT.md", "CLAUDE.md")
+
+def strays(kind):
+    """Every .md (any case) in a boarded folder or its archive/ that is none of an instance, the
+    template, the CONTEXT.md/CLAUDE.md pair, a *-BOARD.md or a file the kind documents (the cut
+    plan beside the stories). A misnamed record is otherwise silently off its board."""
+    out = []
+    for d in (kind.dir, kind.dir / "archive"):
+        if not d.is_dir():
+            continue
+        for p in sorted(d.iterdir()):
+            n = p.name
+            if not p.is_file() or p.suffix.lower() != ".md":
+                continue
+            if (kind.pattern.match(n) or kind.is_template(n) or n in PAIR or n in kind.extras
+                    or n.endswith("-BOARD.md")):
+                continue
+            out.append(rel(p))
+    return out
 
 _CACHE = {}
 def items(key):
