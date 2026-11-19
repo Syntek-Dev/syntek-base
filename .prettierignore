@@ -92,6 +92,11 @@ project-management/src/00-ASSETS/WALK-TESTS/*-PROMPT.md
 project-management/src/00-ASSETS/WALK-TESTS/*-REPORT.md
 project-management/src/00-ASSETS/WALK-TESTS/*-TRANSCRIPT.jsonl
 
+# Archived PM records — frozen (project-management/src/CLAUDE.md). pm-archive.sh's rewrite of a
+# path inside one can unalign a table, and re-padding it would edit a frozen file, so no
+# formatter reads them. pm-board.sh --check is their gate. Added 19/11/2026.
+project-management/src/*/archive/
+
 # Misc
 .git/
 coverage/

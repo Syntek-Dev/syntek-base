@@ -18,6 +18,8 @@ pre-commit:
       glob: "*.{js,mjs,cjs,ts,tsx,json,yaml,yml,css,html,md}"
       exclude:
         - "project-management/export/**"
+        # Archived PM records are frozen — never reformatted (also .prettierignore; 19/11/2026).
+        - "project-management/src/*/archive/**"
         # Prettier rejects explicitly supplied symlinks before applying its ignore file.
         - ".agents/**"
         - ".ai/skills/**"
@@ -58,6 +60,8 @@ pre-commit:
       glob: "*.md"
       exclude:
         - "project-management/export/**"
+        # Archived PM records are frozen — never linted into a rewrite (19/11/2026).
+        - "project-management/src/*/archive/**"
         - ".agents/**"
         - ".ai/skills/**"
         - ".ai/MEMORY.md"

@@ -30,6 +30,10 @@ on:
       - ".copier-answers.yml"
       - ".github/workflows/pm-boards.yml"
       - "code/src/scripts/tests/pm-boards.sh"
+      # pm-boards.sh also proves the formatters skip */archive/ (19/11/2026).
+      - ".prettierignore"
+      - ".markdownlint-cli2.jsonc"
+      - "lefthook.yml"
   pull_request:
     branches: [main, staging, dev, testing]
     paths:
@@ -37,6 +41,10 @@ on:
       - ".copier-answers.yml"
       - ".github/workflows/pm-boards.yml"
       - "code/src/scripts/tests/pm-boards.sh"
+      # pm-boards.sh also proves the formatters skip */archive/ (19/11/2026).
+      - ".prettierignore"
+      - ".markdownlint-cli2.jsonc"
+      - "lefthook.yml"
   workflow_dispatch:
 
 jobs:

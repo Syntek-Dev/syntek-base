@@ -17,6 +17,8 @@
     "!**/tests/e2e/results/**",
     "!**/tests/e2e/playwright-report/**",
     "!project-management/export/**",
+    // Archived PM records are frozen; pm-board.sh --check is their gate (19/11/2026).
+    "!project-management/src/*/archive/**",
     "!code/docs/MACHINE-SPEC.md",
     "!graphify-out/**",
     "!code/src/scripts/**/reports/**",
@@ -34,6 +36,8 @@
     ".ai/skills/**",
     ".ai/MEMORY.md",
     "project-management/export/**",
+    // Archived PM records are frozen, even when staged by name (19/11/2026).
+    "project-management/src/*/archive/**",
     "code/docs/MACHINE-SPEC.md",
     "code/src/scripts/**/reports/**",
     "code/src/rust/target/**",
