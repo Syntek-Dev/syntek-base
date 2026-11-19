@@ -8,9 +8,10 @@
 | **Severity**     | Low — a false red on a scoped run; the unscoped run is unaffected                                     |
 | **Date found**   | 16/11/2026                                                                                            |
 | **Last Updated** | 16/11/2026                                                                                            |
-| **Status**       | Open                                                                                                  |
 | **Found during** | Build and closeout tooling (findings record Section 2.3) — scoping the lint to one shell or YAML file |
 | **Reporter**     | Claude (`22-implementation-documentation` Step 5), from finding F-033                                 |
+
+**Status:** Open
 
 ---
 

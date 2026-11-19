@@ -4,7 +4,7 @@
 **Date:** 30/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
-**Superseded by:** —
+**Superseded by:** None
 **Related:** US003
 
 ---

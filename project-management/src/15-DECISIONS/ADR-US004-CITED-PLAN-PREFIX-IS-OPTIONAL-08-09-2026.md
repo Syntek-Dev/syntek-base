@@ -8,11 +8,12 @@
      Written outside the per-story loop, so it enters as Proposed and is checked at US004's own
      15-decisions pass alongside the story's two Accepted records. -->
 
-**Status:** Accepted <!-- Accepted 05/11/2026 by <%DEVELOPER_NAME%> at US004's closeout (workflow 22 rulings, Q4; finding F-019): the detector has implemented it since 08/09/2026. It read "Proposed" until then. -->
+**Status:** Accepted
+**Status note:** Accepted 05/11/2026 by <%DEVELOPER_NAME%> at US004's closeout (workflow 22 rulings, Q4; finding F-019): the detector has implemented it since 08/09/2026. It read "Proposed" until then.
 **Date:** 08/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** None
+**Superseded by:** None
 **Related:** US004 · `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` (stands as decided; this record replaces nothing in it)
 
 ---

@@ -8,9 +8,10 @@
 | **Severity**     | Low                                                                                                            |
 | **Date found**   | 15/11/2026                                                                                                     |
 | **Last Updated** | 15/11/2026                                                                                                     |
-| **Status**       | Open                                                                                                           |
 | **Found during** | Manual walk — the stack-dependent rows of `../18-TESTS/MANUAL/US006-MANUAL-TESTING.md`, on a us006 stack       |
 | **Reporter**     | Claude, on the developer's behalf; finding F-019 in `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` |
+
+**Status:** Open
 
 Filed for a later fix (developer decision, 15/11/2026): **not fixed in US006**. The defect is in
 the worktree tooling, which predates US006 and which the story's posture guard does not touch, so

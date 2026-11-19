@@ -3,7 +3,7 @@
 **Status:** Superseded
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** —
+**Supersedes:** None
 **Superseded by:** `project-management/src/15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md` <!-- doc-references: template-only -->
 **Related:** US002
 

@@ -8,9 +8,10 @@
 | **Severity**     | Medium                                                                                                                                                |
 | **Date found**   | 17/11/2026                                                                                                                                            |
 | **Last Updated** | 17/11/2026                                                                                                                                            |
-| **Status**       | Fixed                                                                                                                                                 |
 | **Found during** | QA — the US009 probe runner (EC-07 red on every full run until the fix)                                                                               |
 | **Reporter**     | Claude (US009 build), recorded at `22-implementation-documentation` Step 5; finding F-002 in `../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md` |
+
+**Status:** Fixed
 
 ---
 

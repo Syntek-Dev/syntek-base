@@ -8,9 +8,10 @@
 | **Severity**     | Low                                                                                                                |
 | **Date found**   | 02/11/2026                                                                                                         |
 | **Last Updated** | 02/11/2026                                                                                                         |
-| **Status**       | Open                                                                                                               |
 | **Found during** | Manual walk — `../18-TESTS/MANUAL/US007-MANUAL-TESTING.md` row GATES-09                                            |
 | **Reporter**     | Claude, on Sam's behalf; finding F-002 in `../20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` |
+
+**Status:** Open
 
 Filed for a later fix (Sam, 02/11/2026). No target story is named yet; the fix is unscheduled.
 

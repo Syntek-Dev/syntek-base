@@ -8,9 +8,10 @@
 | **Severity**     | Low — a false green, but only off the normal path (CI and the hooks run inside a repository)   |
 | **Date found**   | 16/11/2026                                                                                     |
 | **Last Updated** | 16/11/2026                                                                                     |
-| **Status**       | Open                                                                                           |
 | **Found during** | Manual walk — CITE-05 of `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md`, in a `git archive` copy |
 | **Reporter**     | Claude (`22-implementation-documentation` Step 5), from finding F-035                          |
+
+**Status:** Open
 
 ---
 

@@ -8,9 +8,10 @@
 | **Severity**     | Low                                                                                                                               |
 | **Date found**   | 03/11/2026                                                                                                                        |
 | **Last Updated** | 03/11/2026                                                                                                                        |
-| **Status**       | Open                                                                                                                              |
 | **Found during** | QA breaker pass (M-3, L-7) and the manual walk — `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` row BITE-01                         |
 | **Reporter**     | Claude, on Sam's behalf; finding F-014 in `../20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md`                   |
+
+**Status:** Open
 
 Filed, not fixed: US002 is a docs-only story and its plan files this rather than changing the
 script. No target story is named yet; the fix is unscheduled.

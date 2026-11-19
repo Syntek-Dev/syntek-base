@@ -1,6 +1,8 @@
 # Findings — US006 The destructive dev scripts read the deployment posture, and refuse to run above development
 
-**Last Updated**: 15/11/2026 · **Story**: US006 · **Status**: Open — F-001, F-002, F-005, F-011 and F-018 resolved 15/11/2026; F-019 routed to a bug report; PERM-07 amended under F-018 and walked Pass 15/11/2026; the workflow 23 review's F-020 to F-026 resolved 15/11/2026 (F-023 also routed to a bug report); F-027 revised and F-028 resolved 15/11/2026; F-029 routed to a bug report; every row dispositioned
+**Last Updated**: 15/11/2026 · **Story**: US006
+**Status:** Open
+**Status note:** F-001, F-002, F-005, F-011 and F-018 resolved 15/11/2026; F-019 routed to a bug report; PERM-07 amended under F-018 and walked Pass 15/11/2026; the workflow 23 review's F-020 to F-026 resolved 15/11/2026 (F-023 also routed to a bug report); F-027 revised and F-028 resolved 15/11/2026; F-029 routed to a bug report; every row dispositioned
 
 | Field                | Value                                                                                                                                                                                                                                                                                        |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

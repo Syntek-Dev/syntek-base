@@ -14,9 +14,11 @@ _Template — copy to `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`, replace every `{PL
 | **Severity**     | Critical / High / Medium / Low                                    |
 | **Date found**   | {DD/MM/YYYY}                                                      |
 | **Last Updated** | {DD/MM/YYYY}                                                      |
-| **Status**       | Open / Fixed / Verified                                           |
 | **Found during** | QA / manual walk / review / production / debug session            |
 | **Reporter**     | {name / agent / audit}                                            |
+
+**Status:** Open
+**Status note:** [optional — one line; Open, then Fixed when the fix merges, then Verified once it is seen to hold]
 
 ---
 

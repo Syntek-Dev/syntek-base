@@ -8,9 +8,10 @@
 | **Severity**     | Low                                                                                                                |
 | **Date found**   | 02/11/2026                                                                                                         |
 | **Last Updated** | 02/11/2026                                                                                                         |
-| **Status**       | Open                                                                                                               |
 | **Found during** | `22-implementation-documentation` Step 4 — writing `../18-TESTS/AUTOMATED/US007-TEST-STATUS.md`                    |
 | **Reporter**     | Claude, on Sam's behalf; finding F-012 in `../20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` |
+
+**Status:** Open
 
 Filed for a later fix (Sam, 02/11/2026). No target story is named yet; the fix is unscheduled.
 

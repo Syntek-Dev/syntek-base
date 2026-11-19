@@ -3,8 +3,8 @@
 **Status:** Accepted
 **Date:** 17/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** None
+**Superseded by:** None
 **Related:** US009 · `project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md` AC-GAP-1 · `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US009-HOOK-ARMING.md` TM-01 and Section 3b · `project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md` N-019
 
 ---

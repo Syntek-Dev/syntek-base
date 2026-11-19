@@ -4,7 +4,7 @@
 **Date:** 09/10/2026
 **Deciders:** <%DEVELOPER_NAME%> — authorised adversarial remediation
 **Supersedes:** `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`
-**Superseded by:** —
+**Superseded by:** None
 **Related:** US008
 
 ## Context

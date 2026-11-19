@@ -1,16 +1,18 @@
 # BUG: US008 — a per-story dev stack on `:3080` cannot submit any form
 
-| Field            | Value                                                                                                                               |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| **Story**        | US008 — host-only `__Host-` cookies (surfaced by its walk; **not caused by it** — no Django setting was changed by US008)           |
-| **Story doc**    | `../02-STORIES/US008.md`                                                                                                            |
-| **Story plan**   | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`                                                                        |
-| **Severity**     | Medium — every state-changing request on every worktree dev stack fails; dev-only                                                   |
-| **Date found**   | 16/11/2026                                                                                                                          |
-| **Last Updated** | 16/11/2026                                                                                                                          |
-| **Status**       | Verified 16/11/2026 — fixed in `40ce928` on `us008/story-stack-csrf-origin`, merged `8d6a5ac`; live sign-in on `127.0.0.8:3080` 302 |
-| **Found during** | Manual walk — the dev-stack cookie rows of `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md`, on a us008 story stack                     |
-| **Reporter**     | Claude (`22-implementation-documentation` Step 5), from finding F-034                                                               |
+| Field            | Value                                                                                                                     |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Story**        | US008 — host-only `__Host-` cookies (surfaced by its walk; **not caused by it** — no Django setting was changed by US008) |
+| **Story doc**    | `../02-STORIES/US008.md`                                                                                                  |
+| **Story plan**   | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`                                                              |
+| **Severity**     | Medium — every state-changing request on every worktree dev stack fails; dev-only                                         |
+| **Date found**   | 16/11/2026                                                                                                                |
+| **Last Updated** | 16/11/2026                                                                                                                |
+| **Found during** | Manual walk — the dev-stack cookie rows of `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md`, on a us008 story stack           |
+| **Reporter**     | Claude (`22-implementation-documentation` Step 5), from finding F-034                                                     |
+
+**Status:** Verified
+**Status note:** 16/11/2026 — fixed in `40ce928` on `us008/story-stack-csrf-origin`, merged `8d6a5ac`; live sign-in on `127.0.0.8:3080` 302
 
 ---
 

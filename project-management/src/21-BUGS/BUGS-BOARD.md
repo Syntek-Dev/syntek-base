@@ -7,37 +7,34 @@ One row per bug report in `21-BUGS/` and `21-BUGS/archive/`, filed under its sta
 
 ## Summary
 
-| Column       | Items |
-| ------------ | ----- |
-| Open         | 0     |
-| Fixed        | 0     |
-| Verified     | 0     |
-| Unrecognised | 11    |
+| Column   | Items |
+| -------- | ----- |
+| Open     | 7     |
+| Fixed    | 2     |
+| Verified | 2     |
 
 ## Open
 
-_None._
+| ID                                                                    | Title                                                                                           | Status | File                                                                                                                                                 |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BUG-LINT-READS-GITIGNORED-GRAPHIFY-OUT-02-11-2026                     | Markdown lint reads the gitignored `graphify-out/` and fails on a file nobody ships             | Open   | [BUG-LINT-READS-GITIGNORED-GRAPHIFY-OUT-02-11-2026.md](BUG-LINT-READS-GITIGNORED-GRAPHIFY-OUT-02-11-2026.md)                                         |
+| BUG-MANAGEUSERS-CREATE-STAFF-SHELL-INJECTION-15-11-2026               | `manageusers.sh create-staff` interpolates its arguments into a `manage.py shell -c` string     | Open   | [BUG-MANAGEUSERS-CREATE-STAFF-SHELL-INJECTION-15-11-2026.md](BUG-MANAGEUSERS-CREATE-STAFF-SHELL-INJECTION-15-11-2026.md)                             |
+| BUG-TEST-RECORD-CLAIMS-PROJECT-COVERAGE-FOR-UNTESTED-STORY-02-11-2026 | `test-record.sh` reports project-wide coverage as a story's own when no test declares the story | Open   | [BUG-TEST-RECORD-CLAIMS-PROJECT-COVERAGE-FOR-UNTESTED-STORY-02-11-2026.md](BUG-TEST-RECORD-CLAIMS-PROJECT-COVERAGE-FOR-UNTESTED-STORY-02-11-2026.md) |
+| BUG-TEST-SERVER-WORKTREE-URL-PORT-15-11-2026                          | `tests/server.sh up` prints the worktree test URL on the wrong port                             | Open   | [BUG-TEST-SERVER-WORKTREE-URL-PORT-15-11-2026.md](BUG-TEST-SERVER-WORKTREE-URL-PORT-15-11-2026.md)                                                   |
+| BUG-US002-DOCS-PAIRING-UNSTAGED-DELETION-03-11-2026                   | `docs-pairing.sh` mis-reports an unstaged deletion of a tracked half                            | Open   | [BUG-US002-DOCS-PAIRING-UNSTAGED-DELETION-03-11-2026.md](BUG-US002-DOCS-PAIRING-UNSTAGED-DELETION-03-11-2026.md)                                     |
+| BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026                            | `doc-references.sh` outside a git work tree reports "Nothing to check" and exits 0              | Open   | [BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026.md](BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026.md)                                                       |
+| BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026                           | `lint.sh --path` runs markdownlint over a non-Markdown file                                     | Open   | [BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026.md](BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026.md)                                                     |
 
 ## Fixed
 
-_None._
+| ID                                                     | Title                                                                              | Status | File                                                                                                                   |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------- |
+| BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026 | `restore.sh` drops the database before discovering a relative backup path is wrong | Fixed  | [BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md](BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md) |
+| BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026          | `install.sh`'s host-profile probes abort the whole install when one probe fails    | Fixed  | [BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md](BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md)                   |
 
 ## Verified
 
-_None._
-
-## Unrecognised
-
-| ID                                                                    | Title                                                                                           | Status | File                                                                                                                                                 |
-| --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| BUG-LINT-READS-GITIGNORED-GRAPHIFY-OUT-02-11-2026                     | Markdown lint reads the gitignored `graphify-out/` and fails on a file nobody ships             | —      | [BUG-LINT-READS-GITIGNORED-GRAPHIFY-OUT-02-11-2026.md](BUG-LINT-READS-GITIGNORED-GRAPHIFY-OUT-02-11-2026.md)                                         |
-| BUG-MANAGEUSERS-CREATE-STAFF-SHELL-INJECTION-15-11-2026               | `manageusers.sh create-staff` interpolates its arguments into a `manage.py shell -c` string     | —      | [BUG-MANAGEUSERS-CREATE-STAFF-SHELL-INJECTION-15-11-2026.md](BUG-MANAGEUSERS-CREATE-STAFF-SHELL-INJECTION-15-11-2026.md)                             |
-| BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026                | `restore.sh` drops the database before discovering a relative backup path is wrong              | —      | [BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md](BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md)                               |
-| BUG-TEST-RECORD-CLAIMS-PROJECT-COVERAGE-FOR-UNTESTED-STORY-02-11-2026 | `test-record.sh` reports project-wide coverage as a story's own when no test declares the story | —      | [BUG-TEST-RECORD-CLAIMS-PROJECT-COVERAGE-FOR-UNTESTED-STORY-02-11-2026.md](BUG-TEST-RECORD-CLAIMS-PROJECT-COVERAGE-FOR-UNTESTED-STORY-02-11-2026.md) |
-| BUG-TEST-SERVER-WORKTREE-URL-PORT-15-11-2026                          | `tests/server.sh up` prints the worktree test URL on the wrong port                             | —      | [BUG-TEST-SERVER-WORKTREE-URL-PORT-15-11-2026.md](BUG-TEST-SERVER-WORKTREE-URL-PORT-15-11-2026.md)                                                   |
-| BUG-US002-DOCS-PAIRING-UNSTAGED-DELETION-03-11-2026                   | `docs-pairing.sh` mis-reports an unstaged deletion of a tracked half                            | —      | [BUG-US002-DOCS-PAIRING-UNSTAGED-DELETION-03-11-2026.md](BUG-US002-DOCS-PAIRING-UNSTAGED-DELETION-03-11-2026.md)                                     |
-| BUG-US008-DEV-STATIC-404-16-11-2026                                   | every `/static/` asset 404s on the dev stack                                                    | —      | [BUG-US008-DEV-STATIC-404-16-11-2026.md](BUG-US008-DEV-STATIC-404-16-11-2026.md)                                                                     |
-| BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026                            | `doc-references.sh` outside a git work tree reports "Nothing to check" and exits 0              | —      | [BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026.md](BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026.md)                                                       |
-| BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026                           | `lint.sh --path` runs markdownlint over a non-Markdown file                                     | —      | [BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026.md](BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026.md)                                                     |
-| BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026                          | a per-story dev stack on `:3080` cannot submit any form                                         | —      | [BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md](BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md)                                                   |
-| BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026                         | `install.sh`'s host-profile probes abort the whole install when one probe fails                 | —      | [BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md](BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md)                                                 |
+| ID                                           | Title                                                   | Status   | File                                                                                               |
+| -------------------------------------------- | ------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| BUG-US008-DEV-STATIC-404-16-11-2026          | every `/static/` asset 404s on the dev stack            | Verified | [BUG-US008-DEV-STATIC-404-16-11-2026.md](BUG-US008-DEV-STATIC-404-16-11-2026.md)                   |
+| BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026 | a per-story dev stack on `:3080` cannot submit any form | Verified | [BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md](BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md) |

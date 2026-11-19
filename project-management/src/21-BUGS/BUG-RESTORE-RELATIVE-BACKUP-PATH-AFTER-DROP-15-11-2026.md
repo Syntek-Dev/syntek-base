@@ -8,9 +8,11 @@
 | **Severity**     | Low                                                                                                            |
 | **Date found**   | 15/11/2026                                                                                                     |
 | **Last Updated** | 15/11/2026                                                                                                     |
-| **Status**       | Fixed — on `us006/posture-guard`, uncommitted at the time of writing                                           |
 | **Found during** | Review — workflow `23-pr-and-review` for US006, finding R-004                                                  |
 | **Reporter**     | Claude, on the developer's behalf; finding F-023 in `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` |
+
+**Status:** Fixed
+**Status note:** on `us006/posture-guard`, uncommitted at the time of writing
 
 **Pre-existing, not introduced by US006.** The defect dates from `f0681f2` (18/04/2026) and is
 present on `origin/testing`; US006's posture guard does not touch the path handling, so it takes

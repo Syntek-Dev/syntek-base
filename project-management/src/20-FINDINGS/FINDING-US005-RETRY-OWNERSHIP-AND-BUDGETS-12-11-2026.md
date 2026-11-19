@@ -1,6 +1,8 @@
 # Findings — US005 Exactly one layer decides to retry, and every budget says how long it may take
 
-**Last Updated**: 12/11/2026 | **Story**: US005 | **Status**: Triaged — every row dispositioned; F-001 resolved and F-002 a recorded deviation, both ruled by Sam 12/11/2026
+**Last Updated**: 12/11/2026 | **Story**: US005
+**Status:** Triaged
+**Status note:** every row dispositioned; F-001 resolved and F-002 a recorded deviation, both ruled by Sam 12/11/2026
 
 | Field                | Value                                                                                                                                                                                                                                                                                                                                                                    |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

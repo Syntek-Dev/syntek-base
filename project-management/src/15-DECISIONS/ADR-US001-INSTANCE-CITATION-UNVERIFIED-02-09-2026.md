@@ -4,7 +4,7 @@
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-FULL-PATHS-02-09-2026.md`
-**Superseded by:** —
+**Superseded by:** None
 **Related:** US001, US002
 
 ---

@@ -8,9 +8,11 @@
 | **Severity**     | Low                                                                                                            |
 | **Date found**   | 15/11/2026                                                                                                     |
 | **Last Updated** | 15/11/2026                                                                                                     |
-| **Status**       | Open — not fixed in US006                                                                                      |
 | **Found during** | Review — the env-print audit run under workflow `23-pr-and-review` for US006                                   |
 | **Reporter**     | Claude, on the developer's behalf; finding F-029 in `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` |
+
+**Status:** Open
+**Status note:** not fixed in US006
 
 **Pre-existing, not introduced by US006.** The interpolation dates from `ee5c2bb` (01/08/2026),
 and US006 does not edit `manageusers.sh`. The audit that found it was looking for env-file values

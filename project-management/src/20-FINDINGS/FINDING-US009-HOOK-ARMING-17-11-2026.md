@@ -1,6 +1,8 @@
 # Findings — US009 The git hooks arm on purpose at install, and the README claim that they already do becomes true
 
-**Last Updated**: 17/11/2026 · **Story**: US009 · **Status**: Open — every row dispositioned; F-002 is filed at `../21-BUGS/BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md` (fixed `fd11604`); F-004 was resolved outside the story (`97821a8`); F-026 is the dated `GAPS.md` entry of 17/11/2026; F-018 to F-025 are stale text in other gates' artefacts, recorded and not edited (corrected 17/11/2026: closed at `23-pr-and-review` by developer ruling, each by a dated correction in its owning artefact in the US009 PR)
+**Last Updated**: 17/11/2026 · **Story**: US009
+**Status:** Open
+**Status note:** every row dispositioned; F-002 is filed at `../21-BUGS/BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md` (fixed `fd11604`); F-004 was resolved outside the story (`97821a8`); F-026 is the dated `GAPS.md` entry of 17/11/2026; F-018 to F-025 are stale text in other gates' artefacts, recorded and not edited (corrected 17/11/2026: closed at `23-pr-and-review` by developer ruling, each by a dated correction in its owning artefact in the US009 PR)
 
 | Field                | Value                                                                                                                                                                                                                                                                                                         |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

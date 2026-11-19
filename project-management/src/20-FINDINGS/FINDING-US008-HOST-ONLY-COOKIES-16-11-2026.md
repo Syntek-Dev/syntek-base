@@ -1,6 +1,8 @@
 # Findings — US008 Host-only `__Host-` cookies, an httpOnly CSRF cookie, and one owner guide for cookie scope
 
-**Last Updated**: 16/11/2026 · **Story**: US008 · **Status**: Open — every row dispositioned; F-001 to F-005 are the five manual-guide amendments; F-006 resolved (fixed `1c750c5`, re-walked Pass at `195e5b3`); F-034 resolved (fixed `40ce928`); F-033 and F-035 are routed to their `21-BUGS/` records; F-038 recorded only; F-036 amends COOKIE-05 and F-037 was fixed in-story; F-028 to F-030 are dated `GAPS.md` entries of 16/11/2026
+**Last Updated**: 16/11/2026 · **Story**: US008
+**Status:** Open
+**Status note:** every row dispositioned; F-001 to F-005 are the five manual-guide amendments; F-006 resolved (fixed `1c750c5`, re-walked Pass at `195e5b3`); F-034 resolved (fixed `40ce928`); F-033 and F-035 are routed to their `21-BUGS/` records; F-038 recorded only; F-036 amends COOKIE-05 and F-037 was fixed in-story; F-028 to F-030 are dated `GAPS.md` entries of 16/11/2026
 
 | Field                | Value                                                                                                                                                                                                                                                                                                                                                                    |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

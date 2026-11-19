@@ -3,7 +3,7 @@
 **Status:** Superseded
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** —
+**Supersedes:** None
 **Superseded by:** `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`
 **Related:** US001
 

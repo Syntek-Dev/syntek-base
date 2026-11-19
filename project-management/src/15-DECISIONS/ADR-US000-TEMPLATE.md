@@ -7,11 +7,18 @@
      retired number. One ADR = one decision. Once Accepted, an ADR is immutable —
      supersede it with a new ADR rather than editing the decision in place. -->
 
-**Status:** Proposed <!-- Proposed | Accepted | Superseded | Deprecated -->
+<!-- Status: one plain value — Proposed | Accepted | Superseded | Deprecated (the completion
+     skill owns the vocabulary). No bold, backticks or comment on the Status line itself; any
+     prose (who accepted it, when) goes on the Status note line, which may be deleted if empty.
+     pm-board.sh reads both supersession lines into the decisions board: each is a full ADR
+     filename or None, and a supersession is recorded on both records. -->
+
+**Status:** Proposed
+**Status note:** [optional — one line, e.g. "Accepted DD/MM/YYYY by <name> at <step>"]
 **Date:** DD/MM/YYYY
 **Deciders:** [name(s) who own this decision]
-**Supersedes:** — <!-- full filename of the ADR this record replaces, or — -->
-**Superseded by:** — <!-- full filename of the ADR that later replaced this, or — -->
+**Supersedes:** None <!-- full filename of the ADR this record replaces, or None -->
+**Superseded by:** None <!-- full filename of the ADR that later replaced this, or None -->
 **Related:** [US###, or —] <!-- the story that drove or consumes the decision -->
 
 ---
