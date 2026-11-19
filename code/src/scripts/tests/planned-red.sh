@@ -208,11 +208,14 @@ probe_rejected() {
   check "  and the refusal asks for the probe label" said "names no probe"
   reset; add_probe shipped-boards.sh pass "new probe"
   check "a planned red is refused when its named probe passes" refused "$SPEC" "$RED_MSG"
+  check "  and the refusal says the self-test passed" said "self-test passed"
   reset; add_probe shipped-boards.sh fail "new probe"; add_probe shipped-boards.sh fail "unnamed probe"
   check "a red probe the opt-in does not name refuses the planned red" refused "$SPEC" "$RED_MSG"
+  check "  and the refusal says exactly the named probes may fail" said "exactly the named probes may fail"
   reset; add_probe shipped-boards.sh fail "new probe"; flip_old shipped-boards.sh
   check "an existing probe turned red beside the planned one is refused — a weakened detector" \
     refused "$SPEC" "$RED_MSG"
+  check "  and the refusal names the old probe among the red" said "[new probe|old probe]"
   reset; flip_old shipped-boards.sh
   check "naming a probe that already exists at HEAD is refused — only a new probe is planned" \
     refused 'shipped-boards.sh::old probe' $'test: x\n\nPlanned-Red: shipped-boards.sh::old probe'
@@ -220,8 +223,10 @@ probe_rejected() {
   reset; add_probe shipped-boards.sh fail "new probe"; touch "$FX/.fixture/noend"
   check "a self-test that stops before its end (a crash) is refused, though it exits 1" \
     refused "$SPEC" "$RED_MSG"
+  check "  and the refusal says it stopped early" said "stopped early"
   reset; add_probe shipped-boards.sh fail "new probe"; touch "$FX/.fixture/noledger"
   check "a self-test that writes no ledger is refused, though it exits 1" refused "$SPEC" "$RED_MSG"
+  check "  and the refusal says it recorded no finished ledger" said "no finished ledger"
   reset; add_probe shipped-boards.sh fail "new probe"; set_exit shipped-boards.sh self 2
   check "a planned red is refused when its self-test is a script error (exit 2)" refused "$SPEC" "$RED_MSG"
   reset; add_probe shipped-boards.sh fail "new probe"
@@ -248,13 +253,16 @@ probe_token() {
   echo "token"
   reset
   check "the commit-msg leg alone, with no token, refuses the opt-in and its trailer" direct_refused "$SPEC" "$RED_MSG"
+  check "  and the refusal names the missing token" said "no planned-red token"
   reset; add_probe shipped-boards.sh fail "new probe"
   (cd "$FX" && PLANNED_RED="$SPEC" bash .github/scripts/template-integrity.sh --pre-commit) >/dev/null 2>&1 || true
   touch_other
   check "a token written for another staged tree is refused" direct_refused "$SPEC" "$RED_MSG"
+  check "  and the refusal names the changed tree" said "another staged tree"
   check "  and the refused token is consumed" bash -c '[[ ! -e "$1" ]]' _ "$(token_path)"
   reset; add_probe shipped-boards.sh fail "new probe"; attempt "$SPEC" "$RED_MSG" || true
   check "a token is one-shot — a second message on it is refused" direct_refused "$SPEC" "$RED_MSG"
+  check "  and the refusal names the spent token" said "no planned-red token"
   reset
   fgit checkout -q -b side; touch_other; fgit commit -q --no-verify -m side; fgit checkout -q master
   echo "y" >> "$FX/OTHER.md"; fgit add OTHER.md; fgit commit -q --no-verify -m master-side
@@ -262,6 +270,7 @@ probe_token() {
   PLANNED_RED="$SPEC" fgit merge -q --no-ff side -m "$RED_MSG" > "$OUT" 2>&1 || true
   check "a merge commit carrying the trailer is refused (git merge runs no pre-commit)" \
     bash -c '[[ "$(git -C "$1" rev-parse HEAD)" == "$2" ]]' _ "$FX" "$before"
+  check "  and the refusal says a merge never carries a planned red" said "merge commit never carries a planned red"
   reset
   echo "z" >> "$FX/OTHER.md"; fgit add OTHER.md; fgit commit -q --no-verify -m ordinary
   before="$(fgit rev-parse HEAD)"
@@ -334,6 +343,8 @@ rattempt() {
   [[ $rc -eq 0 && "$(rgit rev-parse HEAD)" != "$before" ]]
 }
 
+rrefused() { ! rattempt "$@"; }
+
 probe_real() {
   echo "real"
   local d rc
@@ -354,8 +365,9 @@ probe_real() {
   sed -i 's/^finding() { FINDINGS+=("$1"); }$/finding() { :; }/' "$RX/.github/scripts/shipped-boards.sh"
   rgit add .github/scripts/shipped-boards.sh
   check "a gutted real check (finding() stubbed) is refused under any planned probe" \
-    bash -c '! "$@"' _ rattempt 'shipped-boards.sh::check 1 fires when a board is re-included' \
+    rrefused 'shipped-boards.sh::check 1 fires when a board is re-included' \
     $'test: x\n\nPlanned-Red: shipped-boards.sh::check 1 fires when a board is re-included'
+  check "  and the refusal says other probes went red" said "exactly the named probes may fail"
   rreset
   awk '{print} /^  ARTEFACTS="\$real_art"$/ {print "  probe \"a planned real probe\" \"a finding no check writes\""}' \
     "$RX/.github/scripts/shipped-boards.sh" > "$RX/.fixture/tmp" && cat "$RX/.fixture/tmp" > "$RX/.github/scripts/shipped-boards.sh"
