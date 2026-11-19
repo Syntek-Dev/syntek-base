@@ -40,6 +40,7 @@ code/src/scripts/tests/
 ├── mutmut.sh                 ← Python mutation testing (local-only; dev stack required)
 ├── open-coverage.sh          ← opens the backend coverage HTML in a browser
 ├── pm-boards.sh              ← probes for the PM board and archive scripts, on a synthetic fixture
+├── planned-red.sh            ← test-only, copier-excluded: probes the template's planned-red hook <!-- doc-references: template-only -->
 ├── server.sh                 ← start or manage the test stack containers
 ├── test-record.sh            ← generator: US### → 18-TESTS/AUTOMATED/ (writes OUTSIDE code/)
 └── reports/                  ← generated reports (all gitignored; sub-dirs below)
@@ -54,20 +55,21 @@ code/src/scripts/tests/
 
 ## Scripts
 
-| Script                      | Tool                | Pattern | Stack required      | Default output dir                                                                   |
-| --------------------------- | ------------------- | ------- | ------------------- | ------------------------------------------------------------------------------------ |
-| `all.sh`                    | orchestrator        | both    | Depends on flags    | (delegates to sub-scripts)                                                           |
-| `api.sh`                    | Bruno CLI           | host    | Test stack up       | `reports/api/`                                                                       |
-| `backend.sh`                | pytest              | exec    | Full test stack up  | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml)          |
-| `backend-coverage.sh`       | pytest + cov        | exec    | Full test stack up  | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)                  |
-| `cookie-preview-fixture.sh` | Copier + git        | host    | None (needs Copier) | N/A (console output; scratch removed on exit) <!-- doc-references: template-only --> |
-| `e2e-py.sh`                 | pytest + playwright | host    | Dev stack up (:81)  | `reports/a11y/` + `reports/e2e/results.xml`                                          |
-| `hook-arming.sh`            | git + pnpm + strace | host    | None                | `reports/hook-arming/<fixture>/` (evidence; scratch fixtures removed on exit)        |
-| `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                                 |
-| `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                                  |
-| `pm-boards.sh`              | git + python3       | host    | None                | N/A (console output; scratch fixture removed on exit)                                |
-| `server.sh`                 | docker compose      | host    | N/A                 | N/A                                                                                  |
-| `test-record.sh`            | report parser       | host    | None (reads files)  | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**                   |
+| Script                      | Tool                | Pattern | Stack required      | Default output dir                                                                           |
+| --------------------------- | ------------------- | ------- | ------------------- | -------------------------------------------------------------------------------------------- |
+| `all.sh`                    | orchestrator        | both    | Depends on flags    | (delegates to sub-scripts)                                                                   |
+| `api.sh`                    | Bruno CLI           | host    | Test stack up       | `reports/api/`                                                                               |
+| `backend.sh`                | pytest              | exec    | Full test stack up  | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml)                  |
+| `backend-coverage.sh`       | pytest + cov        | exec    | Full test stack up  | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)                          |
+| `cookie-preview-fixture.sh` | Copier + git        | host    | None (needs Copier) | N/A (console output; scratch removed on exit) <!-- doc-references: template-only -->         |
+| `e2e-py.sh`                 | pytest + playwright | host    | Dev stack up (:81)  | `reports/a11y/` + `reports/e2e/results.xml`                                                  |
+| `hook-arming.sh`            | git + pnpm + strace | host    | None                | `reports/hook-arming/<fixture>/` (evidence; scratch fixtures removed on exit)                |
+| `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                                         |
+| `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                                          |
+| `pm-boards.sh`              | git + python3       | host    | None                | N/A (console output; scratch fixture removed on exit)                                        |
+| `planned-red.sh`            | git                 | host    | None                | N/A (console output; scratch fixture removed on exit) <!-- doc-references: template-only --> |
+| `server.sh`                 | docker compose      | host    | N/A                 | N/A                                                                                          |
+| `test-record.sh`            | report parser       | host    | None (reads files)  | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**                           |
 
 `backend.sh`, `backend-coverage.sh`, and `api.sh` fall back to `.env.test.example` when
 `.env.test` is absent — every value in it has a working default in
@@ -204,6 +206,8 @@ runs. The `change-filter` fixture tests that decision offline against a scratch 
 `pm-archive.sh` and `pm-lib.sh` (`project-management/src/00-ASSETS/scripts/`) for the decisions,
 findings and bugs boards, on a synthetic `git init` holding **copies** of the three scripts — never
 a path back into this checkout. Host only, git and python3; exit `0` / `1` / `2` as below.
+`planned-red.sh` proves the template's `template-integrity` hook allowance in the same way, on a <!-- doc-references: template-only -->
+fixture of its own; it is template-only and copier-excluded. <!-- Added 19/11/2026. -->
 
 ## --output flag
 
