@@ -20,13 +20,16 @@
 #                    Five checks:
 #                      1. No copier.yml `_exclude` negation re-includes a `*-BOARD.md`: each
 #                         negation, unquoted, comment and block tags stripped, is matched as a
-#                         glob against the eight landed board paths, not searched for a name.
+#                         glob against the eight landed board paths, not searched for a name —
+#                         under gitignore's rules: a slash-less pattern matches a component at
+#                         any depth, and a trailing slash re-includes the folder below it.
 #                      2. The copy-gated `_tasks` entry — the one whose `when:` tests the copy
 #                         operation and which carries the README move — moves each of the
 #                         eight seeds into its folder, on a line that begins with the mv and
 #                         ends with its `&&` (an echoed or commented-out move is not one); and
-#                         no other task moves a board. A move in any other task would run on
-#                         every update and overwrite the project's own board.
+#                         no other task moves or copies a board seed (mv, cp, install, rsync,
+#                         with flags, `./` or not). One in any other task would run on every
+#                         update and overwrite the project's own board.
 #                      3. Each seed exists.
 #                      4. Each seed is byte-identical to the board `pm-board.sh` renders for
 #                         the seed-only tree — which proves it carries none of syntek-base's
@@ -173,6 +176,27 @@ glob_matches() { # path glob
   return 1
 }
 
+# A negation as copier (gitignore) reads it: a trailing `/` names a folder, re-including all below
+# it; a pattern with no other `/` matches a path component — the basename or a folder — at any
+# depth; anything else is anchored at the root, its leading `/` optional.
+negation_matches() { # path pattern
+  local p="$1" g="$2" c
+  g="${g%/}"
+  if [[ "$g" != */* ]]; then
+    local IFS=/
+    for c in $p; do
+      # shellcheck disable=SC2053  # glob match is the point
+      [[ "$c" == $g ]] && return 0
+    done
+    return 1
+  fi
+  g="${g#/}"
+  glob_matches "$p" "$g" && return 0
+  # shellcheck disable=SC2053
+  [[ "$p" == $g/* ]] && return 0
+  return 1
+}
+
 run_checks() {
   FINDINGS=()
   local tasks others folder board seed
@@ -185,9 +209,9 @@ run_checks() {
   local e g hit
   while IFS= read -r e; do
     [[ -z "$e" ]] && continue
-    g="${e#!}"; g="${g#/}"; hit=""
+    g="${e#!}"; hit=""
     for b in "${BOARDS[@]}"; do
-      if glob_matches "project-management/src/${b%%|*}/${b##*|}" "$g"; then hit=1; break; fi
+      if negation_matches "project-management/src/${b%%|*}/${b##*|}" "$g"; then hit=1; break; fi
     done
     [[ -n "$hit" ]] \
       && finding "copier.yml _exclude re-includes a board ($e) — syntek-base's own rows would ship"
@@ -225,7 +249,10 @@ run_checks() {
     # echoed or commented-out move is not read as one.
     grep -qE "^[[:space:]]*(- command:[[:space:]]*)?mv \.copier/${board//./\\.} project-management/src/$folder/${board//./\\.} &&[[:space:]]*\$" <<< "$tasks" \
       || finding "copier.yml's copy-gated _tasks entry does not move .copier/$board into $folder/ — a generated project gets no board, or an update re-seeds it"
-    grep -vE '^[[:space:]]*#' <<< "$others" | grep -qF "mv .copier/$board" \
+    # Any command that names the seed as a source — mv or cp (or install, rsync), with flags, and
+    # with or without a ./ before .copier/ — writes over the project's board on every update.
+    grep -vE '^[[:space:]]*#' <<< "$others" \
+      | grep -qE "(^|[^[:alnum:]_.-])(mv|cp|install|rsync)([[:space:]]+-[^[:space:]]+)*[[:space:]]+(\./)?\.copier/${board//./\\.}([[:space:]]|\$)" \
       && finding "copier.yml moves .copier/$board outside the copy-gated task — that task runs on every update and overwrites the project's own board"
 
     # ── 3. Present ────────────────────────────────────────────────────────────
