@@ -7,26 +7,25 @@ One row per findings record in `20-FINDINGS/` and `20-FINDINGS/archive/`, filed 
 
 ## Summary
 
-| Column  | Items |
-| ------- | ----- |
-| Open    | 3     |
-| Triaged | 6     |
+| Column   | Items |
+| -------- | ----- |
+| Open     | 0     |
+| Resolved | 9     |
 
 ## Open
 
-| ID                                         | Title                                                                                           | Status | File                                                                                           |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------- |
-| FINDING-US006-POSTURE-GUARD-15-11-2026     | The destructive dev scripts read the deployment posture, and refuse to run above development    | Open   | [FINDING-US006-POSTURE-GUARD-15-11-2026.md](FINDING-US006-POSTURE-GUARD-15-11-2026.md)         |
-| FINDING-US008-HOST-ONLY-COOKIES-16-11-2026 | Host-only `__Host-` cookies, an httpOnly CSRF cookie, and one owner guide for cookie scope      | Open   | [FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md](FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md) |
-| FINDING-US009-HOOK-ARMING-17-11-2026       | The git hooks arm on purpose at install, and the README claim that they already do becomes true | Open   | [FINDING-US009-HOOK-ARMING-17-11-2026.md](FINDING-US009-HOOK-ARMING-17-11-2026.md)             |
+_None._
 
-## Triaged
+## Resolved
 
-| ID                                                   | Title                                                                                 | Status  | File                                                                                                               |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026   | Reliability doctrine gets an owning guide                                             | Triaged | [FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md](FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md)     |
-| FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026    | The audits register regains the headroom nine new gates need                          | Triaged | [FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md](FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md)       |
-| FINDING-US003-ABSENCE-GUIDE-05-11-2026               | Absence gets an owning guide, born under 270 with every clause's tier stated          | Triaged | [FINDING-US003-ABSENCE-GUIDE-05-11-2026.md](FINDING-US003-ABSENCE-GUIDE-05-11-2026.md)                             |
-| FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026     | The citation gate stops depending on the git index, and the PM tree becomes checkable | Triaged | [FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md](FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md)         |
-| FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026 | Exactly one layer decides to retry, and every budget says how long it may take        | Triaged | [FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md](FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md) |
-| FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026 | The story status vocabulary gets one owner                                            | Triaged | [FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md](FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md) |
+| ID                                                   | Title                                                                                           | Status   | File                                                                                                               |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
+| FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026   | Reliability doctrine gets an owning guide                                                       | Resolved | [FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md](FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md)     |
+| FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026    | The audits register regains the headroom nine new gates need                                    | Resolved | [FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md](FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md)       |
+| FINDING-US003-ABSENCE-GUIDE-05-11-2026               | Absence gets an owning guide, born under 270 with every clause's tier stated                    | Resolved | [FINDING-US003-ABSENCE-GUIDE-05-11-2026.md](FINDING-US003-ABSENCE-GUIDE-05-11-2026.md)                             |
+| FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026     | The citation gate stops depending on the git index, and the PM tree becomes checkable           | Resolved | [FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md](FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md)         |
+| FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026 | Exactly one layer decides to retry, and every budget says how long it may take                  | Resolved | [FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md](FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md) |
+| FINDING-US006-POSTURE-GUARD-15-11-2026               | The destructive dev scripts read the deployment posture, and refuse to run above development    | Resolved | [FINDING-US006-POSTURE-GUARD-15-11-2026.md](FINDING-US006-POSTURE-GUARD-15-11-2026.md)                             |
+| FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026 | The story status vocabulary gets one owner                                                      | Resolved | [FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md](FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md) |
+| FINDING-US008-HOST-ONLY-COOKIES-16-11-2026           | Host-only `__Host-` cookies, an httpOnly CSRF cookie, and one owner guide for cookie scope      | Resolved | [FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md](FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md)                     |
+| FINDING-US009-HOOK-ARMING-17-11-2026                 | The git hooks arm on purpose at install, and the README claim that they already do becomes true | Resolved | [FINDING-US009-HOOK-ARMING-17-11-2026.md](FINDING-US009-HOOK-ARMING-17-11-2026.md)                                 |

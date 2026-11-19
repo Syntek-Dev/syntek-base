@@ -1,7 +1,8 @@
 # Findings — US001 Reliability doctrine gets an owning guide
 
 **Last Updated**: 03/11/2026 · **Story**: US001
-**Status:** Triaged
+**Status:** Resolved
+**Status note:** Resolved 19/11/2026 (was Triaged; finding vocabulary Open | Resolved, Sam): every row carries a disposition (Accepted, Deferred, Next story or Closed)
 
 | Field                | Value                                                                                                                                                                                                                                                               |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

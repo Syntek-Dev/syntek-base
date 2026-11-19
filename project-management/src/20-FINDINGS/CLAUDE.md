@@ -28,7 +28,7 @@ the smallest fix is, and which of those findings should shape the next story.
   Expensive) → set a disposition for every row → link the story
   (`../02-STORIES/US###.md`) and its plan
   (`../17-STORY-PLANS/<exec-order>-STORY-PLAN-US###-*.md`) → carry the `Next story` rows into
-  the next plan → set `**Status:** Triaged` once every row carries a disposition, any prose on
+  the next plan → set `**Status:** Resolved` once every row carries a disposition, any prose on
   the `**Status note:**` line → `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`
   and commit the board with it.
 - **Definition of done:** file named to convention with a real `DD/MM/YYYY` completion date,
@@ -50,8 +50,8 @@ the smallest fix is, and which of those findings should shape the next story.
   any PII or token appearing in a quoted snippet.
 - **The index is `FINDINGS-BOARD.md`, and it is generated — never hand-edit it.** The status
   vocabulary is the `completion` skill's. **Archive only through `pm-archive.sh <ID>`**, and only
-  once a record is `Triaged`; it keeps that status in `archive/`, which is frozen
-  (`archive/CLAUDE.md`). Look a record up by ID across this folder and `archive/`.
+  once a record is `Resolved`; it keeps that status in `archive/`, which is frozen
+  (`archive/CLAUDE.md`). <!-- Finding vocabulary Open | Resolved from 19/11/2026; it read Open | Triaged before. --> Look a record up by ID across this folder and `archive/`.
 - **Never rename or back-date a filed record** — the date is the completion date and is
   load-bearing for the audit trail; supersede with a new record if needed.
 - Every developer command is a project script under `code/src/scripts/**/*.sh` — never raw

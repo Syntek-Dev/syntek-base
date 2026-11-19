@@ -7,15 +7,15 @@ One row per findings record in `20-FINDINGS/` and `20-FINDINGS/archive/`, filed 
 
 ## Summary
 
-| Column  | Items |
-| ------- | ----- |
-| Open    | 0     |
-| Triaged | 0     |
+| Column   | Items |
+| -------- | ----- |
+| Open     | 0     |
+| Resolved | 0     |
 
 ## Open
 
 _None._
 
-## Triaged
+## Resolved
 
 _None._

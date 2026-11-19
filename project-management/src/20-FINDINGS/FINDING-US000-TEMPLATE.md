@@ -4,7 +4,7 @@ _Template — copy to `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`, replace every 
 
 **Last Updated**: {DD/MM/YYYY} · **Story**: US###
 **Status:** Open
-**Status note:** [optional — one line; Open while any row is undispositioned, Triaged once every row carries a disposition]
+**Status note:** [optional — one line; Open while any row is undispositioned, Resolved once every row carries a disposition]
 
 | Field                | Value                                                  |
 | -------------------- | ------------------------------------------------------ |

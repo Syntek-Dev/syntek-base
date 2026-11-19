@@ -1,7 +1,8 @@
 # Findings — US007 The story status vocabulary gets one owner
 
 **Last Updated**: 02/11/2026 · **Story**: US007
-**Status:** Triaged
+**Status:** Resolved
+**Status note:** Resolved 19/11/2026 (was Triaged; finding vocabulary Open | Resolved, Sam): every row carries a disposition (Accepted, Bug, Deferred, ADR or a GAPS.md entry)
 
 | Field                | Value                                                                                                                                                                                                           |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

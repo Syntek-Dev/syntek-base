@@ -598,7 +598,7 @@ bash project-management/src/00-ASSETS/scripts/pm-archive.sh US###   # close and 
 ```
 
 `pm-archive.sh` closes a `Completed` story, a sprint whose stories are all `Closed`, a `Complete`
-map whose every slice is cut, a `Superseded` or `Deprecated` ADR, a `Triaged` finding or a
+map whose every slice is cut, a `Superseded` or `Deprecated` ADR, a `Resolved` finding or a
 `Verified` bug, and moves it — with its plan — into that folder's `archive/`.
 Archived files are frozen. Every script, the ClickUp export included, finds an artefact by its ID
 across the folder **and** its `archive/`.

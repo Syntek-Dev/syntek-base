@@ -13,7 +13,7 @@
 #        MAP-NAME   the map is Complete and every row of its ## Slices table is cut
 #                   into a story (no `—`, no `US###` placeholder);
 #        ADR-…      the ADR is Superseded or Deprecated;
-#        FINDING-…  the findings record is Triaged;
+#        FINDING-…  the findings record is Resolved;
 #        BUG-…      the bug is Verified.
 #      A record's ID is its filename stem; a path or a trailing `.md` is accepted and cut.
 #   3. Sets the status line to `**Status:** Closed`; a story also gets a row appended to

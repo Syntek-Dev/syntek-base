@@ -22,7 +22,7 @@
 #     SPRINT-00, MAP-000 and 00-*-TEMPLATE in the five, and in the three only the exact name
 #     <PREFIX>-US000-TEMPLATE.md.
 #   * A record register's archive rule: an ADR is archived from Superseded or Deprecated, a
-#     findings record from Triaged, a bug from Verified, and keeps that status in archive/
+#     findings record from Resolved, a bug from Verified, and keeps that status in archive/
 #     (the five status registers close to Closed instead).
 #   * An ADR's **Supersedes:** and **Superseded by:** lines — the ADR filenames each names, or
 #     None — the decisions board's two tail columns, and the chain warnings read from them.
@@ -60,7 +60,7 @@ STORY_STATUSES = ["Open", "Pending", "In Progress", "In Review", "Accepted", "Cu
 SPRINT_STATUSES = ["Planned", "In Progress", "Done", "Closed"]
 MAP_STATUSES = ["Charting", "Resolving", "Blockers Clear", "Complete", "Closed"]
 ADR_STATUSES = ["Proposed", "Accepted", "Superseded", "Deprecated"]
-FINDING_STATUSES = ["Open", "Triaged"]
+FINDING_STATUSES = ["Open", "Resolved"]
 BUG_STATUSES = ["Open", "Fixed", "Verified"]
 POST_ACCEPTED = {"Accepted", "Customer Review", "Customer Accepted", "Completed", "Closed"}
 
@@ -113,7 +113,7 @@ KINDS = {
     "findings": Kind("findings", "20-FINDINGS", "FINDINGS", "findings record", "findings records",
                      r"^(FINDING-[A-Z0-9][A-Z0-9-]*)\.md$", FINDING_STATUSES,
                      template="FINDING-US000-TEMPLATE.md",
-                     title_prefix=r"^Findings\s+[—–-]\s+US\d{3}\s+", archive_from=["Triaged"]),
+                     title_prefix=r"^Findings\s+[—–-]\s+US\d{3}\s+", archive_from=["Resolved"]),
     "bugs": Kind("bugs", "21-BUGS", "BUGS", "bug report", "bug reports",
                  r"^(BUG-[A-Z0-9][A-Z0-9-]*)\.md$", BUG_STATUSES,
                  template="BUG-US000-TEMPLATE.md",

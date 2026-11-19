@@ -62,10 +62,10 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   (`.copier/migrations/`) — exercised at v2.0.0 and v7.0.0, and never because one merely could <!-- doc-references: template-only -->
   be written. Enforced by `code/src/scripts/audits/template-orphans.sh`.
 - **`*/archive/` is frozen.** In each of the eight boarded folders an item that has reached its
-  archive status (`Closed`; an ADR `Superseded` or `Deprecated`, a finding `Triaged`, a bug
+  archive status (`Closed`; an ADR `Superseded` or `Deprecated`, a finding `Resolved`, a bug
   `Verified`) is moved into the folder's `archive/` by `00-ASSETS/scripts/pm-archive.sh` and never edited again —
   `pm-board.sh --check` fails on any change there other than the archive rename and the
-  reference-path rewrites `pm-archive.sh` makes.
+  reference-path rewrites `pm-archive.sh` makes. <!-- Finding archive status Resolved from 19/11/2026; it read Triaged before. -->
 - **Look a file up by ID across the folder and its `archive/`.** Any reader, script or
   numbering step that globs only the live folder breaks the day an item is archived.
 - **`*-BOARD.md` is generated — never hand-edit it.** Run `pm-board.sh --write` after any status

@@ -112,8 +112,9 @@ or `None` each, cross-referenced both ways — which the decisions board shows a
 
 ### Findings (`20-FINDINGS/FINDING-*.md`)
 
-`**Status:** Open | Triaged`, plus an optional `**Status note:**`. **`Open`** — rows still
-undispositioned. **`Triaged`** — every row carries a disposition.
+`**Status:** Open | Resolved`, plus an optional `**Status note:**`. **`Open`** — rows still
+undispositioned. **`Resolved`** — every row carries a disposition; it is the findings archive
+trigger. <!-- Finding vocabulary Open | Resolved from 19/11/2026; it read Open | Triaged before. -->
 
 ### Bugs (`21-BUGS/BUG-*.md`)
 
@@ -122,7 +123,7 @@ fixed. **`Fixed`** — the fix and its regression test are merged. **`Verified`*
 seen to hold after the merge.
 
 **The record registers have no `Closed`.** `pm-archive.sh <ID>` (the ID is the filename stem)
-archives an ADR once `Superseded` or `Deprecated`, a findings record once `Triaged`, a bug once
+archives an ADR once `Superseded` or `Deprecated`, a findings record once `Resolved`, a bug once
 `Verified`, and refuses any other status; the record keeps that end status inside `archive/`, and
 its board files it there. Templates (`<PREFIX>-US000-TEMPLATE.md`) are never instances.
 

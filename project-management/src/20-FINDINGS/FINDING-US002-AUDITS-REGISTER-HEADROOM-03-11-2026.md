@@ -1,7 +1,8 @@
 # Findings — US002 The audits register regains the headroom nine new gates need
 
 **Last Updated**: 03/11/2026 · **Story**: US002
-**Status:** Triaged
+**Status:** Resolved
+**Status note:** Resolved 19/11/2026 (was Triaged; finding vocabulary Open | Resolved, Sam): every row carries a disposition; F-011 and F-017 read "Open" for the GAPS.md entries they were routed to, which is a disposition, not an undispositioned row
 
 | Field                | Value                                                                                                                                                                                                                                                                                                                                                |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

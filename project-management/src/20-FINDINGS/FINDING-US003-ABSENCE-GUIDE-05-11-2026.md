@@ -1,7 +1,8 @@
 # Findings — US003 Absence gets an owning guide, born under 270 with every clause's tier stated
 
 **Last Updated**: 05/11/2026 · **Story**: US003
-**Status:** Triaged
+**Status:** Resolved
+**Status note:** Resolved 19/11/2026 (was Triaged; finding vocabulary Open | Resolved, Sam): every row carries a disposition; the rows reading "Open" are routed to dated GAPS.md entries, and F-021 to the 23-pr-and-review records pass
 
 | Field                | Value                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
