@@ -184,7 +184,7 @@ def candidates():
             pass
         elif not f.startswith(SRC_REL + "/") or f.startswith(SRC_REL + "/00-ASSETS/"):
             continue
-        elif (name in ("CONTEXT.md", "CLAUDE.md") or "TEMPLATE" in name
+        elif (name in ("CONTEXT.md", "CLAUDE.md") or TEMPLATE_NAME.search(name)
               or name.endswith("-BOARD.md") or not name.endswith(".md")):
             continue
         if (ROOT / f).is_file():

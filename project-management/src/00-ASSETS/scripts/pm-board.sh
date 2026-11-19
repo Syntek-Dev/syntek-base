@@ -293,11 +293,16 @@ def git(*args):
         return 1, ""
 
 def norm(text):
-    """Erase exactly what pm-archive.sh may change in a frozen file: `archive/` segments and
-    the `./` / `../` depth of a relative path. Collapsing `../` runs is not enough — a link
-    rewritten one level deeper and later back to the bare filename must compare equal."""
-    text = text.replace("archive/", "")
-    return re.sub(r"(?<![\w.])(?:\.\.?/)+", "", text)
+    """Erase exactly what pm-archive.sh may change in a frozen file, and only where it changes
+    it: an `archive/` segment, and the `./` / `../` depth of a relative path, each only inside a
+    path that ends at a `.md` filename. Collapsing `../` runs is not enough — a link rewritten
+    one level deeper and later back to the bare filename must compare equal. A bare `archive/` or
+    `../` in prose is not a path, so adding or removing one is an edit."""
+    path = re.compile(r"(?<![\w./-])((?:\.\.?/)*)((?:[\w.-]+/)*?)((?:archive/)?)([\w.-]+\.md)(?![\w-])")
+    def strip(m):
+        segs = [s for s in m.group(2).split("/") if s and s != "archive"]
+        return "/".join(segs + [m.group(4)])
+    return path.sub(strip, text)
 
 def frozen_breaches():
     out = []

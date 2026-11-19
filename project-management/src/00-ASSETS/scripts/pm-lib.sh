@@ -18,9 +18,11 @@
 #     16-SPRINT-PLANS, 17-STORY-PLANS, and the three RECORD registers 15-DECISIONS (ADR-*.md),
 #     20-FINDINGS (FINDING-*.md) and 21-BUGS (BUG-*.md, the cross-cutting BUG-<DESCRIPTOR>-…
 #     fallback included); their instance filename patterns (the ID is the filename stem), and
-#     their status vocabularies in board-column order. Templates are never instances: US000,
-#     SPRINT-00, MAP-000 and 00-*-TEMPLATE in the five, and in the three only the exact name
-#     <PREFIX>-US000-TEMPLATE.md.
+#     their status vocabularies in board-column order. Templates are never instances: in the
+#     five, a name of the shipped template pattern (TEMPLATE_NAME — …-US000-TEMPLATE,
+#     …-000-TEMPLATE, …-00-TEMPLATE, US000-TEMPLATE; never TEMPLATE anywhere in a name), and
+#     in the three only the exact name <PREFIX>-US000-TEMPLATE.md. A .md in any subfolder
+#     other than archive/ itself is a stray, off every board.
 #   * A record register's archive rule: an ADR is archived from Superseded or Deprecated, a
 #     findings record from Resolved, a bug from Verified, and keeps that status in archive/
 #     (the five status registers close to Closed instead).
@@ -84,8 +86,9 @@ class Kind:
         self.extras = set(extras)
 
     def is_template(self, name):
-        """By exact name for a record register; by `TEMPLATE` in the name for the other five."""
-        return name == self.template if self.template else "TEMPLATE" in name
+        """By exact name for a record register; by the shipped template naming pattern for the
+        other five — never `TEMPLATE` anywhere in a name, which a real descriptor may hold."""
+        return name == self.template if self.template else bool(TEMPLATE_NAME.search(name))
 
     @property
     def dir(self):
@@ -94,6 +97,11 @@ class Kind:
     def board_md(self):
         return self.dir / f"{self.board}-BOARD.md"
 
+
+# The shipped template names, and only those: <X>-US000-TEMPLATE, <X>-000-TEMPLATE,
+# <X>-00-TEMPLATE and US000-TEMPLATE (.md, or .html for a wireframe). A real record whose
+# descriptor merely holds the word TEMPLATE is not one.
+TEMPLATE_NAME = re.compile(r"(?:^|-)(?:US000|000|00)-TEMPLATE\.(?:md|html)$")
 
 KINDS = {
     "maps": Kind("maps", "01-FEATURE-MAPS", "FEATURE-MAPS", "feature map", "feature maps",
@@ -368,6 +376,16 @@ def strays(kind):
                     or n.endswith("-BOARD.md")):
                 continue
             out.append(rel(p))
+    # Nothing is read below archive/ or in any other subfolder, so every .md there is off the
+    # board: a stray, whatever its name.
+    for p in sorted(kind.dir.rglob("*")):
+        if not p.is_file() or p.suffix.lower() != ".md":
+            continue
+        if p.parent in (kind.dir, kind.dir / "archive"):
+            continue
+        if p.parent.parent in (kind.dir, kind.dir / "archive") and p.name in PAIR:
+            continue
+        out.append(rel(p))
     return out
 
 _CACHE = {}
@@ -522,10 +540,15 @@ def supersession_warnings():
                 if other is None:
                     out.append(f"{adr.id}: {label} names {other_id}, which is not in "
                                "15-DECISIONS/ or its archive/")
-                elif not other.archived and adr.id not in (getattr(other, back[field]) or []):
+                elif adr.id not in (getattr(other, back[field]) or []):
                     # An archived target is frozen and can never be edited to answer, so it owes
-                    # no back-link; the live record's own line is the record of the chain.
-                    out.append(f"{adr.id}: {label} names {other_id}, which does not name it back")
+                    # no back-link — but only while its own line is empty. One that already names
+                    # a different record has its chain on record, and this claim contradicts it.
+                    if not other.archived:
+                        out.append(f"{adr.id}: {label} names {other_id}, which does not name it back")
+                    elif getattr(other, back[field]):
+                        out.append(f"{adr.id}: {label} names the archived {other_id}, whose frozen "
+                                   f"line names {', '.join(getattr(other, back[field]))} instead")
         if adr.status == "Superseded" and not adr.superseded_by:
             out.append(f"{adr.id} is Superseded but its **Superseded by:** line names no successor")
         if adr.superseded_by and adr.status != "Superseded":
