@@ -6,7 +6,7 @@
 | **Date**      | 21/09/2026                                                                                                                                                                                                                                                                                                                                |
 | **Sprint**    | SPRINT-06 — its sole member, 8 of 11 SP, holding a 5 SP reservation for US009's carry (13 / 11 SP at grace if it lands) (corrected 17/11/2026, F-022 of `FINDING-US009-HOOK-ARMING-17-11-2026.md`: the reservation is **released** — US009 completes in SPRINT-05, which is 16 / 11 — so SPRINT-06 is **8 / 11** with nothing carried in) |
 | **Wireframe** | N/A — this story ships Markdown, one YAML `_tasks` chain, one bash array, one bash check family and one Python probe; no screen, no component, no route                                                                                                                                                                                   |
-| **Status**    | Signed off · **corrected in place 30/09/2026 and 03/10/2026** — see below                                                                                                                                                                                                                                                                 |
+| **Status**    | Signed off · **corrected in place 30/09/2026 and 03/10/2026** · **19/11/2026** (re-cut) — see below                                                                                                                                                                                                                                       |
 
 <!-- STEP 1's GRILLING PASS RAN on 21/09/2026: two rounds with the developer over US010 and US011
      together, frontier empty. Its decisions are cited below as "settled 21/09/2026, grilling round
@@ -177,6 +177,40 @@
 > because the two expected outcomes move to what the signed-off family and fixture produce, and no
 > gap, finding or severity moves. The Status row read
 > "Signed off · **corrected in place 30/09/2026** — see below" until then.
+
+> **Corrected in place, 19/11/2026, at US010's re-cut, and kept signed off — a developer decision
+> of 19/11/2026** (re-cut grilling rounds 1 to 4 with <%DEVELOPER_NAME%>; `../../02-STORIES/US010.md`
+> -> _Re-cut — 19/11/2026_; `../../15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`).
+> The story now builds three generated boards, not seven hand-written index files, so scenarios
+> that test the dropped work are superseded, each mapped to the control that replaces it. Nothing
+> below this note is edited; read each superseded scenario through this map.
+>
+> - **The third `shipped-registers.sh` family and the hand-written seeds** — HP-02, HP-03, HP-05,
+>   ES-03 to ES-08, ES-16, EC-14 and EC-17 → `shipped-boards.sh` at eight boards: check 1 (no
+>   negation re-includes a board), check 3 (seed present), check 4 (seed byte-identical to the
+>   seed-only render, which no seeded row or literal can pass) and check 5 (`SEEDED`).
+> - **The seed chain** — HP-04, ES-01, ES-02, ES-10, ES-11 → unchanged in substance for three
+>   board lines; ES-02's ungated task is now caught statically by `shipped-boards.sh` check 2 as
+>   tightened to the copy-gated task, with its own probe red first.
+> - **The update probe** — HP-06 to HP-08, ES-09, ES-20, EC-15 → the same probe over an edited,
+>   committed board; the ungated-`when:` mutation red before byte-identity lands.
+> - **The map index, the map enum and the read rule** — HP-10 to HP-15, HP-21, ES-12 to ES-14,
+>   EC-01 to EC-07, EC-22 → dropped as superseded by 7.7.0 (the feature-maps board and the plain
+>   map status line); the read rule is replaced by plain status lines on the three new kinds.
+> - **The finding, bug and ADR carriers** — EC-08 to EC-10 → status normalisation to a plain
+>   `**Status:**` plus `**Status note:**`; EC-11's ordering → the board's stated lifecycle order and
+>   the decisions board's two tail columns.
+> - **The debt lines, the index files and their CONTEXT sections** — HP-14, HP-16, HP-17, ES-15,
+>   ES-17, EC-12, EC-13, EC-16 → dropped: no index file and no debt line exists; each register's
+>   `CONTEXT.md` names its board.
+> - **The generated-tree literal grep and the link check** — HP-01's grep half, HP-09's, ES-18 →
+>   dropped, byte-identity covering both (round 3 Q4). HP-18's joined-line search survives.
+> - **Every render path** — HP-01 → the 72-case matrix moves to the matrix story (cut 19/11/2026).
+> - **Map boxes** — HP-19 → the index-row box is removed, not ticked; HP-20 (Umbrella ADRs) stands.
+> - **Unchanged:** ES-19, EC-18 to EC-21, PA-01 to PA-04 (PA-01 and PA-04 re-read for boards).
+>
+> **New controls with no scenario here**, walked in the manual guide: the three kinds' generator
+> tests, the supersession walk, the archive trigger and the title-legibility read.
 
 ---
 

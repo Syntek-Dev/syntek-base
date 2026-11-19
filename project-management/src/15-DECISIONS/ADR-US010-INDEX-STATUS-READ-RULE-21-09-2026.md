@@ -1,10 +1,11 @@
 # ADR-US010: An index reads every register's Status by one rule — strip the markup, cut at the first middle dot, trim
 
-**Status:** Accepted
+**Status:** Superseded
+**Status note:** Superseded 19/11/2026 by `project-management/src/15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md` (US010 re-cut grilling, round 2 Q4); this header rewritten that day to the status shape the successor records (plain value, status note, both supersession lines). Accepted 27/09/2026, after an independent review, and its decision is not edited
 **Date:** 21/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** None
+**Superseded by:** `project-management/src/15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`
 **Related:** US010 · US011 · `project-management/src/02-STORIES/US010.md` · `project-management/src/02-STORIES/US011.md` · `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` N-002, N-003 and slice S-03 · `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` (the writer-side format for maps)
 
 ---

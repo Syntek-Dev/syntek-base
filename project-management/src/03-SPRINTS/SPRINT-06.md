@@ -32,6 +32,19 @@
 
 **Status:** In Progress — US010 started 19/11/2026, its first story
 
+> **Re-cut 19/11/2026 — scope and estimate, recorded without a status change.** US010 was re-cut
+> at its build's first step (`../02-STORIES/US010.md` -> _Re-cut — 19/11/2026_; grilling rounds 1
+> to 4 with <%DEVELOPER_NAME%>). It now builds three generated boards — decisions, findings and
+> bugs — on 7.7.0's `pm-board.sh` and seed chain, not seven hand-written index files. **US011's
+> remaining criteria are absorbed into US010** (round 2 Q1); US011's own status is left for a
+> separate developer decision and is not changed here, and `SPRINT-07.md` is not edited by this
+> note. **The 72-case `[3/4]` matrix splits into its own story**, the matrix story (cut 19/11/2026;
+> round 4 Q1). **US010 stays 8 SP, so this sprint stays 8 / 11 SP**, the re-estimate threshold
+> being a fourth fixture family or a second new CI job (round 4 Q2). Where the goal, criteria,
+> tasks and Definition of Done below name index files, the third `shipped-registers.sh` family,
+> the debt lines, the map enum, the literal grep, the link check or every render path, they are
+> superseded 19/11/2026 by the story's re-cut criteria, and kept as the record.
+
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
 

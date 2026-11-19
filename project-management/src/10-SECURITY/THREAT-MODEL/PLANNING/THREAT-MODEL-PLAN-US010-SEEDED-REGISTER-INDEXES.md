@@ -5,7 +5,7 @@
 | **Story**           | US010 — The seven register indexes are born seeded, and the map index leaves the file that ships                                                                                                       |
 | **Date**            | 21/09/2026                                                                                                                                                                                             |
 | **Author**          | Claude Code — `security` skill, Opus · reviewed by <%DEVELOPER_NAME%>                                                                                                                                  |
-| **Status**          | Signed off · **corrected in place 28/09/2026** — see below                                                                                                                                             |
+| **Status**          | Signed off · **corrected in place 28/09/2026** · **19/11/2026** (re-cut) — see below                                                                                                                   |
 | **Feature surface** | No runtime surface. Seven `.copier/` seeds, seven `mv` lines in one copy-gated `_tasks` chain, seven in-tree index files, one grown allowlist, one new seed-check family and one extended update probe |
 
 <!-- STEP 1's GRILLING PASS RAN on 21/09/2026 with <%DEVELOPER_NAME%>: two rounds, frontier empty.
@@ -110,6 +110,32 @@
 > trigger has fired. Each superseded wording is kept in a dated comment beside the table or
 > paragraph it left. Section 3b's Copier reading stays unexecuted: a measurement ST07's self-test
 > owes at implementation, which signing off does not settle.
+
+> **Corrected in place, 19/11/2026, at US010's re-cut, and kept signed off — a developer decision
+> of 19/11/2026** (re-cut grilling rounds 1 to 4 with <%DEVELOPER_NAME%>; `../../../02-STORIES/US010.md`
+> -> _Re-cut — 19/11/2026_; `../../../15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`).
+> The surface is now three board seeds and three `mv` lines in the copy-gated task, gated by
+> `shipped-boards.sh` and `pm-board.sh --check`, not seven hand-written seeds. No severity moves;
+> each threat is mapped to the control the re-cut puts in its place:
+>
+> - **TM-01, TM-04** → the three lines inside the copy-gated task, asserted statically by
+>   `shipped-boards.sh` check 2 as tightened and behaviourally by `shipped-ai.py`'s board update
+>   probe (byte-identity, red with the `when:` key removed).
+> - **TM-02, TM-09** → `shipped-boards.sh` check 1 (no negation re-includes a board) and check 5
+>   (`SEEDED`).
+> - **TM-03, TM-08** → `shipped-boards.sh` check 4: a seed is byte-identical to the generator's
+>   seed-only render, so it cannot be refreshed from a populated board or carry a literal. The
+>   third `shipped-registers.sh` family the model expected is not built.
+> - **TM-05, TM-06, TM-07** → unchanged in substance for the three new lines.
+> - **TM-10** → a board is regenerated and `--check` fails a stale one, so the window it named
+>   (indexes reading complete with no gate) does not open; the `GAPS.md` entry is still written, at
+>   US010's gate 22, absorbed from US011, stating what `S-03` has left to assert.
+> - **TM-11, TM-12** → superseded: the read rule and the map enum are replaced by plain status
+>   lines from the `completion` skill's vocabulary.
+> - **TM-13** → the seed-count sites name the copy-gated task as the list instead of a number.
+> - **TM-14, TM-18** → unchanged; the two `14-UPDATING.md` statements name the new boards.
+> - **TM-15** → unchanged: each new probe red before its check.
+> - **TM-16, TM-17** → unchanged.
 
 ---
 

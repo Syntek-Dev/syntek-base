@@ -6,7 +6,7 @@
 | **Date**       | 21/09/2026                                                                                                                                                                                                        |
 | **Author**     | Claude Code — `security` skill, Opus · reviewed by <%DEVELOPER_NAME%>                                                                                                                                             |
 | **Sprint**     | SPRINT-06 — this story is its sole member, 8 of 11 SP, holding a 5 SP reservation for US009's carry (13 / 11 SP at grace if it lands; `project-management/src/03-SPRINTS/SPRINT-06.md:30-34`, as read 21/09/2026) |
-| **Status**     | Signed off · **corrected in place 28/09/2026** — see below                                                                                                                                                        |
+| **Status**     | Signed off · **corrected in place 28/09/2026** · **19/11/2026** (re-cut) — see below                                                                                                                              |
 | **Frameworks** | STRIDE · OWASP Top 10 (A01–A10, 2025) · NIST CSF 2.0 (GV/ID/PR/DE/RS/RC)                                                                                                                                          |
 
 > This assessment establishes the security **baseline** for the story before any code is
@@ -107,6 +107,26 @@
 > beside the table, paragraph or list it left. Signing off ticks no Section 7 box — the
 > implementation assessment closes each with evidence — and Section 8 item 3 stays open: the
 > Copier reading is a measurement 7.7's self-test owes, not a decision this sign-off settles.
+
+> **Corrected in place, 19/11/2026, at US010's re-cut, and kept signed off — a developer decision
+> of 19/11/2026** (re-cut grilling rounds 1 to 4 with <%DEVELOPER_NAME%>; `../../../02-STORIES/US010.md`
+> -> _Re-cut — 19/11/2026_ and its Security Acceptance Criteria re-cut note;
+> `../../../15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`). Section 6's
+> counts do not move. Section 7's constraints are re-mapped, the text below kept as the record:
+>
+> - **7.1, 7.2, 7.8** bind the three new board `mv` lines; 7.1 is proved by `shipped-boards.sh`
+>   check 2 as tightened to the copy-gated task and by the board update probe.
+> - **7.3, 7.4** — the third `shipped-registers.sh` family is **superseded**; blankness and the
+>   absence of any syntek-base literal are proved by `shipped-boards.sh` check 4's byte-identity
+>   with the generator's seed-only render.
+> - **7.5** — the allowlist is the re-cut ST05 in the story: `shipped-boards.sh`, `pm-board.sh`,
+>   `pm-lib.sh`, `pm-archive.sh` and `.claude/skills/completion/SKILL.md` join it,
+>   `shipped-registers.sh` leaves it.
+> - **7.6** → `shipped-boards.sh` check 1 at eight boards. **7.7** → the board update probe.
+> - **7.9** → superseded by plain status lines; **7.10** stays superseded by 7.7.0.
+> - **7.11** → the `GAPS.md` entry at US010's gate 22, absorbed from US011.
+> - **7.12** unchanged. **7.13** → the count sites name the copy-gated task, no number.
+>   **7.14, 7.15** → the two `14-UPDATING.md` statements, naming the new boards.
 
 ---
 
