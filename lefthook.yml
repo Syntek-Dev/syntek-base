@@ -304,8 +304,9 @@ pre-commit:
 # pre-commit leg's token for this staged tree; without it, and on any merge, no such trailer may
 # appear. Self-gating on copier.yml exactly as the pre-commit leg
 # is — .github/scripts/ is copier _exclude'd, so downstream this exits 0 before calling anything.
-# Armed by `lefthook install`, which install-hooks.sh runs: a checkout armed before this leg
-# existed has no commit-msg hook until install-hooks.sh is run again.
+# Armed by `lefthook install`, which install-hooks.sh runs. A checkout armed before this leg
+# existed has no commit-msg hook; install-hooks.sh --notice (the postinstall) reports it unarmed,
+# and the step re-arms it (19/11/2026).
 commit-msg:
   commands:
     planned-red-trailer:

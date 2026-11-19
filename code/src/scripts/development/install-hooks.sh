@@ -29,7 +29,9 @@
 # script exists to be a step of install.sh, which propagates its code unchanged. An
 # unknown option is therefore also a 2 here (outside --notice, which never fails).
 #
-# "Armed" is one predicate, shared by both modes and by tests/hook-arming.sh: `pre-commit` in
+# "Armed" is one predicate, shared by both modes and by tests/hook-arming.sh — and it also needs
+# lefthook's `commit-msg` hook in the same directory, in the same layout ending
+# `call_lefthook run "commit-msg" "$@"` (lefthook.yml's commit-msg leg; 19/11/2026): `pre-commit` in
 # the hooks DIRECTORY `git rev-parse --path-format=absolute --git-path hooks` names (never the
 # hook file resolved directly, which follows a symlink to its target) is a readable,
 # executable regular file — not a symlink — in lefthook 2.2.2's GENERATED LAYOUT: line 1 is
@@ -180,6 +182,18 @@ lefthook_layout() {
 # becomes the hook's exit status, so the checks stop blocking commits: unarmed.
 is_armed() {
   [[ -f "$1" && ! -L "$1" && -r "$1" && -x "$1" ]] && lefthook_layout "$1" && ! has_graph "$1"
+}
+# lefthook.yml also declares a commit-msg leg, so a checkout is armed only when that hook is
+# lefthook's too: the same layout, its last non-blank line `call_lefthook run "commit-msg" "$@"`.
+# A checkout armed before the leg existed has no commit-msg hook, and is unarmed (19/11/2026).
+MSG_LAST_LINE='call_lefthook run "commit-msg" "$@"'
+msg_armed() {
+  local code
+  [[ -f "$1" && ! -L "$1" && -r "$1" && -x "$1" ]] || return 1
+  [[ "$(head -n 1 "$1" 2>/dev/null)" == '#!/bin/sh' ]] || return 1
+  [[ "$(grep -v '^[[:space:]]*$' "$1" 2>/dev/null | tail -n 1)" == "$MSG_LAST_LINE" ]] || return 1
+  code="$(grep -vE '^[[:space:]]*#' "$1" 2>/dev/null)" || return 1
+  grep -qF 'LEFTHOOK' <<< "$code" && grep -qE '^[[:space:]]*call_lefthook\(\)' <<< "$code"
 }
 
 # The real path of a directory or file that may not exist yet: the nearest existing ancestor
@@ -429,7 +443,7 @@ if $NOTICE; then
     fi
     exit 0
   fi
-  is_armed "$hook" && exit 0
+  is_armed "$hook" && msg_armed "$hook_dir/commit-msg" && exit 0
   say "Git hooks are not armed in this checkout — run: bash install.sh"
   exit 0
 fi
@@ -568,10 +582,10 @@ if ! output="$("$lh_bin" "${args[@]}" 2>&1)"; then
   exit 2
 fi
 
-# Verify the hook git will actually run, not the one lefthook says it wrote.
-if ! is_armed "$hook"; then
+# Verify the hooks git will actually run, not the ones lefthook says it wrote.
+if ! is_armed "$hook" || ! msg_armed "$hook_dir/commit-msg"; then
   [[ -n "$output" ]] && printf '%s\n' "$output" | sed 's/^/    /' >&2
-  err "lefthook install did not arm the effective pre-commit hook at $hook"
+  err "lefthook install did not arm the effective pre-commit and commit-msg hooks in $hook_dir"
   restore_link
   exit 2
 fi

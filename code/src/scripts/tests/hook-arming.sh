@@ -31,7 +31,8 @@
 # graph's block or an arbitrary `|| true` — swallows lefthook's exit status, so it is unarmed. A
 # hook without the executable bit is unarmed, and a SYMLINKED hook is foreign, never armed,
 # whatever it points at (SEC-02). The hooks directory's REAL path must lie inside the
-# repository's git common directory (settled 17/11/2026, round 5).
+# repository's git common directory (settled 17/11/2026, round 5). Beside it, `commit-msg` must be
+# lefthook's too, in the same layout ending `call_lefthook run "commit-msg" "$@"` (19/11/2026).
 #
 # SAFETY: nothing from the source checkout is ever symlinked, bound or shared into a fixture —
 # above all not its node_modules. Every fixture gets its own install; the PATH filter skips any
