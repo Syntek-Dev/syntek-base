@@ -291,11 +291,17 @@ self_test() {
   done
   # 2b. Move a seed out of the copy-gated task into an ungated one. The move still exists, but
   #     it would run on every update and overwrite the project's own board — check 2 binds the
-  #     move to the copy-gated task, not to _tasks at large.
-  grep -vF "mv .copier/STORIES-BOARD.md" "$real_copier" \
-    | awk '{print} /^_tasks:/{print "  - command: mv .copier/STORIES-BOARD.md project-management/src/02-STORIES/STORIES-BOARD.md"}' \
-    > "$tmp/ungated.yml"
-  COPIER="$tmp/ungated.yml"; probe "check 2 fires when a seed move leaves the copy-gated task" "does not move .copier/STORIES-BOARD.md"
+  #     move to the copy-gated task, not to _tasks at large. Leaving the gated move in place
+  #     isolates the second half: any board move outside the gated task is a finding of its own.
+  awk '{print} /^_tasks:/{print "  - command: mv .copier/STORIES-BOARD.md project-management/src/02-STORIES/STORIES-BOARD.md"}' \
+    "$real_copier" > "$tmp/ungated.yml"
+  COPIER="$tmp/ungated.yml"; probe "check 2 fires when a board move also sits in an ungated task" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
+  # 2c. A move line that names the board but is not a move: echoed, or commented out inside the
+  #     folded command. A substring search reads both as wired; one finding each.
+  sed 's#^      mv \.copier/SPRINTS-BOARD\.md #      echo mv .copier/SPRINTS-BOARD.md #' "$real_copier" > "$tmp/echoed.yml"
+  COPIER="$tmp/echoed.yml"; probe "check 2 fires when the move is only echoed" "does not move .copier/SPRINTS-BOARD.md"
+  sed 's#^      mv \.copier/BUGS-BOARD\.md #      \# mv .copier/BUGS-BOARD.md #' "$real_copier" > "$tmp/commented.yml"
+  COPIER="$tmp/commented.yml"; probe "check 2 fires when the move is commented out" "does not move .copier/BUGS-BOARD.md"
   COPIER="$real_copier"
 
   # 3 and 4 work on a fresh copy of the seed directory per probe.
