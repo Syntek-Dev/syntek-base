@@ -126,8 +126,11 @@ that re-runs that self-test. The answer is a narrow opt-in naming the one self-t
 probes in it expected red, under which the leg requires exactly those probes to fail (exit `1`) —
 refusing a pass, an older probe gone red and a script error alike — while every other check still
 runs and must pass, and a `Planned-Red:` trailer records it in the message (`project-management/docs/git/COMMITS.md` → _The planned-red trailer_). Skipping
-the hooks hides every other failure the commit carries along with the one that was planned.
-<!-- Planned-red paragraph added 19/11/2026; named probes 19/11/2026. -->
+the hooks hides every other failure the commit carries along with the one that was planned. A
+probe in a self-test that no pre-commit leg runs needs no opt-in, and earns no exemption: it is
+committed red in its own commit, and **an existing probe is never edited in the commit of the fix
+it proves** — a probe and its check changing together is the shape that hides a weakened check.
+<!-- Planned-red paragraph added 19/11/2026; named probes, and the unhooked-probe rule, 19/11/2026. -->
 
 ---
 
