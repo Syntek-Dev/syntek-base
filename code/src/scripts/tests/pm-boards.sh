@@ -27,6 +27,8 @@
 #   archive    pm-archive.sh <ID> archives an ADR only from Superseded or Deprecated, a findings
 #              record only from Resolved, a bug only from Verified, and refuses any other status
 #              with nothing moved; --check then passes, and fails on an edit to an archived file.
+#   chains     --warn names an ADR superseding itself, a supersession cycle, and a successor
+#              named by an ADR whose status is not Superseded.
 #   masked     A status or supersession line inside a fenced code block or an HTML comment is
 #              never read: a decoy Deprecated above the real Accepted line leaves the board
 #              filing Accepted, and pm-archive.sh --dry-run refusing.
@@ -50,7 +52,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,42p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,44p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'pm-boards.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -203,6 +205,23 @@ probe_masked() {
   done
 }
 
+probe_chains() {
+  local out
+  echo "chains"
+  adr ADR-US007-SELF-08-01-2026 "A record that supersedes itself" Superseded ADR-US007-SELF-08-01-2026 ADR-US007-SELF-08-01-2026
+  adr ADR-US008-CYCLE-A-09-01-2026 "One end of a cycle" Superseded ADR-US008-CYCLE-B-09-01-2026 ADR-US008-CYCLE-B-09-01-2026
+  adr ADR-US008-CYCLE-B-09-01-2026 "The other end of a cycle" Superseded ADR-US008-CYCLE-A-09-01-2026 ADR-US008-CYCLE-A-09-01-2026
+  adr ADR-US009-STILL-ACCEPTED-10-01-2026 "Accepted, yet naming a successor" Accepted None ADR-US009-SUCCESSOR-11-01-2026
+  adr ADR-US009-SUCCESSOR-11-01-2026 "Its successor" Accepted ADR-US009-STILL-ACCEPTED-10-01-2026 None
+  out="$(board --warn --root "$FX" 2>&1 || true)"
+  check "--warn names an ADR that supersedes itself" grep -qE "ADR-US007-SELF-08-01-2026.*(itself)" <<< "$out"
+  check "--warn names a supersession cycle" grep -qE "supersession cycle" <<< "$out"
+  check "--warn names a successor on an ADR that is not Superseded" \
+    grep -qE "ADR-US009-STILL-ACCEPTED-10-01-2026.*Accepted.*Superseded by|ADR-US009-STILL-ACCEPTED-10-01-2026.*not Superseded" <<< "$out"
+  check "  and not the well-formed successor" bash -c '! grep -qE "^warning: ADR-US009-SUCCESSOR-11-01-2026" <<< "$1"' _ "$out"
+  rm -f "$SRC"/15-DECISIONS/ADR-US00[789]-*.md
+}
+
 refused() {  # refused ID FILE — pm-archive.sh exits 1 and the file has not moved
   local rc=0
   archive "$1" >/dev/null 2>&1 || rc=$?
@@ -278,6 +297,7 @@ else
   probe_instances
   probe_tail
   probe_masked
+  probe_chains
   probe_archive
   probe_staged
   probe_strays
