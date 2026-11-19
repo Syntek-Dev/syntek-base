@@ -115,7 +115,7 @@ Sam), and the new ADR,
 support in `pm-archive.sh`; `shipped-boards.sh` at eight boards with check 2 tightened; the board
 update probe in `shipped-ai.py`; three seeds, three `mv` lines, `SEEDED` and the completeness step;
 the content repairs and the map commit; the joined-line instruction search, last. **Out of scope
-now:** the 72-case matrix (the matrix story, cut 19/11/2026), any hand-written index file, the
+now:** the 72-case matrix (US021, the matrix story, cut 19/11/2026), any hand-written index file, the
 third `shipped-registers.sh` family, the literal grep and the link check.
 
 **Why this story exists.** `../02-STORIES/US010.md` is SPRINT-06's sole `Must`, cut from
@@ -726,7 +726,7 @@ status since 7.7.0 (`./CLAUDE.md`). The rest stand.
 **Re-cut 19/11/2026.** The table below is the record as of 03/10/2026; where it disagrees, this
 block is current. **US011 is absorbed**: its remaining criteria are this story's (round 2 Q1), and
 its `**Status:**` is left for a separate developer decision — it no longer waits on anything here.
-**The matrix story (cut 19/11/2026)** owns the 72-case matrix, and **US012** records exhaustive
+**US021, the matrix story (cut 19/11/2026),** owns the 72-case matrix, and **US012** records exhaustive
 coverage as unmeasured until it lands (round 4 Q1). **7.7.0** is the base built on. US009 has
 merged to `testing` and sits in this branch's base. **Blocked by:** none. **Blocks:** nothing hard.
 
@@ -978,10 +978,9 @@ unmeasured and its full-coverage completion criterion cannot be ticked.
 **No pytest, no coverage figure, no migration check** — each recorded `N/A` with its reason. There
 is no application Python in this diff.
 
-### Every valid offered configuration — approved 09/10/2026 — moved 19/11/2026 to the matrix story
+### Every valid offered configuration — approved 09/10/2026 — moved 19/11/2026 to US021
 
-**Moved 19/11/2026** (settled 19/11/2026, re-cut grilling round 4 Q1): this matrix is the
-matrix story's (cut 19/11/2026), not this story's. The section is kept unchanged below as the
+**Moved 19/11/2026** (settled 19/11/2026, re-cut grilling round 4 Q1): this matrix is US021's (cut 19/11/2026), not this story's. The section is kept unchanged below as the
 approved case list that story inherits; nothing in it is a US010 criterion any more, and US012
 records exhaustive coverage as unmeasured until that story lands.
 
@@ -1165,7 +1164,7 @@ hand.
 
 ## Deferred Items
 
-**Re-cut 19/11/2026.** Added: **the 72-case matrix → the matrix story (cut 19/11/2026)**.
+**Re-cut 19/11/2026.** Added: **the 72-case matrix → US021, the matrix story (cut 19/11/2026)**.
 Changed: the four-register backfill row is gone (7.7.0 and the boards replace it); the TM-10
 window is now this story's gate-22 entry, absorbed from US011; `S-03`'s disposal is the map
 owner's. The other rows stand.

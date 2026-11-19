@@ -1,6 +1,6 @@
 # CUT-PLAN — which map slice becomes which story, and in what order
 
-**Last Updated**: 01/11/2026 **Version**: 0.2.5 **Maintained By**: Sam
+**Last Updated**: 19/11/2026 **Version**: 0.2.6 **Maintained By**: Sam
 **Language**: British English (en_GB)
 
 ---
@@ -132,9 +132,9 @@ appended to their maps on 17/10/2026.
 **Slice arithmetic:** 13 + 6 + 58 + 15 + 1 + 36 = 129. Retired slice IDs (GATE-PARITY S-01, S-02,
 S-04, S-06) are not counted.
 
-**Cut stories: 14.** Twelve carry the 13 cut slices (US010 carries two). US002 and US007 were cut from
+**Cut stories: 15.** Twelve carry the 13 cut slices (US010 carries two). US002, US007 and US021 were cut from
 no slice: US002 from PROGRESSIVE-ENHANCEMENT S-04's Flags precondition, US007 from a
-REGISTER-INDEXES fog row.
+REGISTER-INDEXES fog row, and US021 split from US010 on 19/11/2026 (below, MAP-REGISTER-INDEXES).
 
 **Held counts ABSENCE S-05,** added at verification on 21/09/2026 beyond the nine the readiness
 assessment named: its `no-non-null-assertion` leg runs inside `mobile-lint`
@@ -471,13 +471,23 @@ N-007 on MAP-NATIVE-DESIGN-TIER may add a `Superseded` status beside
 ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026's five values (MAP-NATIVE-DESIGN-TIER.md:231),
 which would change the vocabulary US010 counts and S-03's gate matches — not a hold (P11).
 
-| Order | Slice(s)                   | Working title                                                       | SP  | MoSCoW  | Depends on                                                                                                          | Status     | Story            |
-| ----- | -------------------------- | ------------------------------------------------------------------- | --- | ------- | ------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------- |
-| 1     | S-03                       | The index gate, and the duty it enforces                            | ~5  | ~Must   | US010 (:418-422), US011 (a wider fixture), US007 (one status vocabulary), US002 (registry row). See **Owed**        | `Proposed` | —                |
-| 2     | S-04                       | Artefact frontmatter across project-management/src/                 | ~13 | ~Should | nothing — "may run at any point" (:418-419); merge order with US004 on `doc-references.sh`; Nodes read `TBD` (:353) | `Proposed` | —                |
-| —     | S-01 + S-02 (narrowed)     | The seven register indexes are born seeded; MAP-INDEX.md backfilled | 8   | Must    | owned by the story                                                                                                  | `Cut`      | US010, SPRINT-06 |
-| —     | S-05 (appended 20/09/2026) | The four indexes that shipped blank get their rows                  | 8   | Should  | owned by the story                                                                                                  | `Cut`      | US011, SPRINT-07 |
-| —     | — (fog row, :610)          | The story status vocabulary gets one owner                          | 5   | Must    | owned by the story                                                                                                  | `Cut`      | US007, SPRINT-01 |
+| Order | Slice(s)                   | Working title                                                         | SP           | MoSCoW            | Depends on                                                                                                          | Status     | Story              |
+| ----- | -------------------------- | --------------------------------------------------------------------- | ------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------ |
+| 1     | S-03                       | The index gate, and the duty it enforces                              | ~5           | ~Must             | US010 (:418-422), US011 (a wider fixture), US007 (one status vocabulary), US002 (registry row). See **Owed**        | `Proposed` | —                  |
+| 2     | S-04                       | Artefact frontmatter across project-management/src/                   | ~13          | ~Should           | nothing — "may run at any point" (:418-419); merge order with US004 on `doc-references.sh`; Nodes read `TBD` (:353) | `Proposed` | —                  |
+| —     | S-01 + S-02 (narrowed)     | The seven register indexes are born seeded; MAP-INDEX.md backfilled   | 8            | Must              | owned by the story                                                                                                  | `Cut`      | US010, SPRINT-06   |
+| —     | S-05 (appended 20/09/2026) | The four indexes that shipped blank get their rows                    | 8            | Should            | owned by the story                                                                                                  | `Cut`      | US011, SPRINT-07   |
+| —     | — (fog row, :610)          | The story status vocabulary gets one owner                            | 5            | Must              | owned by the story                                                                                                  | `Cut`      | US007, SPRINT-01   |
+| —     | — (split from US010)       | Every valid offered configuration generates a complete, gated project | 8 (proposed) | Should (proposed) | after US010 (its boards and the joined-line search); US012 consumes its runs                                        | `Cut`      | US021, unscheduled |
+
+**Split 19/11/2026 (US010 re-cut grilling, round 4 Q1).** The 72-case `[3/4]` generation matrix,
+approved into US010 on 09/10/2026 as a remediation rather than a slice, leaves US010 for its own
+story, US021, which carries no slice (as US002 and US007 do not). It took US021, not US015,
+because US015 to US020 are held provisionally by MAP-RULE-OWNERSHIP's cut order and US015 is cited
+by that number in US010's signed-off gate records. P14 does not hold it: P14 pauses slice cuts, and
+this is the split of a story in build. It is unscheduled until `03-sprint-planning` admits it, and
+its SP and MoSCoW are proposed for Sam's confirmation. US010 stays 8 SP. Whether
+MAP-REGISTER-INDEXES.md records the split is the map owner's call, not made here.
 
 ---
 

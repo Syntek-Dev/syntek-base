@@ -41,7 +41,7 @@
 > bugs — on 7.7.0's `pm-board.sh` and seed chain, not seven hand-written index files. **US011's
 > remaining criteria are absorbed into US010** (round 2 Q1); US011's own status is left for a
 > separate developer decision and is not changed here, and `../03-SPRINTS/SPRINT-07.md` is not edited
-> by this note. **The 72-case `[3/4]` matrix splits into its own story**, the matrix story (cut 19/11/2026;
+> by this note. **The 72-case `[3/4]` matrix splits into its own story**, US021, the matrix story (cut 19/11/2026;
 > round 4 Q1). **US010 stays 8 SP, so the sprint stays 8 / 11 SP** (`../03-SPRINTS/SPRINT-06.md` wins on sprint facts), the re-estimate threshold
 > being a fourth fixture family or a second new CI job (round 4 Q2). Where the goal, lane, constraints,
 > checklist and Definition of Done below name index files, the third `shipped-registers.sh` family,
