@@ -22,13 +22,13 @@ or neither, and every gate each surface owns **reports rather than skips**
 
 ## Notes
 
-| Field                    | Value                                                                                                                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Domain                   | Template surface architecture · CI/CD · governance (skills, audits, docs, copier gating)                                                          |
-| Skills to load           | `wayfinder` · `grill-with-docs` · `scaffold` · `cicd` · `doc-writer` · `version` · `code-reviewer`                                                |
-| Standing preferences     | See **Settled before charting** below — four decisions from the 20/09/2026 grilling that bound this map                                           |
-| Umbrella ADRs            | **None, and none is authored from here.** ADRs are `ADR-US###-…` and story-bound; each slice's story authors its own at PM step `04`–`14`         |
-| Register entries triaged | **0 closes · 1 blocks · 15 unrelated** (`GAPS.md`, 16 open entries; standing limitations `SL-1`–`SL-3` exempt). `DEFERRED.md` carries **no rows** |
+| Field                    | Value                                                                                                                                                                               |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                   | Template surface architecture · CI/CD · governance (skills, audits, docs, copier gating)                                                                                            |
+| Skills to load           | `wayfinder` · `grill-with-docs` · `scaffold` · `cicd` · `doc-writer` · `version` · `code-reviewer`                                                                                  |
+| Standing preferences     | See **Settled before charting** below — four decisions from the 20/09/2026 grilling that bound this map                                                                             |
+| Umbrella ADRs            | Any ADR is `ADR-US###-…`, authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story |
+| Register entries triaged | **0 closes · 1 blocks · 15 unrelated** (`GAPS.md`, 16 open entries; standing limitations `SL-1`–`SL-3` exempt). `DEFERRED.md` carries **no rows**                                   |
 
 ### Settled before charting
 
@@ -263,7 +263,6 @@ not a rewrite. This is why S-02 can run ahead of the forge.
 - [ ] **Every node marked "blocking a story" is resolved** — 9 open
 - [ ] Every resolved node links to the artefact it became — none resolved yet
 - [x] **Every slice has a flag manifest**
-- [ ] Index row in `CONTEXT.md` — **withheld pending a decision**; see the note in `## Notes`
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked.** S-01 is
 closest: four nodes, three of them unblocked today.

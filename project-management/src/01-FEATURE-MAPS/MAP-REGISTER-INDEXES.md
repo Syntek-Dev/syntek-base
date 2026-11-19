@@ -27,13 +27,13 @@ index cannot silently drift the way `01-FEATURE-MAPS/CONTEXT.md`'s has for ten m
 
 ## Notes
 
-| Field                    | Value                                                                                                                                                                                        |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Domain                   | PM artefact structure · the copier shipping seam · audit gates                                                                                                                               |
-| Skills to load           | `wayfinder` → `grill-with-docs`; `scaffold` and `doc-writer` for the writes; `cicd` for the gate's CI registration                                                                           |
-| Standing preferences     | **Q35–Q38, answered by Sam 28/08/2026** — see the table below. Plus: _no story is cut until the frontier is empty_                                                                           |
-| Umbrella ADRs            | **None — declined 31/08/2026**, the fifteenth consecutive decline on the house rule. Whether that rule survives is `MAP-PROGRESSIVE-ENHANCEMENT.md` N-026, and this map does not pre-empt it |
-| Register entries triaged | 0 closes · 0 blocks · 0 unrelated — **over zero triable entries** (see Register claimed)                                                                                                     |
+| Field                    | Value                                                                                                                                                                |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                   | PM artefact structure · the copier shipping seam · audit gates                                                                                                       |
+| Skills to load           | `wayfinder` → `grill-with-docs`; `scaffold` and `doc-writer` for the writes; `cicd` for the gate's CI registration                                                   |
+| Standing preferences     | **Q35–Q38, answered by Sam 28/08/2026** — see the table below. Plus: _no story is cut until the frontier is empty_                                                   |
+| Umbrella ADRs            | Any ADR is authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story |
+| Register entries triaged | 0 closes · 0 blocks · 0 unrelated — **over zero triable entries** (see Register claimed)                                                                             |
 
 **The four answers this map is chartered on.** They are **inputs**, not resolved nodes: they were
 settled on `MAP-RULE-OWNERSHIP.md` before this map existed, and no node below may reopen them.
@@ -642,7 +642,6 @@ Propagation & ClickUp Sync` (`:633`) and `## Docker & Nginx Infrastructure` (`:6
 - [x] **Every node marked "blocking a story" is resolved** — **N-001 settled 31/08/2026; none remain**
 - [x] Every resolved node links to the artefact it became — N-001, N-002, N-005 to `S-01`; N-006 to `S-02`; N-003, N-004 to `S-03`
 - [x] **Every slice has a flag manifest** — all four do, and **`S-02` is no longer provisional** (N-006, 31/08/2026)
-- [ ] Index row in `CONTEXT.md` current — **superseded by N-001, and this box is a deadlock.** The row moves to `MAP-INDEX.md`; `MAP-INDEX.md` is built by `S-01`; `S-01` needs a story; a story needs this box. **The gate binds the work that repairs the gate** — the same unenforceable-duty shape `MAP-RULE-OWNERSHIP.md` N-010 diagnosed, met from the other side. Resolved by ruling that a **recorded refusal is not drift**: `CONTEXT.md:50` calls a missing row _"an index that has drifted"_, and this one is neither missing by accident nor unexplained. **`S-01` may be cut on that basis; the box closes when `S-01` ships**. **The ruling was exercised on 20/09/2026** — `S-01` is cut as `US010`. The box stays open, correctly: cutting is not shipping, and `MAP-INDEX.md` does not exist yet
 
 **Node-count invariant: 0 open + 6 resolved = 6 = N-006.**
 

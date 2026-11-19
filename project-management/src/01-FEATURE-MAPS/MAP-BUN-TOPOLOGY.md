@@ -52,14 +52,14 @@ table (N-024), per the graduation table — a map never authors an ADR direct.
 
 ## Notes
 
-| Field                    | Value                                                                                                                                                                |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Domain                   | The JS dev toolchain — manifests, lockfile, `code/src/scripts/`, `.claude/hooks/`, 7 CI workflows, `.mcp.json`, Copier migration, the docs that name pnpm            |
-| Skills to load           | `cicd`, `planner`, `grill-with-docs`, `research`, `prototype`, `security`, `doc-writer`, `version`; `stack-react-native` for the mobile nodes                        |
-| Standing preferences     | Q1–Q5 above. Tracers run in a throwaway worktree or scratch clone, **never this tree**. The pass/fail bar for a tracer is settled before it runs (N-002, N-003)      |
-| Umbrella ADRs            | None yet — S-01's story authors the one ADR for Q1–Q5 and the parity table                                                                                           |
-| Register entries triaged | **14 open: 2 closes · 2 blocks · 10 unrelated.** `DEFERRED.md` is empty                                                                                              |
-| Suggested first batch    | **A — grilling N-002 + N-003**: the two bars every tracer is judged against, settled before any spike runs. **B — tracers N-006 to N-010** once Bun exists somewhere |
+| Field                    | Value                                                                                                                                                                                                                                 |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                   | The JS dev toolchain — manifests, lockfile, `code/src/scripts/`, `.claude/hooks/`, 7 CI workflows, `.mcp.json`, Copier migration, the docs that name pnpm                                                                             |
+| Skills to load           | `cicd`, `planner`, `grill-with-docs`, `research`, `prototype`, `security`, `doc-writer`, `version`; `stack-react-native` for the mobile nodes                                                                                         |
+| Standing preferences     | Q1–Q5 above. Tracers run in a throwaway worktree or scratch clone, **never this tree**. The pass/fail bar for a tracer is settled before it runs (N-002, N-003)                                                                       |
+| Umbrella ADRs            | S-01's story authors the one ADR for Q1–Q5 and the parity table; any ADR is authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story |
+| Register entries triaged | **14 open: 2 closes · 2 blocks · 10 unrelated.** `DEFERRED.md` is empty                                                                                                                                                               |
+| Suggested first batch    | **A — grilling N-002 + N-003**: the two bars every tracer is judged against, settled before any spike runs. **B — tracers N-006 to N-010** once Bun exists somewhere                                                                  |
 
 ### What is load-bearing today — measured 11/09/2026 at `b6c5c25`
 
@@ -368,7 +368,6 @@ findings are listed under _Resolved decisions_ and are not repeated here.
 - [ ] **Every node marked "blocking a story" is resolved** — 21 open
 - [x] Every resolved node links to the artefact it became
 - [x] Every slice has a flag manifest — provisional
-- [x] Index row — declined on the record (see the header note)
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked.**
 

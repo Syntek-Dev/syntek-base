@@ -46,7 +46,7 @@ retrospectively decays; written alongside, it stays true.
 | Domain                   | The template's own navigability — `.claude/`, root orientation files, `code/src/scripts/`, workflow `22`                                                                                            |
 | Skills to load           | `doc-writer`, `scaffold`, `codebase-design`, `domain-modelling`, `grill-with-docs`                                                                                                                  |
 | Standing preferences     | Refusal is a legitimate destination; the deletion test comes before the design; tracer before commitment. **Added 31/08/2026:** attribution is owed for inspiration however far the result diverges |
-| Umbrella ADRs            | None — this repository does not write ADRs (Sam, 16/08/2026)                                                                                                                                        |
+| Umbrella ADRs            | Any ADR is authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story                                |
 | Register entries triaged | **Re-triaged 01/09/2026: 0 closes · 0 blocks · 7 unrelated.** The 31/08 triage has expired in both directions — three of its four rows are gone and four entries have arrived since                 |
 
 ### The premise is already half-built, and that changes the question
@@ -794,11 +794,6 @@ because it is what tells a later reader where to look.
 - [x] **Every node belongs to a slice and none is open** — N-005, N-011, N-012 and N-013 into
       `S-02`; N-010 into `S-01` and `S-03`; N-009 into `S-03`; **N-014 into `S-01`**. All three
       slices are cuttable
-- [ ] **Index row still not added** — the shipped `CONTEXT.md` index reads "None charted yet" and
-      **this is now a defect rather than a decision.** `MAP-REGISTER-INDEXES.md` `S-01`/`S-02`
-      settled it 31/08/2026: the table leaves `CONTEXT.md` for a seeded `MAP-INDEX.md`, and this
-      map is one of the ten that gets backfilled. Unticked deliberately, because it is owed and
-      owned elsewhere
 
 **This map produces three slices, and all three will be cut.** `S-03` was conditional on the first
 walk test failing; it failed on 31/08/2026, so the epic ships three things. **The branch was

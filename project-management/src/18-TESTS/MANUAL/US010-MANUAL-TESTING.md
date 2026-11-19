@@ -212,7 +212,7 @@ here carries a `Result`.
 | ShellCheck probed — `command -v shellcheck`, and its version if present                                                                                                          | The plan's P0                                                                                                                          | Before the first edit                   | 19/11/2026 — present, `/run/current-system/sw/bin/shellcheck`, 0.11.0                                                                                              |
 | Each new probe's red — the commit SHA, the probe's failing line or the `[3/4]` run ID, and the SHA of the commit that turned it green                                            | ST05; QA plan PA-03; settled 03/10/2026, 17-story-plans round 1 Q1                                                                     | As each probe and check land (P1)       | R1 `a8a81668` red, `b18f832a` green; R4 red local only (hook), `3d136347` green; R6 `4119d6fa` red, `6e35c080` green; `[3/4]` CI-only at `a8d1b47e` — blocks below |
 | The finding and bug registers re-counted                                                                                                                                         | QA plan EC-16                                                                                                                          | At the commit that writes their indexes | 19/11/2026 at `0df03840`: 9 findings, 11 bugs, 32 ADRs                                                                                                             |
-| The map population under the instance test — the command, its count, HEAD                                                                                                        | QA plan HP-10, EC-02                                                                                                                   | At the map commit (P3)                  |                                                                                                                                                                    |
+| The map population under the instance test — the command, its count, HEAD                                                                                                        | QA plan HP-10, EC-02                                                                                                                   | At the map commit (P3)                  | 19/11/2026 at `761be32b`, before the map commit: 21 maps (archive 0) — block _Map population_ below                                                                |
 | The landing commit's workflow run — its ID, the commit SHA, and the `[1/4]`, `[2/4]` and `[3/4]` results on each render path                                                     | QA plan Section 6; HP-01                                                                                                               | When that run completes                 |                                                                                                                                                                    |
 | Whether US012 and US009 had landed on `main` when the landing commit was rebased, and which landed first                                                                         | QA plan EC-18, EC-19; the plan's P0 and _Risks_                                                                                        | At the rebase before the landing commit |                                                                                                                                                                    |
 | ShellCheck over `.github/scripts/shipped-artefacts.sh` and `.github/scripts/shipped-registers.sh` — run or not run, the version, the output                                      | The story's Verification Checks; SPRINT-06 → Verification Checks                                                                       | At the plan's P4                        | Run 19/11/2026, ShellCheck 0.11.0: info-level notes only (SC2329, SC1091, SC2016) — _Static checks_ block below                                                    |
@@ -294,6 +294,25 @@ P0-5 — length, `docs-length.sh --path` exit 0 for each; cloc Markdown code lin
   47  project-management/src/21-BUGS/CLAUDE.md
  265  .claude/skills/wayfinder/SKILL.md
 ```
+
+### Map population — 19/11/2026
+
+Re-counted immediately before the map commit, on `us010/seeded-register-indexes` at
+`761be32b17756a0e12c17875d8ec997139868be0`, under the instance test (tracked `MAP-*.md`, the
+template excluded by exact filename, `archive/` excluded):
+
+```text
+$ git ls-files 'project-management/src/01-FEATURE-MAPS/MAP-*.md' \
+    | grep -v -x 'project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md' \
+    | grep -v '/archive/' | wc -l
+21
+$ git ls-files 'project-management/src/01-FEATURE-MAPS/archive/MAP-*.md' | wc -l
+0
+```
+
+The map commit edits all 21 and the template: 22 "Index row" boxes removed (one each), 22
+`Umbrella ADRs` rows swept, and the two `Index row` Notes rows that still read "awaits
+`MAP-INDEX.md`" (`MAP-SCRIPT-GUARDS.md`, `MAP-SENTENCE-RULES.md`) marked superseded.
 
 ### Each new probe's red — R1, 19/11/2026
 

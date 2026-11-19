@@ -30,14 +30,14 @@ count.
 
 ## Notes
 
-| Field                    | Value                                                                                     |
-| ------------------------ | ----------------------------------------------------------------------------------------- |
-| Domain                   | Reliability doctrine — retry policy, idempotency, timeouts, and the gate over them        |
-| Skills to load           | `doc-writer` · `backend` · `stack-django` · `cicd` · `grill-with-docs` · `version`, `git` |
-| Standing preferences     | See below — four already-settled constraints bound this work                              |
-| Umbrella ADRs            | None yet, and none authored here — ADRs are workflow `15`, after stories (`02`)           |
-| Register entries triaged | 0 closes · 0 blocks · 5 unrelated (3 standing limitations exempt)                         |
-| Cross-map                | None. `MAP-GATE-PARITY` shares the audits surface at `N-020`; referenced, not merged      |
+| Field                    | Value                                                                                                                                                                |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                   | Reliability doctrine — retry policy, idempotency, timeouts, and the gate over them                                                                                   |
+| Skills to load           | `doc-writer` · `backend` · `stack-django` · `cicd` · `grill-with-docs` · `version`, `git`                                                                            |
+| Standing preferences     | See below — four already-settled constraints bound this work                                                                                                         |
+| Umbrella ADRs            | Any ADR is authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story |
+| Register entries triaged | 0 closes · 0 blocks · 5 unrelated (3 standing limitations exempt)                                                                                                    |
+| Cross-map                | None. `MAP-GATE-PARITY` shares the audits surface at `N-020`; referenced, not merged                                                                                 |
 
 **Standing preferences — settled before this map and not reopened by it:**
 
@@ -493,6 +493,5 @@ _Empty since 01/09/2026 — every parked item was retired by a resolved node or 
 - [x] **Every node marked "blocking a story" is resolved** — last (`N-008`) settled 01/09/2026
 - [x] Every resolved node links to the artefact it became
 - [x] **Every slice has a flag manifest** — every gate it needs, `N/A` omitted
-- [x] Index row in `CONTEXT.md` — **deliberately absent**; see _Notes_
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked.**
