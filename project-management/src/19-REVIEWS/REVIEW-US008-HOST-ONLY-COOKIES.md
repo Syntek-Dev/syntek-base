@@ -131,7 +131,7 @@ Accepted` is Sam's, after CI and his approval.
 - `../18-TESTS/AUTOMATED/US008-TEST-STATUS.md` · `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md` — the
   test records this review reads against
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US008-HOST-ONLY-COOKIES-16-11-2026.md` — the paired QA review
-- `../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — F-001 to F-039
+- `../20-FINDINGS/archive/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — F-001 to F-039
 - `../21-BUGS/archive/BUG-US008-DEV-STATIC-404-16-11-2026.md` · `../21-BUGS/archive/BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md` — the two fixes PR'd here
 - `project-management/workflows/23-pr-and-review/` — the PM workflow where this review is written
 - `code/workflows/07-review/` — the code-review workflow the reviewer ran

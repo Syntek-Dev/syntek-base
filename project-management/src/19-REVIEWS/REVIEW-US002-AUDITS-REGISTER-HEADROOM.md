@@ -215,6 +215,6 @@ Section 4's one decision is therefore taken.
 - `../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` — the plan, its Key Decisions and its QA-triage corrections
 - `../18-TESTS/AUTOMATED/US002-TEST-STATUS.md` · `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` — the test records
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md` — the paired QA review
-- `../20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md` — the findings
+- `../20-FINDINGS/archive/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md` — the findings
 - `../21-BUGS/BUG-US002-DOCS-PAIRING-UNSTAGED-DELETION-03-11-2026.md` — the gate defect the walk surfaced
 - `project-management/workflows/22-implementation-documentation/` — the workflow this record is written in; `23-pr-and-review` verifies it

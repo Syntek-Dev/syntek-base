@@ -76,7 +76,7 @@ ADR on 05/11/2026, and it read `Accepted` at P0; the story edits only its header
 **No Table of Contents, and the omission is house practice.** None of the nine sibling plans in
 this folder, `01-` to `09-`, carries one (re-measured 03/10/2026, all nine at zero).
 
-<!-- CARRIED 17/11/2026 from US009's findings (F-001, project-management/src/20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md):
+<!-- CARRIED 17/11/2026 from US009's findings (F-001, project-management/src/20-FINDINGS/archive/FINDING-US009-HOOK-ARMING-17-11-2026.md):
      US009 was priced at 5 SP and re-estimated to 8 mid-build on a threshold its plan named in advance -
      six TDD rounds, new fixture families and a second CI job. When this plan's estimate is next
      reviewed, price probe-driven shell work by fixture families and CI jobs, and name the

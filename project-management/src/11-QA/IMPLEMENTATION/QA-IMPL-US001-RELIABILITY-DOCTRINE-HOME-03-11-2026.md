@@ -159,7 +159,7 @@ routed by the findings record (F-005, F-006).
 - `../../02-STORIES/US001.md` — the story under review
 - `../../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — the plan, and its Key Decisions Q1 to Q3
 - `../../18-TESTS/AUTOMATED/US001-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US001-MANUAL-TESTING.md` — downstream test records
-- `../../20-FINDINGS/FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md` — the findings this review cites
+- `../../20-FINDINGS/archive/FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md` — the findings this review cites
 - `../../19-REVIEWS/REVIEW-US001-RELIABILITY-DOCTRINE-HOME.md` — the code review and QA breaker pass
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `project-management/workflows/22-implementation-documentation/` — where this review is written

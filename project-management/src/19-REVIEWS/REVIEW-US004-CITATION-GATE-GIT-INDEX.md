@@ -47,7 +47,7 @@ A bash script, its fixtures and Markdown. No Python, template, endpoint, migrati
 Severity is each pass's own grade (major, minor, nit), recorded here as Medium, Low and Info. A
 verifier's re-grade is noted. The phase 9 outputs live outside the tree in
 /tmp/us004-phase9-evidence.json; the findings record names what survives as known limitations.
-"Finding F-0NN" points into `../20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md`.
+"Finding F-0NN" points into `../20-FINDINGS/archive/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md`.
 
 ### 2.1 Phase 9 — `code-reviewer`, at `53a8713`; fixed in `5c24c12`
 
@@ -376,5 +376,5 @@ self-test exits 2, 186 run and passed, 13 sets needing the contract. Evidence
 - `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` — the plan and its _Key Decisions_
 - `../18-TESTS/AUTOMATED/US004-TEST-STATUS.md` · `../18-TESTS/MANUAL/US004-MANUAL-TESTING.md` — the test records
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md` — the paired QA review
-- `../20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md` — the findings
+- `../20-FINDINGS/archive/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md` — the findings
 - `project-management/workflows/22-implementation-documentation/` · `project-management/workflows/23-pr-and-review/` — `22` drafted this record; `23` completes and verifies it

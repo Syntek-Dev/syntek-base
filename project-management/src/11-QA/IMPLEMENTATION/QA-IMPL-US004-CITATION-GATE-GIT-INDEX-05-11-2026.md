@@ -225,6 +225,6 @@ MEASURE-01 as amended (F-002).
 - `../../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` — the plan and its _Key Decisions_ of 05/11/2026
 - `../../18-TESTS/AUTOMATED/US004-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US004-MANUAL-TESTING.md` — downstream test records
 - `../../19-REVIEWS/REVIEW-US004-CITATION-GATE-GIT-INDEX.md` — the phase 9 review, QA pass, verifiers and fix round; workflow 23's two passes and fix rounds (Section 2.5)
-- `../../20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md` — the findings this review cites
+- `../../20-FINDINGS/archive/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md` — the findings this review cites
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `project-management/workflows/22-implementation-documentation/` — where this review is written

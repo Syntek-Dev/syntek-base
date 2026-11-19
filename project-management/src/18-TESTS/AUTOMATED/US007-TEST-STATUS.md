@@ -112,6 +112,6 @@ exits 0 as a warning. None of the 72 is a US007 test, because the story wrote no
 - `../../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — the implementation plan this record closes
 - `../MANUAL/US007-MANUAL-TESTING.md` — the paired manual testing guide, authored before code and walked after it; it carries the story's only executed checks
 - `../../11-QA/IMPLEMENTATION/QA-IMPL-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` — whether the specified scenarios were met
-- `../../20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` — F-012, the no-test block's coverage figures
+- `../../20-FINDINGS/archive/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` — F-012, the no-test block's coverage figures
 - `code/docs/TESTING.md` — coverage floors, test structure, and mocking strategy
 - `code/src/scripts/tests/CLAUDE.md` — the runners, their exit-code contract, and the generator

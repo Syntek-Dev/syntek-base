@@ -1,15 +1,15 @@
 # BUG: `tests/server.sh up` prints the worktree test URL on the wrong port
 
-| Field            | Value                                                                                                          |
-| ---------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Story**        | N/A — cross-cutting (surfaced by US006)                                                                        |
-| **Story doc**    | N/A — surfaced in `../02-STORIES/US006.md`'s walk                                                              |
-| **Story plan**   | N/A — cross-cutting                                                                                            |
-| **Severity**     | Low                                                                                                            |
-| **Date found**   | 15/11/2026                                                                                                     |
-| **Last Updated** | 15/11/2026                                                                                                     |
-| **Found during** | Manual walk — the stack-dependent rows of `../18-TESTS/MANUAL/US006-MANUAL-TESTING.md`, on a us006 stack       |
-| **Reporter**     | Claude, on the developer's behalf; finding F-019 in `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` |
+| Field            | Value                                                                                                                  |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Story**        | N/A — cross-cutting (surfaced by US006)                                                                                |
+| **Story doc**    | N/A — surfaced in `../02-STORIES/US006.md`'s walk                                                                      |
+| **Story plan**   | N/A — cross-cutting                                                                                                    |
+| **Severity**     | Low                                                                                                                    |
+| **Date found**   | 15/11/2026                                                                                                             |
+| **Last Updated** | 15/11/2026                                                                                                             |
+| **Found during** | Manual walk — the stack-dependent rows of `../18-TESTS/MANUAL/US006-MANUAL-TESTING.md`, on a us006 stack               |
+| **Reporter**     | Claude, on the developer's behalf; finding F-019 in `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` |
 
 **Status:** Open
 
@@ -92,7 +92,7 @@ the script's text, in the style of the US006 self-test's structural cases.
   `.claude/CLAUDE.md` Section 7 names `server.sh up` as the place a URL is read from, so a wrong
   line misleads by design. No manual row in US006 asserts the URL, so no row failed.
 - **Related stories:** US006 (surfaced it; does not fix it).
-- **Related records:** `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-019 ·
+- **Related records:** `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-019 ·
   `../18-TESTS/MANUAL/US006-MANUAL-TESTING.md` _Failures_.
 
 ## 9. Verification
@@ -112,7 +112,7 @@ the script's text, in the style of the US006 self-test's structural cases.
 ## Cross-references
 
 - `../02-STORIES/US006.md` — the story whose walk surfaced it
-- `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-019
+- `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-019
 - `code/src/docker/docker-compose.usXXX.test.yml.example` — the binding the URL must match
 - `how-to/docs/GIT-WORKTREES.md` — the documented worktree URLs
 - `code/workflows/10-debug/` — the TDD debug procedure

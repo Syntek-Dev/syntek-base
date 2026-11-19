@@ -234,7 +234,7 @@ Filled at the walk.
 - [x] Every _Recorded during the build_ slot filled at its moment, or recorded as missed — never reconstructed. The baseline's stash commit (09:54:55) holds PM status edits only, and every family file is later than it
 - [x] Every `Fail` has a reason in `Notes` and a row in _Failures_ with somewhere to go — vacuous, none failed
 - [x] Every journey area the story touches has a section, and every `Flow` cell cites a consolidated step or `—`
-- [x] Every amended row carries its trail in `Notes` and a finding in `../../20-FINDINGS/` — no row silently rewritten. The trails are in place; F-001 to F-004 are in `../../20-FINDINGS/FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md`
+- [x] Every amended row carries its trail in `Notes` and a finding in `../../20-FINDINGS/` — no row silently rewritten. The trails are in place; F-001 to F-004 are in `../../20-FINDINGS/archive/FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md`
 - [x] No secrets, real credentials, or personal data used or exposed during the walk
 - [x] Cross-checked against `../AUTOMATED/US001-TEST-STATUS.md` — a manual `Fail` and a green suite means a missing test. Done 03/11/2026: the story has no automated suite (0 rows), so no manual row stands against a green test
 - [x] The tester is not the story's author — the story's _QA Acceptance Criteria — Manual_

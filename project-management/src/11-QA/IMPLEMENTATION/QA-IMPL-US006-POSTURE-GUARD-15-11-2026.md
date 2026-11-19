@@ -216,7 +216,7 @@ pasteable re-run (`posture_rerun`) or the concrete repair. Read as an operator w
 
 - `../PLANNING/QA-PLAN-US006-POSTURE-GUARD.md` — the pre-development plan verified here
 - `../../02-STORIES/US006.md` — the story under review
-- `../../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-001, F-002, F-005, F-018, and the workflow 23 review's F-020 to F-026
+- `../../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-001, F-002, F-005, F-018, and the workflow 23 review's F-020 to F-026
 - `../../21-BUGS/BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md` — F-023 / EC-N8
 - `../../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md` — the 09/10/2026 target decision and the Key Decisions cited in Section 4
 - `../../18-TESTS/AUTOMATED/US006-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US006-MANUAL-TESTING.md` — downstream test records

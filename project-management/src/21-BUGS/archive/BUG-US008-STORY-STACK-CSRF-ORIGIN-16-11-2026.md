@@ -98,7 +98,7 @@ weigh it against the staging/production edge contract before choosing.
   manual row that submits a form or fires an HTMX write there. The main stack is unaffected.
 - **Related stories:** US008 (where it surfaced; its walk moved the publish to `:80` to proceed,
   contrary to the overlay's own rule that the host port is never 80).
-- **Related records:** `../../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` F-034 ·
+- **Related records:** `../../20-FINDINGS/archive/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` F-034 ·
   `BUG-TEST-SERVER-WORKTREE-URL-PORT-15-11-2026.md` (the worktree port, on the test stack).
 
 ## 9. Verification
@@ -117,7 +117,7 @@ weigh it against the staging/production edge contract before choosing.
 
 ## Cross-references
 
-- `../../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — finding F-034
+- `../../20-FINDINGS/archive/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — finding F-034
 - `../../18-TESTS/MANUAL/US008-MANUAL-TESTING.md` — _Walk provenance_, the dev-stack cookie walk
 - `code/docs/URL-STRATEGY.md` — owner of the dev hosts and ports
 - `code/workflows/10-debug/` — the TDD debug procedure (failing test first)

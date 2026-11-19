@@ -1,15 +1,15 @@
 # BUG: Markdown lint reads the gitignored `graphify-out/` and fails on a file nobody ships
 
-| Field            | Value                                                                                                              |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------ |
-| **Story**        | N/A — cross-cutting (surfaced by US007)                                                                            |
-| **Story doc**    | N/A — surfaced in `../02-STORIES/US007.md`'s walk                                                                  |
-| **Story plan**   | N/A — cross-cutting                                                                                                |
-| **Severity**     | Low                                                                                                                |
-| **Date found**   | 02/11/2026                                                                                                         |
-| **Last Updated** | 02/11/2026                                                                                                         |
-| **Found during** | Manual walk — `../18-TESTS/MANUAL/US007-MANUAL-TESTING.md` row GATES-09                                            |
-| **Reporter**     | Claude, on Sam's behalf; finding F-002 in `../20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` |
+| Field            | Value                                                                                                                      |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Story**        | N/A — cross-cutting (surfaced by US007)                                                                                    |
+| **Story doc**    | N/A — surfaced in `../02-STORIES/US007.md`'s walk                                                                          |
+| **Story plan**   | N/A — cross-cutting                                                                                                        |
+| **Severity**     | Low                                                                                                                        |
+| **Date found**   | 02/11/2026                                                                                                                 |
+| **Last Updated** | 02/11/2026                                                                                                                 |
+| **Found during** | Manual walk — `../18-TESTS/MANUAL/US007-MANUAL-TESTING.md` row GATES-09                                                    |
+| **Reporter**     | Claude, on Sam's behalf; finding F-002 in `../20-FINDINGS/archive/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` |
 
 **Status:** Open
 
@@ -86,7 +86,7 @@ There is no test harness for the lint configuration. The regression check is a s
   asks for the Markdown leg to exit 0. CI is unaffected.
 - **Related stories:** US007 (surfaced it).
 - **Related records:** `../18-TESTS/MANUAL/US007-MANUAL-TESTING.md` row GATES-09 ·
-  `../20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` F-002.
+  `../20-FINDINGS/archive/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` F-002.
 
 ## 9. Verification
 

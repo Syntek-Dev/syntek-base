@@ -207,7 +207,7 @@ spellings, F-021), both mitigated 15/11/2026. No CRITICAL or HIGH in the present
 - `../../../02-STORIES/US006.md` — the story reviewed
 - `../../../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md` — the 09/10/2026 target decision and the Key Decisions cited above
 - `../../../18-TESTS/MANUAL/US006-MANUAL-TESTING.md` — the walked rows cited above
-- `../../../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-001, F-002, F-018, and the workflow 23 review's F-020 to F-026
+- `../../../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-001, F-002, F-018, and the workflow 23 review's F-020 to F-026
 - `../../../21-BUGS/BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md` — F-023, pre-existing in `restore.sh`
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE / OWASP Top 10 / NIST CSF 2.0 reference
 - `code/docs/GATE-REPORTING.md` — why "not yet walked" is never written as "passed"

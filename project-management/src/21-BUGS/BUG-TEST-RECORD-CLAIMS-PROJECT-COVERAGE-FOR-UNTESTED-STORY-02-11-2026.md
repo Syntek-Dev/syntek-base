@@ -1,15 +1,15 @@
 # BUG: `test-record.sh` reports project-wide coverage as a story's own when no test declares the story
 
-| Field            | Value                                                                                                              |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------ |
-| **Story**        | N/A — cross-cutting (surfaced by US007)                                                                            |
-| **Story doc**    | N/A — surfaced in `../02-STORIES/US007.md`'s closeout                                                              |
-| **Story plan**   | N/A — cross-cutting                                                                                                |
-| **Severity**     | Low                                                                                                                |
-| **Date found**   | 02/11/2026                                                                                                         |
-| **Last Updated** | 02/11/2026                                                                                                         |
-| **Found during** | `22-implementation-documentation` Step 4 — writing `../18-TESTS/AUTOMATED/US007-TEST-STATUS.md`                    |
-| **Reporter**     | Claude, on Sam's behalf; finding F-012 in `../20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` |
+| Field            | Value                                                                                                                      |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Story**        | N/A — cross-cutting (surfaced by US007)                                                                                    |
+| **Story doc**    | N/A — surfaced in `../02-STORIES/US007.md`'s closeout                                                                      |
+| **Story plan**   | N/A — cross-cutting                                                                                                        |
+| **Severity**     | Low                                                                                                                        |
+| **Date found**   | 02/11/2026                                                                                                                 |
+| **Last Updated** | 02/11/2026                                                                                                                 |
+| **Found during** | `22-implementation-documentation` Step 4 — writing `../18-TESTS/AUTOMATED/US007-TEST-STATUS.md`                            |
+| **Reporter**     | Claude, on Sam's behalf; finding F-012 in `../20-FINDINGS/archive/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` |
 
 **Status:** Open
 
@@ -105,7 +105,7 @@ citation. Because it is generated text, no hand edit may clear it.
   places.
 - **Related stories:** US007 (surfaced it).
 - **Related records:** `../18-TESTS/AUTOMATED/US007-TEST-STATUS.md` (its Section 3 disowns the
-  figure) · `../20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` F-012.
+  figure) · `../20-FINDINGS/archive/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` F-012.
 
 ## 9. Verification
 

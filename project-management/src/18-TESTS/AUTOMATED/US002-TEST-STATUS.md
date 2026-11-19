@@ -128,6 +128,6 @@ exits 0 as a warning. None of the 72 is a US002 test, because the story wrote no
 - `../MANUAL/US002-MANUAL-TESTING.md` — the paired manual testing guide, authored before code and walked after it; it carries the story's only executed checks
 - `../../11-QA/IMPLEMENTATION/QA-IMPL-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md` — whether the specified scenarios were met
 - `../../19-REVIEWS/REVIEW-US002-AUDITS-REGISTER-HEADROOM.md` — the code review and QA breaker pass
-- `../../20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md` — the findings
+- `../../20-FINDINGS/archive/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md` — the findings
 - `code/docs/TESTING.md` — coverage floors, test structure, and mocking strategy
 - `code/src/scripts/tests/CLAUDE.md` — the runners, their exit-code contract, and the generator

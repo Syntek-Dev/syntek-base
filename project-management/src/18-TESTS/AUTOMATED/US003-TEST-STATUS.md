@@ -137,6 +137,6 @@ exits 0 as a warning. None of the 72 is a US003 test, because the story wrote no
 - `../MANUAL/US003-MANUAL-TESTING.md` — the paired manual testing guide, authored before code and walked after it; it carries the story's only executed checks
 - `../../11-QA/IMPLEMENTATION/QA-IMPL-US003-ABSENCE-GUIDE-05-11-2026.md` — whether the specified scenarios were met
 - `../../19-REVIEWS/REVIEW-US003-ABSENCE-GUIDE.md` — the three review rounds and the QA breaker pass
-- `../../20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md` — the findings (F-025 for this record's generated line)
+- `../../20-FINDINGS/archive/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md` — the findings (F-025 for this record's generated line)
 - `code/docs/TESTING.md` — coverage floors, test structure, and mocking strategy
 - `code/src/scripts/tests/CLAUDE.md` — the runners, their exit-code contract, and the generator

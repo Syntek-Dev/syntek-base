@@ -35,7 +35,7 @@ citation inside one fired `[instance citation]`. Workflow 23's review raised it 
 The fix as first written matched any name ending in a real date, anywhere; the second review pass
 (H-04) showed that a dated shipped guide would then lose Check 2, so it was narrowed to the four
 families. Findings F-024 and F-042 in
-`project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md`.
+`project-management/src/20-FINDINGS/archive/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md`.
 
 ## Options considered
 
