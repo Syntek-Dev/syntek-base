@@ -4,7 +4,7 @@
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** None
-**Superseded by:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`
+**Superseded by:** `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`
 **Related:** US004
 
 ---
@@ -114,7 +114,7 @@ keep policing.
   already carries, now doubled in consequence rather than in length.
 - **Follow-on:** the fixture pair added by US004 must cover `US000-MANUAL-TESTING.md` — instance-shaped,
   shipped, and therefore **not** exempt — because that is the case the two exclusions exist for.
-- **Follow-on:** `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+- **Follow-on:** `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
   **retires by its own terms when US004 lands.** It is not superseded — its reasoning was correct
   and its stated condition is simply met — but a reader of that record would otherwise have no way
   to discover it had lapsed. Recorded here rather than by a status change.

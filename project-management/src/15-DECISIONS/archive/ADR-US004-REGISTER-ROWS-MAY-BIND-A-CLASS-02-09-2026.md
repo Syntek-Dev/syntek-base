@@ -123,6 +123,6 @@ rather than a hole.
 - **Follow-on:** `code/docs/FORWARD-VOICE.md` Section 3 and the register's own header gain the
   pattern form and the duty to add a row when a citation first needs one. The duty is stated
   there once and in no workflow `CHECKLIST.md`.
-- **Follow-on:** `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+- **Follow-on:** `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
   retires by its own terms when US004 lands — recorded here and in the sibling record rather than
   by a status change, because its reasoning was never overturned.

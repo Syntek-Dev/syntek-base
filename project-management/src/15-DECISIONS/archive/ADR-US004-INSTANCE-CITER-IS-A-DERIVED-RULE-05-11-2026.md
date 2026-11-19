@@ -3,7 +3,7 @@
 **Status:** Superseded
 **Date:** 05/11/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`
+**Supersedes:** `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`
 **Superseded by:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-CITER-ADMITS-STORYLESS-DATED-RECORDS-06-11-2026.md`
 **Related:** US004
 
@@ -11,8 +11,8 @@
 
 ## Context
 
-`project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`
-(restating `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`)
+`project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`
+(restating `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`)
 decided two things about Check 2 of `code/src/scripts/audits/doc-references.sh`:
 
 1. **Whether a citing file is a per-project instance is read from its own filename**, never from
@@ -25,12 +25,12 @@ decided two things about Check 2 of `code/src/scripts/audits/doc-references.sh`:
 `is_template_only()` is vacuous in a generated project (`copier.yml` excludes itself, `N-009` Q31)
 and why a tree glob blinds the gate on roughly twenty shipped files — is the superseded record's
 _Context_ and _Decision_
-(`project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md:12-151`),
+(`project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md:12-151`),
 and it is cited, not re-argued.
 
 **The risk the superseded record named has materialised.** Its own Consequences recorded that "a
 new per-story artefact class loses its exemption silently until added"
-(`project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md:172-173`).
+(`project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md:172-173`).
 The green phase shipped the list as `INSTANCE_CITER_RE`
 (`code/src/scripts/audits/doc-references.sh:612`), and the per-story instance forms on disk on
 05/11/2026 already outnumber it. Each of these folders holds per-story files named with `US###`

@@ -4,8 +4,8 @@
 **Date:** 17/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** None
-**Superseded by:** `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`
-**Related:** US008 · `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` (the advisory this one delivers) · `project-management/src/11-QA/PLANNING/QA-PLAN-US008-HOST-ONLY-COOKIES.md` AC-GAP-2 · `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US008-HOST-ONLY-COOKIES.md` TM-03, TM-04
+**Superseded by:** `project-management/src/15-DECISIONS/archive/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`
+**Related:** US008 · `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` (the advisory this one delivers) · `project-management/src/11-QA/PLANNING/QA-PLAN-US008-HOST-ONLY-COOKIES.md` AC-GAP-2 · `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US008-HOST-ONLY-COOKIES.md` TM-03, TM-04
 
 ---
 

@@ -3,7 +3,7 @@
 **Status:** Superseded
 **Date:** 30/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md`
+**Supersedes:** `project-management/src/15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md`
 **Superseded by:** `project-management/src/15-DECISIONS/ADR-US004-PATTERNED-REGISTRATION-PRESERVES-SHIPPED-TEMPLATES-09-10-2026.md`
 **Related:** US004
 
@@ -11,7 +11,7 @@
 
 ## Context
 
-`project-management/src/15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md`
+`project-management/src/15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md`
 decided that a row in `how-to/src/PROJECT-PATHS.md` may name a class of paths rather than one
 instance, with `###` translated to exactly three digit classes before `is_registered()` matches,
 and that US004 writes exactly two such rows — one for each per-story test record in
@@ -31,7 +31,7 @@ Which step touches which record is `project-management/src/18-TESTS/CLAUDE.md:30
 lifecycle_. The superseded record names the two records at their old root-level paths —
 "project-management/src/18-TESTS/US###-MANUAL-TESTING.md" and "US###-TEST-STATUS.md" — in its
 Context (`:22-23` and `:36`), its Option A (`:52`) and its Follow-on (`:117-118`) of
-`project-management/src/15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md`.
+`project-management/src/15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md`.
 Implemented as written, that Follow-on would register two paths nothing now creates and leave
 every citation of the split paths unregistered. `project-management/src/02-STORIES/US004.md:272-276`
 and `:286-287`, and
@@ -51,7 +51,7 @@ where its successor states it.
 written after the story that cites them exists — the guide at `17`, the automated record at `22`
 (`project-management/src/02-STORIES/US004.md:272-276`). Its Context, its four options and its
 reasons for choosing its Option B are unchanged and are not repeated here: read
-`project-management/src/15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md:12-101`.
+`project-management/src/15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md:12-101`.
 Its figures — 16 findings rising to 38, all 22 additions forward references — are that day's
 measurement at the root-level paths. `project-management/src/02-STORIES/US004.md:348-353` records
 that the 30/09/2026 backfill of the US001 to US009 manual guides means the figure cannot recur as
@@ -63,7 +63,7 @@ This record does not re-measure it.
 This record chooses only how the moved paths reach a record in force. The options for the
 decision itself — one literal row per story, patterned rows with `###` translated, shell globs, a
 `doc-references: ignore` marker per site — are the superseded record's, and its analysis stands:
-`project-management/src/15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md:47-85`.
+`project-management/src/15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md:47-85`.
 
 ### Option A — Edit the Accepted record in place
 
@@ -190,10 +190,10 @@ justification into every line it touches — 22 of them, as measured that day.
   pattern form and the duty to add a row when a citation first needs one. The duty is stated there
   once and in no workflow `CHECKLIST.md`.
 - **Follow-on:** the baseline-diff regime of
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
   restated unchanged on 30/09/2026 by
   `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   retires by its own terms when US004 lands — recorded here and in the sibling record,
-  `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`,
   rather than by a status change, because its reasoning was never overturned. Its supersession on
   30/09/2026, for the same path move as this record's, is not that retirement.

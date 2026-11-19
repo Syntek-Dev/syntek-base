@@ -8,7 +8,7 @@ _The manual testing guide for US004: the steps a tester follows against the cita
 - **Story plan:** `../../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` — the code master this guide was authored beside
 - **Branch:** `us004/citation-gate-git-index`
 - **Surface:** Gate — `code/src/scripts/audits/doc-references.sh`, run in a terminal. Each action is the command a person runs or the file they open; each outcome is what the gate prints, the exit code it returns, or what the file says.
-- **Authored from:** `../../15-DECISIONS/ADR-US004-PATTERNED-REGISTRATION-PRESERVES-SHIPPED-TEMPLATES-09-10-2026.md` (approved remediation, 09/10/2026) · `../../02-STORIES/US004.md` · `../../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` · `../../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` · `../../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md` · `../../15-DECISIONS/ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL-08-09-2026.md` (`Proposed` when read; Accepted 05/11/2026 at `d13b168`) · `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` · `../../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` · `../../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md`. No stage-1 design, GDPR, security, SEO, API or logging artefact exists for this story — every one of those flags reads `N/A`. Never code.
+- **Authored from:** `../../15-DECISIONS/ADR-US004-PATTERNED-REGISTRATION-PRESERVES-SHIPPED-TEMPLATES-09-10-2026.md` (approved remediation, 09/10/2026) · `../../02-STORIES/US004.md` · `../../11-QA/PLANNING/QA-PLAN-US004-CITATION-GATE-GIT-INDEX.md` · `../../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` · `../../15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md` · `../../15-DECISIONS/ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL-08-09-2026.md` (`Proposed` when read; Accepted 05/11/2026 at `d13b168`) · `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` · `../../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md` · `../../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md`. No stage-1 design, GDPR, security, SEO, API or logging artefact exists for this story — every one of those flags reads `N/A`. Never code.
 
 > **Authored before code, walked after it.** Which workflow writes which part of this file, and
 > when, is `../CLAUDE.md` → _The record lifecycle_. Every rule for filling it — authoring, open
@@ -36,7 +36,7 @@ _The manual testing guide for US004: the steps a tester follows against the cita
 - **The build captures:** taken on the story branch **before its first edit** and filled under
   _Recorded during the build_ — the story makes that a criterion, and
   `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
-  which supersedes `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, records the baseline
+  which supersedes `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, records the baseline
   here "before editing begins". Every row below is walked at `22`, the baseline rows reading
   those captures back.
 - **The detector at the baseline:** the script at the branch point already carries the 08/09/2026

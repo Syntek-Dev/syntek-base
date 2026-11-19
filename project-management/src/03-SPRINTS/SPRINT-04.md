@@ -109,7 +109,7 @@ weakness, and it is worse than when the record opened**; see Notes.
   07/09/2026.** US006's citation-gate Verification Check is written against two different regimes
   depending on whether **US004** — now SPRINT-03's sole `Must`, moved there from SPRINT-02 in the
   cascade re-plan — has landed. US004 retires the baseline-diff regime of
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
   superseded 30/09/2026 by
   `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which restates it unchanged, retirement terms included <!-- UPDATED 30/09/2026: successor added beside the superseded record,
@@ -749,7 +749,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       US004, now SPRINT-03's sole `Must`, and both branches are named for both members.** If US004
       has landed — the expected case, SPRINT-03 being built before this sprint — the gate exits `0`
       on a clean tree and is read as a plain pass for both, the baseline-diff regime of
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+      `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
       (superseded 30/09/2026 by
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
       which restates it unchanged)

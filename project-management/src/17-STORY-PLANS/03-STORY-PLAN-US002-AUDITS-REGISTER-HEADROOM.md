@@ -166,7 +166,7 @@ carries are dropped because the story touches none of them, not to dodge a gate.
 2. The register counts: 24 scripts, 26 Directory Tree rows, 24 inventory rows, 20 Dependencies rows
    as written; captured 03/11/2026 as 27 · 29 · 27 · 22.
 3. `bash code/src/scripts/audits/doc-references.sh` — **the finding identities, not just the
-   count**, per `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` <!-- doc-references: template-only -->,
+   count**, per `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` <!-- doc-references: template-only -->,
    superseded 30/09/2026 by
    `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` <!-- doc-references: template-only -->,
    which restates it unchanged but for the manual testing guide's path.

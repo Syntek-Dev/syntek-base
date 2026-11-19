@@ -1,7 +1,7 @@
 # QA Plan — US008 Host-only cookies under `__Host-` names
 
 > **Approved correction 09/10/2026:** the current report and migration lifecycle decision is
-> `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`.
+> `project-management/src/15-DECISIONS/archive/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`.
 > The earlier channel and dual-gate ADRs are Superseded; citations below retain their history.
 > The dated acceptance/specification correction at the end governs the repaired behaviour.
 
@@ -59,7 +59,7 @@
 >
 > - **The preview proof has its scenarios** (HP-08 round 3 Q11; HP-09 and ES-08 calls made while
 >   applying it, not its answers). AC-GAP-2 inverted the story's manual criterion on 17/09/2026, and
->   `project-management/src/15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` put
+>   `project-management/src/15-DECISIONS/archive/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` put
 >   the `template-update.sh` repair inside US008, but no scenario here proved it. HP-08 proves the
 >   report visible in a successful preview, HP-09 that the repair is general, and ES-08 that the
 >   failure path it leaves alone still behaves as before. Section 5's operator bullet follows.
@@ -75,7 +75,7 @@
 >   `v7.6.0` alone.
 > - **The advisory scenarios follow the dual-gated record** (the call). HP-05, HP-06, EC-09, EC-10
 >   and EC-11 described the single `v7.6.0` advisory of 09/09/2026, which
->   `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` split
+>   `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` split
 >   into the unversioned, state-gated `cookie-domain-conflict.sh` and the keyed
 >   `v<RELEASE>-host-only-cookies.sh`. EC-09 now tests the fix rather than demonstrating the
 >   defect; HP-10 carries the keyed entry's cutover notice, EC-12 the key derived at release and
@@ -295,11 +295,11 @@ the change lands, except where marked as requiring a generated project.
      operator notes, and exits 0 — **and prints no value from the file**"; HP-06's When read "The
      advisory runs" and its Then "It prints nothing and exits 0". Both described the single
      advisory of 09/09/2026, which
-     `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` split
+     `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` split
      into two entries on 17/09/2026; HP-10 is new under the same call, the keyed entry's scenario.
      ADDED 30/09/2026: HP-08 (settled 30/09/2026, 16-sprint-plans grilling round 3 Q11) and HP-09 (a call made 30/09/2026 while applying round 3 Q11, not one of its answers, accepted, settled 30/09/2026, 16-sprint-plans grilling round 5 Q16),
      the preview proof the story's manual criteria have required since
-     `project-management/src/15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`
+     `project-management/src/15-DECISIONS/archive/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`
      inverted them on 17/09/2026. The `template-update.sh`, `copier.yml` and story lines they cite
      were measured 30/09/2026, against the tree committed together with the 18-TESTS split. -->
 
@@ -364,7 +364,7 @@ operator already reads when an update fails.
      AC-GAP-1, and it is a test that currently proves the defect". EC-10's and EC-11's When read
      "The advisory runs", and EC-10's Then "It reports and does not act; the operator judges and
      dismisses it". All three described the single `v7.6.0` advisory, which
-     `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`
+     `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`
      replaced on 17/09/2026 with an unversioned entry for the broken state and a keyed entry for
      the cutover, the key derived at release. EC-09 now tests the fix; EC-12 and EC-13 are new. -->
 
@@ -572,11 +572,11 @@ because the next reader will otherwise raise them again.
 - `project-management/src/02-STORIES/US008.md` — the story this plan tests; all ten gaps above are `[RESOLVED] 17/09/2026` in it
 - `project-management/src/03-SPRINTS/SPRINT-05.md` — the record this story is the `Must` of; its QA and Security rows are first-pass values recomputed at each gate's close
 - `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US008-HOST-ONLY-COOKIES.md` · `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US008-HOST-ONLY-COOKIES.md` — the security gate whose Section 7 constraints this plan exercises
-- `project-management/src/15-DECISIONS/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` — the record AC-GAP-1 invalidated, superseded 17/09/2026 by `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`, which HP-05, HP-06, HP-10 and EC-09 to EC-13 test
-- `project-management/src/15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` — the preview repair HP-08, HP-09 and ES-08 prove; `project-management/src/15-DECISIONS/ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION-17-09-2026.md` — AC-GAP-3's resolution
+- `project-management/src/15-DECISIONS/archive/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` — the record AC-GAP-1 invalidated, superseded 17/09/2026 by `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`, which HP-05, HP-06, HP-10 and EC-09 to EC-13 test
+- `project-management/src/15-DECISIONS/archive/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` — the preview repair HP-08, HP-09 and ES-08 prove; `project-management/src/15-DECISIONS/ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION-17-09-2026.md` — AC-GAP-3's resolution
 - `project-management/src/17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` — P4 and P5, where the preview proof is run
 - `code/src/scripts/development/template-update.sh` — the script the preview proof runs
-- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the regime Section 7 runs under, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+- `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the regime Section 7 runs under, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
   which the 18-TESTS split superseded for the manual testing guide's path alone (settled
   30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide
@@ -597,7 +597,7 @@ HP-04 now uses the exact temporary browser fixture and admin password-change POS
 HP-08/09/10 require complete emitted advisory bodies, not matching banners. ES-08 uses the valid
 clean scratch project's deliberately nonexistent target ref and rejects a preflight failure.
 EC-12's pending entry is explicitly inactive; the real-tag proof remains at release.
-The controlling successor is `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`.
+The controlling successor is `project-management/src/15-DECISIONS/archive/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`.
 
 | ID    | Given                                                                                | When                             | Then                                                                     |
 | ----- | ------------------------------------------------------------------------------------ | -------------------------------- | ------------------------------------------------------------------------ |

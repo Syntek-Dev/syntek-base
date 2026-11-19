@@ -298,7 +298,7 @@ Section 7 are not restated here. Two of them are QA-visible and are the ones a t
 ## 7. Gate baselines, measured 05/09/2026
 
 Captured on the working tree at `7f978a9` plus the untracked US005 artefacts, **before** any edit
-this plan causes. `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+this plan causes. `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
 obliges a pre-edit capture for the citation gate; the other two are recorded on the same terms
 because a regression guard with no recorded starting point cannot show a regression.
 
@@ -335,7 +335,7 @@ The two `code/docs/ABSENCE.md` references arrived with US003's admission to SPRI
 twice.** Run with these files **untracked**, the whole-tree figure was **100**; run again with the
 same bytes entered into the git index and nothing else changed, it was **76**. Every one of the
 difference was a `[template-only citation]` — a citation of a tracked, copier-excluded PM artefact
-such as `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+such as `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
 or `project-management/src/01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md`. Not one survived being
 committed. `project-management/src/03-SPRINTS/SPRINT-02.md` cites the same ADR and has never
 reported one, because it has been committed since 02/09/2026.
@@ -366,7 +366,7 @@ that owns it, and the index state stated beside the figure.
 - `project-management/src/02-STORIES/US005.md` — the story this plan tests and fed fourteen of fifteen gaps back into
 - `project-management/src/03-SPRINTS/SPRINT-03.md` — the sprint whose flag union AC-GAP-15 recomputed
 - `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US005-RETRY-AMPLIFICATION.md` · `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US005-RETRY-AMPLIFICATION.md` — the security gate that raised AC-GAP-8, AC-GAP-11 and AC-GAP-15
-- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the regime Section 7 runs under, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+- `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the regime Section 7 runs under, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
   which the 18-TESTS split superseded for the manual testing guide's path alone (settled
   30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - `project-management/src/15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` — the rule the `doctrine-drift.sh` note rests on

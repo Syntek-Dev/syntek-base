@@ -3,7 +3,7 @@
 **Status:** Superseded
 **Date:** 09/10/2026
 **Deciders:** <%DEVELOPER_NAME%> — approved remediation in this conversation
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`, `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`
+**Supersedes:** `project-management/src/15-DECISIONS/archive/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`, `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`
 **Superseded by:** `project-management/src/15-DECISIONS/ADR-US008-PENDING-MIGRATION-USES-YAML-FALSE-09-10-2026.md`
 **Related:** US008 · `project-management/src/02-STORIES/US008.md` · `project-management/src/17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`
 

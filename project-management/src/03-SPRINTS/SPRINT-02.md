@@ -166,7 +166,7 @@ born behind it.
   SPRINT-03" — the same direction, one sprint later on each side — and it agrees with the build
   order rather than fighting it.
 - **Both members read `doc-references.sh` as a diff against a recorded baseline, never as a
-  pass**, per `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+  pass**, per `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
   (superseded 30/09/2026 by
   `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
@@ -219,7 +219,7 @@ born behind it.
      acceptance reads doc-references.sh as a diff against a recorded baseline, and US004 removes
      the defect that baseline exists for. Building US004 first means US003 is worked against a
      gate that simply passes, and the regime
-     project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md
+     project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md
      imposes is never exercised. **The ordering is therefore now cross-sprint**, and is restated
      in project-management/src/03-SPRINTS/SPRINT-03.md Dependencies rather than left only here —
      a constraint recorded only in the sprint a story has left is a constraint nobody reads.
@@ -631,7 +631,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
       baseline-diff scenario stands as written.** This re-plan (07/09/2026) works US003 ahead of
       US004, so the regime its scenario was written for is the one it is worked under. The
       revision pass recorded on 05/09/2026 — recast the scenario, the before/after QA task and
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+      `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
       (superseded 30/09/2026 by
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
       which restates it unchanged but for the manual testing guide's path)
@@ -677,7 +677,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      documentation only, and per code/docs/GATE-REPORTING.md a skip is never reported as a pass. -->
 
 - [ ] `bash code/src/scripts/audits/doc-references.sh` — **read as a diff, not as a pass**, per
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+      `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
       (superseded 30/09/2026 by
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
       which restates it unchanged and is the record that names the MANUAL/ path below),

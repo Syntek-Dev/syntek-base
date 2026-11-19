@@ -215,9 +215,9 @@ _None._
 - **`GAPS.md`'s 01/09/2026 entry** — the three shipped files still instructing the `CONTEXT.md`
   index row. Adjacent to US004's subject and owned by no slice on any map; explicitly out.
 - **The `MAP-GATE-PARITY` question** — whether a gate means the same thing in a generated project.
-  `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` is one instance of it and
+  `../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` is one instance of it and
   claims none of its scope; so is its successor of 30/09/2026,
-  `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  `../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which restates it unchanged but for the 18-TESTS template paths. <!-- UPDATED 30/09/2026:
   successor added beside the superseded record (settled 30/09/2026, 16-sprint-plans grilling
   round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
@@ -317,7 +317,7 @@ re-measured rather than inherited, which US004's own acceptance already requires
 lands, the intra-sprint order is **US004 then US003** — the original order of 02/09/2026 — and that
 order is what revives US003's revision pass: the Gherkin scenario _"The citation gate is read
 against a recorded baseline, never as a bare pass"_, the QA task recording before/after finding
-counts, and `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (superseded
+counts, and `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (superseded
 30/09/2026 by
 `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which
 restates it unchanged but for the manual testing guide's path) are all written against a defect
@@ -647,13 +647,13 @@ US003's other twelve rows being `N/A`.
 
 ### Decisions binding this sprint
 
-| ADR                                                                      | Binds                                                                                                                                                                                                                                                                                                          |
-| ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`   | Check 2 reads the citing file's name, never `is_template_only()`. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the 18-TESTS template paths in its allowlist                                          |
-| `../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md` | A `PROJECT-PATHS.md` row may name a class; `###` is three digits exactly. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the two rows' paths, now under `18-TESTS/MANUAL/` and `18-TESTS/AUTOMATED/` |
-| `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`   | The full-path citation form, and that no gate verifies a PM `src/` instance citation. **US004 makes the second half false**, which the ADR names as its own retirement condition                                                                                                                               |
-| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`    | A red `doc-references.sh` is read as a diff. **Still in force** — see below. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path                                             |
-| `../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`    | Prose doctrine is verified by human read-across; `doctrine-drift.sh` is a guard only                                                                                                                                                                                                                           |
+| ADR                                                                              | Binds                                                                                                                                                                                                                                                                                                          |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`   | Check 2 reads the citing file's name, never `is_template_only()`. Superseded 30/09/2026 by `../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the 18-TESTS template paths in its allowlist                                  |
+| `../15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md` | A `PROJECT-PATHS.md` row may name a class; `###` is three digits exactly. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the two rows' paths, now under `18-TESTS/MANUAL/` and `18-TESTS/AUTOMATED/` |
+| `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`           | The full-path citation form, and that no gate verifies a PM `src/` instance citation. **US004 makes the second half false**, which the ADR names as its own retirement condition                                                                                                                               |
+| `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`    | A red `doc-references.sh` is read as a diff. **Still in force** — see below. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path                                             |
+| `../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`            | Prose doctrine is verified by human read-across; `doctrine-drift.sh` is a guard only                                                                                                                                                                                                                           |
 
 <!-- UPDATED 30/09/2026: the first, second and fourth rows gain their successors, beside the three
      records the 18-TESTS split superseded that day. Each successor restates its record's decision

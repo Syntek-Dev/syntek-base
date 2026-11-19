@@ -3,15 +3,15 @@
 **Status:** Superseded
 **Date:** 30/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`
-**Superseded by:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md`
+**Supersedes:** `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`
+**Superseded by:** `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md`
 **Related:** US004
 
 ---
 
 ## Context
 
-`project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` decided
+`project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` decided
 on 02/09/2026 how Check 2 of `code/src/scripts/audits/doc-references.sh` tells whether a citing
 file ships: by testing the citer's own **filename** against the instance forms, not by asking
 `is_template_only()` and not by globbing `project-management/src/*`. **This record changes nothing
@@ -23,9 +23,9 @@ about that decision.** It exists because two paths the decision names have moved
 `project-management/src/18-TESTS/AUTOMATED/US000-TEST-STATUS.md`, and `copier.yml:185-186`
 re-includes them there. The superseded record names them twice: as `18-TESTS/US000-*` in the copier
 allowlist its Context weighs
-(`project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md:46`), and
+(`project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md:46`), and
 as `US000-MANUAL-TESTING.md` in the Follow-on that fixes US004's fixture pair
-(`project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md:115`).
+(`project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md:115`).
 
 **Why a successor rather than an edit.** The split first re-pointed those paths inside the Accepted
 record, in place. That edit is reverted — the record's text is its committed text, bar the Status
@@ -39,11 +39,11 @@ successor states it.
 
 **What did not move.** The problem, the forces and the options analysis are the superseded record's,
 read against the tree of 02/09/2026, and are cited rather than copied: its _Context_
-(`project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md:12-53`)
+(`project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md:12-53`)
 for why Check 2 must ask whether the citer ships, why `is_template_only()` is vacuous in a generated
 project (`N-009` Q31), and why `project-management/src/` is not a proxy for "does not ship"; its
 _Options considered_
-(`project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md:55-87`)
+(`project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md:55-87`)
 for the three ways of answering that question. One line anchor has drifted without the decision
 moving: the superseded record reads copier's `project-management/src/` re-includes at
 `copier.yml:120-146`; on 30/09/2026 they read at `copier.yml:160-188`, under the exclude at
@@ -106,8 +106,8 @@ B and C on how Check 2 decides whether a citer ships — stands unchanged and is
 
 - **Summary:** a single record superseding this one and the two other Accepted records the split
   re-pointed,
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` and
-  `project-management/src/15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md`.
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` and
+  `project-management/src/15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md`.
 - **Pros:** one record for one cause.
 - **Cons:** three decisions in one ADR
   (`project-management/src/15-DECISIONS/ADR-US000-TEMPLATE.md:7`), three filenames in a
@@ -175,7 +175,7 @@ keep policing.
 - **Follow-on:** the fixture pair added by US004 must cover
   `project-management/src/18-TESTS/MANUAL/US000-MANUAL-TESTING.md` — instance-shaped, shipped, and
   therefore **not** exempt — because that is the case the two exclusions exist for.
-- **Follow-on:** `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+- **Follow-on:** `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
   **retires by its own terms when US004 lands.** It is not superseded — its reasoning was correct
   and its stated condition is simply met — but a reader of that record would otherwise have no way
   to discover it had lapsed. Recorded here rather than by a status change. _Carried forward

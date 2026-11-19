@@ -128,7 +128,7 @@ stretch. It is not counted until it does.
 - **US004 unblocks** slice `S-01` on `project-management/src/01-FEATURE-MAPS/MAP-NAVIGATION.md`,
   which changes the same script's citation emit and must not land first, and it **retires the
   baseline-diff regime** of
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` by
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` by
   that record's own terms — with the caveat `03-SPRINT-PLAN-03.md` recorded on 05/09/2026, which
   survives the re-plan: the ADR retires when the repair lands **and the gate goes green**, a
   conjunction, and it calls for a superseding record nobody has yet written. A plain pass is not

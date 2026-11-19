@@ -35,11 +35,11 @@
      ../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md's order sentence (:417-418). Build order 1 is
      first of one: the sprint has no other member. -->
 
-Implements `../15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` (a map's
+Implements `../15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` (a map's
 `**Status**` header is one of five plain values — `Charting`, `Resolving`,
 `Blockers clear — stories may start`, `Complete`, `Not started` — with any prose after the first
 middle dot, each value derived from the map's own counts, `Blockers clear` winning the one overlap)
-and `../15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (an index reads every
+and `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (an index reads every
 register's Status by one rule: the carrier value with the trailing HTML comment, bold markers,
 backticks and everything from the first space-middle-dot-space removed, then trimmed, applied to
 the value after the key), under
@@ -253,8 +253,8 @@ rounds between 21/09/2026 and 27/09/2026. What is fixed before this plan:
 
 | Decided                                                                                                            | By                                                                                    | What it fixes                                                                          |
 | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| A map's Status is `<enum> · <prose>`, five plain values, each derived from the map's own counts                    | `../15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`                | The one register value nothing could read as a value                                   |
-| One read rule for all seven carriers                                                                               | `../15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                      | Three different answers to "what is a row's Status", and two carriers nobody had asked |
+| A map's Status is `<enum> · <prose>`, five plain values, each derived from the map's own counts                    | `../15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`        | The one register value nothing could read as a value                                   |
+| One read rule for all seven carriers                                                                               | `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`              | Three different answers to "what is a row's Status", and two carriers nobody had asked |
 | Seven lines inside the one copy-gated chain, ahead of `rmdir`, in the one-line form; no second task, no `mkdir -p` | ST01, ST02, ST08 (settled 21/09/2026, grilling round 1 Q3)                            | Seed-once, and the three parsers that read the line                                    |
 | A third `shipped-registers.sh` family holding its own constant list of seven, plus one seed-row clause             | ST03, ST06 (settled 21/09/2026, grilling round 1 Q2; settled 27/09/2026, round 7 Q34) | Emptiness proved, never trusted; the negation leak the generated-tree check cannot see |
 | An update probe that changes every seed, asserts byte-identity, and goes red with the gate removed                 | ST07 (settled 27/09/2026, grilling round 3 Q16)                                       | A probe that could otherwise pass whether or not the gate exists                       |

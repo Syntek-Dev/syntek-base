@@ -4,7 +4,7 @@
 **Status note:** Accepted 19/11/2026 by <%DEVELOPER_NAME%> at US010's re-cut grilling (round 2 Q4), in the same pass that settled the design it records
 **Date:** 19/11/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`, `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`
+**Supersedes:** `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`, `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`
 **Superseded by:** None
 **Related:** US010 · US011 (absorbed) · `project-management/src/02-STORIES/US010.md` (_Re-cut — 19/11/2026_) · `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` · `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` N-001, N-002, N-003
 
@@ -14,10 +14,10 @@
 
 **US010 was cut on 20/09/2026 to give seven registers a hand-written index file each**, and two
 records of 21/09/2026 decided how those files would read status. The first,
-`project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`, made a
+`project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`, made a
 map's `**Status**` header `<enum> · <prose>` — a five-value enum, the value plain, any prose after
 the first middle dot — so an index could mirror a value that string-equals. The second,
-`project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`, gave every
+`project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`, gave every
 index one read rule for every register's carrier: strip bold, backticks and a trailing comment, cut
 at the first space-middle-dot-space, trim.
 

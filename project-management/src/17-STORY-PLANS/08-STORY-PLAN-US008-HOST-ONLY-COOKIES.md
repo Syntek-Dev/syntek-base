@@ -27,21 +27,21 @@
      {US008, US009}, the order `../16-SPRINT-PLANS/05-SPRINT-PLAN-05.md` -> _Build order_ settled
      on 17/09/2026 on the `Must`-before-`Should` rule in `../../docs/planning/CADENCE.md`. -->
 
-Implements `../15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`,
+Implements `../15-DECISIONS/archive/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`,
 which supersedes the following two records on 09/10/2026 while retaining their dual-gate and
 channel-ownership principles. Earlier decisions, preserved as history:
-`../15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` (the advisory ships
+`../15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` (the advisory ships
 as **two** `_migrations:` entries gated on different things — an unversioned, state-gated entry for
 the always-wrong `_DOMAIN`-beside-`__Host-` combination, and a version-keyed entry for the one-time
 cutover notice — with the key derived at release against `git tag` and never carried from a
-design-time record), `../15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` (the
+design-time record), `../15-DECISIONS/archive/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` (the
 `template-update.sh` preview blindness is repaired **inside** this story, and the rule beyond it:
 a story that specifies a mitigation owns the channel that delivers it) and
 `../15-DECISIONS/ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION-17-09-2026.md` (`SECURE_PROXY_SSL_HEADER`
 is a stated precondition of the doctrine, and the requirement that satisfies it is written into
 `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` Section 6), under
 `../15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md` (this story's citation criterion
-is the scoped run) and `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red
+is the scoped run) and `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red
 `doc-references.sh` is read as a diff against a recorded baseline until US004 retires the regime;
 superseded 30/09/2026, outside this story, by
 `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
@@ -49,7 +49,7 @@ which restates it unchanged but for the manual testing guide's path). <!-- UPDAT
 which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 
-`../15-DECISIONS/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` is **superseded** by the first
+`../15-DECISIONS/archive/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` is **superseded** by the first
 of those and is cited here because a superseded record stays readable: its rule that a key names
 the release the change shipped in whatever the tier survives intact, as does its
 `Template.migration_tasks()` proof, and neither is re-derived by its replacement.
@@ -147,10 +147,10 @@ hygiene; `S-04`'s Phase 2 table; and **amending, appending to or superseding
 `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which stays exactly as it
 is** (Q13, <%DEVELOPER_NAME%> explicit, its object moved to that record: settled 30/09/2026, 16-sprint-plans grilling round 8 Q19) — its **Superseded by** reads `—` today and must
 still read `—` at close, its **Supersedes** names the record it replaced, and this story edits neither ADR. That record,
-`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, was superseded on 30/09/2026 —
+`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, was superseded on 30/09/2026 —
 by the 18-TESTS split, not by this story. Q13's intent — this story leaves the binding record alone — is kept, and only its object has moved.
 <!-- CORRECTED 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 8 Q19): from "**amending" the
-sentence read "**amending, appending to or superseding `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which stays exactly as it is** (Q13, <%DEVELOPER_NAME%> explicit) — both its supersession fields read `—` today and must still read `—` at close." until then,
+sentence read "**amending, appending to or superseding `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which stays exactly as it is** (Q13, <%DEVELOPER_NAME%> explicit) — both its supersession fields read `—` today and must still read `—` at close." until then,
 true until the 18-TESTS split superseded that record on 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17;
 settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). Q13's criterion now reads against the successor, whose
 **Supersedes** names the 02/09/2026 record, so the field that must still read — at close is its **Superseded by**. -->
@@ -637,7 +637,7 @@ Codex release and nothing else.
 > licence, that held for both then and holds for the ADR alone now, the story having been
 > corrected at the `16-sprint-plans` gate on 30/09/2026 (see the comment beneath the note).
 > `../02-STORIES/US008.md:675` and
-> `../15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md:145` both read "`v7.6.0` is
+> `../15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md:145` both read "`v7.6.0` is
 > tagged at `16aac54`". Re-measured 18/09/2026, the count corrected 30/09/2026: **72 tags, newest
 > `v7.5.0`, and `git tag --points-at 16aac54` returns nothing.** Both documents contradict
 > themselves elsewhere and are right there — the story's own `:638-639` says "there is **NO** `v7.6.0` tag", and the ADR's
@@ -1461,9 +1461,9 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US008
       them, 18/09/2026), a `GAPS.md` row stands in its place.** One of the two, never neither
 - [ ] `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` is **cited and
       unchanged** — not amended, appended to or superseded, its **Superseded by** still reading `—` (Q13, <%DEVELOPER_NAME%> explicit, its object moved to this record: settled 30/09/2026, 16-sprint-plans grilling round 8 Q19).
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which it superseded 30/09/2026 for the 18-TESTS split, outside this story, is
+      `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which it superseded 30/09/2026 for the 18-TESTS split, outside this story, is
       cited beside it and not edited by this story either
-      <!-- CORRECTED 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 8 Q19): the item read "`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is **cited and unchanged** — both its supersession fields still read `—` (Q13, <%DEVELOPER_NAME%> explicit)" until then, true until the 18-TESTS split superseded that record on 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18); Q13's criterion now reads against its successor, as the out-of-scope list above says. -->
+      <!-- CORRECTED 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 8 Q19): the item read "`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is **cited and unchanged** — both its supersession fields still read `—` (Q13, <%DEVELOPER_NAME%> explicit)" until then, true until the 18-TESTS split superseded that record on 30/09/2026 (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18); Q13's criterion now reads against its successor, as the out-of-scope list above says. -->
 - [ ] Every gate above run and recorded per `code/docs/GATE-REPORTING.md`; nothing skipped silently
       and nothing not-run reported as clean
 - [ ] The automated record written and the manual guide walked by `22`, the guide signed off by a
@@ -1527,7 +1527,7 @@ satisfy ES-08. Record the valid source ref and the missing-ref diagnosis.
 
 ### Release and report correction — 09/10/2026
 
-The controlling successor is `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`. P4 replays complete captured output once; P5
+The controlling successor is `project-management/src/15-DECISIONS/archive/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`. P4 replays complete captured output once; P5
 keeps the pending cutover entry explicitly inactive. The release commit assigns the version and
 activates it together; no cutover notice may run before that commit. Pending, crossing and later
 update fixture proofs are required in addition to recording the real tag at release.

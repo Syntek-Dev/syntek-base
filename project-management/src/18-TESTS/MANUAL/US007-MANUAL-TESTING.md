@@ -8,7 +8,7 @@ _The manual testing guide for US007 — the checks a tester runs step by step, a
 - **Story plan:** `../../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — the code master this guide was authored beside
 - **Branch:** `us007/status-vocabulary-one-owner`
 - **Surface:** Gate — five audit gates, `pm-board.sh --check` and two Markdown syntax legs, plus read-acrosses of Markdown in an editor. No stack, no rendered page
-- **Authored from:** `../../02-STORIES/US007.md` (_Re-cut criteria — 02/11/2026_, scenarios RC-1 to RC-6 and _Measured as already true_, which supersede its Acceptance Criteria and Tasks; Acceptance Criteria and its thirteen scenarios, QA Acceptance Criteria — Manual, QA Tasks — Manual, Verification Checks, Definition of Done); `../../11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` (Sections 1 to 8); `../../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` (_Re-cut — 02/11/2026_, Approach, Phases 0 to 6, Quality Gates, Testing, Documentation Write-Ups, Sprint Verification Checklist, Definition of Done); `../../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md`; `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (Decision). No `04`–`14` artefact exists for this story: every flag but `QA` reads `N/A`. Never code.
+- **Authored from:** `../../02-STORIES/US007.md` (_Re-cut criteria — 02/11/2026_, scenarios RC-1 to RC-6 and _Measured as already true_, which supersede its Acceptance Criteria and Tasks; Acceptance Criteria and its thirteen scenarios, QA Acceptance Criteria — Manual, QA Tasks — Manual, Verification Checks, Definition of Done); `../../11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` (Sections 1 to 8); `../../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` (_Re-cut — 02/11/2026_, Approach, Phases 0 to 6, Quality Gates, Testing, Documentation Write-Ups, Sprint Verification Checklist, Definition of Done); `../../16-SPRINT-PLANS/01-SPRINT-PLAN-01.md`; `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (Decision). No `04`–`14` artefact exists for this story: every flag but `QA` reads `N/A`. Never code.
 
 > **Authored before code, walked after it.** Which workflow writes which part of this file, and
 > when, is `../CLAUDE.md` → _The record lifecycle_. Every rule for filling it — authoring, open
@@ -81,7 +81,7 @@ _The manual testing guide for US007 — the checks a tester runs step by step, a
 
 The captured sets and the figures the rows below read. Story Scenario 13 and
 `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
-which supersedes `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, put the baseline in this
+which supersedes `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, put the baseline in this
 file, so the implementer pastes its half here at the plan's Phase 0, before the first edit —
 never reconstructed afterwards; the walker pastes the close half at the walk. Each set is a fenced
 block beneath this table — an empty set as an empty block with the gate's own zero-count line
@@ -327,7 +327,7 @@ Filled at the walk.
 - `../../11-QA/IMPLEMENTATION/` — whether the specified scenarios were met, recorded at the closeout
 - `../../05-USER-FLOW/CONSOLIDATED-IDEAS/` — where the `Flow` column's step numbers would be defined; this story has no user flow, so every `Flow` cell is `—`
 - `../../20-FINDINGS/` — where each amendment made at the walk is recorded
-- `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the baseline-diff regime the gate rows run under; superseded 30/09/2026 by `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged and names this file as where the baseline is recorded
+- `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the baseline-diff regime the gate rows run under; superseded 30/09/2026 by `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged and names this file as where the baseline is recorded
 - `code/docs/GATE-REPORTING.md` — why a gate that could not decide is never reported as a pass
 
 <!-- CORRECTED 09/10/2026 after adversarial review: the casing-check population excludes

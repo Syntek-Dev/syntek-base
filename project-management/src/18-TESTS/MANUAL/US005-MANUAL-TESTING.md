@@ -8,7 +8,7 @@ _The manual testing guide for US005: the reads, recomputations and gate runs a t
 - **Story plan:** `../../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` — the code master this guide was authored beside
 - **Branch:** `us005/retry-ownership-and-budgets`
 - **Surface:** Gate — three documentation gates run in a terminal, and Markdown read in an editor. Each action is the command a person runs or the passage they open; each outcome is what the gate prints or what the passage states.
-- **Authored from:** `../../02-STORIES/US005.md` · `../../11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` · `../../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US005-RETRY-AMPLIFICATION.md` · `../../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US005-RETRY-AMPLIFICATION.md` · `../../15-DECISIONS/ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026.md` · `../../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` · `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` · `../../16-SPRINT-PLANS/04-SPRINT-PLAN-04.md` · `../../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`. No stage-1 design, GDPR, SEO, API or logging artefact exists for this story — every one of those flags reads `N/A`. Never code.
+- **Authored from:** `../../02-STORIES/US005.md` · `../../11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` · `../../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US005-RETRY-AMPLIFICATION.md` · `../../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US005-RETRY-AMPLIFICATION.md` · `../../15-DECISIONS/ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026.md` · `../../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md` · `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` · `../../16-SPRINT-PLANS/04-SPRINT-PLAN-04.md` · `../../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md`. No stage-1 design, GDPR, SEO, API or logging artefact exists for this story — every one of those flags reads `N/A`. Never code.
 
 > **Authored before code, walked after it.** Which workflow writes which part of this file, and
 > when, is `../CLAUDE.md` → _The record lifecycle_. Every rule for filling it — authoring, open
@@ -38,7 +38,7 @@ _The manual testing guide for US005: the reads, recomputations and gate runs a t
 - **The build captures:** taken on the story branch **before its first edit** and filled under
   _Recorded during the build_ — the story requires the inventory captured before any statement is
   edited, and `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
-  which supersedes `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, records a
+  which supersedes `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, records a
   baseline "before editing begins". Every row below is walked at `22`, the first section reading
   those captures back.
 - **Index state:** record `git status --porcelain` and `HEAD` beside every citation-gate figure — a

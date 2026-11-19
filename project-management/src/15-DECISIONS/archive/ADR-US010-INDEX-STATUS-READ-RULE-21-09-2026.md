@@ -6,7 +6,7 @@
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** None
 **Superseded by:** `project-management/src/15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`
-**Related:** US010 · US011 · `project-management/src/02-STORIES/US010.md` · `project-management/src/02-STORIES/US011.md` · `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` N-002, N-003 and slice S-03 · `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` (the writer-side format for maps)
+**Related:** US010 · US011 · `project-management/src/02-STORIES/US010.md` · `project-management/src/02-STORIES/US011.md` · `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` N-002, N-003 and slice S-03 · `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` (the writer-side format for maps)
 
 ---
 
@@ -32,7 +32,7 @@ re-measured under it on 27/09/2026 and is unchanged:
   to :33 at HEAD. A concurrent session has moved SPRINT-07's to :41. 7 instances, all `Planned`.
 - **`15-DECISIONS`** (`ADR-*.md`) — `**Status:**` at :3, or :11 in one record. 20 instances: 15
   `Accepted`, 3 `Superseded`, 2 `Proposed`. This pass's two records, this one and
-  `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`, match
+  `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`, match
   the pattern and read `Proposed`, but are untracked on 27/09/2026 and are not counted.
 - **`17-STORY-PLANS`** (`[0-9]{2}-STORY-PLAN-US[0-9]{3}-*.md`) — a table row at :9 whose value cell
   is backticked. 9 instances: 8 `Open`, 1 `Blocked`.
@@ -107,7 +107,7 @@ no instance yet are the two with no reading.
 - **The same on the decision register's tail:** the Supersedes line of
   `project-management/src/15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md:6` and
   the Superseded by line of
-  `project-management/src/15-DECISIONS/ADR-US002-REGISTER-SPLITS-RATHER-THAN-RELOCATES-02-09-2026.md:7`
+  `project-management/src/15-DECISIONS/archive/ADR-US002-REGISTER-SPLITS-RATHER-THAN-RELOCATES-02-09-2026.md:7`
   each end in a citation-marker comment.
 - **Bold:** every prose-line key and the bug row's key cell are bold, and ten live maps bold their
   value as well.
@@ -325,7 +325,7 @@ register (round 1 Q7).
   was corrected on 27/09/2026 at the wayfinder resolve sitting on that map, which also made its two
   Acceptance-cell fixes (settled 27/09/2026, grilling round 5 Q30;
   `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md:231-236`, session log :617;
-  `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`,
+  `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`,
   Follow-on). Neither this record nor US011 edited the map. S-03's gate is built to the corrected
   N-003.
 - **Follow-on** `[RESOLVED] 27/09/2026` — US010 removes the `PLAN-<DESCRIPTOR>.md` permission from

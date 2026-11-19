@@ -76,8 +76,8 @@
 > and the `copier.yml` citations moved with the 18-TESTS split committed beside it:
 >
 > - **Both US010 ADRs read `Accepted`**, not `Proposed` pending review:
->   `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md:3`
->   and `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md:3`,
+>   `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md:3`
+>   and `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md:3`,
 >   committed Accepted at 0c5e635 after round 4 Q27's independent review. Corrected in Section
 >   2's Decisions row and the Cross-references entry.
 > - **The Security flag's widened value is written back.** Section 2 said the replacement text
@@ -598,7 +598,7 @@ question it never asked is worse than one that says it did not ask. The answers 
 - `project-management/src/10-SECURITY/AUDITS/PLANNING/` · `project-management/src/10-SECURITY/VULNERABILITIES/PLANNING/` — the sibling code audit and the escalated findings; this story writes to neither, and Section 6 states why
 - `project-management/src/02-STORIES/US010.md` — the story being assessed, whose `ST01`–`ST05` Section 7 carries
 - `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` — `S-01`'s manifest, and `S-03`, which this story precedes
-- `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` · `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the two records behind 7.10 and 7.9, both `Accepted` (each record's :3), accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (grilling round 4 Q27), and committed Accepted at 0c5e635
+- `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` · `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the two records behind 7.10 and 7.9, both `Accepted` (each record's :3), accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (grilling round 4 Q27), and committed Accepted at 0c5e635
 - `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US009-HOOK-ARMING.md` — the shape precedent for carrying a story's `ST` numbers into Section 7
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP Top 10 (2025), and NIST CSF 2.0 standards
 - `project-management/workflows/10-security-checks/` — the workflow that produces this

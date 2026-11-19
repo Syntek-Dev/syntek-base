@@ -8,7 +8,7 @@ _The manual testing guide for US006: the enumerated proof-case list walked by ha
 - **Story plan:** `../../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md` — the code master this guide was authored beside
 - **Branch:** `us006/posture-guard`
 - **Surface:** CLI — the six guarded scripts under `code/src/scripts/`, run in a terminal. Each action is the command a person runs; each outcome is what it prints, the exit code it returns, and what it did or did not destroy.
-- **Authored from:** `../../02-STORIES/US006.md` — its bound-set table and its enumerated proof-case list, cited below as "case N" · `../../11-QA/PLANNING/QA-PLAN-US006-POSTURE-GUARD.md` · `../../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US006-POSTURE-GUARD.md` · `../../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US006-POSTURE-GUARD.md` · `../../15-DECISIONS/ADR-US006-POSTURE-CARRIER-FAILS-CLOSED-05-09-2026.md` · `../../15-DECISIONS/ADR-US006-OVERRIDE-NAMES-THE-LIVE-POSTURE-05-09-2026.md` · `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` · `../../16-SPRINT-PLANS/04-SPRINT-PLAN-04.md` · `../../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`. No stage-1 design, GDPR, SEO, API or logging artefact exists for this story — every one of those flags reads `N/A`. Never code.
+- **Authored from:** `../../02-STORIES/US006.md` — its bound-set table and its enumerated proof-case list, cited below as "case N" · `../../11-QA/PLANNING/QA-PLAN-US006-POSTURE-GUARD.md` · `../../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US006-POSTURE-GUARD.md` · `../../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US006-POSTURE-GUARD.md` · `../../15-DECISIONS/ADR-US006-POSTURE-CARRIER-FAILS-CLOSED-05-09-2026.md` · `../../15-DECISIONS/ADR-US006-OVERRIDE-NAMES-THE-LIVE-POSTURE-05-09-2026.md` · `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` · `../../16-SPRINT-PLANS/04-SPRINT-PLAN-04.md` · `../../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`. No stage-1 design, GDPR, SEO, API or logging artefact exists for this story — every one of those flags reads `N/A`. Never code.
 
 > **Authored before code, walked after it.** Which workflow writes which part of this file, and
 > when, is `../CLAUDE.md` → _The record lifecycle_. Every rule for filling it — authoring, open
@@ -48,7 +48,7 @@ _The manual testing guide for US006: the enumerated proof-case list walked by ha
 - **The build captures:** taken on the story branch **before its first edit** and filled under
   _Recorded during the build_ — the story's _Verification Checks_ and the plan's P0 require it,
   and `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
-  which supersedes `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, records a baseline
+  which supersedes `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, records a baseline
   here "before editing begins". Every row below is walked at `22`, the first section reading
   those captures back.
 - **Recording a refusal:** `Notes` carries the observed exit code and the message's first line for

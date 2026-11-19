@@ -416,7 +416,7 @@ started`, string-equal under the read rule to that map's own header; Instance a 
   span do not escape in CommonMark, "as" has no space before it, and the continuation at :471 is
   indented one space rather than six. Settled 21/09/2026, grilling round 1 Q5: one read rule for all
   seven carriers, recorded in
-  `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (Proposed).
+  `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (Proposed).
   **The rule applies to the value after the key, never to the whole line.** For a finding, cutting
   the metadata line at its first middle dot loses the Status entirely (EC-08). **Resolution:** :311
   reads "the Status column holds the artefact's own value under the one read rule — the carrier value
@@ -431,7 +431,7 @@ started`, string-equal under the read rule to that map's own header; Instance a 
   carry four values and allow bold, and no task edits the definition site.** US010.md:323-329
   (as read 21/09/2026), :447-449 and :518-520.
   Settled 21/09/2026, grilling round 2 Q11 (with round 1 Q4's fifth value) and recorded in
-  `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`
+  `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`
   (Proposed): the header is `<enum> · <prose>`, the value plain — no bold, no backticks — over five
   values, `Charting`, `Resolving`, `Blockers clear — stories may start`, `Complete` and `Not
 started`. "Begins with one of" (:326) admits a bold value, which ten of the twelve headers being
@@ -685,7 +685,7 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   **32 findings, exit 1, every one `[instance citation]`** (Section 7); the handoff's 47 was taken
   while the file was untracked. The developer settled on 20/09/2026 to **wait for US004** rather
   than add interim markers (SPRINT-06.md:361-362, working tree, as read 21/09/2026), so
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` governs
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` governs
   until US004 lands. Separately, "every citation this story writes … resolves" is assigned to a
   script that reads backticked tokens only, and MAP-INDEX.md's Instance cells are Markdown links,
   so none is read (`project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`).
@@ -1286,11 +1286,11 @@ the five values and the re-derivation of every header stand, and no criterion ho
 - `project-management/src/02-STORIES/US010.md` — the story this plan tests; all twenty-three gaps above are `[RESOLVED] 27/09/2026` in it, the citations re-measured 30/09/2026 against the story as the 16-sprint-plans gate corrected it (27/09/2026 against its pre-commit text until then)
 - `project-management/src/03-SPRINTS/SPRINT-06.md` — the record whose mirrored criteria follow the story's
 - `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US010-SEEDED-REGISTER-INDEXES.md` · `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US010-SEEDED-REGISTER-INDEXES.md` — the security gate Section 5 traces, TM-01 to TM-18 and Sections 7.1 to 7.15
-- `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` · `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the writer format and reader rule, both `Accepted` — committed so at `0c5e635`, after the independent review round 4 Q27 required (settled 27/09/2026). AMENDED 30/09/2026: read "both `Proposed`, accepted in the 27/09/2026 write-back pass only after an independent review and before the US010 commit" until then
+- `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` · `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the writer format and reader rule, both `Accepted` — committed so at `0c5e635`, after the independent review round 4 Q27 required (settled 27/09/2026). AMENDED 30/09/2026: read "both `Proposed`, accepted in the 27/09/2026 write-back pass only after an independent review and before the US010 commit" until then
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md` — the sibling plan sharing AC-GAP-3 and AC-GAP-7
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US012-SEED-PRESENCE-GATE.md` — the seed presence loop this story's `SEEDED` growth meets
 - `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` — S-01, S-02, S-03 and N-001 to N-006
-- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the reporting regime AC-GAP-15 applies, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+- `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the reporting regime AC-GAP-15 applies, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
   which the 18-TESTS split superseded for the manual testing guide's path alone (settled
   30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide

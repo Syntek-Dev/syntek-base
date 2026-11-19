@@ -1,7 +1,7 @@
 # Threat Model Plan — US008 Host-only cookies under `__Host-` names
 
 > **Approved correction 09/10/2026:** the current report and migration lifecycle decision is
-> `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`.
+> `project-management/src/15-DECISIONS/archive/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`.
 > The earlier channel and dual-gate ADRs are Superseded; citations below retain their history.
 > The dated acceptance/specification correction at the end governs the repaired behaviour.
 
@@ -300,7 +300,7 @@ carries it, and that is not yet decided. The constraint is in Section 4b.11, and
 artefact that has to move, which makes this gate `15-decisions`' first piece of input.
 
 **Settled 17/09/2026 at `15-decisions`.**
-`project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` supersedes
+`project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` supersedes
 the record that pinned `v7.6.0`. The always-wrong state now rides an unversioned, state-gated
 entry that no key can strand. The cutover notice's key is derived at release against `git tag`,
 and the tag lands in the same act. Which release that is remains open by design, and the record
@@ -363,7 +363,7 @@ Per `code/docs/GATE-REPORTING.md` this is never reported as "the security gate p
      `SECURE_SSL_REDIRECT`. See QA-PLAN AC-GAP-3 and the ADR named below. -->
 
 **All five are settled.** Q1 by
-`project-management/src/15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` — the
+`project-management/src/15-DECISIONS/archive/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` — the
 preview is repaired inside this story, so the advisory reaches an operator who previews. Q2 by
 `ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION-17-09-2026.md` — it is a precondition, which US008
 states in the owner guide and carries into `EDGE-REQUIREMENTS.md` Section 6 as a strip-the-header
@@ -381,7 +381,7 @@ and each changes an acceptance criterion rather than a wording:
    `GAPS.md` row while relying on the advisory as TM-03's only mitigation. Either the blindness is
    fixed, or the doctrine needs a second channel that a `--preview` operator actually sees.
    **Settled 17/09/2026: the blindness is fixed inside US008**, by
-   `project-management/src/15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`.
+   `project-management/src/15-DECISIONS/archive/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`.
 2. **TM-05 — is `SECURE_PROXY_SSL_HEADER` a precondition of this doctrine?** If it is, the owner
    guide states it and the deployment contract carries it. If it is not, say why the prefix is
    safe without it. **Settled 17/09/2026: it is a precondition**, by
@@ -402,7 +402,7 @@ and each changes an acceptance criterion rather than a wording:
    `v7.6.0`?** This gate cannot rewrite `ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026`, whose
    supporting evidence Section 3b measured as no longer holding. `15-decisions` owns it.
    **Settled 17/09/2026: superseded, not amended**, by
-   `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`, with
+   `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`, with
    the key derived at release.
 
 ## 4b. Developer constraints carried forward
@@ -489,7 +489,7 @@ acceptance criteria; the assessment numbers them.
 
 ## Security clarification — approved 09/10/2026
 
-The controlling successor is `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`. TM-04's preview mitigation
+The controlling successor is `project-management/src/15-DECISIONS/archive/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`. TM-04's preview mitigation
 must deliver the full report, including no-value file/line/setting findings and all operator
 notes. TM-15's cutover entry is explicitly inactive with a literal false `when` until release;
 the actual version and activation land atomically. The state advisory remains active independently.

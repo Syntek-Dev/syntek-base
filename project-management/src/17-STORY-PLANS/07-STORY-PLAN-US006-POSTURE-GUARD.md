@@ -32,7 +32,7 @@ every state but two — a rendered carrier naming `development`, or a template c
 `../15-DECISIONS/ADR-US006-OVERRIDE-NAMES-THE-LIVE-POSTURE-05-09-2026.md` (the override is
 `--force-posture <posture>`, space-separated, naming the posture the project is at now, buying
 nothing else, and a refusal exits `4`), under
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red `doc-references.sh`
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red `doc-references.sh`
 is read as a diff against a recorded baseline until US004 retires the regime; superseded 30/09/2026
 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged but for the manual testing guide's path). <!-- UPDATED 30/09/2026: successor added beside the superseded record,
@@ -594,7 +594,7 @@ is recorded as such, not hidden by a fresh baseline reconstructed after editing.
 **The story's own baseline, inherited rather than re-measured here:** 103 tree-wide and 9 on
 `../02-STORIES/US006.md`, at HEAD `c6df520` on a clean tree, 05/09/2026; 127 tree-wide with the story's five
 artefacts staged, every one of the 24 added being an instance citation of a PM artefact — the class
-`../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` exempts once US004 lands —
+`../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` exempts once US004 lands —
 or a forward reference to "code/docs/ABSENCE.md" (US003), "code/docs/reliability/" (US001) or this
 story's own helper. None is of a class this story owns. The same tree gave 153 an hour earlier with
 a parallel session's two plan files untracked; **a figure without its index state is not a

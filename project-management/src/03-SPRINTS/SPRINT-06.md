@@ -241,7 +241,7 @@ completing in that record in full.
   record.
 - **US010 does not block on US004, and the reason is the one SPRINT-04 recorded for US006 and
   SPRINT-05 for US008.**
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is a
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is a
   reporting regime — "A story cannot be blocked on a gate it is forbidden to repair" — binding every
   story until `doc-references.sh` goes green; it sequences nothing. Its successor of 30/09/2026,
   `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
@@ -594,8 +594,8 @@ ordinary state between opening and filling.
 
 **`15-decisions` ran for US010 on 21/09/2026.** It records its second candidate and a new read
 rule, and declines its first on the record:
-`project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` and
-`project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`, both written
+`project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` and
+`project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`, both written
 `Proposed` and accepted in the 27/09/2026 write-back pass, after an independent review and before
 the US010 commit (settled 27/09/2026, grilling round 4 Q27 to Q29). Each record's own `**Status:**`
 line is the record of that acceptance, not this paragraph: both read `Accepted`, committed with
@@ -715,7 +715,7 @@ did not move with the sign-off, so the QA sections below stand as rewritten too.
      gate 11 closed three days after the rewrite. -->
 
 **The citation gate is inherited red, and this record adds its own findings to it — expected, not a
-regression.** `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
+regression.** `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
 superseded 30/09/2026 by
 `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged but for the manual testing guide's path, <!-- UPDATED 30/09/2026: successor added beside the superseded record,

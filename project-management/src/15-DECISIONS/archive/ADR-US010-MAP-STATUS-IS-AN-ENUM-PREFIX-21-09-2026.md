@@ -6,7 +6,7 @@
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** None
 **Superseded by:** `project-management/src/15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`
-**Related:** US010 · `project-management/src/02-STORIES/US010.md` · `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` N-002, N-003 and slice S-03 · `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (the reader-side rule this format is read by)
+**Related:** US010 · `project-management/src/02-STORIES/US010.md` · `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` N-002, N-003 and slice S-03 · `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (the reader-side rule this format is read by)
 
 ---
 
@@ -100,7 +100,7 @@ already called the prefix hard to reverse on exactly that ground
 
 **Scope.** This record decides what a map **writes**. How an index **reads** any register's status,
 maps included, is the companion
-`project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`. The two are
+`project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`. The two are
 separate records — writer format and reader rule — so either can be superseded without the other
 (settled 21/09/2026, grilling round 2, the consequential calls accepted with Q11).
 

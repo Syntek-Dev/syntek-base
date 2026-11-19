@@ -76,8 +76,8 @@
 > gate, and the `copier.yml` citations moved with the 18-TESTS split committed beside it:
 >
 > - **Both US010 ADRs read `Accepted`**, not `Proposed` pending review:
->   `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md:3`
->   and `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md:3`,
+>   `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md:3`
+>   and `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md:3`,
 >   committed Accepted at 0c5e635 after round 4 Q27's independent review. Corrected in Section
 >   4a's round 4 Q27 row, the read-rule paragraph beneath that table, and both Cross-references
 >   entries.
@@ -617,8 +617,8 @@ rather than a defect, and is answered in the gate runs, not here.
 - `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` — `S-01`, `S-02` and `S-03`, and `N-003`'s three clauses
 - `project-management/src/02-STORIES/CUT-PLAN.md` — P8 (27/09/2026), cited above as "CUT-PLAN.md P8": SPRINT-08 is RULE-OWNERSHIP's and S-03 has no sprint
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US010-SEEDED-REGISTER-INDEXES.md` — cited above as "QA-PLAN-US010": the 24-site index inventory grilling round 3 Q14 corrects, beside TM-13's seven count sites (call recorded 27/09/2026 with round 6); and AC-GAP-2, whose seed-row clause grilling round 7 Q34 settled, and its HP-03 (TM-08)
-- `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` — the writer-format record behind TM-12, `Accepted` (its :3), accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (grilling round 4 Q27), and committed Accepted at 0c5e635
-- `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the reader-rule record behind TM-11, `Accepted` (its :3), accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (grilling round 4 Q27), and committed Accepted at 0c5e635
+- `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` — the writer-format record behind TM-12, `Accepted` (its :3), accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (grilling round 4 Q27), and committed Accepted at 0c5e635
+- `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the reader-rule record behind TM-11, `Accepted` (its :3), accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (grilling round 4 Q27), and committed Accepted at 0c5e635
 - `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US009-HOOK-ARMING.md` — the shape precedent for a story whose surface is a script rather than a feature
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE / OWASP Top 10 (2025) / NIST CSF 2.0 reference
 - `project-management/workflows/10-security-checks/` — the workflow that produces this model

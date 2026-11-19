@@ -1272,7 +1272,7 @@ entry.
 **Type:** Active gap
 **Summary:** The same register in `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md` has no row for the
 `shared-ai-symlinks.sh` migration `copier.yml` declares. The row has been owed since 17/09/2026, the
-date `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` claims
+date `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` claims
 it; US008's story places this entry on its `22-implementation-documentation` pass (story Script
 Tasks, last row). It is recorded here on 16/11/2026, not backdated. It is not US008's repair.
 Finding F-030 in "project-management/src/20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md".

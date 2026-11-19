@@ -5,7 +5,7 @@
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** None
 **Superseded by:** None
-**Related:** US008 · `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (stands as decided and binds this story; this record is a scoped exception to its method and replaces nothing in it) · `project-management/src/15-DECISIONS/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` (the story's other record, on the migration key; decides nothing argued here)
+**Related:** US008 · `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (stands as decided and binds this story; this record is a scoped exception to its method and replaces nothing in it) · `project-management/src/15-DECISIONS/archive/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` (the story's other record, on the migration key; decides nothing argued here)
 
 ---
 
@@ -22,14 +22,14 @@ and confirmed by <%DEVELOPER_NAME%>, recorded here when the story was cut; it is
 not re-opened, at US008's own `15-decisions` pass.
 
 **The rule that binds.**
-`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` decided
+`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` decided
 that while the gate is red its criterion is a diff: the finding set is captured before the first
 edit, the story ships no **new** unresolved citation from a shipped file it writes or edits, and
 the gate is "never reported as the gate passing while the baseline stands". It "applies to every
 story in this backlog until the gate is green", and it retires when slice `S-06` of
 `project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` lands **and the gate goes green**
 — a conjunction, not one event
-(`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:119`).
+(`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:119`).
 That slice is carried by US004, and `project-management/src/02-STORIES/US004.md:4` reads `Open` —
 SPRINT-03's sole `Must Have` (`project-management/src/03-SPRINTS/SPRINT-03.md:87`), with SPRINT-03
 itself still `Planned` (`:20`). The retirement condition is unmet. **US008 is on that record's
@@ -59,7 +59,7 @@ artefacts), 9 from `GAPS.md` (`:418-456` at `ff24084`; the register's own 09/09/
 that entry's Summary sits above the last of them) and 1 from
 `how-to/src/TEMPLATE-GUIDE/10-FIRST-FEATURE.md:130`. **None sits under `code/docs/`.** The count
 was 22 when the baseline record was written on 02/09/2026
-(`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:37`);
+(`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:37`);
 it is 253 now, more than eleven times that, and the detector itself moved on 08/09/2026
 (`project-management/src/15-DECISIONS/ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL-08-09-2026.md`), so
 a whole-tree figure is comparable only under one detector — the reason

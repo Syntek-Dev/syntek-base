@@ -1,7 +1,7 @@
 # ADR-US004: Check 2 admits a plan's exec-order prefix as optional, and enforces nothing about it
 
 <!-- PROVENANCE. This decision was first written on 08/09/2026 as an appendix onto
-     project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md.
+     project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md.
      That record is Accepted and therefore immutable, so the appendix was reverted the same day
      and the record is byte-identical to its committed state. The decision was real; this file
      is where it belongs. It does NOT supersede that record: its Option C stands as decided.
@@ -14,7 +14,7 @@
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** None
 **Superseded by:** None
-**Related:** US004 · `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` (stands as decided; this record replaces nothing in it)
+**Related:** US004 · `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` (stands as decided; this record replaces nothing in it)
 
 ---
 
@@ -25,7 +25,7 @@ artefact. It reads the raw backticked token against one `^`-anchored alternation
 `SPRINT-[0-9]{2}`, `SPRINT-PLAN-[0-9]{2}`, `STORY-PLAN-US[0-9]{3}` and their siblings — and a
 token that matches and names no file on disk is an `[instance citation]`. The two plan arms have
 read that way since the check was written on 11/08/2026 (`af15f4e`, v2.19.0). This alternation is
-the list `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`
+the list `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`
 Option C proposes to reuse on the citer's side, which is why that record calls it "one list to
 keep current".
 
@@ -61,7 +61,7 @@ recorded that slice `S-06` of `project-management/src/01-FEATURE-MAPS/MAP-RULE-O
 carried by US004, owns the first edit to it:
 `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`,
 `project-management/src/15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` and
-`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`. The
+`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`. The
 third states that "the baseline is captured before the first edit, never reconstructed
 afterwards"; `project-management/src/02-STORIES/US004.md` schedules the whole-tree baseline before
 any file is edited, and
@@ -179,7 +179,7 @@ own long comment. This record argues the alternation and stops there.
   exists as a separate clause. Nothing in this record decides Check 4.
 - **Negative / trade-off:** ownership. This is the first edit to the script since three Accepted
   records assigned that edit to US004, and it landed before US004's baseline. The property
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` bought
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` bought
   — a baseline captured before the first edit — cannot be recovered for this file. Recorded, not
   excused; what US004 does about its before/after is its own `15-decisions` pass's call.
 - **Follow-on:** **the two plan conventions are not one rule, and the alternation must not be

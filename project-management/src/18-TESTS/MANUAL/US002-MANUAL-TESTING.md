@@ -8,7 +8,7 @@ _The manual testing guide for US002 — the journey a tester follows step by ste
 - **Story plan:** `../../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` — the code master this guide was authored beside
 - **Branch:** `us002/audits-register-headroom`
 - **Surface:** Gate — every row runs a `code/src/scripts/audits/*.sh` gate or reads a file in the repository
-- **Authored from:** the story; `../../11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md`; the story plan; `../../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md`; `../../15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md` (and the record it supersedes, `../../15-DECISIONS/ADR-US002-REGISTER-SPLITS-RATHER-THAN-RELOCATES-02-09-2026.md`), `../../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md`, `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, `../../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` and `../../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`. No stage-1 design (`04`–`08`) and no `09`, `10`, `12`, `13` or `14` planning artefact exists for this story — every one of those flags reads N/A. Never code.
+- **Authored from:** the story; `../../11-QA/PLANNING/QA-PLAN-US002-AUDITS-REGISTER-HEADROOM.md`; the story plan; `../../16-SPRINT-PLANS/02-SPRINT-PLAN-02.md`; `../../15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md` (and the record it supersedes, `../../15-DECISIONS/archive/ADR-US002-REGISTER-SPLITS-RATHER-THAN-RELOCATES-02-09-2026.md`), `../../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md`, `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, `../../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` and `../../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`. No stage-1 design (`04`–`08`) and no `09`, `10`, `12`, `13` or `14` planning artefact exists for this story — every one of those flags reads N/A. Never code.
 
 > **Authored before code, walked after it.** Which workflow writes which part of this file, and
 > when, is `../CLAUDE.md` → _The record lifecycle_. Every rule for filling it — authoring, open
@@ -292,7 +292,7 @@ Filled at the walk.
 - `../../20-FINDINGS/` — where each amendment made at the walk is recorded
 - `../../15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md` — why the rationale lands in a `slop-family/` sub-folder
 - `../../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` — why `doctrine-drift.sh` is out of scope here
-- `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — why `doc-references.sh` is read as a diff against the baseline; superseded 30/09/2026 by `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged and names this file as where the baseline is recorded
+- `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — why `doc-references.sh` is read as a diff against the baseline; superseded 30/09/2026 by `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged and names this file as where the baseline is recorded
 - No `05-USER-FLOW` citation: the story's `User Flow` flag is N/A, so no consolidated flow or flow implementation record exists for it
 
 <!-- CORRECTED 09/10/2026 after adversarial review: citation baseline identities now omit
