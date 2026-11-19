@@ -365,7 +365,9 @@ probe_round3() {  # run last, on the committed fixture with archived records in 
     bash -c '! bash "$1" --check --quiet --root "$2"' _ "$pmb" "$FX"
   fgit checkout -q -- .
   adr ADR-US014-NEWEST-15-01-2026 "The newest way" Accepted ADR-US001-NEW-WAY-02-01-2026 None
-  sed -i 's/^\*\*Status:\*\* Accepted$/**Status:** Superseded/; s#^\*\*Superseded by:\*\* None$#**Superseded by:** `project-management/src/15-DECISIONS/ADR-US014-NEWEST-15-01-2026.md`#' \
+  # The successor's path is composed, so no citation gate reads a fixture name as a real one.
+  local newest="project-management/src/15-DECISIONS/ADR-US014-NEWEST"
+  sed -i "s/^\*\*Status:\*\* Accepted\$/**Status:** Superseded/; s#^\*\*Superseded by:\*\* None\$#**Superseded by:** \`$newest-15-01-2026.md\`#" \
     "$SRC/15-DECISIONS/ADR-US001-NEW-WAY-02-01-2026.md"
   fgit add -A && fgit commit -q -m newest
   check "archiving an ADR an archived ADR names succeeds" archived ADR-US001-NEW-WAY-02-01-2026 15-DECISIONS
