@@ -69,9 +69,9 @@ archive() { bash "$SRC/00-ASSETS/scripts/pm-archive.sh" "$@"; }
 # ── The fixture ───────────────────────────────────────────────────────────────
 
 adr() {  # adr NAME TITLE STATUS SUPERSEDES SUPERSEDED_BY
-  local sup="$4" by="$5"
-  [[ "$sup" == None ]] || sup="\`project-management/src/15-DECISIONS/$sup.md\`"
-  [[ "$by" == None ]] || by="\`project-management/src/15-DECISIONS/$by.md\`"
+  local sup="$4" by="$5" dir="project-management/src/15-DECISIONS"
+  [[ "$sup" == None ]] || sup="\`$dir/$sup.md\`"
+  [[ "$by" == None ]] || by="\`$dir/$by.md\`"
   printf '# %s: %s\n\n**Status:** %s\n**Status note:** fixture\n**Date:** 01/01/2026\n**Supersedes:** %s\n**Superseded by:** %s\n\n## Decision\n\nA fixture record.\n' \
     "$(cut -d- -f1-2 <<< "$1")" "$2" "$3" "$sup" "$by" > "$SRC/15-DECISIONS/$1.md"
 }
