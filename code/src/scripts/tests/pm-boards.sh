@@ -38,7 +38,14 @@
 #              and on a record register's Unrecognised row; --warn stays exit 0.
 #   strays     --check fails on a .md (any case) in a boarded folder or its archive/ that is no
 #              instance, template, CONTEXT.md/CLAUDE.md pair or board — 02-STORIES/CUT-PLAN.md
-#              excepted — naming each.
+#              excepted — naming each, and on any .md in a subfolder other than archive/ itself.
+#   successors --check fails on an ADR claiming to supersede an archived ADR that already names a
+#              different successor.
+#   frozen     --check fails on a bare archive/ or ../ added to an archived file's prose, and
+#              still admits pm-archive.sh's rewrite of a path inside one.
+#   templates  only the shipped template names (…-US000-TEMPLATE, …-000-TEMPLATE, …-00-TEMPLATE,
+#              US000-TEMPLATE) are templates: a record whose descriptor holds TEMPLATE is a row,
+#              and pm-archive.sh rewrites the paths it carries.
 #
 # Usage: pm-boards.sh [--keep] [--help]
 #   --keep   Leave the fixture directory in place and print its path.
@@ -55,7 +62,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,47p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,55p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'pm-boards.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -322,6 +329,72 @@ probe_check_fails() {  # run on the committed fixture, where --check passes unti
   rm -f "$SRC/21-BUGS/BUG-US003-READY-01-01-2026.md"
 }
 
+probe_round3() {  # run last, on the committed fixture with archived records in place
+  local out rc pmb="$SRC/00-ASSETS/scripts/pm-board.sh" frozen="$SRC/21-BUGS/archive/BUG-US001-TEMPLATE-RENDERS-BLANK-01-01-2026.md"
+  echo "successors"
+  adr ADR-US011-ROGUE-12-01-2026 "A rogue successor" Accepted ADR-US001-OLD-WAY-01-01-2026 None
+  board --write --quiet --root "$FX"
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails when an ADR claims to supersede an archived ADR that names another successor" test "$rc" -eq 1
+  check "  and names the claimant" grep -qF "ADR-US011-ROGUE-12-01-2026" <<< "$out"
+  rm -f "$SRC/15-DECISIONS/ADR-US011-ROGUE-12-01-2026.md"
+  board --write --quiet --root "$FX"
+  check "--check passes once the claimant is gone" board --check --quiet --root "$FX"
+
+  echo "subfolders"
+  mkdir -p "$SRC/20-FINDINGS/old" "$SRC/21-BUGS/archive/older"
+  board --write --quiet --root "$FX"
+  finding FINDING-US099-LOST-19-11-2026 "A record in a subfolder" Open
+  mv "$SRC/20-FINDINGS/FINDING-US099-LOST-19-11-2026.md" "$SRC/20-FINDINGS/old/"
+  printf '# notes\n' > "$SRC/21-BUGS/archive/older/BUG-US098-OLDER-01-01-2026.md"
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails on a .md in a subfolder of a boarded folder other than archive/" test "$rc" -eq 1
+  check "  and names it" grep -qF "20-FINDINGS/old/FINDING-US099-LOST-19-11-2026.md" <<< "$out"
+  check "  and one nested inside archive/" grep -qF "21-BUGS/archive/older/BUG-US098-OLDER-01-01-2026.md" <<< "$out"
+  rm -rf "$SRC/20-FINDINGS/old" "$SRC/21-BUGS/archive/older"
+
+  echo "frozen"
+  sed -i 's/^## 1\. Summary$/## 1. archive\/Summary/' "$frozen"
+  check "--check fails when a bare archive/ is added to an archived file's prose" \
+    bash -c '! bash "$1" --check --quiet --root "$2"' _ "$pmb" "$FX"
+  fgit checkout -q -- .
+  sed -i 's/^## 1\. Summary$/## 1. ..\/Summary/' "$frozen"
+  check "--check fails when a bare ../ is added to an archived file's prose" \
+    bash -c '! bash "$1" --check --quiet --root "$2"' _ "$pmb" "$FX"
+  fgit checkout -q -- .
+  adr ADR-US014-NEWEST-15-01-2026 "The newest way" Accepted ADR-US001-NEW-WAY-02-01-2026 None
+  sed -i 's/^\*\*Status:\*\* Accepted$/**Status:** Superseded/; s#^\*\*Superseded by:\*\* None$#**Superseded by:** `project-management/src/15-DECISIONS/ADR-US014-NEWEST-15-01-2026.md`#' \
+    "$SRC/15-DECISIONS/ADR-US001-NEW-WAY-02-01-2026.md"
+  fgit add -A && fgit commit -q -m newest
+  check "archiving an ADR an archived ADR names succeeds" archived ADR-US001-NEW-WAY-02-01-2026 15-DECISIONS
+  check "  and rewrites the frozen ADR's reference into archive/" \
+    grep -qF "15-DECISIONS/archive/ADR-US001-NEW-WAY-02-01-2026.md" "$SRC/15-DECISIONS/archive/ADR-US001-OLD-WAY-01-01-2026.md"
+  fgit add -A && fgit commit -q -m archive-new-way
+  check "  and --check still admits that rewrite of a frozen file" board --check --quiet --root "$FX"
+
+  echo "templates"
+  adr ADR-US013-OLD-RULE-14-01-2026 "An old rule" Superseded None ADR-US012-SHIPPED-TEMPLATES-RULE-13-01-2026
+  adr ADR-US012-SHIPPED-TEMPLATES-RULE-13-01-2026 "Shipped templates rule" Accepted ADR-US013-OLD-RULE-14-01-2026 None
+  printf '# US012: A story\n\n**Status:** Open\n' > "$SRC/02-STORIES/US012.md"
+  printf '# STORY-PLAN-US012 — template rows\n\nA plan whose descriptor says TEMPLATE.\n' \
+    > "$SRC/17-STORY-PLANS/01-STORY-PLAN-US012-TEMPLATE-ROWS.md"
+  printf '# template\n' > "$SRC/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md"
+  printf '# template\n' > "$SRC/16-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md"
+  printf '# template\n' > "$SRC/01-FEATURE-MAPS/MAP-000-TEMPLATE.md"
+  printf '# template\n' > "$SRC/03-SPRINTS/SPRINT-00-TEMPLATE.md"
+  printf '# template\n' > "$SRC/02-STORIES/US000-TEMPLATE.md"
+  board --write --quiet --root "$FX"
+  check "a story plan whose descriptor holds TEMPLATE is a row" \
+    row "$SRC/17-STORY-PLANS/STORY-PLANS-BOARD.md" 01-STORY-PLAN-US012-TEMPLATE-ROWS
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "  and the five shipped template names are neither rows nor strays" \
+    bash -c '! grep -qE "00-STORY-PLAN-US000-TEMPLATE|00-SPRINT-PLAN-00-TEMPLATE|MAP-000-TEMPLATE|SPRINT-00-TEMPLATE|US000-TEMPLATE" <<< "$1" && ! grep -qE "^\| (US000|SPRINT-00|MAP-000)" "$2"/*/*-BOARD.md' _ "$out" "$SRC"
+  fgit add -A && fgit commit -q -m templates
+  check "archiving an ADR rewrites the Supersedes path of a successor whose name holds TEMPLATE" \
+    bash -c 'bash "$1" ADR-US013-OLD-RULE-14-01-2026 --date 01/02/2026 >/dev/null 2>&1 && grep -qF "15-DECISIONS/archive/ADR-US013-OLD-RULE-14-01-2026.md" "$2"' _ \
+    "$SRC/00-ASSETS/scripts/pm-archive.sh" "$SRC/15-DECISIONS/ADR-US012-SHIPPED-TEMPLATES-RULE-13-01-2026.md"
+}
+
 echo "pm-boards.sh — fixture at $FX"
 if ! build_fixture >/dev/null 2>&1; then
   fail "the fixture could not be built (pm-board.sh --write or the first commit failed)"
@@ -335,6 +408,7 @@ else
   probe_staged
   probe_strays
   probe_check_fails
+  probe_round3
 fi
 echo ""
 if [[ $FAILS -eq 0 ]]; then
