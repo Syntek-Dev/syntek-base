@@ -53,7 +53,9 @@ receives, on update, the
 guides that route to them, the generator that writes them and the check that expects them, and
 not the three board files: `pm-board.sh --check` names each as missing until you run
 `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` and commit what it writes.
-The template does nothing about this for you. (A project updating across 7.7.0 is the one
+Your existing ADR, finding and bug status lines must also be put into the plain `**Status:**` plus
+`**Status note:**` shape by hand, and until they are, each sits under `Unrecognised` and fails
+`pm-board.sh --check`. The template does nothing about this for you. (A project updating across 7.7.0 is the one
 exception: that release's migration runs the generator, which writes every board it knows.)
 
 **`copier recopy`, or `copier copy` into a project that already exists, is a copy, and the task
