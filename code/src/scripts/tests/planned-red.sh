@@ -8,30 +8,48 @@
 # Proves .github/scripts/template-integrity.sh (TEMPLATE-ONLY: .github/scripts/ is copier
 # _exclude'd, and so is this script), the procedure lefthook.yml's template-integrity pre-commit
 # leg and planned-red-trailer commit-msg leg call. A planned red is a probe committed red, ahead
-# of its check, under `PLANNED_RED=<detector>` and a `Planned-Red: <detector>` trailer.
+# of its check, under `PLANNED_RED=<detector>::<probe label>[::<probe label>…]` and a matching
+# `Planned-Red:` trailer.
 #
-# The fixture is SYNTHETIC: a `git init` in a `mktemp -d` directory holding a copier.yml marker,
-# a COPY of template-integrity.sh (never a symlink) and five stand-in detectors, each exiting
-# with a code the probe chooses for its plain run and for its --self-test. Real `git commit`s
-# run through a hooks directory inside the fixture that calls the script exactly as the two
-# lefthook legs do, so the environment a hook inherits is exercised, not assumed. Git runs with
-# no global or system configuration. Nothing in the fixture is a path back into this checkout.
+# Two fixtures, neither holding a path back into this checkout, git running with no global or
+# system configuration in both, and every commit a real `git commit` through a hooks directory
+# inside the fixture that calls the script exactly as the two lefthook legs do:
+#
+#   SYNTHETIC  a `git init` in a `mktemp -d` directory holding a copier.yml marker, a COPY of
+#              template-integrity.sh and five stand-in detectors. A stand-in's probes are lines
+#              in its own file (`#PROBE<TAB>pass|fail<TAB><label>`), so HEAD's version and the
+#              staged one carry different probes exactly as a real detector does; it writes the
+#              self-test ledger from them, and a probe can force any exit code or drop the
+#              ledger's end line to stand for a crash.
+#   REAL       `git archive HEAD` of this checkout, with this working tree's .github/scripts/
+#              copied over it (the versions under test), committed in its own `git init`. The
+#              real detectors run there: a crash inside a self-test, a gutted check and a real
+#              new red probe.
 #
 # What it asserts:
-#   accepted   a planned red is committed when the named self-test exits 1 and the trailer
-#              names it; the hook output records the red.
-#   rejected   the same commit is refused when the named self-test passes, when it is a script
-#              error, when the trailer is missing or names another script, when the trailer is
-#              present without the opt-in, when the opt-in names no detector or an unstaged one.
+#   accepted   a planned red is committed when exactly the named probes fail, each is new
+#              against HEAD, the trailer repeats the opt-in, and the hook output names them.
+#   rejected   a bare detector name with no probe; a named probe that passes; a red probe the
+#              opt-in does not name; a named probe that already exists at HEAD; a self-test that
+#              stops before its end (a crash) or writes no ledger, or exits 2; a missing,
+#              mismatched or doubled trailer; a trailer without the opt-in; an opt-in naming no
+#              detector or an unstaged one.
+#   token      the commit-msg leg needs the one-shot token the pre-commit leg writes on accepting
+#              a planned red, bound to the staged tree, and consumes it; a merge commit never
+#              carries the trailer; an amend is refused with the reset route named, and that
+#              route works.
 #   enforced   every other self-test, and every plain check including the named script's, still
 #              fails the commit; a red self-test without the opt-in still fails it.
 #   ordinary   a commit staging no detector runs no self-test and passes.
+#   real       each real detector writes a complete ledger; an unbound variable and a failing
+#              command inside a real self-test exit 2; a gutted real check is refused; a real new
+#              red probe is accepted end to end.
 #   wired      lefthook.yml calls the script from both legs.
 #
 # Usage: planned-red.sh [--keep] [--help]
-#   --keep   Leave the fixture directory in place and print its path.
+#   --keep   Leave the fixture directories in place and print their paths.
 #
-# Requires: bash, git. No network, no Docker.
+# Requires: bash, git, python3 (the real detectors). No network, no Docker.
 # Exit codes: 0 = every probe passed  1 = a probe failed  2 = script error
 set -euo pipefail
 
@@ -44,14 +62,15 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,37p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,54p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'planned-red.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
 command -v git >/dev/null 2>&1 || { echo "planned-red.sh: git not found" >&2; exit 2; }
 
 FX="$(mktemp -d)"
-cleanup() { if $KEEP; then echo "fixture kept: $FX"; else rm -rf "$FX"; fi; }
+RX="$(mktemp -d)"
+cleanup() { if $KEEP; then echo "fixtures kept: $FX $RX"; else rm -rf "$FX" "$RX"; fi; }
 trap cleanup EXIT
 FAILS=0
 PASSES=0
@@ -60,51 +79,87 @@ OUT="$FX/.fixture/out"
 pass() { PASSES=$((PASSES + 1)); printf '  \033[32m✓\033[0m %s\n' "$1"; }
 fail() { FAILS=$((FAILS + 1)); printf '  \033[31m✗\033[0m %s\n' "$1"; }
 check() { local label="$1"; shift; if "$@" >/dev/null 2>&1; then pass "$label"; else fail "$label"; fi; }
-fgit() {
-  GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 git -C "$FX" -c user.name=probe \
-    -c user.email=probe@example.invalid -c core.hooksPath="$FX/.fixture/hooks" "$@"
+# git in a fixture: no global or system config, a fixed identity, the fixture's own hooks.
+xgit() {
+  local root="$1"; shift
+  GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 git -C "$root" -c user.name=probe \
+    -c user.email=probe@example.invalid -c core.hooksPath="$root/.fixture/hooks" "$@"
 }
+fgit() { xgit "$FX" "$@"; }
 
 DETECTORS=(check-template-tokens.sh shipped-readme.sh shipped-memory.sh shipped-registers.sh
            shipped-boards.sh)
 
+# The two hooks, shaped exactly as lefthook.yml's legs run them, in fixture $1.
+write_hooks() {
+  mkdir -p "$1/.fixture/hooks"
+  printf '#!/usr/bin/env bash\n[ -f copier.yml ] || exit 0\nexec bash .github/scripts/template-integrity.sh --pre-commit\n' \
+    > "$1/.fixture/hooks/pre-commit"
+  printf '#!/usr/bin/env bash\n[ -f copier.yml ] || exit 0\nexec bash .github/scripts/template-integrity.sh --commit-msg "$1"\n' \
+    > "$1/.fixture/hooks/commit-msg"
+  chmod +x "$1/.fixture/hooks/"*
+}
+
 build_fixture() {
   local d
-  mkdir -p "$FX/.github/scripts" "$FX/.fixture/hooks" "$FX/.fixture/exit"
+  mkdir -p "$FX/.github/scripts" "$FX/.fixture/exit"
   printf '_exclude: []\n' > "$FX/copier.yml"
   printf '.fixture/\n' > "$FX/.gitignore"
   cp "$HOOK" "$FX/.github/scripts/template-integrity.sh"
   for d in "${DETECTORS[@]}"; do
-    # A stand-in: exits with .fixture/exit/<name>.<plain|self>, 0 when absent, and logs the call.
+    # A stand-in. Its probes are its own `#PROBE` lines; under --self-test it writes each to the
+    # ledger, then the end line (unless .fixture/noend), and exits 1 if any failed. An exit code
+    # in .fixture/exit/<name>.<plain|self> overrides; .fixture/noledger writes no ledger at all.
+    # It runs from HEAD's tree too (the novelty check), where .fixture is absent.
     cat > "$FX/.github/scripts/$d" <<'EOF'
 #!/usr/bin/env bash
 mode=plain; [[ "${1:-}" == --self-test ]] && mode=self
 root="$(cd "$(dirname "$0")/../.." && pwd)"
-echo "$(basename "$0") $mode" >> "$root/.fixture/calls"
-f="$root/.fixture/exit/$(basename "$0").$mode"
-exit "$(cat "$f" 2>/dev/null || echo 0)"
+name="$(basename "$0")"
+echo "$name $mode" 2>/dev/null >> "$root/.fixture/calls"
+code=0
+if [[ $mode == self ]]; then
+  fails=0
+  while IFS=$'\t' read -r tag res label; do
+    [[ "$tag" == "#PROBE" ]] || continue
+    [[ $res == fail ]] && fails=$((fails + 1))
+    [[ -n "${SELF_TEST_LEDGER:-}" && ! -f "$root/.fixture/noledger" ]] \
+      && printf '%s\t%s\n' "$res" "$label" >> "$SELF_TEST_LEDGER"
+  done < "$0"
+  [[ -n "${SELF_TEST_LEDGER:-}" && ! -f "$root/.fixture/noledger" && ! -f "$root/.fixture/noend" ]] \
+    && printf 'end\t%s\n' "$fails" >> "$SELF_TEST_LEDGER"
+  [[ $fails -gt 0 ]] && code=1
+fi
+f="$root/.fixture/exit/$name.$mode"
+[[ -f "$f" ]] && code="$(cat "$f")"
+exit "$code"
 EOF
+    printf '#PROBE\tpass\told probe\n' >> "$FX/.github/scripts/$d"
   done
-  # The two hooks, shaped exactly as lefthook.yml's legs run them.
-  printf '#!/usr/bin/env bash\n[ -f copier.yml ] || exit 0\nexec bash .github/scripts/template-integrity.sh --pre-commit\n' \
-    > "$FX/.fixture/hooks/pre-commit"
-  printf '#!/usr/bin/env bash\n[ -f copier.yml ] || exit 0\nexec bash .github/scripts/template-integrity.sh --commit-msg "$1"\n' \
-    > "$FX/.fixture/hooks/commit-msg"
-  chmod +x "$FX/.fixture/hooks/"*
-  git init -q "$FX"
+  write_hooks "$FX"
+  git init -q -b master "$FX"
   fgit add -A
   fgit commit -q --no-verify -m fixture
 }
 
-# reset — back to the fixture commit, every stand-in green, no calls logged.
+# reset — back to the fixture commit on master, every stand-in green, no calls logged.
 reset() {
-  fgit reset -q --hard HEAD
+  fgit merge --abort >/dev/null 2>&1 || true
+  fgit rebase --abort >/dev/null 2>&1 || true
+  fgit checkout -q -f master 2>/dev/null || true
   fgit reset -q --hard "$(fgit rev-list --max-parents=0 HEAD)"
-  rm -f "$FX/.fixture/exit/"* "$FX/.fixture/calls" "$OUT"
+  fgit branch -D side >/dev/null 2>&1 || true
+  fgit clean -qfd -e .fixture
+  rm -f "$FX/.fixture/exit/"* "$FX/.fixture/calls" "$FX/.fixture/noend" "$FX/.fixture/noledger" "$OUT"
+  rm -f "$(fgit rev-parse --git-path planned-red-token)"
 }
 set_exit() { echo "$3" > "$FX/.fixture/exit/$1.$2"; }       # set_exit NAME plain|self CODE
-touch_detector() { echo "# probe" >> "$FX/.github/scripts/$1"; fgit add ".github/scripts/$1"; }
+# add_probe NAME pass|fail LABEL — a new probe in the stand-in, staged.
+add_probe() { printf '#PROBE\t%s\t%s\n' "$2" "$3" >> "$FX/.github/scripts/$1"; fgit add ".github/scripts/$1"; }
+# flip_old NAME — the stand-in's committed probe turns red (a weakened detector), staged.
+flip_old() { sed -i 's/^#PROBE\tpass\told probe$/#PROBE\tfail\told probe/' "$FX/.github/scripts/$1"; fgit add ".github/scripts/$1"; }
 touch_other() { echo "x" >> "$FX/README.md"; fgit add README.md; }
+token_path() { printf '%s/%s' "$FX" "$(fgit rev-parse --git-path planned-red-token)"; }
 
 # attempt [PLANNED_RED] MESSAGE — commit; 0 when git made the commit. Output kept in $OUT.
 attempt() {
@@ -121,55 +176,120 @@ attempt() {
 }
 refused() { ! attempt "$@"; }
 said() { grep -qF -- "$1" "$OUT"; }
+direct_refused() { ! hook_direct "$@"; }
+# hook_direct PLANNED_RED MESSAGE — the commit-msg leg alone, as a path that skips pre-commit.
+hook_direct() {
+  printf '%s\n' "$2" > "$FX/.fixture/msg"
+  (cd "$FX" && PLANNED_RED="$1" bash .github/scripts/template-integrity.sh --commit-msg .fixture/msg) > "$OUT" 2>&1
+}
 
-RED_MSG=$'test: a red probe\n\nPlanned-Red: shipped-boards.sh'
+SPEC='shipped-boards.sh::new probe'
+RED_MSG=$'test: a red probe\n\nPlanned-Red: shipped-boards.sh::new probe'
 
 probe_accepted() {
   echo "accepted"
-  reset; touch_detector shipped-boards.sh; set_exit shipped-boards.sh self 1
-  check "a planned red is committed when its self-test exits 1 and the trailer names it" \
-    attempt shipped-boards.sh "$RED_MSG"
-  check "the hook output records the planned red" said "planned red — shipped-boards.sh --self-test exited 1"
-  check "the commit carries the Planned-Red trailer" \
-    bash -c 'git -C "$1" log -1 --format=%B | grep -qx "Planned-Red: shipped-boards.sh"' _ "$FX"
+  reset; add_probe shipped-boards.sh fail "new probe"
+  check "a planned red is committed when exactly its named new probe fails and the trailer repeats it" \
+    attempt "$SPEC" "$RED_MSG"
+  check "  the hook output names the planned probe" said "planned red — shipped-boards.sh: new probe"
+  check "  the commit carries the Planned-Red trailer" \
+    bash -c 'git -C "$1" log -1 --format=%B | grep -qxF "Planned-Red: shipped-boards.sh::new probe"' _ "$FX"
+  check "  and the token is consumed" bash -c '[[ ! -e "$1" ]]' _ "$(token_path)"
+  reset; add_probe shipped-boards.sh fail "new probe"; add_probe shipped-boards.sh fail "second probe"
+  check "two new red probes are committed when the opt-in names both" \
+    attempt "$SPEC::second probe" $'test: two red probes\n\nPlanned-Red: shipped-boards.sh::new probe::second probe'
 }
 
 probe_rejected() {
   echo "rejected"
-  reset; touch_detector shipped-boards.sh
-  check "a planned red is refused when its self-test passes" refused shipped-boards.sh "$RED_MSG"
-  check "  and the refusal says the self-test passed" said "self-test passed"
-  reset; touch_detector shipped-boards.sh; set_exit shipped-boards.sh self 2
-  check "a planned red is refused when its self-test is a script error (exit 2)" refused shipped-boards.sh "$RED_MSG"
-  reset; touch_detector shipped-boards.sh; set_exit shipped-boards.sh self 1
-  check "a planned red with no trailer is refused" refused shipped-boards.sh "test: a red probe"
-  reset; touch_detector shipped-boards.sh; set_exit shipped-boards.sh self 1
-  check "a planned red whose trailer names another script is refused" \
-    refused shipped-boards.sh $'test: a red probe\n\nPlanned-Red: shipped-memory.sh'
-  reset; touch_detector shipped-boards.sh; set_exit shipped-boards.sh self 1
+  reset; add_probe shipped-boards.sh fail "new probe"
+  check "an opt-in naming the detector but no probe is refused" \
+    refused shipped-boards.sh $'test: x\n\nPlanned-Red: shipped-boards.sh'
+  check "  and the refusal asks for the probe label" said "names no probe"
+  reset; add_probe shipped-boards.sh pass "new probe"
+  check "a planned red is refused when its named probe passes" refused "$SPEC" "$RED_MSG"
+  reset; add_probe shipped-boards.sh fail "new probe"; add_probe shipped-boards.sh fail "unnamed probe"
+  check "a red probe the opt-in does not name refuses the planned red" refused "$SPEC" "$RED_MSG"
+  reset; add_probe shipped-boards.sh fail "new probe"; flip_old shipped-boards.sh
+  check "an existing probe turned red beside the planned one is refused — a weakened detector" \
+    refused "$SPEC" "$RED_MSG"
+  reset; flip_old shipped-boards.sh
+  check "naming a probe that already exists at HEAD is refused — only a new probe is planned" \
+    refused 'shipped-boards.sh::old probe' $'test: x\n\nPlanned-Red: shipped-boards.sh::old probe'
+  check "  and the refusal says it already exists at HEAD" said "already exists at HEAD"
+  reset; add_probe shipped-boards.sh fail "new probe"; touch "$FX/.fixture/noend"
+  check "a self-test that stops before its end (a crash) is refused, though it exits 1" \
+    refused "$SPEC" "$RED_MSG"
+  reset; add_probe shipped-boards.sh fail "new probe"; touch "$FX/.fixture/noledger"
+  check "a self-test that writes no ledger is refused, though it exits 1" refused "$SPEC" "$RED_MSG"
+  reset; add_probe shipped-boards.sh fail "new probe"; set_exit shipped-boards.sh self 2
+  check "a planned red is refused when its self-test is a script error (exit 2)" refused "$SPEC" "$RED_MSG"
+  reset; add_probe shipped-boards.sh fail "new probe"
+  check "a planned red with no trailer is refused" refused "$SPEC" "test: a red probe"
+  reset; add_probe shipped-boards.sh fail "new probe"
+  check "a trailer naming the detector alone, not the probe, is refused" \
+    refused "$SPEC" $'test: a red probe\n\nPlanned-Red: shipped-boards.sh'
+  reset; add_probe shipped-boards.sh fail "new probe"
   check "a planned red with two trailers is refused" \
-    refused shipped-boards.sh "$RED_MSG"$'\nPlanned-Red: shipped-boards.sh'
-  reset; touch_detector shipped-boards.sh
+    refused "$SPEC" "$RED_MSG"$'\nPlanned-Red: shipped-boards.sh::new probe'
+  reset; add_probe shipped-boards.sh pass "new probe"
   check "a Planned-Red trailer without the opt-in is refused" refused "" "$RED_MSG"
-  reset; touch_detector shipped-boards.sh
-  check "a Planned-Red trailer in the body, not the trailer block, is not a trailer" \
-    attempt "" $'test: green\n\nPlanned-Red: shipped-boards.sh\n\nthis paragraph ends the message.'
+  reset; add_probe shipped-boards.sh pass "new probe"
+  check "a Planned-Red line in the body, not the trailer block, is not a trailer" \
+    attempt "" $'test: green\n\nPlanned-Red: shipped-boards.sh::new probe\n\nthis paragraph ends the message.'
   reset; touch_other
   check "an opt-in naming no self-tested detector is refused" \
-    refused shipped-ai.sh $'test: x\n\nPlanned-Red: shipped-ai.sh'
-  reset; touch_detector shipped-memory.sh; set_exit shipped-boards.sh self 1
-  check "an opt-in naming a detector that is not staged is refused" refused shipped-boards.sh "$RED_MSG"
+    refused 'shipped-ai.sh::x' $'test: x\n\nPlanned-Red: shipped-ai.sh::x'
+  reset; add_probe shipped-memory.sh pass "new probe"
+  check "an opt-in naming a detector that is not staged is refused" refused "$SPEC" "$RED_MSG"
+}
+
+probe_token() {
+  echo "token"
+  reset
+  check "the commit-msg leg alone, with no token, refuses the opt-in and its trailer" direct_refused "$SPEC" "$RED_MSG"
+  reset; add_probe shipped-boards.sh fail "new probe"
+  (cd "$FX" && PLANNED_RED="$SPEC" bash .github/scripts/template-integrity.sh --pre-commit) >/dev/null 2>&1 || true
+  touch_other
+  check "a token written for another staged tree is refused" direct_refused "$SPEC" "$RED_MSG"
+  check "  and the refused token is consumed" bash -c '[[ ! -e "$1" ]]' _ "$(token_path)"
+  reset; add_probe shipped-boards.sh fail "new probe"; attempt "$SPEC" "$RED_MSG" || true
+  check "a token is one-shot — a second message on it is refused" direct_refused "$SPEC" "$RED_MSG"
+  reset
+  fgit checkout -q -b side; touch_other; fgit commit -q --no-verify -m side; fgit checkout -q master
+  echo "y" >> "$FX/OTHER.md"; fgit add OTHER.md; fgit commit -q --no-verify -m master-side
+  local before; before="$(fgit rev-parse HEAD)"
+  PLANNED_RED="$SPEC" fgit merge -q --no-ff side -m "$RED_MSG" > "$OUT" 2>&1 || true
+  check "a merge commit carrying the trailer is refused (git merge runs no pre-commit)" \
+    bash -c '[[ "$(git -C "$1" rev-parse HEAD)" == "$2" ]]' _ "$FX" "$before"
+  reset
+  echo "z" >> "$FX/OTHER.md"; fgit add OTHER.md; fgit commit -q --no-verify -m ordinary
+  before="$(fgit rev-parse HEAD)"
+  printf '%s\n' "$RED_MSG" > "$FX/.fixture/reword-msg"
+  printf '#!/bin/sh\ncat "%s" > "$1"\n' "$FX/.fixture/reword-msg" > "$FX/.fixture/editor"
+  chmod +x "$FX/.fixture/editor"
+  PLANNED_RED="$SPEC" GIT_EDITOR="$FX/.fixture/editor" \
+    fgit -c sequence.editor="sed -i s/^pick/reword/" rebase -q -i HEAD~1 > "$OUT" 2>&1 || true
+  check "a sequencer reword adding the trailer to a commit with no red probe is refused" \
+    bash -c '! git -C "$1" log -1 --format=%B | grep -q "^Planned-Red:"' _ "$FX"
+  reset; add_probe shipped-boards.sh fail "new probe"; attempt "$SPEC" "$RED_MSG" || true
+  check "amending a planned-red commit is refused" \
+    bash -c 'PLANNED_RED="$2" GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 git -C "$1" -c user.name=probe -c user.email=probe@example.invalid -c core.hooksPath="$1/.fixture/hooks" commit -q --amend -m "$3" > "$4" 2>&1; [[ $? -ne 0 ]]' \
+    _ "$FX" "$SPEC" "$RED_MSG" "$OUT"
+  check "  and the refusal names the reset route" said "git reset --soft HEAD^"
+  fgit reset -q --soft HEAD^ 2>/dev/null || true
+  check "the reset route recommits the planned red" attempt "$SPEC" "$RED_MSG"
 }
 
 probe_enforced() {
   echo "enforced"
-  reset; touch_detector shipped-boards.sh; set_exit shipped-boards.sh self 1; set_exit shipped-memory.sh self 1
-  check "another self-test that fails still refuses the planned red" refused shipped-boards.sh "$RED_MSG"
-  reset; touch_detector shipped-boards.sh; set_exit shipped-boards.sh self 1; set_exit shipped-readme.sh plain 1
-  check "another plain check that fails still refuses it" refused shipped-boards.sh "$RED_MSG"
-  reset; touch_detector shipped-boards.sh; set_exit shipped-boards.sh self 1; set_exit shipped-boards.sh plain 1
-  check "the named script's own plain check that fails still refuses it" refused shipped-boards.sh "$RED_MSG"
-  reset; touch_detector shipped-boards.sh; set_exit shipped-boards.sh self 1
+  reset; add_probe shipped-boards.sh fail "new probe"; set_exit shipped-memory.sh self 1
+  check "another self-test that fails still refuses the planned red" refused "$SPEC" "$RED_MSG"
+  reset; add_probe shipped-boards.sh fail "new probe"; set_exit shipped-readme.sh plain 1
+  check "another plain check that fails still refuses it" refused "$SPEC" "$RED_MSG"
+  reset; add_probe shipped-boards.sh fail "new probe"; set_exit shipped-boards.sh plain 1
+  check "the named script's own plain check that fails still refuses it" refused "$SPEC" "$RED_MSG"
+  reset; add_probe shipped-boards.sh fail "new probe"
   check "a red self-test without the opt-in refuses the commit" refused "" "test: unplanned red"
 }
 
@@ -179,8 +299,69 @@ probe_ordinary() {
   check "a commit staging no detector passes" attempt "" "docs: ordinary"
   check "  and runs no self-test" bash -c '! grep -q " self$" "$1/.fixture/calls"' _ "$FX"
   check "  but runs every plain check" bash -c '[[ $(grep -c " plain$" "$1/.fixture/calls") -eq 5 ]]' _ "$FX"
-  reset; touch_detector shipped-readme.sh
+  reset; add_probe shipped-readme.sh pass "new probe"
   check "a green detector commit passes with every self-test run" attempt "" "test: green"
+}
+
+# ── The real fixture ─────────────────────────────────────────────────────────────────────────
+rgit() { xgit "$RX" "$@"; }
+build_real() {
+  git -C "$PROJECT_ROOT" archive HEAD | tar -x -C "$RX"
+  rm -rf "$RX/.github/scripts"; mkdir -p "$RX/.github/scripts"
+  cp "$PROJECT_ROOT"/.github/scripts/*.sh "$PROJECT_ROOT"/.github/scripts/*.py "$RX/.github/scripts/"
+  write_hooks "$RX"
+  printf '.fixture/\n' >> "$RX/.gitignore"
+  git init -q -b master "$RX"
+  rgit add -A
+  rgit commit -q --no-verify -m real-fixture
+}
+rreset() { rgit reset -q --hard HEAD; rgit clean -qfd -e .fixture; }
+# rself NAME — the real detector's self-test with a ledger; prints the exit code.
+rself() {
+  local rc=0
+  (cd "$RX" && SELF_TEST_LEDGER="$RX/.fixture/ledger" bash ".github/scripts/$1" --self-test) >/dev/null 2>&1 || rc=$?
+  echo "$rc"
+}
+# insert_in_self_test NAME LINE — put LINE as the first statement of the real self_test().
+insert_in_self_test() {
+  awk -v l="$2" '{print} /^self_test\(\) \{/ && !done {print l; done=1}' "$RX/.github/scripts/$1" \
+    > "$RX/.fixture/tmp" && cat "$RX/.fixture/tmp" > "$RX/.github/scripts/$1"
+}
+rattempt() {
+  local planned="$1" msg="$2" before rc=0
+  before="$(rgit rev-parse HEAD)"
+  PLANNED_RED="$planned" rgit commit -q -m "$msg" > "$OUT" 2>&1 || rc=$?
+  [[ $rc -eq 0 && "$(rgit rev-parse HEAD)" != "$before" ]]
+}
+
+probe_real() {
+  echo "real"
+  local d rc
+  if ! build_real >/dev/null 2>&1; then fail "the real fixture could not be built"; return; fi
+  for d in "${DETECTORS[@]}"; do
+    rm -f "$RX/.fixture/ledger"
+    rc="$(rself "$d")"
+    check "real $d --self-test passes and writes a complete ledger" \
+      bash -c '[[ $2 -eq 0 ]] && grep -qP "^pass\t" "$1" && tail -1 "$1" | grep -qxP "end\t0"' _ "$RX/.fixture/ledger" "$rc"
+  done
+  rreset; insert_in_self_test shipped-boards.sh '  : "$PLANNED_RED_PROBE_UNSET_VAR"'
+  check "an unbound variable inside a real self-test exits 2, never a red" \
+    bash -c '[[ $1 -eq 2 ]]' _ "$(rself shipped-boards.sh)"
+  rreset; insert_in_self_test shipped-memory.sh '  grep -q planned-red-nomatch /dev/null'
+  check "a failing command inside a real self-test exits 2, never a red" \
+    bash -c '[[ $1 -eq 2 ]]' _ "$(rself shipped-memory.sh)"
+  rreset
+  sed -i 's/^finding() { FINDINGS+=("$1"); }$/finding() { :; }/' "$RX/.github/scripts/shipped-boards.sh"
+  rgit add .github/scripts/shipped-boards.sh
+  check "a gutted real check (finding() stubbed) is refused under any planned probe" \
+    bash -c '! "$@"' _ rattempt 'shipped-boards.sh::check 1 fires when a board is re-included' \
+    $'test: x\n\nPlanned-Red: shipped-boards.sh::check 1 fires when a board is re-included'
+  rreset
+  awk '{print} /^  ARTEFACTS="\$real_art"$/ {print "  probe \"a planned real probe\" \"a finding no check writes\""}' \
+    "$RX/.github/scripts/shipped-boards.sh" > "$RX/.fixture/tmp" && cat "$RX/.fixture/tmp" > "$RX/.github/scripts/shipped-boards.sh"
+  rgit add .github/scripts/shipped-boards.sh
+  check "a real new red probe is accepted end to end" \
+    rattempt 'shipped-boards.sh::a planned real probe' $'test: a real red probe\n\nPlanned-Red: shipped-boards.sh::a planned real probe'
 }
 
 probe_wired() {
@@ -191,7 +372,7 @@ probe_wired() {
     grep -qF 'bash .github/scripts/template-integrity.sh --commit-msg {1}' "$LEFTHOOK"
 }
 
-echo "planned-red.sh — fixture at $FX"
+echo "planned-red.sh — fixtures at $FX and $RX"
 if [[ ! -f "$HOOK" ]]; then
   fail "there is no .github/scripts/template-integrity.sh to prove"
   probe_wired
@@ -200,8 +381,10 @@ elif ! build_fixture >/dev/null 2>&1; then
 else
   probe_accepted
   probe_rejected
+  probe_token
   probe_enforced
   probe_ordinary
+  probe_real
   probe_wired
 fi
 echo ""
