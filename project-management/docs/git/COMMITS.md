@@ -114,6 +114,22 @@ the time of the commit. **It is never pinned in a rule**, here or in a skill: a 
 version string goes stale on the next model release and then every commit misattributes itself
 to a model that did not write it. The same applies to a PR body's generation footer.
 
+### The planned-red trailer
+
+A commit that deliberately records a failing probe ahead of its fix — test-first, where the probe
+sits in a gate's own self-test — names that gate in a trailer:
+
+```text
+Planned-Red: <self-test script basename>
+```
+
+It is the record of an opt-in, never a substitute for one: the commit is made with
+`PLANNED_RED=<the same basename>` set, the pre-commit leg running that self-test requires it to
+exit `1` and everything else to pass, and the commit-message leg refuses a `Planned-Red:` trailer
+without the opt-in, a second one, or one naming a different script. It sits beside the co-author
+trailer, in the closing trailer block. `--no-verify` is never the way to land a red probe.
+<!-- Section added 19/11/2026. -->
+
 ### Type values
 
 | Type       | When to use                                         |

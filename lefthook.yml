@@ -251,22 +251,29 @@ pre-commit:
     # `parallel: true`, so this leg is still the critical path either way, but on an
     # ordinary commit it now clears docs-pairing (2.73s) by about a second rather than
     # eight.
+    #
+    # THE PROCEDURE NOW LIVES IN A SCRIPT (19/11/2026), .github/scripts/template-integrity.sh,
+    # so that it can be tested and so that it can carry the one allowance below. It runs the
+    # same five self-tests on the same trigger, then the same five plain checks, and fails on
+    # the first that does not pass — the `set -e` reasoning above, kept inside the script.
+    #
+    # THE PLANNED-RED ALLOWANCE. Test-first means a probe is committed red before its fix — and
+    # when the probe sits in a detector's own --self-test, the leg above would refuse that
+    # commit, so the red could only ever be squashed into its fix and never recorded. The
+    # allowance is an opt-in naming ONE detector, never a bypass:
+    #
+    #   PLANNED_RED=shipped-boards.sh git commit    # with a `Planned-Red: shipped-boards.sh` trailer
+    #
+    # For the named detector its --self-test must exit 1 — a pass is refused, and so is any
+    # other code, 2 (a script error) above all. Every other self-test and every plain check,
+    # the named detector's own included, still runs and must pass, and the detector must be
+    # staged. The commit-msg leg below requires exactly one matching `Planned-Red:` trailer
+    # when the opt-in is set and refuses the trailer without it, so the history records each
+    # planned red the hook saw and no other. Proven by code/src/scripts/tests/planned-red.sh.
     template-integrity:
       run: |
-        set -e
         [ -f copier.yml ] || exit 0
-        if git diff --cached --name-only | grep -q '^\.github/scripts/.*\.sh$'; then
-          bash .github/scripts/check-template-tokens.sh --self-test
-          bash .github/scripts/shipped-readme.sh --self-test
-          bash .github/scripts/shipped-memory.sh --self-test
-          bash .github/scripts/shipped-registers.sh --self-test
-          bash .github/scripts/shipped-boards.sh --self-test
-        fi
-        bash .github/scripts/check-template-tokens.sh
-        bash .github/scripts/shipped-readme.sh
-        bash .github/scripts/shipped-memory.sh
-        bash .github/scripts/shipped-registers.sh
-        bash .github/scripts/shipped-boards.sh
+        bash .github/scripts/template-integrity.sh --pre-commit
 
     # Regenerate the read-only ClickUp client exports from source stories and re-stage
     # them. Self-gating: exits instantly unless a story or generated file is staged.
@@ -280,3 +287,16 @@ pre-commit:
       run: |
         [ -f project-management/src/00-ASSETS/scripts/precommit-clickup.sh ] || exit 0
         bash project-management/src/00-ASSETS/scripts/precommit-clickup.sh
+
+# The commit-message half of the template-integrity leg's planned-red allowance (above): with
+# PLANNED_RED set, the message must carry exactly one matching `Planned-Red: <detector>` trailer;
+# without it, no such trailer may appear. Self-gating on copier.yml exactly as the pre-commit leg
+# is — .github/scripts/ is copier _exclude'd, so downstream this exits 0 before calling anything.
+# Armed by `lefthook install`, which install-hooks.sh runs: a checkout armed before this leg
+# existed has no commit-msg hook until install-hooks.sh is run again.
+commit-msg:
+  commands:
+    planned-red-trailer:
+      run: |
+        [ -f copier.yml ] || exit 0
+        bash .github/scripts/template-integrity.sh --commit-msg {1}

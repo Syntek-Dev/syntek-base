@@ -120,6 +120,15 @@ Verify tests are red:
 Do not proceed to Phase 2 until all new tests are red. A test that is green before any
 implementation exists is either testing the wrong thing or testing nothing.
 
+**Where the red is committed before its fix, it is committed as a planned red — never with
+`--no-verify`.** A probe that lives inside a gate's own self-test is refused by any pre-commit leg
+that re-runs that self-test. The answer is a narrow opt-in naming the one self-test expected red,
+under which the leg requires that self-test to fail (exit `1`) — refusing a pass and a script error
+alike — while every other check still runs and must pass, and a `Planned-Red:` trailer records it
+in the message (`project-management/docs/git/COMMITS.md` → _The planned-red trailer_). Skipping
+the hooks hides every other failure the commit carries along with the one that was planned.
+<!-- Planned-red paragraph added 19/11/2026. -->
+
 ---
 
 ## Phase 2 — Green (Minimal Implementation)
