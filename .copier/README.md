@@ -171,6 +171,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-mcp-parity.yml         ← `.mcp.json` and `.codex/config.toml` declare the same servers
 │       ├── audit-dev-static.yml         ← dev Nginx proxies /static/ to Django, never serves it from disk
 │       ├── audit-env-read-deny.yml      ← Claude, Codex and Zed each deny reading the live env files
+│       ├── audit-hook-arming.yml        ← install.sh arms the git hooks; the postinstall only announces
 │       ├── audit-playwright-pin.yml     ← eight sites declare the Playwright pin; all must name one release
 │       ├── audit-seam-contract.yml      ← the build/operate seam in the server contract
 │       ├── audit-secrets.yml            ← scans for accidentally committed secrets
@@ -1126,7 +1127,7 @@ pnpm lint:md          # markdownlint — checks every Markdown file
 pnpm lint:md          # markdownlint-cli2 — checks all Markdown files
 pnpm format:check     # Prettier — dry-run format check
 pnpm format           # Prettier — apply formatting
-pnpm prepare          # Install Lefthook git hooks (runs automatically after install.sh)
+bash install.sh       # Install everything and arm the Lefthook git hooks (Phase 1 Step 9)
 ```
 
 ### Development scripts (`code/src/scripts/development/`)
@@ -1140,6 +1141,7 @@ pnpm prepare          # Install Lefthook git hooks (runs automatically after ins
 | `new-django-view.sh`    | Scaffold a new public marketing page (Django view + template + URL)   |
 | `install-backend.sh`    | Update `uv.lock` and optionally sync Python backend dependencies      |
 | `install-frontend.sh`   | Update `pnpm-lock.yaml` and optionally sync frontend dependencies     |
+| `install-hooks.sh`      | Arm the Lefthook git hooks (`install.sh` runs it); `--notice` reminds |
 | `install.sh`            | Compatibility shim — forwards to `install-frontend.sh`                |
 | `pnpm-update.sh`        | Self-update pnpm and pin the new version across project files         |
 | `hosts-story-add.sh`    | Add `/etc/hosts` entries for a story worktree (worktree dev setup)    |

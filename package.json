@@ -8,7 +8,7 @@
     "pnpm": ">=12.18.0"
   },
   "scripts": {
-    "prepare": "[ -d .git ] && lefthook install || true",
+    "postinstall": "bash code/src/scripts/development/install-hooks.sh --notice || true",
     "lint:js": "eslint .",
     "lint:md": "markdownlint-cli2",
     "format:check": "prettier --check .",

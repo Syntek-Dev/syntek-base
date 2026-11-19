@@ -1,12 +1,12 @@
 # QA Plan — US010 The seven register indexes are born seeded
 
-| Field         | Value                                                                                                                                                   |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Story**     | US010 — The seven register indexes are born seeded, and the map index leaves the file that ships                                                        |
-| **Date**      | 21/09/2026                                                                                                                                              |
-| **Sprint**    | SPRINT-06 — its sole member, 8 of 11 SP, holding a 5 SP reservation for US009's carry (13 / 11 SP at grace if it lands)                                 |
-| **Wireframe** | N/A — this story ships Markdown, one YAML `_tasks` chain, one bash array, one bash check family and one Python probe; no screen, no component, no route |
-| **Status**    | Signed off · **corrected in place 30/09/2026 and 03/10/2026** — see below                                                                               |
+| Field         | Value                                                                                                                                                                                                                                                                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**     | US010 — The seven register indexes are born seeded, and the map index leaves the file that ships                                                                                                                                                                                                                                          |
+| **Date**      | 21/09/2026                                                                                                                                                                                                                                                                                                                                |
+| **Sprint**    | SPRINT-06 — its sole member, 8 of 11 SP, holding a 5 SP reservation for US009's carry (13 / 11 SP at grace if it lands) (corrected 17/11/2026, F-022 of `FINDING-US009-HOOK-ARMING-17-11-2026.md`: the reservation is **released** — US009 completes in SPRINT-05, which is 16 / 11 — so SPRINT-06 is **8 / 11** with nothing carried in) |
+| **Wireframe** | N/A — this story ships Markdown, one YAML `_tasks` chain, one bash array, one bash check family and one Python probe; no screen, no component, no route                                                                                                                                                                                   |
+| **Status**    | Signed off · **corrected in place 30/09/2026 and 03/10/2026** — see below                                                                                                                                                                                                                                                                 |
 
 <!-- STEP 1's GRILLING PASS RAN on 21/09/2026: two rounds with the developer over US010 and US011
      together, frontier empty. Its decisions are cited below as "settled 21/09/2026, grilling round

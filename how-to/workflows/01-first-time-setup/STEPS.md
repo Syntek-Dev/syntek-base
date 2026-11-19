@@ -51,6 +51,7 @@ This single command:
 - Copies every `.env.*.example` file to its live counterpart (skips existing)
 - Auto-generates `SECRET_KEY`, `ENCRYPTION_KEY`, `LEGAL_FIELD_HMAC_KEY`, `MFA_FIELD_KEY`, and `POSTGRES_PASSWORD` in `.env.dev`
 - Marks `install.sh` and all `code/src/scripts/**/*.sh` files executable
+- Arms the lefthook git hooks (delegates to `code/src/scripts/development/install-hooks.sh`), reporting any existing pre-commit hook it replaces
 
 > **Model:** opus
 

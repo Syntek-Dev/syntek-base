@@ -11,7 +11,8 @@ Base-repo scaffold: the folder ships **template-only**; real records are added b
 project-management/src/20-FINDINGS/
 ├── CONTEXT.md                  ← this file (orientation)
 ├── CLAUDE.md                   ← operating rules
-└── FINDING-US000-TEMPLATE.md   ← copy this to record a story's findings
+├── FINDING-US000-TEMPLATE.md   ← copy this to record a story's findings
+└── FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md ← one record per shipped story, written at workflow 22 Step 5
 ```
 
 ## Where this sits — the record tier

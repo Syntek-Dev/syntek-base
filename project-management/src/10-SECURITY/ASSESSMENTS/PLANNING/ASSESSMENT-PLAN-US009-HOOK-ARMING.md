@@ -1,13 +1,13 @@
 # Security Posture Assessment (Plan) — US009 The git hooks arm on purpose at install
 
-| Field          | Value                                                                                                   |
-| -------------- | ------------------------------------------------------------------------------------------------------- |
-| **Story**      | US009 — The git hooks arm on purpose at install, and the README claim that they already do becomes true |
-| **Date**       | 17/09/2026                                                                                              |
-| **Author**     | Claude Code — `security` skill, Opus · reviewed by <%DEVELOPER_NAME%>                                   |
-| **Sprint**     | SPRINT-05 — this story is its stretch `Should`, 5 of 13 SP                                              |
-| **Status**     | Signed off · **corrected in place 28/09/2026** — see below                                              |
-| **Frameworks** | STRIDE · OWASP Top 10 (A01–A10, 2025) · NIST CSF 2.0 (GV/ID/PR/DE/RS/RC)                                |
+| Field          | Value                                                                                                                                                                                                                      |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**      | US009 — The git hooks arm on purpose at install, and the README claim that they already do becomes true                                                                                                                    |
+| **Date**       | 17/09/2026                                                                                                                                                                                                                 |
+| **Author**     | Claude Code — `security` skill, Opus · reviewed by <%DEVELOPER_NAME%>                                                                                                                                                      |
+| **Sprint**     | SPRINT-05 — this story is its stretch `Should`, 5 of 13 SP (corrected 17/11/2026, F-021 of `FINDING-US009-HOOK-ARMING-17-11-2026.md`: the story is **8 SP** and SPRINT-05 **16 / 11** since the re-estimate of 17/11/2026) |
+| **Status**     | Signed off · **corrected in place 28/09/2026** — see below                                                                                                                                                                 |
+| **Frameworks** | STRIDE · OWASP Top 10 (A01–A10, 2025) · NIST CSF 2.0 (GV/ID/PR/DE/RS/RC)                                                                                                                                                   |
 
 > This assessment establishes the security **baseline** for the story before any code is
 > written. It synthesises the story's STRIDE threat model and maps overall posture against
@@ -120,6 +120,11 @@ was re-estimated 3 to 5 SP. TM-03 by `ST07`'s `git rev-parse --git-dir`, TM-04 b
 `pnpm exec lefthook install`, and TM-05 by moving the step to the end of Phase 1 with the hard fail
 kept. TM-02 is not closed, and its register entry is owed (7.2). Section 8 records each settlement.
 
+> **Correction 17/11/2026 (review QA-01, workflow 23):** TM-04's settlement as built differs from
+> the text above. `install-hooks.sh` checks `node_modules/.bin/lefthook` and runs it directly,
+> never through `pnpm exec`, whose dependency check can install over a stale `node_modules`; pnpm
+> is no longer required. The project's own binary, never `PATH`, still holds.
+
 <!-- AMENDED 28/09/2026 at sign-off. Section 1 is the baseline of 17/09/2026; only the tense of
      its claims about the story moved. Read "The story is right about the defect and incomplete
      about the fix", "The principal finding is that the story's own user story is not delivered
@@ -213,20 +218,20 @@ implementation assessment closes the constraint with evidence._
 Grouped by severity. All twelve are carried from the threat model unchanged; see it for the full
 mitigation text and the promotion triggers.
 
-| ID    | STRIDE | OWASP | NIST  | TB  | Threat Description                                                      | Severity | Planned Mitigation                                                 |
-| ----- | ------ | ----- | ----- | --- | ----------------------------------------------------------------------- | -------- | ------------------------------------------------------------------ |
-| TM-01 | T      | A03   | PR.PS | TB3 | The silent-arming channel stays open through 11 unsuppressed installs   | MEDIUM   | Settle `prepare`'s fate, or state the precedence (Section 7.1)     |
-| TM-02 | E      | A03   | PR.PS | TB6 | `--ignore-scripts` is three lines, asserted as though it were a posture | MEDIUM   | Narrow ST01's wording; raise the wider gap (Section 7.2)           |
-| TM-03 | D      | A10   | PR.PS | TB1 | `[ -d .git ]` is false in a worktree — every parallel-story checkout    | MEDIUM   | Test for a repository, not a directory (Section 7.3)               |
-| TM-04 | S      | A03   | PR.PS | TB2 | `lefthook` is not on `PATH`; resolution is unspecified                  | MEDIUM   | `pnpm exec lefthook install` — the house idiom (Section 7.4)       |
-| TM-05 | D      | A10   | RC.RP | TB1 | A hard fail abandons four later Phase 1 steps                           | MEDIUM   | Move the step, or justify the abandonment (Section 7.5)            |
-| TM-06 | E      | A01   | PR.PS | TB1 | The step sits downstream of a live `sudo rm -rf` with stray arguments   | MEDIUM   | Make "neither depends on nor masks it" a criterion (Section 7.6)   |
-| TM-09 | D      | A10   | DE.CM | TB5 | The automated proof is specified into a job that cannot run it          | MEDIUM   | Grep in the generation job; execution gets its own (Section 7.9)   |
-| TM-07 | T      | A08   | PR.DS | TB4 | `.git/hooks/pre-commit` is overwritten unconditionally, in silence      | LOW      | The step reports what it wrote and replaced (Section 7.7)          |
-| TM-08 | T      | A03   | PR.PS | TB2 | The "pinned" devDependency is a caret range Step 4 may move             | LOW      | Correct ST03's wording: the lockfile pins (Section 7.8)            |
-| TM-10 | T      | A02   | PR.PS | TB1 | `usage()`'s Phase 2 steps 7–8 collide with Phase 1's 7–8                | LOW      | Renumbering names Phase 2, or leaves it and says so (Section 7.10) |
-| TM-11 | S      | A03   | PR.PS | TB5 | A generated project's `.git` has no commits; the case is untested       | LOW      | Cover it, or record the assumption (Section 7.11)                  |
-| TM-12 | R      | A09   | DE.AE | TB4 | Nothing records whether the hooks were armed for a commit               | INFO     | Accepted residual, named rather than assumed                       |
+| ID    | STRIDE | OWASP | NIST  | TB  | Threat Description                                                      | Severity | Planned Mitigation                                                                                                                                                                    |
+| ----- | ------ | ----- | ----- | --- | ----------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TM-01 | T      | A03   | PR.PS | TB3 | The silent-arming channel stays open through 11 unsuppressed installs   | MEDIUM   | Settle `prepare`'s fate, or state the precedence (Section 7.1)                                                                                                                        |
+| TM-02 | E      | A03   | PR.PS | TB6 | `--ignore-scripts` is three lines, asserted as though it were a posture | MEDIUM   | Narrow ST01's wording; raise the wider gap (Section 7.2)                                                                                                                              |
+| TM-03 | D      | A10   | PR.PS | TB1 | `[ -d .git ]` is false in a worktree — every parallel-story checkout    | MEDIUM   | Test for a repository, not a directory (Section 7.3)                                                                                                                                  |
+| TM-04 | S      | A03   | PR.PS | TB2 | `lefthook` is not on `PATH`; resolution is unspecified                  | MEDIUM   | `pnpm exec lefthook install` — the house idiom (Section 7.4) (corrected 17/11/2026, review QA-01, workflow 23: run directly as `node_modules/.bin/lefthook`, not through `pnpm exec`) |
+| TM-05 | D      | A10   | RC.RP | TB1 | A hard fail abandons four later Phase 1 steps                           | MEDIUM   | Move the step, or justify the abandonment (Section 7.5)                                                                                                                               |
+| TM-06 | E      | A01   | PR.PS | TB1 | The step sits downstream of a live `sudo rm -rf` with stray arguments   | MEDIUM   | Make "neither depends on nor masks it" a criterion (Section 7.6)                                                                                                                      |
+| TM-09 | D      | A10   | DE.CM | TB5 | The automated proof is specified into a job that cannot run it          | MEDIUM   | Grep in the generation job; execution gets its own (Section 7.9)                                                                                                                      |
+| TM-07 | T      | A08   | PR.DS | TB4 | `.git/hooks/pre-commit` is overwritten unconditionally, in silence      | LOW      | The step reports what it wrote and replaced (Section 7.7)                                                                                                                             |
+| TM-08 | T      | A03   | PR.PS | TB2 | The "pinned" devDependency is a caret range Step 4 may move             | LOW      | Correct ST03's wording: the lockfile pins (Section 7.8)                                                                                                                               |
+| TM-10 | T      | A02   | PR.PS | TB1 | `usage()`'s Phase 2 steps 7–8 collide with Phase 1's 7–8                | LOW      | Renumbering names Phase 2, or leaves it and says so (Section 7.10)                                                                                                                    |
+| TM-11 | S      | A03   | PR.PS | TB5 | A generated project's `.git` has no commits; the case is untested       | LOW      | Cover it, or record the assumption (Section 7.11)                                                                                                                                     |
+| TM-12 | R      | A09   | DE.AE | TB4 | Nothing records whether the hooks were armed for a commit               | INFO     | Accepted residual, named rather than assumed                                                                                                                                          |
 
 <!-- AMENDED 30/09/2026: until then each constraint reference in the table above was written with
      the section sign, which `.claude/skills/global-workflow/VERSIONING-AND-DOCS.md` Section 2
@@ -286,6 +291,16 @@ until it was retired on 17/09/2026.
       Q6), dated the day it is written and citing the 17/09/2026 claim of
       `project-management/src/15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md`
       as the date it was owed from — never backdated to it
+
+  > **Correction 17/11/2026 (F-025, `FINDING-US009-HOOK-ARMING-17-11-2026.md`):** re-measured
+  > 17/11/2026, the tree holds **18** executable `pnpm install` invocations, **6** carrying
+  > `--ignore-scripts` and **12** not. The sixth suppressed is
+  > `code/src/scripts/dependencies/audit.sh:401`; the twelfth unsuppressed is US009's own CI
+  > setup step, `.github/workflows/audit-hook-arming.yml:78`. The three asserted lines are now
+  > `install-frontend.sh:71`, `:104` and `:113`, not `:67`, `:84` and `:93`. The register entry
+  > is written: `GAPS.md`, "17/11/2026 — twelve `pnpm install` invocations still run dependency
+  > lifecycle scripts" (F-026), so the second limb is satisfied from that date.
+
 - [ ] **7.3** The guard tests for a **git repository**, not for a directory. A `git worktree add`
       checkout has `.git` as a **file**, so `[ -d .git ]` skips there — in exactly the checkouts
       `how-to/workflows/02-worktree-setup/` tells this project to create for parallel story work
@@ -293,6 +308,7 @@ until it was retired on 17/09/2026.
 - [ ] **7.4** The binary is resolved from the project's own `node_modules` by the house `pnpm exec`
       idiom — used at 23 sites in this repository — and **never** from `PATH`. Measured
       17/09/2026: `lefthook` is not on `PATH`; `node_modules/.bin/lefthook` exists (A03, TM-04)
+      (corrected 17/11/2026, review QA-01, workflow 23: run directly as `node_modules/.bin/lefthook`, not through `pnpm exec`)
 - [ ] **7.5** The step's **position** is justified against its failure mode. Inserted after Step 4
       and exiting 2, a transient failure abandons Steps 5–8: `.env.*` files, generated dev secrets,
       script executable bits and the machine spec. Either it moves to the end of Phase 1, where
@@ -307,6 +323,15 @@ until it was retired on 17/09/2026.
       and this is a **criterion**, not a sentence in the Dependencies section. `:84` sits inside
       that block, so a QA pass reading the asserted lines walks past the defect (A01, TM-06).
       **Carried 30/09/2026 as `ST08`** (settled 30/09/2026, 16-sprint-plans grilling round 3 Q11)
+
+  > **Correction 17/11/2026 (F-024, `FINDING-US009-HOOK-ARMING-17-11-2026.md`):** the
+  > `sudo rm -rf` is **not live**. It was fixed upstream in `8dceffb` (14/10/2026), before this
+  > story's build began; the `--local` branch of
+  > `code/src/scripts/development/install-frontend.sh` now removes an array of targets, which
+  > cannot dangle a `\`. This criterion and the A01 row of the OWASP table describe the
+  > pre-`8dceffb` file, and its `:84` is now `:104`. The criterion still holds as written: each
+  > assertion is found by content and checks one line.
+
 - [ ] **7.7** The step **reports what it wrote** into `.git/hooks/` and what it replaced, rather
       than overwriting in silence. `install.sh` writes nothing under `.git/` today, and
       `lefthook.yml:73-76` records `code-review-graph install` appending its own hook to the same
@@ -315,6 +340,12 @@ until it was retired on 17/09/2026.
       `pnpm-lock.yaml:54-56` is what pins `2.1.10`. `install-frontend.sh:84` is plain
       `pnpm install`, not `--frozen-lockfile`, so Step 4 may resolve higher and Step 5 then arms
       with whatever it resolved (A03, TM-08)
+
+  > **Correction 17/11/2026 (F-019, `FINDING-US009-HOOK-ARMING-17-11-2026.md`):** re-resolved
+  > by quoted text, `package.json:22` now reads `"lefthook": "^2.2.2"` and the lockfile pins
+  > **2.2.2** at its `lefthook:` importer entry (`pnpm-lock.yaml:214-216`), both since `c2abb54`
+  > (09/11/2026). The range-versus-pin point stands; the `:84` above is now `:104`.
+
 - [ ] **7.9** The generation job's criterion is what it can actually do — **assert the step is
       present** in the generated `install.sh` on both answer sets. Executing `install.sh` needs
       docker, uv, pnpm and `sudo tee -a /etc/hosts`, which `audit-template.yml:151-163` does not
@@ -339,6 +370,14 @@ until it was retired on 17/09/2026.
       US009/ST04, unchanged.)_
 - [ ] **7.13** The step introduces no new network fetch, no new credential read, and no new write
       outside `.git/hooks/`. _(Carried from US009/ST05, unchanged.)_
+
+  > **Correction 17/11/2026 (F-018, `FINDING-US009-HOOK-ARMING-17-11-2026.md`):** the write
+  > boundary was widened at the red phase to the **effective hook directory** (the configured
+  > `core.hooksPath` where one is set, `.git/hooks/` otherwise) plus lefthook's own
+  > `.git/info/lefthook.checksum`, which every `lefthook install` writes; nothing else outside
+  > the hook directory may change. Ruling: _Red-phase answers — 17/11/2026_ in
+  > `project-management/src/17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`.
+
 - [ ] **7.14** The `.git` guard tests for a repository and nothing else; it does not become a
       general try/ignore that would hide a real failure. _(Carried from US009/ST06, and note
       that 7.3 changes **how** the test is written while this keeps **what** it may cover.)_

@@ -5,13 +5,13 @@
 > The earlier channel and dual-gate ADRs are Superseded; citations below retain their history.
 > The dated acceptance/specification correction at the end governs the repaired behaviour.
 
-| Field         | Value                                                                                                          |
-| ------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Story**     | US008 — Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule |
-| **Date**      | 17/09/2026                                                                                                     |
-| **Sprint**    | SPRINT-05 — this story is its `Must`, 8 SP of 13 / 11 (grace taken)                                            |
-| **Wireframe** | N/A — this story ships settings, a shell audit and Markdown, not a screen                                      |
-| **Status**    | Signed off · **corrected in place 30/09/2026** — see below                                                     |
+| Field         | Value                                                                                                                                                                                                                                        |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**     | US008 — Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                                                                                                                               |
+| **Date**      | 17/09/2026                                                                                                                                                                                                                                   |
+| **Sprint**    | SPRINT-05 — this story is its `Must`, 8 SP of 13 / 11 (grace taken) (corrected 17/11/2026, F-022 of `FINDING-US009-HOOK-ARMING-17-11-2026.md`: SPRINT-05 is **16 / 11**, over grace, since US009's re-estimate from 5 to 8 SP on 17/11/2026) |
+| **Wireframe** | N/A — this story ships settings, a shell audit and Markdown, not a screen                                                                                                                                                                    |
+| **Status**    | Signed off · **corrected in place 30/09/2026** — see below                                                                                                                                                                                   |
 
 <!-- SIGNED OFF 30/09/2026 by <%DEVELOPER_NAME%> (settled 30/09/2026, 16-sprint-plans grilling
      round 3 Q9), against the tree at a18db0b with that gate's corrections applied. The Status row

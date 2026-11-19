@@ -135,8 +135,14 @@ def check_settings(project: Path) -> None:
     for name, server in claude.items():
         require(servers[name]["command"] == server["command"], f"MCP command differs: {name}")
         require(servers[name]["args"] == server["args"], f"MCP arguments differ: {name}")
+        # Claude's `${KEY}` and `${KEY:-}` both mean what Codex's `env_vars` means: forward the
+        # host's variable. The empty-default form only changes what an UNSET variable becomes (an
+        # empty string, not the literal reference), so it is still a forward. Any other default is
+        # a fixed value and must match Codex's `env` table. Widened 17/11/2026 for 2950392.
         forwarded = {
-            key for key, value in server.get("env", {}).items() if value == "${" + key + "}"
+            key
+            for key, value in server.get("env", {}).items()
+            if value in ("${" + key + "}", "${" + key + ":-}")
         }
         fixed = {key: value for key, value in server.get("env", {}).items() if key not in forwarded}
         require(

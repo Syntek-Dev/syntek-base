@@ -1,6 +1,6 @@
 # SPRINT-06
 
-**Last Updated**: 31/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 17/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -36,10 +36,20 @@
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
 
 **Timeline:** TBD · **Capacity:** **8 / 11 SP** — inside capacity, all-`Must`, and **closed to
-admission, holding a reservation**: `project-management/src/03-SPRINTS/SPRINT-05.md` reserves
-US009's 5 SP `Should` carry to this record, and if it lands this sprint is **13 / 11 SP** and at
-grace. The grace is deliberately available for that carry and for nothing else
-(<%DEVELOPER_NAME%>'s call at `03-sprint-planning`, 20/09/2026). See Notes.
+admission**. **The US009 carry reserved here is RELEASED (17/11/2026)**: <%DEVELOPER_NAME%> settled
+"Keep all of US009 on SPRINT-05 as we are implementing", so US009 completes in
+`project-management/src/03-SPRINTS/SPRINT-05.md` and nothing lands here. See Notes.
+
+<!-- RELEASED 17/11/2026. Until that day this line read: "closed to admission, holding a
+     reservation: SPRINT-05.md reserves US009's 5 SP `Should` carry to this record, and if it lands
+     this sprint is 13 / 11 SP and at grace. The grace is deliberately available for that carry and
+     for nothing else (<%DEVELOPER_NAME%>'s call at `03-sprint-planning`, 20/09/2026)." Earlier on
+     17/11/2026 it gained a note that US009's re-estimate from 5 to 8 SP made the carry 8 SP and a
+     landed carry 16 / 11, past grace, outside that licence. The same day's later call released the
+     reservation, so the 20/09/2026 grace licence no longer has a subject: this record's grace is
+     held for nothing. The closure to admission stands as recorded — it was a call, and reopening
+     the record is <%DEVELOPER_NAME%>'s call, not a consequence of the release. The 5 SP carry
+     figures elsewhere in this record are as of 20/09/2026. -->
 
 <!-- FLAGS — the union of the member stories' flags. Recompute this table on every story
      admitted, never edit it directly.
@@ -165,9 +175,14 @@ grace. The grace is deliberately available for that carry and for nothing else
 | ----- | ---------------------------------------------------------------------------------------- | --------- | --- |
 | US010 | The seven register indexes are born seeded, and the map index leaves the file that ships | Must Have | 8   |
 
-**Total:** 8 SP — all committed, no stretch tier at opening. **US009's 5 SP `Should` carry is
-reserved to this record from `project-management/src/03-SPRINTS/SPRINT-05.md`**; if it arrives the
-total is 13 SP, 8 committed and 5 stretch. It is not counted until it does.
+**Total:** 8 SP — all committed, no stretch tier. **No carry is reserved here since 17/11/2026**:
+the US009 carry from `project-management/src/03-SPRINTS/SPRINT-05.md` is released, US009
+completing in that record in full.
+
+<!-- RELEASED 17/11/2026. Read until then: "US009's 5 SP `Should` carry is reserved to this record
+     from SPRINT-05.md; if it arrives the total is 13 SP, 8 committed and 5 stretch. It is not
+     counted until it does", with a note added earlier the same day that the carry had become 8 SP
+     and a landed carry would total 16 SP. -->
 
 <!-- US010 is added to this table rather than referenced from it because
      project-management/docs/planning/SPRINTS.md computes the flag union and the capacity FROM this
@@ -267,7 +282,8 @@ total is 13 SP, 8 committed and 5 stretch. It is not counted until it does.
   `project-management/src/03-SPRINTS/SPRINT-05.md` -> Definition of Done reserves US009's 5 SP
   `Should` carry here if it is dropped rather than delivered. Nothing else can: SPRINT-01, SPRINT-02
   and SPRINT-04 are closed with nothing reserved out of them, and SPRINT-03 holds US003's
-  reservation which runs into SPRINT-03, not out of it.
+  reservation which runs into SPRINT-03, not out of it. **Since 17/11/2026 nothing carries here**:
+  the US009 reservation is released, US009 completing in SPRINT-05 in full.
 - **`Blocked` is a story status, not a sprint one.** US010 waits on nothing, so no story
   `**Status:**` moves on account of this record.
 
@@ -358,8 +374,8 @@ SPRINT-05 — until that day it stood in three records only, four rows long, and
 | `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11 — closed                                             |
 | `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
 | `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed                                  |
-| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
-| `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 8, stretch)             | 16 / 11 — over grace, closed; reconciled at its close       |
+| `SPRINT-06` | US010 (`Must`, 8)                                               | 8 / 11 — closed                                             |
 | `SPRINT-07` | US012 (`Must`, 2) then US011 (`Should`, 8, stretch)             | 10 / 11 — closed                                            |
 | `SPRINT-08` | US013 (`Must`, 3) then US014 (`Must`, 8)                        | 11 / 11 — at capacity, open                                 |
 
@@ -368,6 +384,21 @@ capacity change is written into every copy in the same change. It is maintained 
 reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
 `project-management/docs/planning/SPRINTS.md`. Obligation:
 `project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- TWO ROWS CHANGED, 17/11/2026, on US009's re-estimate from 5 to 8 SP during implementation
+     (settled with <%DEVELOPER_NAME%>, /implement-story grilling round 5). The `SPRINT-05` row read
+     "US009 (`Should`, 5, stretch)" and "13 / 11 — at grace, closed", and the `SPRINT-06` row
+     "US009's reserved 5 SP carry" and "13 / 11 if it lands", from 20/09/2026 until that day.
+     SPRINT-05 is re-planned at its close rather than now, and no membership moved. Checked against
+     each record's own capacity line as well as against the other copies, per
+     project-management/src/03-SPRINTS/CLAUDE.md.
+     THE SAME TWO ROWS CHANGED AGAIN LATER ON 17/11/2026, on <%DEVELOPER_NAME%>'s call "Keep all of
+     US009 on SPRINT-05 as we are implementing". US009 completes in SPRINT-05 and the carry
+     reserved into SPRINT-06 is released: the `SPRINT-06` row read "US010 (`Must`, 8), plus
+     US009's reserved 8 SP carry if it slips" and "8 / 11 — closed, holding a reservation; 16 / 11
+     if it lands", and the `SPRINT-05` row "re-planned at its close", earlier that day. SPRINT-05
+     is now reconciled at its close. No membership moved; checked against each record's own
+     capacity line as well as against the other copies. -->
 
 <!-- ONE ROW ADDED, 31/10/2026 at 03-sprint-planning. `SPRINT-08` opened that day with its first
      admitted story, US013 (`Must`, 3), cut the same day from
@@ -453,6 +484,12 @@ for nothing else — so a record reading "open" while every point in it is claim
 the register exists to prevent. Closed by decision, on SPRINT-01's precedent of 07/09/2026 and
 SPRINT-03's of 05/09/2026: a ledger is closed by a call, not only by a ceiling.
 
+<!-- 17/11/2026: the reservation this paragraph rests on is RELEASED — US009 completes in SPRINT-05
+     in full (<%DEVELOPER_NAME%>: "Keep all of US009 on SPRINT-05 as we are implementing"). The
+     3 SP of headroom and the grace above it are no longer spoken for, and the 20/09/2026 licence
+     has no subject. The record stays closed as called; reopening it is a fresh call. The
+     paragraph is kept as the 20/09/2026 reasoning. -->
+
 **The all-`Must` weakness stands, and this record has no give it can honestly hold.**
 `project-management/docs/planning/SPRINTS.md` is explicit: "**Avoid a plan where everything is
 Must.** If every story is Must, the sprint has no give and the first surprise breaks it." The repair
@@ -469,6 +506,10 @@ SPRINT-05 it arrives here as a 5 SP `Should`, and this record would then have th
 whose absence is the defect — at 13 / 11, the shape SPRINT-03 has held since 07/09/2026. Until then
 the weakness is real and is recorded the way SPRINT-03 recorded it on 07/09/2026 and SPRINT-05 on
 09/09/2026: "the weakness stands, and this record has no other give it can honestly hold".
+
+<!-- 17/11/2026: the partial answer above is gone. The reservation is released, US009 completing in
+     SPRINT-05, so this record has no conditional give at all: the all-`Must` weakness stands
+     unanswered. -->
 
 **This record's plan was written on 03/10/2026, owed by a call and not by a fill.** It is
 `project-management/src/16-SPRINT-PLANS/06-SPRINT-PLAN-06.md`, written by a `16-sprint-plans` run
@@ -1187,7 +1228,9 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       `Should` is never dropped silently, and the backlog register is updated in every copy in the
       same change. If it did not carry, that is stated here rather than left as an unexplained
       8 / 11. **In the carry case this record stands at 13 / 11 and at grace**, which is the reading
-      the capacity line above already licenses
+      the capacity line above already licenses. **Disposed of 17/11/2026: US009 did not carry** —
+      it completes in `project-management/src/03-SPRINTS/SPRINT-05.md` in full, the reservation is
+      released, and this record stands at 8 / 11
 - [ ] **The carry has a deadline, and it is this record's close.** If US009 is still undecided when
       this record would otherwise close, the close waits on that decision or the reservation is
       released in writing — a reservation with no expiry silently holds 5 SP of a record's give
@@ -1195,14 +1238,16 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       the drop is recorded in `project-management/src/03-SPRINTS/SPRINT-05.md` and the story is
       carried into whichever record is open at that moment, or recorded as owed and unplaced if
       none is. Build order makes that ordering unlikely — US009 builds ninth and US010 tenth — but
-      unlikely is not impossible, and it is stated rather than left to be decided at the keyboard
+      unlikely is not impossible, and it is stated rather than left to be decided at the keyboard.
+      **Met 17/11/2026: the reservation is released in writing**, before this record's close
 - [ ] **A landed carry re-opens the sprint plan, written 03/10/2026.**
       `project-management/docs/planning/SPRINTS.md` -> _Two artefacts, two moments_ makes the plan
       "written once, against a settled story set", so a carry arriving now that
       `project-management/src/16-SPRINT-PLANS/06-SPRINT-PLAN-06.md` exists un-settles that set: the
       plan is revised in the same change that admits the story, never left describing a one-member
       sprint that now has two. The same change swaps US010's and US009's story-plan prefixes, as
-      that plan's _Build order_ states
+      that plan's _Build order_ states. **Moot since 17/11/2026**: the reservation is released, so no
+      carry can land and the prefixes stay as they are
 - [ ] **Nothing else carries into this record.** SPRINT-01, SPRINT-02 and SPRINT-04 are closed with
       nothing reserved out of them, and SPRINT-03's reservation runs into SPRINT-03. If a story
       arrives anyway it is recorded in both records with its reason and the capacity line

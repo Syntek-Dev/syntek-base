@@ -161,11 +161,21 @@ jobs:
       # answers are this job's (CI Probe, a fixed DATE, the derived slug `ci-probe`), so a local
       # render and CI's answer the same questions the same way (US004 B-2). `--ref HEAD` renders
       # the checked-out commit, as `--vcs-ref=HEAD` did; the post-generation tasks still run.
+      # US009 HP-07: each generated install.sh carries the git-hooks step. A grep and nothing
+      # more: this job never executes a generated install.sh, which would need docker, uv, pnpm
+      # and `sudo tee -a /etc/hosts` here. The behaviour is .github/workflows/audit-hook-arming.yml's.
       - name: Generate a project both ways
         run: |
           for mobile in false true; do
             bash code/src/scripts/development/template-render.sh --ref HEAD \
               --data INCLUDE_MOBILE=$mobile --target "$RUNNER_TEMP/gen-$mobile"
+            gen="$RUNNER_TEMP/gen-$mobile"
+            if ! grep -qF '# ── Phase 1 · Step 9 — Git hooks' "$gen/install.sh" ||
+               ! grep -qF 'bash "$PROJECT_ROOT/code/src/scripts/development/install-hooks.sh"' "$gen/install.sh"; then
+              echo "::error::INCLUDE_MOBILE=$mobile — the generated install.sh does not carry the git-hooks step"
+              exit 1
+            fi
+            echo "INCLUDE_MOBILE=$mobile — the generated install.sh carries the git-hooks step"
           done
 
       - name: Shared AI aliases must survive copy and update without leaking memory

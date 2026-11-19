@@ -68,7 +68,8 @@ bash install.sh
 
 This installs Python and JavaScript dependencies, copies every `.env.*` file from its example,
 auto-generates development secrets with `openssl`, offers to add the `/etc/hosts` entries, marks
-every project script executable, and writes a gitignored machine profile.
+every project script executable, writes a gitignored machine profile, and arms the lefthook git
+hooks so every `git commit` runs the pre-commit checks.
 
 To go further and build the Docker stack and run migrations in the same pass:
 
