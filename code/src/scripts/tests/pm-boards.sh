@@ -27,6 +27,9 @@
 #   archive    pm-archive.sh <ID> archives an ADR only from Superseded or Deprecated, a findings
 #              record only from Resolved, a bug only from Verified, and refuses any other status
 #              with nothing moved; --check then passes, and fails on an edit to an archived file.
+#   masked     A status or supersession line inside a fenced code block or an HTML comment is
+#              never read: a decoy Deprecated above the real Accepted line leaves the board
+#              filing Accepted, and pm-archive.sh --dry-run refusing.
 #   staged     --boards-for names the record boards a status edit moves.
 #
 # Usage: pm-boards.sh [--keep] [--help]
@@ -44,7 +47,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,36p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,39p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'pm-boards.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -86,6 +89,13 @@ bug() {  # bug NAME TITLE STATUS
     "$2" "$3" > "$SRC/21-BUGS/$1.md"
 }
 
+masked_adr() {  # masked_adr NAME FORM — a decoy Deprecated status inside FORM (fence|comment), then the real Accepted line
+  local open close
+  if [[ "$2" == fence ]]; then open='```text'; close='```'; else open='<!--'; close='-->'; fi
+  printf '# %s: A decision quoting another header\n\n%s\n**Status:** Deprecated\n**Superseded by:** `project-management/src/15-DECISIONS/ADR-US001-NEW-WAY-02-01-2026.md`\n%s\n\n**Status:** Accepted\n**Status note:** fixture\n**Date:** 01/01/2026\n**Supersedes:** None\n**Superseded by:** None\n\n## Decision\n\nA fixture record.\n' \
+    "$(cut -d- -f1-2 <<< "$1")" "$open" "$close" > "$SRC/15-DECISIONS/$1.md"
+}
+
 build_fixture() {
   local d
   for d in 00-ASSETS/scripts 01-FEATURE-MAPS 02-STORIES 03-SPRINTS 15-DECISIONS 16-SPRINT-PLANS \
@@ -99,6 +109,8 @@ build_fixture() {
   adr ADR-US002-DRAFT-03-01-2026 "A draft decision" Proposed None None
   adr ADR-US003-RETIRED-04-01-2026 "A retired decision" Deprecated None None
   adr ADR-US004-ORPHAN-05-01-2026 "An orphaned supersession" Superseded None ADR-US001-NEW-WAY-02-01-2026
+  masked_adr ADR-US005-FENCED-STATUS-06-01-2026 fence
+  masked_adr ADR-US006-COMMENTED-STATUS-07-01-2026 comment
   finding FINDING-US000-TEMPLATE "{STORY TITLE}" Open
   finding FINDING-US001-RESOLVED-01-01-2026 "The first record" Resolved
   finding FINDING-US002-OPEN-01-01-2026 "The second record" Open
@@ -174,6 +186,20 @@ probe_tail() {
     bash -c 'bash "$1" --warn --root "$2" | grep -q "ADR-US004-ORPHAN-05-01-2026"' _ "$SRC/00-ASSETS/scripts/pm-board.sh" "$FX"
 }
 
+probe_masked() {
+  local dec="$SRC/15-DECISIONS/DECISIONS-BOARD.md" id form
+  echo "masked"
+  for id in ADR-US005-FENCED-STATUS-06-01-2026 ADR-US006-COMMENTED-STATUS-07-01-2026; do
+    form="a fenced code block"; [[ "$id" == *COMMENTED* ]] && form="an HTML comment"
+    check "$id: a decoy status in $form is not read — the board files it Accepted" \
+      bash -c 'grep -E "^\| $2 " "$1" | grep -qE "\| Accepted +\|"' _ "$dec" "$id"
+    check "$id: a decoy Superseded by line there is not read either" \
+      bash -c 'grep -E "^\| $2 " "$1" | grep -qE "\| None +\| None +\|$"' _ "$dec" "$id"
+    check "$id: pm-archive.sh --dry-run refuses it (it is Accepted, not Deprecated)" \
+      bash -c '! bash "$1" "$2" --dry-run' _ "$SRC/00-ASSETS/scripts/pm-archive.sh" "$id"
+  done
+}
+
 refused() {  # refused ID FILE — pm-archive.sh exits 1 and the file has not moved
   local rc=0
   archive "$1" >/dev/null 2>&1 || rc=$?
@@ -232,6 +258,7 @@ else
   probe_render
   probe_instances
   probe_tail
+  probe_masked
   probe_archive
   probe_staged
 fi
