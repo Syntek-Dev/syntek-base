@@ -210,7 +210,7 @@ here carries a `Result`.
 | Whether US012 and US009 had landed on `main`                                                                                                                                     | QA plan EC-18, EC-19; the plan's P0                                                                                                    | Before the first edit                   | 19/11/2026 — neither on `main`. US009 merged to `testing` (PR 37, `b5fcede`), in this base; US012 `Pending` (block P0-4)                       |
 | The length readings — `docs-length.sh --path` over each bound instructional file the change edits, its code-line count                                                           | The plan's P0 and P4; `code/docs/DOCUMENTATION-LENGTH.md` Section 3                                                                    | Before the first edit, and at close     | 19/11/2026 — 19 files, all within 300, none at 270; highest `wayfinder/SKILL.md` at 265 (block P0-5)                                           |
 | ShellCheck probed — `command -v shellcheck`, and its version if present                                                                                                          | The plan's P0                                                                                                                          | Before the first edit                   | 19/11/2026 — present, `/run/current-system/sw/bin/shellcheck`, 0.11.0                                                                          |
-| Each new probe's red — the commit SHA, the probe's failing line or the `[3/4]` run ID, and the SHA of the commit that turned it green                                            | ST05; QA plan PA-03; settled 03/10/2026, 17-story-plans round 1 Q1                                                                     | As each probe and check land (P1)       |                                                                                                                                                |
+| Each new probe's red — the commit SHA, the probe's failing line or the `[3/4]` run ID, and the SHA of the commit that turned it green                                            | ST05; QA plan PA-03; settled 03/10/2026, 17-story-plans round 1 Q1                                                                     | As each probe and check land (P1)       | R1 `a8a81668` red, `b18f832a` green — block below                                                                                              |
 | The finding and bug registers re-counted                                                                                                                                         | QA plan EC-16                                                                                                                          | At the commit that writes their indexes |                                                                                                                                                |
 | The map population under the instance test — the command, its count, HEAD                                                                                                        | QA plan HP-10, EC-02                                                                                                                   | At the map commit (P3)                  |                                                                                                                                                |
 | The landing commit's workflow run — its ID, the commit SHA, and the `[1/4]`, `[2/4]` and `[3/4]` results on each render path                                                     | QA plan Section 6; HP-01                                                                                                               | When that run completes                 |                                                                                                                                                |
@@ -293,6 +293,32 @@ P0-5 — length, `docs-length.sh --path` exit 0 for each; cloc Markdown code lin
   55  project-management/src/20-FINDINGS/CLAUDE.md
   47  project-management/src/21-BUGS/CLAUDE.md
  265  .claude/skills/wayfinder/SKILL.md
+```
+
+### Each new probe's red — R1, 19/11/2026
+
+The generator's probes, `code/src/scripts/tests/pm-boards.sh` (a synthetic fixture; run with
+`bash code/src/scripts/tests/pm-boards.sh`), committed red in a commit of their own before the
+generator change they prove. The check lines are the script's own; nothing here is a `Result`.
+
+```text
+red    a8a81668  test(us010): red probes for the decisions, findings and bugs boards and their archive
+       exit 1 — "✗ pm-boards.sh: 30 of 37 probes failed"; failing lines include
+         ✗ DECISIONS-BOARD.md is written
+         ✗ the cross-cutting BUG-<DESCRIPTOR>-DD-MM-YYYY.md fallback is a row
+         ✗ the decisions header is ID, Title, Status, File, Supersedes, Superseded by
+         ✗ an Accepted ADR is refused          (pm-archive.sh exit 2: an ADR ID was not accepted)
+         ✗ a Superseded ADR is archived
+         ✗ --check fails on an edit to an archived bug (no archived bug to edit)
+         ✗ --boards-for names DECISIONS-BOARD.md for an ADR status edit
+       the 7 that passed at red are non-regression guards (templates absent, no Unrecognised
+       column, a refusal moves nothing, --check green on the fixture, no tail columns on the
+       findings and bugs boards)
+green  b18f832a  feat(us010): decisions, findings and bugs boards, their archive, and the
+                 supersession columns — exit 0, "✓ pm-boards.sh: 37 probes passed"
+note   one expectation was corrected in the green commit, not the code it tests: "the bugs board
+       counts four instances" read four where the fixture defines three bug instances; it reads
+       "its three instances" from b18f832a
 ```
 
 ---

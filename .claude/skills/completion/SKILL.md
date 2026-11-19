@@ -41,7 +41,9 @@ folder pairs, workflows and the planning guides link here rather than restating 
 board's `Unrecognised` column and raises a warning.
 
 **Status line format.** `**Status:** <Title>`, optionally followed by a spaced `— <note>` tail. Text after
-the spaced `—` is a note and the parser ignores it (`**Status:** In Review — PR 124`).
+the spaced `—` is a note and the parser ignores it (`**Status:** In Review — PR 124`). **Maps and
+the three record registers below carry no tail:** the line holds the value alone — no bold, no
+backticks, no trailing comment — and any prose goes on a `**Status note:**` line beside it.
 
 ### Stories (`US###.md`)
 
@@ -100,6 +102,30 @@ only `pm-archive.sh SPRINT-##` sets it, moving the sprint and its sprint plan in
 been cut into stories; only `pm-archive.sh MAP-<NAME>` sets it. A closed map is frozen: new work
 on the area makes a new map. The status itself is advanced by `wayfinder`.
 
+### Decisions (`15-DECISIONS/ADR-*.md`)
+
+`**Status:** Proposed | Accepted | Superseded | Deprecated`, plus an optional `**Status note:**`.
+**`Proposed`** — drafted, not yet signed off. **`Accepted`** — signed off; the decision is now
+immutable. **`Superseded`** — a later ADR replaced it. **`Deprecated`** — withdrawn with no
+successor. Every ADR also carries `**Supersedes:**` and `**Superseded by:**` — a full ADR filename
+or `None` each, cross-referenced both ways — which the decisions board shows as two columns.
+
+### Findings (`20-FINDINGS/FINDING-*.md`)
+
+`**Status:** Open | Triaged`, plus an optional `**Status note:**`. **`Open`** — rows still
+undispositioned. **`Triaged`** — every row carries a disposition.
+
+### Bugs (`21-BUGS/BUG-*.md`)
+
+`**Status:** Open | Fixed | Verified`, plus an optional `**Status note:**`. **`Open`** — filed, not
+fixed. **`Fixed`** — the fix and its regression test are merged. **`Verified`** — the fix was
+seen to hold after the merge.
+
+**The record registers have no `Closed`.** `pm-archive.sh <ID>` (the ID is the filename stem)
+archives an ADR once `Superseded` or `Deprecated`, a findings record once `Triaged`, a bug once
+`Verified`, and refuses any other status; the record keeps that end status inside `archive/`, and
+its board files it there. Templates (`<PREFIX>-US000-TEMPLATE.md`) are never instances.
+
 ### Plans (`16-SPRINT-PLANS/`, `17-STORY-PLANS/`)
 
 **No status line of their own.** Their board shows the parent's status — a story plan the
@@ -116,8 +142,9 @@ on the area makes a new map. The status itself is advanced by `wayfinder`.
   `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`. The `*-BOARD.md` are committed and generated (never hand-edited); their `.json` and
   `.html` siblings are gitignored. `pm-board.sh --warn` prints the readiness signals: a
   `Blocked` story with its dependencies landed, a story past its window (ready for `Completed`),
-  a `Completed` story (ready to archive), a sprint whose stories are all `Closed`, and a
-  `Complete` map with every slice cut.
+  a `Completed` story (ready to archive), a sprint whose stories are all `Closed`, a
+  `Complete` map with every slice cut, a record in its end state (ready to archive), and an ADR
+  supersession that is not cross-referenced both ways.
 
 ## Before recording anything
 
