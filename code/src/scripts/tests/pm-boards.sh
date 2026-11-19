@@ -154,8 +154,8 @@ probe_instances() {
   check "BUG-US000-TEMPLATE.md is not a row" lacks "$bugs" "BUG-US000-TEMPLATE"
   check "ADR-US000-TEMPLATE.md is not a row" lacks "$SRC/15-DECISIONS/DECISIONS-BOARD.md" "ADR-US000-TEMPLATE"
   check "FINDING-US000-TEMPLATE.md is not a row" lacks "$SRC/20-FINDINGS/FINDINGS-BOARD.md" "FINDING-US000-TEMPLATE"
-  check "the bugs board counts four instances" \
-    bash -c '[[ $(grep -cE "^\| BUG-" "$1") -eq 4 ]]' _ "$bugs"
+  check "the bugs board counts its three instances" \
+    bash -c '[[ $(grep -cE "^\| BUG-" "$1") -eq 3 ]]' _ "$bugs"
 }
 
 probe_tail() {

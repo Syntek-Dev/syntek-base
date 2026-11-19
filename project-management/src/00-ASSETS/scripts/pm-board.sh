@@ -1,28 +1,36 @@
 #!/usr/bin/env bash
-# pm-board.sh — Generate, check and warn on the five PM kanban boards.
+# pm-board.sh — Generate, check and warn on the eight PM kanban boards.
 #
 # One board per register folder, built ONLY from each item's status line:
 #
 #   01-FEATURE-MAPS/  FEATURE-MAPS-BOARD.md  feature-maps-board.json  feature-maps-board.html
 #   02-STORIES/       STORIES-BOARD.md       stories-board.json       stories-board.html
 #   03-SPRINTS/       SPRINTS-BOARD.md       sprints-board.json       sprints-board.html
+#   15-DECISIONS/     DECISIONS-BOARD.md     decisions-board.json     decisions-board.html
 #   16-SPRINT-PLANS/  SPRINT-PLANS-BOARD.md  sprint-plans-board.json  sprint-plans-board.html
 #   17-STORY-PLANS/   STORY-PLANS-BOARD.md   story-plans-board.json   story-plans-board.html
+#   20-FINDINGS/      FINDINGS-BOARD.md      findings-board.json      findings-board.html
+#   21-BUGS/          BUGS-BOARD.md          bugs-board.json          bugs-board.html
 #
 # The .md is COMMITTED — it is the register index (one row per instance: ID, title from
 # the H1, status verbatim, link) grouped into the status columns in lifecycle order. The
 # .json and .html are GITIGNORED local views. Plans carry no status of their own: a plan
 # shows its parent's (story plan → US###, sprint plan → SPRINT-##, both from the filename).
-# Items under archive/ sit under Closed. Templates are never instances. A status outside
+# Items under archive/ sit under Closed — bar the three RECORD registers (decisions, findings,
+# bugs), whose archived records stay under the end status they were archived from, and whose
+# boards say so, with their row order (ID, i.e. filename, order), in their opening line. The
+# decisions board adds two tail columns, Supersedes and Superseded by, read from each ADR's own
+# two lines. Templates are never instances. A status outside
 # the vocabulary lands in an "Unrecognised" column and raises a warning. The vocabulary,
 # the parsing and the lookup live in pm-lib.sh, shared with pm-archive.sh.
 #
 # Usage: pm-board.sh --write [--staged] | --boards-for PATH... | --check | --warn
 #                   [--root DIR] [--quiet] [--help]
 #
-#   --write    Regenerate all five boards (.md, .json, .html).
+#   --write    Regenerate all eight boards (.md, .json, .html); a folder that does not exist
+#              is skipped.
 #   --staged   With --write, for the lefthook pre-commit leg: do nothing unless a file in
-#              one of the five folders is staged. Renders the boards from the INDEX (what
+#              one of the eight folders is staged. Renders the boards from the INDEX (what
 #              is about to be committed), never the working tree, so an unstaged status
 #              edit can never leak into a committed board. Writes each *-BOARD.md whose
 #              staged copy differs, RE-STAGES NOTHING, names it and exits 1, so the board is
@@ -53,8 +61,10 @@
 #              story past its window, ready for Completed; a Completed story, ready to
 #              archive; a sprint whose stories are all Closed; a Complete map with every
 #              slice cut; a Complete or Closed map whose Fog of war still lists an item
-#              (a list item or table row; prose such as "_Empty._" lists nothing); an
-#              unrecognised status. Windows: CUSTOMER_REVIEW_WEEKS and
+#              (a list item or table row; prose such as "_Empty._" lists nothing); a
+#              record in an end state, ready to archive; a supersession chain that does
+#              not walk both ways (a named ADR absent, or not naming this one back, or a
+#              Superseded ADR naming no successor); an unrecognised status. Windows: CUSTOMER_REVIEW_WEEKS and
 #              FEEDBACK_WEEKS from .copier-answers.yml, default 2 and 4.
 #   --root DIR Operate on another project root (used by .github/scripts/shipped-boards.sh
 #              to render the boards a generated project is seeded with).
@@ -102,7 +112,7 @@ while [[ $# -gt 0 ]]; do
       [[ -n "${2:-}" && -d "${2:-}" ]] || die "--root needs an existing directory"
       PROJECT_ROOT="$(cd "$2" && pwd)"; shift 2 ;;
     --quiet|-q) QUIET=true; shift ;;
-    --help|-h) sed -n '2,70p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '2,80p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) die "unknown argument: '$1'. Use --help for usage." ;;
   esac
 done
@@ -115,8 +125,10 @@ source "$SCRIPT_DIR/pm-lib.sh"
 
 cd "$PROJECT_ROOT"
 
-FOLDERS=(01-FEATURE-MAPS 02-STORIES 03-SPRINTS 16-SPRINT-PLANS 17-STORY-PLANS)
-BOARDS=(FEATURE-MAPS STORIES SPRINTS SPRINT-PLANS STORY-PLANS)
+FOLDERS=(01-FEATURE-MAPS 02-STORIES 03-SPRINTS 15-DECISIONS 16-SPRINT-PLANS 17-STORY-PLANS
+         20-FINDINGS 21-BUGS)
+BOARDS=(FEATURE-MAPS STORIES SPRINTS DECISIONS SPRINT-PLANS STORY-PLANS FINDINGS BUGS)
+FOLDER_RE="^project-management/src/($(IFS='|'; echo "${FOLDERS[*]}"))/"
 
 if [[ "$MODE" == boards-for ]]; then
   # Expand the named pathspecs the way `git add` will — from the caller's directory, so a
@@ -127,15 +139,15 @@ if [[ "$MODE" == boards-for ]]; then
     git ls-files --full-name --cached --others --exclude-standard -- "${BOARDS_ARGS[@]}"
     git ls-files --full-name --deleted -- "${BOARDS_ARGS[@]}"
   } | sort -u)" || die "could not read the named paths through git"
-  if ! grep -qE '^project-management/src/(01-FEATURE-MAPS|02-STORIES|03-SPRINTS|16-SPRINT-PLANS|17-STORY-PLANS)/' \
-      <<< "$BOARDS_FOR$(git diff --cached --name-only 2>/dev/null || true)"; then
-    $QUIET || echo "pm-board: no named or staged file is in the five board folders — nothing to stage" >&2
+  if ! grep -qE "$FOLDER_RE" \
+      <<< "$BOARDS_FOR"$'\n'"$(git diff --cached --name-only 2>/dev/null || true)"; then
+    $QUIET || echo "pm-board: no named or staged file is in the eight board folders — nothing to stage" >&2
     exit 0
   fi
 elif $STAGED; then
   staged="$(git diff --cached --name-only 2>/dev/null || true)"
-  if ! grep -qE '^project-management/src/(01-FEATURE-MAPS|02-STORIES|03-SPRINTS|16-SPRINT-PLANS|17-STORY-PLANS)/' <<< "$staged"; then
-    $QUIET || echo "pm-board: no file in the five board folders is staged — nothing to do"
+  if ! grep -qE "$FOLDER_RE" <<< "$staged"; then
+    $QUIET || echo "pm-board: no file in the eight board folders is staged — nothing to do"
     exit 0
   fi
 fi
@@ -170,8 +182,34 @@ def build(key):
         if kind.parent:
             row["parent"] = it.parent_id
             row["parent_href"] = link(owner.path, kind.dir) if owner else ""
+        if kind.tail:
+            row["supersedes"] = tail_cell(it.supersedes)
+            row["superseded_by"] = tail_cell(it.superseded_by)
         grouped[col].append(row)
     return kind, cols, grouped, warns
+
+def tail_cell(ids):
+    """A supersession column: the IDs named, `None`, or `—` for a missing or unreadable line."""
+    if ids is None:
+        return "—"
+    return ", ".join(ids) if ids else "None"
+
+def lede(kind, src):
+    where = f"One row per {kind.noun} in `{kind.folder}/` and `{kind.folder}/archive/`, filed under {src}."
+    if kind.archive_from:
+        return (f"{where} Columns run in lifecycle order and the rows in each column in ID order, "
+                "which is filename order; an archived record stays under the end status it was "
+                "archived from.")
+    return f"{where} Columns run in lifecycle order; archived items sit under Closed."
+
+def record_rows(kind, rows):
+    """The table for a register with no parent: ID, Title, Status, File, plus any tail columns."""
+    header = ["ID", "Title", "Status", "File"] + (["Supersedes", "Superseded by"] if kind.tail else [])
+    body = []
+    for r in rows:
+        cells = [r["id"], r["title"], r["status"] or "—", f"[{os.path.basename(r['path'])}]({r['href']})"]
+        body.append(cells + ([r["supersedes"], r["superseded_by"]] if kind.tail else []))
+    return render_table(header, body)
 
 def render_md(kind, cols, grouped):
     title = kind.board.replace("-", " ").title().replace("Feature Maps", "Feature maps")
@@ -180,10 +218,7 @@ def render_md(kind, cols, grouped):
     out = [f"# {title} board", "",
            f"<!-- GENERATED by {SCRIPT} --write. Never hand-edit: regenerate it. The only source",
            f"     of truth is each item's status line; `pm-board.sh --check` fails when this file is stale. -->",
-           "",
-           f"One row per {kind.noun} in `{kind.folder}/` and `{kind.folder}/archive/`, filed under "
-           f"{src}. Columns run in lifecycle order; archived items sit under Closed.",
-           "", "## Summary", ""]
+           "", lede(kind, src), "", "## Summary", ""]
     shown = cols + (["Unrecognised"] if grouped["Unrecognised"] else [])
     out += render_table(["Column", "Items"], [[c, str(len(grouped[c]))] for c in shown])
     for c in shown:
@@ -199,9 +234,7 @@ def render_md(kind, cols, grouped):
                     for r in rows]
             out += render_table(["Plan", noun, "Title", "Status", "File"], body)
         else:
-            body = [[r["id"], r["title"], r["status"] or "—", f"[{os.path.basename(r['path'])}]({r['href']})"]
-                    for r in rows]
-            out += render_table(["ID", "Title", "Status", "File"], body)
+            out += record_rows(kind, rows)
     return "\n".join(out) + "\n"
 
 CSS = """
@@ -320,7 +353,7 @@ if MODE == "check":
         for b in bad:
             print(f"✗ {b}")
         sys.exit(1)
-    say("✓ pm-board: all five boards are current and archive/ is untouched")
+    say(f"✓ pm-board: all {len(ORDER)} boards are current and archive/ is untouched")
     sys.exit(0)
 
 for kind, cols, grouped, warns in boards:
@@ -335,7 +368,7 @@ for kind, cols, grouped, warns in boards:
     (kind.dir / f"{stem}.html").write_text(render_html(kind, cols, grouped), encoding="utf-8")
 for w in all_warns:
     say(f"warning: {w}")
-say("pm-board: wrote the five boards (.md committed, .json/.html gitignored)")
+say(f"pm-board: wrote the {len(ORDER)} boards (.md committed, .json/.html gitignored)")
 PYEOF
 )
 
@@ -345,7 +378,7 @@ if ! $STAGED && [[ "$MODE" != boards-for ]]; then
   exit $?
 fi
 
-# --staged and --boards-for both render from the INDEX. Materialise the staged copy of the five
+# --staged and --boards-for both render from the INDEX. Materialise the staged copy of the eight
 # folders (and the answers file the clock reads) into a scratch tree; --boards-for then lays
 # the author's named paths over it from the working tree, so the render is exactly what the
 # index will hold once those paths are staged. Each board that differs from its staged copy is
