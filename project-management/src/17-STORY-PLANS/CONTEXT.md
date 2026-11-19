@@ -121,7 +121,7 @@ against its sprint in that sprint plan's _Story Plans — the code master_ table
      date here would ship 08/09/2026 into every project generated afterwards and would leave this
      file the only one of the 138 out of pattern. The update date is this comment. -->
 
-<!-- 08/09/2026, later the same day: two corrections to _The plans index_ above; the comment above
+<!-- CORRECTED 08/09/2026, later the same day: two corrections to _The plans index_ above; the comment above
      is kept as the record of the position held at that hour. (1) The section's closing sentence
      read "Until that lands, the instructions elsewhere that require a row here stand unaltered and
      the row is not added; a plan's own status lives in its metadata table and in its story." It
@@ -141,7 +141,7 @@ against its sprint in that sprint plan's _Story Plans — the code master_ table
      `STORY-PLANS-BOARD.md` here, and a plan's status row was retired — the board mirrors the
      parent story. The two comments above stay as the record of the earlier position. -->
 
-<!-- 19/11/2026: the tree's `PLAN-<DESCRIPTOR>.md` row and the `**Naming:**` line's programme-plan
+<!-- UPDATED 19/11/2026: the tree's `PLAN-<DESCRIPTOR>.md` row and the `**Naming:**` line's programme-plan
      clause removed — the board lists only the per-story pattern, so a programme plan here would
      be unindexed. _The plans index_ no longer calls the board "the excluded-and-seeded index file
      the register-index work called for, built for this folder (and `01`, `02`, `03` and `16`) by
