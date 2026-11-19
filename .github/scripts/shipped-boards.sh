@@ -100,6 +100,10 @@ cd "$PROJECT_ROOT"
 [[ -f "$MAP_SEED" ]] || die "missing $MAP_SEED — the seed-only tree cannot be built"
 command -v python3 >/dev/null 2>&1 || die "python3 is required"
 
+# The self-test ledger and crash guard template-integrity.sh's planned-red allowance reads.
+# shellcheck source=self-test-ledger.sh
+. "$SCRIPT_DIR/self-test-ledger.sh"
+
 RENDER_DIR=""
 # shellcheck disable=SC2329  # invoked by the EXIT trap below
 cleanup() { [[ -n "$RENDER_DIR" ]] && rm -rf "$RENDER_DIR"; }
@@ -247,8 +251,10 @@ probe() {
   run_checks
   if [[ ${#FINDINGS[@]} -eq 1 ]] && [[ "${FINDINGS[0]}" == *"$2"* ]]; then
     log "  ✓ $1"
+    st_record pass "$1"
   else
     ST_FAILS=$((ST_FAILS + 1))
+    st_record fail "$1"
     printf '\033[31m  ✗ %s produced %d finding(s): %s\033[0m\n' \
       "$1" "${#FINDINGS[@]}" "$(printf '%s; ' "${FINDINGS[@]:-(none)}")"
   fi
@@ -362,9 +368,11 @@ self_test() {
   fi
   log "  the detector no longer separates a clean seed from a polluted one —"
   log "  fix the check, never the expectation."
-  return 1
+  return 0
 }
 
+# Armed ahead of the render: a self-test run that stops anywhere before its end exits 2.
+if $SELF_TEST; then st_arm cleanup; fi
 render
 
 if $FIX; then
@@ -376,7 +384,7 @@ fi
 
 if $SELF_TEST; then
   self_test
-  exit $?
+  st_finish "$ST_FAILS"
 fi
 
 bold "▸ shipped-boards.sh"

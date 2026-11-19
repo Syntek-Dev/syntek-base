@@ -72,6 +72,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# The self-test ledger and crash guard template-integrity.sh's planned-red allowance reads.
+# shellcheck source=self-test-ledger.sh
+. "$SCRIPT_DIR/self-test-ledger.sh"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 README="$PROJECT_ROOT/.copier/README.md"
@@ -108,6 +111,9 @@ while [[ $# -gt 0 ]]; do
     *)           die "unknown argument: $1" ;;
   esac
 done
+
+# Armed once the arguments are read: a self-test run that stops anywhere before its end exits 2.
+if $SELF_TEST; then st_arm; fi
 
 cd "$PROJECT_ROOT"
 [[ -f "$README" ]] || die "missing $README"
@@ -259,6 +265,7 @@ run_readme_checks() {
   [[ -n "$AUDIT_REG"  ]] || die "no '### Audit scripts' section in $README"
 
 # ── 1. Root entries ───────────────────────────────────────────────────────────
+# shellcheck disable=SC2010  # root entry names are plain; ls -A also lists the dotfiles a bare glob skips
 for entry in $(ls -A | grep -vE '^(\.git|node_modules|\.venv|\.code-review-graph)$'); do
   is_excluded "$entry" && continue
   case "$entry" in .*) [[ "$entry" == ".claude" || "$entry" == ".agents" || "$entry" == ".ai" || "$entry" == ".codex" || "$entry" == ".mcp.json" || "$entry" == ".zed" ]] || continue ;; esac
@@ -398,16 +405,16 @@ self_test() {
   src=$(first_required "$SRC_BLOCK" code/src/*/)             || die "no unambiguous code/src/ anchor — the proof cannot run"
   gh="${gh##*	}"; doc="${doc##*	}"; src="${src##*	}"
 
-  assert_in  "GH_BLOCK"   "$GH_BLOCK"   "$gh"
-  assert_in  "DOCS_BLOCK" "$DOCS_BLOCK" "$doc"
-  assert_in  "SRC_BLOCK"  "$SRC_BLOCK"  "$src"
-  assert_out "GH_BLOCK"   "$GH_BLOCK"   "$doc"
-  assert_out "GH_BLOCK"   "$GH_BLOCK"   "$src"
-  assert_out "DOCS_BLOCK" "$DOCS_BLOCK" "$src"
-  assert_out "DOCS_BLOCK" "$DOCS_BLOCK" "$gh"
-  assert_out "SRC_BLOCK"  "$SRC_BLOCK"  "$doc"
-  assert_out "SRC_BLOCK"  "$SRC_BLOCK"  "$gh"
-  assert_out "CODE_BLOCK" "$CODE_BLOCK" "$gh"
+  assert_in  "GH_BLOCK"   "$GH_BLOCK"   "$gh" "its own first member"
+  assert_in  "DOCS_BLOCK" "$DOCS_BLOCK" "$doc" "its own first member"
+  assert_in  "SRC_BLOCK"  "$SRC_BLOCK"  "$src" "its own first member"
+  assert_out "GH_BLOCK"   "$GH_BLOCK"   "$doc" "the code/docs/ anchor"
+  assert_out "GH_BLOCK"   "$GH_BLOCK"   "$src" "the code/src/ anchor"
+  assert_out "DOCS_BLOCK" "$DOCS_BLOCK" "$src" "the code/src/ anchor"
+  assert_out "DOCS_BLOCK" "$DOCS_BLOCK" "$gh" "the .github/ anchor"
+  assert_out "SRC_BLOCK"  "$SRC_BLOCK"  "$doc" "the code/docs/ anchor"
+  assert_out "SRC_BLOCK"  "$SRC_BLOCK"  "$gh" "the .github/ anchor"
+  assert_out "CODE_BLOCK" "$CODE_BLOCK" "$gh" "the .github/ anchor"
 
   # count_rows underpins the uniqueness filter every mutation target passes through:
   # if it under-counted, an ambiguous target would be picked and the deletion would hit
@@ -436,6 +443,7 @@ self_test() {
     # shellcheck disable=SC2086
     target=$(first_required "$blob" $candidates) || {
       ST_FAILS=$((ST_FAILS + 1))
+      st_record fail "check $num fires on a missing row"
       printf '\033[31m  ✗ check %s: no unambiguous mutation target — the proof cannot run\033[0m\n' "$num"
       continue
     }
@@ -449,8 +457,10 @@ self_test() {
 
     if [[ ${#FINDINGS[@]} -eq 1 ]] && [[ "${FINDINGS[0]}" == *"$path"* || "${FINDINGS[0]}" == *"$name"* ]]; then
       log "  ✓ check $num fires on a missing row — $path"
+      st_record pass "check $num fires on a missing row"
     else
       ST_FAILS=$((ST_FAILS + 1))
+      st_record fail "check $num fires on a missing row"
       out=$(printf '%s; ' "${FINDINGS[@]:-(none)}")
       printf '\033[31m  ✗ check %s: deleting %s produced %d finding(s): %s\033[0m\n' \
         "$num" "$path" "${#FINDINGS[@]}" "$out"
@@ -473,6 +483,7 @@ self_test() {
 
     if [[ -z "$reg_target" ]]; then
       ST_FAILS=$((ST_FAILS + 1))
+      st_record fail "check $reg_num fires when a register row becomes prose about itself"
       printf '\033[31m  ✗ check %s: no solo register row to mutate — the proof cannot run\033[0m\n' "$reg_num"
       continue
     fi
@@ -485,8 +496,10 @@ self_test() {
 
     if [[ ${#FINDINGS[@]} -eq 1 ]] && [[ "${FINDINGS[0]}" == *"$reg_want"* ]] && [[ "${FINDINGS[0]}" == *"$reg_target"* ]]; then
       log "  ✓ check $reg_num fires when the row becomes prose about itself — $reg_target"
+      st_record pass "check $reg_num fires when a register row becomes prose about itself"
     else
       ST_FAILS=$((ST_FAILS + 1))
+      st_record fail "check $reg_num fires when a register row becomes prose about itself"
       out=$(printf '%s; ' "${FINDINGS[@]:-(none)}")
       printf '\033[31m  ✗ check %s: prose-ifying %s produced %d finding(s): %s\033[0m\n' \
         "$reg_num" "$reg_target" "${#FINDINGS[@]}" "$out"
@@ -506,7 +519,7 @@ self_test() {
   log "  the detector no longer separates a complete tree from a mutated one —"
   log "  fix the check, never the expectation."
   log ""
-  return 1
+  return 0
 }
 
 # Pick a row the README is REQUIRED to carry AND that appears exactly once, so deleting
@@ -581,16 +594,22 @@ first_in_register() { # $1 = the register blob, $2… = candidate paths
 ST_FAILS=0
 ST_PROBES=0
 
-assert_in() {  # $1 = label, $2 = blob, $3 = a name the blob MUST carry
+assert_in() {  # $1 = label, $2 = blob, $3 = a name the blob MUST carry, $4 = its stable role
   ST_PROBES=$((ST_PROBES + 1))
-  if ! in_tree "$2" "$3"; then
+  if in_tree "$2" "$3"; then
+    st_record pass "$1 carries ${4:-$3}"
+  else
+    st_record fail "$1 carries ${4:-$3}"
     ST_FAILS=$((ST_FAILS + 1))
     printf '\033[31m  ✗ %s is missing "%s" — the block under-captures\033[0m\n' "$1" "$3"
   fi
 }
-assert_out() { # $1 = label, $2 = blob, $3 = a name from a NEIGHBOURING section
+assert_out() { # $1 = label, $2 = blob, $3 = a name from a NEIGHBOURING section, $4 = its stable role
   ST_PROBES=$((ST_PROBES + 1))
-  if in_tree "$2" "$3"; then
+  if ! in_tree "$2" "$3"; then
+    st_record pass "$1 excludes ${4:-$3}"
+  else
+    st_record fail "$1 excludes ${4:-$3}"
     ST_FAILS=$((ST_FAILS + 1))
     printf '\033[31m  ✗ %s carries "%s" from another section — the block over-captures\033[0m\n' "$1" "$3"
   fi
@@ -598,15 +617,26 @@ assert_out() { # $1 = label, $2 = blob, $3 = a name from a NEIGHBOURING section
 assert_count() { # $1 = label, $2 = name, $3 = comparison (-eq/-ge), $4 = expected
   local got; got=$(count_rows "$TREE" "$2")
   ST_PROBES=$((ST_PROBES + 1))
-  if ! [ "$got" "$3" "$4" ]; then
+  # A case, not `[ "$got" "$3" "$4" ]`: shellcheck cannot parse an operator held in a variable,
+  # and stopped reading this file at that line.
+  local ok=false
+  case "$3" in
+    -eq) if (( got == $4 )); then ok=true; fi ;;
+    -ge) if (( got >= $4 )); then ok=true; fi ;;
+    *)   die "assert_count: unknown comparison $3" ;;
+  esac
+  if ! $ok; then
+    st_record fail "count_rows: $1"
     ST_FAILS=$((ST_FAILS + 1))
     printf '\033[31m  ✗ count_rows("%s") = %s, expected %s %s — %s\033[0m\n' "$2" "$got" "$3" "$4" "$1"
+  else
+    st_record pass "count_rows: $1"
   fi
 }
 
 if $SELF_TEST; then
   self_test
-  exit $?
+  st_finish "$ST_FAILS"
 fi
 
 bold "▸ shipped-readme.sh"

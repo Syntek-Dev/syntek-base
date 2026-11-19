@@ -70,6 +70,10 @@
 #
 set -euo pipefail
 
+# The self-test ledger and crash guard template-integrity.sh's planned-red allowance reads.
+# shellcheck source=self-test-ledger.sh
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/self-test-ledger.sh"
+
 cd "$(git rev-parse --show-toplevel)"
 
 SELF_TEST=false
@@ -95,6 +99,9 @@ while [[ $# -gt 0 ]]; do
     *)           printf 'check-template-tokens.sh error: unknown argument: %s\n' "$1" >&2; exit 2 ;;
   esac
 done
+
+# Armed once the arguments are read: a self-test run that stops anywhere before its end exits 2.
+if $SELF_TEST; then st_arm; fi
 
 # Must mirror copier.yml's _exclude list: a file that is never rendered may quote delimiter
 # syntax freely, and copier.yml / .copier-answers.yml hold real Jinja.
@@ -222,8 +229,10 @@ probe() { # $1 = label, $2 = the variable name that must be non-empty
   local hit="${!2}"
   if [[ -n "$hit" ]]; then
     printf '  ✓ %s\n' "$1"
+    st_record pass "$1"
   else
     ST_FAILS=$((ST_FAILS + 1))
+    st_record fail "$1"
     printf '\033[31m  ✗ %s — $%s came back empty; the check no longer fires\033[0m\n' "$1" "$2"
   fi
 }
@@ -287,12 +296,12 @@ self_test() {
   fi
   printf '  the detector no longer separates well-formed template syntax from broken —\n'
   printf '  fix the check, never the expectation.\n\n'
-  return 1
+  return 0
 }
 
 if $SELF_TEST; then
   self_test
-  exit $?
+  st_finish "$ST_FAILS"
 fi
 
 run_checks

@@ -117,18 +117,21 @@ to a model that did not write it. The same applies to a PR body's generation foo
 ### The planned-red trailer
 
 A commit that deliberately records a failing probe ahead of its fix — test-first, where the probe
-sits in a gate's own self-test — names that gate in a trailer:
+sits in a gate's own self-test — names that gate and the probes it expects red in a trailer:
 
 ```text
-Planned-Red: <self-test script basename>
+Planned-Red: <self-test script basename>::<probe label>[::<probe label>…]
 ```
 
 It is the record of an opt-in, never a substitute for one: the commit is made with
-`PLANNED_RED=<the same basename>` set, the pre-commit leg running that self-test requires it to
-exit `1` and everything else to pass, and the commit-message leg refuses a `Planned-Red:` trailer
-without the opt-in, a second one, or one naming a different script. It sits beside the co-author
-trailer, in the closing trailer block. `--no-verify` is never the way to land a red probe.
-<!-- Section added 19/11/2026. -->
+`PLANNED_RED=` set to the same value, and the pre-commit leg running that self-test requires it
+to exit `1`, to finish, and to fail **exactly** the named probes — each new against `HEAD`, every
+other probe passing — with everything else green. The commit-message leg refuses a `Planned-Red:`
+trailer without the opt-in, a second one, one that differs from it, or one the pre-commit leg did
+not accept for this staged tree, and a merge commit never carries one. It sits beside the
+co-author trailer, in the closing trailer block. A planned-red commit is changed by
+`git reset --soft HEAD^` and committed again, never amended. `--no-verify` is never the way to
+land a red probe. <!-- Section added 19/11/2026; probe labels and the commit-bound check 19/11/2026. -->
 
 ### Type values
 

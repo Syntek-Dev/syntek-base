@@ -260,16 +260,20 @@ pre-commit:
     # THE PLANNED-RED ALLOWANCE. Test-first means a probe is committed red before its fix — and
     # when the probe sits in a detector's own --self-test, the leg above would refuse that
     # commit, so the red could only ever be squashed into its fix and never recorded. The
-    # allowance is an opt-in naming ONE detector, never a bypass:
+    # allowance is an opt-in naming ONE detector and the NEW probes in it expected red, never a
+    # bypass:
     #
-    #   PLANNED_RED=shipped-boards.sh git commit    # with a `Planned-Red: shipped-boards.sh` trailer
+    #   PLANNED_RED='shipped-boards.sh::<probe label>' git commit   # trailer: `Planned-Red: <same>`
     #
-    # For the named detector its --self-test must exit 1 — a pass is refused, and so is any
-    # other code, 2 (a script error) above all. Every other self-test and every plain check,
-    # the named detector's own included, still runs and must pass, and the detector must be
-    # staged. The commit-msg leg below requires exactly one matching `Planned-Red:` trailer
-    # when the opt-in is set and refuses the trailer without it, so the history records each
-    # planned red the hook saw and no other. Proven by code/src/scripts/tests/planned-red.sh.
+    # The named detector's --self-test must exit 1, finish its ledger (a crash exits 2 — the
+    # detectors' guard in self-test-ledger.sh), and fail exactly the named probes, each absent
+    # from HEAD's version; an old probe gone red is a weakened detector and is refused. Every
+    # other self-test and every plain check, the named detector's own included, still runs and
+    # must pass, and the detector must be staged. On acceptance the leg writes a one-shot token
+    # bound to the staged tree; the commit-msg leg below requires and consumes it with exactly
+    # one matching trailer, refuses the trailer without the opt-in or on a merge, so the history
+    # records each planned red the hook saw and no other. Proven by
+    # code/src/scripts/tests/planned-red.sh. (Probe labels and the token, 19/11/2026.)
     template-integrity:
       run: |
         [ -f copier.yml ] || exit 0
@@ -289,8 +293,9 @@ pre-commit:
         bash project-management/src/00-ASSETS/scripts/precommit-clickup.sh
 
 # The commit-message half of the template-integrity leg's planned-red allowance (above): with
-# PLANNED_RED set, the message must carry exactly one matching `Planned-Red: <detector>` trailer;
-# without it, no such trailer may appear. Self-gating on copier.yml exactly as the pre-commit leg
+# PLANNED_RED set, the message must carry exactly one `Planned-Red:` trailer repeating it, and the
+# pre-commit leg's token for this staged tree; without it, and on any merge, no such trailer may
+# appear. Self-gating on copier.yml exactly as the pre-commit leg
 # is — .github/scripts/ is copier _exclude'd, so downstream this exits 0 before calling anything.
 # Armed by `lefthook install`, which install-hooks.sh runs: a checkout armed before this leg
 # existed has no commit-msg hook until install-hooks.sh is run again.
