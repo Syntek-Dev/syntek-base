@@ -23,7 +23,9 @@
 #                         glob against the eight landed board paths, not searched for a name.
 #                      2. The copy-gated `_tasks` entry — the one whose `when:` tests the copy
 #                         operation and which carries the README move — moves each of the
-#                         eight seeds into its folder. A move in any other task would run on
+#                         eight seeds into its folder, on a line that begins with the mv and
+#                         ends with its `&&` (an echoed or commented-out move is not one); and
+#                         no other task moves a board. A move in any other task would run on
 #                         every update and overwrite the project's own board.
 #                      3. Each seed exists.
 #                      4. Each seed is byte-identical to the board `pm-board.sh` renders for
@@ -87,7 +89,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,52p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,54p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done
@@ -169,7 +171,7 @@ glob_matches() { # path glob
 
 run_checks() {
   FINDINGS=()
-  local tasks folder board seed
+  local tasks others folder board seed
 
   # ── 1. Nothing re-includes a board ───────────────────────────────────────────
   # Every `_exclude` negation, read as copier reads it — either quote style or none, a trailing
@@ -199,12 +201,28 @@ run_checks() {
     /^    when: *"<% *_copier_operation *== *.copy. *%>" *$/ { gated = 1 }
     END { if (t != "" && readme && gated) print t }
   ' "$COPIER" || true)
+  # Every other _tasks entry, for the second half of check 2: no board move may sit there.
+  others=$(awk '
+    /^_tasks:/ { f = 1; next }
+    /^[a-zA-Z_]+:/ { f = 0 }
+    !f { next }
+    /^  - / { if (t != "" && !(readme && gated)) print t; t = ""; readme = 0; gated = 0 }
+    { t = t $0 "\n" }
+    index($0, "mv .copier/README.md README.md") { readme = 1 }
+    /^    when: *"<% *_copier_operation *== *.copy. *%>" *$/ { gated = 1 }
+    END { if (t != "" && !(readme && gated)) print t }
+  ' "$COPIER" || true)
   for b in "${BOARDS[@]}"; do
     folder="${b%%|*}"; board="${b##*|}"; seed="$SEED_DIR/$board"
 
     # ── 2. Wired ──────────────────────────────────────────────────────────────
-    grep -qF "mv .copier/$board project-management/src/$folder/$board" <<< "$tasks" \
+    # A real move: a line of the gated task that STARTS with the mv (after the folded block's
+    # indent, or `- command:` for a one-line task) and ends with the `&&` chaining it — so an
+    # echoed or commented-out move is not read as one.
+    grep -qE "^[[:space:]]*(- command:[[:space:]]*)?mv \.copier/${board//./\\.} project-management/src/$folder/${board//./\\.} &&[[:space:]]*\$" <<< "$tasks" \
       || finding "copier.yml's copy-gated _tasks entry does not move .copier/$board into $folder/ — a generated project gets no board, or an update re-seeds it"
+    grep -vE '^[[:space:]]*#' <<< "$others" | grep -qF "mv .copier/$board" \
+      && finding "copier.yml moves .copier/$board outside the copy-gated task — that task runs on every update and overwrites the project's own board"
 
     # ── 3. Present ────────────────────────────────────────────────────────────
     if [[ ! -f "$seed" ]]; then
