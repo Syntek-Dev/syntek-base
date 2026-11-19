@@ -1,6 +1,6 @@
 # SPRINT-06
 
-**Last Updated**: 17/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 19/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -30,7 +30,7 @@
      Q15) are named under Acceptance Criteria rather than here: they sit in neither the title nor
      the Client Summary this goal is derived from. -->
 
-**Status:** Planned
+**Status:** In Progress — US010 started 19/11/2026, its first story
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->

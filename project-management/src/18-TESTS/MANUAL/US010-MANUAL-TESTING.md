@@ -191,24 +191,99 @@ puts the baseline in this file) — and each build slot at the moment it names; 
 walk-time slots. Each captured set is a fenced block beneath this table, with its date. Nothing
 here carries a `Result`.
 
-| Capture                                                                                                                                                                          | Required by                                                                                                                            | Taken                                   | Value |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | ----- |
-| Pre-edit tree — `git rev-parse HEAD` and the `git status --porcelain` count                                                                                                      | The plan's P0; QA plan Section 6                                                                                                       | Before the first edit                   |       |
-| Whole-tree `doc-references.sh` set as `(file, kind, token)`, line dropped, multiplicity kept; the detector's `git hash-object`; HEAD; the index state                            | The ADR above; the story's QA Acceptance Criteria — Automated                                                                          | Before the first edit                   |       |
-| The same gate, same form, same index state                                                                                                                                       | The same                                                                                                                               | At the walk                             |       |
-| The existing self-test probes — count, labels and expected substrings for `shipped-registers.sh` and `shipped-ai.py`, each run, and for `shipped-artefacts.sh`, read in the file | ST05 (nine, five and two in `shipped-registers.sh`, `shipped-artefacts.sh` and `shipped-ai.py`, as measured 21/09/2026); QA plan PA-03 | Before the first edit                   |       |
-| Whether US012 and US009 had landed on `main`                                                                                                                                     | QA plan EC-18, EC-19; the plan's P0                                                                                                    | Before the first edit                   |       |
-| The length readings — `docs-length.sh --path` over each bound instructional file the change edits, its code-line count                                                           | The plan's P0 and P4; `code/docs/DOCUMENTATION-LENGTH.md` Section 3                                                                    | Before the first edit, and at close     |       |
-| ShellCheck probed — `command -v shellcheck`, and its version if present                                                                                                          | The plan's P0                                                                                                                          | Before the first edit                   |       |
-| Each new probe's red — the commit SHA, the probe's failing line or the `[3/4]` run ID, and the SHA of the commit that turned it green                                            | ST05; QA plan PA-03; settled 03/10/2026, 17-story-plans round 1 Q1                                                                     | As each probe and check land (P1)       |       |
-| The finding and bug registers re-counted                                                                                                                                         | QA plan EC-16                                                                                                                          | At the commit that writes their indexes |       |
-| The map population under the instance test — the command, its count, HEAD                                                                                                        | QA plan HP-10, EC-02                                                                                                                   | At the map commit (P3)                  |       |
-| The landing commit's workflow run — its ID, the commit SHA, and the `[1/4]`, `[2/4]` and `[3/4]` results on each render path                                                     | QA plan Section 6; HP-01                                                                                                               | When that run completes                 |       |
-| Whether US012 and US009 had landed on `main` when the landing commit was rebased, and which landed first                                                                         | QA plan EC-18, EC-19; the plan's P0 and _Risks_                                                                                        | At the rebase before the landing commit |       |
-| ShellCheck over `.github/scripts/shipped-artefacts.sh` and `.github/scripts/shipped-registers.sh` — run or not run, the version, the output                                      | The story's Verification Checks; SPRINT-06 → Verification Checks                                                                       | At the plan's P4                        |       |
-| A Python lint over `.github/scripts/shipped-ai.py` — run or not run, and the reason                                                                                              | The story's Verification Checks                                                                                                        | At the plan's P4                        |       |
-| The enum derivation per map — the counts read, the value given, and why                                                                                                          | The story's QA Acceptance Criteria — Manual; QA Tasks — Manual                                                                         | At the walk                             |       |
-| The legibility reader's readings, verbatim, with the developer's review — and the count of Summaries read beside the count of rows                                               | The story's QA Acceptance Criteria — Manual; QA plan HP-13                                                                             | At the walk                             |       |
+| Capture                                                                                                                                                                          | Required by                                                                                                                            | Taken                                   | Value                                                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pre-edit tree — `git rev-parse HEAD` and the `git status --porcelain` count                                                                                                      | The plan's P0; QA plan Section 6                                                                                                       | Before the first edit                   | 19/11/2026 — `b5fcede` on `us010/seeded-register-indexes`, cut from `testing`; porcelain count 0 (block P0-1)                                  |
+| Whole-tree `doc-references.sh` set as `(file, kind, token)`, line dropped, multiplicity kept; the detector's `git hash-object`; HEAD; the index state                            | The ADR above; the story's QA Acceptance Criteria — Automated                                                                          | Before the first edit                   | 19/11/2026 — exit 1, 18 findings, all `dangling path`, none in this story's write set; detector `12e8135`; index empty (0 staged) (block P0-2) |
+| The same gate, same form, same index state                                                                                                                                       | The same                                                                                                                               | At the walk                             |                                                                                                                                                |
+| The existing self-test probes — count, labels and expected substrings for `shipped-registers.sh` and `shipped-ai.py`, each run, and for `shipped-artefacts.sh`, read in the file | ST05 (nine, five and two in `shipped-registers.sh`, `shipped-artefacts.sh` and `shipped-ai.py`, as measured 21/09/2026); QA plan PA-03 | Before the first edit                   | 19/11/2026 — 12 / 8 / 2, recounted, not 9 / 5 / 2: 7.7.0 added CUT-PLAN checks 10–12 (block P0-3)                                              |
+| Whether US012 and US009 had landed on `main`                                                                                                                                     | QA plan EC-18, EC-19; the plan's P0                                                                                                    | Before the first edit                   | 19/11/2026 — neither on `main`. US009 merged to `testing` (PR 37, `b5fcede`), in this base; US012 `Pending` (block P0-4)                       |
+| The length readings — `docs-length.sh --path` over each bound instructional file the change edits, its code-line count                                                           | The plan's P0 and P4; `code/docs/DOCUMENTATION-LENGTH.md` Section 3                                                                    | Before the first edit, and at close     | 19/11/2026 — 19 files, all within 300, none at 270; highest `wayfinder/SKILL.md` at 265 (block P0-5)                                           |
+| ShellCheck probed — `command -v shellcheck`, and its version if present                                                                                                          | The plan's P0                                                                                                                          | Before the first edit                   | 19/11/2026 — present, `/run/current-system/sw/bin/shellcheck`, 0.11.0                                                                          |
+| Each new probe's red — the commit SHA, the probe's failing line or the `[3/4]` run ID, and the SHA of the commit that turned it green                                            | ST05; QA plan PA-03; settled 03/10/2026, 17-story-plans round 1 Q1                                                                     | As each probe and check land (P1)       |                                                                                                                                                |
+| The finding and bug registers re-counted                                                                                                                                         | QA plan EC-16                                                                                                                          | At the commit that writes their indexes |                                                                                                                                                |
+| The map population under the instance test — the command, its count, HEAD                                                                                                        | QA plan HP-10, EC-02                                                                                                                   | At the map commit (P3)                  |                                                                                                                                                |
+| The landing commit's workflow run — its ID, the commit SHA, and the `[1/4]`, `[2/4]` and `[3/4]` results on each render path                                                     | QA plan Section 6; HP-01                                                                                                               | When that run completes                 |                                                                                                                                                |
+| Whether US012 and US009 had landed on `main` when the landing commit was rebased, and which landed first                                                                         | QA plan EC-18, EC-19; the plan's P0 and _Risks_                                                                                        | At the rebase before the landing commit |                                                                                                                                                |
+| ShellCheck over `.github/scripts/shipped-artefacts.sh` and `.github/scripts/shipped-registers.sh` — run or not run, the version, the output                                      | The story's Verification Checks; SPRINT-06 → Verification Checks                                                                       | At the plan's P4                        |                                                                                                                                                |
+| A Python lint over `.github/scripts/shipped-ai.py` — run or not run, and the reason                                                                                              | The story's Verification Checks                                                                                                        | At the plan's P4                        |                                                                                                                                                |
+| The enum derivation per map — the counts read, the value given, and why                                                                                                          | The story's QA Acceptance Criteria — Manual; QA Tasks — Manual                                                                         | At the walk                             |                                                                                                                                                |
+| The legibility reader's readings, verbatim, with the developer's review — and the count of Summaries read beside the count of rows                                               | The story's QA Acceptance Criteria — Manual; QA plan HP-13                                                                             | At the walk                             |                                                                                                                                                |
+
+### P0 captures — 19/11/2026
+
+Taken on `us010/seeded-register-indexes` at `b5fcede` before the first edit, every gate run on the
+clean tree. The raw outputs were held outside the checkout while being taken.
+
+P0-1 — pre-edit tree:
+
+```text
+HEAD      b5fcede961fa397c72a417257061db73ea4701b4  (branch cut from testing, 19/11/2026)
+porcelain 0
+```
+
+P0-2 — `bash code/src/scripts/audits/doc-references.sh`, exit 1, normalised `(file, kind, token)`,
+line dropped, multiplicity kept; detector `git hash-object` `12e81359308e194bcb607eb04b30583b3ab5089b`;
+index state: 0 staged paths:
+
+```text
+project-management/src/02-STORIES/US014.md  |  dangling path  |  code/src/django/apps/core/observability.py
+project-management/src/02-STORIES/US014.md  |  dangling path  |  code/src/django/apps/core/observability.py
+project-management/src/02-STORIES/US014.md  |  dangling path  |  code/src/django/apps/core/tests/unit/test_observability.py
+project-management/src/02-STORIES/US014.md  |  dangling path  |  code/src/django/apps/core/tests/unit/test_observability.py
+project-management/src/03-SPRINTS/SPRINT-03.md  |  dangling path  |  how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US014-JSON-LOGGING-REQUEST-ID.md  |  dangling path  |  code/src/django/apps/core/observability.py
+project-management/src/11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md  |  dangling path  |  how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md  |  dangling path  |  how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md  |  dangling path  |  how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md  |  dangling path  |  project-management/src/21-BUGS/BUG-INDEX.md
+project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md  |  dangling path  |  project-management/src/21-BUGS/BUG-INDEX.md
+project-management/src/11-QA/PLANNING/QA-PLAN-US014-STRUCTURED-JSON-LOGGING.md  |  dangling path  |  code/src/django/apps/core/tests/unit/test_observability.py
+project-management/src/15-DECISIONS/ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026.md  |  dangling path  |  how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/16-SPRINT-PLANS/03-SPRINT-PLAN-03.md  |  dangling path  |  how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/16-SPRINT-PLANS/03-SPRINT-PLAN-03.md  |  dangling path  |  how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md  |  dangling path  |  how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md  |  dangling path  |  how-to/src/OUTBOUND-TIMEOUTS.md
+project-management/src/17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md  |  dangling path  |  how-to/src/OUTBOUND-TIMEOUTS.md
+```
+
+P0-3 — the existing self-test probes, re-counted:
+
+```text
+shipped-registers.sh --self-test   exit 0, 12 probes: checks 1-9 (GAPS/DEFERRED) as before,
+                                   plus 10-12 (CUT-PLAN _tasks move, legend heading, map section)
+shipped-artefacts.sh               8 probe() calls in the file (:310-352); CI-only, not run
+shipped-ai.sh --self-test          exit 0; 2 detector probes: rejects dereferenced-aliases,
+                                   rejects excluded-skill-alias; plus 4 exercise PASS lines
+shipped-registers.sh (plain run)   exit 0
+```
+
+P0-4 — landing state: US009 `In Review — PR 37`, merged into `testing` at `b5fcede` and so inside
+this base, not on `main`; US012 `Pending`, landed nowhere.
+
+P0-5 — length, `docs-length.sh --path` exit 0 for each; cloc Markdown code lines:
+
+```text
+  67  project-management/src/01-FEATURE-MAPS/CONTEXT.md
+  40  project-management/src/02-STORIES/CONTEXT.md
+  38  project-management/src/03-SPRINTS/CONTEXT.md
+  32  project-management/src/15-DECISIONS/CONTEXT.md
+  79  project-management/src/17-STORY-PLANS/CONTEXT.md
+  55  project-management/src/20-FINDINGS/CONTEXT.md
+  38  project-management/src/21-BUGS/CONTEXT.md
+  87  project-management/workflows/17-story-plans/CLAUDE.md
+ 176  project-management/workflows/17-story-plans/STEPS.md
+  90  project-management/workflows/17-story-plans/CHECKLIST.md
+ 114  project-management/workflows/17-story-plans/CONTEXT.md
+ 188  project-management/workflows/01-feature-map/STEPS.md
+  89  project-management/workflows/01-feature-map/CHECKLIST.md
+  54  project-management/src/15-DECISIONS/CLAUDE.md
+  73  project-management/src/17-STORY-PLANS/CLAUDE.md
+  59  project-management/src/01-FEATURE-MAPS/CLAUDE.md
+  55  project-management/src/20-FINDINGS/CLAUDE.md
+  47  project-management/src/21-BUGS/CLAUDE.md
+ 265  .claude/skills/wayfinder/SKILL.md
+```
 
 ---
 
