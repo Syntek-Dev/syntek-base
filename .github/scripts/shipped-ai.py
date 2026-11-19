@@ -44,6 +44,7 @@ TEMPLATE_MEMORY = "Template memory must never become project memory."
 PROJECT_MEMORY = "Project memory must survive a template update."
 UPDATED_SKILL = "Shared skill update reached both coding tools."
 BOARD_CHANGED = "was not byte-identical to the project's own edit after copier update"
+SEED_TASK_COUNT = "copier.yml must carry exactly one seed task (the one moving .copier/README.md)"
 
 
 def require(condition: bool, message: str) -> None:
@@ -296,6 +297,19 @@ def self_test(directory: Path, config: dict) -> None:
             print(f"PASS: detector rejects {name}")
         else:
             raise AssertionError(f"Detector accepted the broken {name} fixture")
+
+    # The seed task is found by its README move, and must be the only one: a second task
+    # carrying that move would let the board seeds be read from either.
+    mutated = copy.deepcopy(config)
+    duplicate_task = copy.deepcopy(mutated["_tasks"][0])
+    mutated["_tasks"] = [{"command": "true"}, *mutated["_tasks"], duplicate_task]
+    try:
+        seeded_boards(mutated)
+    except AssertionError as error:
+        require(SEED_TASK_COUNT in str(error), f"Mutation failed for an unexpected reason: {error}")
+        print(f"PASS: detector rejects duplicate-seed-task — {error}")
+    else:
+        raise AssertionError("Detector accepted the broken duplicate-seed-task fixture")
 
     # The seed-once gate itself. Without its `when:` the seed task runs on `update` too, and
     # moves every blank board seed over the project's own committed board. This runs the
