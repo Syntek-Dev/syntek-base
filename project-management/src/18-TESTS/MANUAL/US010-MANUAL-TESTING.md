@@ -574,6 +574,82 @@ Taken at `a776b76d` on `us010/seeded-register-indexes`, every run on the clean t
 | `shipped-ai.sh --self-test`                                                | 0    | the update probe and its mutations green                                 |
 | `shipped-artefacts.sh` and `[3/4]` landing run                             | —    | **not run**, because both need CI's `[3/4]` job; owed at the landing run |
 
+### Fix-round readings — 19/11/2026
+
+Taken at `c25c314b` (the joined-line search over renders of `3551ea8f`, which differ from
+`c25c314b` only in the workflow file the step is read from) on `us010/seeded-register-indexes`,
+after the review fix round: D1 (finding vocabulary `Open | Resolved`), D4 (the planned-red
+allowance), QA-M1 to QA-M5, QA-L1 to QA-L4, Sec-LOW-2, Sec-LOW-3, CR-L2, CR-M1 to CR-M3. Each
+probe was committed red before its fix; the two `shipped-boards.sh` self-test reds, `848d5eb5`
+and `7e724e73`, were committed under `PLANNED_RED=shipped-boards.sh` with a matching
+`Planned-Red:` trailer, and the hook printed
+"planned red — shipped-boards.sh --self-test exited 1, as PLANNED_RED declares" each time.
+
+**The joined-line instruction search, re-proved locally (QA-L1).** Its `run:` block was
+extracted verbatim from `.github/workflows/audit-template.yml` at `c25c314b` and run with
+`RUNNER_TEMP` at two renders made by a scratch copy's own `template-render.sh --ref HEAD`
+(`git archive HEAD | tar -x` into a `mktemp -d` directory, `git init`, committed; 73 tracked
+symlinks, none resolving outside the copy). Over both renders it exits 0:
+
+```text
+pattern (Perl, case-insensitive, over paragraphs): index row.{0,80}CONTEXT\.md|CONTEXT\.md[^;.]{0,80}index row|CONTEXT\.md`?'?s (?:map |register )?index|CONTEXT\.md.{0,40}(?:map index|register index|is the index|as the index)|register'?s index.{0,40}CONTEXT\.md|CONTEXT\.md.{0,40}register'?s index|row to .{0,40}\d\d-[A-Z-]+/CONTEXT\.md|\bno (?:folder-level |in-tree )?index\b|\bno (?:board|generated index)\b|index (?:is |was )?deferred|register-index work|holds no index|carries no index
+project-management/ only: row to .{0,40}CONTEXT\.md
+INCLUDE_MOBILE=false — 0 hits
+INCLUDE_MOBILE=true — 0 hits
+```
+
+The same block run over a synthetic tree holding six intended forms (reverse order, the two
+possessives, "no board", the bare "row to … CONTEXT.md" under `project-management/`, an unmarked
+dated comment), an `UPDATED`-marked dated comment and the two false positives (a script registry's
+"add the row to `CONTEXT.md`" under `code/`, and the skills roster's "index row") exits 1,
+reporting the six forms and nothing else on each path:
+
+```text
+pattern (Perl, case-insensitive, over paragraphs): index row.{0,80}CONTEXT\.md|CONTEXT\.md[^;.]{0,80}index row|CONTEXT\.md`?'?s (?:map |register )?index|CONTEXT\.md.{0,40}(?:map index|register index|is the index|as the index)|register'?s index.{0,40}CONTEXT\.md|CONTEXT\.md.{0,40}register'?s index|row to .{0,40}\d\d-[A-Z-]+/CONTEXT\.md|\bno (?:folder-level |in-tree )?index\b|\bno (?:board|generated index)\b|index (?:is |was )?deferred|register-index work|holds no index|carries no index
+project-management/ only: row to .{0,40}CONTEXT\.md
+::error::INCLUDE_MOBILE=false — a shipped instruction routes a register's index to a CONTEXT.md
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...- Charting a map: add the map to `[CONTEXT.md` as its index row]
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...- Then the `[CONTEXT.md`'s index]
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...- The [register's index is this folder's `CONTEXT.md]
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...- There is [no board]
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...- Add the map's [row to its `CONTEXT.md]
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...<!-- 01/01/2026: the [index was deferred]
+::error::INCLUDE_MOBILE=true — a shipped instruction routes a register's index to a CONTEXT.md
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...- Charting a map: add the map to `[CONTEXT.md` as its index row]
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...- Then the `[CONTEXT.md`'s index]
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...- The [register's index is this folder's `CONTEXT.md]
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...- There is [no board]
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...- Add the map's [row to its `CONTEXT.md]
+./project-management/src/01-FEATURE-MAPS/CLAUDE.md: ...<!-- 01/01/2026: the [index was deferred]
+```
+
+**A deviation found and fixed in the round:** `56dace9e` wrote the pattern through a shell `echo`
+that turned its four `\b` into backspace bytes, so the "no board" and "no index" forms could not
+match; `c25c314b` restores them, and the readings above are of the restored step.
+
+**Citation diff against P0 (block P0-2):** `bash code/src/scripts/audits/doc-references.sh`
+exits 1 with 18 findings; normalised the P0 way, they are **identical** to P0's 18 (`diff` exits
+0). The detector's `git hash-object` is `12e81359308e194bcb607eb04b30583b3ab5089b`, unchanged. A
+first run at `87d4938f` held a nineteenth, this round's own — the masked-status fixture in
+`pm-boards.sh` wrote its decoy ADR path literally — fixed at `3551ea8f` before this reading.
+
+| Gate                                                                    | Exit | Reading                                                                                                                     |
+| ----------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------------------------------------- |
+| `code/src/scripts/tests/pm-boards.sh`                                   | 0    | 60 probes passed                                                                                                            |
+| `code/src/scripts/tests/planned-red.sh`                                 | 0    | 23 probes passed                                                                                                            |
+| `pm-board.sh --check`                                                   | 0    | all 8 boards current, `archive/` untouched                                                                                  |
+| `pm-board.sh --warn`                                                    | 0    | 25 readiness warnings, all "ready to archive"; no chain or Unrecognised warning                                             |
+| `shipped-boards.sh` / `--self-test`                                     | 0/0  | current, empty boards; 28 probes                                                                                            |
+| `shipped-registers.sh` / `--self-test`                                  | 0/0  | correctly seeded; 12 probes                                                                                                 |
+| `shipped-memory.sh` / `--self-test`                                     | 0/0  | correctly seeded; 5 probes                                                                                                  |
+| `shipped-ai.sh --self-test`                                             | 0    | 8 PASS lines, `duplicate-seed-task` rejected with "found 2"                                                                 |
+| `audits/docs-length.sh`                                                 | 0    | all 818 instructional files within 300 lines, 3 approaching                                                                 |
+| `audits/docs-pairing.sh`                                                | 0    | split intact                                                                                                                |
+| `audits/skill-conformance.sh`                                           | 0    | every skill conforms                                                                                                        |
+| `audits/doc-references.sh` (whole tree)                                 | 1    | the P0 set exactly, 18 findings, none in this round's write set                                                             |
+| ShellCheck 0.11.0 over every edited shell script (`-x` for the pm trio) | 0    | `pm-boards.sh`, `planned-red.sh`, `template-integrity.sh`, `shipped-boards.sh`, `pm-lib.sh`, `pm-board.sh`, `pm-archive.sh` |
+| `[3/4]` landing run                                                     | —    | **not run**: it needs CI; the step above is a local reading, owed at the landing run                                        |
+
 ## Journeys
 
 ### Approved remediation evidence
