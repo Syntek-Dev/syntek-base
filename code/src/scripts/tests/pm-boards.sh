@@ -98,10 +98,10 @@ bug() {  # bug NAME TITLE STATUS
 }
 
 masked_adr() {  # masked_adr NAME FORM — a decoy Deprecated status inside FORM (fence|comment), then the real Accepted line
-  local open close
+  local open close decoy="project-management/src/15-DECISIONS/ADR-US001-NEW-WAY-02-01-2026"
   if [[ "$2" == fence ]]; then open='```text'; close='```'; else open='<!--'; close='-->'; fi
-  printf '# %s: A decision quoting another header\n\n%s\n**Status:** Deprecated\n**Superseded by:** `project-management/src/15-DECISIONS/ADR-US001-NEW-WAY-02-01-2026.md`\n%s\n\n**Status:** Accepted\n**Status note:** fixture\n**Date:** 01/01/2026\n**Supersedes:** None\n**Superseded by:** None\n\n## Decision\n\nA fixture record.\n' \
-    "$(cut -d- -f1-2 <<< "$1")" "$open" "$close" > "$SRC/15-DECISIONS/$1.md"
+  printf '# %s: A decision quoting another header\n\n%s\n**Status:** Deprecated\n**Superseded by:** `%s.md`\n%s\n\n**Status:** Accepted\n**Status note:** fixture\n**Date:** 01/01/2026\n**Supersedes:** None\n**Superseded by:** None\n\n## Decision\n\nA fixture record.\n' \
+    "$(cut -d- -f1-2 <<< "$1")" "$open" "$decoy" "$close" > "$SRC/15-DECISIONS/$1.md"
 }
 
 build_fixture() {
