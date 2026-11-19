@@ -43,6 +43,8 @@
 #              different successor.
 #   frozen     --check fails on a bare archive/ or ../ added to an archived file's prose, and
 #              still admits pm-archive.sh's rewrite of a path inside one.
+#   formatters the real .prettierignore, .markdownlint-cli2.jsonc and lefthook.yml skip every
+#              boarded archive/, so an archive move that rewrites a table cell trips no formatter.
 #   templates  only the shipped template names (…-US000-TEMPLATE, …-000-TEMPLATE, …-00-TEMPLATE,
 #              US000-TEMPLATE) are templates: a record whose descriptor holds TEMPLATE is a row,
 #              and pm-archive.sh rewrites the paths it carries.
@@ -62,7 +64,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,55p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,57p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'pm-boards.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -395,6 +397,17 @@ probe_round3() {  # run last, on the committed fixture with archived records in 
     "$SRC/00-ASSETS/scripts/pm-archive.sh" "$SRC/15-DECISIONS/ADR-US012-SHIPPED-TEMPLATES-RULE-13-01-2026.md"
 }
 
+probe_formatters() {  # the real configs: archive/ is frozen, so no formatter may rewrite it
+  local pi="$PROJECT_ROOT/.prettierignore" ml="$PROJECT_ROOT/.markdownlint-cli2.jsonc" lh="$PROJECT_ROOT/lefthook.yml"
+  echo "formatters"
+  check ".prettierignore skips every boarded archive/" grep -qx 'project-management/src/\*/archive/' "$pi"
+  check ".markdownlint-cli2.jsonc drops archive/ from its globs" grep -qF '"!project-management/src/*/archive/**"' "$ml"
+  check "  and ignores it when a file is passed by name" \
+    bash -c 'sed -n "/\"ignores\"/,/\]/p" "$1" | grep -qF "\"project-management/src/*/archive/**\""' _ "$ml"
+  check "lefthook's prettier and markdownlint legs exclude archive/" \
+    bash -c '[[ $(grep -cF "\"project-management/src/*/archive/**\"" "$1") -ge 2 ]]' _ "$lh"
+}
+
 echo "pm-boards.sh — fixture at $FX"
 if ! build_fixture >/dev/null 2>&1; then
   fail "the fixture could not be built (pm-board.sh --write or the first commit failed)"
@@ -410,6 +423,7 @@ else
   probe_check_fails
   probe_round3
 fi
+probe_formatters
 echo ""
 if [[ $FAILS -eq 0 ]]; then
   printf '\033[1m✓ pm-boards.sh: %d probes passed\033[0m\n' "$PASSES"
