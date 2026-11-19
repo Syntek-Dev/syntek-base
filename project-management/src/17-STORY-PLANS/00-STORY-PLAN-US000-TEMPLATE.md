@@ -13,7 +13,7 @@
   HOW TO USE THIS TEMPLATE  (delete this comment block in the real plan)
 ═══════════════════════════════════════════════════════════════════════════════
   • Copy to <exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESCRIPTOR>.md — prefix = build order,
-    renumbered on change (17-STORY-PLANS/CLAUDE.md) — replace every <...> and [PLACEHOLDER], and point the story's row in its sprint plan's "Story Plans — the code master" table (16-SPRINT-PLANS/) at the file; 17-STORY-PLANS/CONTEXT.md holds no index, by decision.
+    renumbered on change (17-STORY-PLANS/CLAUDE.md) — replace every <...> and [PLACEHOLDER], and point the story's row in its sprint plan's "Story Plans — the code master" table (16-SPRINT-PLANS/) at the file; the folder's index is the generated STORY-PLANS-BOARD.md (pm-board.sh --write).
   • This is a SUPERSET. Keep the ★-marked core sections always. Keep the
     ◇-marked sections only when the story touches that concern; delete the
     rest so the plan stays honest. Never delete a section to dodge a gate —
@@ -251,9 +251,9 @@ is fixed by prior decisions vs what this story is free to choose.]
 **Blocks:** [stories that depend on this — or "none".]
 **Can be done now:** [the slice startable immediately inside this worktree, independent of blockers.]
 
-> Where the project keeps a cross-cutting programme plan (`17-STORY-PLANS/PLAN-<DESCRIPTOR>.md`,
-> e.g. a parallel-worktree execution DAG), cross-reference it here so the serialisation gates
-> are respected. The base template ships none — delete this line if the project has no such plan.
+> Where this story must serialise against another in a parallel worktree, name that story's
+> `US###` in **Blocked by** or **Blocks** above — each story's own plan carries its side of the
+> gate, and no cross-cutting plan file is kept. Delete this note if the story has none.
 
 ---
 
@@ -711,8 +711,8 @@ Four per-story worktree-isolation files (create alongside the worktree):
 ```
 
 > The worktree-aware scripts auto-detect the `us###/...` branch (`_lib/worktree-detect.sh`) and layer
-> in these override files. Cross-reference the project's parallel-worktree programme plan
-> (`17-STORY-PLANS/PLAN-<DESCRIPTOR>.md`) where one exists.
+> in these override files. A story serialised against another names it under _Dependencies_
+> above, where each plan carries its own side of the gate.
 
 ---
 
@@ -820,3 +820,11 @@ if [ -f project-management/src/00-ASSETS/scripts/export-clickup-stories.sh ]; th
      Why: a plan now carries no status — the board mirrors the parent `US###` — and the story's
      lifecycle is owned by `.claude/skills/completion/SKILL.md`. The folder index the note above
      deferred now exists as the generated `STORY-PLANS-BOARD.md`. -->
+
+<!-- 19/11/2026: three sites rewritten IN PLACE, one line for one line, so every line-number
+     citation of this template still resolves — the HOW TO USE copy step's closing clause, the
+     Dependencies blockquote and the Docker & Nginx blockquote. Superseded: "17-STORY-PLANS/CONTEXT.md
+     holds no index, by decision"; and both blockquotes' cross-reference to a cross-cutting
+     programme plan (`17-STORY-PLANS/PLAN-<DESCRIPTOR>.md`). Why: the folder's index is the
+     generated board, and the board lists only the per-story pattern, so a programme plan there
+     would be unindexed — serialisation is carried by each story's own Dependencies section. -->

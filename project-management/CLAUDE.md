@@ -55,7 +55,7 @@ plans that gate a feature into code, and the post-implementation records, plus t
 
 - **Hand-written:** all artefacts under `src/`, the `docs/` guides, and workflow
   `STEPS.md`/`CHECKLIST.md`.
-- **Generated:** PDFs and zip archives under `export/` (client delivery), and the five
+- **Generated:** PDFs and zip archives under `export/` (client delivery), and the eight
   `src/*/*-BOARD.md` boards (committed; their `.json` / `.html` siblings gitignored) written by
   `src/00-ASSETS/scripts/pm-board.sh --write` — never hand-edit; regenerate from source.
 - Numbered `src/` folders `NN-SCREAMING-SNAKE-CASE/`; artefacts follow their fixed

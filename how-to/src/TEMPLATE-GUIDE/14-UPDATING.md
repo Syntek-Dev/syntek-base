@@ -1,6 +1,6 @@
 # Updating — Pulling Template Changes into a Live Project
 
-**Last Updated**: 31/10/2026
+**Last Updated**: 19/11/2026
 
 A project generated with Copier stays connected to the template. When `syntek-base` gains a fix,
 you can pull it into a project that has been diverging for months.
@@ -26,11 +26,11 @@ Copier re-renders the old template version with your answers, diffs it against t
 and applies that diff to your working tree — so your own changes survive, and only genuine
 overlaps become conflicts.
 
-### Nine files an update can never touch
+### The seeded files an update can never touch
 
-`README.md`, `VERSION`, `VERSION-HISTORY.md`, `CHANGELOG.md`, `RELEASES.md`, `.claude/MEMORY.md`,
-`GAPS.md`, `DEFERRED.md` and the scale-planning map are **excluded from the template and
-re-seeded** from a staging directory by a `_tasks` entry that is gated
+`README.md`, the version state, `.claude/MEMORY.md`, `GAPS.md`, `DEFERRED.md`, the cut plan, the
+PM boards and the scale-planning map are **excluded from the template and re-seeded** from a
+staging directory by a `_tasks` entry that is gated
 `when: _copier_operation == 'copy'`. The gate is what makes them unreachable — **`_tasks`
 themselves run on update too**, so an ungated one (the manifest branding) fires on every update
 by design.
@@ -38,11 +38,29 @@ by design.
 That is the whole mechanism, and it is deliberate: these are the files that **accumulate**. An
 update must never hand your project the template's release history, or replace two years of
 project memory or accumulated gaps with a blank canvas. Everything else in the tree is fair game
-for the merge; these nine are not reachable by it at all.
+for the merge; these are not reachable by it at all. **The list is that task's `mv` lines in
+`copier.yml`**, not a count written here. <!-- doc-references: template-only -->
 
 The corollary is that a **template improvement to any of them never reaches you either.** If a
 later release improves the shipped `MEMORY.md` headings, you copy the change across by hand or
 you keep yours. Both are correct; nothing decides it for you.
+
+**A board added after your project was generated arrives as a route, never as a file.** The
+decisions, findings and bugs boards (`15-DECISIONS/DECISIONS-BOARD.md`,
+`20-FINDINGS/FINDINGS-BOARD.md`, `21-BUGS/BUGS-BOARD.md`) are seeded by the same copy-gated task,
+and no migration of their own writes them. A project already past 7.7.0 when they arrived
+receives, on update, the
+guides that route to them, the generator that writes them and the check that expects them, and
+not the three board files: `pm-board.sh --check` names each as missing until you run
+`bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` and commit what it writes.
+The template does nothing about this for you. (A project updating across 7.7.0 is the one
+exception: that release's migration runs the generator, which writes every board it knows.)
+
+**`copier recopy`, or `copier copy` into a project that already exists, is a copy, and the task
+runs.** Every blank seed is moved over the project's own file — its README, version state,
+memory, registers, cut plan and boards — with no prompt and no merge. A committed file can be
+restored from git; **an uncommitted edit to any of them is lost outright.** Commit, or do not
+recopy. The template ships no guard against it.
 
 ## Running an update
 

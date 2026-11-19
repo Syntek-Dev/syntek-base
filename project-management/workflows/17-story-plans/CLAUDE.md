@@ -94,7 +94,7 @@ testing guide in `src/18-TESTS/MANUAL/`.
   must not be "corrected" — that protects a **pair** of numbers whose disagreement is the
   information. A story plan has one number and no pair, so a prefix out of step with build
   order is not information, it is a stale claim. Rule and derivation: `STEPS.md` Step 2.
-- **No index row goes into `src/17-STORY-PLANS/CONTEXT.md`.** The folder index is the generated
+- **The folder index is the generated board, never a hand table in the folder.** It is
   `STORY-PLANS-BOARD.md` (`pm-board.sh --write`; never hand-edited). A plan is also listed
   against its sprint in the sprint plan's _Story Plans — the code master_ table (no status
   cell), a reserved number is recorded in the owning story, and a plan moves to `archive/` only
@@ -133,3 +133,7 @@ testing guide in `src/18-TESTS/MANUAL/`.
      cleared", "its Status cell filled as that plan's own section defines the column", and the
      deferral of the folder-level index to the register-index work. A plan now carries no status
      (the board mirrors its story), and the index is the generated `STORY-PLANS-BOARD.md`. -->
+
+<!-- 19/11/2026: the folder-index guardrail's opening rewritten in place, line for line. Superseded:
+     "No index row goes into `src/17-STORY-PLANS/CONTEXT.md`. The folder index is the generated" —
+     a negative instruction naming the context file; the line now states what the index is. -->

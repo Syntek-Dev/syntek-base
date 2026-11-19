@@ -321,13 +321,13 @@ Two things to do on a freshly generated project:
 │   │   ├── 12-SEO/
 │   │   ├── 13-API-DESIGN/
 │   │   ├── 14-LOGGING/
-│   │   ├── 15-DECISIONS/
+│   │   ├── 15-DECISIONS/                ← ADRs · DECISIONS-BOARD.md (generated) · archive/
 │   │   ├── 16-SPRINT-PLANS/             ← sprint plans · board (shows the sprint's status) · archive/
 │   │   ├── 17-STORY-PLANS/              ← story plans · board (shows the story's status) · archive/
 │   │   ├── 18-TESTS/                    ← MANUAL/ guides (authored before code) · AUTOMATED/ records
 │   │   ├── 19-REVIEWS/
-│   │   ├── 20-FINDINGS/
-│   │   ├── 21-BUGS/
+│   │   ├── 20-FINDINGS/                 ← findings · FINDINGS-BOARD.md (generated) · archive/
+│   │   ├── 21-BUGS/                     ← bug reports · BUGS-BOARD.md (generated) · archive/
 │   │   ├── 22-REFACTORING/
 │   │   └── 23-INCIDENTS/               ← the PII-free incident register; no story, no workflow
 │   └── workflows/                       ← 24 step-by-step PM workflows
@@ -586,8 +586,8 @@ appends a row to the story's _Status history_. The vocabulary, the rejection pat
 are owned by the `completion` skill (`.claude/skills/completion/SKILL.md`); the planning rules by
 `project-management/docs/planning/STORIES.md`.
 
-`01-FEATURE-MAPS/`, `02-STORIES/`, `03-SPRINTS/`, `16-SPRINT-PLANS/` and `17-STORY-PLANS/` each hold
-a generated board — `STORIES-BOARD.md` and its siblings, committed, plus a `.json` and a
+`01-FEATURE-MAPS/`, `02-STORIES/`, `03-SPRINTS/`, `15-DECISIONS/`, `16-SPRINT-PLANS/`,
+`17-STORY-PLANS/`, `20-FINDINGS/` and `21-BUGS/` each hold a generated board — `STORIES-BOARD.md` and its siblings, committed, plus a `.json` and a
 self-contained `.html` kanban that are gitignored. **Never hand-edit a board**:
 
 ```bash
@@ -597,8 +597,9 @@ bash project-management/src/00-ASSETS/scripts/pm-board.sh --warn    # list work 
 bash project-management/src/00-ASSETS/scripts/pm-archive.sh US###   # close and archive one item
 ```
 
-`pm-archive.sh` closes a `Completed` story, a sprint whose stories are all `Closed`, or a `Complete`
-map whose every slice is cut, and moves it — with its plan — into that folder's `archive/`.
+`pm-archive.sh` closes a `Completed` story, a sprint whose stories are all `Closed`, a `Complete`
+map whose every slice is cut, a `Superseded` or `Deprecated` ADR, a `Triaged` finding or a
+`Verified` bug, and moves it — with its plan — into that folder's `archive/`.
 Archived files are frozen. Every script, the ClickUp export included, finds an artefact by its ID
 across the folder **and** its `archive/`.
 

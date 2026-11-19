@@ -91,11 +91,12 @@ pre-commit:
       run: bash code/src/scripts/development/sync-trees.sh --write --staged
       stage_fixed: true
 
-    # Regenerate the five PM boards (01-FEATURE-MAPS, 02-STORIES, 03-SPRINTS, 16-SPRINT-PLANS,
-    # 17-STORY-PLANS) when anything in those folders is staged. It renders from the INDEX, so an
-    # unstaged status edit never reaches a committed board, WRITES the board into the working
-    # tree and RE-STAGES NOTHING — deliberately no stage_fixed (unlike sync-trees above, which
-    # restages its fixes and fails only on a TODO row): the board is staged by the author, with
+    # Regenerate the eight PM boards (01-FEATURE-MAPS, 02-STORIES, 03-SPRINTS, 15-DECISIONS,
+    # 16-SPRINT-PLANS, 17-STORY-PLANS, 20-FINDINGS, 21-BUGS) when anything in those folders is
+    # staged. It renders from the INDEX, so an unstaged status edit never reaches a committed
+    # board, WRITES the board into the working tree and RE-STAGES NOTHING — deliberately no
+    # stage_fixed (unlike sync-trees above, which restages its fixes and fails only on a TODO
+    # row): the board is staged by the author, with
     # the status edit that moved it. When a staged *-BOARD.md is stale the script names it and
     # exits 1, because a board left unstaged would sail through here and fail
     # `pm-board.sh --check` in CI instead. Re-commit once it is staged.

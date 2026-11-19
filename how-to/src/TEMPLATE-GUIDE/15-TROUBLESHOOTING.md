@@ -1,6 +1,6 @@
 # Troubleshooting
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 19/11/2026
 
 What breaks, why, and what to do. Grouped by when it happens.
 
@@ -84,7 +84,8 @@ adding to the exclude list.
 
 ### The `.copier/` staging task failed
 
-One of the nine seed files was not copied — usually because an `_exclude` pattern matched it.
+One of the seed files was not copied — usually because an `_exclude` pattern matched it. The
+copy-gated task's `mv` lines in `copier.yml` are the list of what should have arrived. <!-- doc-references: template-only -->
 Remember `_exclude` uses **gitignore semantics**: an unanchored `README.md` matches at every
 depth. Root-only patterns need a leading slash.
 

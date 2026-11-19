@@ -8,7 +8,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 ## Purpose (one line)
 
 Per-story implementation plans — one `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`
-per user story (plus cross-cutting `PLAN-<DESCRIPTOR>.md` programme plans) — written **before**
+per user story, and no other kind of file — no cross-cutting plan sits here — written **before**
 implementation to fix the technical approach, key decisions, dependencies, risks, and per-story
 worktree isolation files. Tier 15: the **master a developer codes from**.
 
@@ -61,7 +61,7 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
 - Root-level plans under `src/` are exempt from the 300-line instructional limit, but
   keep the story's row in its sprint plan's _Story Plans — the code master_ table current on
   every add and every renumber.
-- **No index row goes into `CONTEXT.md` here.** The index is the generated `STORY-PLANS-BOARD.md`
+- **The index is the generated `STORY-PLANS-BOARD.md`, never a table in this folder's context file**
   (`bash project-management/src/00-ASSETS/scripts/pm-board.sh --write`; committed, never
   hand-edited; `.json` / `.html` gitignored). A reserved number is recorded in the owning story
   under `../02-STORIES/`. Plans move to `archive/` only with their story, by
@@ -69,18 +69,18 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
 
 ## Output & naming
 
-- **Hand-written:** every `<exec-order>-STORY-PLAN-US###-*.md` and `PLAN-<DESCRIPTOR>.md`, plus
+- **Hand-written:** every `<exec-order>-STORY-PLAN-US###-*.md`, the one instance pattern, plus
   the story's row in its sprint plan's _Story Plans — the code master_ table next door.
-  `CONTEXT.md` here carries no index; `STORY-PLANS-BOARD.md` is generated (`pm-board.sh`).
+  The index is `STORY-PLANS-BOARD.md`, generated (`pm-board.sh`) and listing every plan.
 - **Not filed here:** the manual testing guide `17-story-plans` Step 7.2 authors beside each plan
   — it goes in `../18-TESTS/MANUAL/`, whose `CLAUDE.md` owns every rule of it.
 - **Template:** `00-STORY-PLAN-US000-TEMPLATE.md` — the copy source; do not delete or repurpose.
   `00-` is reserved for it, mirroring `../16-SPRINT-PLANS/00-SPRINT-PLAN-00-TEMPLATE.md`, and a
   real plan never takes that prefix.
 - Per-story plans `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`, both the prefix
-  2-digit zero-padded and the story number 3-digit zero-padded; cross-cutting programme plans
-  `PLAN-<DESCRIPTOR>.md`, unprefixed — they span several stories and so hold no position in a
-  build order; stories referenced as `US###`; dates DD/MM/YYYY.
+  2-digit zero-padded and the story number 3-digit zero-padded — the board lists only that
+  pattern, so work spanning several stories is recorded in each story's own plan, never in an
+  unprefixed file here; stories referenced as `US###`; dates DD/MM/YYYY.
 
 <!-- RENAMED 08/09/2026. The six plans in this folder were renamed by `git mv` that day from
      `STORY-PLAN-US###-<DESC>.md` to `<exec-order>-STORY-PLAN-US###-<DESC>.md`, and the three
@@ -117,3 +117,10 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
      must be truthful — a plan marked anything other than `Blocked` asserts its blockers are
      cleared"; and the deferral of the folder index to the register-index work. A plan now has no
      status (the board mirrors the parent story) and the index is the generated board. -->
+
+<!-- 19/11/2026: four sites rewritten IN PLACE, line for line. Superseded: the purpose line's "(plus
+     cross-cutting `PLAN-<DESCRIPTOR>.md` programme plans)"; the guardrail opening "No index row
+     goes into `CONTEXT.md` here."; Output & naming's "and `PLAN-<DESCRIPTOR>.md`", its "`CONTEXT.md`
+     here carries no index", and its naming rule for unprefixed cross-cutting programme plans. Why:
+     the board generator lists only the per-story pattern, so a programme plan would sit in the
+     folder unindexed; and the board is the index, so the sites now name it rather than an absence. -->

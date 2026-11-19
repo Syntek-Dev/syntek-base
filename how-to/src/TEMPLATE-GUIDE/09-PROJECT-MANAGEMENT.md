@@ -1,6 +1,6 @@
 # The PM Layer — Using `project-management/src/`
 
-**Last Updated**: 31/10/2026
+**Last Updated**: 19/11/2026
 
 Twenty-four numbered folders is a lot to meet at once. This explains what each is for, which ones
 you will actually touch, and the two patterns that govern them — so the layer reads as a system
@@ -146,15 +146,16 @@ evidence afterwards.
 
 ## Status and boards
 
-Five folders carry a lifecycle — `01-FEATURE-MAPS`, `02-STORIES`, `03-SPRINTS`, and the two plan
-folders `16-SPRINT-PLANS` and `17-STORY-PLANS`. Each artefact's `**Status:**` line is the **only**
+Eight folders carry a lifecycle — `01-FEATURE-MAPS`, `02-STORIES`, `03-SPRINTS`, the two plan
+folders `16-SPRINT-PLANS` and `17-STORY-PLANS`, and the three records `15-DECISIONS`,
+`20-FINDINGS` and `21-BUGS`. Each artefact's `**Status:**` line is the **only**
 source of truth for where it stands; the plans carry none of their own and show their parent's.
 
 | You see                   | What it is                                                                    |
 | ------------------------- | ----------------------------------------------------------------------------- |
 | `STORIES-BOARD.md` etc.   | A generated kanban of that folder, one column per status — **committed**      |
 | `stories-board.json/html` | The same board for tooling and the browser — **gitignored**, regenerated      |
-| `archive/`                | Where `Closed` artefacts and their plans live — **frozen**, never hand-edited |
+| `archive/`                | Where finished artefacts and their plans live — **frozen**, never hand-edited |
 
 A story moves `Open → Pending → In Progress → In Review → Accepted`, then through the customer
 statuses unless its `Customer review` flag is `N/A`, and reaches `Completed` once the feedback

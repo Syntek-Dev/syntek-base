@@ -18,7 +18,6 @@ project-management/src/17-STORY-PLANS/
 ├── story-plans-board.json           ← generated, gitignored
 ├── story-plans-board.html           ← generated kanban view, gitignored
 ├── ##-STORY-PLAN-US###-<DESC>.md    ← one plan per user story (e.g. 02-STORY-PLAN-US001-<DESC>.md)
-├── PLAN-<DESCRIPTOR>.md             ← cross-cutting programme plans spanning several stories
 └── archive/                         ← plans moved here with their story by pm-archive.sh — frozen
 ```
 
@@ -26,7 +25,7 @@ This is a base-repo scaffold: the folder ships with the template only. Real plan
 added by copying it.
 
 **Naming:** `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md` per story, the prefix
-2-digit zero-padded; `PLAN-<DESCRIPTOR>.md`, unprefixed, for cross-cutting programme plans.
+2-digit zero-padded — the one instance pattern, and the only one the board lists.
 Wayfinder feature maps live upstream in `../01-FEATURE-MAPS/`, not here.
 
 ## Why the filename carries a build-order prefix
@@ -90,9 +89,9 @@ dependency DAG stays accurate.
 ## The plans index
 
 **The index is `STORY-PLANS-BOARD.md`, generated beside these plans by `pm-board.sh --write`** —
-committed, never hand-edited; its `.json` and `.html` siblings are gitignored. It is the
-excluded-and-seeded index file the register-index work called for, built for this folder (and
-`01`, `02`, `03` and `16`) by the 7.7.0 PM-boards change: a generated project starts with an
+committed, never hand-edited; its `.json` and `.html` siblings are gitignored. It is an
+excluded-and-seeded board, one of the eight `pm-board.sh` writes — the others in `01`, `02`,
+`03`, `15`, `16`, `20` and `21` — and a generated project starts with an
 empty board, so this shipped file still names no per-project plan. **A plan carries no status of
 its own** — the board files each plan under the `**Status:**` of the `US###` in its filename —
 and `pm-archive.sh US###` moves the plan into `archive/` with its story. A plan is still listed
@@ -141,3 +140,9 @@ against its sprint in that sprint plan's _Story Plans — the code master_ table
      table and in its story". Both are superseded: the PM-boards change generates
      `STORY-PLANS-BOARD.md` here, and a plan's status row was retired — the board mirrors the
      parent story. The two comments above stay as the record of the earlier position. -->
+
+<!-- 19/11/2026: the tree's `PLAN-<DESCRIPTOR>.md` row and the `**Naming:**` line's programme-plan
+     clause removed — the board lists only the per-story pattern, so a programme plan here would
+     be unindexed. _The plans index_ no longer calls the board "the excluded-and-seeded index file
+     the register-index work called for, built for this folder (and `01`, `02`, `03` and `16`) by
+     the 7.7.0 PM-boards change"; it names the eight boards instead. -->
