@@ -33,6 +33,8 @@
 #              never read: a decoy Deprecated above the real Accepted line leaves the board
 #              filing Accepted, and pm-archive.sh --dry-run refusing.
 #   staged     --boards-for names the record boards a status edit moves.
+#   check      --check exits 1, naming the item, on a supersession chain that does not walk
+#              and on a record register's Unrecognised row; --warn stays exit 0.
 #   strays     --check fails on a .md (any case) in a boarded folder or its archive/ that is no
 #              instance, template, CONTEXT.md/CLAUDE.md pair or board — 02-STORIES/CUT-PLAN.md
 #              excepted — naming each.
@@ -52,7 +54,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,44p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,46p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'pm-boards.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -113,7 +115,6 @@ build_fixture() {
   adr ADR-US001-NEW-WAY-02-01-2026 "The new way" Accepted ADR-US001-OLD-WAY-01-01-2026 None
   adr ADR-US002-DRAFT-03-01-2026 "A draft decision" Proposed None None
   adr ADR-US003-RETIRED-04-01-2026 "A retired decision" Deprecated None None
-  adr ADR-US004-ORPHAN-05-01-2026 "An orphaned supersession" Superseded None ADR-US001-NEW-WAY-02-01-2026
   masked_adr ADR-US005-FENCED-STATUS-06-01-2026 fence
   masked_adr ADR-US006-COMMENTED-STATUS-07-01-2026 comment
   finding FINDING-US000-TEMPLATE "{STORY TITLE}" Open
@@ -187,8 +188,10 @@ probe_tail() {
     bash -c 'grep -E "^\| ADR-US001-NEW-WAY-02-01-2026 " "$1" | grep -qE "\| ADR-US001-OLD-WAY-01-01-2026 +\| None +\|$"' _ "$dec"
   check "the findings and bugs boards carry no supersession columns" \
     bash -c '! grep -q "Superseded by" "$@"' _ "$SRC/20-FINDINGS/FINDINGS-BOARD.md" "$SRC/21-BUGS/BUGS-BOARD.md"
+  adr ADR-US004-ORPHAN-05-01-2026 "An orphaned supersession" Superseded None ADR-US001-NEW-WAY-02-01-2026
   check "--warn names a supersession its successor does not name back" \
     bash -c 'bash "$1" --warn --root "$2" | grep -q "ADR-US004-ORPHAN-05-01-2026"' _ "$SRC/00-ASSETS/scripts/pm-board.sh" "$FX"
+  rm -f "$SRC/15-DECISIONS/ADR-US004-ORPHAN-05-01-2026.md"
 }
 
 probe_masked() {
@@ -289,6 +292,30 @@ probe_strays() {
   rm -f "$SRC/02-STORIES/CUT-PLAN.md"
 }
 
+probe_check_fails() {  # run on the committed fixture, where --check passes until a probe file lands
+  local out rc
+  echo "check"
+  adr ADR-US004-ORPHAN-05-01-2026 "An orphaned supersession" Superseded None ADR-US001-NEW-WAY-02-01-2026
+  board --write --quiet --root "$FX"
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check exits 1 on a supersession chain that does not walk back, its board current" test "$rc" -eq 1
+  check "  and names the chain" grep -qE "^✗ .*ADR-US004-ORPHAN-05-01-2026" <<< "$out"
+  rm -f "$SRC/15-DECISIONS/ADR-US004-ORPHAN-05-01-2026.md"
+  finding FINDING-US003-LEGACY-02-01-2026 "A legacy status" Triaged
+  board --write --quiet --root "$FX"
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check exits 1 on a findings record filed under Unrecognised, its board current" test "$rc" -eq 1
+  check "  and names the record" grep -qE "^✗ .*FINDING-US003-LEGACY-02-01-2026" <<< "$out"
+  rm -f "$SRC/20-FINDINGS/FINDING-US003-LEGACY-02-01-2026.md"
+  board --write --quiet --root "$FX"
+  check "--check passes again once both are gone" board --check --quiet --root "$FX"
+  bug BUG-US003-READY-01-01-2026 "US003 — verified, not yet archived" Verified
+  check "--warn stays advisory: it names a record ready to archive and exits 0" bash -c '
+    out="$(bash "$1" --warn --root "$2")" && grep -q "BUG-US003-READY-01-01-2026 is Verified — ready to archive" <<< "$out"' _ \
+    "$SRC/00-ASSETS/scripts/pm-board.sh" "$FX"
+  rm -f "$SRC/21-BUGS/BUG-US003-READY-01-01-2026.md"
+}
+
 echo "pm-boards.sh — fixture at $FX"
 if ! build_fixture >/dev/null 2>&1; then
   fail "the fixture could not be built (pm-board.sh --write or the first commit failed)"
@@ -301,6 +328,7 @@ else
   probe_archive
   probe_staged
   probe_strays
+  probe_check_fails
 fi
 echo ""
 if [[ $FAILS -eq 0 ]]; then
