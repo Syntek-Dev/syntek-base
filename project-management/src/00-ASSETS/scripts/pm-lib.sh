@@ -28,7 +28,8 @@
 #     None — the decisions board's two tail columns, and the chain warnings read from them.
 #   * LOOKUP BY ID ACROSS THE FOLDER AND ITS archive/ — every reader resolves an item this
 #     way, so archiving one never breaks a script.
-#   * The status read: the first line beginning `**Status:**` (or the older `**Status**:`),
+#   * The status read: the first line beginning `**Status:**` (or the older `**Status**:`)
+#     that sits outside an HTML comment and a fenced code block (so do the supersession lines),
 #     with `**`, backticks and a trailing HTML comment removed, cut at the first ` — `
 #     (or ` · `) — the rest is a note — and trimmed. Never translated: a value outside the
 #     vocabulary is reported as Unrecognised, not guessed at.
@@ -137,10 +138,32 @@ def strip_comments(text):
     return re.sub(r"<!--.*?-->", "", text, flags=re.S)
 
 STATUS_LINE = re.compile(r"^\*\*Status(?::\*\*|\*\*:)[ \t]*(.*)$", re.M)
+FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
+
+def masked(text):
+    """The text with every closed HTML comment and every fenced code block blanked to spaces,
+    newlines and length kept — so a header line quoted in a comment or a fence is never read as
+    the file's own, and an offset found here is the same offset in the text."""
+    out = re.sub(r"<!--.*?-->", lambda m: re.sub(r"[^\n]", " ", m.group(0)), text, flags=re.S)
+    lines, fence = out.split("\n"), None
+    for i, line in enumerate(lines):
+        m = FENCE.match(line)
+        if fence is None and m:
+            fence = m.group(1)
+        elif fence is not None:
+            if m and m.group(1)[0] == fence[0] and len(m.group(1)) >= len(fence) \
+                    and not line.strip().lstrip(fence[0]):
+                lines[i], fence = " " * len(line), None
+                continue
+        else:
+            continue
+        lines[i] = " " * len(line)
+    return "\n".join(lines)
 
 def read_status(text):
-    """(value, note) from the first status line, or (None, None) when there is none."""
-    m = STATUS_LINE.search(text)
+    """(value, note) from the first status line outside a comment or a fence, or (None, None)
+    when there is none."""
+    m = STATUS_LINE.search(masked(text))
     if not m:
         return None, None
     raw = re.sub(r"<!--.*?(-->|$)", "", m.group(1)).replace("**", "").replace("`", "").strip()
@@ -182,7 +205,7 @@ SUPERSESSION = {"supersedes": re.compile(r"^\*\*Supersedes:\*\*[ \t]*(.*)$", re.
 def supersession(text, field):
     """The ADR IDs an ADR's `**Supersedes:**` or `**Superseded by:**` line names, as a list ([]
     for `None`), or None when the line is absent or holds neither a filename nor `None`."""
-    m = SUPERSESSION[field].search(text)
+    m = SUPERSESSION[field].search(masked(text))
     if not m:
         return None
     value = strip_comments(m.group(1))
@@ -580,6 +603,7 @@ def append_history_row(text, date, frm, to, note):
 
 def set_status(text, value):
     """Rewrite the first status line to `**Status:** <value>` (its old note is dropped)."""
-    return STATUS_LINE.sub(lambda m: f"**Status:** {value}", text, count=1)
+    m = STATUS_LINE.search(masked(text))
+    return text if not m else text[:m.start()] + f"**Status:** {value}" + text[m.end():]
 PYEOF
 )
