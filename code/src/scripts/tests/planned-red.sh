@@ -41,10 +41,12 @@
 #   enforced   every other self-test, and every plain check including the named script's, still
 #              fails the commit; a red self-test without the opt-in still fails it.
 #   ordinary   a commit staging no detector runs no self-test and passes.
+#   proof      staging the hook, the ledger library, lefthook.yml or this script runs this script,
+#              and its failure refuses the commit; nothing else runs it.
 #   real       each real detector writes a complete ledger; an unbound variable and a failing
 #              command inside a real self-test exit 2; a gutted real check is refused; a real new
 #              red probe is accepted end to end.
-#   wired      lefthook.yml calls the script from both legs.
+#   wired      lefthook.yml calls the script from both legs, and audit-template.yml runs this one.
 #
 # Usage: planned-red.sh [--keep] [--help]
 #   --keep   Leave the fixture directories in place and print their paths.
@@ -62,7 +64,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,54p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,56p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'planned-red.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -376,8 +378,39 @@ probe_real() {
     rattempt 'shipped-boards.sh::a planned real probe' $'test: a real red probe\n\nPlanned-Red: shipped-boards.sh::a planned real probe'
 }
 
+# The allowance's own proof runs when the allowance changes: a stand-in planned-red.sh in the
+# synthetic fixture, exiting with .fixture/exit/planned-red.sh.self (0 when absent).
+probe_proof() {
+  echo "proof"
+  reset
+  mkdir -p "$FX/code/src/scripts/tests"
+  printf '#!/usr/bin/env bash
+root="$(cd "$(dirname "$0")/../../../.." && pwd)"
+echo "planned-red.sh self" >> "$root/.fixture/calls"
+exit "$(cat "$root/.fixture/exit/planned-red.sh.self" 2>/dev/null || echo 0)"
+' \
+    > "$FX/code/src/scripts/tests/planned-red.sh"
+  fgit add code/src/scripts/tests/planned-red.sh; fgit commit -q --no-verify -m stand-in
+  local f
+  for f in .github/scripts/template-integrity.sh .github/scripts/self-test-ledger.sh lefthook.yml \
+           code/src/scripts/tests/planned-red.sh; do
+    rm -f "$FX/.fixture/calls"; mkdir -p "$FX/$(dirname "$f")"; echo "# probe" >> "$FX/$f"; fgit add "$f"
+    set_exit planned-red.sh self 1
+    check "staging $f runs planned-red.sh, and its failure refuses the commit" refused "" "ci: x"
+    check "  and planned-red.sh was called" bash -c 'grep -qx "planned-red.sh self" "$1/.fixture/calls"' _ "$FX"
+    rm -f "$FX/.fixture/exit/planned-red.sh.self"
+    check "  and it passes once planned-red.sh passes" attempt "" "ci: x"
+  done
+  rm -f "$FX/.fixture/calls"; touch_other
+  attempt "" "docs: x" >/dev/null 2>&1 || true
+  check "a commit staging none of them does not run planned-red.sh" \
+    bash -c '! grep -q "planned-red.sh" "$1/.fixture/calls"' _ "$FX"
+}
+
 probe_wired() {
   echo "wired"
+  check "audit-template.yml runs planned-red.sh" \
+    grep -qE '^[[:space:]]+run: bash code/src/scripts/tests/planned-red\.sh$' "$PROJECT_ROOT/.github/workflows/audit-template.yml"
   check "lefthook.yml's pre-commit leg calls template-integrity.sh --pre-commit" \
     grep -qF 'bash .github/scripts/template-integrity.sh --pre-commit' "$LEFTHOOK"
   check "lefthook.yml's commit-msg leg calls template-integrity.sh --commit-msg {1}" \
@@ -396,6 +429,7 @@ else
   probe_token
   probe_enforced
   probe_ordinary
+  probe_proof
   probe_real
   probe_wired
 fi
