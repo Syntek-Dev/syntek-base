@@ -7,7 +7,8 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → `../CONTEXT.md` → 
 
 ## Purpose (one line)
 
-The frozen archive of findings records that reached `Triaged`, written only by `pm-archive.sh`.
+The frozen archive of findings records that reached `Resolved`, written only by `pm-archive.sh`.
+<!-- Resolved from 19/11/2026; it read Triaged before. -->
 
 ## How to work here
 

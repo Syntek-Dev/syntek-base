@@ -65,7 +65,9 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   archive status (`Closed`; an ADR `Superseded` or `Deprecated`, a finding `Resolved`, a bug
   `Verified`) is moved into the folder's `archive/` by `00-ASSETS/scripts/pm-archive.sh` and never edited again —
   `pm-board.sh --check` fails on any change there other than the archive rename and the
-  reference-path rewrites `pm-archive.sh` makes. <!-- Finding archive status Resolved from 19/11/2026; it read Triaged before. -->
+  reference-path rewrites `pm-archive.sh` makes — an `archive/` segment or a `./` / `../` depth,
+  and only inside a path that ends at a `.md` filename. No formatter or lint leg reads `archive/`,
+  so nothing re-pads a table a rewrite unaligned. <!-- Finding archive status Resolved from 19/11/2026; it read Triaged before. The rewrite scope and the formatter exclusion stated 19/11/2026. -->
 - **Look a file up by ID across the folder and its `archive/`.** Any reader, script or
   numbering step that globs only the live folder breaks the day an item is archived.
 - **`*-BOARD.md` is generated — never hand-edit it.** Run `pm-board.sh --write` after any status
