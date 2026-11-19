@@ -114,18 +114,23 @@ NAMED_SHIPPED=(
   "23-INCIDENTS/INCIDENT-INDEX.md"
 )
 
-# Seeded by the copy-gated _task, so each is legitimately present in a generated project
-# despite not being template content under project-management/src/: the scale-planning map,
-# the five PM boards (.github/scripts/shipped-boards.sh proves those seeds empty), and the
-# blank CUT-PLAN.md the same _task moves from .copier/ since 7.7.0.
+# An ALLOWLIST, not a proof of landing: each entry is a path the copy-gated _task may move
+# from .copier/ into $SRC_TREE, so this leak check admits it although it is not template
+# content. Being listed here proves nothing about whether the move happens — check 2 of
+# .github/scripts/shipped-boards.sh binds the board moves to the copy-gated task, and the
+# [3/4] completeness step asserts each board is present. Ten entries: the scale-planning map,
+# the eight PM boards (shipped-boards.sh proves those seeds empty), and the blank CUT-PLAN.md.
 SEEDED=(
   "01-FEATURE-MAPS/MAP-SCALE-PLANNING.md"
   "01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md"
   "02-STORIES/STORIES-BOARD.md"
   "02-STORIES/CUT-PLAN.md"
   "03-SPRINTS/SPRINTS-BOARD.md"
+  "15-DECISIONS/DECISIONS-BOARD.md"
   "16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md"
   "17-STORY-PLANS/STORY-PLANS-BOARD.md"
+  "20-FINDINGS/FINDINGS-BOARD.md"
+  "21-BUGS/BUGS-BOARD.md"
 )
 
 QUIET=false

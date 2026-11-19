@@ -321,6 +321,31 @@ note   one expectation was corrected in the green commit, not the code it tests:
        "its three instances" from b18f832a
 ```
 
+### Each new probe's red — R4 to R6, 19/11/2026
+
+The seed gate and the update probe. Same rule as R1: the lines are the scripts' own, and nothing
+here is a `Result`.
+
+```text
+[3/4]  a8d1b47e  test(us010): the generated-project completeness step expects the decisions,
+                 findings and bugs boards
+       CI-only: red expected in [3/4] at a8d1b47e, on "INCLUDE_MOBILE=<false|true> —
+       project-management/src/{15-DECISIONS/DECISIONS,20-FINDINGS/FINDINGS,21-BUGS/BUGS}-BOARD.md
+       missing from the generated project"; CI was not run locally, so no run ID is held
+R4     shipped-boards.sh --self-test probes — red taken LOCALLY, not in a commit of its own
+       (deviation: the template-integrity pre-commit leg runs every --self-test whenever a
+       .github/scripts/*.sh is staged, so a red self-test cannot be committed without
+       --no-verify, which this build may not use). The red probe file is held as blob
+       842acdc4d4520954b6ec6239e981344ef82c10af (git hash-object -w, on HEAD a8d1b47e)
+       exit 1 — 13 of 21 probes failed, each "produced 0 finding(s): (none)":
+         ✗ check 2 fires when the {DECISIONS,FINDINGS,BUGS}-BOARD.md move is dropped
+         ✗ check 2 fires when a seed move leaves the copy-gated task
+         ✗ check 3 fires when {DECISIONS,FINDINGS,BUGS}-BOARD.md is missing
+         ✗ check 4 fires when {DECISIONS,FINDINGS,BUGS}-BOARD.md carries a row
+         ✗ check 5 fires when SEEDED omits {DECISIONS,FINDINGS,BUGS}-BOARD.md
+       the 8 that passed at red: the five original probes, and check 1 on the three new boards
+       (check 1 matches any re-included *BOARD path, so it never depended on the list)
+
 ---
 
 ## Journeys
@@ -699,3 +724,4 @@ Filled at the walk.
 - `../../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US010-SEEDED-REGISTER-INDEXES.md` — the fifteen security constraints the chain, family and update rows read against
 - `../../20-FINDINGS/` — where each amendment made at the walk is recorded
 - `code/docs/GATE-REPORTING.md` — why a scenario this guide cannot walk is named out of scope rather than reported as passed
+```

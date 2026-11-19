@@ -100,13 +100,16 @@ def fixture(directory: Path, config: dict, *, legacy: bool = False) -> None:
             duplicate(source, directory / ".copier" / source.name)
     migration = ".copier/migrations/shared-ai-symlinks.sh"
     duplicate(ROOT / migration, directory / migration)
-    # One marker per seed destination folder: the scale-planning map and the five PM boards.
+    # One marker per seed destination folder: the scale-planning map and the eight PM boards.
     for folder in (
         "01-FEATURE-MAPS",
         "02-STORIES",
         "03-SPRINTS",
+        "15-DECISIONS",
         "16-SPRINT-PLANS",
         "17-STORY-PLANS",
+        "20-FINDINGS",
+        "21-BUGS",
     ):
         marker = f"project-management/src/{folder}/CONTEXT.md"
         duplicate(ROOT / marker, directory / marker)

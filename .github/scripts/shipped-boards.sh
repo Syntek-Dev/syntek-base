@@ -2,9 +2,9 @@
 #
 # shipped-boards.sh — Verify a generated project receives EMPTY, current PM boards.
 #
-#                    `pm-board.sh` writes a committed `*-BOARD.md` into each of five register
+#                    `pm-board.sh` writes a committed `*-BOARD.md` into each of eight register
 #                    folders. In syntek-base those boards list syntek-base's own maps,
-#                    stories, sprints and plans — the same carrier problem
+#                    stories, sprints, plans, decisions, findings and bugs — the same carrier problem
 #                    shipped-registers.sh gates for GAPS.md and DEFERRED.md: a row about this
 #                    template read in a generated project as that project's own backlog.
 #
@@ -14,12 +14,15 @@
 #                    seed is correct when it is EXACTLY what `pm-board.sh --write` renders for
 #                    a project holding nothing but the other seeds — today the one seeded
 #                    `MAP-SCALE-PLANNING.md`. That makes the feature-maps board one row and
-#                    the other four rowless, and makes the new project's first
+#                    the other seven rowless, and makes the new project's first
 #                    `pm-board.sh --check` green rather than stale on day one.
 #
 #                    Five checks:
 #                      1. No copier.yml `_exclude` negation re-includes a `*-BOARD.md`.
-#                      2. `_tasks` moves each of the five seeds into its folder.
+#                      2. The copy-gated `_tasks` entry — the one whose `when:` tests the copy
+#                         operation and which carries the README move — moves each of the
+#                         eight seeds into its folder. A move in any other task would run on
+#                         every update and overwrite the project's own board.
 #                      3. Each seed exists.
 #                      4. Each seed is byte-identical to the board `pm-board.sh` renders for
 #                         the seed-only tree — which proves it carries none of syntek-base's
@@ -30,10 +33,11 @@
 #                    Numbers are stable identifiers. Append, never renumber.
 #
 # SELF-TEST. --self-test mutates a copy of each input — re-includes a board, drops a `_tasks`
-#            move, removes a seed, adds a row to a seed, drops a `SEEDED` entry — and asserts
-#            each check catches its own, exactly once.
+#            move, moves a seed into an ungated task, removes a seed, adds a row to a seed,
+#            drops a `SEEDED` entry — and asserts each check catches its own, exactly once.
+#            Each kind runs on one of the first five boards and on each of the later three.
 #
-# --fix      Re-render the five seeds from the generator. Run it after changing how
+# --fix      Re-render the eight seeds from the generator. Run it after changing how
 #            pm-board.sh renders a board, then review the diff — never to silence check 4 on
 #            a seed that has picked up rows.
 #
@@ -56,13 +60,16 @@ ARTEFACTS="$PROJECT_ROOT/.github/scripts/shipped-artefacts.sh"
 PM_BOARD="$PROJECT_ROOT/project-management/src/00-ASSETS/scripts/pm-board.sh"
 MAP_SEED="$PROJECT_ROOT/.copier/MAP-SCALE-PLANNING.md"
 
-# folder|board — the five registers, in board order.
+# folder|board — the eight registers, in board order.
 BOARDS=(
   "01-FEATURE-MAPS|FEATURE-MAPS-BOARD.md"
   "02-STORIES|STORIES-BOARD.md"
   "03-SPRINTS|SPRINTS-BOARD.md"
+  "15-DECISIONS|DECISIONS-BOARD.md"
   "16-SPRINT-PLANS|SPRINT-PLANS-BOARD.md"
   "17-STORY-PLANS|STORY-PLANS-BOARD.md"
+  "20-FINDINGS|FINDINGS-BOARD.md"
+  "21-BUGS|BUGS-BOARD.md"
 )
 
 QUIET=false
@@ -78,7 +85,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,46p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,50p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done
@@ -122,13 +129,24 @@ run_checks() {
     finding "copier.yml _exclude re-includes a board ($e) — syntek-base's own rows would ship"
   done < <(grep -E '^!.*BOARD' <<< "$excluded" || true)
 
-  tasks=$(awk '/^_tasks:/{f=1;next} /^[a-zA-Z_]+:/{f=0} f' "$COPIER" || true)
+  # The copy-gated task alone: _tasks split into its `  - ` entries, keeping the one that
+  # both moves the README and carries `when: "<% _copier_operation == 'copy' %>"`.
+  tasks=$(awk '
+    /^_tasks:/ { f = 1; next }
+    /^[a-zA-Z_]+:/ { f = 0 }
+    !f { next }
+    /^  - / { if (t != "" && readme && gated) print t; t = ""; readme = 0; gated = 0 }
+    { t = t $0 "\n" }
+    index($0, "mv .copier/README.md README.md") { readme = 1 }
+    /^    when: *"<% *_copier_operation *== *.copy. *%>" *$/ { gated = 1 }
+    END { if (t != "" && readme && gated) print t }
+  ' "$COPIER" || true)
   for b in "${BOARDS[@]}"; do
     folder="${b%%|*}"; board="${b##*|}"; seed="$SEED_DIR/$board"
 
     # ── 2. Wired ──────────────────────────────────────────────────────────────
     grep -qF "mv .copier/$board project-management/src/$folder/$board" <<< "$tasks" \
-      || finding "copier.yml _tasks does not move .copier/$board into $folder/ — a generated project gets no board"
+      || finding "copier.yml's copy-gated _tasks entry does not move .copier/$board into $folder/ — a generated project gets no board, or an update re-seeds it"
 
     # ── 3. Present ────────────────────────────────────────────────────────────
     if [[ ! -f "$seed" ]]; then
@@ -174,30 +192,68 @@ self_test() {
   fi
   log "  ✓ the real inputs pass — the baseline is clean"
 
+  # The three later registers, folder|board — each check kind is proven on each of them too.
+  local later=("15-DECISIONS|DECISIONS-BOARD.md" "20-FINDINGS|FINDINGS-BOARD.md" "21-BUGS|BUGS-BOARD.md")
+  local lb lf lname
+
   # 1. Re-include a board.
   awk '{print} /^_exclude:/{print "  - \"!/project-management/src/02-STORIES/STORIES-BOARD.md\""}' \
     "$real_copier" > "$tmp/reinclude.yml"
   COPIER="$tmp/reinclude.yml"; probe "check 1 fires when a board is re-included" "re-includes a board"
+  for lb in "${later[@]}"; do
+    lf="${lb%%|*}"; lname="${lb##*|}"
+    awk -v l="  - \"!/project-management/src/$lf/$lname\"" '{print} /^_exclude:/{print l}' \
+      "$real_copier" > "$tmp/reinclude.yml"
+    COPIER="$tmp/reinclude.yml"; probe "check 1 fires when $lname is re-included" "re-includes a board (!/project-management/src/$lf/$lname)"
+  done
   COPIER="$real_copier"
 
   # 2. Drop a _tasks move.
   grep -vF "mv .copier/SPRINTS-BOARD.md" "$real_copier" > "$tmp/no-move.yml"
   COPIER="$tmp/no-move.yml"; probe "check 2 fires when a _tasks move is dropped" "does not move .copier/SPRINTS-BOARD.md"
+  for lb in "${later[@]}"; do
+    lname="${lb##*|}"
+    grep -vF "mv .copier/$lname" "$real_copier" > "$tmp/no-move.yml"
+    COPIER="$tmp/no-move.yml"; probe "check 2 fires when the $lname move is dropped" "does not move .copier/$lname"
+  done
+  # 2b. Move a seed out of the copy-gated task into an ungated one. The move still exists, but
+  #     it would run on every update and overwrite the project's own board — check 2 binds the
+  #     move to the copy-gated task, not to _tasks at large.
+  grep -vF "mv .copier/STORIES-BOARD.md" "$real_copier" \
+    | awk '{print} /^_tasks:/{print "  - command: mv .copier/STORIES-BOARD.md project-management/src/02-STORIES/STORIES-BOARD.md"}' \
+    > "$tmp/ungated.yml"
+  COPIER="$tmp/ungated.yml"; probe "check 2 fires when a seed move leaves the copy-gated task" "does not move .copier/STORIES-BOARD.md"
   COPIER="$real_copier"
 
-  # 3 and 4 work on a copy of the seed directory.
-  mkdir -p "$tmp/seeds"; cp "$real_seeds"/*-BOARD.md "$tmp/seeds/"
+  # 3 and 4 work on a fresh copy of the seed directory per probe.
+  fresh_seeds() { rm -rf "$tmp/seeds"; mkdir -p "$tmp/seeds"; cp "$real_seeds"/*-BOARD.md "$tmp/seeds/"; }
   SEED_DIR="$tmp/seeds"
-  rm "$tmp/seeds/STORY-PLANS-BOARD.md"
+  fresh_seeds; rm -f "$tmp/seeds/STORY-PLANS-BOARD.md"
   probe "check 3 fires when a seed is missing" "missing .copier/STORY-PLANS-BOARD.md"
-  cp "$real_seeds/STORY-PLANS-BOARD.md" "$tmp/seeds/"
+  for lb in "${later[@]}"; do
+    lname="${lb##*|}"
+    fresh_seeds; rm -f "$tmp/seeds/$lname"
+    probe "check 3 fires when $lname is missing" "missing .copier/$lname"
+  done
+  fresh_seeds
   printf '\n| US001 | A template story | Open | [US001.md](US001.md) |\n' >> "$tmp/seeds/STORIES-BOARD.md"
   probe "check 4 fires when a seed carries a row" ".copier/STORIES-BOARD.md differs"
+  for lb in "${later[@]}"; do
+    lname="${lb##*|}"
+    fresh_seeds
+    printf '\n| X-TEMPLATE-ROW | A template record | Open | [x.md](x.md) |\n' >> "$tmp/seeds/$lname"
+    probe "check 4 fires when $lname carries a row" ".copier/$lname differs"
+  done
   SEED_DIR="$real_seeds"
 
   # 5. Drop a SEEDED entry.
   sed 's#"16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md"##' "$real_art" > "$tmp/artefacts.sh"
   ARTEFACTS="$tmp/artefacts.sh"; probe "check 5 fires when SEEDED omits a board" "SEEDED does not list 16-SPRINT-PLANS"
+  for lb in "${later[@]}"; do
+    lf="${lb%%|*}"; lname="${lb##*|}"
+    sed "s#\"$lf/$lname\"##" "$real_art" > "$tmp/artefacts.sh"
+    ARTEFACTS="$tmp/artefacts.sh"; probe "check 5 fires when SEEDED omits $lname" "SEEDED does not list $lf/$lname"
+  done
   ARTEFACTS="$real_art"
 
   rm -rf "$tmp"
