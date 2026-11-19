@@ -66,7 +66,8 @@
 #              (a list item or table row; prose such as "_Empty._" lists nothing); a
 #              record in an end state, ready to archive; a supersession chain that does
 #              not walk both ways (a named ADR absent, or not naming this one back, or a
-#              Superseded ADR naming no successor); an unrecognised status. Windows: CUSTOMER_REVIEW_WEEKS and
+#              Superseded ADR naming no successor, an ADR naming itself, an ADR not
+#              Superseded naming a successor, or a cycle); an unrecognised status. Windows: CUSTOMER_REVIEW_WEEKS and
 #              FEEDBACK_WEEKS from .copier-answers.yml, default 2 and 4.
 #   --root DIR Operate on another project root (used by .github/scripts/shipped-boards.sh
 #              to render the boards a generated project is seeded with).
@@ -114,7 +115,7 @@ while [[ $# -gt 0 ]]; do
       [[ -n "${2:-}" && -d "${2:-}" ]] || die "--root needs an existing directory"
       PROJECT_ROOT="$(cd "$2" && pwd)"; shift 2 ;;
     --quiet|-q) QUIET=true; shift ;;
-    --help|-h) sed -n '2,82p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '2,83p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) die "unknown argument: '$1'. Use --help for usage." ;;
   esac
 done

@@ -506,7 +506,8 @@ def article(noun):
 
 def supersession_warnings():
     """Every chain on the decisions board must walk both ways: a named record exists, names this
-    one back, and a Superseded record names its successor."""
+    one back, and a Superseded record names its successor. No record names itself, only a
+    Superseded record names a successor, and no chain loops."""
     out = []
     back = {"superseded_by": "supersedes", "supersedes": "superseded_by"}
     for adr in items("decisions"):
@@ -525,6 +526,31 @@ def supersession_warnings():
                     out.append(f"{adr.id}: {label} names {other_id}, which does not name it back")
         if adr.status == "Superseded" and not adr.superseded_by:
             out.append(f"{adr.id} is Superseded but its **Superseded by:** line names no successor")
+        if adr.superseded_by and adr.status != "Superseded":
+            out.append(f"{adr.id} is {adr.status} but its **Superseded by:** line names "
+                       f"{', '.join(adr.superseded_by)} — only a Superseded ADR names a successor")
+        for field, label in (("supersedes", "Supersedes"), ("superseded_by", "Superseded by")):
+            if adr.id in (getattr(adr, field) or []):
+                out.append(f"{adr.id}: its **{label}:** line names itself")
+    return out + supersession_cycles()
+
+def supersession_cycles():
+    """Each cycle met walking **Superseded by:** from every ADR, reported once: a chain must end
+    on a record nothing supersedes, and a walk that meets an ID twice never ends."""
+    out, seen = [], set()
+    for adr in items("decisions"):
+        path, cur = [], adr
+        while cur is not None and cur.superseded_by:
+            if cur.id in path:
+                loop = path[path.index(cur.id):]
+                key = frozenset(loop)
+                if key not in seen and len(loop) > 1:
+                    seen.add(key)
+                    out.append("supersession cycle: " + " → ".join(loop + [cur.id])
+                               + " — a chain must end on a record nothing supersedes")
+                break
+            path.append(cur.id)
+            cur = find("decisions", cur.superseded_by[0])
     return out
 
 def record_warnings():
