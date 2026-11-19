@@ -8,6 +8,9 @@
 # --pre-commit is the cheap half of .github/workflows/audit-template.yml, pulled forward to the
 # commit: the five detectors' plain checks, preceded by their --self-tests whenever a
 # .github/scripts/*.sh is staged. Every result must be a pass — bar the probes named in advance.
+# When the allowance itself is staged — this script, self-test-ledger.sh, lefthook.yml, or its
+# proof code/src/scripts/tests/planned-red.sh — that proof runs first (about a minute), because
+# no detector's self-test exercises the allowance and a weakened one would otherwise pass.
 #
 # THE PLANNED-RED ALLOWANCE. A probe is committed red ahead of the check it proves (code
 # workflow 02-tdd-cycle). When the probe lives in a detector's own --self-test, the self-test leg
@@ -53,6 +56,7 @@ DETECTORS=(check-template-tokens.sh shipped-readme.sh shipped-memory.sh shipped-
            shipped-boards.sh)
 PLANNED="${PLANNED_RED:-}"
 TOKEN_NAME="planned-red-token"
+PROOF="code/src/scripts/tests/planned-red.sh"
 PL_DET=""
 PL_LABELS=()
 SCRATCH=()
@@ -155,6 +159,12 @@ pre_commit() {
         && refuse "PLANNED_RED=$PLANNED but $PL_DET is not staged — an amend sees nothing staged against the commit it amends; to change a planned-red commit, git reset --soft HEAD^ and commit it again with the opt-in"
       refuse "PLANNED_RED=$PLANNED but $PL_DET is not staged — a planned red commits a probe in that detector"
     fi
+  fi
+  if grep -qxE '\.github/scripts/(template-integrity|self-test-ledger)\.sh|lefthook\.yml|code/src/scripts/tests/planned-red\.sh' <<< "$staged"; then
+    [[ -f "$PROOF" ]] || refuse "the allowance is staged but its proof $PROOF is missing"
+    rc=0
+    bash "$PROOF" || rc=$?
+    [[ $rc -eq 0 ]] || refuse "the planned-red allowance is staged and its proof $PROOF exited $rc"
   fi
   if grep -q '^\.github/scripts/.*\.sh$' <<< "$staged"; then
     for d in "${DETECTORS[@]}"; do

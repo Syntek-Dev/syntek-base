@@ -207,7 +207,7 @@ runs. The `change-filter` fixture tests that decision offline against a scratch 
 findings and bugs boards, on a synthetic `git init` holding **copies** of the three scripts — never
 a path back into this checkout. Host only, git and python3; exit `0` / `1` / `2` as below.
 `planned-red.sh` proves the template's `template-integrity` hook allowance in the same way, on a <!-- doc-references: template-only -->
-fixture of its own; it is template-only and copier-excluded. <!-- Added 19/11/2026. -->
+fixture of its own, template-only and copier-excluded; `audit-template.yml` runs it. <!-- Added 19/11/2026; CI 19/11/2026. -->
 
 ## --output flag
 

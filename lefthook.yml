@@ -273,7 +273,10 @@ pre-commit:
     # bound to the staged tree; the commit-msg leg below requires and consumes it with exactly
     # one matching trailer, refuses the trailer without the opt-in or on a merge, so the history
     # records each planned red the hook saw and no other. Proven by
-    # code/src/scripts/tests/planned-red.sh. (Probe labels and the token, 19/11/2026.)
+    # code/src/scripts/tests/planned-red.sh, which this leg runs first whenever the allowance
+    # itself is staged — template-integrity.sh, self-test-ledger.sh, this file or the proof —
+    # at about a minute's cost, and audit-template.yml [1/4] on every push. (Probe labels, the
+    # token and the proof run, 19/11/2026.)
     template-integrity:
       run: |
         [ -f copier.yml ] || exit 0
