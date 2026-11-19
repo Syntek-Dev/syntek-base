@@ -3,12 +3,12 @@
 | Field            | Value                                                                                                                     |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | **Story**        | US008 — host-only `__Host-` cookies (surfaced by its walk; **not caused by it** — no Django setting was changed by US008) |
-| **Story doc**    | `../02-STORIES/US008.md`                                                                                                  |
-| **Story plan**   | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`                                                              |
+| **Story doc**    | `../../02-STORIES/US008.md`                                                                                               |
+| **Story plan**   | `../../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`                                                           |
 | **Severity**     | Medium — every state-changing request on every worktree dev stack fails; dev-only                                         |
 | **Date found**   | 16/11/2026                                                                                                                |
 | **Last Updated** | 16/11/2026                                                                                                                |
-| **Found during** | Manual walk — the dev-stack cookie rows of `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md`, on a us008 story stack           |
+| **Found during** | Manual walk — the dev-stack cookie rows of `../../18-TESTS/MANUAL/US008-MANUAL-TESTING.md`, on a us008 story stack        |
 | **Reporter**     | Claude (`22-implementation-documentation` Step 5), from finding F-034                                                     |
 
 **Status:** Verified
@@ -98,7 +98,7 @@ weigh it against the staging/production edge contract before choosing.
   manual row that submits a form or fires an HTMX write there. The main stack is unaffected.
 - **Related stories:** US008 (where it surfaced; its walk moved the publish to `:80` to proceed,
   contrary to the overlay's own rule that the host port is never 80).
-- **Related records:** `../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` F-034 ·
+- **Related records:** `../../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` F-034 ·
   `BUG-TEST-SERVER-WORKTREE-URL-PORT-15-11-2026.md` (the worktree port, on the test stack).
 
 ## 9. Verification
@@ -117,7 +117,7 @@ weigh it against the staging/production edge contract before choosing.
 
 ## Cross-references
 
-- `../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — finding F-034
-- `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md` — _Walk provenance_, the dev-stack cookie walk
+- `../../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — finding F-034
+- `../../18-TESTS/MANUAL/US008-MANUAL-TESTING.md` — _Walk provenance_, the dev-stack cookie walk
 - `code/docs/URL-STRATEGY.md` — owner of the dev hosts and ports
 - `code/workflows/10-debug/` — the TDD debug procedure (failing test first)

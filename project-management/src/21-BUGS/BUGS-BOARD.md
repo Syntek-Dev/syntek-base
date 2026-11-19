@@ -34,7 +34,7 @@ One row per bug report in `21-BUGS/` and `21-BUGS/archive/`, filed under its sta
 
 ## Verified
 
-| ID                                           | Title                                                   | Status   | File                                                                                               |
-| -------------------------------------------- | ------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------- |
-| BUG-US008-DEV-STATIC-404-16-11-2026          | every `/static/` asset 404s on the dev stack            | Verified | [BUG-US008-DEV-STATIC-404-16-11-2026.md](BUG-US008-DEV-STATIC-404-16-11-2026.md)                   |
-| BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026 | a per-story dev stack on `:3080` cannot submit any form | Verified | [BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md](BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md) |
+| ID                                           | Title                                                   | Status   | File                                                                                                       |
+| -------------------------------------------- | ------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------- |
+| BUG-US008-DEV-STATIC-404-16-11-2026          | every `/static/` asset 404s on the dev stack            | Verified | [BUG-US008-DEV-STATIC-404-16-11-2026.md](archive/BUG-US008-DEV-STATIC-404-16-11-2026.md)                   |
+| BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026 | a per-story dev stack on `:3080` cannot submit any form | Verified | [BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md](archive/BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md) |
