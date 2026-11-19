@@ -379,6 +379,100 @@ green  6e35c080  test(us010): a board edited and committed in a generated projec
                  copier update"; both copy/update passes report 8 edited boards byte-identical
 ```
 
+**R4's red, made durable — 19/11/2026.** The blob above is reachable from no ref, so a `git gc`
+would lose it. Its content, as `git diff a8d1b47e:.github/scripts/shipped-boards.sh 842acdc4`
+prints it, is pasted here as the record: the probes that ran red, against the check as it stood at
+`a8d1b47e`.
+
+```diff
+diff --git a/.github/scripts/shipped-boards.sh b/842acdc4
+index 9f325d21..842acdc4 100644
+--- a/.github/scripts/shipped-boards.sh
++++ b/842acdc4
+@@ -174,30 +174,68 @@ self_test() {
+   fi
+   log "  ✓ the real inputs pass — the baseline is clean"
+
++  # The three later registers, folder|board — each check kind is proven on each of them too.
++  local later=("15-DECISIONS|DECISIONS-BOARD.md" "20-FINDINGS|FINDINGS-BOARD.md" "21-BUGS|BUGS-BOARD.md")
++  local lb lf lname
++
+   # 1. Re-include a board.
+   awk '{print} /^_exclude:/{print "  - \"!/project-management/src/02-STORIES/STORIES-BOARD.md\""}' \
+     "$real_copier" > "$tmp/reinclude.yml"
+   COPIER="$tmp/reinclude.yml"; probe "check 1 fires when a board is re-included" "re-includes a board"
++  for lb in "${later[@]}"; do
++    lf="${lb%%|*}"; lname="${lb##*|}"
++    awk -v l="  - \"!/project-management/src/$lf/$lname\"" '{print} /^_exclude:/{print l}' \
++      "$real_copier" > "$tmp/reinclude.yml"
++    COPIER="$tmp/reinclude.yml"; probe "check 1 fires when $lname is re-included" "re-includes a board (!/project-management/src/$lf/$lname)"
++  done
+   COPIER="$real_copier"
+
+   # 2. Drop a _tasks move.
+   grep -vF "mv .copier/SPRINTS-BOARD.md" "$real_copier" > "$tmp/no-move.yml"
+   COPIER="$tmp/no-move.yml"; probe "check 2 fires when a _tasks move is dropped" "does not move .copier/SPRINTS-BOARD.md"
++  for lb in "${later[@]}"; do
++    lname="${lb##*|}"
++    grep -vF "mv .copier/$lname" "$real_copier" > "$tmp/no-move.yml"
++    COPIER="$tmp/no-move.yml"; probe "check 2 fires when the $lname move is dropped" "does not move .copier/$lname"
++  done
++  # 2b. Move a seed out of the copy-gated task into an ungated one. The move still exists, but
++  #     it would run on every update and overwrite the project's own board — check 2 binds the
++  #     move to the copy-gated task, not to _tasks at large.
++  grep -vF "mv .copier/STORIES-BOARD.md" "$real_copier" \
++    | awk '{print} /^_tasks:/{print "  - command: mv .copier/STORIES-BOARD.md project-management/src/02-STORIES/STORIES-BOARD.md"}' \
++    > "$tmp/ungated.yml"
++  COPIER="$tmp/ungated.yml"; probe "check 2 fires when a seed move leaves the copy-gated task" "does not move .copier/STORIES-BOARD.md"
+   COPIER="$real_copier"
+
+-  # 3 and 4 work on a copy of the seed directory.
+-  mkdir -p "$tmp/seeds"; cp "$real_seeds"/*-BOARD.md "$tmp/seeds/"
++  # 3 and 4 work on a fresh copy of the seed directory per probe.
++  fresh_seeds() { rm -rf "$tmp/seeds"; mkdir -p "$tmp/seeds"; cp "$real_seeds"/*-BOARD.md "$tmp/seeds/"; }
+   SEED_DIR="$tmp/seeds"
+-  rm "$tmp/seeds/STORY-PLANS-BOARD.md"
++  fresh_seeds; rm -f "$tmp/seeds/STORY-PLANS-BOARD.md"
+   probe "check 3 fires when a seed is missing" "missing .copier/STORY-PLANS-BOARD.md"
+-  cp "$real_seeds/STORY-PLANS-BOARD.md" "$tmp/seeds/"
++  for lb in "${later[@]}"; do
++    lname="${lb##*|}"
++    fresh_seeds; rm -f "$tmp/seeds/$lname"
++    probe "check 3 fires when $lname is missing" "missing .copier/$lname"
++  done
++  fresh_seeds
+   printf '\n| US001 | A template story | Open | [US001.md](US001.md) |\n' >> "$tmp/seeds/STORIES-BOARD.md"
+   probe "check 4 fires when a seed carries a row" ".copier/STORIES-BOARD.md differs"
++  for lb in "${later[@]}"; do
++    lname="${lb##*|}"
++    fresh_seeds
++    printf '\n| X-TEMPLATE-ROW | A template record | Open | [x.md](x.md) |\n' >> "$tmp/seeds/$lname"
++    probe "check 4 fires when $lname carries a row" ".copier/$lname differs"
++  done
+   SEED_DIR="$real_seeds"
+
+   # 5. Drop a SEEDED entry.
+   sed 's#"16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md"##' "$real_art" > "$tmp/artefacts.sh"
+   ARTEFACTS="$tmp/artefacts.sh"; probe "check 5 fires when SEEDED omits a board" "SEEDED does not list 16-SPRINT-PLANS"
++  for lb in "${later[@]}"; do
++    lf="${lb%%|*}"; lname="${lb##*|}"
++    sed "s#\"$lf/$lname\"##" "$real_art" > "$tmp/artefacts.sh"
++    ARTEFACTS="$tmp/artefacts.sh"; probe "check 5 fires when SEEDED omits $lname" "SEEDED does not list $lf/$lname"
++  done
+   ARTEFACTS="$real_art"
+
+   rm -rf "$tmp"
+```
+
+**TM-15's trigger fired at `3d136347`.** The threat model promotes TM-15 to `MEDIUM` when a probe
+lands in the same commit as the check it proves, and R4's probes did: the red was taken locally
+and committed only together with its green. The cause was the template-integrity leg, which runs
+every `--self-test` when a `.github/scripts/*.sh` is staged and so refused the red commit. The
+planned-red allowance added 19/11/2026 (`PLANNED_RED=<detector>` with a matching `Planned-Red:`
+trailer, proved by `code/src/scripts/tests/planned-red.sh`) removes that cause: this story's later
+self-test probes — `848d5eb5` and `7e724e73` — were each committed red, before their fixes. The
+threat-model implementation record of TM-15 is gate 22's, not this capture's.
+
 ### Static checks over the gate scripts — 19/11/2026
 
 ```text
