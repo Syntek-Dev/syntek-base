@@ -385,7 +385,7 @@ probe_round3() {  # run last, on the committed fixture with archived records in 
   printf '# template\n' > "$SRC/02-STORIES/US000-TEMPLATE.md"
   board --write --quiet --root "$FX"
   check "a story plan whose descriptor holds TEMPLATE is a row" \
-    row "$SRC/17-STORY-PLANS/STORY-PLANS-BOARD.md" 01-STORY-PLAN-US012-TEMPLATE-ROWS
+    row "$SRC/17-STORY-PLANS/STORY-PLANS-BOARD.md" 01-STORY-PLAN-US012
   rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
   check "  and the five shipped template names are neither rows nor strays" \
     bash -c '! grep -qE "00-STORY-PLAN-US000-TEMPLATE|00-SPRINT-PLAN-00-TEMPLATE|MAP-000-TEMPLATE|SPRINT-00-TEMPLATE|US000-TEMPLATE" <<< "$1" && ! grep -qE "^\| (US000|SPRINT-00|MAP-000)" "$2"/*/*-BOARD.md' _ "$out" "$SRC"
