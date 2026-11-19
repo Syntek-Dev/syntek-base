@@ -407,6 +407,79 @@ Python, .github/scripts/shipped-ai.py:
 
 ---
 
+### The joined-line instruction search, taken locally — 19/11/2026
+
+The `[3/4]` step _No shipped instruction may route a register's index to a CONTEXT.md_, added at
+`abad41a6`, was run locally: its `run:` block was extracted verbatim from
+`.github/workflows/audit-template.yml` and executed with `RUNNER_TEMP` pointing at two renders,
+`INCLUDE_MOBILE=false` and `true`. Each render came from a scratch copy made with
+`git archive <ref> | tar -x` into a `mktemp -d` directory, `git init` and committed there, and
+rendered by that copy's own `template-render.sh --ref HEAD`. No path in either copy resolves back
+into this checkout: all 73 tracked symlinks resolve inside the copy.
+
+**The CI run is still owed.** This is a local reading, not the landing run that SITES-05 reads
+by run ID.
+
+Over `deb4a9b5`, the map commit and the tree the step judges, it exits 0:
+
+```text
+pattern (Perl, case-insensitive, over paragraphs): index row.{0,80}CONTEXT\.md|CONTEXT\.md.{0,40}(?:map index|register index|is the index|as the index)|row to .{0,40}\d\d-[A-Z-]+/CONTEXT\.md|\bno (?:folder-level |in-tree )?index\b|index (?:is |was )?deferred|register-index work|holds no index|carries no index
+INCLUDE_MOBILE=false — 0 hits
+INCLUDE_MOBILE=true — 0 hits
+```
+
+Over `b5fcede`, the pre-change base, the same step exits 1. This shows the pattern reaches the
+sites R7 repaired. It was not planted in history:
+
+```text
+pattern (Perl, case-insensitive, over paragraphs): index row.{0,80}CONTEXT\.md|CONTEXT\.md.{0,40}(?:map index|register index|is the index|as the index)|row to .{0,40}\d\d-[A-Z-]+/CONTEXT\.md|\bno (?:folder-level |in-tree )?index\b|index (?:is |was )?deferred|register-index work|holds no index|carries no index
+::error::INCLUDE_MOBILE=false — a shipped instruction routes a register's index to a CONTEXT.md
+./project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md: ...*Every slice has a flag manifest** — every gate it needs, `N/A` omitted - [ ] [Index row in `CONTEXT.md]
+./project-management/src/15-DECISIONS/CLAUDE.md: ...t ADR by **full filename**; note the supersession on both records. - **There is [no index]
+./project-management/src/17-STORY-PLANS/CLAUDE.md: ...y Plans — the code master_ table current on every add and every renumber. - **[No index]
+./project-management/src/17-STORY-PLANS/CLAUDE.md: ...int plan's _Story Plans — the code master_ table next door. `CONTEXT.md` here [carries no index]
+./project-management/src/17-STORY-PLANS/CONTEXT.md: ...d `.html` siblings are gitignored. It is the excluded-and-seeded index file the [register-index work]
+./project-management/workflows/17-story-plans/CLAUDE.md: ...t information, it is a stale claim. Rule and derivation: `STEPS.md` Step 2. - **[No index]
+::error::INCLUDE_MOBILE=true — a shipped instruction routes a register's index to a CONTEXT.md
+./project-management/src/01-FEATURE-MAPS/MAP-000-TEMPLATE.md: ...*Every slice has a flag manifest** — every gate it needs, `N/A` omitted - [ ] [Index row in `CONTEXT.md]
+./project-management/src/15-DECISIONS/CLAUDE.md: ...t ADR by **full filename**; note the supersession on both records. - **There is [no index]
+./project-management/src/17-STORY-PLANS/CLAUDE.md: ...y Plans — the code master_ table current on every add and every renumber. - **[No index]
+./project-management/src/17-STORY-PLANS/CLAUDE.md: ...int plan's _Story Plans — the code master_ table next door. `CONTEXT.md` here [carries no index]
+./project-management/src/17-STORY-PLANS/CONTEXT.md: ...d `.html` siblings are gitignored. It is the excluded-and-seeded index file the [register-index work]
+./project-management/workflows/17-story-plans/CLAUDE.md: ...t information, it is a stale claim. Rule and derivation: `STEPS.md` Step 2. - **[No index]
+```
+
+### Close-out readings — 19/11/2026
+
+Taken at `a776b76d` on `us010/seeded-register-indexes`, every run on the clean tree.
+
+**Citation diff against P0 (block P0-2):**
+
+- `bash code/src/scripts/audits/doc-references.sh` exits 1.
+- Normalised the P0 way (`(file, kind, token)`, line dropped, multiplicity kept), its 18 findings
+  are **identical** to P0's 18. `diff` exits 0.
+- The detector's `git hash-object` is `12e81359308e194bcb607eb04b30583b3ab5089b`, unchanged from
+  P0, so the diff is not confounded by a change to the detector.
+- The first close-out run held three findings that P0 did not, and all three were this story's own:
+  - a stale `doc-references-shipping.txt`, which was missing the three new seeds;
+  - two `dangling path` tokens in `code/src/scripts/tests/pm-boards.sh`'s ADR fixture.
+- Both were fixed at `a776b76d` before this reading was taken.
+
+| Gate                                                                       | Exit | Reading                                                                  |
+| -------------------------------------------------------------------------- | ---- | ------------------------------------------------------------------------ |
+| `audits/doc-references.sh` (whole tree)                                    | 1    | 18 findings, the P0 set exactly; none in this story's write set          |
+| `audits/docs-length.sh`                                                    | 0    | 818 files within 300; 3 approaching, none edited by this story           |
+| `audits/docs-pairing.sh`                                                   | 0    | split intact, 238 `CONTEXT.md` / 228 `CLAUDE.md`                         |
+| `audits/skill-conformance.sh`                                              | 0    | every skill conforms; `wayfinder/SKILL.md` not edited (265 at P0)        |
+| `audits/doctrine-drift.sh`                                                 | 0    | all 4 claims have exactly one home                                       |
+| `syntax/check.sh`                                                          | 0    | Python, mobile and Rust checks clean                                     |
+| `tests/all.sh`                                                             | 0    | backend 71 + 22 passed; mobile 16 passed                                 |
+| `tests/pm-boards.sh`                                                       | 0    | 37 probes passed                                                         |
+| `pm-board.sh --check`                                                      | 0    | all 8 boards current, `archive/` untouched                               |
+| `shipped-boards`, `-registers`, `-memory`, `-readme` `.sh` + `--self-test` | 0    | each pass and self-test green                                            |
+| `shipped-ai.sh --self-test`                                                | 0    | the update probe and its mutations green                                 |
+| `shipped-artefacts.sh` and `[3/4]` landing run                             | —    | **not run**, because both need CI's `[3/4]` job; owed at the landing run |
+
 ## Journeys
 
 ### Approved remediation evidence
