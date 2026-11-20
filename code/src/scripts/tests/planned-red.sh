@@ -135,6 +135,7 @@ if [[ $mode == self ]]; then
   while IFS=$'\t' read -r tag res label; do
     n=$((n + 1))
     [[ "$tag" == "#PROBE" ]] || continue
+    [[ -f "$root/.github/scripts/fixed-probes" ]] && grep -qxF -- "$label" "$root/.github/scripts/fixed-probes" && res=pass
     [[ $res == fail ]] && fails=$((fails + 1))
     [[ -n "${SELF_TEST_LEDGER:-}" && ! -f "$root/.fixture/noledger" ]] \
       && printf '%s\t%s\t%s\n' "$res" "$label" "$n" >> "$SELF_TEST_LEDGER"
@@ -507,6 +508,52 @@ probe_real_only_adds() {
   rroot
 }
 
+# ── Round 4: never weaken a red probe ─────────────────────────────────────────────────────────
+# A probe red at HEAD may turn green only by a fix elsewhere: its own source, and every probe
+# helper, unchanged. A stand-in probe listed in the tracked .github/scripts/fixed-probes passes,
+# which stands for a check fixed without touching the probe.
+probe_never_weaken() {
+  echo "never weaken"
+  local f="$FX/.github/scripts/shipped-boards.sh"
+  reset; add_probe shipped-boards.sh fail "new probe"
+  check "the planned red the weakening probes start from is committed" attempt "$SPEC" "$RED_MSG"
+  sed -i 's/^#PROBE\tfail\tnew probe$/#PROBE\tpass\tnew probe/' "$f"; fgit add .github/scripts/shipped-boards.sh
+  check "a fix commit turning a red probe green by editing that probe is refused" refused "" "fix: x"
+  check "  and the refusal says the red probe's source changed — the synthetic probe" said "was red at HEAD and passes now"
+  fgit checkout -q -- .
+  printf 'new probe\n' > "$FX/.github/scripts/fixed-probes"; echo "# the check, fixed" >> "$f"
+  fgit add .github/scripts/fixed-probes .github/scripts/shipped-boards.sh
+  check "a fix commit turning a red probe green without touching it is accepted" attempt "" "fix: the check"
+}
+
+probe_real_never_weaken() {
+  echo "real never weaken"
+  local b="$RX/.github/scripts/shipped-boards.sh"
+  rroot
+  awk '{print} /^  ARTEFACTS="\$real_art"$/ && !done {
+         print "  : > \"$tmp/r4-art\""
+         print "  ARTEFACTS=\"$tmp/r4-art\"; probe \"r4 segment probe\" \"does not list 02-STORIES/STORIES-BOARD.md\""
+         print "  ARTEFACTS=\"$real_art\""; done = 1 }' "$b" > "$RX/.fixture/tmp" && cat "$RX/.fixture/tmp" > "$b"
+  rgit add .github/scripts/shipped-boards.sh
+  check "a real planned red the weakening probes start from is committed" \
+    rattempt 'shipped-boards.sh::r4 segment probe' "$(rmsg 'shipped-boards.sh::r4 segment probe')"
+  sed -i 's#^  : > "\$tmp/r4-art"$#  grep -vF "\\"02-STORIES/STORIES-BOARD.md\\"" "$real_art" > "$tmp/r4-art" || true#' "$b"
+  rgit add .github/scripts/shipped-boards.sh
+  check "a real fix turning the red probe green by changing its set-up line is refused" rrefused "" "fix: x"
+  check "  and the refusal says its source changed — the real set-up line" said "its source changed"
+  rgit checkout -q -- .
+  sed -i 's/^  ARTEFACTS="\$tmp\/r4-art"; probe "r4 segment probe" .*$/  ARTEFACTS="$tmp\/r4-art"; ST_PROBES=$((ST_PROBES + 1)); st_record pass "r4 segment probe"/' "$b"
+  rgit add .github/scripts/shipped-boards.sh
+  check "a real fix replacing the red probe's call with a recorded pass is refused" rrefused "" "fix: x"
+  check "  and the refusal says its source changed — the real probe call" said "its source changed"
+  rgit checkout -q -- .
+  sed -i 's/^  if \[\[ \${#FINDINGS\[@\]} -eq 1 \]\] && \[\[ "\${FINDINGS\[0\]}" == \*"\$2"\* \]\]; then$/  if true; then/' "$b"
+  rgit add .github/scripts/shipped-boards.sh
+  check "a real fix turning the red probe green by weakening probe() is refused" rrefused "" "fix: x"
+  check "  and the refusal names the changed probe helper" said "the probe helper probe() changed"
+  rroot
+}
+
 # The proof's own planned red: a stand-in planned-red.sh in the synthetic fixture whose probes are
 # its `#PROBE` lines, written to PROOF_LEDGER, exiting 1 when any is red.
 proof_standin() {
@@ -592,8 +639,10 @@ else
   probe_proof
   probe_proof_planned
   probe_only_adds
+  probe_never_weaken
   probe_real
   probe_real_only_adds
+  probe_real_never_weaken
   probe_wired
 fi
 echo ""
