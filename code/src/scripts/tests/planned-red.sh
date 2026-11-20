@@ -42,7 +42,9 @@
 #              fails the commit; a red self-test without the opt-in still fails it.
 #   ordinary   a commit staging no detector runs no self-test and passes.
 #   proof      staging the hook, the ledger library, lefthook.yml or this script runs this script,
-#              and its failure refuses the commit; nothing else runs it.
+#              and its failure refuses the commit; nothing else runs it. The proof's own planned
+#              red: accepted when its new probes alone are red; refused beside a staged allowance,
+#              an old probe red, renamed or deleted, a changed line, or an uncounted failure.
 #   real       each real detector writes a complete ledger; an unbound variable and a failing
 #              command inside a real self-test exit 2; a gutted real check is refused; a real new
 #              red probe is accepted end to end.
@@ -64,7 +66,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,56p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,57p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'planned-red.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -78,8 +80,14 @@ FAILS=0
 PASSES=0
 OUT="$FX/.fixture/out"
 
-pass() { PASSES=$((PASSES + 1)); printf '  \033[32m✓\033[0m %s\n' "$1"; }
-fail() { FAILS=$((FAILS + 1)); printf '  \033[31m✗\033[0m %s\n' "$1"; }
+# The proof's own ledger, for the allowance's planned red of the proof: with PROOF_LEDGER set, each
+# probe appends `pass|fail<TAB><label>` and the run ends with `end<TAB><failed count>`. The
+# detectors' SELF_TEST_LEDGER is cleared, so no fixture's detector ever writes into a caller's.
+LEDGER="${PROOF_LEDGER:-}"
+unset PROOF_LEDGER SELF_TEST_LEDGER
+record() { if [[ -n "$LEDGER" ]]; then printf '%s\t%s\n' "$1" "${2//[$'\t\n']/ }" >> "$LEDGER"; fi; }
+pass() { PASSES=$((PASSES + 1)); record pass "$1"; printf '  \033[32m✓\033[0m %s\n' "$1"; }
+fail() { FAILS=$((FAILS + 1)); record fail "$1"; printf '  \033[31m✗\033[0m %s\n' "$1"; }
 check() { local label="$1"; shift; if "$@" >/dev/null 2>&1; then pass "$label"; else fail "$label"; fi; }
 # git in a fixture: no global or system config, a fixed identity, the fixture's own hooks.
 xgit() {
@@ -109,9 +117,11 @@ build_fixture() {
   printf '.fixture/\n' > "$FX/.gitignore"
   cp "$HOOK" "$FX/.github/scripts/template-integrity.sh"
   for d in "${DETECTORS[@]}"; do
-    # A stand-in. Its probes are its own `#PROBE` lines; under --self-test it writes each to the
-    # ledger, then the end line (unless .fixture/noend), and exits 1 if any failed. An exit code
-    # in .fixture/exit/<name>.<plain|self> overrides; .fixture/noledger writes no ledger at all.
+    # A stand-in. Its probes are its own `#PROBE` lines, inside a `self_test() {` … `}` region at
+    # its end (never executed: the script exits above it); under --self-test it writes each to the
+    # ledger with its line number, then the end line (unless .fixture/noend; one failure more than
+    # it recorded under .fixture/endbump), and exits 1 if any failed. An exit code in
+    # .fixture/exit/<name>.<plain|self> overrides; .fixture/noledger writes no ledger at all.
     # It runs from HEAD's tree too (the novelty check), where .fixture is absent.
     cat > "$FX/.github/scripts/$d" <<'EOF'
 #!/usr/bin/env bash
@@ -121,13 +131,15 @@ name="$(basename "$0")"
 echo "$name $mode" 2>/dev/null >> "$root/.fixture/calls"
 code=0
 if [[ $mode == self ]]; then
-  fails=0
+  fails=0; n=0
   while IFS=$'\t' read -r tag res label; do
+    n=$((n + 1))
     [[ "$tag" == "#PROBE" ]] || continue
     [[ $res == fail ]] && fails=$((fails + 1))
     [[ -n "${SELF_TEST_LEDGER:-}" && ! -f "$root/.fixture/noledger" ]] \
-      && printf '%s\t%s\n' "$res" "$label" >> "$SELF_TEST_LEDGER"
+      && printf '%s\t%s\t%s\n' "$res" "$label" "$n" >> "$SELF_TEST_LEDGER"
   done < "$0"
+  [[ -f "$root/.fixture/endbump" ]] && fails=$((fails + 1))
   [[ -n "${SELF_TEST_LEDGER:-}" && ! -f "$root/.fixture/noledger" && ! -f "$root/.fixture/noend" ]] \
     && printf 'end\t%s\n' "$fails" >> "$SELF_TEST_LEDGER"
   [[ $fails -gt 0 ]] && code=1
@@ -135,8 +147,9 @@ fi
 f="$root/.fixture/exit/$name.$mode"
 [[ -f "$f" ]] && code="$(cat "$f")"
 exit "$code"
+self_test() {
 EOF
-    printf '#PROBE\tpass\told probe\n' >> "$FX/.github/scripts/$d"
+    printf '#PROBE\tpass\told probe\n}\n' >> "$FX/.github/scripts/$d"
   done
   write_hooks "$FX"
   git init -q -b master "$FX"
@@ -152,12 +165,18 @@ reset() {
   fgit reset -q --hard "$(fgit rev-list --max-parents=0 HEAD)"
   fgit branch -D side >/dev/null 2>&1 || true
   fgit clean -qfd -e .fixture
-  rm -f "$FX/.fixture/exit/"* "$FX/.fixture/calls" "$FX/.fixture/noend" "$FX/.fixture/noledger" "$OUT"
+  rm -f "$FX/.fixture/exit/"* "$FX/.fixture/calls" "$FX/.fixture/noend" "$FX/.fixture/noledger" \
+    "$FX/.fixture/endbump" "$OUT"
   rm -f "$(fgit rev-parse --git-path planned-red-token)"
 }
 set_exit() { echo "$3" > "$FX/.fixture/exit/$1.$2"; }       # set_exit NAME plain|self CODE
-# add_probe NAME pass|fail LABEL — a new probe in the stand-in, staged.
-add_probe() { printf '#PROBE\t%s\t%s\n' "$2" "$3" >> "$FX/.github/scripts/$1"; fgit add ".github/scripts/$1"; }
+# add_probe NAME pass|fail LABEL — a new probe in the stand-in, the last line of its self_test()
+# region (inserted above the closing brace, so the diff only adds a line inside it), staged.
+add_probe() { insert_before_last "$FX/.github/scripts/$1" "$(printf '#PROBE\t%s\t%s' "$2" "$3")"; fgit add ".github/scripts/$1"; }
+insert_before_last() { # FILE LINE — LINE above FILE's last line
+  local f="$1" t; t="$(mktemp)"
+  { head -n -1 "$f"; printf '%s\n' "$2"; tail -n 1 "$f"; } > "$t" && cat "$t" > "$f" && rm -f "$t"
+}
 # flip_old NAME — the stand-in's committed probe turns red (a weakened detector), staged.
 flip_old() { sed -i 's/^#PROBE\tpass\told probe$/#PROBE\tfail\told probe/' "$FX/.github/scripts/$1"; fgit add ".github/scripts/$1"; }
 touch_other() { echo "x" >> "$FX/README.md"; fgit add README.md; }
@@ -407,6 +426,66 @@ exit "$(cat "$root/.fixture/exit/planned-red.sh.self" 2>/dev/null || echo 0)"
     bash -c '! grep -q "planned-red.sh" "$1/.fixture/calls"' _ "$FX"
 }
 
+# The proof's own planned red: a stand-in planned-red.sh in the synthetic fixture whose probes are
+# its `#PROBE` lines, written to PROOF_LEDGER, exiting 1 when any is red.
+proof_standin() {
+  mkdir -p "$FX/code/src/scripts/tests"
+  cat > "$FX/code/src/scripts/tests/planned-red.sh" <<'EOF'
+#!/usr/bin/env bash
+root="$(cd "$(dirname "$0")/../../../.." && pwd)"
+echo "planned-red.sh self" 2>/dev/null >> "$root/.fixture/calls"
+fails=0; n=0
+while IFS=$'\t' read -r tag res label; do
+  n=$((n + 1))
+  [[ "$tag" == "#PROBE" ]] || continue
+  [[ $res == fail ]] && fails=$((fails + 1))
+  [[ -n "${PROOF_LEDGER:-}" ]] && printf '%s\t%s\t%s\n' "$res" "$label" "$n" >> "$PROOF_LEDGER"
+done < "$0"
+[[ -f "$root/.fixture/endbump" ]] && fails=$((fails + 1))
+[[ -n "${PROOF_LEDGER:-}" ]] && printf 'end\t%s\n' "$fails" >> "$PROOF_LEDGER"
+code=0; [[ $fails -gt 0 ]] && code=1
+exit "$code"
+#PROBE	pass	old proof probe
+#PROBE	pass	second old proof probe
+EOF
+  fgit add code/src/scripts/tests/planned-red.sh; fgit commit -q --no-verify -m proof-stand-in
+}
+PROOF_SPEC='planned-red.sh::new proof probe'
+PROOF_MSG=$'test: a red proof probe\n\nPlanned-Red: planned-red.sh::new proof probe'
+proof_add() { printf '#PROBE\t%s\t%s\n' "$1" "$2" >> "$FX/code/src/scripts/tests/planned-red.sh"; fgit add code/src/scripts/tests/planned-red.sh; }
+
+probe_proof_planned() {
+  echo "proof planned red"
+  local p="$FX/code/src/scripts/tests/planned-red.sh"
+  reset; proof_standin; proof_add fail "new proof probe"
+  check "a red probe new in the proof is committed as the proof's planned red" attempt "$PROOF_SPEC" "$PROOF_MSG"
+  check "  and the hook output names it" said "planned red — planned-red.sh: new proof probe"
+  reset; proof_standin; proof_add fail "new proof probe"; echo "# x" >> "$FX/.github/scripts/template-integrity.sh"
+  fgit add .github/scripts/template-integrity.sh
+  check "the proof's planned red is refused when the allowance itself is staged with it" \
+    refused "$PROOF_SPEC" "$PROOF_MSG"
+  check "  and the refusal says the allowance is staged" said "the allowance itself is staged"
+  reset; proof_standin; proof_add fail "new proof probe"
+  sed -i 's/^#PROBE\tpass\told proof probe$/#PROBE\tfail\told proof probe/' "$p"; fgit add "$p"
+  check "an old proof probe gone red beside the new one is refused" refused "$PROOF_SPEC" "$PROOF_MSG"
+  reset; proof_standin
+  sed -i 's/^#PROBE\tpass\told proof probe$/#PROBE\tfail\trenamed proof probe/' "$p"; fgit add "$p"
+  check "an old proof probe renamed and red is refused, though its new label is absent at HEAD" \
+    refused 'planned-red.sh::renamed proof probe' $'test: x\n\nPlanned-Red: planned-red.sh::renamed proof probe'
+  check "  and the refusal says a planned red may only add probes" said "may only add probes"
+  reset; proof_standin
+  sed -i '/^#PROBE\tpass\tsecond old proof probe$/d' "$p"; proof_add fail "new proof probe"
+  check "an old proof probe deleted beside a new red one is refused" refused "$PROOF_SPEC" "$PROOF_MSG"
+  reset; proof_standin; proof_add fail "new proof probe"; sed -i 's/^code=0; /code=0;  /' "$p"; fgit add "$p"
+  check "a proof whose diff changes a line beside the new probe is refused" refused "$PROOF_SPEC" "$PROOF_MSG"
+  check "  and the refusal says the proof only gains lines" said "adds probes and changes nothing else"
+  reset; proof_standin; proof_add fail "new proof probe"; touch "$FX/.fixture/endbump"
+  check "a proof counting a failure it never recorded is refused" refused "$PROOF_SPEC" "$PROOF_MSG"
+  check "  and the refusal names the uncounted failure" said "a failure counted without being recorded"
+  reset; proof_standin; proof_add pass "new proof probe"
+  check "a green proof commit still passes without the opt-in" attempt "" "test: green proof"
+}
+
 probe_wired() {
   echo "wired"
   check "audit-template.yml runs planned-red.sh" \
@@ -430,10 +509,12 @@ else
   probe_enforced
   probe_ordinary
   probe_proof
+  probe_proof_planned
   probe_real
   probe_wired
 fi
 echo ""
+record end "$FAILS"
 if [[ $FAILS -eq 0 ]]; then
   printf '\033[1m✓ planned-red.sh: %d probes passed\033[0m\n' "$PASSES"
   exit 0

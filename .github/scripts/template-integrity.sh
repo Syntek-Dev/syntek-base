@@ -40,6 +40,15 @@
 #   amends and is refused; to change a planned-red commit, `git reset --soft HEAD^` and commit it
 #   again with the opt-in.
 #
+#   THE PROOF ITSELF. Staging the proof runs it, so a red probe committed ahead of its fix in the
+#   proof would be refused like any other. PLANNED_RED=planned-red.sh::<probe label>… names the
+#   proof's new red probes instead, judged from its own ledger (PROOF_LEDGER) exactly as a
+#   detector's — exit 1, a finished ledger, exactly the named probes red and each new against
+#   HEAD's proof — and three things more: every probe HEAD's proof runs runs again and passes,
+#   the end line's failure count is the fail lines recorded, and the staged proof's diff against
+#   HEAD adds lines and changes or deletes none. The allowance's own files (this script,
+#   self-test-ledger.sh, lefthook.yml) may not be staged with it.
+#
 # There is no other bypass, and the allowance is not one: it changes which probes one self-test
 # may fail, never whether it runs.
 #
@@ -57,6 +66,7 @@ DETECTORS=(check-template-tokens.sh shipped-readme.sh shipped-memory.sh shipped-
 PLANNED="${PLANNED_RED:-}"
 TOKEN_NAME="planned-red-token"
 PROOF="code/src/scripts/tests/planned-red.sh"
+PROOF_NAME="planned-red.sh"
 PL_DET=""
 PL_LABELS=()
 SCRATCH=()
@@ -90,47 +100,107 @@ parse_planned() {
   done
 }
 
-# The labels HEAD's version of detector $1 records, one per line into file $2, from a
-# `git archive HEAD` copy. Writes nothing when HEAD holds no such detector; fails when HEAD's
-# self-test leaves no finished ledger, because then novelty cannot be shown.
-head_labels() {
-  local d="$1" out="$2" tree ledger rc=0
-  : > "$out"
-  git rev-parse --verify -q HEAD >/dev/null || return 0
-  git cat-file -e "HEAD:.github/scripts/$d" 2>/dev/null || return 0
-  scratch tree; ledger="$tree/.planned-red-ledger"
-  git archive HEAD | tar -x -C "$tree" || return 1
-  # Some detectors read the index (git ls-files); give the copy one, and no hooks or config.
-  GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 git -C "$tree" init -q \
-    && GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 git -C "$tree" add -A || return 1
-  (cd "$tree" && SELF_TEST_LEDGER="$ledger" PLANNED_RED='' bash ".github/scripts/$d" --self-test) \
-    >/dev/null 2>&1 || rc=$?
-  [[ $rc -le 1 && -f "$ledger" ]] && [[ "$(tail -n 1 "$ledger" | cut -f1)" == end ]] || return 1
-  awk -F'\t' '$1 == "pass" || $1 == "fail" { print $2 }' "$ledger" > "$out"
+# HEAD's tree, once per run: a `git archive HEAD` copy with its own index and one commit (the
+# proof's real fixture archives HEAD), no hooks and no configuration. Path in HEAD_TREE.
+HEAD_TREE=""
+# git, and anything run, in another tree: none of the hook's own repository environment
+# (GIT_INDEX_FILE, which `git commit` exports to its hooks, and GIT_CONFIG_PARAMETERS, which carries
+# a caller's `-c` options — a hooks path among them — into every child git) and no configuration.
+in_tree() { # DIR CMD… — CMD in DIR, cut off from this repository
+  local d="$1"; shift
+  (cd "$d" && env -u GIT_INDEX_FILE -u GIT_DIR -u GIT_WORK_TREE -u GIT_PREFIX -u GIT_OBJECT_DIRECTORY \
+    -u GIT_CONFIG_PARAMETERS -u GIT_CONFIG_COUNT \
+    GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 "$@")
+}
+head_tree() {
+  [[ -z "$HEAD_TREE" ]] || return 0
+  local t; scratch t
+  git archive HEAD | tar -x -C "$t" || return 1
+  in_tree "$t" git init -q && in_tree "$t" git add -A \
+    && in_tree "$t" git -c user.name=head -c user.email=head@example.invalid commit -q -m head || return 1
+  HEAD_TREE="$t"
 }
 
-# The named detector's self-test, judged against the opt-in.
+target_path() { # NAME — the judged script's path from the root
+  if [[ "$1" == "$PROOF_NAME" ]]; then printf '%s' "$PROOF"; else printf '.github/scripts/%s' "$1"; fi
+}
+
+# run_probes NAME LEDGER DIR — the named script's probes, run in DIR with a ledger; prints nothing,
+# returns the script's exit code. A detector runs --self-test under SELF_TEST_LEDGER; the proof runs
+# under PROOF_LEDGER, with SELF_TEST_LEDGER cleared so its fixtures' detectors never write to it.
+run_probes() {
+  local n="$1" l="$2" dir="$3" rc=0
+  local run=(env); [[ "$dir" == . ]] || run=(in_tree "$dir" env)
+  if [[ "$n" == "$PROOF_NAME" ]]; then
+    "${run[@]}" -u SELF_TEST_LEDGER PROOF_LEDGER="$l" PLANNED_RED='' bash "$PROOF" || rc=$?
+  else
+    "${run[@]}" -u PROOF_LEDGER SELF_TEST_LEDGER="$l" PLANNED_RED='' bash ".github/scripts/$n" --self-test || rc=$?
+  fi
+  return "$rc"
+}
+
+# head_ledger NAME OUT — HEAD's version of the named script run with a ledger, into OUT. Returns 3
+# when HEAD holds no such script, 1 when HEAD's run leaves no finished ledger (then nothing can be
+# shown new against it).
+head_ledger() {
+  local n="$1" out="$2" rc=0
+  : > "$out"
+  git rev-parse --verify -q HEAD >/dev/null || return 3
+  git cat-file -e "HEAD:$(target_path "$n")" 2>/dev/null || return 3
+  head_tree || return 1
+  run_probes "$n" "$out" "$HEAD_TREE" >/dev/null 2>&1 || rc=$?
+  [[ $rc -le 1 && -s "$out" ]] && [[ "$(tail -n 1 "$out" | cut -f1)" == end ]] || return 1
+}
+
+labels_of() { awk -F'\t' '$1 == "pass" || $1 == "fail" { print $2 }' "$1"; }
+
+# judge_planned NAME — the named script's probes, judged against the opt-in.
 judge_planned() {
-  local d="$1" dir ledger rc=0 fails want l
+  local d="$1" dir ledger rc=0 fails want l n_fail n_end what="self-test"
   scratch dir; ledger="$dir/ledger"
-  SELF_TEST_LEDGER="$ledger" bash ".github/scripts/$d" --self-test || rc=$?
+  [[ "$d" != "$PROOF_NAME" ]] || what="proof"
+  if [[ "$d" == "$PROOF_NAME" ]]; then
+    run_probes "$d" "$ledger" . || rc=$?
+  else
+    SELF_TEST_LEDGER="$ledger" bash ".github/scripts/$d" --self-test || rc=$?
+  fi
   case "$rc" in
     1) ;;
-    0) refuse "PLANNED_RED=$PLANNED but $d's self-test passed — nothing is red, so nothing is planned" ;;
-    *) refuse "PLANNED_RED=$PLANNED but $d's self-test exited $rc — a script error is not a planned red" ;;
+    0) refuse "PLANNED_RED=$PLANNED but $d's $what passed — nothing is red, so nothing is planned" ;;
+    *) refuse "PLANNED_RED=$PLANNED but $d's $what exited $rc — a script error is not a planned red" ;;
   esac
   [[ -f "$ledger" && "$(tail -n 1 "$ledger" | cut -f1)" == end ]] \
-    || refuse "$d's self-test exited 1 but recorded no finished ledger — it stopped early, and a crash is not a planned red"
+    || refuse "$d's $what exited 1 but recorded no finished ledger — it stopped early, and a crash is not a planned red"
   fails="$(awk -F'\t' '$1 == "fail" { print $2 }' "$ledger" | LC_ALL=C sort -u)"
   want="$(printf '%s\n' "${PL_LABELS[@]}" | LC_ALL=C sort -u)"
   [[ "$fails" == "$want" ]] || refuse "PLANNED_RED names [$(paste -sd'|' <<< "$want")] but $d's red probes are [$(paste -sd'|' <<< "$fails")] — exactly the named probes may fail, and every other must pass"
-  head_labels "$d" "$dir/head-labels" \
-    || refuse "HEAD's $d records no finished self-test ledger, so the named probes cannot be shown to be new"
+  rc=0; head_ledger "$d" "$dir/head-ledger" || rc=$?
+  if [[ $rc -ne 0 ]]; then
+    [[ $rc -eq 3 && "$d" != "$PROOF_NAME" ]] \
+      || refuse "HEAD's $d records no finished ledger, so the named probes cannot be shown to be new"
+  fi
+  labels_of "$dir/head-ledger" > "$dir/head-labels"
   for l in "${PL_LABELS[@]}"; do
     if grep -qxF -- "$l" "$dir/head-labels"; then
       refuse "the probe '$l' already exists at HEAD — only a probe new in this commit may be planned red; an old probe gone red is a broken detector"
     fi
   done
+  if [[ "$d" == "$PROOF_NAME" ]]; then
+    # The proof may only gain probes: every probe it ran at HEAD runs again and passes, its end
+    # count is the fails it recorded, and its diff against HEAD adds lines and changes none.
+    n_fail="$(awk -F'\t' '$1 == "fail"' "$ledger" | wc -l | tr -d ' ')"
+    n_end="$(tail -n 1 "$ledger" | cut -f2)"
+    [[ "$n_end" == "$n_fail" ]] \
+      || refuse "$d's ledger ends with $n_end failure(s) but records $n_fail fail line(s) — a failure counted without being recorded is not a planned red"
+    while IFS= read -r l; do
+      [[ -n "$l" ]] || continue
+      awk -F'\t' -v l="$l" '$1 == "pass" && $2 == l { found = 1 } END { exit !found }' "$ledger" \
+        || refuse "the probe '$l' runs at HEAD but is not a pass in the staged $d — a planned red may only add probes, never rename, remove or break one"
+    done < "$dir/head-labels"
+    if git diff --cached -U0 HEAD -- "$PROOF" | grep -qE '^-([^-]|$)'; then
+      refuse "the staged $d changes or deletes lines against HEAD — a planned red of the proof adds probes and changes nothing else"
+    fi
+  fi
   printf '\033[33m▸ planned red — %s: %s (new, and the only red probes), as PLANNED_RED declares\033[0m\n' \
     "$d" "$(paste -sd'|' <<< "$want" | sed 's/|/, /g')"
 }
@@ -149,22 +219,30 @@ pre_commit() {
   staged="$(git diff --cached --name-only)" || die "could not read the staged set"
   if [[ -n "$PLANNED" ]]; then
     parse_planned
-    is_detector "$PL_DET" \
-      || refuse "PLANNED_RED=$PLANNED names no self-tested detector (one of: ${DETECTORS[*]})"
+    [[ "$PL_DET" == "$PROOF_NAME" ]] || is_detector "$PL_DET" \
+      || refuse "PLANNED_RED=$PLANNED names no self-tested detector (one of: ${DETECTORS[*]}), nor the proof $PROOF_NAME"
     [[ ${#PL_LABELS[@]} -gt 0 ]] \
       || refuse "PLANNED_RED=$PLANNED names no probe — write it <detector>::<probe label>[::<probe label>…]"
     for d in "${PL_LABELS[@]}"; do [[ -n "$d" ]] || refuse "PLANNED_RED=$PLANNED names an empty probe label"; done
-    if ! grep -qxF ".github/scripts/$PL_DET" <<< "$staged"; then
+    if ! grep -qxF "$(target_path "$PL_DET")" <<< "$staged"; then
       head_has_trailer \
         && refuse "PLANNED_RED=$PLANNED but $PL_DET is not staged — an amend sees nothing staged against the commit it amends; to change a planned-red commit, git reset --soft HEAD^ and commit it again with the opt-in"
       refuse "PLANNED_RED=$PLANNED but $PL_DET is not staged — a planned red commits a probe in that detector"
     fi
+    if [[ "$PL_DET" == "$PROOF_NAME" ]] \
+       && grep -qxE '\.github/scripts/(template-integrity|self-test-ledger)\.sh|lefthook\.yml' <<< "$staged"; then
+      refuse "PLANNED_RED=$PLANNED but the allowance itself is staged — the proof is never red in the commit that changes what it proves"
+    fi
   fi
   if grep -qxE '\.github/scripts/(template-integrity|self-test-ledger)\.sh|lefthook\.yml|code/src/scripts/tests/planned-red\.sh' <<< "$staged"; then
     [[ -f "$PROOF" ]] || refuse "the allowance is staged but its proof $PROOF is missing"
-    rc=0
-    bash "$PROOF" || rc=$?
-    [[ $rc -eq 0 ]] || refuse "the planned-red allowance is staged and its proof $PROOF exited $rc"
+    if [[ -n "$PLANNED" && "$PL_DET" == "$PROOF_NAME" ]]; then
+      judge_planned "$PROOF_NAME"
+    else
+      rc=0
+      env -u PROOF_LEDGER -u SELF_TEST_LEDGER bash "$PROOF" || rc=$?
+      [[ $rc -eq 0 ]] || refuse "the planned-red allowance is staged and its proof $PROOF exited $rc"
+    fi
   fi
   if grep -q '^\.github/scripts/.*\.sh$' <<< "$staged"; then
     for d in "${DETECTORS[@]}"; do
@@ -221,6 +299,6 @@ commit_msg() {
 case "${1:-}" in
   --pre-commit) pre_commit ;;
   --commit-msg) [[ -n "${2:-}" ]] || die "--commit-msg needs the message file"; commit_msg "$2" ;;
-  --help|-h) sed -n '2,49p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  --help|-h) sed -n '2,59p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) die "usage: template-integrity.sh --pre-commit | --commit-msg FILE | --help" ;;
 esac
