@@ -48,7 +48,8 @@ plans that gate a feature into code, and the post-implementation records, plus t
 - **Every new directory in any layer needs a `CONTEXT.md` + `CLAUDE.md`.**
 - **`src/*/archive/` is frozen, and every lookup is by ID across the folder and its
   `archive/`.** Only `src/00-ASSETS/scripts/pm-archive.sh` writes an archive;
-  `pm-board.sh --check` fails on any other change there (`src/CLAUDE.md` carries the rule in full).
+  `pm-board.sh --check` fails on a deletion, a rename, an edit beyond its rewrites (the move
+  included) or a non-archive status there (`src/CLAUDE.md` carries the rule in full). <!-- Freeze scope restated 20/11/2026. -->
 - Single-track semver: bump only via `docs/VERSIONING-GUIDE.md` / the `version` skill.
 
 ## Output & naming

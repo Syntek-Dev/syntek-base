@@ -55,11 +55,21 @@
 #              CLAUDE.md, board or documented extra (02-STORIES/CUT-PLAN.md); if an ADR,
 #              findings record or bug sits under Unrecognised, or a supersession chain fails
 #              any --warn chain test below (those two are failures here, not advice); or if the archive
-#              frozen rule is breached: a file already under */archive/ may differ from
-#              the version that first landed there ONLY by the reference-path rewrites
-#              pm-archive.sh makes (inserting `archive/`, adjusting `../` depth), and no
-#              archived file committed at HEAD may be deleted or moved back out. Measured
-#              against git history, so CI must check out with full depth.
+#              frozen rule is breached. Under any */archive/ (its CONTEXT.md and CLAUDE.md aside):
+#                · no committed deletion (a move back out reads as one), and no rename whose
+#                  source is already there;
+#                · each file, as its archiving commit left it (or the working tree, before that
+#                  commit), equals the live copy it was moved from in the commit before, but for
+#                  what pm-archive.sh rewrites: a status register's status line (to Closed) and a
+#                  story's archive history row, every reference path's depth and folder, and a
+#                  table row's padding (whitespace only). A file with no live copy before it, and
+#                  a story or map not archived from Completed or Complete, also fail;
+#                · after that commit it differs ONLY by the reference-path rewrites pm-archive.sh
+#                  makes later (inserting `archive/`, adjusting `../` depth);
+#                · no file archived at HEAD is gone from the working tree;
+#                · each holds its kind's archive status — Closed, or the end state a record was
+#                  archived from — a failure here, where --warn only advises.
+#              Measured against git history, so CI must check out with full depth.
 #   --warn     Print stale-status warnings and exit 0: a Blocked story whose dependencies
 #              are all Completed/Closed; a Customer Accepted (or N/A-customer Accepted)
 #              story past its window, ready for Completed; a Completed story, ready to
@@ -304,37 +314,114 @@ def norm(text):
         return "/".join(segs + [m.group(4)])
     return path.sub(strip, text)
 
+# Draws only on what pm-archive.sh may change while it moves a file in: the status line of a status
+# register (to Closed) and a story's archive history row, every reference path's depth and folder
+# (a path ending at a .md filename compares as that filename; a ./ or ../ prefix of a folder path
+# is erased), and the padding of a table row pm-archive's rewrite unaligned.
+DIR_DEPTH = re.compile(r"(?<![\w./-])(?:\.\.?/)+(?=(?:[\w.-]+/)+)")
+MD_PATH = re.compile(r"(?<![\w./-])(?:[\w.-]*/)*([\w.-]+\.md)(?![\w-])")
+TABLE_ROW = re.compile(r"^\s*\|.*\|\s*$")
+ARCHIVE_ROW = re.compile(r"^\|[^|]*\|[^|]*\|Closed\|Archived by pm-archive\.sh\|$")
+PRE_ARCHIVE = {"stories": "Completed", "maps": "Complete"}
+
+def move_norm(text, kind):
+    if not kind.archive_from:
+        text = set_status(text, "⟨status⟩")
+    text = DIR_DEPTH.sub("", MD_PATH.sub(lambda m: m.group(1), norm(text)))
+    out = []
+    for line in text.split("\n"):
+        if TABLE_ROW.match(line):
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            line = "|" + "|".join("-" if re.fullmatch(r":?-+:?", c) else c for c in cells) + "|"
+            if kind.key == "stories" and ARCHIVE_ROW.match(line):
+                continue
+        out.append(line)
+    text = "\n".join(out).rstrip()
+    if kind.key == "stories":   # a history section pm-archive.sh created holds only its header now
+        text = re.sub(r"\n+## +Status history\n+\|Date\|From\|To\|Note\|\n\|-\|-\|-\|-\|$", "", text)
+    return text
+
+def archive_events(folders):
+    """(commit, status, src, dst) for every change under the archive folders, oldest first."""
+    code, out = git("log", "--reverse", "-M", "--name-status", "--format=@%H", "--", *folders)
+    ev, c = [], None
+    if code != 0:
+        return ev
+    for line in out.splitlines():
+        if line.startswith("@"):
+            c = line[1:]
+        elif line.strip():
+            parts = line.split("\t")
+            ev.append((c, parts[0][:1], parts[1], parts[-1]))
+    return ev
+
 def frozen_breaches():
     out = []
+    folders = [f"{SRC_REL}/{KINDS[k].folder}/archive/" for k in ORDER]
+    def frozen(r):
+        return any(r.startswith(f) for f in folders) and os.path.basename(r) not in PAIR
+    # (a) and (b): a committed deletion under archive/, or a rename whose source is there. A path-
+    # limited log reports a move out of archive/ as a deletion, and a move in from the live folder
+    # as an addition, so these two cover every way an archived file can leave or change its name.
+    for c, st, src, dst in archive_events(folders):
+        if st == "D" and frozen(src):
+            out.append(f"{src} was deleted from archive/ in {c[:9]} — archive/ is frozen (an "
+                       "archived item is never deleted or moved back out)")
+        elif st == "R" and frozen(src):
+            out.append(f"{src} was renamed to {dst} in {c[:9]} — archive/ is frozen (an archived "
+                       "file is never renamed)")
+    # (c): each archived file against the live copy it was moved from, as the move commit left it,
+    # and every later state against the move commit's.
     for key in ORDER:
-        adir = KINDS[key].dir / "archive"
+        kind = KINDS[key]
+        adir = kind.dir / "archive"
         if not adir.is_dir():
             continue
         for p in sorted(adir.iterdir()):
-            if not p.is_file() or p.name in ("CONTEXT.md", "CLAUDE.md"):
+            if not p.is_file() or p.name in PAIR:
                 continue
-            r = rel(p)
+            r, live = rel(p), f"{SRC_REL}/{kind.folder}/{p.name}"
             code, log = git("log", "--diff-filter=A", "--format=%H", "--", r)
-            commits = log.split()
-            if code != 0 or not commits:
-                continue        # freshly archived, not yet committed: nothing to compare
-            code, first = git("show", f"{commits[-1]}:{r}")
+            commits = log.split() if code == 0 else []
+            if commits:
+                add, where = commits[-1], commits[-1][:9]
+                _c, archived = git("show", f"{add}:{r}")
+                code, base = git("show", f"{add}^:{live}")
+            else:                       # moved in, not yet committed: against HEAD's live copy
+                where, archived = "the working tree", read(p)
+                code, base = git("show", f"HEAD:{live}")
             if code != 0:
+                out.append(f"{r} entered archive/ ({where}) with no live {kind.noun} at {live} "
+                           "before it — only pm-archive.sh moves an item in, from its folder")
                 continue
-            if norm(first) != norm(read(p)):
-                out.append(f"{r} has changed since it was archived in {commits[-1][:9]} — "
+            if move_norm(base, kind) != move_norm(archived, kind):
+                out.append(f"{r} was changed as it was archived ({where}) — the move may change "
+                           "only what pm-archive.sh rewrites (its status to Closed, a story's "
+                           "history row, reference paths, table padding)")
+            pre = PRE_ARCHIVE.get(key)
+            if pre and read_status(base)[0] != pre:
+                out.append(f"{r} was archived ({where}) from status {read_status(base)[0]!r} — "
+                           f"{article(kind.noun)} {kind.noun} is archived only from {pre!r}")
+            if commits and norm(archived) != norm(read(p)):
+                out.append(f"{r} has changed since it was archived in {where} — "
                            "archive/ is frozen (only pm-archive.sh's path rewrites are allowed)")
     # An archived file committed at HEAD must still be there: deleting one, or moving it back
     # out of archive/, is as much a breach as editing it.
-    folders = [f"{SRC_REL}/{KINDS[k].folder}/archive/" for k in ORDER]
     code, listing = git("ls-tree", "-r", "--name-only", "HEAD", "--", *folders)
     if code == 0:
         for r in listing.splitlines():
-            if os.path.basename(r) in ("CONTEXT.md", "CLAUDE.md"):
+            if os.path.basename(r) in PAIR:
                 continue
             if not (ROOT / r).is_file():
                 out.append(f"{r} was archived at HEAD and is gone from the working tree — "
                            "archive/ is frozen (an archived item is never deleted or moved back)")
+    # (d): everything under archive/ holds its kind's archive status.
+    for key in ORDER:
+        for it in items(key):
+            if it.archived:
+                _col, w = column_of(it)
+                if w and "sits in archive/" in w:
+                    out.append(w)
     return out
 
 boards = [build(k) for k in ORDER]

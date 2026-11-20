@@ -142,8 +142,9 @@ its board files it there. Templates (`<PREFIX>-US000-TEMPLATE.md`) are never ins
 
 ### Archive and boards
 
-- **`*/archive/` is frozen.** `pm-board.sh --check` fails on any edit to an archived file other
-  than the rename into `archive/` and the reference-path rewrites `pm-archive.sh` makes.
+- **`*/archive/` is frozen.** `pm-board.sh --check` fails on a deletion from `archive/`, a
+  rename within it, a move or later edit that changes more than `pm-archive.sh` rewrites, and an
+  archived file whose status is not its archive status (`project-management/src/CLAUDE.md`).
 - **Look a file up by ID** across its folder **and** its `archive/` — a move never breaks a
   reader.
 - **Regenerate after every edit:**

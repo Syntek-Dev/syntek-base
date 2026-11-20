@@ -63,11 +63,16 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   be written. Enforced by `code/src/scripts/audits/template-orphans.sh`.
 - **`*/archive/` is frozen.** In each of the eight boarded folders an item that has reached its
   archive status (`Closed`; an ADR `Superseded` or `Deprecated`, a finding `Resolved`, a bug
-  `Verified`) is moved into the folder's `archive/` by `00-ASSETS/scripts/pm-archive.sh` and never edited again —
-  `pm-board.sh --check` fails on any change there other than the archive rename and the
-  reference-path rewrites `pm-archive.sh` makes — an `archive/` segment or a `./` / `../` depth,
-  and only inside a path that ends at a `.md` filename. No formatter or lint leg reads `archive/`,
-  so nothing re-pads a table a rewrite unaligned. <!-- Finding archive status Resolved from 19/11/2026; it read Triaged before. The rewrite scope and the formatter exclusion stated 19/11/2026. -->
+  `Verified`) is moved into the folder's `archive/` by `00-ASSETS/scripts/pm-archive.sh` and never
+  edited again. `pm-board.sh --check` fails on any deletion from `archive/` or rename within it; on
+  a move that changes the file beyond what `pm-archive.sh` rewrites — a status register's status
+  line to `Closed` and a story's history row, reference-path depth and folder, and whitespace-only
+  re-padding of a table row (allowed because a move made before the formatters skipped `archive/`
+  re-padded the tables it unaligned); on a move with no live copy before it, or of a story or map
+  not `Completed` or `Complete`; on any later change but the rewrite of a path ending at a `.md`
+  filename (an `archive/` segment or a `./` / `../` depth); and on a file whose status is not its
+  kind's archive status. No formatter or lint leg reads an archived record; `archive/`'s
+  own `CONTEXT.md` and `CLAUDE.md` are read like any pair. <!-- Finding archive status Resolved from 19/11/2026; it read Triaged before. The rewrite scope and the formatter exclusion stated 19/11/2026; the move, deletion, rename and status rules, and the records-only exclusion, 20/11/2026. -->
 - **Look a file up by ID across the folder and its `archive/`.** Any reader, script or
   numbering step that globs only the live folder breaks the day an item is archived.
 - **`*-BOARD.md` is generated — never hand-edit it.** Run `pm-board.sh --write` after any status

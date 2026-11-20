@@ -22,7 +22,8 @@
 #     five, a name of the shipped template pattern (TEMPLATE_NAME — …-US000-TEMPLATE,
 #     …-000-TEMPLATE, …-00-TEMPLATE, US000-TEMPLATE; never TEMPLATE anywhere in a name), and
 #     in the three only the exact name <PREFIX>-US000-TEMPLATE.md. A .md in any subfolder
-#     other than archive/ itself is a stray, off every board.
+#     other than archive/ itself is a stray, off every board — bar the CONTEXT.md / CLAUDE.md
+#     pair of a first-level subfolder other than archive/; nothing below archive/ is exempt.
 #   * A record register's archive rule: an ADR is archived from Superseded or Deprecated, a
 #     findings record from Resolved, a bug from Verified, and keeps that status in archive/
 #     (the five status registers close to Closed instead).
@@ -383,8 +384,8 @@ def strays(kind):
             continue
         if p.parent in (kind.dir, kind.dir / "archive"):
             continue
-        if p.parent.parent in (kind.dir, kind.dir / "archive") and p.name in PAIR:
-            continue
+        if p.parent.parent == kind.dir and p.parent.name != "archive" and p.name in PAIR:
+            continue        # a first-level subfolder's own pair; never one below archive/
         out.append(rel(p))
     return out
 
