@@ -43,8 +43,12 @@
 #              different successor.
 #   frozen     --check fails on a bare archive/ or ../ added to an archived file's prose, and
 #              still admits pm-archive.sh's rewrite of a path inside one.
+#   freeze     --check fails on a committed deletion from archive/, a rename inside it, a move
+#              into it that edits the file (staged or committed), an Open record moved in
+#              unedited (a failure, not a warning), and a pair file nested below archive/.
 #   formatters the real .prettierignore, .markdownlint-cli2.jsonc and lefthook.yml skip every
-#              boarded archive/, so an archive move that rewrites a table cell trips no formatter.
+#              boarded archive/'s records, so an archive move that rewrites a table cell trips no
+#              formatter — and still read archive/'s own CONTEXT.md and CLAUDE.md.
 #   templates  only the shipped template names (…-US000-TEMPLATE, …-000-TEMPLATE, …-00-TEMPLATE,
 #              US000-TEMPLATE) are templates: a record whose descriptor holds TEMPLATE is a row,
 #              and pm-archive.sh rewrites the paths it carries.
@@ -399,15 +403,66 @@ probe_round3() {  # run last, on the committed fixture with archived records in 
     "$SRC/00-ASSETS/scripts/pm-archive.sh" "$SRC/15-DECISIONS/ADR-US012-SHIPPED-TEMPLATES-RULE-13-01-2026.md"
 }
 
-probe_formatters() {  # the real configs: archive/ is frozen, so no formatter may rewrite it
+probe_freeze() {  # round 4: archive/ is frozen against deletion, renames and the move itself
+  local out rc pmb="$SRC/00-ASSETS/scripts/pm-board.sh" open="BUG-US097-OPEN-SECURITY-01-03-2026"
+  echo "freeze"
+  board --write --quiet --root "$FX"; fgit add -A; fgit commit -q --allow-empty -m pre-freeze
+  local victim="$SRC/20-FINDINGS/archive/FINDING-US001-RESOLVED-01-01-2026.md"
+  fgit rm -q "$victim"; board --write --quiet --root "$FX"; fgit add -A; fgit commit -q -m delete-archived
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails once an archived file's deletion is committed" test "$rc" -eq 1
+  check "  and names the deletion" grep -qE "FINDING-US001-RESOLVED-01-01-2026\.md was deleted from archive/" <<< "$out"
+  fgit reset -q --hard HEAD~1
+  fgit mv "$SRC/20-FINDINGS/archive/FINDING-US001-RESOLVED-01-01-2026.md" "$SRC/20-FINDINGS/archive/FINDING-US001-RESOLVED-02-01-2026.md"
+  sed -i 's/^\*\*Status:\*\* Resolved$/**Status:** Resolved — reworded/' "$SRC/20-FINDINGS/archive/FINDING-US001-RESOLVED-02-01-2026.md"
+  printf '\nA sentence added in the rename.\n' >> "$SRC/20-FINDINGS/archive/FINDING-US001-RESOLVED-02-01-2026.md"
+  board --write --quiet --root "$FX"; fgit add -A; fgit commit -q -m rename-in-archive
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails on a rename inside archive/ that edits the file" test "$rc" -eq 1
+  check "  and names the rename" grep -qE "FINDING-US001-RESOLVED-01-01-2026\.md was renamed" <<< "$out"
+  fgit reset -q --hard HEAD~1
+  bug "$open" "US097 — an open security bug" Open
+  board --write --quiet --root "$FX"; fgit add -A; fgit commit -q -m open-bug
+  fgit mv "$SRC/21-BUGS/$open.md" "$SRC/21-BUGS/archive/$open.md"
+  sed -i 's/^\*\*Status:\*\* Open$/**Status:** Verified/' "$SRC/21-BUGS/archive/$open.md"
+  board --write --quiet --root "$FX"; fgit add -A
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails on a staged move into archive/ that flips an Open bug to Verified" test "$rc" -eq 1
+  fgit commit -q -m move-and-flip
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails once that move-and-flip is committed" test "$rc" -eq 1
+  check "  and says the file changed as it was archived" grep -qE "$open\.md was changed as it was archived" <<< "$out"
+  fgit reset -q --hard HEAD~1
+  fgit mv "$SRC/21-BUGS/$open.md" "$SRC/21-BUGS/archive/$open.md"
+  board --write --quiet --root "$FX"; fgit add -A; fgit commit -q -m move-open
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails on an Open bug moved into archive/ unedited — a failure, not a warning" test "$rc" -eq 1
+  check "  and names its status" grep -qE "^✗ .*$open sits in archive/ but its status reads 'Open'" <<< "$out"
+  fgit reset -q --hard HEAD~2
+  board --write --quiet --root "$FX"
+  check "--check passes again on the history before the breaches" board --check --quiet --root "$FX"
+  mkdir -p "$SRC/20-FINDINGS/archive/deep"; printf '# ctx\n' > "$SRC/20-FINDINGS/archive/deep/CONTEXT.md"
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails on a pair file nested below archive/" test "$rc" -eq 1
+  check "  and names it" grep -qF "20-FINDINGS/archive/deep/CONTEXT.md" <<< "$out"
+  rm -rf "$SRC/20-FINDINGS/archive/deep"
+}
+
+probe_formatters() {  # the real configs: archive/'s records are frozen, so no formatter may rewrite them
   local pi="$PROJECT_ROOT/.prettierignore" ml="$PROJECT_ROOT/.markdownlint-cli2.jsonc" lh="$PROJECT_ROOT/lefthook.yml"
+  local rec='project-management/src/*/archive/*-*.md' us='project-management/src/*/archive/US[0-9][0-9][0-9].md'
   echo "formatters"
-  check ".prettierignore skips every boarded archive/" grep -qx 'project-management/src/\*/archive/' "$pi"
-  check ".markdownlint-cli2.jsonc drops archive/ from its globs" grep -qF '"!project-management/src/*/archive/**"' "$ml"
-  check "  and ignores it when a file is passed by name" \
-    bash -c 'sed -n "/\"ignores\"/,/\]/p" "$1" | grep -qF "\"project-management/src/*/archive/**\""' _ "$ml"
-  check "lefthook's prettier and markdownlint legs exclude archive/" \
-    bash -c '[[ $(grep -cF "\"project-management/src/*/archive/**\"" "$1") -ge 2 ]]' _ "$lh"
+  check ".prettierignore skips every boarded archive/'s records" \
+    bash -c 'grep -qxF "$2" "$1" && grep -qxF "$3" "$1"' _ "$pi" "$rec" "$us"
+  check "  but not archive/'s own CONTEXT.md and CLAUDE.md, which ship" \
+    bash -c '! grep -qxE "project-management/src/\*/archive/(\*\*?)?" "$1"' _ "$pi"
+  check ".markdownlint-cli2.jsonc drops archive/'s records from its globs" \
+    bash -c 'grep -qF "\"!$2\"" "$1" && grep -qF "\"!$3\"" "$1"' _ "$ml" "$rec" "$us"
+  check "  and ignores them when a file is passed by name" \
+    bash -c 'i="$(sed -n "/\"ignores\"/,/\]/p" "$1")"; grep -qF "\"$2\"" <<< "$i" && grep -qF "\"$3\"" <<< "$i"' _ "$ml" "$rec" "$us"
+  check "  but neither list drops archive/ whole" bash -c '! grep -qF "archive/**" "$1"' _ "$ml"
+  check "lefthook's prettier and markdownlint legs exclude archive/'s records, and only them" \
+    bash -c '[[ $(grep -cF "\"$2\"" "$1") -ge 2 && $(grep -cF "\"$3\"" "$1") -ge 2 ]] && ! grep -qF "archive/**" "$1"' _ "$lh" "$rec" "$us"
 }
 
 echo "pm-boards.sh — fixture at $FX"
@@ -424,6 +479,7 @@ else
   probe_strays
   probe_check_fails
   probe_round3
+  probe_freeze
 fi
 probe_formatters
 echo ""
