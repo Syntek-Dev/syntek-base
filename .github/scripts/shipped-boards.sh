@@ -363,6 +363,29 @@ self_test() {
       "$real_copier" > "$tmp/ungated.yml"
     COPIER="$tmp/ungated.yml"; probe "check 2 fires on ${ung#*|}" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
   done
+  # 2e. Round 4: the shapes a command-and-flag match still missed — a quoted seed path, a glob
+  #     matching one board, a $PWD prefix, a link and a redirect — and the bare .copier/
+  #     directory, which holds every board and so is a finding for each.
+  for ung in 'mv ".copier/STORIES-BOARD.md" x|a quoted seed path' \
+             'mv .copier/STORIES-*.md x|a glob matching one board' \
+             'mv "$PWD/.copier/STORIES-BOARD.md" x|a $PWD-prefixed seed path' \
+             'ln -f .copier/STORIES-BOARD.md x|a link to a seed' \
+             'cat .copier/STORIES-BOARD.md > x|a redirect of a seed'; do
+    printf '%s\n' "  - command: ${ung%%|*}" > "$tmp/line"
+    awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+    COPIER="$tmp/ungated.yml"; probe "check 2 fires on ${ung#*|}" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
+  done
+  printf '%s\n' '  - command: cp -r .copier/ project-management/src/' > "$tmp/line"
+  awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+  COPIER="$tmp/ungated.yml"; run_checks; ST_PROBES=$((ST_PROBES + 1))
+  if [[ ${#FINDINGS[@]} -eq ${#BOARDS[@]} && "$(printf '%s\n' "${FINDINGS[@]}" | grep -c 'outside the copy-gated task' || true)" -eq ${#BOARDS[@]} ]]; then
+    log "  ✓ check 2 fires for every board on the bare .copier/ directory"
+    st_record pass "check 2 fires for every board on the bare .copier/ directory"
+  else
+    ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 fires for every board on the bare .copier/ directory"
+    printf '\033[31m  ✗ the bare .copier/ directory produced %d finding(s)\033[0m\n' "${#FINDINGS[@]}"
+  fi
+  COPIER="$real_copier"
   # 2c. A move line that names the board but is not a move: echoed, or commented out inside the
   #     folded command. A substring search reads both as wired; one finding each.
   sed 's#^      mv \.copier/SPRINTS-BOARD\.md #      echo mv .copier/SPRINTS-BOARD.md #' "$real_copier" > "$tmp/echoed.yml"
