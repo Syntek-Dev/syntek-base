@@ -45,7 +45,10 @@
 #              still admits pm-archive.sh's rewrite of a path inside one.
 #   freeze     --check fails on a committed deletion from archive/, a rename inside it, a move
 #              into it that edits the file (staged or committed), an Open record moved in
-#              unedited (a failure, not a warning), and a pair file nested below archive/.
+#              unedited (a failure, not a warning), and a pair file nested below archive/;
+#              and (round 5) on a deletion, rename or move out made inside a merge commit, a
+#              mode or type change (a symlink swapped in, named by the archived path), a
+#              caller's hostile git configuration, and a one-commit history (named as such).
 #   formatters the real .prettierignore, .markdownlint-cli2.jsonc and lefthook.yml skip every
 #              boarded archive/'s records, so an archive move that rewrites a table cell trips no
 #              formatter — and still read archive/'s own CONTEXT.md and CLAUDE.md.
@@ -68,7 +71,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,57p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,63p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'pm-boards.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -448,6 +451,82 @@ probe_freeze() {  # round 4: archive/ is frozen against deletion, renames and th
   rm -rf "$SRC/20-FINDINGS/archive/deep"
 }
 
+# merge_breach LABEL CMD… — on a side branch and a main-line commit, merge with --no-commit, run CMD
+# inside the merge, commit it, and record whether --check fails; the history is put back after.
+merge_breach() {
+  local label="$1" base main rc; shift
+  base="$(fgit rev-parse HEAD)"; main="$(fgit rev-parse --abbrev-ref HEAD)"
+  fgit checkout -q -b side
+  finding FINDING-US095-SIDE-01-03-2026 "A side-branch record" Open
+  board --write --quiet --root "$FX"; fgit add -A; fgit commit -q -m side
+  fgit checkout -q "$main"
+  finding FINDING-US094-MAIN-01-03-2026 "A main-line record" Open
+  board --write --quiet --root "$FX"; fgit add -A; fgit commit -q -m main-line
+  fgit merge -q --no-ff --no-commit side >/dev/null 2>&1 || true
+  "$@"
+  board --write --quiet --root "$FX"; fgit add -A; fgit commit -q -m "merge with a breach"
+  rc=0; MERGE_OUT="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "$label" test "$rc" -eq 1
+  fgit reset -q --hard "$base"; fgit branch -q -D side
+  board --write --quiet --root "$FX"
+}
+
+probe_freeze_round5() {  # round 5: merges, modes, symlinks and a one-commit history
+  local out rc arch="20-FINDINGS/archive/FINDING-US001-RESOLVED-01-01-2026.md"
+  local victim="$SRC/$arch"
+  echo "freeze (round 5)"
+  merge_breach "--check fails on an archived file deleted inside a merge commit" fgit rm -q "$victim"
+  check "  and names the deletion" grep -qE "FINDING-US001-RESOLVED-01-01-2026\.md was deleted from archive/" <<< "$MERGE_OUT"
+  merge_breach "--check fails on an archived file renamed inside a merge commit" \
+    fgit mv "$victim" "$SRC/20-FINDINGS/archive/FINDING-US001-RESOLVED-09-01-2026.md"
+  check "  and names the rename" grep -qE "FINDING-US001-RESOLVED-01-01-2026\.md was renamed" <<< "$MERGE_OUT"
+  merge_breach "--check fails on an archived file moved back out inside a merge commit" \
+    fgit mv "$victim" "$SRC/20-FINDINGS/FINDING-US001-RESOLVED-01-01-2026.md"
+  check "  and names the move out" grep -qE "FINDING-US001-RESOLVED-01-01-2026\.md was (deleted from archive/|renamed)" <<< "$MERGE_OUT"
+
+  chmod +x "$victim"; fgit add -A; fgit commit -q -m mode-change
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails on a committed mode change of an archived file" test "$rc" -eq 1
+  check "  and names the mode change" grep -qE "FINDING-US001-RESOLVED-01-01-2026\.md .*mode" <<< "$out"
+  fgit reset -q --hard HEAD~1
+
+  cp "$victim" "$FX/outside-copy.md"; rm -f "$victim"; ln -s ../../../../outside-copy.md "$victim"
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails on an archived file swapped for a symlink in the working tree" test "$rc" -eq 1
+  check "  and names the archived path, not the link's target" \
+    bash -c 'grep -qF "$2" <<< "$1" && ! grep -qF "outside-copy.md" <<< "$1"' _ "$out" "$arch"
+  fgit add -A; fgit commit -q -m symlink-swap
+  rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check fails once the symlink swap is committed" test "$rc" -eq 1
+  check "  and names the type change on the archived path" grep -qE "FINDING-US001-RESOLVED-01-01-2026\.md .*(type|symlink)" <<< "$out"
+  fgit reset -q --hard HEAD~1; rm -f "$FX/outside-copy.md"
+
+  # Git configuration a caller carries in must not change what the freeze reads: a committed
+  # deletion is still seen with an external diff, a textconv on every .md, forced colour and
+  # signatures shown (regression guards — the freeze reads --raw and cat-file, which none reach).
+  fgit rm -q "$victim"; board --write --quiet --root "$FX"; fgit add -A; fgit commit -q -m delete-archived
+  printf '*.md diff=hide -diff\n' > "$FX/.git/info/attributes"
+  rc=0; out="$(GIT_EXTERNAL_DIFF=true GIT_CONFIG_PARAMETERS="'diff.external'='true' 'diff.hide.textconv'='true' 'color.ui'='always' 'log.showSignature'='true' 'core.quotePath'='true'" \
+    board --check --root "$FX" 2>&1)" || rc=$?
+  check "--check still sees a committed deletion under a hostile git configuration" \
+    bash -c '[[ $1 -eq 1 ]] && grep -qE "FINDING-US001-RESOLVED-01-01-2026\.md was deleted from archive/" <<< "$2"' _ "$rc" "$out"
+  rm -f "$FX/.git/info/attributes"; fgit reset -q --hard HEAD~1
+  board --write --quiet --root "$FX"
+  check "--check passes again on the history before the round-5 breaches" board --check --quiet --root "$FX"
+
+  # A history imported in one commit holds no move to read: the message says so, not "no live copy".
+  local one; one="$(mktemp -d)"
+  mkdir -p "$one/project-management/src"
+  cp -r "$SRC/." "$one/project-management/src/"
+  git init -q "$one"
+  git -C "$one" -c user.name=probe -c user.email=probe@example.invalid -c core.hooksPath=/dev/null add -A
+  git -C "$one" -c user.name=probe -c user.email=probe@example.invalid -c core.hooksPath=/dev/null commit -q -m squashed
+  rc=0; out="$(bash "$one/project-management/src/00-ASSETS/scripts/pm-board.sh" --check --root "$one" 2>&1)" || rc=$?
+  check "--check on a one-commit history fails closed and names the root commit as the cause" \
+    bash -c '[[ $1 -eq 1 ]] && grep -qF "root commit" <<< "$2"' _ "$rc" "$out"
+  rm -rf "$one"
+}
+
 probe_formatters() {  # the real configs: archive/'s records are frozen, so no formatter may rewrite them
   local pi="$PROJECT_ROOT/.prettierignore" ml="$PROJECT_ROOT/.markdownlint-cli2.jsonc" lh="$PROJECT_ROOT/lefthook.yml"
   local rec='project-management/src/*/archive/*-*.md' us='project-management/src/*/archive/US[0-9][0-9][0-9].md'
@@ -480,6 +559,7 @@ else
   probe_check_fails
   probe_round3
   probe_freeze
+  probe_freeze_round5
 fi
 probe_formatters
 echo ""
