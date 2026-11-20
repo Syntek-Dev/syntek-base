@@ -125,13 +125,17 @@ Planned-Red: <self-test script basename>::<probe label>[::<probe label>…]
 
 It is the record of an opt-in, never a substitute for one: the commit is made with
 `PLANNED_RED=` set to the same value, and the pre-commit leg running that self-test requires it
-to exit `1`, to finish, and to fail **exactly** the named probes — each new against `HEAD`, every
-other probe passing — with everything else green. The commit-message leg refuses a `Planned-Red:`
-trailer without the opt-in, a second one, one that differs from it, or one the pre-commit leg did
-not accept for this staged tree, and a merge commit never carries one. It sits beside the
-co-author trailer, in the closing trailer block. A planned-red commit is changed by
+to exit `1`, to finish, and to fail **exactly** the named probes — each new against `HEAD` — with
+everything else green. A planned red may only **add** probes: every probe `HEAD` runs must still
+pass, the failure count must match the failures recorded, and the script's diff against `HEAD`
+adds lines and changes none (in a detector, only inside its `self_test()` region). The
+commit-message leg refuses a `Planned-Red:` trailer without the opt-in, a second one, one that
+differs from it, or one the pre-commit leg did not accept for this staged tree, and a merge
+commit never carries one; a cherry-pick or rebase copies the trailer without either leg running,
+so the trailer proves acceptance only for a commit the hooks judged as it was made. It sits beside
+the co-author trailer, in the closing trailer block. A planned-red commit is changed by
 `git reset --soft HEAD^` and committed again, never amended. `--no-verify` is never the way to
-land a red probe. <!-- Section added 19/11/2026; probe labels and the commit-bound check 19/11/2026. -->
+land a red probe. <!-- Section added 19/11/2026; probe labels and the commit-bound check 19/11/2026; only-adds and the copied-trailer limit 20/11/2026. -->
 
 ### Type values
 

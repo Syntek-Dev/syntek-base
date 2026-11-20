@@ -124,13 +124,23 @@ implementation exists is either testing the wrong thing or testing nothing.
 `--no-verify`.** A probe that lives inside a gate's own self-test is refused by any pre-commit leg
 that re-runs that self-test. The answer is a narrow opt-in naming the one self-test and the new
 probes in it expected red, under which the leg requires exactly those probes to fail (exit `1`) —
-refusing a pass, an older probe gone red and a script error alike — while every other check still
-runs and must pass, and a `Planned-Red:` trailer records it in the message (`project-management/docs/git/COMMITS.md` → _The planned-red trailer_). Skipping
-the hooks hides every other failure the commit carries along with the one that was planned. A
-probe in a self-test that no pre-commit leg runs needs no opt-in, and earns no exemption: it is
-committed red in its own commit, and **an existing probe is never edited in the commit of the fix
-it proves** — a probe and its check changing together is the shape that hides a weakened check.
-<!-- Planned-red paragraph added 19/11/2026; named probes, and the unhooked-probe rule, 19/11/2026. -->
+refusing a pass, an older probe gone red or renamed, a changed line and a script error alike —
+while every other check still runs and must pass, and a `Planned-Red:` trailer records it in the
+message (`project-management/docs/git/COMMITS.md` → _The planned-red trailer_). Skipping the
+hooks hides every other failure the commit carries along with the one that was planned.
+
+**An existing probe is never edited in the commit of the fix it proves** — a probe and its check
+changing together is the shape that hides a weakened check. Where a gate's self-test writes the
+probe ledger and a pre-commit leg runs it, the leg enforces this: a probe red at `HEAD` that
+passes in the commit is refused when its own source lines or any probe helper changed. Everywhere
+else it is a rule, held by review: a self-test no pre-commit leg runs, a probe outside the ledger,
+a fixture helper that records nothing, or a set-up shared by several probes. Such a probe needs no
+opt-in and earns no exemption — it is committed red in its own commit, and its fix commit leaves
+it untouched.
+In this template the leg enforces it for the six hooked `.github/scripts/*.sh` detectors; it is <!-- doc-references: template-only -->
+review alone for `shipped-ai.py`'s self-test, the planned-red proof's own probes and every <!-- doc-references: template-only -->
+`code/src/scripts/tests/*.sh` suite.
+<!-- Planned-red paragraph added 19/11/2026; named probes, and the unhooked-probe rule, 19/11/2026; only-adds, and the never-edit rule enforced where a leg runs the ledger, 20/11/2026. -->
 
 ---
 

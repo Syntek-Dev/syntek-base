@@ -973,7 +973,7 @@ if the exact generated export is ignored or untracked, verify its path and prove
 and require it tracked at the landing HEAD when the enabled hook owes it.
 
 **Approved remediation 09/10/2026 (grill-with-docs, Q4).** Every valid offered configuration
-means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_. All applicable generated-tree gates run for each case,
+means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026 — moved 19/11/2026 to MAP-GENERATION-COVERAGE_ (re-cited 20/11/2026). All applicable generated-tree gates run for each case,
 with its answers, source SHA, run ID and gate outcomes recorded separately. A mobile-only run or
 reduced `shipped-ai` fixture cannot establish this criterion. US010 owns the workflow expansion;
 US011 and US012 consume its exhaustive runs and add no CI implementation. If US012 lands before

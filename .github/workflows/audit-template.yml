@@ -60,7 +60,8 @@ jobs:
       # The pre-commit leg's planned-red allowance (.github/scripts/template-integrity.sh) is the
       # one exception in the hooks, and none of the detectors' self-tests exercises it — so its
       # own proof runs here on every push, where a weakened allowance cannot pass unseen. It
-      # needs git and python3 only, both on the runner. Added 19/11/2026.
+      # needs git and python3 only, both on the runner. Added 19/11/2026. It also proves the
+      # only-adds and never-weaken rules and the proof's own planned red (20/11/2026).
       - name: Prove the planned-red allowance (synthetic and real-detector fixtures)
         run: bash code/src/scripts/tests/planned-red.sh
 

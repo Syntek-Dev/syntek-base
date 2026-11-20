@@ -268,23 +268,31 @@ pre-commit:
     # THE PLANNED-RED ALLOWANCE. Test-first means a probe is committed red before its fix — and
     # when the probe sits in a detector's own --self-test, the leg above would refuse that
     # commit, so the red could only ever be squashed into its fix and never recorded. The
-    # allowance is an opt-in naming ONE detector and the NEW probes in it expected red, never a
-    # bypass:
+    # allowance is an opt-in naming ONE self-tested script and the NEW probes in it expected
+    # red, never a bypass:
     #
     #   PLANNED_RED='shipped-boards.sh::<probe label>' git commit   # trailer: `Planned-Red: <same>`
     #
-    # The named detector's --self-test must exit 1, finish its ledger (a crash exits 2 — the
-    # detectors' guard in self-test-ledger.sh), and fail exactly the named probes, each absent
-    # from HEAD's version; an old probe gone red is a weakened detector and is refused. Every
-    # other self-test and every plain check, the named detector's own included, still runs and
-    # must pass, and the detector must be staged. On acceptance the leg writes a one-shot token
-    # bound to the staged tree; the commit-msg leg below requires and consumes it with exactly
-    # one matching trailer, refuses the trailer without the opt-in or on a merge, so the history
-    # records each planned red the hook saw and no other. Proven by
-    # code/src/scripts/tests/planned-red.sh, which this leg runs first whenever the allowance
-    # itself is staged — template-integrity.sh, self-test-ledger.sh, this file or the proof —
-    # at about a minute's cost, and audit-template.yml [1/4] on every push. (Probe labels, the
-    # token and the proof run, 19/11/2026.)
+    # The named script — one of the six self-tested detectors (the five whose plain checks run
+    # here, and register-index-routes.sh), or the proof planned-red.sh itself — must exit 1,
+    # finish its ledger (a crash exits 2 — the guard in self-test-ledger.sh), and fail exactly
+    # the named probes, each absent from HEAD's version. A planned red may only ADD probes: every
+    # probe HEAD's version runs must pass, the ledger's failure count must equal its recorded
+    # fails, and the diff against HEAD may only add lines — in a detector, all inside its
+    # self_test() region, so no check can change in a planned-red commit. Every other self-test
+    # and every plain check, the named detector's own included, still runs and must pass, and
+    # the named script must be staged with no unstaged change beside it. On acceptance the leg
+    # writes a one-shot token bound to the staged tree; the commit-msg leg below requires and
+    # consumes it with exactly one matching trailer and refuses the trailer without the opt-in
+    # or on a merge, so every commit the hook judges as it is made carries the trailer only for
+    # a planned red it accepted (a cherry-pick or rebase copies one unjudged). And a probe red at
+    # HEAD may turn green only through a fix elsewhere: when a staged detector's probe was red
+    # at HEAD and passes now, the leg refuses the commit if that probe's own source, or any probe
+    # helper, changed. Proven by code/src/scripts/tests/planned-red.sh, which this leg runs first
+    # whenever the allowance itself is staged — template-integrity.sh, self-test-ledger.sh, this
+    # file or the proof — at a few minutes' cost, and audit-template.yml [1/4] on every push.
+    # (Probe labels, the token and the proof run 19/11/2026; only-adds, never-weaken, the proof's
+    # own planned red and the sixth detector 20/11/2026.)
     template-integrity:
       run: |
         [ -f copier.yml ] || exit 0
