@@ -118,6 +118,26 @@ EOF
   ok=false; [[ $n -ne 8 ]] || ok=true
   st_probe "exactly the 8 intended forms hit: the UPDATED-marked comment and both false positives do not" "$ok"
   $ok || printf '%s hits:\n%s\n' "$n" "$hits"
+  # Round 4: the plain phrasings the first forms missed, one file each so a probe reads only
+  # whether its file hit, and a root holding no .md at all.
+  local r4="$fx/r4" i rc
+  mkdir -p "$r4/docs"
+  printf '%s\n' '- The map index is this folder'"'"'s `CONTEXT.md`.' > "$r4/docs/f1.md"
+  printf '%s\n' '- The register index lives in `CONTEXT.md`.' > "$r4/docs/f2.md"
+  printf '%s\n' '- The index for this register is CONTEXT.md.' > "$r4/docs/f3.md"
+  printf '%s\n' '- There is no kanban board for this register.' > "$r4/docs/f4.md"
+  printf '%s\n' '- The index is postponed to a later story.' > "$r4/docs/f5.md"
+  hits="$(search "$r4")"
+  for i in "1|the map index named before CONTEXT.md" "2|the register index named before CONTEXT.md" \
+           "3|the index for this register as CONTEXT.md" "4|no board with a word between" \
+           "5|an index postponed"; do
+    ok=false; if grep -q "^\./docs/f${i%%|*}\.md: " <<< "$hits"; then ok=true; fi
+    st_probe "hits ${i#*|}" "$ok"
+  done
+  mkdir -p "$fx/empty-root"; rc=0
+  bash "${BASH_SOURCE[0]}" "$fx/empty-root" >/dev/null 2>&1 || rc=$?
+  ok=false; if [[ $rc -eq 2 ]]; then ok=true; fi
+  st_probe "a root holding no .md is a script error (exit 2), never 0 hits" "$ok"
   if [[ $ST_FAILS -eq 0 ]]; then printf '✓ register-index-routes.sh --self-test passed\n'; return 0; fi
   printf '✗ register-index-routes.sh --self-test: %s failure(s) — fix the search, never the fixture\n' "$ST_FAILS"
   return 0
