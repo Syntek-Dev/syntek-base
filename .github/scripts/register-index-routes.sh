@@ -28,6 +28,10 @@
 #
 # Usage: register-index-routes.sh [--self-test] ROOT...
 #
+# Its --self-test writes the probe ledger template-integrity.sh reads (self-test-ledger.sh), so the
+# pre-commit leg self-tests it whenever a .github/scripts/*.sh is staged, and a probe may be
+# planned red in it like the five detectors'.
+#
 # Requires: bash, find, perl. No network.
 # Exit codes: 0 = no hit (or the self-test passed)  1 = a hit (or the self-test failed)
 #             2 = script error
@@ -39,6 +43,17 @@ HIST='^\s*(?:doc-references:\s*template-only|(?:SUPERSEDED|UPDATED|CORRECTED|REN
 
 die() { printf 'register-index-routes.sh: %s\n' "$*" >&2; exit 2; }
 command -v perl >/dev/null 2>&1 || die "perl is required"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=self-test-ledger.sh
+. "$SCRIPT_DIR/self-test-ledger.sh"
+FX_DIR=""
+# shellcheck disable=SC2329  # invoked through st_arm's EXIT guard
+cleanup() { if [[ -n "$FX_DIR" ]]; then rm -rf "$FX_DIR"; fi; }
+ST_FAILS=0
+st_probe() { # LABEL OK — one probe's outcome, printed and recorded
+  if [[ "$2" == true ]]; then printf '  ✓ %s\n' "$1"; st_record pass "$1"
+  else printf '  ✗ %s\n' "$1"; st_record fail "$1"; ST_FAILS=$((ST_FAILS + 1)); fi
+}
 
 # search ROOT — print one line per hit, `<file>: ...<context>[<match>]`, paths relative to ROOT.
 search() {
@@ -61,10 +76,9 @@ search() {
 }
 
 self_test() {
-  local fx fails=0 hits form n
+  local fx hits form n ok
   fx="$(mktemp -d)" || die "could not create a temporary directory"
-  # shellcheck disable=SC2064
-  trap "rm -rf '$fx'" EXIT
+  FX_DIR="$fx"
   mkdir -p "$fx/project-management/src/01-FEATURE-MAPS" "$fx/code/src/scripts/audits" "$fx/.claude/skills"
   # The intended forms, one paragraph each, every one of which must hit.
   cat > "$fx/project-management/src/01-FEATURE-MAPS/CLAUDE.md" <<'EOF'
@@ -93,30 +107,26 @@ EOF
 
   hits="$(search "$fx")"
   n=0; [[ -z "$hits" ]] || n="$(grep -c . <<< "$hits")"
-  if [[ $n -eq 0 ]]; then
-    printf '  ✗ the planted fixture produced 0 hits — the pattern is broken, and 0 is never a pass\n'
-    fails=$((fails + 1))
-  fi
+  ok=true; [[ $n -gt 0 ]] || ok=false
+  st_probe "the planted fixture produces hits — 0 is never a pass" "$ok"
   for form in "[index row in \`CONTEXT.md]" "[CONTEXT.md\` as its index row]" "[CONTEXT.md\`'s index]" \
               "[register's index is this folder's \`CONTEXT.md]" "[no board]" "[row to its \`CONTEXT.md]" \
               "01/01/2026: the [index was deferred]" "updated: the [index was deferred]"; do
-    if grep -qF -- "$form" <<< "$hits"; then printf '  ✓ hits %s\n' "$form"
-    else printf '  ✗ misses %s\n' "$form"; fails=$((fails + 1)); fi
+    ok=false; if grep -qF -- "$form" <<< "$hits"; then ok=true; fi
+    st_probe "hits $form" "$ok"
   done
-  if [[ $n -ne 8 ]]; then
-    printf '  ✗ %s hits, not the 8 intended forms — a marked comment or a false positive hit:\n%s\n' "$n" "$hits"
-    fails=$((fails + 1))
-  else
-    printf '  ✓ exactly the 8 intended forms hit: the UPDATED-marked comment and both false positives do not\n'
-  fi
-  if [[ $fails -eq 0 ]]; then printf '✓ register-index-routes.sh --self-test passed\n'; return 0; fi
-  printf '✗ register-index-routes.sh --self-test: %s failure(s) — fix the search, never the fixture\n' "$fails"
-  return 1
+  ok=false; [[ $n -ne 8 ]] || ok=true
+  st_probe "exactly the 8 intended forms hit: the UPDATED-marked comment and both false positives do not" "$ok"
+  $ok || printf '%s hits:\n%s\n' "$n" "$hits"
+  if [[ $ST_FAILS -eq 0 ]]; then printf '✓ register-index-routes.sh --self-test passed\n'; return 0; fi
+  printf '✗ register-index-routes.sh --self-test: %s failure(s) — fix the search, never the fixture\n' "$ST_FAILS"
+  return 0
 }
 
 if [[ "${1:-}" == --self-test ]]; then
+  st_arm cleanup
   self_test
-  exit $?
+  st_finish "$ST_FAILS"
 fi
 [[ $# -gt 0 ]] || die "usage: register-index-routes.sh [--self-test] ROOT..."
 printf 'pattern (Perl, case-insensitive, over paragraphs): %s\n' "$PATTERN"

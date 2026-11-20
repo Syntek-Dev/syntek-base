@@ -6,11 +6,18 @@
 # (itself _exclude'd), so downstream they exit 0 before reaching it.
 #
 # --pre-commit is the cheap half of .github/workflows/audit-template.yml, pulled forward to the
-# commit: the five detectors' plain checks, preceded by their --self-tests whenever a
-# .github/scripts/*.sh is staged. Every result must be a pass — bar the probes named in advance.
-# When the allowance itself is staged — this script, self-test-ledger.sh, lefthook.yml, or its
-# proof code/src/scripts/tests/planned-red.sh — that proof runs first (about a minute), because
-# no detector's self-test exercises the allowance and a weakened one would otherwise pass.
+# commit: the five detectors' plain checks, preceded, whenever a .github/scripts/*.sh is staged,
+# by the self-tests of six — the five and register-index-routes.sh, whose plain check reads a
+# rendered project and so runs only in CI's [3/4]. Every result must be a pass — bar the probes
+# named in advance. When the allowance itself is staged — this script, self-test-ledger.sh,
+# lefthook.yml, or its proof code/src/scripts/tests/planned-red.sh — that proof runs first (a few
+# minutes), because no detector's self-test exercises the allowance and a weakened one would
+# otherwise pass.
+#
+# The probes run from the WORKING TREE. Lefthook hides unstaged changes during pre-commit, so
+# there it is the staged tree; under a plain hook it need not be, so a staged .github/scripts/*.sh
+# or proof with unstaged changes beside it is refused, and under PLANNED_RED any unstaged change
+# to a tracked file is.
 #
 # THE PLANNED-RED ALLOWANCE. A probe is committed red ahead of the check it proves (code
 # workflow 02-tdd-cycle). When the probe lives in a detector's own --self-test, the self-test leg
@@ -18,7 +25,7 @@
 #
 #   PLANNED_RED=<detector>::<probe label>[::<probe label>…]
 #
-#   <detector> is ONE of the five self-tested detectors by its basename in .github/scripts/, and
+#   <detector> is ONE of the six self-tested detectors by its basename in .github/scripts/, and
 #   it must be staged — the probes being committed live in it. Each <probe label> is a probe's
 #   name exactly as the detector records it in its self-test ledger (.github/scripts/
 #   self-test-ledger.sh), and at least one is required.
@@ -42,10 +49,16 @@
 #   `Planned-Red: <the opt-in, verbatim>` trailer, requires the token for the current staged tree,
 #   and consumes it whatever it decides. So a trailer on a path that never ran this pre-commit leg
 #   — a merge, a bare commit-msg run — has no token and is refused, a merge commit is refused the
-#   trailer outright, and a trailer without the opt-in is refused too: the history records each
-#   planned red the hook saw and no other. An amend sees nothing staged against the commit it
-#   amends and is refused; to change a planned-red commit, `git reset --soft HEAD^` and commit it
-#   again with the opt-in.
+#   trailer outright, and a trailer without the opt-in is refused too: every commit this hook
+#   judged as it was made carries a trailer only if the hook accepted its planned red. A commit
+#   git copies without running hooks — a cherry-pick, a rebase — keeps the trailer on a tree no
+#   hook judged; CI's self-tests are the check there. An amend sees nothing staged against the
+#   commit it amends and is refused; to change a planned-red commit, `git reset --soft HEAD^` and
+#   commit it again with the opt-in. A pre-commit leg that restages a file after this one wrote
+#   the token (lefthook's parallel sync-trees, stage_fixed) changes the staged tree, and the
+#   commit-msg leg then refuses: re-run the commit. That refusal fails closed, never open. A
+#   `Planned-Red:` line in the body, outside the trailer block, is not a trailer: git's own
+#   trailer readers ignore it, and so does this check.
 #
 #   THE PROOF ITSELF. Staging the proof runs it, so a red probe committed ahead of its fix in the
 #   proof would be refused like any other. PLANNED_RED=planned-red.sh::<probe label>… names the
@@ -78,6 +91,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 DETECTORS=(check-template-tokens.sh shipped-readme.sh shipped-memory.sh shipped-registers.sh
            shipped-boards.sh)
+# Self-tested by this leg and nameable in PLANNED_RED: the five, and the index-route search, whose
+# plain check reads a rendered project and so runs only in audit-template.yml [3/4].
+SELF_TESTED=("${DETECTORS[@]}" register-index-routes.sh)
 PLANNED="${PLANNED_RED:-}"
 TOKEN_NAME="planned-red-token"
 PROOF="code/src/scripts/tests/planned-red.sh"
@@ -99,7 +115,7 @@ scratch() { # VAR — a fresh directory, removed on exit, its path in VAR
 
 is_detector() {
   local d
-  for d in "${DETECTORS[@]}"; do [[ "$1" == "$d" ]] && return 0; done
+  for d in "${SELF_TESTED[@]}"; do [[ "$1" == "$d" ]] && return 0; done
   return 1
 }
 
@@ -156,8 +172,9 @@ run_probes() {
 }
 
 # head_ledger NAME OUT — HEAD's version of the named script run with a ledger, into OUT. Returns 3
-# when HEAD holds no such script, 1 when HEAD's run leaves no finished ledger (then nothing can be
-# shown new against it).
+# when HEAD holds no such script, 4 when HEAD's version passes and keeps no ledger (it predates
+# one, so it records no red probe), 1 when HEAD's run leaves no finished ledger otherwise (then
+# nothing can be shown new against it).
 head_ledger() {
   local n="$1" out="$2" rc=0
   : > "$out"
@@ -165,6 +182,7 @@ head_ledger() {
   git cat-file -e "HEAD:$(target_path "$n")" 2>/dev/null || return 3
   head_tree || return 1
   run_probes "$n" "$out" "$HEAD_TREE" >/dev/null 2>&1 || rc=$?
+  [[ $rc -ne 0 || -s "$out" ]] || return 4   # passed, and keeps no ledger: older than the ledger
   [[ $rc -le 1 && -s "$out" ]] && [[ "$(tail -n 1 "$out" | cut -f1)" == end ]] || return 1
 }
 
@@ -228,7 +246,7 @@ never_weaken() {
      != "$(git rev-parse -q --verify ":$path" 2>/dev/null || true)" ]] || return 0
   scratch dir
   head_ledger "$d" "$dir/head" || rc=$?
-  [[ $rc -ne 3 ]] || return 0
+  [[ $rc -ne 3 && $rc -ne 4 ]] || return 0
   [[ $rc -eq 0 ]] || refuse "HEAD's $d records no finished ledger, so a red probe turning green cannot be judged"
   awk -F'\t' '$1 == "fail" { print $2 }' "$dir/head" | LC_ALL=C sort -u > "$dir/was-red"
   [[ -s "$dir/was-red" ]] || return 0
@@ -314,16 +332,26 @@ pre_commit() {
   token="$(git rev-parse --git-path "$TOKEN_NAME")" || die "could not resolve the git directory"
   rm -f "$token"
   staged="$(git diff --cached --name-only)" || die "could not read the staged set"
+  # The probes run from the working tree, so what they judge must be what is committed: lefthook
+  # hides unstaged changes during pre-commit, and a plain hook does not.
+  if [[ -n "$PLANNED" ]] && ! git diff --quiet; then
+    refuse "PLANNED_RED=$PLANNED but the working tree has unstaged changes — the probes run from the working tree, so a planned red is judged only on a tree that is all staged (stage or stash the rest)"
+  fi
+  while IFS= read -r d; do
+    [[ "$d" == .github/scripts/*.sh || "$d" == "$PROOF" ]] || continue
+    git diff --quiet -- "$d" \
+      || refuse "$d is staged with unstaged changes beside it — its probes run from the working tree, so stage the whole file (or stash the rest)"
+  done <<< "$staged"
   if [[ -n "$PLANNED" ]]; then
     parse_planned
     [[ "$PL_DET" == "$PROOF_NAME" ]] || is_detector "$PL_DET" \
-      || refuse "PLANNED_RED=$PLANNED names no self-tested detector (one of: ${DETECTORS[*]}), nor the proof $PROOF_NAME"
+      || refuse "PLANNED_RED=$PLANNED names no self-tested detector (one of: ${SELF_TESTED[*]}), nor the proof $PROOF_NAME"
     [[ ${#PL_LABELS[@]} -gt 0 ]] \
       || refuse "PLANNED_RED=$PLANNED names no probe — write it <detector>::<probe label>[::<probe label>…]"
     for d in "${PL_LABELS[@]}"; do [[ -n "$d" ]] || refuse "PLANNED_RED=$PLANNED names an empty probe label"; done
     if ! grep -qxF "$(target_path "$PL_DET")" <<< "$staged"; then
       head_has_trailer \
-        && refuse "PLANNED_RED=$PLANNED but $PL_DET is not staged — an amend sees nothing staged against the commit it amends; to change a planned-red commit, git reset --soft HEAD^ and commit it again with the opt-in"
+        && refuse "PLANNED_RED=$PLANNED but $PL_DET is not staged — if this is an amend of the planned-red commit, an amend sees nothing staged against the commit it amends: git reset --soft HEAD^ and commit it again with the opt-in; otherwise unset PLANNED_RED"
       refuse "PLANNED_RED=$PLANNED but $PL_DET is not staged — a planned red commits a probe in that detector"
     fi
     if [[ "$PL_DET" == "$PROOF_NAME" ]] \
@@ -342,7 +370,7 @@ pre_commit() {
     fi
   fi
   if grep -q '^\.github/scripts/.*\.sh$' <<< "$staged"; then
-    for d in "${DETECTORS[@]}"; do
+    for d in "${SELF_TESTED[@]}"; do
       if [[ -n "$PLANNED" && "$d" == "$PL_DET" ]]; then
         judge_planned "$d"
         never_weaken "$d" "$JUDGED_LEDGER"
@@ -399,6 +427,6 @@ commit_msg() {
 case "${1:-}" in
   --pre-commit) pre_commit ;;
   --commit-msg) [[ -n "${2:-}" ]] || die "--commit-msg needs the message file"; commit_msg "$2" ;;
-  --help|-h) sed -n '2,74p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  --help|-h) sed -n '2,87p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) die "usage: template-integrity.sh --pre-commit | --commit-msg FILE | --help" ;;
 esac
