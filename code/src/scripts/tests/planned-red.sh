@@ -99,6 +99,9 @@ fgit() { xgit "$FX" "$@"; }
 
 DETECTORS=(check-template-tokens.sh shipped-readme.sh shipped-memory.sh shipped-registers.sh
            shipped-boards.sh)
+# The index-route search is self-tested by the leg too, and planned red like the five; it has no
+# plain check there (it reads a rendered project, CI's [3/4]).
+DETECTORS+=(register-index-routes.sh)
 
 # The two hooks, shaped exactly as lefthook.yml's legs run them, in fixture $1.
 write_hooks() {
@@ -557,6 +560,32 @@ probe_real_never_weaken() {
   rroot
 }
 
+# ── Round 4: the hook's edges, and the index-route detector ───────────────────────────────────
+probe_edges() {
+  echo "edges"
+  reset; add_probe shipped-boards.sh fail "new probe"; insert_before_last "$FX/.github/scripts/shipped-boards.sh" '# unstaged'
+  check "a planned red with an unstaged change beside it is refused — the hook judges the staged tree" \
+    refused "$SPEC" "$RED_MSG"
+  check "  and the refusal names the unstaged change — the opt-in" said "unstaged"
+  reset; add_probe shipped-readme.sh pass "new probe"; insert_before_last "$FX/.github/scripts/shipped-readme.sh" '# unstaged'
+  check "a staged detector with an unstaged change beside it is refused" refused "" "test: green"
+  check "  and the refusal names the unstaged change — a staged detector" said "unstaged"
+  reset; add_probe shipped-boards.sh fail "new probe"; attempt "$SPEC" "$RED_MSG" || true
+  touch_other
+  check "an ordinary commit with PLANNED_RED left set after a planned red is refused" refused "$SPEC" "docs: x"
+  check "  and the refusal offers the amend route only as an if" said "if this is an amend"
+  reset; set_exit register-index-routes.sh self 1; add_probe shipped-readme.sh pass "new probe"
+  check "staging a detector runs register-index-routes.sh --self-test, and its failure refuses the commit" \
+    refused "" "test: green"
+  check "  and the refusal names register-index-routes.sh" said "register-index-routes.sh --self-test exited 1"
+  reset; add_probe register-index-routes.sh fail "new probe"
+  check "a planned red in register-index-routes.sh is accepted like the five" \
+    attempt 'register-index-routes.sh::new probe' $'test: a red probe\n\nPlanned-Red: register-index-routes.sh::new probe'
+  reset; touch_other; attempt "" "docs: x" >/dev/null 2>&1 || true
+  check "the leg never runs register-index-routes.sh's plain check" \
+    bash -c '! grep -qx "register-index-routes.sh plain" "$1/.fixture/calls"' _ "$FX"
+}
+
 # The proof's own planned red: a stand-in planned-red.sh in the synthetic fixture whose probes are
 # its `#PROBE` lines, written to PROOF_LEDGER, exiting 1 when any is red.
 proof_standin() {
@@ -643,6 +672,7 @@ else
   probe_proof_planned
   probe_only_adds
   probe_never_weaken
+  probe_edges
   probe_real
   probe_real_only_adds
   probe_real_never_weaken
