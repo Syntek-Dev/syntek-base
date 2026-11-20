@@ -140,6 +140,7 @@ if [[ $mode == self ]]; then
       && printf '%s\t%s\t%s\n' "$res" "$label" "$n" >> "$SELF_TEST_LEDGER"
   done < "$0"
   [[ -f "$root/.fixture/endbump" ]] && fails=$((fails + 1))
+  [[ -f "$root/.fixture/endbump.$name" ]] && fails=$((fails + 1))
   [[ -n "${SELF_TEST_LEDGER:-}" && ! -f "$root/.fixture/noledger" && ! -f "$root/.fixture/noend" ]] \
     && printf 'end\t%s\n' "$fails" >> "$SELF_TEST_LEDGER"
   [[ $fails -gt 0 ]] && code=1
@@ -426,6 +427,86 @@ exit "$(cat "$root/.fixture/exit/planned-red.sh.self" 2>/dev/null || echo 0)"
     bash -c '! grep -q "planned-red.sh" "$1/.fixture/calls"' _ "$FX"
 }
 
+# ── Round 4: a planned red may only add probes ────────────────────────────────────────────────
+# relabel NAME — every old stand-in probe renamed (and left green); staged.
+relabel() { sed -i 's/^#PROBE\tpass\told probe$/#PROBE\tpass\told probe (rev)/' "$FX/.github/scripts/$1"; fgit add ".github/scripts/$1"; }
+
+probe_only_adds() {
+  echo "only adds"
+  reset; sed -i 's/^#PROBE\tpass\told probe$/#PROBE\tfail\told probe (rev)/' "$FX/.github/scripts/shipped-boards.sh"
+  fgit add .github/scripts/shipped-boards.sh
+  check "an old probe renamed and red is refused, though its new label is absent at HEAD" \
+    refused 'shipped-boards.sh::old probe (rev)' $'test: x\n\nPlanned-Red: shipped-boards.sh::old probe (rev)'
+  check "  and the refusal says a planned red may only add probes — an old probe renamed and red" said "may only add probes"
+  reset; relabel shipped-boards.sh; add_probe shipped-boards.sh fail "new probe"
+  check "an old probe renamed while green beside a new red probe is refused" refused "$SPEC" "$RED_MSG"
+  reset; sed -i '/^#PROBE\tpass\told probe$/d' "$FX/.github/scripts/shipped-boards.sh"; add_probe shipped-boards.sh fail "new probe"
+  check "an old probe deleted beside a new red probe is refused" refused "$SPEC" "$RED_MSG"
+  check "  and the refusal says a planned red may only add probes — an old probe deleted beside a new red probe" said "may only add probes"
+  reset; add_probe shipped-boards.sh fail "new probe"; touch "$FX/.fixture/endbump.shipped-boards.sh"
+  check "a self-test counting a failure it never recorded is refused" refused "$SPEC" "$RED_MSG"
+  check "  and the refusal names the uncounted failure — a self-test counting a failure it never recorded" said "a failure counted without being recorded"
+  rm -f "$FX/.fixture/endbump.shipped-boards.sh"
+  reset; add_probe shipped-boards.sh fail "new probe"; sed -i 's/^code=0$/code=0 /' "$FX/.github/scripts/shipped-boards.sh"
+  fgit add .github/scripts/shipped-boards.sh
+  check "a detector whose diff changes a line beside the new probe is refused" refused "$SPEC" "$RED_MSG"
+  check "  and the refusal says a line was changed or deleted — a detector whose diff changes a line beside the new probe" said "changes or deletes a line"
+  reset; add_probe shipped-boards.sh fail "new probe"; echo "# appended" >> "$FX/.github/scripts/shipped-boards.sh"
+  fgit add .github/scripts/shipped-boards.sh
+  check "a detector gaining a line outside its self_test() region is refused" refused "$SPEC" "$RED_MSG"
+  check "  and the refusal says the line is outside self_test() — a detector gaining a line outside its self_test() region" said "outside self_test()"
+  reset; add_probe shipped-boards.sh fail "new probe"
+  check "a new red probe inside the region alone is still accepted" attempt "$SPEC" "$RED_MSG"
+}
+
+rroot() { rgit reset -q --hard "$(rgit rev-list --max-parents=0 HEAD)"; rgit clean -qfd -e .fixture; }
+# rred NAME — the real detector's red labels in the working tree, joined `<NAME>::<l>::<l>…`.
+rred() {
+  rm -f "$RX/.fixture/ledger"; rself "$1" >/dev/null
+  printf '%s' "$1"; awk -F'\t' '$1 == "fail" { printf "::%s", $2 }' "$RX/.fixture/ledger"
+}
+rmsg() { printf 'test: x\n\nPlanned-Red: %s' "$1"; }
+
+probe_real_only_adds() {
+  echo "real only adds"
+  local b="$RX/.github/scripts/shipped-boards.sh" m="$RX/.github/scripts/shipped-memory.sh" spec
+  rroot
+  sed -i 's/^finding() { FINDINGS+=("$1"); }$/finding() { :; }/; s/st_record pass "\$1"$/st_record pass "$1 (rev)"/; s/st_record fail "\$1"$/st_record fail "$1 (rev)"/' "$b"
+  rgit add .github/scripts/shipped-boards.sh; spec="$(rred shipped-boards.sh)"
+  check "a gutted real check with every probe relabelled is refused, though each red label is new" \
+    rrefused "$spec" "$(rmsg "$spec")"
+  check "  and the refusal says a planned red may only add probes — a gutted real check with every probe relabelled" said "may only add probes"
+  rroot
+  awk '/^self_test\(\) \{/ { print; print "  ST_FAILS=1; st_record fail \"the only probe\"; return 0"; skip = 1; next }
+       skip && /^}$/ { skip = 0 } !skip { print }' "$b" > "$RX/.fixture/tmp" && cat "$RX/.fixture/tmp" > "$b"
+  sed -i 's/^finding() { FINDINGS+=("$1"); }$/finding() { :; }/' "$b"
+  rgit add .github/scripts/shipped-boards.sh
+  check "a real self-test emptied of every old probe but one new red one is refused" \
+    rrefused 'shipped-boards.sh::the only probe' "$(rmsg 'shipped-boards.sh::the only probe')"
+  check "  and the refusal says a planned red may only add probes — a real self-test emptied of every old probe but one new red one" said "may only add probes"
+  rroot
+  sed -i 's/^    || finding "copier.yml _exclude does not list/    || true "copier.yml _exclude does not list/; s/probe "check 1 fires when the _exclude row is dropped"/probe "check 1 fires when the exclude row is dropped"/' "$m"
+  rgit add .github/scripts/shipped-memory.sh; spec="$(rred shipped-memory.sh)"
+  check "a real probe renamed beside its neutered check is refused" rrefused "$spec" "$(rmsg "$spec")"
+  check "  and the refusal says a planned red may only add probes — a real probe renamed beside its neutered check" said "may only add probes"
+  rroot
+  sed -i 's/^  FINDINGS=()$/  FINDINGS=( )/' "$b"
+  awk '{print} /^  ARTEFACTS="\$real_art"$/ {print "  probe \"a planned real probe\" \"a finding no check writes\""}' \
+    "$b" > "$RX/.fixture/tmp" && cat "$RX/.fixture/tmp" > "$b"
+  rgit add .github/scripts/shipped-boards.sh
+  check "a real check-logic line modified beside a new red probe is refused" \
+    rrefused 'shipped-boards.sh::a planned real probe' "$(rmsg 'shipped-boards.sh::a planned real probe')"
+  check "  and the refusal says a line was changed or deleted — a real check-logic line modified beside a new red probe" said "changes or deletes a line"
+  rroot
+  awk '{print} /^  ARTEFACTS="\$real_art"$/ {print "  probe \"a planned real probe\" \"a finding no check writes\""; print "  ST_FAILS=$((ST_FAILS + 1))"}' \
+    "$b" > "$RX/.fixture/tmp" && cat "$RX/.fixture/tmp" > "$b"
+  rgit add .github/scripts/shipped-boards.sh
+  check "a real self-test bumping its failure count without recording a probe is refused" \
+    rrefused 'shipped-boards.sh::a planned real probe' "$(rmsg 'shipped-boards.sh::a planned real probe')"
+  check "  and the refusal names the uncounted failure — a real self-test bumping its failure count without recording a probe" said "a failure counted without being recorded"
+  rroot
+}
+
 # The proof's own planned red: a stand-in planned-red.sh in the synthetic fixture whose probes are
 # its `#PROBE` lines, written to PROOF_LEDGER, exiting 1 when any is red.
 proof_standin() {
@@ -510,7 +591,9 @@ else
   probe_ordinary
   probe_proof
   probe_proof_planned
+  probe_only_adds
   probe_real
+  probe_real_only_adds
   probe_wired
 fi
 echo ""
