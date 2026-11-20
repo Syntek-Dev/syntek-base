@@ -17,6 +17,12 @@
 # numbered-folder prefix, is a second pattern read only under project-management/: outside it the
 # same words are the ordinary "add the script's row to CONTEXT.md" of a script or tag registry.
 #
+# The search is a DENY-LIST of the phrasings these routes have been written in — the forms above,
+# the map or register index named before CONTEXT.md, the index "for this register", a word between
+# "no" and "board", an index deferred or postponed — never a parser of meaning: a phrasing outside
+# it still reads 0 hits, and is added here, with a self-test probe, when it is found. A ROOT
+# holding no .md at all is a script error (exit 2), because an empty render also reads 0 hits.
+#
 # A dated HTML comment is skipped only when it marks itself historical: its text OPENS with
 # `doc-references: template-only` or one of SUPERSEDED, UPDATED, CORRECTED, RENAMED or AMENDED,
 # in capitals. A marker word anywhere else in the comment exempts nothing (narrowed 19/11/2026:
@@ -37,7 +43,7 @@
 #             2 = script error
 set -euo pipefail
 
-PATTERN='index row.{0,80}CONTEXT\.md|CONTEXT\.md[^;.]{0,80}index row|CONTEXT\.md`?'"'"'?s (?:map |register )?index|CONTEXT\.md.{0,40}(?:map index|register index|is the index|as the index)|register'"'"'?s index.{0,40}CONTEXT\.md|CONTEXT\.md.{0,40}register'"'"'?s index|row to .{0,40}\d\d-[A-Z-]+/CONTEXT\.md|\bno (?:folder-level |in-tree )?index\b|\bno (?:board|generated index)\b|index (?:is |was )?deferred|register-index work|holds no index|carries no index'
+PATTERN='index row.{0,80}CONTEXT\.md|CONTEXT\.md[^;.]{0,80}index row|CONTEXT\.md`?'"'"'?s (?:map |register )?index|CONTEXT\.md.{0,40}(?:map index|register index|is the index|as the index)|register'"'"'?s index.{0,40}CONTEXT\.md|CONTEXT\.md.{0,40}register'"'"'?s index|row to .{0,40}\d\d-[A-Z-]+/CONTEXT\.md|(?:map|register) index[^;.]{0,40}CONTEXT\.md|index for this (?:map|register)[^;.]{0,40}CONTEXT\.md|\bno (?:folder-level |in-tree )?index\b|\bno (?:[\w-]+ )?board\b|\bno generated index\b|index (?:is |was )?(?:deferred|postponed)|register-index work|holds no index|carries no index'
 PM_PATTERN='row to .{0,40}CONTEXT\.md'
 HIST='^\s*(?:doc-references:\s*template-only|(?:SUPERSEDED|UPDATED|CORRECTED|RENAMED|AMENDED)\b)'
 
@@ -154,6 +160,8 @@ printf 'project-management/ only: %s\n' "$PM_PATTERN"
 status=0
 for root in "$@"; do
   [[ -d "$root" ]] || die "no such directory: $root"
+  [[ -n "$(find "$root" -name .git -prune -o -type f -name '*.md' -print -quit)" ]] \
+    || die "$root holds no .md file — an empty render is never 0 hits"
   hits="$(search "$root")"
   if [[ -n "$hits" ]]; then
     printf '::error::%s — a shipped instruction routes a register'"'"'s index to a CONTEXT.md\n%s\n' "$root" "$hits"
