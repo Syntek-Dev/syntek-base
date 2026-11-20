@@ -70,12 +70,14 @@
 # NEVER WEAKEN A RED PROBE. Whenever the self-test leg runs, each self-tested detector whose
 # staged copy differs from HEAD's has HEAD's version run in the `git archive HEAD` copy too. A
 # probe red there and a pass now may have turned green only through a fix elsewhere: the commit is
-# refused when the probe's own source changed — its segment, the lines after the previous
-# recorded probe line (or after `self_test() {`) up to the line its ledger entry names — or when
+# refused when the probe's own source changed — its segment, every line strictly between the
+# nearest line a probe whose result did not change recorded on before it (or `self_test() {`) and
+# the nearest after it (or the region's closing brace) — or when
 # any probe helper changed (a function other than self_test() whose body calls st_record). A
 # set-up shared by several probes, or a fixture helper that records nothing, sits outside both
-# and is held to the rule only by review. The proof's own probes, and shipped-ai.py's, are not
-# read by this rule.
+# and is held to the rule only by review. A fix commit that also adds a probe right beside a red
+# probe it turns green changes that probe's segment and is refused: commit new probes on their
+# own. The proof's own probes, and shipped-ai.py's, are not read by this rule.
 #
 # There is no other bypass, and the allowance is not one: it changes which probes one self-test
 # may fail, never whether it runs.
@@ -209,17 +211,27 @@ diff_shape() {
     /^\+/ { if (n < lo || n > hi) { print "outside"; exit } n++ }'
 }
 
-# segment SRC LEDGER LABEL — the source of LABEL's probe in SRC: the lines after the previous
-# recorded probe line (or after `self_test() {`) up to and including its own. Prints a sentinel
-# when the ledger gives LABEL no line, so an unlocatable probe never compares equal to a real one.
+# segment SRC LEDGER LABEL STABLE — the source of LABEL's probe in SRC: every line strictly between
+# the nearest line a STABLE probe recorded on before LABEL's first recorded line (or `self_test() {`)
+# and the nearest one after its last (or the region's closing brace). STABLE lists the labels whose
+# result is the same at HEAD and now: only they bound a segment, because a probe whose result
+# changed may record on another line (an inline if/else records its pass and its fail apart), so
+# two such probes side by side read as one span in both versions. Prints a sentinel when the
+# ledger gives LABEL no line, so an unlocatable probe never compares equal to a real one.
 segment() {
   awk -F'\t' -v l="$3" '
-    NR == FNR { if (($1 == "pass" || $1 == "fail") && $3 + 0 > 0) { rec[$3 + 0] = 1; if ($2 == l) want = $3 + 0 } next }
+    FILENAME == stable_file { stable[$0] = 1; next }
+    FILENAME == ledger { if (($1 == "pass" || $1 == "fail") && $3 + 0 > 0) {
+                  n = $3 + 0
+                  if ($2 == l) { if (!mn || n < mn) mn = n; if (n > mx) mx = n } else if ($2 in stable) other[n] = 1 }
+                next }
     !st && /^self_test\(\) \{/ { st = FNR }
+    st && !en && FNR > st && /^}$/ { en = FNR }
     { line[FNR] = $0 }
-    END { if (!want) { print "\001unlocated"; exit }
-          lo = st; for (k in rec) if (k + 0 < want && k + 0 > lo) lo = k + 0
-          for (i = lo + 1; i <= want; i++) print line[i] }' "$2" "$1"
+    END { if (!mn) { print "\001unlocated"; exit }
+          lo = st; hi = en ? en : FNR + 1
+          for (k in other) { k += 0; if (k < mn && k > lo) lo = k; if (k > mx && k < hi) hi = k }
+          for (i = lo + 1; i < hi; i++) print line[i] }' stable_file="$4" ledger="$2" "$4" "$2" "$1"
 }
 
 # helpers SRC DIR — every function in SRC other than self_test() whose body calls st_record (a
@@ -252,10 +264,16 @@ never_weaken() {
   [[ -s "$dir/was-red" ]] || return 0
   { git show "HEAD:$path" > "$dir/head.src" && git show ":$path" > "$dir/now.src"; } || die "could not read $path"
   helpers "$dir/head.src" "$dir/head.fn"; helpers "$dir/now.src" "$dir/now.fn"
+  # The labels whose result is the same at HEAD and now (every result a label recorded, joined).
+  awk -F'\t' '$1 == "pass" || $1 == "fail" { r[$2] = r[$2] $1 } END { for (k in r) print k "\t" r[k] }' "$dir/head" \
+    | LC_ALL=C sort > "$dir/head.res"
+  awk -F'\t' '$1 == "pass" || $1 == "fail" { r[$2] = r[$2] $1 } END { for (k in r) print k "\t" r[k] }' "$now" \
+    | LC_ALL=C sort > "$dir/now.res"
+  LC_ALL=C comm -12 "$dir/head.res" "$dir/now.res" | cut -f1 > "$dir/stable"
   while IFS= read -r l; do
     awk -F'\t' -v l="$l" '$1 == "fail" && $2 == l { f = 1 } $1 == "pass" && $2 == l { p = 1 } END { exit !(p && !f) }' "$now" \
       || continue
-    [[ "$(segment "$dir/head.src" "$dir/head" "$l")" == "$(segment "$dir/now.src" "$now" "$l")" ]] \
+    [[ "$(segment "$dir/head.src" "$dir/head" "$l" "$dir/stable")" == "$(segment "$dir/now.src" "$now" "$l" "$dir/stable")" ]] \
       || refuse "the probe '$l' was red at HEAD and passes now, and its source changed — never weaken a red probe; fix the check it proves"
     for fn in $( (ls "$dir/head.fn"; ls "$dir/now.fn") | LC_ALL=C sort -u); do
       cmp -s "$dir/head.fn/$fn" "$dir/now.fn/$fn" \
@@ -292,7 +310,7 @@ judge_planned() {
   labels_of "$dir/head-ledger" > "$dir/head-labels"
   for l in "${PL_LABELS[@]}"; do
     if grep -qxF -- "$l" "$dir/head-labels"; then
-      refuse "the probe '$l' already exists at HEAD — only a probe new in this commit may be planned red; an old probe gone red is a broken detector"
+      refuse "the probe '$l' already exists at HEAD — only a probe new in this commit may be planned red (a planned red may only add probes); an old probe gone red is a broken detector"
     fi
   done
   # A planned red may only ADD probes: every probe HEAD's version runs runs again and passes, the
@@ -427,6 +445,6 @@ commit_msg() {
 case "${1:-}" in
   --pre-commit) pre_commit ;;
   --commit-msg) [[ -n "${2:-}" ]] || die "--commit-msg needs the message file"; commit_msg "$2" ;;
-  --help|-h) sed -n '2,87p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  --help|-h) sed -n '2,89p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) die "usage: template-integrity.sh --pre-commit | --commit-msg FILE | --help" ;;
 esac

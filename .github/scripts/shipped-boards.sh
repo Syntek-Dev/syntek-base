@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# SC2016: the self-test writes copier.yml task lines holding shell text ($PWD) that copier, not
+# this shell, would expand, so they are single-quoted on purpose.
+# shellcheck disable=SC2016
 #
 # shipped-boards.sh — Verify a generated project receives EMPTY, current PM boards.
 #
@@ -27,9 +30,11 @@
 #                         operation and which carries the README move — moves each of the
 #                         eight seeds into its folder, on a line that begins with the mv and
 #                         ends with its `&&` (an echoed or commented-out move is not one); and
-#                         no other task moves or copies a board seed (mv, cp, install, rsync,
-#                         with flags, `./` or not). One in any other task would run on every
-#                         update and overwrite the project's own board.
+#                         no other task's non-comment line names a board seed at all — by
+#                         any command, quoted or not, behind any prefix (`./`, `$PWD/`), by a
+#                         glob matching it, or by the bare .copier directory holding it. One in
+#                         any other task would run on every update and overwrite the project's
+#                         own board.
 #                      3. Each seed exists.
 #                      4. Each seed is byte-identical to the board `pm-board.sh` renders for
 #                         the seed-only tree — which proves it carries none of syntek-base's
@@ -249,11 +254,20 @@ run_checks() {
     # echoed or commented-out move is not read as one.
     grep -qE "^[[:space:]]*(- command:[[:space:]]*)?mv \.copier/${board//./\\.} project-management/src/$folder/${board//./\\.} &&[[:space:]]*\$" <<< "$tasks" \
       || finding "copier.yml's copy-gated _tasks entry does not move .copier/$board into $folder/ — a generated project gets no board, or an update re-seeds it"
-    # Any command that names the seed as a source — mv or cp (or install, rsync), with flags, and
-    # with or without a ./ before .copier/ — writes over the project's board on every update.
-    grep -vE '^[[:space:]]*#' <<< "$others" \
-      | grep -qE "(^|[^[:alnum:]_.-])(mv|cp|install|rsync)([[:space:]]+-[^[:space:]]+)*[[:space:]]+(\./)?\.copier/${board//./\\.}([[:space:]]|\$)" \
-      && finding "copier.yml moves .copier/$board outside the copy-gated task — that task runs on every update and overwrites the project's own board"
+    # Any reference to the seed outside the gated task — whatever the command (mv, cp, ln, a cat
+    # redirect…), quoted or not, behind any prefix ($PWD/, ./) — or to a glob matching it, or to
+    # the bare .copier directory that holds it, reads it on every update and can overwrite the
+    # project's own board. Comment lines are skipped; any other mention counts.
+    local src hit=false
+    while IFS= read -r src; do
+      src="${src#*.copier}"; src="${src#/}"
+      # shellcheck disable=SC2053  # $src is a glob on purpose: a pattern matching the board names it
+      if [[ -z "$src" || "$board" == $src ]]; then hit=true; break; fi
+    done < <(grep -vE '^[[:space:]]*#' <<< "$others" \
+               | grep -oE "(^|[^[:alnum:]_.-])\.copier(/[^[:space:]\"';&|<>()]*)?" || true)
+    if $hit; then
+      finding "copier.yml moves .copier/$board outside the copy-gated task — it names the seed, a glob matching it or the .copier directory in a task that runs on every update and overwrites the project's own board"
+    fi
 
     # ── 3. Present ────────────────────────────────────────────────────────────
     if [[ ! -f "$seed" ]]; then

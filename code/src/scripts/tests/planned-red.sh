@@ -586,6 +586,27 @@ probe_edges() {
     bash -c '! grep -qx "register-index-routes.sh plain" "$1/.fixture/calls"' _ "$FX"
 }
 
+# A probe that records its pass and its fail on different lines (an inline if/else in self_test())
+# turned green by a fix outside self_test(): accepted, its source untouched.
+probe_real_two_line() {
+  echo "real two-line probe"
+  local b="$RX/.github/scripts/shipped-boards.sh"
+  rroot
+  awk '{print} /^  ARTEFACTS="\$real_art"$/ && !done {
+         print "  ST_PROBES=$((ST_PROBES + 1))"
+         print "  if [[ \"${R4_FIXED:-}\" == yes ]]; then st_record pass \"r4 two-line probe\""
+         print "  else ST_FAILS=$((ST_FAILS + 1)); st_record fail \"r4 two-line probe\"; fi"; done = 1 }' \
+    "$b" > "$RX/.fixture/tmp" && cat "$RX/.fixture/tmp" > "$b"
+  rgit add .github/scripts/shipped-boards.sh
+  check "a real planned red whose probe records pass and fail on different lines is committed" \
+    rattempt 'shipped-boards.sh::r4 two-line probe' "$(rmsg 'shipped-boards.sh::r4 two-line probe')"
+  awk '{print} /^set -euo pipefail$/ && !done { print "R4_FIXED=yes"; done = 1 }' "$b" > "$RX/.fixture/tmp" \
+    && cat "$RX/.fixture/tmp" > "$b"
+  rgit add .github/scripts/shipped-boards.sh
+  check "a fix outside self_test() turning that probe green, its source untouched, is accepted" rattempt "" "fix: the check"
+  rroot
+}
+
 # The proof's own planned red: a stand-in planned-red.sh in the synthetic fixture whose probes are
 # its `#PROBE` lines, written to PROOF_LEDGER, exiting 1 when any is red.
 proof_standin() {
@@ -676,6 +697,7 @@ else
   probe_real
   probe_real_only_adds
   probe_real_never_weaken
+  probe_real_two_line
   probe_wired
 fi
 echo ""
