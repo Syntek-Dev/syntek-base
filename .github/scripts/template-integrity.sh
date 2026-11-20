@@ -25,10 +25,17 @@
 #
 #   The named detector's --self-test runs with a ledger and must exit 1, finish (its end line
 #   written — a self-test that stops early is a crash, and the detectors' crash guard exits 2),
-#   and fail EXACTLY the named probes: every other probe must pass, so an old probe turned red —
-#   a weakened detector — is refused. Each named probe must also be NEW: absent from the ledger of
-#   HEAD's version of the detector, run in a `git archive HEAD` copy. Every other self-test, and
-#   every plain check including the named detector's own, still runs and must pass.
+#   and fail EXACTLY the named probes, each NEW: absent from the ledger of HEAD's version of the
+#   detector, run in a `git archive HEAD` copy. And a planned red may only ADD probes:
+#     a. every probe label in HEAD's ledger appears in the staged ledger as a pass — none renamed,
+#        removed or turned red;
+#     b. the staged detector's diff against HEAD changes and deletes no line, and every line it
+#        adds sits inside its self_test() region (from `self_test() {` to the first `}` alone on
+#        a line), so no check a plain run executes can change in a planned-red commit;
+#     c. the end line's failure count equals the fail lines recorded, so a failure counted
+#        without being recorded is refused.
+#   Every other self-test, and every plain check including the named detector's own, still runs
+#   and must pass.
 #
 #   On acceptance --pre-commit writes a one-shot token under `git rev-parse --git-path`, holding
 #   the opt-in and the staged tree (`git write-tree`). --commit-msg requires exactly one
@@ -42,12 +49,10 @@
 #
 #   THE PROOF ITSELF. Staging the proof runs it, so a red probe committed ahead of its fix in the
 #   proof would be refused like any other. PLANNED_RED=planned-red.sh::<probe label>… names the
-#   proof's new red probes instead, judged from its own ledger (PROOF_LEDGER) exactly as a
-#   detector's — exit 1, a finished ledger, exactly the named probes red and each new against
-#   HEAD's proof — and three things more: every probe HEAD's proof runs runs again and passes,
-#   the end line's failure count is the fail lines recorded, and the staged proof's diff against
-#   HEAD adds lines and changes or deletes none. The allowance's own files (this script,
-#   self-test-ledger.sh, lefthook.yml) may not be staged with it.
+#   proof's new red probes instead, judged from its own ledger (PROOF_LEDGER) by the same rules,
+#   with (b) read over the whole file: the proof's diff adds lines and changes or deletes none.
+#   The allowance's own files (this script, self-test-ledger.sh, lefthook.yml) may not be staged
+#   with it.
 #
 # There is no other bypass, and the allowance is not one: it changes which probes one self-test
 # may fail, never whether it runs.
@@ -154,6 +159,27 @@ head_ledger() {
 
 labels_of() { awk -F'\t' '$1 == "pass" || $1 == "fail" { print $2 }' "$1"; }
 
+# diff_shape NAME — how the staged script differs from HEAD: `changed` when a line is changed or
+# deleted, `outside` when a line is added outside the detector's self_test() region (from its
+# `self_test() {` line to the first `}` alone on a line after it, in the staged copy), `noregion`
+# when a detector has no such region, nothing when every change is an added line inside it. The
+# proof has no region: any added line is inside.
+diff_shape() {
+  local n="$1" path lo=1 hi=999999999 bounds
+  path="$(target_path "$n")"
+  if [[ "$n" != "$PROOF_NAME" ]]; then
+    bounds="$(git show ":$path" | awk '!s && /^self_test\(\) \{/ { s = NR; next } s && !e && /^}$/ { e = NR } END { print s + 0, e + 0 }')"
+    lo="${bounds% *}"; hi="${bounds#* }"
+    if [[ "$lo" -eq 0 || "$hi" -eq 0 ]]; then echo noregion; return 0; fi
+    lo=$((lo + 1)); hi=$((hi - 1))
+  fi
+  git diff --cached -U0 HEAD -- "$path" | awk -v lo="$lo" -v hi="$hi" '
+    /^@@/ { h = 1; match($0, /\+[0-9]+/); n = substr($0, RSTART + 1, RLENGTH - 1) + 0; next }
+    !h || /^\\/ { next }
+    /^-/ { print "changed"; exit }
+    /^\+/ { if (n < lo || n > hi) { print "outside"; exit } n++ }'
+}
+
 # judge_planned NAME — the named script's probes, judged against the opt-in.
 judge_planned() {
   local d="$1" dir ledger rc=0 fails want l n_fail n_end what="self-test"
@@ -185,22 +211,27 @@ judge_planned() {
       refuse "the probe '$l' already exists at HEAD — only a probe new in this commit may be planned red; an old probe gone red is a broken detector"
     fi
   done
-  if [[ "$d" == "$PROOF_NAME" ]]; then
-    # The proof may only gain probes: every probe it ran at HEAD runs again and passes, its end
-    # count is the fails it recorded, and its diff against HEAD adds lines and changes none.
-    n_fail="$(awk -F'\t' '$1 == "fail"' "$ledger" | wc -l | tr -d ' ')"
-    n_end="$(tail -n 1 "$ledger" | cut -f2)"
-    [[ "$n_end" == "$n_fail" ]] \
-      || refuse "$d's ledger ends with $n_end failure(s) but records $n_fail fail line(s) — a failure counted without being recorded is not a planned red"
-    while IFS= read -r l; do
-      [[ -n "$l" ]] || continue
-      awk -F'\t' -v l="$l" '$1 == "pass" && $2 == l { found = 1 } END { exit !found }' "$ledger" \
-        || refuse "the probe '$l' runs at HEAD but is not a pass in the staged $d — a planned red may only add probes, never rename, remove or break one"
-    done < "$dir/head-labels"
-    if git diff --cached -U0 HEAD -- "$PROOF" | grep -qE '^-([^-]|$)'; then
-      refuse "the staged $d changes or deletes lines against HEAD — a planned red of the proof adds probes and changes nothing else"
-    fi
-  fi
+  # A planned red may only ADD probes: every probe HEAD's version runs runs again and passes, the
+  # end line's failure count is the fail lines recorded, and the diff against HEAD adds lines and
+  # changes or deletes none — for a detector, every added line inside its self_test() region, so
+  # no check a plain run executes can change in a planned-red commit.
+  n_fail="$(awk -F'\t' '$1 == "fail"' "$ledger" | wc -l | tr -d ' ')"
+  n_end="$(tail -n 1 "$ledger" | cut -f2)"
+  [[ "$n_end" == "$n_fail" ]] \
+    || refuse "$d's ledger ends with $n_end failure(s) but records $n_fail fail line(s) — a failure counted without being recorded is not a planned red"
+  while IFS= read -r l; do
+    [[ -n "$l" ]] || continue
+    awk -F'\t' -v l="$l" '$1 == "pass" && $2 == l { found = 1 } END { exit !found }' "$ledger" \
+      || refuse "the probe '$l' runs at HEAD but is not a pass in the staged $d — a planned red may only add probes, never rename, remove or break one"
+  done < "$dir/head-labels"
+  case "$(diff_shape "$d")" in
+    changed) if [[ "$d" == "$PROOF_NAME" ]]; then
+               refuse "the staged $d changes or deletes lines against HEAD — a planned red of the proof adds probes and changes nothing else"
+             fi
+             refuse "the staged $d changes or deletes a line against HEAD — a planned red only adds probes, inside self_test()" ;;
+    outside) refuse "the staged $d adds a line outside self_test() — a planned red only adds probes there, so no check can change with it" ;;
+    noregion) refuse "the staged $d has no self_test() { … } region to hold a planned red's probes" ;;
+  esac
   printf '\033[33m▸ planned red — %s: %s (new, and the only red probes), as PLANNED_RED declares\033[0m\n' \
     "$d" "$(paste -sd'|' <<< "$want" | sed 's/|/, /g')"
 }
@@ -299,6 +330,6 @@ commit_msg() {
 case "${1:-}" in
   --pre-commit) pre_commit ;;
   --commit-msg) [[ -n "${2:-}" ]] || die "--commit-msg needs the message file"; commit_msg "$2" ;;
-  --help|-h) sed -n '2,59p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  --help|-h) sed -n '2,64p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) die "usage: template-integrity.sh --pre-commit | --commit-msg FILE | --help" ;;
 esac
