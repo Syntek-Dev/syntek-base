@@ -8,10 +8,13 @@
 # detector runs --self-test:
 #
 #   THE LEDGER. With SELF_TEST_LEDGER=<file> set, each probe appends one line,
-#   `pass<TAB><label>` or `fail<TAB><label>`, and a self-test that reaches its end appends
-#   `end<TAB><failed count>`. A label is the probe's stable name: never a path or a count that
-#   moves with the tree, because the allowance compares labels against HEAD's version to tell
-#   a NEW probe from an old one turned red. No ledger file is written when the variable is unset.
+#   `pass<TAB><label><TAB><line>` or `fail<TAB><label><TAB><line>`, and a self-test that reaches
+#   its end appends `end<TAB><failed count>`. A label is the probe's stable name: never a path or a
+#   count that moves with the tree, because the allowance compares labels against HEAD's version
+#   to tell a NEW probe from an old one turned red. <line> is the line inside self_test() whose
+#   call recorded it (0 outside self_test()): the hook reads a probe's source from it, to refuse
+#   a red probe that turns green by being edited. No ledger file is written when the variable is
+#   unset.
 #
 #   THE CRASH GUARD. st_arm traps ERR (with errtrace, so functions inherit it) and EXIT. A command
 #   that would stop the script under `set -e`, an unbound variable, or any exit before st_finish
@@ -31,8 +34,12 @@ ST_ENDED=false
 ST_ON_EXIT=""
 
 st_record() { # pass|fail LABEL
-  local label="${2//[$'\t\n']/ }"
-  if [[ -n "$ST_LEDGER" ]]; then printf '%s\t%s\n' "$1" "$label" >> "$ST_LEDGER"; fi
+  local label="${2//[$'\t\n']/ }" i line=0
+  # The probe's own line: the line inside self_test() whose call led here, however deep.
+  for ((i = 1; i < ${#FUNCNAME[@]}; i++)); do
+    if [[ "${FUNCNAME[$i]}" == self_test ]]; then line="${BASH_LINENO[$((i - 1))]}"; break; fi
+  done
+  if [[ -n "$ST_LEDGER" ]]; then printf '%s\t%s\t%s\n' "$1" "$label" "$line" >> "$ST_LEDGER"; fi
   return 0
 }
 

@@ -521,6 +521,7 @@ probe_never_weaken() {
   check "a fix commit turning a red probe green by editing that probe is refused" refused "" "fix: x"
   check "  and the refusal says the red probe's source changed — the synthetic probe" said "was red at HEAD and passes now"
   fgit checkout -q -- .
+  fgit reset -q --hard HEAD   # the index too: checkout restores only the work tree
   printf 'new probe\n' > "$FX/.github/scripts/fixed-probes"; echo "# the check, fixed" >> "$f"
   fgit add .github/scripts/fixed-probes .github/scripts/shipped-boards.sh
   check "a fix commit turning a red probe green without touching it is accepted" attempt "" "fix: the check"
@@ -542,11 +543,13 @@ probe_real_never_weaken() {
   check "a real fix turning the red probe green by changing its set-up line is refused" rrefused "" "fix: x"
   check "  and the refusal says its source changed — the real set-up line" said "its source changed"
   rgit checkout -q -- .
+  rgit reset -q --hard HEAD   # the index too: checkout restores only the work tree
   sed -i 's/^  ARTEFACTS="\$tmp\/r4-art"; probe "r4 segment probe" .*$/  ARTEFACTS="$tmp\/r4-art"; ST_PROBES=$((ST_PROBES + 1)); st_record pass "r4 segment probe"/' "$b"
   rgit add .github/scripts/shipped-boards.sh
   check "a real fix replacing the red probe's call with a recorded pass is refused" rrefused "" "fix: x"
   check "  and the refusal says its source changed — the real probe call" said "its source changed"
   rgit checkout -q -- .
+  rgit reset -q --hard HEAD   # the index too: checkout restores only the work tree
   sed -i 's/^  if \[\[ \${#FINDINGS\[@\]} -eq 1 \]\] && \[\[ "\${FINDINGS\[0\]}" == \*"\$2"\* \]\]; then$/  if true; then/' "$b"
   rgit add .github/scripts/shipped-boards.sh
   check "a real fix turning the red probe green by weakening probe() is refused" rrefused "" "fix: x"

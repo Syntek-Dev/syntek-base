@@ -54,6 +54,16 @@
 #   The allowance's own files (this script, self-test-ledger.sh, lefthook.yml) may not be staged
 #   with it.
 #
+# NEVER WEAKEN A RED PROBE. Whenever the self-test leg runs, each self-tested detector whose
+# staged copy differs from HEAD's has HEAD's version run in the `git archive HEAD` copy too. A
+# probe red there and a pass now may have turned green only through a fix elsewhere: the commit is
+# refused when the probe's own source changed — its segment, the lines after the previous
+# recorded probe line (or after `self_test() {`) up to the line its ledger entry names — or when
+# any probe helper changed (a function other than self_test() whose body calls st_record). A
+# set-up shared by several probes, or a fixture helper that records nothing, sits outside both
+# and is held to the rule only by review. The proof's own probes, and shipped-ai.py's, are not
+# read by this rule.
+#
 # There is no other bypass, and the allowance is not one: it changes which probes one self-test
 # may fail, never whether it runs.
 #
@@ -74,6 +84,7 @@ PROOF="code/src/scripts/tests/planned-red.sh"
 PROOF_NAME="planned-red.sh"
 PL_DET=""
 PL_LABELS=()
+JUDGED_LEDGER=""
 SCRATCH=()
 
 die() { printf 'template-integrity: %s\n' "$*" >&2; exit 2; }
@@ -180,10 +191,65 @@ diff_shape() {
     /^\+/ { if (n < lo || n > hi) { print "outside"; exit } n++ }'
 }
 
+# segment SRC LEDGER LABEL — the source of LABEL's probe in SRC: the lines after the previous
+# recorded probe line (or after `self_test() {`) up to and including its own. Prints a sentinel
+# when the ledger gives LABEL no line, so an unlocatable probe never compares equal to a real one.
+segment() {
+  awk -F'\t' -v l="$3" '
+    NR == FNR { if (($1 == "pass" || $1 == "fail") && $3 + 0 > 0) { rec[$3 + 0] = 1; if ($2 == l) want = $3 + 0 } next }
+    !st && /^self_test\(\) \{/ { st = FNR }
+    { line[FNR] = $0 }
+    END { if (!want) { print "\001unlocated"; exit }
+          lo = st; for (k in rec) if (k + 0 < want && k + 0 > lo) lo = k + 0
+          for (i = lo + 1; i <= want; i++) print line[i] }' "$2" "$1"
+}
+
+# helpers SRC DIR — every function in SRC other than self_test() whose body calls st_record (a
+# probe helper), one file per function in DIR, named for it.
+helpers() {
+  mkdir -p "$2"
+  awk -v dir="$2" '
+    !inf && /^[A-Za-z_][A-Za-z0-9_]*\(\)[[:space:]]*\{/ {
+      name = $0; sub(/\(\).*/, "", name); buf = $0 "\n"; inf = 1
+      if ($0 ~ /\}[[:space:]]*(#.*)?$/) { inf = 0; if (name != "self_test" && buf ~ /st_record/) { printf "%s", buf > (dir "/" name); close(dir "/" name) } }
+      next }
+    inf { buf = buf $0 "\n"
+          if ($0 ~ /^}$/) { inf = 0; if (name != "self_test" && buf ~ /st_record/) { printf "%s", buf > (dir "/" name); close(dir "/" name) } } }' "$1"
+}
+
+# never_weaken NAME LEDGER — a probe red at HEAD that passes in LEDGER (the staged detector's run)
+# may have turned green only through a fix elsewhere: refused when its own source (segment) or
+# any probe helper changed against HEAD. Only a detector whose staged copy differs from HEAD's
+# is read; one HEAD does not hold has no red probe to weaken.
+never_weaken() {
+  local d="$1" now="$2" dir rc=0 l fn path
+  path="$(target_path "$d")"
+  [[ "$(git rev-parse -q --verify "HEAD:$path" 2>/dev/null || true)" \
+     != "$(git rev-parse -q --verify ":$path" 2>/dev/null || true)" ]] || return 0
+  scratch dir
+  head_ledger "$d" "$dir/head" || rc=$?
+  [[ $rc -ne 3 ]] || return 0
+  [[ $rc -eq 0 ]] || refuse "HEAD's $d records no finished ledger, so a red probe turning green cannot be judged"
+  awk -F'\t' '$1 == "fail" { print $2 }' "$dir/head" | LC_ALL=C sort -u > "$dir/was-red"
+  [[ -s "$dir/was-red" ]] || return 0
+  { git show "HEAD:$path" > "$dir/head.src" && git show ":$path" > "$dir/now.src"; } || die "could not read $path"
+  helpers "$dir/head.src" "$dir/head.fn"; helpers "$dir/now.src" "$dir/now.fn"
+  while IFS= read -r l; do
+    awk -F'\t' -v l="$l" '$1 == "fail" && $2 == l { f = 1 } $1 == "pass" && $2 == l { p = 1 } END { exit !(p && !f) }' "$now" \
+      || continue
+    [[ "$(segment "$dir/head.src" "$dir/head" "$l")" == "$(segment "$dir/now.src" "$now" "$l")" ]] \
+      || refuse "the probe '$l' was red at HEAD and passes now, and its source changed — never weaken a red probe; fix the check it proves"
+    for fn in $( (ls "$dir/head.fn"; ls "$dir/now.fn") | LC_ALL=C sort -u); do
+      cmp -s "$dir/head.fn/$fn" "$dir/now.fn/$fn" \
+        || refuse "the probe '$l' was red at HEAD and passes now, and the probe helper $fn() changed — never weaken a red probe; fix the check it proves"
+    done
+  done < "$dir/was-red"
+}
+
 # judge_planned NAME — the named script's probes, judged against the opt-in.
 judge_planned() {
   local d="$1" dir ledger rc=0 fails want l n_fail n_end what="self-test"
-  scratch dir; ledger="$dir/ledger"
+  scratch dir; ledger="$dir/ledger"; JUDGED_LEDGER="$ledger"
   [[ "$d" != "$PROOF_NAME" ]] || what="proof"
   if [[ "$d" == "$PROOF_NAME" ]]; then
     run_probes "$d" "$ledger" . || rc=$?
@@ -244,7 +310,7 @@ head_has_trailer() {
 pre_commit() {
   cd "$PROJECT_ROOT"
   [[ -f copier.yml ]] || exit 0
-  local staged d rc token
+  local staged d rc token ldir
   token="$(git rev-parse --git-path "$TOKEN_NAME")" || die "could not resolve the git directory"
   rm -f "$token"
   staged="$(git diff --cached --name-only)" || die "could not read the staged set"
@@ -279,11 +345,14 @@ pre_commit() {
     for d in "${DETECTORS[@]}"; do
       if [[ -n "$PLANNED" && "$d" == "$PL_DET" ]]; then
         judge_planned "$d"
+        never_weaken "$d" "$JUDGED_LEDGER"
         continue
       fi
       rc=0
-      bash ".github/scripts/$d" --self-test || rc=$?
+      scratch ldir
+      env -u PROOF_LEDGER SELF_TEST_LEDGER="$ldir/ledger" bash ".github/scripts/$d" --self-test || rc=$?
       [[ $rc -eq 0 ]] || refuse "$d --self-test exited $rc"
+      never_weaken "$d" "$ldir/ledger"
     done
   fi
   for d in "${DETECTORS[@]}"; do
@@ -330,6 +399,6 @@ commit_msg() {
 case "${1:-}" in
   --pre-commit) pre_commit ;;
   --commit-msg) [[ -n "${2:-}" ]] || die "--commit-msg needs the message file"; commit_msg "$2" ;;
-  --help|-h) sed -n '2,64p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  --help|-h) sed -n '2,74p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) die "usage: template-integrity.sh --pre-commit | --commit-msg FILE | --help" ;;
 esac
