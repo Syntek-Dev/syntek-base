@@ -626,6 +626,26 @@ self_test() {
     log "  ✓ check 2 reads a 500-separator word inside 2 s"
     st_record pass "check 2 reads a 500-separator word inside 2 s"
   fi
+  # 2o. Round 9: brace spans are capped, so the worst case is bounded — 300 × `.{a,b}=` (45 s
+  #     at round 8) is read, whole check, inside 2 s, and the cap is itself the one finding.
+  long=""; t=0
+  for ((k = 0; k < 300; k++)); do long+=".{a,b}="; done
+  printf '  - command: echo %s\n' "$long" > "$tmp/line"
+  awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/braces.yml"
+  ( COPIER="$tmp/braces.yml"; run_checks; printf '%s\n' "${FINDINGS[@]}" > "$tmp/braces.out" ) & pid=$!
+  while kill -0 "$pid" 2>/dev/null && [[ $t -lt 20 ]]; do sleep 0.1; t=$((t + 1)); done
+  ST_PROBES=$((ST_PROBES + 1))
+  if kill -0 "$pid" 2>/dev/null; then
+    kill "$pid" 2>/dev/null || true; wait "$pid" 2>/dev/null || true
+    ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 reads 300 brace spans inside 2 s and reports the cap"
+    printf '\033[31m  ✗ 300 brace spans were still being read after 2 s\033[0m\n'
+  elif wait "$pid" && [[ "$(wc -l < "$tmp/braces.out")" -eq 1 ]] && grep -q 'brace expansions' "$tmp/braces.out"; then
+    log "  ✓ check 2 reads 300 brace spans inside 2 s and reports the cap"
+    st_record pass "check 2 reads 300 brace spans inside 2 s and reports the cap"
+  else
+    ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 reads 300 brace spans inside 2 s and reports the cap"
+    printf '\033[31m  ✗ 300 brace spans: %s\033[0m\n' "$(tr '\n' ';' < "$tmp/braces.out")"
+  fi
   # 2l. Round 9: copier.yml is read as one document of plain top-level keys, and anything else at
   #     column 0 is refused — a quoted or escaped key, a `?` key, a document marker, a tag, a merge
   #     key — since copier (PyYAML, its `!include` and its multi-document merge) may read a
