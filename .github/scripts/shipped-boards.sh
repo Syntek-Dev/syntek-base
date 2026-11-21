@@ -561,6 +561,26 @@ self_test() {
     ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 reads 300 brace spans inside 2 s and reports the cap"
     printf '\033[31m  ✗ 300 brace spans: %s\033[0m\n' "$(tr '\n' ';' < "$tmp/braces.out")"
   fi
+  # 2p. Round 10: word length is capped too — a brace-free 16 KB word (`.=` × 8000, 172 s at round
+  #     9) is read, whole check, inside 2 s, and the length cap is itself the one finding.
+  long=""; t=0
+  for ((k = 0; k < 8000; k++)); do long+=".="; done
+  printf '  - command: echo %s\n' "$long" > "$tmp/line"
+  awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/long.yml"
+  ( COPIER="$tmp/long.yml"; run_checks; printf '%s\n' "${FINDINGS[@]}" > "$tmp/long.out" ) & pid=$!
+  while kill -0 "$pid" 2>/dev/null && [[ $t -lt 20 ]]; do sleep 0.1; t=$((t + 1)); done
+  ST_PROBES=$((ST_PROBES + 1))
+  if kill -0 "$pid" 2>/dev/null; then
+    kill "$pid" 2>/dev/null || true; wait "$pid" 2>/dev/null || true
+    ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 reads a 16 KB word inside 2 s and reports the length cap"
+    printf '\033[31m  ✗ a 16 KB word was still being read after 2 s\033[0m\n'
+  elif wait "$pid" && [[ "$(wc -l < "$tmp/long.out")" -eq 1 ]] && grep -q 'characters' "$tmp/long.out"; then
+    log "  ✓ check 2 reads a 16 KB word inside 2 s and reports the length cap"
+    st_record pass "check 2 reads a 16 KB word inside 2 s and reports the length cap"
+  else
+    ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 reads a 16 KB word inside 2 s and reports the length cap"
+    printf '\033[31m  ✗ a 16 KB word: %s\033[0m\n' "$(tr '\n' ';' < "$tmp/long.out")"
+  fi
   # 2l. Round 9: copier.yml is read as one document of plain top-level keys, and anything else at
   #     column 0 is refused — a quoted or escaped key, a `?` key, a document marker, a tag, a merge
   #     key — since copier (PyYAML, its `!include` and its multi-document merge) may read a
