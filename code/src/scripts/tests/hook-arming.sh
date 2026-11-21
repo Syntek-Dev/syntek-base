@@ -31,8 +31,9 @@
 # graph's block or an arbitrary `|| true` — swallows lefthook's exit status, so it is unarmed. A
 # hook without the executable bit is unarmed, and a SYMLINKED hook is foreign, never armed,
 # whatever it points at (SEC-02). The hooks directory's REAL path must lie inside the
-# repository's git common directory (settled 17/11/2026, round 5). Beside it, `commit-msg` must be
-# lefthook's too, in the same layout ending `call_lefthook run "commit-msg" "$@"` (19/11/2026).
+# repository's git common directory (settled 17/11/2026, round 5). Beside it, `pre-push` must be
+# lefthook's too, in the same layout ending `call_lefthook run "pre-push" "$@"` (21/11/2026; it
+# was `commit-msg` from 19/11/2026 until that leg was removed with the planned-red allowance).
 #
 # SAFETY: nothing from the source checkout is ever symlinked, bound or shared into a fixture —
 # above all not its node_modules. Every fixture gets its own install; the PATH filter skips any
@@ -328,14 +329,14 @@ is_armed() {
   [[ -f "$p" && ! -L "$p" && -r "$p" && -x "$p" ]] && lefthook_layout "$p" && ! grep -qF "$GRAPH_MARKER" "$p"
 }
 unarmed() { ! is_armed "$1"; }
-# The commit-msg hook lefthook.yml's commit-msg leg needs: the same layout, its own last line.
-msg_hook() { local p; p="$(eff_hook "$1")" || return 1; printf '%s\n' "${p%/pre-commit}/commit-msg"; }
-rearmed_msg() { [[ $1 == 0 ]] && msg_armed "$2"; }
-msg_armed() {
-  local p code; p="$(msg_hook "$1")" || return 1
+# The pre-push hook lefthook.yml's pre-push leg needs: the same layout, its own last line.
+push_hook() { local p; p="$(eff_hook "$1")" || return 1; printf '%s\n' "${p%/pre-commit}/pre-push"; }
+rearmed_push() { [[ $1 == 0 ]] && push_armed "$2"; }
+push_armed() {
+  local p code; p="$(push_hook "$1")" || return 1
   [[ -f "$p" && ! -L "$p" && -r "$p" && -x "$p" ]] || return 1
   [[ "$(head -n 1 "$p")" == '#!/bin/sh' ]] || return 1
-  [[ "$(grep -v '^[[:space:]]*$' "$p" | tail -n 1)" == 'call_lefthook run "commit-msg" "$@"' ]] || return 1
+  [[ "$(grep -v '^[[:space:]]*$' "$p" | tail -n 1)" == 'call_lefthook run "pre-push" "$@"' ]] || return 1
   code="$(grep -vE '^[[:space:]]*#' "$p")"
   grep -qF 'LEFTHOOK' <<< "$code" && grep -qE '^[[:space:]]*call_lefthook\(\)' <<< "$code"
 }
@@ -559,17 +560,17 @@ fx_A() {
   check HP-04 "the hook is still lefthook's after a re-run" "unarmed" is_armed "$d"
   check EC-06 "the hook is byte-identical across runs" "it changed" cmp -s "$p" "$e/hook.before"
 
-  # The commit-msg leg is armed by the same step and counted by the same predicate (19/11/2026):
-  # a checkout armed before lefthook.yml grew that leg has no commit-msg hook, and --notice must
-  # say so rather than report it armed.
-  check R3-01 "the effective commit-msg hook is lefthook's too" "commit-msg unarmed after the step" msg_armed "$d"
-  rm -f "$(msg_hook "$d")"
-  notice "$d" "$e/no-commit-msg"
-  check R3-01 "with the commit-msg hook missing, --notice names bash install.sh" "it was silent" \
-    notice_valid "$e/no-commit-msg"
-  run_ut "$d" "$e/rearm-commit-msg" --
-  check R3-01 "the step re-arms a missing commit-msg hook" "exit $RC or commit-msg still unarmed" \
-    rearmed_msg "$RC" "$d"
+  # The pre-push leg is armed by the same step and counted by the same predicate (21/11/2026;
+  # the commit-msg leg before it, 19/11/2026): a checkout armed before lefthook.yml grew that leg
+  # has no pre-push hook, and --notice must say so rather than report it armed.
+  check R3-01 "the effective pre-push hook is lefthook's too" "pre-push unarmed after the step" push_armed "$d"
+  rm -f "$(push_hook "$d")"
+  notice "$d" "$e/no-pre-push"
+  check R3-01 "with the pre-push hook missing, --notice names bash install.sh" "it was silent" \
+    notice_valid "$e/no-pre-push"
+  run_ut "$d" "$e/rearm-pre-push" --
+  check R3-01 "the step re-arms a missing pre-push hook" "exit $RC or pre-push still unarmed" \
+    rearmed_push "$RC" "$d"
 
   check HP-03 "a throwaway commit runs the lefthook pre-commit legs" "no lefthook summary in the commit output" \
     commit_runs_legs "$d" "$e/main"
