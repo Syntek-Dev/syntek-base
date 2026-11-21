@@ -28,7 +28,9 @@
 #              present that exits 127 refuses; no ref lines at all is said, never silent; (round 7)
 #              only a tip whose history never held the script is skipped — one that deletes it is
 #              refused, "deleted at <sha>"; (round 8) so is an orphan, a commit-tree squash or a
-#              replace-graft of the deleting tree, and a shallow clone is refused outright.
+#              replace-graft of the deleting tree, and a shallow clone is refused outright;
+#              (round 9) ancestry is origin/main's alone — a grafts file or a crafted local HEAD
+#              forges nothing, and with no origin/main a missing script is red, named so.
 #   hostile    a local attribute that drops a file from the copy, a caller's `-c`, or a repository
 #              configuration that reshapes git's output, never makes a red commit read green.
 #   replay     `template-integrity.sh --self-tests <commit>` is the reviewer's replay of one
@@ -56,7 +58,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,49p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,51p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'template-hooks.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
