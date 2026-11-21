@@ -663,6 +663,16 @@ self_test() {
   COPIER="$tmp/echoed.yml"; probe "check 2 fires when the move is only echoed" "does not move .copier/SPRINTS-BOARD.md"
   sed 's#^      mv \.copier/BUGS-BOARD\.md #      \# mv .copier/BUGS-BOARD.md #' "$real_copier" > "$tmp/commented.yml"
   COPIER="$tmp/commented.yml"; probe "check 2 fires when the move is commented out" "does not move .copier/BUGS-BOARD.md"
+  # 2n. Round 9: the wired test reads the DECODED folded command, split at `&&`. A line of its own
+  #     folds into the next step — `echo` turns the move into an echo, `true #` comments it and
+  #     every later step out — so a raw line that still begins with the mv is not a move.
+  for ung in '      echo|^      mv \.copier/STORIES-BOARD\.md |does not move .copier/STORIES-BOARD.md|an echo line folded into the move' \
+             '      true #|^      mv \.copier/STORIES-BOARD\.md |does not move .copier/STORIES-BOARD.md|a true # line folded into the move' \
+             '      true #|^      mv \.copier/README\.md |not a seed move or the closing rmdir|a true # line folded into the first step'; do
+    IFS='|' read -r lf lb lname _ <<< "$ung"
+    awk -v l="$lf" -v re="$lb" '$0 ~ re {print l} {print}' "$real_copier" > "$tmp/folded.yml"
+    COPIER="$tmp/folded.yml"; probe "check 2 fires on ${ung##*|}" "$lname"
+  done
   COPIER="$real_copier"
 
   # 3 and 4 work on a fresh copy of the seed directory per probe.
