@@ -49,6 +49,8 @@
 #              and (round 5) on a deletion, rename or move out made inside a merge commit, a
 #              mode or type change (a symlink swapped in, named by the archived path), a
 #              caller's hostile git configuration, and a one-commit history (named as such).
+#              (round 5) --write --staged renders the same boards under a caller's autocrlf or a
+#              smudge filter an attribute names.
 #   formatters the real .prettierignore, .markdownlint-cli2.jsonc and lefthook.yml skip every
 #              boarded archive/'s records, so an archive move that rewrites a table cell trips no
 #              formatter — and still read archive/'s own CONTEXT.md and CLAUDE.md.
@@ -71,7 +73,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,63p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,65p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'pm-boards.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -296,6 +298,17 @@ probe_staged() {
   check "--boards-for names DECISIONS-BOARD.md for an ADR status edit" \
     grep -qx "project-management/src/15-DECISIONS/DECISIONS-BOARD.md" <<< "$out"
   fgit checkout -q -- .
+  # Round 5: --write --staged renders from an index checkout, so a caller's git configuration must
+  # not reach the records it renders — a `-c core.autocrlf=true`, or a smudge filter an attribute
+  # names, rewrote every board (CRLF, or the filter's edit) on a commit that changed no status.
+  printf '\n' >> "$FX/$adr"; fgit add "$adr"
+  GIT_CONFIG_PARAMETERS="'core.autocrlf'='true'" bash "$SRC/00-ASSETS/scripts/pm-board.sh" --write --staged --root "$FX" --quiet >/dev/null 2>&1 || true
+  check "--write --staged under a caller's core.autocrlf leaves every board as it was" fgit diff --quiet
+  fgit checkout -q -- .
+  printf '*.md filter=probe\n' > "$FX/.git/info/attributes"
+  GIT_CONFIG_PARAMETERS="'filter.probe.smudge'='sed s/decision/HOSTILE/'" bash "$SRC/00-ASSETS/scripts/pm-board.sh" --write --staged --root "$FX" --quiet >/dev/null 2>&1 || true
+  check "--write --staged under a smudge filter leaves every board as it was" fgit diff --quiet
+  rm -f "$FX/.git/info/attributes"; fgit checkout -q -- .; fgit reset -q -- "$adr"; fgit checkout -q -- "$adr"
 }
 
 probe_strays() {
