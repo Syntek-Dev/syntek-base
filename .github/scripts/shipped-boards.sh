@@ -600,6 +600,28 @@ self_test() {
     log "  ✓ check 2 reads a 500-separator word inside 2 s"
     st_record pass "check 2 reads a 500-separator word inside 2 s"
   fi
+  # 2l. Round 9: copier.yml is read as one document of plain top-level keys, and anything else at
+  #     column 0 is refused — a quoted or escaped key, a `?` key, a document marker, a tag, a merge
+  #     key — since copier (PyYAML, its `!include` and its multi-document merge) may read a
+  #     `_tasks`, `_migrations` or `_exclude` there that checks 1 and 2 never see. One finding each.
+  local shape tail
+  for shape in '"_tasks":|  - command: mv .copier/STORIES-BOARD.md x|a quoted _tasks key' \
+               '"_migrations":|  - command: mv .copier/STORIES-BOARD.md x|a quoted _migrations key' \
+               '"\x5fmigrations":|  - command: mv .copier/STORIES-BOARD.md x|an escaped _migrations key' \
+               '? _migrations|:   [mv .copier/STORIES-BOARD.md x]|an explicit ? key' \
+               '---|!include extra.yml|a document marker and an !include' \
+               '...|_zz: true|a document end marker' \
+               '<<: *base|_zz: true|a merge key' \
+               '"_exclude":|  - "!/project-management/src/02-STORIES/STORIES-BOARD.md"|a quoted _exclude key'; do
+    tail="${shape#*|}"
+    { cat "$real_copier"; printf '%s\n%s\n' "${shape%%|*}" "${tail%|*}"; } > "$tmp/toplevel.yml"
+    COPIER="$tmp/toplevel.yml"; probe "copier.yml refuses ${shape##*|} at the top level" "not one document of plain top-level keys"
+  done
+  { cat "$real_copier"; printf '_templates_suffix: ""\n'; } > "$tmp/toplevel.yml"
+  COPIER="$tmp/toplevel.yml"; probe "copier.yml refuses a repeated plain top-level key" "repeats the top-level key _templates_suffix:"
+  sed 's/^_exclude:.*$/_exclude: !include extra.yml/' "$real_copier" > "$tmp/toplevel.yml"
+  COPIER="$tmp/toplevel.yml"; probe "copier.yml refuses a tag on a top-level value" "not one document of plain top-level keys"
+  COPIER="$real_copier"
   # A guard, kept as round 6 left it: a different directory whose name only starts .copier is
   # no seed, so it is no finding.
   printf '%s\n' '  - command: mv .copierx/STORIES-BOARD.md x' > "$tmp/line"
