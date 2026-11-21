@@ -408,6 +408,20 @@ self_test() {
     awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
     COPIER="$tmp/ungated.yml"; probe "check 2 fires on ${ung#*|}" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
   done
+  # 2g. Round 6: the .copier directory named by a glob, spelt with `//`, `/./` or a `..` that
+  #     resolves back to it, or ANSI-C quoted — each a literal path the shell resolves to the seed.
+  for ung in 'mv .cop?er/STORIES-BOARD.md x|a ? glob in the directory name' \
+             'mv .c*r/STORIES-BOARD.md x|a * glob in the directory name' \
+             'mv .[c]opier/STORIES-BOARD.md x|a bracket glob opening the directory name' \
+             'mv .copie[r]/STORIES-BOARD.md x|a bracket glob closing the directory name' \
+             'mv .copier//STORIES-BOARD.md x|a doubled slash after the directory' \
+             'mv .copier/./STORIES-BOARD.md x|a /./ after the directory' \
+             'mv ./.copier/../.copier/STORIES-BOARD.md x|a .. resolving back to the directory' \
+             "mv .cop\$'i'er/STORIES-BOARD.md x|an ANSI-C quoted directory name"; do
+    printf '%s\n' "  - command: ${ung%%|*}" > "$tmp/line"
+    awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+    COPIER="$tmp/ungated.yml"; probe "check 2 fires on ${ung#*|}" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
+  done
   printf '%s\n' '  - command: cp -r .copier/ project-management/src/' > "$tmp/line"
   awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
   COPIER="$tmp/ungated.yml"; run_checks; ST_PROBES=$((ST_PROBES + 1))
