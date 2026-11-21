@@ -386,6 +386,20 @@ def section_of(lines: list[str], i: int) -> list[str]:
     return lines[i + 1 : j]
 
 
+# The one Jinja shape an `_exclude` entry may take (21/11/2026): the whole entry a single
+# `<: if … :>…<: endif :>` wrap, no tag inside it — the shape of every real entry that has one.
+IF_WRAP = re.compile(r"^<:\s*if\s(?:(?!<:|:>).)*:>(?:(?!<:|:>).)*<:\s*endif\s*:>$")
+
+
+def jinja_checked(value: str) -> str:
+    """An entry copier renders as the text check 1 reads — refused if Jinja could change that."""
+    if "<%" in value or "<~" in value:
+        raise RefusedError("a Jinja variable or comment tag, which copier renders first")
+    if ("<:" in value or ":>" in value) and not IF_WRAP.match(value):
+        raise RefusedError("a Jinja block other than one whole-entry `if` wrap (an else, nesting)")
+    return value
+
+
 def exclude_entry(raw: list[str], seq: int, label: str) -> str:
     """One `_exclude` entry, decoded — or refused when it is not one line of one string."""
     head = raw[0][seq + 1 :].strip()
@@ -394,7 +408,7 @@ def exclude_entry(raw: list[str], seq: int, label: str) -> str:
     if head.startswith("!"):  # unquoted: an unknown tag to YAML (copier refuses to load it)
         if len(raw) > 1:
             raise RefusedError("an unquoted `!` entry on more than one line")
-        return re.sub(r"\s+#.*$", "", head)
+        return jinja_checked(re.sub(r"\s+#.*$", "", head))
     if head[:1] in "|>" and head:
         raise RefusedError("a block scalar")
     if head[:1] in "[{" and head:
@@ -404,7 +418,7 @@ def exclude_entry(raw: list[str], seq: int, label: str) -> str:
         raise RefusedError("a mapping, not a string")
     if "\n" in value:
         raise RefusedError("a string holding a line break")
-    return value
+    return jinja_checked(value)
 
 
 def exclude(lines: list[str], i: int, out: list[str]) -> None:

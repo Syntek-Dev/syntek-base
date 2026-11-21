@@ -24,10 +24,10 @@
 #                      1. No copier.yml `_exclude` negation re-includes a `*-BOARD.md`: each
 #                         entry is DECODED by copier-commands.py as YAML decodes it (either quote
 #                         style, an escape such as `\x21`, a trailing comment dropped), and one it
-#                         cannot read as one string — a block scalar, a flow collection, a
-#                         mapping — is refused as a finding (round 10, 21/11/2026); each
-#                         negation, block tags stripped, is matched as a
-#                         glob against the eight landed board paths, not searched for a name —
+#                         cannot read as one string — a block scalar, a flow collection, a mapping,
+#                         a string tag (`!!str`), Jinja but one whole `if` wrap — is a finding;
+#                         each negation, that wrap stripped, is matched as a glob against the
+#                         eight landed board paths, not searched for a name (21/11/2026) —
 #                         under gitignore's rules: a slash-less pattern matches a component at
 #                         any depth, and a trailing slash re-includes the folder below it.
 #                      2. The copy-gated `_tasks` entry — the one whose `when:` tests the copy
@@ -181,8 +181,8 @@ FINDINGS=()
 finding() { FINDINGS+=("$1"); }
 
 # The `_exclude` negations, one per line: copier-commands.py's DECODED entries (its X records,
-# round 10), every block tag (the copier block delimiters, assembled from LT so no literal opener
-# sits in this file) removed and the entry trimmed, those that then open with `!`.
+# round 10), the one `if` wrap the reader lets through (the copier block delimiters, assembled
+# from LT so no literal opener sits in this file) removed and the entry trimmed, those opening `!`.
 negations() { # reader output
   local LT='<' v pre rest
   while IFS= read -r v; do
@@ -207,10 +207,10 @@ run_checks() {
 
   # ── 1. Nothing re-includes a board ───────────────────────────────────────────
   # Every `_exclude` negation, read as copier reads it — DECODED by copier-commands.py (either
-  # quote style or none, an escape such as `\x21`, a trailing comment dropped; a block scalar or
-  # flow entry refused; round 10), a block-tag conditional around it stripped — then tested as a
-  # GLOB against each of the eight landed board paths. A name test (`BOARD` in the entry) misses a
-  # glob that matches a board without naming one. One finding per negating entry.
+  # quote style or none, an escape such as `\x21`, a comment dropped; a block scalar, a flow entry,
+  # a string tag or Jinja but one whole `if` wrap refused), that wrap stripped — then tested as a
+  # GLOB against each landed board path; a name test (`BOARD` in it) misses a glob matching a
+  # board without naming one. One finding per negating entry (21/11/2026).
   local e g hit
   while IFS= read -r e; do
     [[ -z "$e" ]] && continue
