@@ -16,10 +16,16 @@
 /CONTRIBUTING.md                @Syntek-Studio
 /.github/                       @Syntek-Studio
 
-# The gates that judge a change, and the hooks that run them early (21/11/2026). `*` and
-# /.github/ already cover them; they are named so a later, narrower owner line elsewhere can never
-# leave them without one. A change can edit the check that judges it in the same commit, so these
-# always want a close read — which only binds once main's ruleset requires code-owner review.
+# The gates that judge a change, and the hooks that run them early (21/11/2026). `*` already
+# covers them. In CODEOWNERS the LAST matching line wins, so these lines override
+# the broader lines above them and nothing else: keep them last, and give any line added after them
+# that matches these paths an owner, or it leaves them unowned. A change can edit the check that
+# judges it in the same commit, so these always want a close read. main's ruleset does not require
+# code-owner review, by decision (21/11/2026): the sole owner cannot approve their own pull
+# request, so requiring it would send every merge through the admin bypass, which skips the
+# required checks as well.
 /code/src/scripts/tests/                    @Syntek-Studio
+/code/src/scripts/audits/                   @Syntek-Studio
 /project-management/src/00-ASSETS/scripts/  @Syntek-Studio
+/.claude/hooks/                             @Syntek-Studio
 /lefthook.yml                               @Syntek-Studio
