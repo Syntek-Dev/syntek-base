@@ -114,9 +114,9 @@ OPT_IN='PLANNED''_RED'
 TRAILER='Planned''-Red'
 check "neither the legs nor the script carries a red-probe opt-in" \
   bash -c '! grep -qE -- "$1|$2" "$3" "$4"' _ "$OPT_IN" "$TRAILER" "$LEFTHOOK" "$INTEGRITY"
-# (round 6) CI is the check of record only if it runs every self-test the push leg runs, in a
-# workflow with no path filter that runs on a push to any branch: audit-template.yml, whose four
-# jobs are required checks on main.
+# (round 6) CI is the record only if it runs every self-test the push leg runs, in a workflow with
+# no path filter that runs on a push to any branch: audit-template.yml, whose four jobs are
+# required checks on main (which its ruleset's bypass actor can still merge past — round 7).
 AUDIT="$PROJECT_ROOT/.github/workflows/audit-template.yml"
 mapfile -t LISTED < <(sed -n '/^SELF_TESTS=(/,/^)/p' "$INTEGRITY" | grep -oE '"[^"]+"' | tr -d '"')
 check "template-integrity.sh lists its self-tests (SELF_TESTS read)" test "${#LISTED[@]}" -ge 9
