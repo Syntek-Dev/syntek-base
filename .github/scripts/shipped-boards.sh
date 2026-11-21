@@ -145,7 +145,8 @@ command -v python3 >/dev/null 2>&1 || die "python3 is required"
 # The self-test crash guard (exit 2, never a red or a pass) and the optional probe ledger.
 # shellcheck source=self-test-ledger.sh
 . "$SCRIPT_DIR/self-test-ledger.sh"
-# Check 2's word reading — seed_word, seed_any and BRACE_CAP (split out round 9, 21/11/2026).
+# Check 1's glob reading (glob_matches, negation_matches; moved round 10) and check 2's word
+# reading (seed_word, seed_any, BRACE_CAP; split out round 9, 21/11/2026).
 # shellcheck source=shipped-boards-words.sh
 . "$SCRIPT_DIR/shipped-boards-words.sh"
 
@@ -201,44 +202,6 @@ for line in open(sys.argv[1], encoding="utf-8"):
         print(v)
 PYEOF
 }
-
-# copier's _exclude glob shapes, as code/src/scripts/audits/doc-references.sh path_matches reads
-# them: `a/**` covers the tree, and `a/**/b` matches `a/b` as well as `a/x/b`.
-glob_matches() { # path glob
-  local p="$1" g="$2" g2
-  case "$g" in
-    */'**') g="${g%/**}"; [[ "$p" == "$g" || "$p" == "$g"/* ]] && return 0; return 1 ;;
-  esac
-  g2="${g//\/\*\*\//\/}"
-  # shellcheck disable=SC2053  # glob match is the point, not a string comparison
-  [[ "$p" == $g ]] && return 0
-  # shellcheck disable=SC2053
-  [[ "$p" == $g2 ]] && return 0
-  [[ "$p" == "$g" || "$p" == "$g"/* ]] && return 0
-  return 1
-}
-
-# A negation as copier (gitignore) reads it: a trailing `/` names a folder, re-including all below
-# it; a pattern with no other `/` matches a path component — the basename or a folder — at any
-# depth; anything else is anchored at the root, its leading `/` optional.
-negation_matches() { # path pattern
-  local p="$1" g="$2" c
-  g="${g%/}"
-  if [[ "$g" != */* ]]; then
-    local IFS=/
-    for c in $p; do
-      # shellcheck disable=SC2053  # glob match is the point
-      [[ "$c" == $g ]] && return 0
-    done
-    return 1
-  fi
-  g="${g#/}"
-  glob_matches "$p" "$g" && return 0
-  # shellcheck disable=SC2053
-  [[ "$p" == $g/* ]] && return 0
-  return 1
-}
-
 
 run_checks() {
   FINDINGS=()

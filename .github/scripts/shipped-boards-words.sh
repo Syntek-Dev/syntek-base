@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
-# shipped-boards-words.sh — check 2's word reading, sourced by shipped-boards.sh (never run).
+# shipped-boards-words.sh — check 1's glob reading and check 2's word reading, sourced by
+#                           shipped-boards.sh (never run).
 #
 # TEMPLATE-ONLY: .github/scripts/ is copier _exclude'd. Split out of shipped-boards.sh on
 # 21/11/2026 (round 9) to hold that script inside the 750-line source limit; the functions are
 # moved unchanged but for the brace cap. seed_word reads one word as a path; seed_any reads a word
-# and the spans a separator bounds through it. Pattern matching only: nothing is expanded or run.
+# and the spans a separator bounds through it. glob_matches and negation_matches, check 1's, moved
+# here unchanged on 21/11/2026 (round 10) for the same limit. Pattern matching only: nothing is
+# expanded or run.
 
 # The most `{` brace spans one word may hold and still be read for a seed (round 9, 21/11/2026).
 BRACE_CAP=8
@@ -84,5 +87,42 @@ seed_any() {
     fi
     if [[ ${seps[a]} -lt $n ]]; then seed_word "${w:i}" "$board" && return 0; fi
   done
+  return 1
+}
+
+# copier's _exclude glob shapes, as code/src/scripts/audits/doc-references.sh path_matches reads
+# them: `a/**` covers the tree, and `a/**/b` matches `a/b` as well as `a/x/b`.
+glob_matches() { # path glob
+  local p="$1" g="$2" g2
+  case "$g" in
+    */'**') g="${g%/**}"; [[ "$p" == "$g" || "$p" == "$g"/* ]] && return 0; return 1 ;;
+  esac
+  g2="${g//\/\*\*\//\/}"
+  # shellcheck disable=SC2053  # glob match is the point, not a string comparison
+  [[ "$p" == $g ]] && return 0
+  # shellcheck disable=SC2053
+  [[ "$p" == $g2 ]] && return 0
+  [[ "$p" == "$g" || "$p" == "$g"/* ]] && return 0
+  return 1
+}
+
+# A negation as copier (gitignore) reads it: a trailing `/` names a folder, re-including all below
+# it; a pattern with no other `/` matches a path component — the basename or a folder — at any
+# depth; anything else is anchored at the root, its leading `/` optional.
+negation_matches() { # path pattern
+  local p="$1" g="$2" c
+  g="${g%/}"
+  if [[ "$g" != */* ]]; then
+    local IFS=/
+    for c in $p; do
+      # shellcheck disable=SC2053  # glob match is the point
+      [[ "$c" == $g ]] && return 0
+    done
+    return 1
+  fi
+  g="${g#/}"
+  glob_matches "$p" "$g" && return 0
+  # shellcheck disable=SC2053
+  [[ "$p" == $g/* ]] && return 0
   return 1
 }
