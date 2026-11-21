@@ -15,3 +15,11 @@
 /SECURITY.md                    @Syntek-Studio
 /CONTRIBUTING.md                @Syntek-Studio
 /.github/                       @Syntek-Studio
+
+# The gates that judge a change, and the hooks that run them early (21/11/2026). `*` and
+# /.github/ already cover them; they are named so a later, narrower owner line elsewhere can never
+# leave them without one. A change can edit the check that judges it in the same commit, so these
+# always want a close read — which only binds once main's ruleset requires code-owner review.
+/code/src/scripts/tests/                    @Syntek-Studio
+/project-management/src/00-ASSETS/scripts/  @Syntek-Studio
+/lefthook.yml                               @Syntek-Studio
