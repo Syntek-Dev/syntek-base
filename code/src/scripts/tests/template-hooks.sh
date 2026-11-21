@@ -10,7 +10,8 @@
 # Proves .github/scripts/template-integrity.sh and the two lefthook.yml legs that call it:
 #   shape      lefthook.yml declares the pre-commit leg (`--pre-commit`) and a pre-push leg
 #              (`--pre-push`, `use_stdin: true`), and no commit-msg leg; neither the leg nor the
-#              script carries any opt-in that lets a red self-test through.
+#              script carries any opt-in that lets a red self-test through; (round 6) every
+#              SELF_TESTS entry is a step of audit-template.yml, unfiltered and on every branch.
 #   commit     a commit runs only the plain checks: a red self-test commits (none runs), and a red
 #              plain check blocks the commit.
 #   push       a push runs every self-test against the commit being pushed — the tip of each
@@ -46,7 +47,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,39p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,40p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'template-hooks.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -108,6 +109,16 @@ OPT_IN='PLANNED''_RED'
 TRAILER='Planned''-Red'
 check "neither the legs nor the script carries a red-probe opt-in" \
   bash -c '! grep -qE -- "$1|$2" "$3" "$4"' _ "$OPT_IN" "$TRAILER" "$LEFTHOOK" "$INTEGRITY"
+# (round 6) CI is the check of record only if it runs every self-test the push leg runs, in a
+# workflow with no path filter that runs on a push to any branch: audit-template.yml, whose four
+# jobs are required checks on main.
+AUDIT="$PROJECT_ROOT/.github/workflows/audit-template.yml"
+mapfile -t LISTED < <(sed -n '/^SELF_TESTS=(/,/^)/p' "$INTEGRITY" | grep -oE '"[^"]+"' | tr -d '"')
+check "template-integrity.sh lists its self-tests (SELF_TESTS read)" test "${#LISTED[@]}" -ge 9
+in_ci() { local t; for t in "${LISTED[@]}"; do grep -qxE "[[:space:]]*run: bash ${t//./\\.}" "$AUDIT" || return 1; done; }
+check "audit-template.yml runs every self-test the push leg runs" in_ci
+check "  on a push to any branch, with no path filter" \
+  bash -c 'grep -qF "branches: [\"**\"]" "$1" && ! grep -qE "^[[:space:]]+paths(-ignore)?:" "$1"' _ "$AUDIT"
 [[ -n "$PRE_COMMIT" && -n "$PRE_PUSH" ]] || { printf '\n%d passed, %d failed — the legs are missing, so no hook can be driven\n' "$PASSES" "$FAILS"; exit 1; }
 
 # ── The fixture ───────────────────────────────────────────────────────────────
