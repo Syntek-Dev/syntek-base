@@ -13,7 +13,8 @@ reader for the shapes those two lists are written in, never a general parser:
   - keys are compared after decoding, and a key repeated inside one item (two `when:`) is an
     error, never "the last one wins" read silently;
   - anything else in those lists — a flow collection, an anchor, an alias, a tag, a complex key,
-    a nested sequence, an unknown escape, an unterminated quote — is an error.
+    a nested sequence, a value on the lines after its key or a bare `-` (round 9), an unknown
+    escape, an unterminated quote — is an error, never a traceback.
 
 An error is a finding (fail closed): check 2 cannot say what such an entry runs, so it never
 reads it as harmless.
@@ -213,7 +214,7 @@ def scalar(rest: str, more: list[str], parent: int) -> str:
         )
     if r.startswith("- ") or r == "-":
         raise RefusedError("a nested sequence")
-    if r[:1] in "\"'":
+    if r and r[0] in "\"'":  # r[:1] is '' on an empty value, and '' is in every string
         whole = "\n".join([r] + more)
         value, after = (double_quoted if r[0] == '"' else single_quoted)(whole)
         after = after.strip()
@@ -221,7 +222,10 @@ def scalar(rest: str, more: list[str], parent: int) -> str:
             raise RefusedError("text follows a quoted scalar")
         return value
     if not r and any(ln.strip() for ln in more):
-        raise RefusedError("an empty key followed by a nested block")
+        raise RefusedError(
+            "a value on the lines after its key or `-` (a nested block, or a scalar this "
+            "reader reads only on the key's own line)"
+        )
     lines = [re.sub(r"(^|\s)#.*$", "", ln).rstrip() for ln in [r] + more]
     while lines and not lines[-1].strip():
         lines.pop()
