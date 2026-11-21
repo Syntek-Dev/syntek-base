@@ -138,6 +138,16 @@ command -v python3 >/dev/null 2>&1 || die "python3 not found on PATH"
 # shellcheck source=pm-lib.sh
 source "$SCRIPT_DIR/pm-lib.sh"
 
+# git, read here, with no system or global configuration, no caller `-c` options, no external
+# diff or pager, and the output-shaping keys pinned — the shell half of the freeze's GIT_ENV
+# (round 5, 21/11/2026). The index is still the index git is committing (GIT_INDEX_FILE kept).
+g() {
+  env -u GIT_CONFIG_PARAMETERS -u GIT_CONFIG_COUNT -u GIT_EXTERNAL_DIFF -u GIT_PAGER -u GIT_ATTR_SOURCE \
+    GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
+    git --no-pager -c color.ui=false -c core.quotePath=true -c diff.relative=false \
+      -c core.autocrlf=false -c core.eol=lf -c core.attributesFile=/dev/null "$@"
+}
+
 cd "$PROJECT_ROOT"
 
 FOLDERS=(01-FEATURE-MAPS 02-STORIES 03-SPRINTS 15-DECISIONS 16-SPRINT-PLANS 17-STORY-PLANS
@@ -151,16 +161,16 @@ if [[ "$MODE" == boards-for ]]; then
   # tracked or untracked-unignored file they match, and every tracked file they match that is
   # gone from the working tree (a deletion or move-away the author is about to stage).
   BOARDS_FOR="$(cd "$CALLER_DIR" && {
-    git ls-files --full-name --cached --others --exclude-standard -- "${BOARDS_ARGS[@]}"
-    git ls-files --full-name --deleted -- "${BOARDS_ARGS[@]}"
+    g ls-files --full-name --cached --others --exclude-standard -- "${BOARDS_ARGS[@]}"
+    g ls-files --full-name --deleted -- "${BOARDS_ARGS[@]}"
   } | sort -u)" || die "could not read the named paths through git"
   if ! grep -qE "$FOLDER_RE" \
-      <<< "$BOARDS_FOR"$'\n'"$(git diff --cached --name-only 2>/dev/null || true)"; then
+      <<< "$BOARDS_FOR"$'\n'"$(g diff --cached --name-only --no-renames 2>/dev/null || true)"; then
     $QUIET || echo "pm-board: no named or staged file is in the eight board folders — nothing to stage" >&2
     exit 0
   fi
 elif $STAGED; then
-  staged="$(git diff --cached --name-only 2>/dev/null || true)"
+  staged="$(g diff --cached --name-only --no-renames 2>/dev/null || true)"
   if ! grep -qE "$FOLDER_RE" <<< "$staged"; then
     $QUIET || echo "pm-board: no file in the eight board folders is staged — nothing to do"
     exit 0
@@ -555,8 +565,35 @@ SCRATCH="$(mktemp -d)"
 trap 'rm -rf "$SCRATCH"' EXIT
 paths=()
 for f in "${FOLDERS[@]}"; do paths+=("project-management/src/$f"); done
-git ls-files -z -- "${paths[@]}" .copier-answers.yml \
-  | git checkout-index -z --stdin --prefix="$SCRATCH/"
+# The index's blobs, byte for byte: `cat-file --batch` applies no filter, line-ending conversion
+# or attribute, where `checkout-index` would apply every smudge filter and eol rule the
+# repository or a caller configures (round 5, 21/11/2026). Regular files only.
+g ls-files -s -z -- "${paths[@]}" .copier-answers.yml \
+  | python3 -I -c '
+import os, subprocess, sys
+dest = sys.argv[1]
+env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_CONFIG")}
+env.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
+entries = []
+for rec in sys.stdin.buffer.read().split(b"\0"):
+    if not rec:
+        continue
+    meta, path = rec.split(b"\t", 1)
+    mode, sha, _stage = meta.split()
+    if mode in (b"100644", b"100755"):
+        entries.append((path, sha))
+cat = subprocess.Popen(["git", "cat-file", "--batch"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, env=env)
+for path, sha in entries:
+    cat.stdin.write(sha + b"\n"); cat.stdin.flush()
+    size = int(cat.stdout.readline().split()[2])
+    data = cat.stdout.read(size); cat.stdout.read(1)
+    out = os.path.join(dest.encode(), path)
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    with open(out, "wb") as fh:
+        fh.write(data)
+cat.stdin.close()
+sys.exit(cat.wait())
+' "$SCRATCH" || die "could not copy the index into the scratch tree"
 if [[ "$MODE" == boards-for ]]; then
   while IFS= read -r p; do
     [[ -n "$p" ]] || continue
@@ -575,7 +612,7 @@ changed=()
 for i in "${!FOLDERS[@]}"; do
   md="project-management/src/${FOLDERS[$i]}/${BOARDS[$i]}-BOARD.md"
   [[ -f "$SCRATCH/$md" ]] || continue
-  if ! git show ":$md" 2>/dev/null | cmp -s - "$SCRATCH/$md"; then
+  if ! g cat-file blob ":$md" 2>/dev/null | cmp -s - "$SCRATCH/$md"; then
     cp "$SCRATCH/$md" "$PROJECT_ROOT/$md"
     changed+=("$md")
   fi
