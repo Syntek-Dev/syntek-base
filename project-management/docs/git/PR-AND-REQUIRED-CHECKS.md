@@ -144,6 +144,27 @@ This guide holds the criteria and the traps; branch protection holds the members
   so they do not exist in a generated project — never carry them into one's own protection
   rules.
 
+### Merge methods and the archive freeze
+
+<!-- Added 21/11/2026. -->
+
+- **Never squash a range that carries an `archive/` move.** `pm-board.sh --check` judges each
+  archived file against the live copy in the parent of the commit that moved it. A squash folds
+  the record's earlier edits, or its creation, into the move, so every later run reads it "changed
+  as it was archived" or "entered archive/ with no live … before it" — and history cannot be
+  changed. On a branch whose required checks run `--check`, one squash locks it red for good.
+- **A merge commit or a rebase is safe:** each replays or keeps the moving commit on its own, so
+  the live copy is still in its parent and `--check` holds.
+- **Where `--check` is a required check, allow only merge and rebase** — the pull-request rule's
+  allowed merge methods. Restricting one branch is not the whole answer: an unprotected branch
+  that takes a squash carries it into every branch it is later merged into, so the first rule
+  binds on every branch in the promotion order, protected or not.
+- **A ruleset bypass actor in `always` mode skips all of this** — it can merge or push past the
+  required checks and force-push or delete the branch. Read who holds it before relying on a rule.
+- **In syntek-base**, restricting `main` to merge and rebase, and requiring a branch to be up to
+  date before it merges (strict required checks), are **pending** the maintainer's ruleset change;
+  until then squash is still offered on `main` and must not be chosen.
+
 ---
 
 ## Toolchain pins
