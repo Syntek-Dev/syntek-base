@@ -32,9 +32,12 @@
 #                         ends with its `&&` (an echoed or commented-out move is not one); and
 #                         no other task's non-comment line names a board seed at all — by
 #                         any command, quoted or not, behind any prefix (`./`, `$PWD/`), by a
-#                         glob matching it, or by the bare .copier directory holding it. One in
-#                         any other task would run on every update and overwrite the project's
-#                         own board.
+#                         glob matching it, or by the bare .copier directory holding it — read
+#                         with quotes and backslashes removed and a `{A,B}` brace expansion
+#                         matched as either alternative. One in any other task would run on
+#                         every update and overwrite the project's own board. It stays a
+#                         deny-list: a name built at run time (a variable, `$(…)`, `eval`) is
+#                         review's, and the [3/4] render's.
 #                      3. Each seed exists.
 #                      4. Each seed is byte-identical to the board `pm-board.sh` renders for
 #                         the seed-only tree — which proves it carries none of syntek-base's
@@ -258,12 +261,18 @@ run_checks() {
     # redirect…), quoted or not, behind any prefix ($PWD/, ./) — or to a glob matching it, or to
     # the bare .copier directory that holds it, reads it on every update and can overwrite the
     # project's own board. Comment lines are skipped; any other mention counts.
-    local src hit=false
+    # The line is read as the shell will hand it to the command: quotes and backslashes inside a
+    # word are removed first (`.cop""ier`, `.co'p'ier`, `.cop\ier` all name .copier), and a brace
+    # expansion `{A,B}` is matched as either alternative (round 5, 21/11/2026).
+    local src hit=false inner
     while IFS= read -r src; do
       src="${src#*.copier}"; src="${src#/}"
+      while [[ "$src" =~ \{([^{}]*)\} ]]; do
+        inner="${BASH_REMATCH[1]}"; src="${src/"{$inner}"/"@(${inner//,/|})"}"
+      done
       # shellcheck disable=SC2053  # $src is a glob on purpose: a pattern matching the board names it
       if [[ -z "$src" || "$board" == $src ]]; then hit=true; break; fi
-    done < <(grep -vE '^[[:space:]]*#' <<< "$others" \
+    done < <(grep -vE '^[[:space:]]*#' <<< "$others" | tr -d "\"'\\\\" \
                | grep -oE "(^|[^[:alnum:]_.-])\.copier(/[^[:space:]\"';&|<>()]*)?" || true)
     if $hit; then
       finding "copier.yml moves .copier/$board outside the copy-gated task — it names the seed, a glob matching it or the .copier directory in a task that runs on every update and overwrites the project's own board"
