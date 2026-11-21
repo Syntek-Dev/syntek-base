@@ -42,7 +42,9 @@
 #                         refused, as one finding: a quoted or escaped key, a `?` key, a `---`
 #                         or `...` marker, a `%` directive, a `!` tag (`!include`), a `<<:`
 #                         merge, a repeated key (round 9, 21/11/2026; check 1's `_exclude`
-#                         reading rests on the same refusal) — DECODES every YAML scalar as
+#                         reading rests on the same refusal), and any of YAML 1.1's line
+#                         breaks but `\n` and `\r\n` — a lone CR, NEL, U+2028, U+2029 — anywhere
+#                         in the file (round 10, 21/11/2026) — DECODES every YAML scalar as
 #                         copier does (a double-quoted `\x2e`, `''`, line folding, block
 #                         chomping) and refuses — as a finding — an entry it cannot read: a key
 #                         repeated in one entry (two `when:`), a flow collection, an anchor,
@@ -79,7 +81,8 @@
 #            move, moves a seed into an ungated task, removes a seed, adds a row to a seed,
 #            drops a `SEEDED` entry — and asserts each check catches its own, exactly once; and
 #            (round 8) a YAML-escaped or `_migrations` move, a repeated `when:`, and a long word
-#            read in bounded time; (round 9) each top-level shape that is no plain key.
+#            read in bounded time; (round 9) each top-level shape that is no plain key; (round 10)
+#            each YAML line break the reader does not split at.
 #            Each kind runs on one of the first five boards and on each of the later three.
 #
 # --fix      Re-render the eight seeds from the generator. Run it after changing how
@@ -131,7 +134,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,96p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,99p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done

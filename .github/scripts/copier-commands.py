@@ -19,6 +19,11 @@ reader for the shapes those two lists are written in, never a general parser:
 An error is a finding (fail closed): check 2 cannot say what such an entry runs, so it never
 reads it as harmless.
 
+LINE BREAKS (round 10, 21/11/2026). The file is read raw and split at \n (a \r\n counts as one);
+YAML 1.1's other breaks — a lone \r, NEL (\x85), U+2028 and U+2029, which PyYAML honours — are
+refused anywhere in copier.yml, as one finding naming the first and its line, because a key after
+one is a line to copier and none to this reader.
+
 THE TOP LEVEL (round 9, 21/11/2026). copier.yml is read as ONE DOCUMENT OF PLAIN TOP-LEVEL KEYS,
 and anything else is refused. Every column-0 line must be blank, a comment, or an unquoted
 identifier and `:`; a quoted or escaped key (`"_tasks":`, `"\\x5fmigrations":`), an explicit `?`
@@ -75,6 +80,10 @@ ESCAPES = {
     "P": "\u2029",
 }
 HEX = {"x": 2, "u": 4, "U": 8}
+# YAML 1.1's line breaks other than \n (PyYAML's scan_line_break): a \r not before a \n, NEL,
+# U+2028 and U+2029. Read raw (newline=""), so a lone CR is not folded into a \n unseen.
+BREAKS = re.compile("\r(?!\n)|[\x85\u2028\u2029]")
+BREAK_NAMES = {"\r": "a lone CR", "\x85": "NEL (U+0085)", "\u2028": "U+2028", "\u2029": "U+2029"}
 
 
 class RefusedError(Exception):
@@ -347,14 +356,30 @@ def top_level(lines: list[str], out: list[str]) -> list[tuple[int, str]]:
     return keys
 
 
+def line_breaks(text: str, out: list[str]) -> None:
+    """Refuse every YAML line break but \n and \r\n, the two this reader splits at (round 10)."""
+    found = [(m.start(), m.group()) for m in BREAKS.finditer(text)]
+    if found:
+        pos, ch = found[0]
+        more = f" (and {len(found) - 1} more)" if len(found) > 1 else ""
+        out.append(
+            f"E\tcopier.yml line {text.count(chr(10), 0, pos) + 1} holds {BREAK_NAMES[ch]}{more}, "
+            "a YAML line break (PyYAML breaks at \\r\\n, \\r, \\n, NEL, U+2028 and U+2029) this "
+            "reader does not split at — copier may read a top-level key after it that checks 1 "
+            "and 2 never see, so it is a finding"
+        )
+
+
 def main() -> int:
     try:
-        text = open(sys.argv[1], encoding="utf-8").read()
+        with open(sys.argv[1], encoding="utf-8", newline="") as fh:
+            text = fh.read()
     except (OSError, IndexError, UnicodeDecodeError) as exc:
         print(f"copier-commands.py: {exc}", file=sys.stderr)
         return 2
-    lines = text.split("\n")
     out: list[str] = []
+    line_breaks(text, out)
+    lines = text.replace("\r\n", "\n").split("\n")
     keys = top_level(lines, out)
     for i, name in keys:
         if name not in SECTIONS:
