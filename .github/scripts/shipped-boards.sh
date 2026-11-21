@@ -592,6 +592,17 @@ self_test() {
       printf '\033[31m  ✗ %s: the reader exited %d (%s)\033[0m\n' "${ung#*|}" "$rc" "$(tail -n 1 "$tmp/read.out")"
     fi
   done
+  # 2q. Round 10: a line break PyYAML honours and a "\n" split does not — NEL, U+2028, U+2029,
+  #     a lone CR — puts a top-level key after it that copier reads and the reader never sees.
+  #     Refused anywhere in copier.yml, as one finding.
+  local brk inj
+  for brk in '\xc2\x85|NEL (U+0085)' '\xe2\x80\xa8|U+2028' '\xe2\x80\xa9|U+2029' '\r|a lone CR'; do
+    for inj in '_migrations:\n  - mv .copier/STORIES-BOARD.md project-management/src/02-STORIES/STORIES-BOARD.md|_migrations' \
+               '_exclude: ["INJECT"]|_exclude'; do
+      { cat "$real_copier"; printf '_zz_note: hi%b%b\n' "${brk%%|*}" "${inj%%|*}"; } > "$tmp/break.yml"
+      COPIER="$tmp/break.yml"; probe "copier.yml refuses ${brk#*|} hiding a top-level ${inj#*|}" "a YAML line break"
+    done
+  done
   COPIER="$real_copier"
   # A guard, kept as round 6 left it: a different directory whose name only starts .copier is
   # no seed, so it is no finding.
