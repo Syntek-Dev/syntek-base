@@ -1785,6 +1785,23 @@ pending statement, so it is unchanged.
   `project-management/docs/git/`" in US010's story plan (`Risks`) and twice in US011's.
 - **No GitHub setting was changed:** the ruleset and the repository were read, never written.
 
+**Closing readings**, at `6a341d26`, the clean tree (this commit adds only this table):
+
+| Gate                                                                   | Exit | Reading                                                                                                         |
+| ---------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------------------------- |
+| `template-integrity.sh --self-tests HEAD`                              | 0    | `9 run, 0 red, 0 absent and skipped`, 61 s; no grafts hint                                                      |
+| `shipped-boards.sh --self-test` / plain                                | 0/0  | 100 probes / a generated project receives current, empty PM boards                                              |
+| `code/src/scripts/tests/template-hooks.sh`                             | 0    | 69 passed, 0 failed                                                                                             |
+| `code/src/scripts/tests/pm-boards.sh`                                  | 0    | 112 probes passed                                                                                               |
+| `pm-board.sh --check`                                                  | 0    | all 8 boards current, `archive/` untouched                                                                      |
+| `audits/docs-length.sh` / `docs-pairing.sh`                            | 0/0  | 818 files within 300, 3 approaching / split intact                                                              |
+| `audits/doc-references.sh` (whole tree)                                | 1    | 18 findings, **identical** to this pass's P0 at `f6f55c9b`; only the token totals moved (83304 to 83379); 451 s |
+| ShellCheck 0.11.0 (`-x -P SCRIPTDIR`)                                  | 0    | `shipped-boards.sh`, `template-integrity.sh`                                                                    |
+| Ruff over `copier-commands.py` (lefthook's `ruff-lint`, `ruff-format`) | 0    | clean                                                                                                           |
+| GitHub CI                                                              | —    | **not run**: R7-8, pending the push                                                                             |
+
+No scratch copy was made this pass; every `/tmp` log it wrote is deleted.
+
 ## Journeys
 
 ### Approved remediation evidence
