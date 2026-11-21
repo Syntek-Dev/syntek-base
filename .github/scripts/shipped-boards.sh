@@ -30,25 +30,34 @@
 #                         operation and which carries the README move — moves each of the
 #                         eight seeds into its folder, on a line that begins with the mv and
 #                         ends with its `&&` (an echoed or commented-out move is not one); and
-#                         no other task's non-comment line names a board seed at all — by
-#                         any command, quoted or not, behind a path prefix (`./`, `$PWD/`) or
+#                         no other `_tasks` or `_migrations` entry names a board seed at all —
+#                         by any command, quoted or not, behind a path prefix (`./`, `$PWD/`) or
 #                         an `=`, `,` or `:` (`F=…`, `if=…`, `--dir=…`, a list), by a glob
-#                         matching it, or by the bare .copier directory holding it. Each word
-#                         is read with `$'…'` quoting, quotes and backslashes removed, then
-#                         whole, as each span an `=`, `,` or `:` bounds, and (a word opening
-#                         with one `-`) from each later `.`, for a short option's glued value
-#                         (`-C.copier`) — each as a path:
-#                         `//` and `/./` collapse, a `..` cancels the component before it, a
-#                         component opening with `.` names .copier when it matches it as a glob
-#                         (`.cop?er`, `.c*r`, `.[c]opier`), and a `{A,B}` brace expansion is
-#                         either alternative. One in any other task would run on every update
-#                         and overwrite the project's own board. It stays a deny-list over the
-#                         text, and exactly these are review's, and the [3/4] render's: a name
-#                         built at run time (a variable, `$(…)`, backticks, `eval`, a script
-#                         the task runs), a `..` through a symlink, a component opening with a
-#                         wildcard (`*`, `?`, `[.]`, which sh never matches against a leading
-#                         dot), and a name a program composes from its own syntax beyond these
-#                         (an argument file, a `--long` option's value glued on without `=`).
+#                         matching it, or by the bare .copier directory holding it (the one
+#                         exemption: the migration whose whole command is `rm -rf .copier`).
+#                         Both lists are read through copier-commands.py first, which DECODES
+#                         every YAML scalar as copier does (a double-quoted `\x2e`, `''`, line
+#                         folding, block chomping) and refuses — as a finding — an entry it
+#                         cannot read: a key repeated in one entry (two `when:`), a flow
+#                         collection, an anchor, alias or tag, an unknown escape. Each word is
+#                         then read with `$'…'` quoting, quotes and backslashes removed, whole,
+#                         as the spans an `=`, `,` or `:` bounds, and (a word opening with one
+#                         `-`) from each later `.`, for a short option's glued value
+#                         (`-C.copier`) — each as a path: `//` and `/./` collapse, a `..` cancels
+#                         the component before it, a component opening with `.` names .copier
+#                         when it matches it as a glob (`.cop?er`, `.c*r`, `.[c]opier`), and a
+#                         `{A,B}` brace expansion is either alternative. One in any other entry
+#                         would run on every update and overwrite the project's own board.
+#                         WHAT IT DOES NOT READ (round 8, 21/11/2026): check 2 reads the literal
+#                         words left after YAML decoding and shell quote removal, and nothing
+#                         more. Any shell construct that builds the name at run time —
+#                         parameter expansion (defaults such as `${S:-…}` and `${S:=…}`
+#                         included), command substitution (backticks included), the escapes
+#                         inside `$'…'`, `eval`, a variable, a short option glued on inside a
+#                         span, a script the task runs — is review's alone. The [3/4] job is
+#                         NO backstop for it: its render is a copy, and shipped-ai.py's update
+#                         keeps only the seed task and the `rm -rf .copier` and
+#                         shared-ai-symlinks migrations, so no other entry runs on an update.
 #                      3. Each seed exists.
 #                      4. Each seed is byte-identical to the board `pm-board.sh` renders for
 #                         the seed-only tree — which proves it carries none of syntek-base's
@@ -60,14 +69,17 @@
 #
 # SELF-TEST. --self-test mutates a copy of each input — re-includes a board, drops a `_tasks`
 #            move, moves a seed into an ungated task, removes a seed, adds a row to a seed,
-#            drops a `SEEDED` entry — and asserts each check catches its own, exactly once.
+#            drops a `SEEDED` entry — and asserts each check catches its own, exactly once; and
+#            (round 8) a YAML-escaped or `_migrations` move, a repeated `when:`, and a long word
+#            read in linear time.
 #            Each kind runs on one of the first five boards and on each of the later three.
 #
 # --fix      Re-render the eight seeds from the generator. Run it after changing how
 #            pm-board.sh renders a board, then review the diff — never to silence check 4 on
 #            a seed that has picked up rows.
 #
-# Requirements: python3, awk, grep. No network.
+# Requirements: python3 (standard library only; copier-commands.py beside this file), awk, grep.
+# No network.
 #
 # Usage: shipped-boards.sh [--quiet] [--self-test] [--fix] [--help]
 #
@@ -111,7 +123,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,76p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,88p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done
@@ -225,6 +237,8 @@ negation_matches() { # path pattern
 # or one component matching BOARD as a glob. Pattern matching only: nothing is expanded or run.
 seed_word() {
   local w="$1" board="$2" inner comp i parts=() out=() rest=()
+  # No `.` and no brace: no component can open with `.` or `@(`, so nothing here names .copier.
+  [[ "$w" == *.* || "$w" == *\{* ]] || return 1
   while [[ "$w" =~ \{([^{}]*)\} ]]; do
     inner="${BASH_REMATCH[1]}"; w="${w/"{$inner}"/"@(${inner//,/|})"}"
   done
@@ -249,27 +263,39 @@ seed_word() {
   return 1
 }
 
-# seed_any WORD BOARD — seed_word over WORD and over every span of it that a separator bounds, so
+# seed_any WORD BOARD — seed_word over WORD and over the spans of it that a separator bounds, so
 # a path behind an assignment or an `=value` (`F=.copier/…`, `if=.copier/…`, `--dir=.copier`), or
 # inside a comma or colon list, is read as the path it is (round 7, 21/11/2026). The separators are
 # `=`, `,` and `:`, read wherever they sit — quoted ones included, since the quotes are gone by
 # now — so the reading errs towards a finding, never away from one. A word opening with a single
 # `-` is also read from each `.` after its first two characters, for a short option with its value
-# glued on (`-C.copier`, `-xC.copier`). Brace alternatives still read as a whole word.
+# glued on (`-C.copier`, `-xC.copier`). Each start is read to three ends (round 8, 21/11/2026):
+# the next separator, the next one outside a `{…}` brace or `[…]` bracket (a brace's or a
+# bracket's own `,` or `:` is part of the path), and the word's end — linear in the separators,
+# where round 7 read every pair of them (13 s at 150).
 seed_any() {
-  local w="$1" board="$2" n=${#1} i j starts=(0) ends=()
+  local w="$1" board="$2" n=${#1} i c depth=0 inbr=false starts=(0) seps=() tops=() a=0 b=0
   for ((i = 0; i < n; i++)); do
-    case "${w:i:1}" in
-      [=,:]) starts+=("$((i + 1))"); ends+=("$i") ;;
+    c="${w:i:1}"
+    case "$c" in
+      [=,:]) starts+=("$((i + 1))"); seps+=("$i"); [[ $depth -eq 0 ]] && ! $inbr && tops+=("$i") ;;
       .) [[ "$w" == -[!-]* && $i -ge 2 ]] && starts+=("$i") ;;
+      '{') $inbr || depth=$((depth + 1)) ;;
+      '}') $inbr || { [[ $depth -gt 0 ]] && depth=$((depth - 1)); } ;;
+      '[') inbr=true ;;
+      ']') inbr=false ;;
     esac
   done
-  ends+=("$n")
+  seps+=("$n"); tops+=("$n")
   for i in "${starts[@]}"; do
-    for j in "${ends[@]}"; do
-      [[ $j -gt $i ]] || continue
-      seed_word "${w:i:j-i}" "$board" && return 0
-    done
+    while [[ ${seps[a]} -lt $i ]]; do a=$((a + 1)); done
+    while [[ ${tops[b]} -lt $i ]]; do b=$((b + 1)); done
+    [[ $i -lt $n ]] || continue
+    if [[ ${seps[a]} -gt $i ]]; then seed_word "${w:i:seps[a]-i}" "$board" && return 0; fi
+    if [[ ${tops[b]} -gt ${seps[a]} && ${tops[b]} -lt $n ]]; then
+      seed_word "${w:i:tops[b]-i}" "$board" && return 0
+    fi
+    if [[ ${seps[a]} -lt $n ]]; then seed_word "${w:i}" "$board" && return 0; fi
   done
   return 1
 }
@@ -294,29 +320,19 @@ run_checks() {
       && finding "copier.yml _exclude re-includes a board ($e) — syntek-base's own rows would ship"
   done < <(negations "$COPIER")
 
-  # The copy-gated task alone: _tasks split into its `  - ` entries, keeping the one that
-  # both moves the README and carries `when: "<% _copier_operation == 'copy' %>"`.
-  tasks=$(awk '
-    /^_tasks:/ { f = 1; next }
-    /^[a-zA-Z_]+:/ { f = 0 }
-    !f { next }
-    /^  - / { if (t != "" && readme && gated) print t; t = ""; readme = 0; gated = 0 }
-    { t = t $0 "\n" }
-    index($0, "mv .copier/README.md README.md") { readme = 1 }
-    /^    when: *"<% *_copier_operation *== *.copy. *%>" *$/ { gated = 1 }
-    END { if (t != "" && readme && gated) print t }
-  ' "$COPIER" || true)
-  # Every other _tasks entry, for the second half of check 2: no board move may sit there.
-  others=$(awk '
-    /^_tasks:/ { f = 1; next }
-    /^[a-zA-Z_]+:/ { f = 0 }
-    !f { next }
-    /^  - / { if (t != "" && !(readme && gated)) print t; t = ""; readme = 0; gated = 0 }
-    { t = t $0 "\n" }
-    index($0, "mv .copier/README.md README.md") { readme = 1 }
-    /^    when: *"<% *_copier_operation *== *.copy. *%>" *$/ { gated = 1 }
-    END { if (t != "" && !(readme && gated)) print t }
-  ' "$COPIER" || true)
+  # _tasks and _migrations, read through copier-commands.py — every scalar DECODED as YAML decodes
+  # it, a key repeated in one entry refused (round 8, 21/11/2026). `S` lines are the copy-gated
+  # task's raw lines (its `when:` decodes to the copy test and it carries the README move); `O`
+  # lines the decoded commands of every other task and migration; `E` an entry the reader refuses,
+  # a finding of its own, since check 2 cannot say what it runs.
+  local read_out
+  read_out=$(python3 -I "$SCRIPT_DIR/copier-commands.py" "$COPIER") \
+    || die "copier-commands.py could not read $COPIER"
+  tasks=$(sed -n 's/^S\t//p' <<< "$read_out")
+  others=$(sed -n 's/^O\t//p' <<< "$read_out")
+  while IFS= read -r e; do
+    [[ -n "$e" ]] && finding "$e"
+  done < <(sed -n 's/^E\t//p' <<< "$read_out")
   for b in "${BOARDS[@]}"; do
     folder="${b%%|*}"; board="${b##*|}"; seed="$SEED_DIR/$board"
 
@@ -329,7 +345,8 @@ run_checks() {
     # Any reference to the seed outside the gated task — whatever the command (mv, cp, ln, a cat
     # redirect…), quoted or not, behind any prefix ($PWD/, ./) — or to a glob matching it, or to
     # the bare .copier directory that holds it, reads it on every update and can overwrite the
-    # project's own board. Comment lines are skipped; any other word on any line counts.
+    # project's own board. Every word of every decoded task and migration line counts — a shell
+    # comment too, which errs towards a finding (YAML comments are gone with the decoding).
     # The line is read as the shell will hand it to the command: `$'…'` / `$"…"` quoting and the
     # quotes and backslashes inside a word are removed first (`.cop""ier`, `.co'p'ier`, `.cop\ier`,
     # `.cop$'i'er` all name .copier), then each word is read as a path by seed_word below
@@ -338,10 +355,10 @@ run_checks() {
     local word hit=false
     while IFS= read -r word; do
       if seed_any "$word" "$board"; then hit=true; break; fi
-    done < <(grep -vE '^[[:space:]]*#' <<< "$others" | sed -e "s/\\\$'/'/g" -e 's/\$"/"/g' \
+    done < <(sed -e "s/\\\$'/'/g" -e 's/\$"/"/g' <<< "$others" \
                | tr -d "\"'\\\\" | tr -s ' \t;&|<>()' '\n' | grep -v '^$' || true)
     if $hit; then
-      finding "copier.yml moves .copier/$board outside the copy-gated task — it names the seed, a glob matching it or the .copier directory in a task that runs on every update and overwrites the project's own board"
+      finding "copier.yml moves .copier/$board outside the copy-gated task — it names the seed, a glob matching it or the .copier directory in a task or migration that runs on every update and overwrites the project's own board"
     fi
 
     # ── 3. Present ────────────────────────────────────────────────────────────
