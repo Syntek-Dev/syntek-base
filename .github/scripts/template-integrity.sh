@@ -21,9 +21,13 @@
 # is named as a script error and never read as a pass. A listed script the commit does not hold
 # (a tip older than it) is named "absent at <sha> — skipped": not run, and never counted as a pass
 # or a red; one it holds that exits 127 is a failure like any other. A push with no commit to
-# judge (a deletion only, or no ref lines on stdin) says so and exits 0. CI runs the same self-tests on every push
-# (audit-template.yml, pm-boards.yml), and is the check of record: a hook is a convenience a
-# developer can skip (`--no-verify`, core.hooksPath), never a gate.
+# judge (a deletion only, or no ref lines on stdin) says so and exits 0. CI runs the same nine
+# self-tests on every push to any branch, unfiltered, in audit-template.yml (pm-boards.sh in [1/4]
+# from 21/11/2026; template-hooks.sh proves the list and the steps agree), and is the check of
+# record: a hook is a convenience a developer can skip (`--no-verify`, core.hooksPath), never a
+# gate. Those jobs are required checks on main only — dev, staging and testing are unprotected,
+# so a red tip can reach them, never main. Two self-tests run in CI alone, needing toolchains or
+# a generated project: check-template-parsers.sh's and shipped-artefacts.sh's.
 #
 # --self-tests [COMMIT] is the same judgement for one commit (default HEAD) — the reviewer's
 # replay. A red probe's own commit exits 1 and its fix exits 0; the two review rules this
@@ -202,6 +206,6 @@ case "${1:-}" in
     cd "$PROJECT_ROOT"
     sha="$(g rev-parse --verify -q "${2:-HEAD}^{commit}")" || die "no commit ${2:-HEAD}"
     self_tests "$sha" ;;
-  --help|-h) sed -n '2,50p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  --help|-h) sed -n '2,54p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) die "usage: template-integrity.sh --pre-commit | --pre-push [REMOTE [URL]] | --self-tests [COMMIT]" ;;
 esac

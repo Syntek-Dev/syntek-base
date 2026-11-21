@@ -210,8 +210,9 @@ pre-commit:
     # ONLY THE CHEAP HALF. audit-template.yml has four jobs and two of them belong to CI
     # alone: [3/4] Template Generation runs a full `copier copy` twice over, and [4/4]
     # Parser Probes drives uv, cargo, pnpm and docker compose. Both need a network and a
-    # toolchain, and neither survives contact with a pre-commit hook. [1/4] Template Tokens
-    # and [2/4] Shipped Documentation are pure text over the working tree — those ride here.
+    # toolchain, and neither survives contact with a pre-commit hook. The PLAIN checks of [1/4]
+    # Template Tokens and [2/4] Shipped Documentation are pure text over the working tree — those
+    # ride here; their self-tests ride the pre-push leg below (21/11/2026).
     #
     # `set -e` IS LOAD-BEARING, not decoration. lefthook reports the exit status of the run
     # block, which without it is the status of the LAST command alone: five failures
@@ -273,8 +274,11 @@ pre-commit:
 # COST, measured 21/11/2026: ~63 seconds a pushed tip (63.1 / 63.1 through the script, 66.6
 # through `lefthook run pre-push`). The self-tests run in parallel, so the slowest sets it —
 # shipped-ai.sh's copy-and-update self-test (~60s); the others finish inside ~20.
-# CI runs every one of them on every push too (audit-template.yml, pm-boards.yml): this leg is
-# the early signal, CI the check of record. It replaces the commit-msg leg (19/11/2026 to
+# CI runs every one of them on every push to any branch too, unfiltered, in audit-template.yml's
+# jobs (pm-boards.sh in [1/4] since 21/11/2026), which are required checks on main alone: this
+# leg is the early signal, CI the check of record — and a record a merge into main must pass,
+# while dev, staging and testing are unprotected. Two self-tests are CI's only: the parser
+# probes' (toolchains) and shipped-artefacts.sh's (a generated project). It replaces the commit-msg leg (19/11/2026 to
 # 20/11/2026), which existed only for the planned-red trailer.
 pre-push:
   commands:

@@ -122,7 +122,8 @@ implementation exists is either testing the wrong thing or testing nothing.
 
 **Where the red is committed before its fix, it is an ordinary commit — never `--no-verify`.**
 No commit hook runs a gate's self-test, so a red probe inside one commits like any other change;
-self-tests run at push and in CI, against the commit pushed. Two rules hold it, and both are
+self-tests run at push and in CI, against the commit pushed — bar the two that need the
+toolchains or a generated project, which run in CI only. Two rules hold it, and both are
 **review rules**, checked by replaying history rather than by a hook:
 
 - **Red in a commit of its own, before its fix.** The red commit adds the probe and changes no
@@ -137,7 +138,8 @@ probe lives in must exit `1` with the new probe failing and every older one pass
 must not touch the probe. An exit `2` at either commit is a script error, never a red.
 In this template the replay is one command per commit, run from any checkout: <!-- doc-references: template-only -->
 `bash .github/scripts/template-integrity.sh --self-tests <sha>` runs every self-test against a copy <!-- doc-references: template-only -->
-of that commit; `SELF_TEST_LEDGER=<file>` on a detector's `--self-test` records each probe's label <!-- doc-references: template-only -->
+of that commit, and names any listed script the commit does not yet hold "absent — skipped", <!-- doc-references: template-only -->
+never a pass or a red, so an early commit is judged on what it held; `SELF_TEST_LEDGER=<file>` on a detector's `--self-test` records each probe's label <!-- doc-references: template-only -->
 and result, so the two ledgers show the label unchanged and its result gone `fail` to `pass`. <!-- doc-references: template-only -->
 <!-- 21/11/2026: the planned-red opt-in (19/11/2026 to 20/11/2026) was removed; both rules became review rules. -->
 

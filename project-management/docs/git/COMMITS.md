@@ -119,8 +119,9 @@ to a model that did not write it. The same applies to a PR body's generation foo
 A commit that deliberately records a failing probe ahead of its fix — test-first — is an
 **ordinary commit**: `test(<scope>): red probes — …`, no special trailer, and never
 `--no-verify`. No commit hook runs a self-test, so nothing refuses it; the self-tests run at push
-and in CI. Its body names what is red and the command that reproduces it, so a reviewer can
-replay it: the red commit exits `1` and its fix `0`, and the fix leaves the probe untouched
+and in CI — bar the two that need the toolchains or a generated project, which run in CI only.
+Its body names what is red and the command that reproduces it, so a reviewer can replay it: the
+red commit exits `1` and its fix `0`, and the fix leaves the probe untouched
 (`code/workflows/02-tdd-cycle/STEPS.md` Phase 1). Push the red commit together with its fix — a
 push of the red tip alone is refused, as any red tip is.
 <!-- 21/11/2026: replaced "The planned-red trailer" (19/11/2026 to 20/11/2026). Commits carrying a Planned-Red trailer stay as history; the mechanism behind it was removed because four review rounds each found a narrower bypass — the hook had to judge code the commit itself could change. -->

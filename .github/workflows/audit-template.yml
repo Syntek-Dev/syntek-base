@@ -64,6 +64,13 @@ jobs:
       - name: Prove the hook legs (plain checks at commit, self-tests at push)
         run: bash code/src/scripts/tests/template-hooks.sh
 
+      # The PM board and archive probes — the proof of the archive/ freeze — are the ninth
+      # self-test the push leg runs, and the one no required job ran: pm-boards.yml runs them too,
+      # but path-filtered, on the chain branches only, and as no required check. Here they run on
+      # every push to any branch, inside a required job (21/11/2026). git and python3 only.
+      - name: Prove the PM board and archive scripts (synthetic fixture)
+        run: bash code/src/scripts/tests/pm-boards.sh
+
   # The two documents that describe the template to whoever generates from it. Neither
   # has a consumer that fails when it goes stale: .copier/README.md is only read after
   # generation, and TEMPLATE-TOKENS.md is prose. Without this job they drift silently —
