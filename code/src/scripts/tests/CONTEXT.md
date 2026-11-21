@@ -42,6 +42,7 @@ code/src/scripts/tests/
 ├── pm-boards.sh              ← probes for the PM board and archive scripts, on a synthetic fixture
 ├── planned-red.sh            ← test-only, copier-excluded: probes the template's planned-red hook <!-- doc-references: template-only -->
 ├── server.sh                 ← start or manage the test stack containers
+├── template-hooks.sh         ← test-only, copier-excluded: probes the template's own hook shape <!-- doc-references: template-only -->
 ├── test-record.sh            ← generator: US### → 18-TESTS/AUTOMATED/ (writes OUTSIDE code/)
 └── reports/                  ← generated reports (all gitignored; sub-dirs below)
     ├── a11y/                 ← axe results from e2e-py.sh (created on demand)
@@ -206,8 +207,7 @@ runs. The `change-filter` fixture tests that decision offline against a scratch 
 `pm-archive.sh` and `pm-lib.sh` (`project-management/src/00-ASSETS/scripts/`) for the decisions,
 findings and bugs boards, on a synthetic `git init` holding **copies** of the three scripts — never
 a path back into this checkout. Host only, git and python3; exit `0` / `1` / `2` as below.
-`planned-red.sh` proves the template's `template-integrity` hook allowance in the same way, on a <!-- doc-references: template-only -->
-fixture of its own, template-only and copier-excluded; `audit-template.yml` runs it. <!-- Added 19/11/2026; CI 19/11/2026. -->
+`planned-red.sh` and `template-hooks.sh` prove the template's own hook legs the same way, template-only. <!-- doc-references: template-only --> <!-- 21/11/2026 -->
 
 ## --output flag
 
