@@ -11,8 +11,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 2     |
-| In Progress       | 1     |
-| In Review         | 0     |
+| In Progress       | 0     |
+| In Review         | 1     |
 | Accepted          | 4     |
 | Customer Review   | 0     |
 | Customer Accepted | 5     |
@@ -35,13 +35,13 @@ _None._
 
 ## In Progress
 
-| Plan                | Story                           | Title                                                                                    | Status      | File                                                                                             |
-| ------------------- | ------------------------------- | ---------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------ |
-| 10-STORY-PLAN-US010 | [US010](../02-STORIES/US010.md) | The seven register indexes are born seeded, and the map index leaves the file that ships | In Progress | [10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md](10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md) |
+_None._
 
 ## In Review
 
-_None._
+| Plan                | Story                           | Title                                                                                    | Status    | File                                                                                             |
+| ------------------- | ------------------------------- | ---------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------ |
+| 10-STORY-PLAN-US010 | [US010](../02-STORIES/US010.md) | The seven register indexes are born seeded, and the map index leaves the file that ships | In Review | [10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md](10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md) |
 
 ## Accepted
 

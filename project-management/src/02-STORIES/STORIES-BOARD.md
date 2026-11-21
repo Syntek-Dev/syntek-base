@@ -11,8 +11,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 2     |
-| In Progress       | 1     |
-| In Review         | 0     |
+| In Progress       | 0     |
+| In Review         | 1     |
 | Accepted          | 4     |
 | Customer Review   | 0     |
 | Customer Accepted | 5     |
@@ -35,13 +35,13 @@ _None._
 
 ## In Progress
 
-| ID    | Title                                                                                    | Status      | File                 |
-| ----- | ---------------------------------------------------------------------------------------- | ----------- | -------------------- |
-| US010 | The seven register indexes are born seeded, and the map index leaves the file that ships | In Progress | [US010.md](US010.md) |
+_None._
 
 ## In Review
 
-_None._
+| ID    | Title                                                                                    | Status    | File                 |
+| ----- | ---------------------------------------------------------------------------------------- | --------- | -------------------- |
+| US010 | The seven register indexes are born seeded, and the map index leaves the file that ships | In Review | [US010.md](US010.md) |
 
 ## Accepted
 
