@@ -22,7 +22,11 @@
 #
 #                    Five checks:
 #                      1. No copier.yml `_exclude` negation re-includes a `*-BOARD.md`: each
-#                         negation, unquoted, comment and block tags stripped, is matched as a
+#                         entry is DECODED by copier-commands.py as YAML decodes it (either quote
+#                         style, an escape such as `\x21`, a trailing comment dropped), and one it
+#                         cannot read as one string — a block scalar, a flow collection, a
+#                         mapping — is refused as a finding (round 10, 21/11/2026); each
+#                         negation, block tags stripped, is matched as a
 #                         glob against the eight landed board paths, not searched for a name —
 #                         under gitignore's rules: a slash-less pattern matches a component at
 #                         any depth, and a trailing slash re-includes the folder below it.
@@ -134,7 +138,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,99p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,103p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done
@@ -175,46 +179,37 @@ render() {
 FINDINGS=()
 finding() { FINDINGS+=("$1"); }
 
-# The `_exclude` negations, one per line, unquoted and stripped: the value after `- `, its
-# trailing ` # comment` dropped when unquoted, its quotes removed, every block tag (the copier
-# block delimiters, assembled from LT so no literal opener sits in this file) removed.
-negations() {
-  LT='<' python3 -I - "$1" <<'PYEOF'
-import os, re, sys
-lt = os.environ["LT"]
-block = re.compile(re.escape(lt + ":") + r".*?" + re.escape(":>"))
-on = False
-for line in open(sys.argv[1], encoding="utf-8"):
-    if re.match(r"^_exclude:", line):
-        on = True
-        continue
-    if on and re.match(r"^[A-Za-z_]+:", line):
-        break
-    m = re.match(r"^\s*-\s+(.*?)\s*$", line) if on else None
-    if not m:
-        continue
-    v = m.group(1)
-    if v[:1] in ("'", '"'):
-        q = v[0]
-        end = v.find(q, 1)
-        v = v[1:end] if end > 0 else v[1:]
-    else:
-        v = re.sub(r"\s+#.*$", "", v)
-    v = block.sub("", v).strip()
-    if v.startswith("!"):
-        print(v)
-PYEOF
+# The `_exclude` negations, one per line: copier-commands.py's DECODED entries (its X records,
+# round 10), every block tag (the copier block delimiters, assembled from LT so no literal opener
+# sits in this file) removed and the entry trimmed, those that then open with `!`.
+negations() { # reader output
+  local LT='<' v pre rest
+  while IFS= read -r v; do
+    while [[ "$v" == *"$LT:"*":>"* ]]; do
+      pre="${v%%"$LT:"*}"; rest="${v#*"$LT:"}"; rest="${rest#*":>"}"; v="$pre$rest"
+    done
+    v="${v#"${v%%[![:space:]]*}"}"; v="${v%"${v##*[![:space:]]}"}"
+    [[ "$v" == '!'* ]] && printf '%s\n' "$v"
+  done < <(sed -n 's/^X\t//p' <<< "$1")
+  return 0
 }
 
 run_checks() {
   FINDINGS=()
   local tasks others folder board seed c
 
+  # copier.yml, read once through copier-commands.py: every YAML scalar DECODED as YAML decodes it,
+  # an entry or a top-level shape it cannot read refused as an `E` record (a finding of its own).
+  local read_out
+  read_out=$(python3 -I "$SCRIPT_DIR/copier-commands.py" "$COPIER") \
+    || die "copier-commands.py could not read $COPIER"
+
   # ── 1. Nothing re-includes a board ───────────────────────────────────────────
-  # Every `_exclude` negation, read as copier reads it — either quote style or none, a trailing
-  # comment dropped, a block-tag conditional around it stripped — then tested as a GLOB against
-  # each of the eight landed board paths. A name test (`BOARD` in the entry) misses a glob that
-  # matches a board without naming one. One finding per negating entry.
+  # Every `_exclude` negation, read as copier reads it — DECODED by copier-commands.py (either
+  # quote style or none, an escape such as `\x21`, a trailing comment dropped; a block scalar or
+  # flow entry refused; round 10), a block-tag conditional around it stripped — then tested as a
+  # GLOB against each of the eight landed board paths. A name test (`BOARD` in the entry) misses a
+  # glob that matches a board without naming one. One finding per negating entry.
   local e g hit
   while IFS= read -r e; do
     [[ -z "$e" ]] && continue
@@ -224,16 +219,13 @@ run_checks() {
     done
     [[ -n "$hit" ]] \
       && finding "copier.yml _exclude re-includes a board ($e) — syntek-base's own rows would ship"
-  done < <(negations "$COPIER")
+  done < <(negations "$read_out")
 
-  # _tasks and _migrations, read through copier-commands.py — every scalar DECODED as YAML decodes
-  # it, a key repeated in one entry refused (round 8, 21/11/2026). `S` lines are the copy-gated
-  # task's raw lines (its `when:` decodes to the copy test and it carries the README move); `O`
-  # lines the decoded commands of every other task and migration; `E` an entry the reader refuses,
-  # a finding of its own, since check 2 cannot say what it runs.
-  local read_out
-  read_out=$(python3 -I "$SCRIPT_DIR/copier-commands.py" "$COPIER") \
-    || die "copier-commands.py could not read $COPIER"
+  # _tasks and _migrations, from the same read — every scalar DECODED as YAML decodes it, a key
+  # repeated in one entry refused (round 8, 21/11/2026). `S` lines are the `&&` steps of the
+  # copy-gated task's decoded command (its `when:` decodes to the copy test and it carries the
+  # README move; round 9); `O` lines the decoded commands of every other task and migration; `E`
+  # an entry or shape the reader refuses (checks 1 and 2 alike), a finding of its own.
   tasks=$(sed -n 's/^S\t//p' <<< "$read_out")
   local unwired=() step last named ub
   others=$(sed -n 's/^O\t//p' <<< "$read_out")

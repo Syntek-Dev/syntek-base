@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""copier-commands.py — the `_tasks` and `_migrations` commands of a copier.yml, decoded.
+"""copier-commands.py — the `_tasks` and `_migrations` commands of a copier.yml, decoded, and
+its `_exclude` entries (round 10).
 
-Read by shipped-boards.sh check 2 (run as `python3 -I`, standard library only: the project's
+Read by shipped-boards.sh checks 1 and 2 (run as `python3 -I`, standard library only: the project's
 python3 has no YAML library, and the pre-commit leg adds no dependency). It is a MINIMAL YAML
 reader for the shapes those two lists are written in, never a general parser:
 
@@ -38,6 +39,10 @@ Output, one record per line, tab-separated:
                     decodes to the copy test, and its command holds the README move), stripped,
                     a line break or tab in it written `\\n` / `\\t` — for check 2's wired test
   O <line>          a line of the decoded command of every other `_tasks` / `_migrations` entry
+  X <entry>         one `_exclude` entry, decoded — for check 1 (round 10, 21/11/2026). An entry
+                    that is not one line of one string (a block scalar, a flow collection, a
+                    mapping, a decoded line break) is an E record instead; an unquoted entry
+                    opening `!` (a tag to YAML) is read as the negation it looks like.
   E <message>       an entry this reader refuses
 
 Usage: python3 -I copier-commands.py COPIER_YML
@@ -370,6 +375,58 @@ def line_breaks(text: str, out: list[str]) -> None:
         )
 
 
+def section_of(lines: list[str], i: int) -> list[str]:
+    """The lines of the section whose key is on line i: up to the next column-0 line."""
+    j = i + 1
+    while j < len(lines) and (blank_or_comment(lines[j]) or lines[j].startswith(" ")):
+        j += 1
+    return lines[i + 1 : j]
+
+
+def exclude_entry(raw: list[str], seq: int, label: str) -> str:
+    """One `_exclude` entry, decoded — or refused when it is not one line of one string."""
+    head = raw[0][seq + 1 :].strip()
+    if head.startswith("!"):  # unquoted: a tag to YAML, a negation to the eye — read as one
+        if len(raw) > 1:
+            raise RefusedError("an unquoted `!` entry on more than one line")
+        return re.sub(r"\s+#.*$", "", head)
+    if head[:1] in "|>" and head:
+        raise RefusedError("a block scalar")
+    if head[:1] in "[{" and head:
+        raise RefusedError("a flow collection")
+    value = parse_item(raw, seq, label)
+    if not isinstance(value, str):
+        raise RefusedError("a mapping, not a string")
+    if "\n" in value:
+        raise RefusedError("a string holding a line break")
+    return value
+
+
+def exclude(lines: list[str], i: int, out: list[str]) -> None:
+    """`_exclude`, for check 1: X records of decoded entries, E for one it cannot read."""
+    tail = " — check 1 cannot read what it excludes, so it is a finding"
+    if re.sub(r"(^|\s)#.*$", "", lines[i][len("_exclude:") :]).strip()[:1] in ("!", "&", "*"):
+        return  # a tag, anchor or alias: top_level has refused it already, as the one finding
+    if not re.match(r"^_exclude\s*:\s*(#.*)?$", lines[i]):
+        out.append("E\tcopier.yml _exclude: is not a block sequence this reader knows" + tail)
+        return
+    section = section_of(lines, i)
+    body = [ln for ln in section if not blank_or_comment(ln)]
+    if not body:
+        return
+    seq = indent(body[0])
+    if any(indent(ln) < seq for ln in body):
+        out.append("E\tcopier.yml _exclude: a line left of its list" + tail)
+    for k, raw in items(section, seq):
+        try:
+            out.append("X\t" + exclude_entry(raw, seq, f"copier.yml _exclude entry {k}"))
+        except RefusedError as exc:
+            msg = str(exc)
+            if not msg.startswith("copier.yml"):
+                msg = f"copier.yml _exclude entry {k}: {msg}"
+            out.append(f"E\t{msg}{tail}")
+
+
 def main() -> int:
     try:
         with open(sys.argv[1], encoding="utf-8", newline="") as fh:
@@ -382,6 +439,9 @@ def main() -> int:
     lines = text.replace("\r\n", "\n").split("\n")
     keys = top_level(lines, out)
     for i, name in keys:
+        if name == "_exclude":
+            exclude(lines, i, out)
+            continue
         if name not in SECTIONS:
             continue
         if not re.match(r"^(_tasks|_migrations)\s*:\s*(#.*)?$", lines[i]):
@@ -390,10 +450,7 @@ def main() -> int:
                 "cannot read it"
             )
             continue
-        j = i + 1  # the section ends at the next column-0 line, a key or a refused shape
-        while j < len(lines) and (blank_or_comment(lines[j]) or lines[j].startswith(" ")):
-            j += 1
-        section = lines[i + 1 : j]
+        section = section_of(lines, i)  # ends at the next column-0 line, a key or a refused shape
         body = [ln for ln in section if not blank_or_comment(ln)]
         if not body:
             continue
