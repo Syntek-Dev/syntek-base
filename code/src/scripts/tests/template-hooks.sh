@@ -19,7 +19,9 @@
 #              the push when any is red or crashes (exit 2 read as a script error, never a pass);
 #              a deletion pushes nothing to judge; two refs are judged one by one; (round 6) a
 #              self-test absent from the commit is skipped with a notice, never a pass, while one
-#              present that exits 127 refuses; no ref lines at all is said, never silent.
+#              present that exits 127 refuses; no ref lines at all is said, never silent; (round 7)
+#              only a tip whose history never held the script is skipped — one that deletes it is
+#              refused, "deleted at <sha>".
 #   hostile    a local attribute that drops a file from the copy, a caller's `-c`, or a repository
 #              configuration that reshapes git's output, never makes a red commit read green.
 #   replay     `template-integrity.sh --self-tests <commit>` is the reviewer's replay of one
@@ -47,7 +49,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,40p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,42p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'template-hooks.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -145,8 +147,11 @@ build_fixture() {
     stub ".github/scripts/$s.sh"
   done
   stub code/src/scripts/tests/pm-boards.sh
-  stub code/src/scripts/tests/template-hooks.sh
   touch "$FX/stub/.keep"
+  # (round 7) A commit from before template-hooks.sh existed, so a tip can be genuinely older.
+  fgit add -A && fgit commit -q -m "before template-hooks.sh"
+  PRE_HOOKS_SHA="$(fgit rev-parse HEAD)"
+  stub code/src/scripts/tests/template-hooks.sh
   fgit add -A && fgit commit -q -m base
   fgit remote add origin "$REMOTE"
   fgit push -q origin main
@@ -221,15 +226,23 @@ check "the refusal names the red ref's commit" says "${RED2:0:12}"
 
 # (round 6) A self-test absent from the commit judged — a tip older than the script — is skipped
 # with a notice naming the commit: never a red, never counted as a pass. One present that exits
-# 127, or crashes, is still a failure.
-fgit checkout -q -b older main
-fgit rm -q code/src/scripts/tests/template-hooks.sh
-commit "a tip older than one self-test"
+# 127, or crashes, is still a failure. (round 7) The older tip is genuinely older — a branch from
+# before the script was added, so no commit in its history ever held it — and a tip that deletes
+# a script its history held is refused, never skipped.
+fgit checkout -q -b older "$PRE_HOOKS_SHA"
+fgit commit -q --allow-empty -m "a tip older than one self-test"
 OLDER="$(fgit rev-parse HEAD)"
 check "a tip without one listed self-test pushes" push older
 check "  and names it absent at that commit, skipped" says "template-hooks\.sh.*absent at ${OLDER:0:12} — skipped"
 check "  and never counts it as a pass" bash -c '! grep -qE "✓.*template-hooks" "$1"' _ "$OUT"
 check "  and the others still ran" ran 'self-test'
+fgit checkout -q -b deleted main
+fgit rm -q code/src/scripts/tests/template-hooks.sh
+commit "a tip that deletes one self-test"
+DELETED="$(fgit rev-parse HEAD)"
+check "a tip that deletes a listed self-test its history held is refused" refused push deleted
+check "  and the refusal names it deleted at that commit" says "template-hooks\.sh.*deleted at ${DELETED:0:12}"
+check "  and never reads it as absent and skipped" bash -c '! grep -q "absent at" "$1"' _ "$OUT"
 fgit checkout -q -b exit127 main
 set_stub register-index-routes self-test 127
 commit "a self-test that exits 127"
@@ -286,6 +299,8 @@ echo "replay"
 replay() { (cd "$FX" && bash .github/scripts/template-integrity.sh --self-tests "$1") > "$OUT" 2>&1; }
 check "--self-tests replays a red probe's commit as exit 1" rc_is 1 replay "$RED_SHA"
 check "--self-tests replays its fix as exit 0" replay "$GREEN_SHA"
+check "--self-tests replays a commit deleting a self-test as exit 1" rc_is 1 replay "$DELETED"
+check "--self-tests replays a genuinely older commit as exit 0" replay "$OLDER"
 
 printf '\n%d passed, %d failed\n' "$PASSES" "$FAILS"
 [[ $FAILS -eq 0 ]]
