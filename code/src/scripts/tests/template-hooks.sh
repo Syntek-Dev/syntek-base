@@ -223,7 +223,17 @@ fgit config core.autocrlf true
 fgit config color.ui always
 check "a repository's autocrlf and colour settings leave the red tip red" refused push side
 fgit config --unset core.autocrlf; fgit config --unset color.ui
-check "a caller's -c options leave the red tip red" refused -c core.autocrlf=true -c color.ui=always push side
+# A caller's `-c` reaches the hook as GIT_CONFIG_PARAMETERS. `tar.umask` is pinned nowhere, so
+# only stripping that variable keeps it out of `git archive`: let through, it drops the stubs'
+# execute bits, the copy's tree check refuses before any self-test runs, and the probes below see
+# a refusal for the wrong reason (round 6: the probe ran `-c` as a command and could not fail).
+caller_c_push() {
+  : > "$LOG"
+  fgit -c core.autocrlf=true -c color.ui=always -c tar.umask=0111 push origin side > "$OUT" 2>&1
+}
+check "a caller's -c options leave the red tip red" refused caller_c_push
+check "  and the self-tests still ran, in a copy of the commit" ran 'self-test'
+check "  and the refusal names the red self-test" says 'shipped-readme'
 # The staged read at pre-commit: a staged detector with an unstaged change beside it is refused,
 # whatever colour, external diff or relative setting the repository carries.
 fgit checkout -q main
