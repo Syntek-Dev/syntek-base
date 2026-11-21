@@ -915,17 +915,17 @@ deduplicated into A to I below. Sam's rulings of 21/11/2026 bind three of them: 
 make `pm-boards.sh` a real gate; **E** skip a self-test absent from the judged commit with a
 notice; **I** add code owners. Each red is an ordinary commit ahead of its fix.
 
-| #   | Finding (sources)                                                                                                                                                   | Disposition                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Red → fix                             |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| A   | `template-hooks.sh`'s "a caller's -c options leave the red tip red" ran `-c` as a command (127), so it could not fail (CR-M1)                                       | Fixed: the push runs through `git -c core.autocrlf=true -c color.ui=always -c tar.umask=0111 push origin side`, and the probe now also requires that the self-tests ran and the refusal line `shipped-readme.sh --self-test — exit 1`. `tar.umask` is pinned nowhere, so only `g()` stripping `GIT_CONFIG_PARAMETERS` keeps it out of `git archive`. The code under test was already correct, so **no red commit exists**; the red is shown by mutation (below)                                                                                                                                                                                     | `4fcb0661`, `2c97121c` (mutation red) |
-| B   | "CI runs every self-test on every push, the check of record" was false for `pm-boards.sh` — path-filtered, chain branches only, not required (Sec-M1, CR-L1, QA-L4) | Fixed, option (a): `pm-boards.sh` is a step of `audit-template.yml` `[1/4] Template Tokens` — every branch, no path filter, already a required check on `main`, so **no new check name**. `pm-boards.yml` keeps its run (it ships; a generated project has no `audit-template.yml`). A shape probe requires every `SELF_TESTS` entry as a step there. Wording corrected in `template-integrity.sh`, `lefthook.yml` (the _ONLY THE CHEAP HALF_ block included), `COMMITS.md` and `02-tdd-cycle/STEPS.md`; `check-template-parsers.sh` and `shipped-artefacts.sh` self-tests stated CI-only (toolchains; a generated project — neither cheap at push) | `76e6e5ec` → `01ae497f`               |
-| C   | Check 2 missed a glob, `//`, `/./` or `..` in the `.copier` name; the header overclaimed (CR-L2, QA-L2, Sec-L1)                                                     | Fixed: each word of an ungated task line is read as a path — `$'…'`/`$"…"` unquoted, `//` and `/./` collapsed, `..` resolved lexically, and a component opening with `.` matched against `.copier` as a glob, by pattern match only (no `eval`). The header's residual is now exact: a name built at run time, a `..` through a symlink, a component opening with a wildcard (which `sh` never matches against a leading dot)                                                                                                                                                                                                                       | `2ec575a2` → `dcf4f663`               |
-| D   | `pm-boards.sh` read the host's global git config, so `5c1c418b`'s recorded red depended on the host (CR-L4, QA-L5, Sec-L2)                                          | Fixed: it exports `GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1` and unsets the location and `-c` variables, as `template-hooks.sh` does. The round-5 reading is corrected above: **2 of 109** failed at `5c1c418b` in a clean environment, the autocrlf probe a real red fixed at `c676e5f2` (replayed 21/11/2026)                                                                                                                                                                                                                                                                                                                            | `273c0f26`                            |
-| E   | Pre-push and `--self-tests <sha>` read a `SELF_TESTS` script absent from the judged commit as red, exit 127 (CR-L3, QA-L3)                                          | Fixed, by Sam's ruling: an absent script is printed `absent at <sha> — skipped (not run, not a pass)` and counted in no total; a present one exiting 127 or crashing still refuses (that probe a guard). The summary reads `<n> run, <n> red, <n> absent and skipped`. `02-tdd-cycle/STEPS.md`'s replay paragraph says so                                                                                                                                                                                                                                                                                                                           | `90956566` → `4f7ac7e7`               |
-| F   | A repository-local `log.diffMerges` (`combined`, `dense-combined`, `off`) hid a deletion inside a merge from `--check` (QA-L1)                                      | Fixed: `archive_events()` names `--diff-merges=separate`, and `GIT_PIN` pins `log.diffMerges=separate`; three repo-config probes added beside the caller-config one                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `8e673918` → `7b91945c`               |
-| G   | `--pre-push` with no ref lines passed silently (Sec-L3)                                                                                                             | Fixed: no pushed commit (a deletion only, or empty stdin) prints `no pushed commit to judge` and exits 0; the deletion probe kept, and now reads the notice                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `90956566` → `4f7ac7e7`               |
-| H   | Round-5 record lines overstated red-first (QA-L5)                                                                                                                   | Corrected in place with dated amendments: the round-5 intro, the `1fe46f26` and `5c1c418b` rows, and the first deviation (27 of `template-hooks.sh`'s 33 probes never ran red; the hostile-config probe at `1fe46f26` was a guard)                                                                                                                                                                                                                                                                                                                                                                                                                  | this record                           |
-| I   | The check of record lives in the tree it judges, and `main` requires no code-owner review (Sec-L4)                                                                  | Done, by Sam's ruling. `.github/CODEOWNERS` already existed (`*` and `/.github/`), owned by the repository's one admin — the login read from the collaborators API, no teams — and `copier.yml` already excludes it, so it never ships and needs no token. It now names `code/src/scripts/tests/`, `project-management/src/00-ASSETS/scripts/` and `lefthook.yml` too. It binds nothing until `main`'s ruleset sets `require_code_owner_review`: Sam's change, command in his hand-off                                                                                                                                                              | `96d94e7d`                            |
+| #   | Finding (sources)                                                                                                                                                   | Disposition                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Red → fix                             |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| A   | `template-hooks.sh`'s "a caller's -c options leave the red tip red" ran `-c` as a command (127), so it could not fail (CR-M1)                                       | Fixed: the push runs through `git -c core.autocrlf=true -c color.ui=always -c tar.umask=0111 push origin side`, and the probe now also requires that the self-tests ran and the refusal line `shipped-readme.sh --self-test — exit 1`. `tar.umask` is pinned nowhere, so only `g()` stripping `GIT_CONFIG_PARAMETERS` keeps it out of `git archive`. The code under test was already correct, so **no red commit exists**; the red is shown by mutation (below)                                                                                                                                                                                                                                                                                                                                                                          | `4fcb0661`, `2c97121c` (mutation red) |
+| B   | "CI runs every self-test on every push, the check of record" was false for `pm-boards.sh` — path-filtered, chain branches only, not required (Sec-M1, CR-L1, QA-L4) | Fixed, option (a): `pm-boards.sh` is a step of `audit-template.yml` `[1/4] Template Tokens` — every branch, no path filter, already a required check on `main`, so **no new check name**. `pm-boards.yml` keeps its run (it ships; a generated project has no `audit-template.yml`). A shape probe requires every `SELF_TESTS` entry as a step there. Wording corrected in `template-integrity.sh`, `lefthook.yml` (the _ONLY THE CHEAP HALF_ block included), `COMMITS.md` and `02-tdd-cycle/STEPS.md`; `check-template-parsers.sh` and `shipped-artefacts.sh` self-tests stated CI-only (toolchains; a generated project — neither cheap at push)                                                                                                                                                                                      | `76e6e5ec` → `01ae497f`               |
+| C   | Check 2 missed a glob, `//`, `/./` or `..` in the `.copier` name; the header overclaimed (CR-L2, QA-L2, Sec-L1)                                                     | Fixed: each word of an ungated task line is read as a path — `$'…'`/`$"…"` unquoted, `//` and `/./` collapsed, `..` resolved lexically, and a component opening with `.` matched against `.copier` as a glob, by pattern match only (no `eval`). The header's residual is now exact: a name built at run time, a `..` through a symlink, a component opening with a wildcard (which `sh` never matches against a leading dot). _Amended 21/11/2026 (round 7, R7-1) — was exact for the shapes read; why: the rewrite stopped reading a path behind `=` (`F=.copier/…`, `dd if=`, `--opt=`), which round 5 caught — a regression no probe covered; fixed in round 7_                                                                                                                                                                      | `2ec575a2` → `dcf4f663`               |
+| D   | `pm-boards.sh` read the host's global git config, so `5c1c418b`'s recorded red depended on the host (CR-L4, QA-L5, Sec-L2)                                          | Fixed: it exports `GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1` and unsets the location and `-c` variables, as `template-hooks.sh` does. The round-5 reading is corrected above: **2 of 109** failed at `5c1c418b` in a clean environment, the autocrlf probe a real red fixed at `c676e5f2` (replayed 21/11/2026)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `273c0f26`                            |
+| E   | Pre-push and `--self-tests <sha>` read a `SELF_TESTS` script absent from the judged commit as red, exit 127 (CR-L3, QA-L3)                                          | Fixed, by Sam's ruling: an absent script is printed `absent at <sha> — skipped (not run, not a pass)` and counted in no total; _amended 21/11/2026 (round 7, R7-2) — was: "counted in no total"; why: it is counted, in its own `absent and skipped` total, never in `run` or `red`; and "absent" read a tip that deletes the script the same as an older one, wider than the ruling — round 7 refuses a deletion_; a present one exiting 127 or crashing still refuses (that probe a guard). The summary reads `<n> run, <n> red, <n> absent and skipped`. `02-tdd-cycle/STEPS.md`'s replay paragraph says so                                                                                                                                                                                                                           | `90956566` → `4f7ac7e7`               |
+| F   | A repository-local `log.diffMerges` (`combined`, `dense-combined`, `off`) hid a deletion inside a merge from `--check` (QA-L1)                                      | Fixed: `archive_events()` names `--diff-merges=separate`, and `GIT_PIN` pins `log.diffMerges=separate`; three repo-config probes added beside the caller-config one                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | `8e673918` → `7b91945c`               |
+| G   | `--pre-push` with no ref lines passed silently (Sec-L3)                                                                                                             | Fixed: no pushed commit (a deletion only, or empty stdin) prints `no pushed commit to judge` and exits 0; the deletion probe kept, and now reads the notice                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | `90956566` → `4f7ac7e7`               |
+| H   | Round-5 record lines overstated red-first (QA-L5)                                                                                                                   | Corrected in place with dated amendments: the round-5 intro, the `1fe46f26` and `5c1c418b` rows, and the first deviation (27 of `template-hooks.sh`'s 33 probes never ran red; the hostile-config probe at `1fe46f26` was a guard)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | this record                           |
+| I   | The check of record lives in the tree it judges, and `main` requires no code-owner review (Sec-L4)                                                                  | Done, by Sam's ruling. `.github/CODEOWNERS` already existed (`*` and `/.github/`), owned by the repository's one admin — the login read from the collaborators API, no teams — and `copier.yml` already excludes it, so it never ships and needs no token. It now names `code/src/scripts/tests/`, `project-management/src/00-ASSETS/scripts/` and `lefthook.yml` too. It binds nothing until `main`'s ruleset sets `require_code_owner_review`: Sam's change, command in his hand-off. _Amended 21/11/2026 (round 7, R7-3) — the code-owner `gh api` command is **withdrawn**, by Sam's ruling: the sole owner cannot approve their own pull request, so requiring code-owner review would send every merge through the admin bypass, which skips the required checks too. CODEOWNERS stays; `require_code_owner_review` stays `false`_ | `96d94e7d`                            |
 
 **Noted, not findings:** the push leg omitting two self-tests is resolved under B (both stay CI-only,
 each needing what a push cannot cheaply provide). **The ~460 MB per pushed tip is confirmed and
@@ -937,9 +937,9 @@ which is the isolation the copies exist for. An absent script now costs no copy.
 **The window that remains (B, I) — recorded here for gate 22's TM-15 implementation record,** the
 planning model being frozen (`10-SECURITY/THREAT-MODEL/PLANNING/CLAUDE.md`): only `main` is
 protected, so a red or weakened tip can reach `dev`, `staging` or `testing` and stops at a merge
-into `main`; a pushed commit can still edit the workflow or `SELF_TESTS` that judges it; and with
+into `main` (_amended 21/11/2026, round 7, R7-4 — was: "stops at a merge into `main`"; why: `main`'s bypass actor, the admin role in mode `always`, can merge or push past the required checks, so it reaches `main` that way too_); a pushed commit can still edit the workflow or `SELF_TESTS` that judges it; and with
 one code owner, who cannot approve their own pull request, an owner review binds outside
-contributors only — the owner merges through the admin bypass. A self-test gutted so that it stays
+contributors only — the owner merges through the admin bypass (_amended 21/11/2026, round 7, R7-3 — code-owner review is not enabled, by Sam's ruling, so it binds no one; and the bypass skips the required checks as well as review_). A self-test gutted so that it stays
 green is still review's alone.
 
 **Reds and how to reproduce them** (`bash .github/scripts/template-integrity.sh --self-tests <sha>`
@@ -972,7 +972,7 @@ code/src/scripts/tests/template-hooks.sh` there with its own `TMPDIR`: **33 pass
   and G's deletion probe's base half.
 - **The TM-15 mitigation and the remaining window are recorded here, not in the threat model**,
   whose planning half is frozen once the sprint began; the implementation record is gate 22's.
-- **The `gh api` ruleset change is not made here** — outward-facing, and Sam's.
+- **The `gh api` ruleset change is not made here** — outward-facing, and Sam's. _Amended 21/11/2026 (round 7, R7-3): that code-owner change is withdrawn — see row I._
 - **TM-15 did not fire this round:** no fix commit touches a probe — `7b91945c`, `4f7ac7e7` and
   `01ae497f` change no file holding one, and `dcf4f663`'s hunks (`git diff -U0 2ec575a2 dcf4f663`)
   are the header, `--help`, a new helper and `run_checks`, none in `self_test()`. `4fcb0661` and `2c97121c`
@@ -999,6 +999,156 @@ code/src/scripts/tests/template-hooks.sh` there with its own `TMPDIR`: **33 pass
 | Prettier over the edited YAML (`format.sh --file-type yaml --path`)             | 0    | `audit-template.yml`, `lefthook.yml`                                                                                                                                                               |
 | actionlint                                                                      | —    | **unmeasured**: no `code/src/scripts/**` script runs it, so it was not run                                                                                                                         |
 | `[1/4]` with the new `pm-boards.sh` step, and the `[3/4]` render                | —    | **not run**: they need CI                                                                                                                                                                          |
+
+### Fix round 7 — 21/11/2026
+
+The three round-6 reviews (code review, QA re-attack, security review, in that order) were
+deduplicated into R7-1 to R7-8 below. Sam's rulings of 21/11/2026 bind three of them: **R7-3** keep
+`.github/CODEOWNERS` and do not enable code-owner review; **R7-4** correct every claim that a red
+tip cannot reach `main`, and Sam sets the strict required-checks policy himself; **R7-5** move the
+real archive freeze into a required job. Each red is an ordinary commit ahead of its fix; the
+replay of every pair is in the reds table below.
+
+- **R7-1 — check 2 missed a `.copier` path behind `=` (all three reviews, MEDIUM; a regression
+  from `dcf4f663`).** Fixed: `seed_any` reads each word whole and as each span an `=`, `,` or `:`
+  bounds, each through `seed_word` — `F=.copier/…; mv "$F" x`, `dd if=`, `--no-target-directory=`,
+  a comma or a colon list, and `tar --directory=.copier` / `rsync src=.copier/` (the bare
+  directory, a finding per board). The separators are read even where quoted (the quotes are gone
+  by then), so the reading errs towards a finding. A second pair adds a short option's glued value
+  (`tar -C.copier`, `tar -xC.copier`). The `.copierx` false-positive fix is kept, now under a
+  guard probe. The header's residual list is exact: a name built at run time, a `..` through a
+  symlink, a wildcard-led component, and a name a program composes from its own syntax beyond
+  these (an argument file, a long option's value glued on without `=`). Red `d7dc4134` → fix
+  `4a84db5e`; red `36b361f0` → fix `1fe4c8af`. Reproduce:
+  `bash .github/scripts/shipped-boards.sh --self-test`.
+- **R7-2 — the push leg skipped a tip that deletes a listed self-test (QA M1, CR L2, Sec L1).**
+  Fixed: a script the judged commit lacks is skipped with the absent notice only when
+  `git rev-list -1 --full-history <sha> -- <path>` is empty (under `g()`'s pinned git); one its
+  history held is printed `deleted at <sha> (its history held it) — a red, never a skip` and
+  refuses. `template-hooks.sh`'s fixture now holds a commit from before `template-hooks.sh`
+  existed, so the "older" probe branches from it and is genuinely older; a "deleted in a
+  descendant refuses" probe and its `--self-tests` replay were added red. Header, `--help` and
+  `code/workflows/02-tdd-cycle/STEPS.md` updated; row E's "counted in no total" amended above.
+  Red `6024d4fa` → fix `b3abbf94`. Reproduce: `bash code/src/scripts/tests/template-hooks.sh`.
+- **R7-3 — code-owner review would force every merge through the bypass (Sec M3; CR L1, QA L2,
+  Sec L3 for the comment).** By Sam's ruling, `.github/CODEOWNERS` stays and
+  `require_code_owner_review` stays `false`: the sole owner cannot approve their own pull request,
+  so every merge would need the admin bypass, which skips the required checks too. The round-6
+  code-owner `gh api` command is **withdrawn** (row I and the deviation amended above). The comment
+  now says the last matching line wins, so these lines override earlier ones only and must stay
+  last; `/code/src/scripts/audits/` and `/.claude/hooks/` are named. Commit `0fb55d2c`; no probe
+  (CODEOWNERS has no executable reading).
+- **R7-4 — "a red tip can never reach `main`" was false (Sec M1).** Corrected in
+  `template-integrity.sh`'s header, `lefthook.yml`'s push-leg comment, `template-hooks.sh`'s shape
+  comment and the round-6 window paragraph above: only `main` is protected, and ruleset
+  `20221742`'s bypass actor (RepositoryRole 5, admin, `bypass_mode: always`) can merge or push past
+  the required checks. The strict policy is **pending Sam's command** (below); the docs say
+  "pending" until he confirms, never "set". Commit `e32f9d10`; the guide amendments are this
+  record. A repository-wide `git grep` for "never main", "merge into main must", "stops at a
+  merge", "check of record" and "reach main" found no other hit outside history records.
+- **R7-5 — the real archive freeze ran only in the path-filtered, unrequired `pm-boards.yml` (Sec
+  L4).** Fixed, by Sam's ruling: `pm-board.sh --check` is a step of `audit-template.yml`
+  `[1/4] Template Tokens`, whose checkout gains `fetch-depth: 0`. `[1/4]` had the default depth-1
+  checkout, and `--check` fails closed on a shallow or one-commit history — measured on a
+  one-commit scratch copy of `94e68dcb` (`git archive`, own `git init`):
+  exit 1, 25 archived files named "added in the root commit". `pm-boards.yml` keeps its own run,
+  because it ships. **`--warn` is not added:** it is advisory and always exits 0, so a required
+  job gains nothing from it. Red `94e68dcb` → fix `52353c90`. Reproduce:
+  `bash code/src/scripts/tests/template-hooks.sh`.
+- **R7-6 — the CI shape probe proved text presence only (CR L3, QA L1, Sec L2).** Tightened, not
+  narrowed: a `python3 -I` line parse of the workflow's fixed indentation (no YAML library) reads
+  each step's job name, `if:` and `continue-on-error` on the step and its job, the job's checkout
+  depth, and which `on:` event owns `branches: ["**"]`. Every `SELF_TESTS` step and
+  `pm-board.sh --check` must sit in a job named as one of the four required `[n/4]` contexts,
+  unconditioned, the freeze's job at full depth; the round-6 presence probes are kept. The names,
+  not the live ruleset, stand for "required". The `SELF_TESTS` and `on.push` probes were green at
+  their red commit `94e68dcb` (the workflow was already right), so their red is by mutation —
+  below.
+- **R7-7 — two docs said `pm-boards.yml` alone runs `pm-boards.sh` (QA L3).** Both now name
+  `audit-template.yml`'s `[1/4]` caller under the `template-only` marker: the script's header and
+  `code/src/scripts/tests/CONTEXT.md`'s CI table (one row, the count line folded, so the file stays
+  under the 270 ratchet). Commit `7b0183dd`.
+- **R7-8 — no CI run of rounds 5 to 7 exists.** The branch is unpushed (`git ls-remote` shows
+  `main` only), so `[1/4]` running `pm-boards.sh` and `pm-board.sh --check` at full depth, and the
+  `[3/4]` render, are **unmeasured — pending the push**. To be filled after it: the run URL, the
+  head SHA, and each `[n/4]` job's conclusion.
+
+**The strict policy — Sam's command, not run here.** Built from the live ruleset read
+21/11/2026 (`gh api` GET only). A `PUT` replaces every rule, so it carries all four rules and all
+27 required checks, changing one value:
+
+```bash
+gh api repos/Syntek-Dev/syntek-base/rulesets/20221742 \
+  | jq '{name,target,enforcement,conditions,bypass_actors,rules:(.rules|map(if .type=="required_status_checks" then .parameters.strict_required_status_checks_policy=true else . end))}' \
+  | gh api -X PUT repos/Syntek-Dev/syntek-base/rulesets/20221742 --input -
+```
+
+The `jq` step dry-run against the live JSON (no `PUT`), `diff -u` of the before and after bodies:
+
+```diff
+@@ -48,7 +48,7 @@
+     {
+       "type": "required_status_checks",
+       "parameters": {
+-        "strict_required_status_checks_policy": false,
++        "strict_required_status_checks_policy": true,
+         "do_not_enforce_on_create": false,
+         "required_status_checks": [
+```
+
+That is the only difference: 4 rules and 27 checks in both, and the bodies hash identically once the
+one value is reset. The `pull_request` rule's GET-only-looking keys (`dismissal_restriction`,
+`require_extra_approval_for_unattributed_changes`) travel as read; if the `PUT` rejects them it
+returns 422 and nothing changes. Afterwards,
+`gh api repos/Syntek-Dev/syntek-base/rulesets/20221742 --jq '.rules[] | select(.type=="required_status_checks") | .parameters.strict_required_status_checks_policy'`
+should print `true`. Strict makes a pull request's branch current with `main` before it merges;
+the admin bypass can still skip it. **Status: pending Sam's command** — recorded "set by Sam on
+<date>" only once he confirms.
+
+**Reds and how to reproduce them** (`bash .github/scripts/template-integrity.sh --self-tests <sha>`
+from any checkout, or `git checkout <sha>` and the named script):
+
+| Red        | Command                                              | Reading at the red                                                                         | Reading at the fix            |
+| ---------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------ | ----------------------------- |
+| `d7dc4134` | `bash .github/scripts/shipped-boards.sh --self-test` | exit 1: exactly the 7 new `=`/`,`/`:` probes fail; the `.copierx` guard passes             | `4a84db5e`: exit 0, 59 probes |
+| `36b361f0` | `bash .github/scripts/shipped-boards.sh --self-test` | exit 1: exactly the 2 new short-option probes fail                                         | `1fe4c8af`: exit 0, 61 probes |
+| `6024d4fa` | `bash code/src/scripts/tests/template-hooks.sh`      | exit 1: 4 of 52 failed — the three "deleted at" push probes and the deleting-commit replay | `b3abbf94`: exit 0, 52 passed |
+| `94e68dcb` | `bash code/src/scripts/tests/template-hooks.sh`      | exit 1: 1 of 55 failed — `pm-board.sh --check` is no step of a required job at full depth  | `52353c90`: exit 0, 55 passed |
+
+Each pair was also replayed through `template-integrity.sh --self-tests <sha>` on 21/11/2026: every
+red exits 1 with only its own self-test red (`9 run, 1 red, 0 absent and skipped`), every fix exits
+0 (`9 run, 0 red, 0 absent and skipped`), 61 to 72 s each.
+
+**R7-6's red, by mutation** (no red commit can exist — the workflow was already right): each
+mutation applied to `audit-template.yml` in a `git archive 52353c90` copy in a `mktemp -d`, then
+`bash code/src/scripts/tests/template-hooks.sh` there with its own `TMPDIR`. The round-6 presence
+probes ("runs every self-test", "on a push to any branch") stay **green** under every one — the
+blindness the finding named:
+
+| Mutation                                                | Reading                                                               |
+| ------------------------------------------------------- | --------------------------------------------------------------------- |
+| `if: false` on the `pm-boards.sh` step                  | exit 1, 54/1 — "every listed self-test is a step of a required … job" |
+| `continue-on-error: true` on the `[2/4]` job            | exit 1, 54/1 — the same probe                                         |
+| `branches: ["**"]` moved from `push` to `pull_request`  | exit 1, 54/1 — "the branches line is on.push's own"                   |
+| `[1/4]` renamed `Template Tokens` (no required context) | exit 1, 53/2 — both required-job probes                               |
+| `[1/4]` checkout at `fetch-depth: 1`                    | exit 1, 54/1 — "pm-board.sh --check … with full history"              |
+
+**Deviations, recorded rather than repaired:**
+
+- **Guards, green at their red:** R7-1's `.copierx` probe (the round-6 false-positive fix, newly
+  pinned); R7-2's "replays a genuinely older commit as exit 0"; R7-6's `SELF_TESTS` and `on.push`
+  probes (mutation red above).
+- **R7-2's red commit changes an existing probe's set-up:** the "older" probe now branches from the
+  fixture's pre-`template-hooks.sh` commit rather than deleting the script from `main`. Its
+  expectations are unchanged and it is stronger (it now tests the case the ruling covers); no
+  check changed beside it, so TM-15 did not fire.
+- **TM-15 did not fire this round:** no fix commit touches a probe — `4a84db5e`'s and `1fe4c8af`'s
+  hunks (`git diff -U0`) are the header, `--help`, `seed_word`/`seed_any` and `run_checks`, all
+  above `self_test()` (line 374 and 379); `b3abbf94` changes `template-integrity.sh` and
+  `STEPS.md`; `52353c90` the workflow. `e32f9d10` edits a comment in `template-hooks.sh` only.
+- **The TM-15 mitigation, the bypass and the strict policy are recorded here, not in the threat
+  model,** whose planning half is frozen; the implementation record is gate 22's.
+- **No GitHub setting was changed:** the ruleset was read, never written.
 
 ## Journeys
 
