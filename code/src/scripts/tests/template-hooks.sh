@@ -231,8 +231,12 @@ build_fixture() {
   stub code/src/scripts/tests/pm-boards.sh
   touch "$FX/stub/.keep"
   # (round 7) A commit from before template-hooks.sh existed, so a tip can be genuinely older.
+  # (round 8) The older tip is the very parent of the commit that adds the script — an ancestor
+  # of it, which is the one shape the push leg reads as absent rather than deleted.
   fgit add -A && fgit commit -q -m "before template-hooks.sh"
   PRE_HOOKS_SHA="$(fgit rev-parse HEAD)"
+  fgit commit -q --allow-empty -m "a tip older than one self-test"
+  OLDER="$(fgit rev-parse HEAD)"
   stub code/src/scripts/tests/template-hooks.sh
   fgit add -A && fgit commit -q -m base
   fgit remote add origin "$REMOTE"
@@ -311,9 +315,7 @@ check "the refusal names the red ref's commit" says "${RED2:0:12}"
 # 127, or crashes, is still a failure. (round 7) The older tip is genuinely older — a branch from
 # before the script was added, so no commit in its history ever held it — and a tip that deletes
 # a script its history held is refused, never skipped.
-fgit checkout -q -b older "$PRE_HOOKS_SHA"
-fgit commit -q --allow-empty -m "a tip older than one self-test"
-OLDER="$(fgit rev-parse HEAD)"
+fgit checkout -q -b older "$OLDER"
 check "a tip without one listed self-test pushes" push older
 check "  and names it absent at that commit, skipped" says "template-hooks\.sh.*absent at ${OLDER:0:12} — skipped"
 check "  and never counts it as a pass" bash -c '! grep -qE "✓.*template-hooks" "$1"' _ "$OUT"
@@ -325,6 +327,29 @@ DELETED="$(fgit rev-parse HEAD)"
 check "a tip that deletes a listed self-test its history held is refused" refused push deleted
 check "  and the refusal names it deleted at that commit" says "template-hooks\.sh.*deleted at ${DELETED:0:12}"
 check "  and never reads it as absent and skipped" bash -c '! grep -q "absent at" "$1"' _ "$OUT"
+# (round 8) Rewritten histories that hide the deletion from a history walk: an orphan tip of the
+# deleting tree, a commit-tree squash of it onto a commit from before the script, a replace-graft
+# that cuts the deleting commit off its parents, and a shallow clone. None is an ancestor of the
+# commit that added the script, so each is a deletion — or, shallow, refused outright.
+fgit checkout -q --orphan orphan "$DELETED"
+commit "an orphan tip of the deleting tree"
+ORPHAN="$(fgit rev-parse HEAD)"
+check "an orphan tip lacking a listed self-test is refused" refused push orphan
+check "  and the refusal names it deleted at that commit" says "template-hooks\.sh.*deleted at ${ORPHAN:0:12}"
+SQUASH="$(fgit commit-tree "$DELETED^{tree}" -p "$PRE_HOOKS_SHA" -m "a squash of the deleting tree")"
+fgit branch -q squash "$SQUASH"; fgit checkout -q squash
+check "a commit-tree squash onto a pre-script commit is refused" refused push squash
+check "  and the refusal names it deleted at that commit" says "template-hooks\.sh.*deleted at ${SQUASH:0:12}"
+fgit checkout -q main
+fgit replace --graft "$DELETED"
+graft_replay() { (cd "$FX" && bash .github/scripts/template-integrity.sh --self-tests "$DELETED") > "$OUT" 2>&1; }
+check "a replace-graft cutting the deleting commit off its parents still reads it red" rc_is 1 graft_replay
+check "  and names it deleted, not absent" says "template-hooks\.sh.*deleted at ${DELETED:0:12}"
+fgit replace -d "$DELETED" >/dev/null
+git clone -q --depth 1 --branch deleted "file://$FX" "$TMP/shallow" 2>/dev/null
+shallow_replay() { (cd "$TMP/shallow" && bash .github/scripts/template-integrity.sh --self-tests HEAD) > "$OUT" 2>&1; }
+check "--self-tests in a shallow clone is refused" rc_is 1 shallow_replay
+check "  and the refusal names the shallow history" says 'shallow'
 fgit checkout -q -b exit127 main
 set_stub register-index-routes self-test 127
 commit "a self-test that exits 127"
