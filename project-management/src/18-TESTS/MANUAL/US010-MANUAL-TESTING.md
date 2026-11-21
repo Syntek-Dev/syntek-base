@@ -1049,7 +1049,8 @@ replay of every pair is in the reds table below.
   comment and the round-6 window paragraph above: only `main` is protected, and ruleset
   `20221742`'s bypass actor (RepositoryRole 5, admin, `bypass_mode: always`) can merge or push past
   the required checks. The strict policy is **pending Sam's command** (below); the docs say
-  "pending" until he confirms, never "set". Commit `e32f9d10`; the guide amendments are this
+  "pending" until he confirms, never "set" (_amended 21/11/2026 (final pass): set 21/11/2026, read
+  back under Final fix pass_). Commit `e32f9d10`; the guide amendments are this
   record. A repository-wide `git grep` for "never main", "merge into main must", "stops at a
   merge", "check of record" and "reach main" found no other hit outside history records.
 - **R7-5 — the real archive freeze ran only in the path-filtered, unrequired `pm-boards.yml` (Sec
@@ -1117,7 +1118,7 @@ should print `true`. Strict makes a pull request's branch current with `main` be
 the admin bypass can still skip it. **Status: pending Sam's command** — recorded "set by Sam on
 <date>" only once he confirms. _Superseded 21/11/2026 (round 8, R8-1): run the combined command
 under Fix round 8 instead — it sets strict, restricts the merge methods to merge and rebase, and
-drops the two `"parameters": null` keys this one sent (CR L4)._
+drops the two `"parameters": null` keys this one sent (CR L4)._ _Amended 21/11/2026 (final pass): set 21/11/2026 — the end state, by round 9's command (a) and round 10's (b); read back under Final fix pass._
 
 **Reds and how to reproduce them** (`bash .github/scripts/template-integrity.sh --self-tests <sha>`
 from any checkout, or `git checkout <sha>` and the named script):
@@ -1205,7 +1206,8 @@ tightened; **R8-5** every bypass statement names force-push and deletion; **R8-6
   and rebase. `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md` gains _Merge methods and the
   archive freeze_ (never squash a range carrying an archive move; merge and rebase are safe; the
   rule binds every branch in the promotion order; the bypass skips it) with `main`'s restriction
-  **pending Sam's command**; its folder `CONTEXT.md` row names it. `.claude/MEMORY.md`'s TruffleHog
+  **pending Sam's command** (_amended 21/11/2026 (final pass): set 21/11/2026, merge only_); its
+  folder `CONTEXT.md` row names it. `.claude/MEMORY.md`'s TruffleHog
   entry now says reword or rewrite the offending commit on the branch before merging, squash not
   being allowed on `main` (_amended 21/11/2026 (round 9, R9-7) — the entry stated the ruling as
   live; it now reads "never squash into `main` … the ruleset and repository restrictions are
@@ -1325,7 +1327,7 @@ Those are the only differences: 4 rules and 27 checks in both; `name`, `target`,
 `conditions` and `bypass_actors` hash identically to the live GET. Afterwards,
 `gh api repos/Syntek-Dev/syntek-base/rulesets/20221742 --jq '.rules[] | .parameters | objects | (.strict_required_status_checks_policy, .allowed_merge_methods) | select(. != null)'`
 should print `true` and `["merge","rebase"]`. **Status: pending Sam's command** — recorded "set by
-Sam on <date>" only once he confirms; until then squash is still offered on `main`.
+Sam on <date>" only once he confirms; until then squash is still offered on `main`. _Amended 21/11/2026 (final pass): set 21/11/2026 — the end state, by round 9's command (a) and round 10's (b); read back under Final fix pass._
 
 **Reds and how to reproduce them** (`bash .github/scripts/template-integrity.sh --self-tests <sha>`
 from any checkout, or `git checkout <sha>` and the named script):
@@ -1455,7 +1457,8 @@ ordinary commit ahead of its fix, and no fix commit edits a probe's body.
   and the archive freeze_ now says a merge commit is safe, a rebase only on a range with no merges
   (GitHub's rebase merge flattens a pull request containing merges, as every promotion pull
   request does — its effect on `--check` **unmeasured**), merge only where `--check` is required,
-  and squash off repository-wide; both restrictions **pending Sam's commands** below. Commit
+  and squash off repository-wide; both restrictions **pending Sam's commands** below (_amended
+  21/11/2026 (final pass): set 21/11/2026_). Commit
   `e7ccef99`. Round 8's command is marked superseded above.
 - **R9-7 — records and nits.** `.claude/MEMORY.md`'s TruffleHog entry now reads "never squash into
   `main` — reword or rewrite the offending commit on the branch before merging (Sam's ruling
@@ -1519,7 +1522,7 @@ gh api -X PATCH repos/Syntek-Dev/syntek-base -F allow_squash_merge=false
 
 Afterwards the same read should print `"allow_squash_merge":false` with the other two still
 `true`. **Status of both: pending Sam's commands** — recorded "set by Sam on <date>" only once he
-confirms; until then squash and rebase are still offered on `main`.
+confirms; until then squash and rebase are still offered on `main`. _Amended 21/11/2026 (final pass): set 21/11/2026 — the end state, by round 9's command (a) and round 10's (b); read back under Final fix pass._
 
 **Reds and how to reproduce them** (`bash .github/scripts/template-integrity.sh --self-tests <sha>`
 from a checkout whose `origin/main` is fetched, or `git checkout <sha>` and the named script):
@@ -1601,11 +1604,12 @@ ordinary commit ahead of its fix, and no fix commit touches `self_test()` (every
 - **R10-4 — merge methods (Sec L1; Sam's ruling, option a).** `PR-AND-REQUIRED-CHECKS.md` _Merge
   methods and the archive freeze_ now says merge commits only, on every branch, by the repository
   settings `allow_squash_merge=false` and `allow_rebase_merge=false`, and on `main` by the ruleset
-  as well — pending Sam's commands below (`27c2a5bc`). `.claude/MEMORY.md`'s TruffleHog entry
+  as well — set 21/11/2026 (`27c2a5bc`; amended in the final pass, which restates it as the
+  required setting). `.claude/MEMORY.md`'s TruffleHog entry
   names no rebase, so it is unchanged. Round 9's `PATCH` is marked superseded above.
 - **R10-5 — `template-integrity.sh`'s header still said "merge and rebase" (CR L2, Sec L2).** It
   now reads merge commits only (`main` by ruleset, every branch by repository setting) and strict
-  checks on `main`, pending the maintainer's commands (`05751282`). The repository grep for "merge
+  checks on `main`, set 21/11/2026 (`05751282`; "pending" until the final pass). The repository grep for "merge
   and rebase" and "squash" found nothing else untrue in a shipped or gate file; the three
   planning-time lines "No merge-strategy rule exists" are under _Deviations_.
 - **R10-6 — `STEPS.md` stated the replay rule without its limit (QA L3).**
@@ -1641,8 +1645,7 @@ gh api -X PATCH repos/Syntek-Dev/syntek-base -F allow_squash_merge=false -F allo
 
 Afterwards the same read should print
 `{"allow_merge_commit":true,"allow_rebase_merge":false,"allow_squash_merge":false}`. **Status of
-both: pending Sam's commands** — recorded "set by Sam on <date>" only once he confirms; until then
-squash and rebase are still offered on every branch.
+both: set 21/11/2026** — Sam ran both; the read-back is under Final fix pass.
 
 **Reds and how to reproduce them** (`bash .github/scripts/template-integrity.sh --self-tests <sha>`
 from a checkout whose `origin/main` is fetched, or `git checkout <sha>` and the named script):
@@ -1672,6 +1675,9 @@ fix and `9eb93e13` exit 0 (`9 run, 0 red, 0 absent and skipped`), 85 to 116 s ea
 - **An unquoted `_exclude` entry opening `!`** is a tag to YAML, not a string, and copier would
   refuse to load it; the reader reads it as the negation it looks like, as check 1 did before,
   which errs towards a finding and keeps the unquoted-negation probe passing as it was.
+  _Amended 21/11/2026 (final pass, F1): true of an unknown tag only. The core tags `!!str`, the
+  verbatim `!<tag:yaml.org,2002:str>` and the non-specific `!` resolve to the string after them,
+  which copier reads as the negation; such an entry is now refused (`4a60b1ad`)._
 - **A tag on the `_exclude:` value** stays the one top-level finding (R9-1's probe); the
   `_exclude` reader adds nothing for it.
 - **A timing probe is load-sensitive.** `05751282` (a header and `g()` change, which no
@@ -1714,6 +1720,70 @@ fix and `9eb93e13` exit 0 (`9 run, 0 red, 0 absent and skipped`), 85 to 116 s ea
 
 The scratch fixture, the two renders and every `git archive` copy this round made were deleted
 after these readings; none linked back into the checkout.
+
+### Final fix pass — 21/11/2026
+
+The three round-10 reviews (code review, QA re-attack, security review) were deduplicated into
+F1 to F4. **Sam's scope of 21/11/2026: fix exactly these four, nothing else — the final pass.**
+Each red is an ordinary commit ahead of its fix; each red commit only adds lines inside
+`self_test()`, and no fix commit touches it.
+
+- **F1 — a string-tagged `_exclude` entry passed check 1 (MEDIUM; CR M1, QA M1, Sec M1). Fixed.**
+  `exclude_entry` returned any head opening `!` raw, as a negation; but `!!str "!…"`, the
+  non-specific `! "!…"` and the verbatim `!<tag:yaml.org,2002:str> "!…"` resolve to the quoted
+  string, which copier reads as the negation. A head opening `!!`, `!<` or `!` then whitespace is
+  now an E finding ("a YAML tag, which may resolve to the string copier reads"). An unknown tag
+  (copier refuses to load it) is still read as the negation it looks like, so the existing
+  unquoted-negation probe is unchanged. The docstring's `X` record and round 10's deviation are
+  amended. Red `44e088df` → fix `4a60b1ad`.
+- **F2 — Jinja in an `_exclude` entry passed check 1 (LOW; CR L1). Fixed.** Copier renders each
+  entry before matching it; check 1 stripped block tags only. The reader now refuses an entry
+  holding copier's variable or comment opener, or any block tag but one whole-entry `if … endif`
+  wrap with no tag inside it. All 104 real entries read byte-identically and the 25 negations are unchanged.
+  Check 1's header, its in-function comment and `negations()`'s comment are corrected. Red
+  `bfaad228` → fix `1d450d19` (the fix's first attempt was refused by the ruff leg, a 101-character
+  line, and re-committed shortened).
+- **F3 — "Update with rebase" (LOW; Sec L1). Fixed.** `PR-AND-REQUIRED-CHECKS.md` _Merge methods
+  and the archive freeze_ now says a pull-request branch is brought up to date with a merge
+  commit, never "Update with rebase", and that whether `allow_rebase_merge=false` hides that
+  button is **unmeasured**. Its closing bullet states the required settings and how to read them
+  back, not one repository's state (`e6da5996`). No probe: a setting has no executable reading.
+- **F4 — nits. Fixed.** `g()`'s long `-c diff.relative=false …` line is wrapped, and
+  `copier-commands.py`'s docstring says three lists (`bb6bc573`).
+
+**Sam's settings — set 21/11/2026.** Sam ran round 9's command (a) and round 10's (b). Read back
+the same day, `gh api` GET only:
+
+- `gh api repos/Syntek-Dev/syntek-base --jq '{allow_squash_merge,allow_rebase_merge,allow_merge_commit}'`
+  printed `{"allow_merge_commit":true,"allow_rebase_merge":false,"allow_squash_merge":false}`.
+- Ruleset `20221742` (`updated_at` 21/11/2026 19:37:31 UTC): `enforcement` `active`; rules
+  `deletion`, `non_fast_forward`, `pull_request`, `required_status_checks` (4); the pull-request
+  rule's `allowed_merge_methods` `["merge"]`; `strict_required_status_checks_policy` `true`; 27
+  checks. The check list hashes `62fe2e77…` and the compact `name`, `target`, `enforcement`,
+  `conditions` and `bypass_actors` `9634c3d8…`, both as recorded before the change — only the two
+  intended values moved. Bypass actor unchanged: RepositoryRole 5, `always`.
+
+`template-integrity.sh`'s header and `.claude/MEMORY.md`'s TruffleHog entry now say set
+(`c006f87f`); the guide's earlier "pending" lines carry dated amendments; `lefthook.yml` held no
+pending statement, so it is unchanged.
+
+**Reds and how to reproduce them** (`bash .github/scripts/template-integrity.sh --self-tests <sha>`,
+`origin/main` at `eb902ea5`; or `git checkout <sha>` and `bash .github/scripts/shipped-boards.sh --self-test`):
+
+| Red        | Reading at the red                                                                                    | Reading at the fix                                          |
+| ---------- | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `44e088df` | exit 1: exactly the 3 tag probes fail, 0 findings each; replay `9 run, 1 red` (`shipped-boards.sh`)   | `4a60b1ad`: exit 0, 97 probes; replay `9 run, 0 red`, 63 s  |
+| `bfaad228` | exit 1: exactly the 3 Jinja probes fail, 0 findings each; replay `9 run, 1 red` (`shipped-boards.sh`) | `1d450d19`: exit 0, 100 probes; replay `9 run, 0 red`, 59 s |
+
+**Deviations, recorded rather than repaired:**
+
+- **F1's probes and F2's share one array** in `self_test()`, so `shipped-boards.sh` stays at 750
+  lines; F2's red added two lines inside it.
+- **The fix lives in the reader, not `negations()`:** an entry the reader refuses is an E finding
+  of its own, as round 10's refusals are, and `negations()` strips only the one wrap let through.
+- **Still flagged, untouched (Sam's call, out of scope):** "No merge-strategy rule exists in
+  `project-management/docs/git/`" in US010's story plan (`Risks`) and twice in US011's.
+- **No GitHub setting was changed:** the ruleset and the repository were read, never written.
 
 ## Journeys
 
