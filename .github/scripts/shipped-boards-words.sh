@@ -11,6 +11,9 @@
 
 # The most `{` brace spans one word may hold and still be read for a seed (round 9, 21/11/2026).
 BRACE_CAP=8
+# The longest word, in characters, still read for a seed (round 10, 21/11/2026): the span reading
+# is quadratic in a word's length, so the two caps together bound each word's reading.
+WORD_CAP=1024
 
 # seed_word WORD BOARD — WORD, read as a path the shell resolves, names the .copier directory
 # itself or .copier/BOARD. `//` and `/./` collapse and a `..` cancels the component before it, so a
@@ -58,13 +61,17 @@ seed_word() {
 # bracket's own `,` or `:` is part of the path), and the word's end: three spans per separator,
 # where round 7 read every pair of them (13 s at 150). Each span is still read along its length,
 # so the cost grows with the square of a word's length, not linearly (round 9, 21/11/2026) — and
-# a brace span re-reads it once more, so a word holding more than BRACE_CAP of them is skipped
-# here and reported by run_checks. Measured 21/11/2026, at the cap: 0.5 s for a 2 KB word, 1.6 s
-# for 4 KB; uncapped, 300 `.{a,b}=` took 45 s.
+# a brace span re-reads it once more, so a word holding more than BRACE_CAP of them, or longer
+# than WORD_CAP characters (round 10), is skipped here and reported by run_checks. Each word's
+# reading is therefore bounded, and the whole reading grows linearly with the number of words —
+# bounded per word, not overall. Measured 21/11/2026, plain check, one word at both caps (1 KB,
+# 8 braces): 1.8 s, about 1.5 s over the 0.3 s baseline; ten such words: 14.7 s. Uncapped, 300
+# `.{a,b}=` took 45 s (round 8) and a brace-free `.=` × 8000 172 s (round 9).
 seed_any() {
   local w="$1" board="$2" n=${#1} i c depth=0 inbr=false starts=(0) seps=() tops=() a=0 b=0
   c="${w//[^\{]/}"
   [[ ${#c} -le $BRACE_CAP ]] || return 1   # over the cap: run_checks reports it (round 9)
+  [[ $n -le $WORD_CAP ]] || return 1       # the same, for length (round 10)
   for ((i = 0; i < n; i++)); do
     c="${w:i:1}"
     case "$c" in

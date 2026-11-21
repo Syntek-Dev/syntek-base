@@ -85,8 +85,9 @@
 #            move, moves a seed into an ungated task, removes a seed, adds a row to a seed,
 #            drops a `SEEDED` entry — and asserts each check catches its own, exactly once; and
 #            (round 8) a YAML-escaped or `_migrations` move, a repeated `when:`, and a long word
-#            read in bounded time; (round 9) each top-level shape that is no plain key; (round 10)
-#            each YAML line break the reader does not split at.
+#            read inside 2 s; (round 9) each top-level shape that is no plain key, and a word over
+#            the brace cap; (round 10) each YAML line break the reader does not split at, an
+#            escaped, block or flow `_exclude` entry, and a word over the length cap.
 #            Each kind runs on one of the first five boards and on each of the later three.
 #
 # --fix      Re-render the eight seeds from the generator. Run it after changing how
@@ -138,7 +139,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,103p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,104p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done
@@ -236,16 +237,21 @@ run_checks() {
   local words word capped=""
   words=$(sed -e "s/\\\$'/'/g" -e 's/\$"/"/g' <<< "$others" \
             | tr -d "\"'\\\\" | tr -s ' \t;&|<>()' '\n' | grep -v '^$' || true)
-  # A word with more brace spans than BRACE_CAP is not read for a seed (seed_any skips it, so the
-  # reading ends in bounded time) and is a finding of its own, since check 2 cannot say what it
-  # names (round 9, 21/11/2026).
+  # A word with more brace spans than BRACE_CAP, or longer than WORD_CAP characters, is not read
+  # for a seed (seed_any skips it, so each word's reading is bounded; the whole reading grows
+  # with the number of words) and is a finding of its own, since check 2 cannot say what it names
+  # (round 9; the length cap round 10, 21/11/2026). The first capped word is reported, under the
+  # brace cap when it breaks both.
   while IFS= read -r word; do
-    [[ "$word" == *\{* ]] || continue
     c="${word//[^\{]/}"
-    if [[ ${#c} -gt $BRACE_CAP ]]; then capped="$word"; break; fi
+    if [[ ${#c} -gt $BRACE_CAP || ${#word} -gt $WORD_CAP ]]; then capped="$word"; break; fi
   done <<< "$words"
-  [[ -z "$capped" ]] \
-    || finding "copier.yml has a task or migration word with more than $BRACE_CAP brace expansions (${capped:0:40}…) — check 2 caps its reading so it ends in bounded time, so it cannot say the word names no seed"
+  c="${capped//[^\{]/}"
+  if [[ -n "$capped" && ${#c} -gt $BRACE_CAP ]]; then
+    finding "copier.yml has a task or migration word with more than $BRACE_CAP brace expansions (${capped:0:40}…) — check 2 caps each word's reading, so it cannot say the word names no seed"
+  elif [[ -n "$capped" ]]; then
+    finding "copier.yml has a task or migration word longer than $WORD_CAP characters (${capped:0:40}…) — check 2 caps each word's reading, so it cannot say the word names no seed"
+  fi
   for b in "${BOARDS[@]}"; do
     folder="${b%%|*}"; board="${b##*|}"; seed="$SEED_DIR/$board"
 
