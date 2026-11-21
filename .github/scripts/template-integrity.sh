@@ -18,13 +18,17 @@
 # tree: for each distinct tip (a deletion has none, and is skipped), every self-test in SELF_TESTS
 # runs, in parallel, each in its own copy of that commit's tree. The push is refused when any
 # exits non-zero; exit 2, a self-test that crashed or stopped early (self-test-ledger.sh's guard),
-# is named as a script error and never read as a pass. CI runs the same self-tests on every push
+# is named as a script error and never read as a pass. A listed script the commit does not hold
+# (a tip older than it) is named "absent at <sha> — skipped": not run, and never counted as a pass
+# or a red; one it holds that exits 127 is a failure like any other. A push with no commit to
+# judge (a deletion only, or no ref lines on stdin) says so and exits 0. CI runs the same self-tests on every push
 # (audit-template.yml, pm-boards.yml), and is the check of record: a hook is a convenience a
 # developer can skip (`--no-verify`, core.hooksPath), never a gate.
 #
 # --self-tests [COMMIT] is the same judgement for one commit (default HEAD) — the reviewer's
 # replay. A red probe's own commit exits 1 and its fix exits 0; the two review rules this
-# replays are code/workflows/02-tdd-cycle/STEPS.md's.
+# replays are code/workflows/02-tdd-cycle/STEPS.md's. A commit older than a listed script reads
+# that script absent and skipped, so the replay judges what the commit held.
 #
 # THE COPY. `git archive <commit>` extracted into a `mktemp -d`, then checked: re-added under a
 # fresh repository with every content attribute unset, its tree must be the commit's tree, byte
@@ -128,21 +132,29 @@ copy_of() {
 
 # self_tests SHA — every self-test against SHA, each in its own copy, in parallel; refuses on any red.
 self_tests() {
-  local sha="$1" base i dirs=() pids=() rc bad=() t0=$SECONDS
+  local sha="$1" base i dirs=() pids=() rc bad=() run=() absent=() t0=$SECONDS
   scratch base
   mkdir "$base/copy"
   copy_of "$sha" "$base/copy"
+  # A listed script the commit does not hold — a tip older than it — is skipped and named, never
+  # run and never counted as a pass. One it does hold that exits 127 or crashes is a failure.
   for i in "${!SELF_TESTS[@]}"; do
-    cp -a "$base/copy" "$base/$i" || die "could not copy the tree of $sha"
-    dirs+=("$base/$i")
+    if [[ -f "$base/copy/${SELF_TESTS[$i]%% *}" ]]; then run+=("$i"); else absent+=("$i"); fi
   done
-  printf '▸ %s: %d self-tests, each in a copy of the commit…\n' "${sha:0:12}" "${#SELF_TESTS[@]}"
-  for i in "${!SELF_TESTS[@]}"; do
+  for i in "${run[@]}"; do
+    cp -a "$base/copy" "$base/$i" || die "could not copy the tree of $sha"
+    dirs[i]="$base/$i"
+  done
+  printf '▸ %s: %d self-tests, each in a copy of the commit…\n' "${sha:0:12}" "${#run[@]}"
+  for i in "${absent[@]}"; do
+    printf '  \033[33m–\033[0m %s — absent at %s — skipped (not run, not a pass)\n' "${SELF_TESTS[$i]}" "${sha:0:12}"
+  done
+  for i in "${run[@]}"; do
     # shellcheck disable=SC2086  # each entry is a script and its flags, split on purpose
     in_tree "${dirs[$i]}" bash ${SELF_TESTS[$i]} > "$base/$i.out" 2>&1 &
-    pids+=("$!")
+    pids[i]="$!"
   done
-  for i in "${!SELF_TESTS[@]}"; do
+  for i in "${run[@]}"; do
     rc=0; wait "${pids[$i]}" || rc=$?
     if [[ $rc -eq 0 ]]; then
       printf '  \033[32m✓\033[0m %s\n' "${SELF_TESTS[$i]}"
@@ -159,7 +171,7 @@ self_tests() {
     printf '\n── %s (last 20 lines) ──\n' "${SELF_TESTS[$i]}" >&2
     tail -n 20 "$base/$i.out" >&2
   done
-  printf '  (%ds)\n' "$((SECONDS - t0))"
+  printf '  (%ds — %d run, %d red, %d absent and skipped)\n' "$((SECONDS - t0))" "${#run[@]}" "${#bad[@]}" "${#absent[@]}"
   [[ ${#bad[@]} -eq 0 ]] || refuse "${sha:0:12} has ${#bad[@]} red self-test(s) — fix them before this commit is pushed"
 }
 
@@ -176,6 +188,10 @@ pre_push() {
     seen+="$sha "; tips+=("$sha")
     : "$rref" "$rsha"
   done
+  if [[ ${#tips[@]} -eq 0 ]]; then
+    printf 'template-integrity: no pushed commit to judge (a deletion only, or no ref lines on stdin)\n'
+    return 0
+  fi
   for sha in "${tips[@]}"; do self_tests "$sha"; done
 }
 
@@ -186,6 +202,6 @@ case "${1:-}" in
     cd "$PROJECT_ROOT"
     sha="$(g rev-parse --verify -q "${2:-HEAD}^{commit}")" || die "no commit ${2:-HEAD}"
     self_tests "$sha" ;;
-  --help|-h) sed -n '2,46p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  --help|-h) sed -n '2,50p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) die "usage: template-integrity.sh --pre-commit | --pre-push [REMOTE [URL]] | --self-tests [COMMIT]" ;;
 esac
