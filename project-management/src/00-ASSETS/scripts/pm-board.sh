@@ -315,7 +315,8 @@ GIT_ENV = {k: v for k, v in os.environ.items()
                    "GIT_PAGER", "PAGER"))}
 GIT_ENV.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
 GIT_PIN = ["--no-pager", "-c", "core.quotePath=false", "-c", "log.showSignature=false",
-           "-c", "color.ui=never", "-c", "core.attributesFile=" + os.devnull, "-c", "diff.renameLimit=0"]
+           "-c", "color.ui=never", "-c", "core.attributesFile=" + os.devnull, "-c", "diff.renameLimit=0",
+           "-c", "log.diffMerges=separate"]
 
 def git(*args):
     try:
@@ -365,9 +366,11 @@ def move_norm(text, kind):
 
 def archive_events(folders):
     """(commit, status, src, dst, src mode, dst mode) for every change under the archive folders,
-    oldest first. `-m` diffs a merge commit against each of its parents, so a deletion, rename or
-    move made inside a merge is an event like any other (a plain log shows a merge no diff)."""
-    code, out = git("log", "--reverse", "-m", "-M", "--raw", "--no-abbrev", "--no-ext-diff",
+    oldest first. `--diff-merges=separate` diffs a merge commit against each of its parents, so a
+    deletion, rename or move made inside a merge is an event like any other (a plain log shows a
+    merge no diff). It is spelt out rather than `-m`, which follows the repository's own
+    log.diffMerges — `combined`, `dense-combined` or `off` there would hide the merge's diff."""
+    code, out = git("log", "--reverse", "--diff-merges=separate", "-M", "--raw", "--no-abbrev", "--no-ext-diff",
                     "--no-textconv", "--no-color", "--format=@%H", "--", *folders)
     ev, c = [], None
     if code != 0:
