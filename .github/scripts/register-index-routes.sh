@@ -34,9 +34,8 @@
 #
 # Usage: register-index-routes.sh [--self-test] ROOT...
 #
-# Its --self-test writes the probe ledger template-integrity.sh reads (self-test-ledger.sh), so the
-# pre-commit leg self-tests it whenever a .github/scripts/*.sh is staged, and a probe may be
-# planned red in it like the five detectors'.
+# Its --self-test runs under self-test-ledger.sh's crash guard (exit 2, never a red or a pass), and
+# template-integrity.sh's pre-push leg runs it against every pushed commit, as CI does (21/11/2026).
 #
 # Requires: bash, find, perl. No network.
 # Exit codes: 0 = no hit (or the self-test passed)  1 = a hit (or the self-test failed)

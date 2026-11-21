@@ -57,13 +57,12 @@ jobs:
       - name: Check token syntax integrity
         run: bash .github/scripts/check-template-tokens.sh
 
-      # The pre-commit leg's planned-red allowance (.github/scripts/template-integrity.sh) is the
-      # one exception in the hooks, and none of the detectors' self-tests exercises it — so its
-      # own proof runs here on every push, where a weakened allowance cannot pass unseen. It
-      # needs git and python3 only, both on the runner. Added 19/11/2026. It also proves the
-      # only-adds and never-weaken rules and the proof's own planned red (20/11/2026).
-      - name: Prove the planned-red allowance (synthetic and real-detector fixtures)
-        run: bash code/src/scripts/tests/planned-red.sh
+      # The template's own hook legs (.github/scripts/template-integrity.sh): plain checks at
+      # commit, every self-test at push against the pushed commit. No detector's self-test
+      # exercises the legs, so their proof runs here on every push. git and tar only. It replaced
+      # the planned-red allowance's proof on 21/11/2026, when the allowance was removed (Q1).
+      - name: Prove the hook legs (plain checks at commit, self-tests at push)
+        run: bash code/src/scripts/tests/template-hooks.sh
 
   # The two documents that describe the template to whoever generates from it. Neither
   # has a consumer that fails when it goes stale: .copier/README.md is only read after

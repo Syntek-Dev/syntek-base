@@ -53,10 +53,11 @@ _exclude:
   # P5 cases read this copier.yml's `_migrations:`. A generated project holds neither, so it
   # could only ever fail there. Test-only and template-only, settled 16/11/2026.
   - /code/src/scripts/tests/cookie-preview-fixture.sh
-  # Proves .github/scripts/template-integrity.sh, the planned-red allowance in the template's
-  # own pre-commit leg. That script and the detectors it runs are excluded above, so this could
-  # only ever fail there. Test-only and template-only, settled 19/11/2026.
-  - /code/src/scripts/tests/planned-red.sh
+  # Proves .github/scripts/template-integrity.sh, the template's own hook legs. That script and
+  # the detectors it runs are excluded above, so this could only ever fail there. Test-only and
+  # template-only, settled 19/11/2026 (as planned-red.sh; renamed 21/11/2026 when the planned-red
+  # allowance it proved was removed).
+  - /code/src/scripts/tests/template-hooks.sh
   # toolchain-pins.sh's held register names PIN S-01 in MAP-PIN-DETECT-MOVE, and
   # /project-management/src/** below excludes that map. Shipped, it would hold the unpinned uv
   # class in every generated project against an owner that is not there and a release condition

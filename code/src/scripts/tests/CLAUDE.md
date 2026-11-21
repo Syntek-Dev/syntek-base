@@ -14,8 +14,8 @@ probes, the `pm-boards.sh` probes of the PM board and archive scripts, `test-rec
 which turns what a run produced into a story's test record, and the test-only
 `cookie-preview-fixture.sh`, which builds US008's generated scratch project for its preview proof, <!-- doc-references: template-only -->
 and which `copier.yml` excludes, so a generated project never receives it, <!-- doc-references: template-only -->
-and the test-only `planned-red.sh`, which proves the template's own planned-red hook allowance and <!-- doc-references: template-only -->
-is excluded the same way. <!-- Purpose line extended 19/11/2026: planned-red.sh added. -->
+and the test-only `template-hooks.sh`, which proves the template's own hook legs (plain checks at <!-- doc-references: template-only -->
+commit, self-tests at push) and is excluded the same way. <!-- Purpose line extended 19/11/2026 (planned-red.sh); renamed and re-scoped 21/11/2026. -->
 
 ## How to work here
 

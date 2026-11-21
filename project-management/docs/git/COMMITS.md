@@ -114,28 +114,16 @@ the time of the commit. **It is never pinned in a rule**, here or in a skill: a 
 version string goes stale on the next model release and then every commit misattributes itself
 to a model that did not write it. The same applies to a PR body's generation footer.
 
-### The planned-red trailer
+### A red probe ahead of its fix
 
-A commit that deliberately records a failing probe ahead of its fix — test-first, where the probe
-sits in a gate's own self-test — names that gate and the probes it expects red in a trailer:
-
-```text
-Planned-Red: <self-test script basename>::<probe label>[::<probe label>…]
-```
-
-It is the record of an opt-in, never a substitute for one: the commit is made with
-`PLANNED_RED=` set to the same value, and the pre-commit leg running that self-test requires it
-to exit `1`, to finish, and to fail **exactly** the named probes — each new against `HEAD` — with
-everything else green. A planned red may only **add** probes: every probe `HEAD` runs must still
-pass, the failure count must match the failures recorded, and the script's diff against `HEAD`
-adds lines and changes none (in a detector, only inside its `self_test()` region). The
-commit-message leg refuses a `Planned-Red:` trailer without the opt-in, a second one, one that
-differs from it, or one the pre-commit leg did not accept for this staged tree, and a merge
-commit never carries one; a cherry-pick or rebase copies the trailer without either leg running,
-so the trailer proves acceptance only for a commit the hooks judged as it was made. It sits beside
-the co-author trailer, in the closing trailer block. A planned-red commit is changed by
-`git reset --soft HEAD^` and committed again, never amended. `--no-verify` is never the way to
-land a red probe. <!-- Section added 19/11/2026; probe labels and the commit-bound check 19/11/2026; only-adds and the copied-trailer limit 20/11/2026. -->
+A commit that deliberately records a failing probe ahead of its fix — test-first — is an
+**ordinary commit**: `test(<scope>): red probes — …`, no special trailer, and never
+`--no-verify`. No commit hook runs a self-test, so nothing refuses it; the self-tests run at push
+and in CI. Its body names what is red and the command that reproduces it, so a reviewer can
+replay it: the red commit exits `1` and its fix `0`, and the fix leaves the probe untouched
+(`code/workflows/02-tdd-cycle/STEPS.md` Phase 1). Push the red commit together with its fix — a
+push of the red tip alone is refused, as any red tip is.
+<!-- 21/11/2026: replaced "The planned-red trailer" (19/11/2026 to 20/11/2026). Commits carrying a Planned-Red trailer stay as history; the mechanism behind it was removed because four review rounds each found a narrower bypass — the hook had to judge code the commit itself could change. -->
 
 ### Type values
 

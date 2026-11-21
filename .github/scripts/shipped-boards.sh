@@ -108,7 +108,7 @@ cd "$PROJECT_ROOT"
 [[ -f "$MAP_SEED" ]] || die "missing $MAP_SEED — the seed-only tree cannot be built"
 command -v python3 >/dev/null 2>&1 || die "python3 is required"
 
-# The self-test ledger and crash guard template-integrity.sh's planned-red allowance reads.
+# The self-test crash guard (exit 2, never a red or a pass) and the optional probe ledger.
 # shellcheck source=self-test-ledger.sh
 . "$SCRIPT_DIR/self-test-ledger.sh"
 

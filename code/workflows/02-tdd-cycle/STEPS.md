@@ -120,27 +120,26 @@ Verify tests are red:
 Do not proceed to Phase 2 until all new tests are red. A test that is green before any
 implementation exists is either testing the wrong thing or testing nothing.
 
-**Where the red is committed before its fix, it is committed as a planned red — never with
-`--no-verify`.** A probe that lives inside a gate's own self-test is refused by any pre-commit leg
-that re-runs that self-test. The answer is a narrow opt-in naming the one self-test and the new
-probes in it expected red, under which the leg requires exactly those probes to fail (exit `1`) —
-refusing a pass, an older probe gone red or renamed, a changed line and a script error alike —
-while every other check still runs and must pass, and a `Planned-Red:` trailer records it in the
-message (`project-management/docs/git/COMMITS.md` → _The planned-red trailer_). Skipping the
-hooks hides every other failure the commit carries along with the one that was planned.
+**Where the red is committed before its fix, it is an ordinary commit — never `--no-verify`.**
+No commit hook runs a gate's self-test, so a red probe inside one commits like any other change;
+self-tests run at push and in CI, against the commit pushed. Two rules hold it, and both are
+**review rules**, checked by replaying history rather than by a hook:
 
-**An existing probe is never edited in the commit of the fix it proves** — a probe and its check
-changing together is the shape that hides a weakened check. Where a gate's self-test writes the
-probe ledger and a pre-commit leg runs it, the leg enforces this: a probe red at `HEAD` that
-passes in the commit is refused when its own source lines or any probe helper changed. Everywhere
-else it is a rule, held by review: a self-test no pre-commit leg runs, a probe outside the ledger,
-a fixture helper that records nothing, or a set-up shared by several probes. Such a probe needs no
-opt-in and earns no exemption — it is committed red in its own commit, and its fix commit leaves
-it untouched.
-In this template the leg enforces it for the six hooked `.github/scripts/*.sh` detectors; it is <!-- doc-references: template-only -->
-review alone for `shipped-ai.py`'s self-test, the planned-red proof's own probes and every <!-- doc-references: template-only -->
-`code/src/scripts/tests/*.sh` suite.
-<!-- Planned-red paragraph added 19/11/2026; named probes, and the unhooked-probe rule, 19/11/2026; only-adds, and the never-edit rule enforced where a leg runs the ledger, 20/11/2026. -->
+- **Red in a commit of its own, before its fix.** The red commit adds the probe and changes no
+  check; the fix commit follows it.
+- **Never weaken a red probe.** The fix commit leaves the probe untouched — no edited
+  expectation, no rename, no deletion, no redefined helper. A probe and its check changing
+  together is the shape that hides a weakened check.
+
+The reviewer replays both commits: `git checkout <red-sha>` then the self-test (or suite) the
+probe lives in must exit `1` with the new probe failing and every older one passing;
+`git checkout <fix-sha>` then the same command must exit `0`; and `git diff <red-sha> <fix-sha>`
+must not touch the probe. An exit `2` at either commit is a script error, never a red.
+In this template the replay is one command per commit, run from any checkout: <!-- doc-references: template-only -->
+`bash .github/scripts/template-integrity.sh --self-tests <sha>` runs every self-test against a copy <!-- doc-references: template-only -->
+of that commit; `SELF_TEST_LEDGER=<file>` on a detector's `--self-test` records each probe's label <!-- doc-references: template-only -->
+and result, so the two ledgers show the label unchanged and its result gone `fail` to `pass`. <!-- doc-references: template-only -->
+<!-- 21/11/2026: the planned-red opt-in (19/11/2026 to 20/11/2026) was removed; both rules became review rules. -->
 
 ---
 

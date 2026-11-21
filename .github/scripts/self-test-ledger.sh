@@ -1,25 +1,25 @@
 #!/usr/bin/env bash
-# self-test-ledger.sh — Sourced, never run: the self-test ledger and crash guard the five
+# self-test-ledger.sh — Sourced, never run: the crash guard and the optional probe ledger the six
 #                       self-tested detectors share.
 #
 # TEMPLATE-ONLY: .github/scripts/ is copier _exclude'd.
 #
-# Two duties, both for template-integrity.sh's planned-red allowance, and both inert unless a
-# detector runs --self-test:
-#
-#   THE LEDGER. With SELF_TEST_LEDGER=<file> set, each probe appends one line,
-#   `pass<TAB><label><TAB><line>` or `fail<TAB><label><TAB><line>`, and a self-test that reaches
-#   its end appends `end<TAB><failed count>`. A label is the probe's stable name: never a path or a
-#   count that moves with the tree, because the allowance compares labels against HEAD's version
-#   to tell a NEW probe from an old one turned red. <line> is the line inside self_test() whose
-#   call recorded it (0 outside self_test()): the hook reads a probe's source from it, to refuse
-#   a red probe that turns green by being edited. No ledger file is written when the variable is
-#   unset.
+# Two duties, both inert unless a detector runs --self-test:
 #
 #   THE CRASH GUARD. st_arm traps ERR (with errtrace, so functions inherit it) and EXIT. A command
 #   that would stop the script under `set -e`, an unbound variable, or any exit before st_finish
-#   exits 2 — a script error — never 1, which is reserved for a probe that ran and failed. A
-#   failure inside a command substitution or subshell is left to its caller, as `set -e` leaves it.
+#   exits 2 — a script error — never 1, which is reserved for a probe that ran and failed, and
+#   never 0. A failure inside a command substitution or subshell is left to its caller, as
+#   `set -e` leaves it. template-integrity.sh's pre-push leg and CI both read exit 2 as a script
+#   error, so a self-test that crashes can never read as a red probe or as a pass.
+#
+#   THE LEDGER. With SELF_TEST_LEDGER=<file> set, each probe appends one line,
+#   `pass<TAB><label><TAB><line>` or `fail<TAB><label><TAB><line>`, and a self-test that reaches
+#   its end appends `end<TAB><failed count>`. <line> is the line inside self_test() whose call
+#   recorded it (0 outside self_test()). No hook reads it (21/11/2026: the planned-red allowance
+#   that did was removed). It is a reviewer's record: run at a red probe's commit and at its fix,
+#   two ledgers show the probe's label unchanged and its result gone fail to pass
+#   (code/workflows/02-tdd-cycle/STEPS.md). No ledger file is written when the variable is unset.
 #
 # Usage, in a detector:
 #   . "$SCRIPT_DIR/self-test-ledger.sh"

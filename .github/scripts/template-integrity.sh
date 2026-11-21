@@ -1,108 +1,68 @@
 #!/usr/bin/env bash
-# template-integrity.sh — The template-integrity pre-commit leg and its planned-red allowance.
+# template-integrity.sh — The template-integrity hook legs: plain checks at commit, every
+#                         self-test at push.
 #
 # TEMPLATE-ONLY: .github/scripts/ is copier _exclude'd, so a generated project never holds this
 # file. lefthook.yml ships, and its two legs that call this script are self-gating on copier.yml
 # (itself _exclude'd), so downstream they exit 0 before reaching it.
 #
 # --pre-commit is the cheap half of .github/workflows/audit-template.yml, pulled forward to the
-# commit: the five detectors' plain checks, preceded, whenever a .github/scripts/*.sh is staged,
-# by the self-tests of six — the five and register-index-routes.sh, whose plain check reads a
-# rendered project and so runs only in CI's [3/4]. Every result must be a pass — bar the probes
-# named in advance. When the allowance itself is staged — this script, self-test-ledger.sh,
-# lefthook.yml, or its proof code/src/scripts/tests/planned-red.sh — that proof runs first (a few
-# minutes), because no detector's self-test exercises the allowance and a weakened one would
-# otherwise pass.
+# commit: the five detectors' PLAIN checks, and nothing else. No self-test runs at commit, so a
+# probe committed red ahead of its fix (code workflow 02-tdd-cycle) is an ordinary commit — durable
+# in history, and replayable. A staged .github/scripts/*.sh with unstaged changes beside it is
+# refused, because the plain checks run from the working tree, which under a plain hook need not
+# be what is committed (lefthook hides unstaged changes during pre-commit; a plain hook does not).
 #
-# The probes run from the WORKING TREE. Lefthook hides unstaged changes during pre-commit, so
-# there it is the staged tree; under a plain hook it need not be, so a staged .github/scripts/*.sh
-# or proof with unstaged changes beside it is refused, and under PLANNED_RED any unstaged change
-# to a tracked file is.
+# --pre-push [REMOTE [URL]] reads git's pre-push lines on stdin (`<local ref> <local sha>
+# <remote ref> <remote sha>`) and judges the commit each pushed ref points at — never the working
+# tree: for each distinct tip (a deletion has none, and is skipped), every self-test in SELF_TESTS
+# runs, in parallel, each in its own copy of that commit's tree. The push is refused when any
+# exits non-zero; exit 2, a self-test that crashed or stopped early (self-test-ledger.sh's guard),
+# is named as a script error and never read as a pass. CI runs the same self-tests on every push
+# (audit-template.yml, pm-boards.yml), and is the check of record: a hook is a convenience a
+# developer can skip (`--no-verify`, core.hooksPath), never a gate.
 #
-# THE PLANNED-RED ALLOWANCE. A probe is committed red ahead of the check it proves (code
-# workflow 02-tdd-cycle). When the probe lives in a detector's own --self-test, the self-test leg
-# would refuse that commit, so the red could never be recorded. The allowance names the probes:
+# --self-tests [COMMIT] is the same judgement for one commit (default HEAD) — the reviewer's
+# replay. A red probe's own commit exits 1 and its fix exits 0; the two review rules this
+# replays are code/workflows/02-tdd-cycle/STEPS.md's.
 #
-#   PLANNED_RED=<detector>::<probe label>[::<probe label>…]
+# THE COPY. `git archive <commit>` extracted into a `mktemp -d`, then checked: re-added under a
+# fresh repository with every content attribute unset, its tree must be the commit's tree, byte
+# for byte and mode for mode — so a local attribute (export-ignore, export-subst), a filter or a
+# line-ending setting that changed the copy is refused, never judged. The copy is then committed
+# (shipped-ai.py renders from it over git) with no hooks and no configuration, and every self-test
+# runs with this repository's git environment stripped.
 #
-#   <detector> is ONE of the six self-tested detectors by its basename in .github/scripts/, and
-#   it must be staged — the probes being committed live in it. Each <probe label> is a probe's
-#   name exactly as the detector records it in its self-test ledger (.github/scripts/
-#   self-test-ledger.sh), and at least one is required.
+# GIT, READ HERE. Every git command this script runs in this repository runs with no system or
+# global configuration, no caller `-c` options (GIT_CONFIG_PARAMETERS / GIT_CONFIG_COUNT), no
+# external diff or pager, and the output-shaping keys pinned (colour, quoting, relative paths,
+# renames, line endings, the attributes file): a repository's own .git/config cannot be switched
+# off, and the copy's tree check is what stands against it.
 #
-#   The named detector's --self-test runs with a ledger and must exit 1, finish (its end line
-#   written — a self-test that stops early is a crash, and the detectors' crash guard exits 2),
-#   and fail EXACTLY the named probes, each NEW: absent from the ledger of HEAD's version of the
-#   detector, run in a `git archive HEAD` copy. And a planned red may only ADD probes:
-#     a. every probe label in HEAD's ledger appears in the staged ledger as a pass — none renamed,
-#        removed or turned red;
-#     b. the staged detector's diff against HEAD changes and deletes no line, and every line it
-#        adds sits inside its self_test() region (from `self_test() {` to the first `}` alone on
-#        a line), so no check a plain run executes can change in a planned-red commit;
-#     c. the end line's failure count equals the fail lines recorded, so a failure counted
-#        without being recorded is refused.
-#   Every other self-test, and every plain check including the named detector's own, still runs
-#   and must pass.
+# Usage: template-integrity.sh --pre-commit | --pre-push [REMOTE [URL]] | --self-tests [COMMIT]
+#        | --help
 #
-#   On acceptance --pre-commit writes a one-shot token under `git rev-parse --git-path`, holding
-#   the opt-in and the staged tree (`git write-tree`). --commit-msg requires exactly one
-#   `Planned-Red: <the opt-in, verbatim>` trailer, requires the token for the current staged tree,
-#   and consumes it whatever it decides. So a trailer on a path that never ran this pre-commit leg
-#   — a merge, a bare commit-msg run — has no token and is refused, a merge commit is refused the
-#   trailer outright, and a trailer without the opt-in is refused too: every commit this hook
-#   judged as it was made carries a trailer only if the hook accepted its planned red. A commit
-#   git copies without running hooks — a cherry-pick, a rebase — keeps the trailer on a tree no
-#   hook judged; CI's self-tests are the check there. An amend sees nothing staged against the
-#   commit it amends and is refused; to change a planned-red commit, `git reset --soft HEAD^` and
-#   commit it again with the opt-in. A pre-commit leg that restages a file after this one wrote
-#   the token (lefthook's parallel sync-trees, stage_fixed) changes the staged tree, and the
-#   commit-msg leg then refuses: re-run the commit. That refusal fails closed, never open. A
-#   `Planned-Red:` line in the body, outside the trailer block, is not a trailer: git's own
-#   trailer readers ignore it, and so does this check.
-#
-#   THE PROOF ITSELF. Staging the proof runs it, so a red probe committed ahead of its fix in the
-#   proof would be refused like any other. PLANNED_RED=planned-red.sh::<probe label>… names the
-#   proof's new red probes instead, judged from its own ledger (PROOF_LEDGER) by the same rules,
-#   with (b) read over the whole file: the proof's diff adds lines and changes or deletes none.
-#   The allowance's own files (this script, self-test-ledger.sh, lefthook.yml) may not be staged
-#   with it.
-#
-# NEVER WEAKEN A RED PROBE. Whenever the self-test leg runs, each self-tested detector whose
-# staged copy differs from HEAD's has HEAD's version run in the `git archive HEAD` copy too. A
-# probe red there and a pass now may have turned green only through a fix elsewhere: the commit is
-# refused when the probe's own source changed — its segment, every line strictly between the
-# nearest line a probe whose result did not change recorded on before it (or `self_test() {`) and
-# the nearest after it (or the region's closing brace) — or when
-# any probe helper changed (a function other than self_test() whose body calls st_record). A
-# set-up shared by several probes, or a fixture helper that records nothing, sits outside both
-# and is held to the rule only by review. A fix commit that also adds a probe right beside a red
-# probe it turns green changes that probe's segment and is refused: commit new probes on their
-# own. The proof's own probes, and shipped-ai.py's, are not read by this rule.
-#
-# There is no other bypass, and the allowance is not one: it changes which probes one self-test
-# may fail, never whether it runs.
-#
-# Usage: template-integrity.sh --pre-commit | --commit-msg FILE | --help
-#
-# Requires: bash, git, tar.
-# Exit codes: 0 = pass  1 = refused (a check failed, or the allowance was misused)
-#             2 = script error
+# Requires: bash, git, tar; the self-tests' own needs (shipped-ai.sh: uvx with Copier cached).
+# Exit codes: 0 = pass  1 = refused (a check or a self-test failed)  2 = script error
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 DETECTORS=(check-template-tokens.sh shipped-readme.sh shipped-memory.sh shipped-registers.sh
            shipped-boards.sh)
-# Self-tested by this leg and nameable in PLANNED_RED: the five, and the index-route search, whose
-# plain check reads a rendered project and so runs only in audit-template.yml [3/4].
-SELF_TESTED=("${DETECTORS[@]}" register-index-routes.sh)
-PLANNED="${PLANNED_RED:-}"
-TOKEN_NAME="planned-red-token"
-PROOF="code/src/scripts/tests/planned-red.sh"
-PROOF_NAME="planned-red.sh"
-PL_DET=""
-PL_LABELS=()
-JUDGED_LEDGER=""
+# Every self-test the push leg runs, from the root of the commit judged. Each also runs in CI.
+SELF_TESTS=(
+  ".github/scripts/check-template-tokens.sh --self-test"
+  ".github/scripts/shipped-readme.sh --self-test"
+  ".github/scripts/shipped-memory.sh --self-test"
+  ".github/scripts/shipped-registers.sh --self-test"
+  ".github/scripts/shipped-boards.sh --self-test"
+  ".github/scripts/register-index-routes.sh --self-test"
+  ".github/scripts/shipped-ai.sh --self-test"
+  "code/src/scripts/tests/pm-boards.sh"
+  "code/src/scripts/tests/template-hooks.sh"
+)
+ZERO_SHA_RE='^0+$'
 SCRATCH=()
 
 die() { printf 'template-integrity: %s\n' "$*" >&2; exit 2; }
@@ -115,336 +75,117 @@ scratch() { # VAR — a fresh directory, removed on exit, its path in VAR
   SCRATCH+=("$d"); printf -v "$1" '%s' "$d"
 }
 
-is_detector() {
-  local d
-  for d in "${SELF_TESTED[@]}"; do [[ "$1" == "$d" ]] && return 0; done
-  return 1
+# git in this repository, its output pinned (see GIT, READ HERE). GIT_INDEX_FILE and GIT_DIR are
+# kept: a pre-commit hook must read the index git is committing.
+g() {
+  env -u GIT_CONFIG_PARAMETERS -u GIT_CONFIG_COUNT -u GIT_EXTERNAL_DIFF -u GIT_DIFF_OPTS \
+    -u GIT_PAGER -u GIT_ATTR_SOURCE GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
+    git --no-pager -c color.ui=false -c core.quotePath=true -c diff.relative=false \
+      -c diff.noprefix=false -c diff.renames=false -c core.autocrlf=false -c core.eol=lf \
+      -c core.attributesFile=/dev/null "$@"
 }
-
-# PLANNED_RED=<detector>::<label>[::<label>…] → PL_DET and PL_LABELS.
-parse_planned() {
-  local rest
-  PL_DET="${PLANNED%%::*}"
-  PL_LABELS=()
-  [[ "$PLANNED" == *::* ]] || return 0
-  rest="${PLANNED#*::}::"
-  while [[ -n "$rest" ]]; do
-    PL_LABELS+=("${rest%%::*}")
-    rest="${rest#*::}"
-  done
-}
-
-# HEAD's tree, once per run: a `git archive HEAD` copy with its own index and one commit (the
-# proof's real fixture archives HEAD), no hooks and no configuration. Path in HEAD_TREE.
-HEAD_TREE=""
-# git, and anything run, in another tree: none of the hook's own repository environment
-# (GIT_INDEX_FILE, which `git commit` exports to its hooks, and GIT_CONFIG_PARAMETERS, which carries
-# a caller's `-c` options — a hooks path among them — into every child git) and no configuration.
+# git, and anything run, in another tree: none of this repository's environment and no
+# configuration.
 in_tree() { # DIR CMD… — CMD in DIR, cut off from this repository
   local d="$1"; shift
   (cd "$d" && env -u GIT_INDEX_FILE -u GIT_DIR -u GIT_WORK_TREE -u GIT_PREFIX -u GIT_OBJECT_DIRECTORY \
-    -u GIT_CONFIG_PARAMETERS -u GIT_CONFIG_COUNT \
-    GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 "$@")
-}
-head_tree() {
-  [[ -z "$HEAD_TREE" ]] || return 0
-  local t; scratch t
-  git archive HEAD | tar -x -C "$t" || return 1
-  in_tree "$t" git init -q && in_tree "$t" git add -A \
-    && in_tree "$t" git -c user.name=head -c user.email=head@example.invalid commit -q -m head || return 1
-  HEAD_TREE="$t"
-}
-
-target_path() { # NAME — the judged script's path from the root
-  if [[ "$1" == "$PROOF_NAME" ]]; then printf '%s' "$PROOF"; else printf '.github/scripts/%s' "$1"; fi
-}
-
-# run_probes NAME LEDGER DIR — the named script's probes, run in DIR with a ledger; prints nothing,
-# returns the script's exit code. A detector runs --self-test under SELF_TEST_LEDGER; the proof runs
-# under PROOF_LEDGER, with SELF_TEST_LEDGER cleared so its fixtures' detectors never write to it.
-run_probes() {
-  local n="$1" l="$2" dir="$3" rc=0
-  local run=(env); [[ "$dir" == . ]] || run=(in_tree "$dir" env)
-  if [[ "$n" == "$PROOF_NAME" ]]; then
-    "${run[@]}" -u SELF_TEST_LEDGER PROOF_LEDGER="$l" PLANNED_RED='' bash "$PROOF" || rc=$?
-  else
-    "${run[@]}" -u PROOF_LEDGER SELF_TEST_LEDGER="$l" PLANNED_RED='' bash ".github/scripts/$n" --self-test || rc=$?
-  fi
-  return "$rc"
-}
-
-# head_ledger NAME OUT — HEAD's version of the named script run with a ledger, into OUT. Returns 3
-# when HEAD holds no such script, 4 when HEAD's version passes and keeps no ledger (it predates
-# one, so it records no red probe), 1 when HEAD's run leaves no finished ledger otherwise (then
-# nothing can be shown new against it).
-head_ledger() {
-  local n="$1" out="$2" rc=0
-  : > "$out"
-  git rev-parse --verify -q HEAD >/dev/null || return 3
-  git cat-file -e "HEAD:$(target_path "$n")" 2>/dev/null || return 3
-  head_tree || return 1
-  run_probes "$n" "$out" "$HEAD_TREE" >/dev/null 2>&1 || rc=$?
-  [[ $rc -ne 0 || -s "$out" ]] || return 4   # passed, and keeps no ledger: older than the ledger
-  [[ $rc -le 1 && -s "$out" ]] && [[ "$(tail -n 1 "$out" | cut -f1)" == end ]] || return 1
-}
-
-labels_of() { awk -F'\t' '$1 == "pass" || $1 == "fail" { print $2 }' "$1"; }
-
-# diff_shape NAME — how the staged script differs from HEAD: `changed` when a line is changed or
-# deleted, `outside` when a line is added outside the detector's self_test() region (from its
-# `self_test() {` line to the first `}` alone on a line after it, in the staged copy), `noregion`
-# when a detector has no such region, nothing when every change is an added line inside it. The
-# proof has no region: any added line is inside.
-diff_shape() {
-  local n="$1" path lo=1 hi=999999999 bounds
-  path="$(target_path "$n")"
-  if [[ "$n" != "$PROOF_NAME" ]]; then
-    bounds="$(git show ":$path" | awk '!s && /^self_test\(\) \{/ { s = NR; next } s && !e && /^}$/ { e = NR } END { print s + 0, e + 0 }')"
-    lo="${bounds% *}"; hi="${bounds#* }"
-    if [[ "$lo" -eq 0 || "$hi" -eq 0 ]]; then echo noregion; return 0; fi
-    lo=$((lo + 1)); hi=$((hi - 1))
-  fi
-  git diff --cached -U0 HEAD -- "$path" | awk -v lo="$lo" -v hi="$hi" '
-    /^@@/ { h = 1; match($0, /\+[0-9]+/); n = substr($0, RSTART + 1, RLENGTH - 1) + 0; next }
-    !h || /^\\/ { next }
-    /^-/ { print "changed"; exit }
-    /^\+/ { if (n < lo || n > hi) { print "outside"; exit } n++ }'
-}
-
-# segment SRC LEDGER LABEL STABLE — the source of LABEL's probe in SRC: every line strictly between
-# the nearest line a STABLE probe recorded on before LABEL's first recorded line (or `self_test() {`)
-# and the nearest one after its last (or the region's closing brace). STABLE lists the labels whose
-# result is the same at HEAD and now: only they bound a segment, because a probe whose result
-# changed may record on another line (an inline if/else records its pass and its fail apart), so
-# two such probes side by side read as one span in both versions. Prints a sentinel when the
-# ledger gives LABEL no line, so an unlocatable probe never compares equal to a real one.
-segment() {
-  awk -F'\t' -v l="$3" '
-    FILENAME == stable_file { stable[$0] = 1; next }
-    FILENAME == ledger { if (($1 == "pass" || $1 == "fail") && $3 + 0 > 0) {
-                  n = $3 + 0
-                  if ($2 == l) { if (!mn || n < mn) mn = n; if (n > mx) mx = n } else if ($2 in stable) other[n] = 1 }
-                next }
-    !st && /^self_test\(\) \{/ { st = FNR }
-    st && !en && FNR > st && /^}$/ { en = FNR }
-    { line[FNR] = $0 }
-    END { if (!mn) { print "\001unlocated"; exit }
-          lo = st; hi = en ? en : FNR + 1
-          for (k in other) { k += 0; if (k < mn && k > lo) lo = k; if (k > mx && k < hi) hi = k }
-          for (i = lo + 1; i < hi; i++) print line[i] }' stable_file="$4" ledger="$2" "$4" "$2" "$1"
-}
-
-# helpers SRC DIR — every function in SRC other than self_test() whose body calls st_record (a
-# probe helper), one file per function in DIR, named for it.
-helpers() {
-  mkdir -p "$2"
-  awk -v dir="$2" '
-    !inf && /^[A-Za-z_][A-Za-z0-9_]*\(\)[[:space:]]*\{/ {
-      name = $0; sub(/\(\).*/, "", name); buf = $0 "\n"; inf = 1
-      if ($0 ~ /\}[[:space:]]*(#.*)?$/) { inf = 0; if (name != "self_test" && buf ~ /st_record/) { printf "%s", buf > (dir "/" name); close(dir "/" name) } }
-      next }
-    inf { buf = buf $0 "\n"
-          if ($0 ~ /^}$/) { inf = 0; if (name != "self_test" && buf ~ /st_record/) { printf "%s", buf > (dir "/" name); close(dir "/" name) } } }' "$1"
-}
-
-# never_weaken NAME LEDGER — a probe red at HEAD that passes in LEDGER (the staged detector's run)
-# may have turned green only through a fix elsewhere: refused when its own source (segment) or
-# any probe helper changed against HEAD. Only a detector whose staged copy differs from HEAD's
-# is read; one HEAD does not hold has no red probe to weaken.
-never_weaken() {
-  local d="$1" now="$2" dir rc=0 l fn path
-  path="$(target_path "$d")"
-  [[ "$(git rev-parse -q --verify "HEAD:$path" 2>/dev/null || true)" \
-     != "$(git rev-parse -q --verify ":$path" 2>/dev/null || true)" ]] || return 0
-  scratch dir
-  head_ledger "$d" "$dir/head" || rc=$?
-  [[ $rc -ne 3 && $rc -ne 4 ]] || return 0
-  [[ $rc -eq 0 ]] || refuse "HEAD's $d records no finished ledger, so a red probe turning green cannot be judged"
-  awk -F'\t' '$1 == "fail" { print $2 }' "$dir/head" | LC_ALL=C sort -u > "$dir/was-red"
-  [[ -s "$dir/was-red" ]] || return 0
-  { git show "HEAD:$path" > "$dir/head.src" && git show ":$path" > "$dir/now.src"; } || die "could not read $path"
-  helpers "$dir/head.src" "$dir/head.fn"; helpers "$dir/now.src" "$dir/now.fn"
-  # The labels whose result is the same at HEAD and now (every result a label recorded, joined).
-  awk -F'\t' '$1 == "pass" || $1 == "fail" { r[$2] = r[$2] $1 } END { for (k in r) print k "\t" r[k] }' "$dir/head" \
-    | LC_ALL=C sort > "$dir/head.res"
-  awk -F'\t' '$1 == "pass" || $1 == "fail" { r[$2] = r[$2] $1 } END { for (k in r) print k "\t" r[k] }' "$now" \
-    | LC_ALL=C sort > "$dir/now.res"
-  LC_ALL=C comm -12 "$dir/head.res" "$dir/now.res" | cut -f1 > "$dir/stable"
-  while IFS= read -r l; do
-    awk -F'\t' -v l="$l" '$1 == "fail" && $2 == l { f = 1 } $1 == "pass" && $2 == l { p = 1 } END { exit !(p && !f) }' "$now" \
-      || continue
-    [[ "$(segment "$dir/head.src" "$dir/head" "$l" "$dir/stable")" == "$(segment "$dir/now.src" "$now" "$l" "$dir/stable")" ]] \
-      || refuse "the probe '$l' was red at HEAD and passes now, and its source changed — never weaken a red probe; fix the check it proves"
-    for fn in $( (ls "$dir/head.fn"; ls "$dir/now.fn") | LC_ALL=C sort -u); do
-      cmp -s "$dir/head.fn/$fn" "$dir/now.fn/$fn" \
-        || refuse "the probe '$l' was red at HEAD and passes now, and the probe helper $fn() changed — never weaken a red probe; fix the check it proves"
-    done
-  done < "$dir/was-red"
-}
-
-# judge_planned NAME — the named script's probes, judged against the opt-in.
-judge_planned() {
-  local d="$1" dir ledger rc=0 fails want l n_fail n_end what="self-test"
-  scratch dir; ledger="$dir/ledger"; JUDGED_LEDGER="$ledger"
-  [[ "$d" != "$PROOF_NAME" ]] || what="proof"
-  if [[ "$d" == "$PROOF_NAME" ]]; then
-    run_probes "$d" "$ledger" . || rc=$?
-  else
-    SELF_TEST_LEDGER="$ledger" bash ".github/scripts/$d" --self-test || rc=$?
-  fi
-  case "$rc" in
-    1) ;;
-    0) refuse "PLANNED_RED=$PLANNED but $d's $what passed — nothing is red, so nothing is planned" ;;
-    *) refuse "PLANNED_RED=$PLANNED but $d's $what exited $rc — a script error is not a planned red" ;;
-  esac
-  [[ -f "$ledger" && "$(tail -n 1 "$ledger" | cut -f1)" == end ]] \
-    || refuse "$d's $what exited 1 but recorded no finished ledger — it stopped early, and a crash is not a planned red"
-  fails="$(awk -F'\t' '$1 == "fail" { print $2 }' "$ledger" | LC_ALL=C sort -u)"
-  want="$(printf '%s\n' "${PL_LABELS[@]}" | LC_ALL=C sort -u)"
-  [[ "$fails" == "$want" ]] || refuse "PLANNED_RED names [$(paste -sd'|' <<< "$want")] but $d's red probes are [$(paste -sd'|' <<< "$fails")] — exactly the named probes may fail, and every other must pass"
-  rc=0; head_ledger "$d" "$dir/head-ledger" || rc=$?
-  if [[ $rc -ne 0 ]]; then
-    [[ $rc -eq 3 && "$d" != "$PROOF_NAME" ]] \
-      || refuse "HEAD's $d records no finished ledger, so the named probes cannot be shown to be new"
-  fi
-  labels_of "$dir/head-ledger" > "$dir/head-labels"
-  for l in "${PL_LABELS[@]}"; do
-    if grep -qxF -- "$l" "$dir/head-labels"; then
-      refuse "the probe '$l' already exists at HEAD — only a probe new in this commit may be planned red (a planned red may only add probes); an old probe gone red is a broken detector"
-    fi
-  done
-  # A planned red may only ADD probes: every probe HEAD's version runs runs again and passes, the
-  # end line's failure count is the fail lines recorded, and the diff against HEAD adds lines and
-  # changes or deletes none — for a detector, every added line inside its self_test() region, so
-  # no check a plain run executes can change in a planned-red commit.
-  n_fail="$(awk -F'\t' '$1 == "fail"' "$ledger" | wc -l | tr -d ' ')"
-  n_end="$(tail -n 1 "$ledger" | cut -f2)"
-  [[ "$n_end" == "$n_fail" ]] \
-    || refuse "$d's ledger ends with $n_end failure(s) but records $n_fail fail line(s) — a failure counted without being recorded is not a planned red"
-  while IFS= read -r l; do
-    [[ -n "$l" ]] || continue
-    awk -F'\t' -v l="$l" '$1 == "pass" && $2 == l { found = 1 } END { exit !found }' "$ledger" \
-      || refuse "the probe '$l' runs at HEAD but is not a pass in the staged $d — a planned red may only add probes, never rename, remove or break one"
-  done < "$dir/head-labels"
-  case "$(diff_shape "$d")" in
-    changed) if [[ "$d" == "$PROOF_NAME" ]]; then
-               refuse "the staged $d changes or deletes lines against HEAD — a planned red of the proof adds probes and changes nothing else"
-             fi
-             refuse "the staged $d changes or deletes a line against HEAD — a planned red only adds probes, inside self_test()" ;;
-    outside) refuse "the staged $d adds a line outside self_test() — a planned red only adds probes there, so no check can change with it" ;;
-    noregion) refuse "the staged $d has no self_test() { … } region to hold a planned red's probes" ;;
-  esac
-  printf '\033[33m▸ planned red — %s: %s (new, and the only red probes), as PLANNED_RED declares\033[0m\n' \
-    "$d" "$(paste -sd'|' <<< "$want" | sed 's/|/, /g')"
-}
-
-head_has_trailer() {
-  git rev-parse --verify -q HEAD >/dev/null \
-    && git log -1 --format=%B HEAD | git interpret-trailers --parse | grep -qi '^Planned-Red:'
+    -u GIT_ALTERNATE_OBJECT_DIRECTORIES -u GIT_CONFIG_PARAMETERS -u GIT_CONFIG_COUNT \
+    -u GIT_EXTERNAL_DIFF -u GIT_ATTR_SOURCE GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 "$@")
 }
 
 pre_commit() {
   cd "$PROJECT_ROOT"
   [[ -f copier.yml ]] || exit 0
-  local staged d rc token ldir
-  token="$(git rev-parse --git-path "$TOKEN_NAME")" || die "could not resolve the git directory"
-  rm -f "$token"
-  staged="$(git diff --cached --name-only)" || die "could not read the staged set"
-  # The probes run from the working tree, so what they judge must be what is committed: lefthook
-  # hides unstaged changes during pre-commit, and a plain hook does not.
-  if [[ -n "$PLANNED" ]] && ! git diff --quiet; then
-    refuse "PLANNED_RED=$PLANNED but the working tree has unstaged changes — the probes run from the working tree, so a planned red is judged only on a tree that is all staged (stage or stash the rest)"
-  fi
-  while IFS= read -r d; do
-    [[ "$d" == .github/scripts/*.sh || "$d" == "$PROOF" ]] || continue
-    git diff --quiet -- "$d" \
-      || refuse "$d is staged with unstaged changes beside it — its probes run from the working tree, so stage the whole file (or stash the rest)"
-  done <<< "$staged"
-  if [[ -n "$PLANNED" ]]; then
-    parse_planned
-    [[ "$PL_DET" == "$PROOF_NAME" ]] || is_detector "$PL_DET" \
-      || refuse "PLANNED_RED=$PLANNED names no self-tested detector (one of: ${SELF_TESTED[*]}), nor the proof $PROOF_NAME"
-    [[ ${#PL_LABELS[@]} -gt 0 ]] \
-      || refuse "PLANNED_RED=$PLANNED names no probe — write it <detector>::<probe label>[::<probe label>…]"
-    for d in "${PL_LABELS[@]}"; do [[ -n "$d" ]] || refuse "PLANNED_RED=$PLANNED names an empty probe label"; done
-    if ! grep -qxF "$(target_path "$PL_DET")" <<< "$staged"; then
-      head_has_trailer \
-        && refuse "PLANNED_RED=$PLANNED but $PL_DET is not staged — if this is an amend of the planned-red commit, an amend sees nothing staged against the commit it amends: git reset --soft HEAD^ and commit it again with the opt-in; otherwise unset PLANNED_RED"
-      refuse "PLANNED_RED=$PLANNED but $PL_DET is not staged — a planned red commits a probe in that detector"
-    fi
-    if [[ "$PL_DET" == "$PROOF_NAME" ]] \
-       && grep -qxE '\.github/scripts/(template-integrity|self-test-ledger)\.sh|lefthook\.yml' <<< "$staged"; then
-      refuse "PLANNED_RED=$PLANNED but the allowance itself is staged — the proof is never red in the commit that changes what it proves"
-    fi
-  fi
-  if grep -qxE '\.github/scripts/(template-integrity|self-test-ledger)\.sh|lefthook\.yml|code/src/scripts/tests/planned-red\.sh' <<< "$staged"; then
-    [[ -f "$PROOF" ]] || refuse "the allowance is staged but its proof $PROOF is missing"
-    if [[ -n "$PLANNED" && "$PL_DET" == "$PROOF_NAME" ]]; then
-      judge_planned "$PROOF_NAME"
-    else
-      rc=0
-      env -u PROOF_LEDGER -u SELF_TEST_LEDGER bash "$PROOF" || rc=$?
-      [[ $rc -eq 0 ]] || refuse "the planned-red allowance is staged and its proof $PROOF exited $rc"
-    fi
-  fi
-  if grep -q '^\.github/scripts/.*\.sh$' <<< "$staged"; then
-    for d in "${SELF_TESTED[@]}"; do
-      if [[ -n "$PLANNED" && "$d" == "$PL_DET" ]]; then
-        judge_planned "$d"
-        never_weaken "$d" "$JUDGED_LEDGER"
-        continue
-      fi
-      rc=0
-      scratch ldir
-      env -u PROOF_LEDGER SELF_TEST_LEDGER="$ldir/ledger" bash ".github/scripts/$d" --self-test || rc=$?
-      [[ $rc -eq 0 ]] || refuse "$d --self-test exited $rc"
-      never_weaken "$d" "$ldir/ledger"
-    done
-  fi
+  local d rc
+  while IFS= read -r -d '' d; do
+    [[ "$d" == .github/scripts/*.sh ]] || continue
+    g diff --quiet --no-ext-diff --no-textconv -- "$d" \
+      || refuse "$d is staged with unstaged changes beside it — the plain checks run from the working tree, so stage the whole file (or stash the rest)"
+  done < <(g diff --cached --name-only --no-renames -z || die "could not read the staged set")
   for d in "${DETECTORS[@]}"; do
     rc=0
     bash ".github/scripts/$d" || rc=$?
     [[ $rc -eq 0 ]] || refuse "$d exited $rc"
   done
-  if [[ -n "$PLANNED" ]]; then
-    printf '%s\n%s\n' "$PLANNED" "$(git write-tree)" > "$token" || die "could not write the planned-red token"
-  fi
 }
 
-commit_msg() {
-  local file="$1" trailers n token tok_planned="" tok_tree="" have_token=false
+# copy_of SHA DIR — SHA's tree extracted into DIR, checked to be that tree, and committed.
+copy_of() {
+  local sha="$1" dir="$2" want got
+  want="$(g rev-parse --verify -q "$sha^{tree}")" || die "no tree for $sha"
+  g archive --format=tar "$sha" | tar -x -C "$dir" || die "could not extract $sha"
+  in_tree "$dir" git init -q || die "could not initialise the copy of $sha"
+  printf '* -text -eol -filter -ident -working-tree-encoding -export-ignore -export-subst\n' \
+    > "$dir/.git/info/attributes"
+  in_tree "$dir" git add -A -f || die "could not stage the copy of $sha"
+  got="$(in_tree "$dir" git write-tree)" || die "could not read the copy of $sha"
+  [[ "$got" == "$want" ]] \
+    || refuse "the copy of ${sha:0:12} is not the tree that commit holds — a local attribute, filter or line-ending setting changed it (git archive), so it cannot be judged"
+  rm -f "$dir/.git/info/attributes"
+  in_tree "$dir" git -c user.name=template-integrity -c user.email=template-integrity@example.invalid \
+    -c core.hooksPath=/dev/null commit -q --no-verify -m "copy of $sha" || die "could not commit the copy of $sha"
+}
+
+# self_tests SHA — every self-test against SHA, each in its own copy, in parallel; refuses on any red.
+self_tests() {
+  local sha="$1" base i dirs=() pids=() rc bad=() t0=$SECONDS
+  scratch base
+  mkdir "$base/copy"
+  copy_of "$sha" "$base/copy"
+  for i in "${!SELF_TESTS[@]}"; do
+    cp -a "$base/copy" "$base/$i" || die "could not copy the tree of $sha"
+    dirs+=("$base/$i")
+  done
+  printf '▸ %s: %d self-tests, each in a copy of the commit…\n' "${sha:0:12}" "${#SELF_TESTS[@]}"
+  for i in "${!SELF_TESTS[@]}"; do
+    # shellcheck disable=SC2086  # each entry is a script and its flags, split on purpose
+    in_tree "${dirs[$i]}" bash ${SELF_TESTS[$i]} > "$base/$i.out" 2>&1 &
+    pids+=("$!")
+  done
+  for i in "${!SELF_TESTS[@]}"; do
+    rc=0; wait "${pids[$i]}" || rc=$?
+    if [[ $rc -eq 0 ]]; then
+      printf '  \033[32m✓\033[0m %s\n' "${SELF_TESTS[$i]}"
+    else
+      bad+=("$i")
+      if [[ $rc -eq 2 ]]; then
+        printf '  \033[31m✗\033[0m %s — exit 2, a script error (it crashed or stopped early), never a pass\n' "${SELF_TESTS[$i]}"
+      else
+        printf '  \033[31m✗\033[0m %s — exit %d\n' "${SELF_TESTS[$i]}" "$rc"
+      fi
+    fi
+  done
+  for i in "${bad[@]}"; do
+    printf '\n── %s (last 20 lines) ──\n' "${SELF_TESTS[$i]}" >&2
+    tail -n 20 "$base/$i.out" >&2
+  done
+  printf '  (%ds)\n' "$((SECONDS - t0))"
+  [[ ${#bad[@]} -eq 0 ]] || refuse "${sha:0:12} has ${#bad[@]} red self-test(s) — fix them before this commit is pushed"
+}
+
+pre_push() {
   cd "$PROJECT_ROOT"
   [[ -f copier.yml ]] || exit 0
-  [[ -f "$file" ]] || die "no commit message file at $file"
-  token="$(git rev-parse --git-path "$TOKEN_NAME")" || die "could not resolve the git directory"
-  if [[ -f "$token" ]]; then
-    have_token=true
-    tok_planned="$(sed -n 1p "$token")"; tok_tree="$(sed -n 2p "$token")"
-  fi
-  rm -f "$token"   # one-shot: consumed whatever this leg decides
-  trailers="$(git interpret-trailers --parse < "$file" | grep -i '^Planned-Red:' || true)"
-  n=0; [[ -z "$trailers" ]] || n="$(grep -c . <<< "$trailers")"
-  if git rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
-    [[ $n -eq 0 && -z "$PLANNED" ]] \
-      || refuse "a merge commit never carries a planned red — the pre-commit leg does not run for a merge"
-    return 0
-  fi
-  if [[ -z "$PLANNED" ]]; then
-    [[ $n -eq 0 ]] || refuse "the message carries a Planned-Red trailer, but PLANNED_RED is not set — the hook saw no planned red (to change a planned-red commit, git reset --soft HEAD^ and commit it again with the opt-in)"
-    return 0
-  fi
-  [[ $n -eq 1 ]] || refuse "PLANNED_RED=$PLANNED needs exactly one 'Planned-Red: $PLANNED' trailer; the message carries $n"
-  [[ "$(sed 's/^[^:]*:[[:space:]]*//; s/[[:space:]]*$//' <<< "$trailers")" == "$PLANNED" ]] \
-    || refuse "the Planned-Red trailer names '${trailers#*:}', not $PLANNED"
-  $have_token || refuse "no planned-red token — the pre-commit leg accepted no planned red for this commit (a merge, a hook that did not run, or a token already spent)"
-  [[ "$tok_planned" == "$PLANNED" ]] || refuse "the planned-red token was written for PLANNED_RED=$tok_planned, not $PLANNED"
-  [[ "$tok_tree" == "$(git write-tree)" ]] \
-    || refuse "the planned-red token was written for another staged tree — the index changed after the pre-commit leg judged it"
+  local lref lsha rref rsha seen=" " sha
+  local -a tips=()
+  while read -r lref lsha rref rsha; do
+    [[ -n "${lsha:-}" ]] || continue
+    [[ ! "$lsha" =~ $ZERO_SHA_RE ]] || continue   # a deletion pushes no commit
+    sha="$(g rev-parse --verify -q "$lsha^{commit}")" || die "the pushed $lref names no commit ($lsha)"
+    [[ "$seen" == *" $sha "* ]] && continue
+    seen+="$sha "; tips+=("$sha")
+    : "$rref" "$rsha"
+  done
+  for sha in "${tips[@]}"; do self_tests "$sha"; done
 }
 
 case "${1:-}" in
   --pre-commit) pre_commit ;;
-  --commit-msg) [[ -n "${2:-}" ]] || die "--commit-msg needs the message file"; commit_msg "$2" ;;
-  --help|-h) sed -n '2,89p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
-  *) die "usage: template-integrity.sh --pre-commit | --commit-msg FILE | --help" ;;
+  --pre-push) pre_push ;;
+  --self-tests)
+    cd "$PROJECT_ROOT"
+    sha="$(g rev-parse --verify -q "${2:-HEAD}^{commit}")" || die "no commit ${2:-HEAD}"
+    self_tests "$sha" ;;
+  --help|-h) sed -n '2,46p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  *) die "usage: template-integrity.sh --pre-commit | --pre-push [REMOTE [URL]] | --self-tests [COMMIT]" ;;
 esac

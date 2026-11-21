@@ -73,7 +73,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# The self-test ledger and crash guard template-integrity.sh's planned-red allowance reads.
+# The self-test crash guard (exit 2, never a red or a pass) and the optional probe ledger.
 # shellcheck source=self-test-ledger.sh
 . "$SCRIPT_DIR/self-test-ledger.sh"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"

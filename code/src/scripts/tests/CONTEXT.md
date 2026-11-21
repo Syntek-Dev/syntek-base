@@ -40,7 +40,6 @@ code/src/scripts/tests/
 ├── mutmut.sh                 ← Python mutation testing (local-only; dev stack required)
 ├── open-coverage.sh          ← opens the backend coverage HTML in a browser
 ├── pm-boards.sh              ← probes for the PM board and archive scripts, on a synthetic fixture
-├── planned-red.sh            ← test-only, copier-excluded: probes the template's planned-red hook <!-- doc-references: template-only -->
 ├── server.sh                 ← start or manage the test stack containers
 ├── template-hooks.sh         ← test-only, copier-excluded: probes the template's own hook shape <!-- doc-references: template-only -->
 ├── test-record.sh            ← generator: US### → 18-TESTS/AUTOMATED/ (writes OUTSIDE code/)
@@ -68,8 +67,8 @@ code/src/scripts/tests/
 | `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                                         |
 | `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                                          |
 | `pm-boards.sh`              | git + python3       | host    | None                | N/A (console output; scratch fixture removed on exit)                                        |
-| `planned-red.sh`            | git                 | host    | None                | N/A (console output; scratch fixture removed on exit) <!-- doc-references: template-only --> |
 | `server.sh`                 | docker compose      | host    | N/A                 | N/A                                                                                          |
+| `template-hooks.sh`         | git + tar           | host    | None                | N/A (console output; scratch fixture removed on exit) <!-- doc-references: template-only --> |
 | `test-record.sh`            | report parser       | host    | None (reads files)  | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**                           |
 
 `backend.sh`, `backend-coverage.sh`, and `api.sh` fall back to `.env.test.example` when
@@ -207,7 +206,7 @@ runs. The `change-filter` fixture tests that decision offline against a scratch 
 `pm-archive.sh` and `pm-lib.sh` (`project-management/src/00-ASSETS/scripts/`) for the decisions,
 findings and bugs boards, on a synthetic `git init` holding **copies** of the three scripts — never
 a path back into this checkout. Host only, git and python3; exit `0` / `1` / `2` as below.
-`planned-red.sh` and `template-hooks.sh` prove the template's own hook legs the same way, template-only. <!-- doc-references: template-only --> <!-- 21/11/2026 -->
+`template-hooks.sh` proves the template's own hook legs the same way, template-only. <!-- doc-references: template-only --> <!-- 21/11/2026: replaced planned-red.sh -->
 
 ## --output flag
 
