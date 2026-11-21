@@ -539,6 +539,50 @@ self_test() {
       printf '\033[31m  ✗ %s produced %d finding(s)\033[0m\n' "${ung#*|}" "${#FINDINGS[@]}"
     fi
   done
+  # 2j. Round 8: the YAML layer and the second list. A double-quoted scalar's escape decodes to
+  #     the dot before the shell sees it, and a `_migrations` entry runs on update as an ungated
+  #     task does — each is a board move outside the copy-gated task.
+  printf '%s\n' '  - command: "mv \x2ecopier/STORIES-BOARD.md x"' > "$tmp/line"
+  awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+  COPIER="$tmp/ungated.yml"; probe "check 2 fires on a seed path spelt with a YAML \\x2e escape" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
+  printf '%s\n' '  - command: mv .copier/STORIES-BOARD.md project-management/src/02-STORIES/STORIES-BOARD.md' \
+    "    when: \"<% _stage == 'after' %>\"" > "$tmp/line"
+  awk -v f="$tmp/line" '{print} /^_migrations:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+  COPIER="$tmp/ungated.yml"; probe "check 2 fires on a _migrations entry moving a seed" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
+  #     A key repeated inside one entry: YAML keeps the last, so the entry does not run as it
+  #     first reads. Once on an ungated task (that finding alone), once on the seed task itself,
+  #     where a copy `when:` followed by an update one made the move read as gated.
+  printf '%s\n' '  - command: echo a task' "    when: \"<% _copier_operation == 'copy' %>\"" \
+    "    when: \"<% _copier_operation == 'update' %>\"" > "$tmp/line"
+  awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+  COPIER="$tmp/ungated.yml"; probe "check 2 fires on a duplicate when: in a task" "repeats the key when:"
+  awk '{print} prev ~ /rmdir \.copier$/ && /^    when: / {print "    when: \"<% _copier_operation == '"'"'update'"'"' %>\""} {prev = $0}' \
+    "$real_copier" > "$tmp/dupseed.yml"
+  COPIER="$tmp/dupseed.yml"; run_checks; ST_PROBES=$((ST_PROBES + 1))
+  if [[ ${#FINDINGS[@]} -gt 0 ]] && printf '%s\n' "${FINDINGS[@]}" | grep -qF 'repeats the key when:'; then
+    log "  ✓ check 2 fires on a duplicate when: in the seed task"
+    st_record pass "check 2 fires on a duplicate when: in the seed task"
+  else
+    ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 fires on a duplicate when: in the seed task"
+    printf '\033[31m  ✗ a duplicate when: in the seed task produced %d finding(s), none naming the repeat\033[0m\n' "${#FINDINGS[@]}"
+  fi
+  COPIER="$real_copier"
+  # 2k. Round 8: the span reading is linear in a word's separators — a 500-separator word reads
+  #     inside 2 s (round 7's every-pair reading took 13 s at 150).
+  local long="" k pid t=0
+  for ((k = 0; k < 500; k++)); do long+=".,"; done
+  ( seed_any "$long" STORIES-BOARD.md || true ) & pid=$!
+  while kill -0 "$pid" 2>/dev/null && [[ $t -lt 20 ]]; do sleep 0.1; t=$((t + 1)); done
+  ST_PROBES=$((ST_PROBES + 1))
+  if kill -0 "$pid" 2>/dev/null; then
+    kill "$pid" 2>/dev/null || true; wait "$pid" 2>/dev/null || true
+    ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 reads a 500-separator word inside 2 s"
+    printf '\033[31m  ✗ a 500-separator word was still being read after 2 s\033[0m\n'
+  else
+    wait "$pid" || true
+    log "  ✓ check 2 reads a 500-separator word inside 2 s"
+    st_record pass "check 2 reads a 500-separator word inside 2 s"
+  fi
   # A guard, kept as round 6 left it: a different directory whose name only starts .copier is
   # no seed, so it is no finding.
   printf '%s\n' '  - command: mv .copierx/STORIES-BOARD.md x' > "$tmp/line"
