@@ -379,6 +379,17 @@ self_test() {
   COPIER="$tmp/reinclude.yml"; probe "check 1 fires on a slash-less basename negation" "re-includes a board"
   awk '{print} /^_exclude:/{print "  - \"!/project-management/src/03-SPRINTS/\""}' "$real_copier" > "$tmp/reinclude.yml"
   COPIER="$tmp/reinclude.yml"; probe "check 1 fires on a trailing-slash folder negation" "re-includes a board"
+  # 1d. Round 10: an entry read as copier DECODES it — a double-quoted `\x21` is the `!` — and an
+  #     entry check 1 cannot read as one line, a block scalar, refused as a finding of its own.
+  printf '%s\n' '  - "\x21project-management/src/02-STORIES/STORIES-BOARD.md"' > "$tmp/line"
+  awk -v f="$tmp/line" '{print} /^_exclude:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/reinclude.yml"
+  COPIER="$tmp/reinclude.yml"; probe "check 1 fires on a negation spelt with a YAML \\x21 escape" "re-includes a board"
+  printf '%s\n' '  - >-' '    !project-management/src/02-STORIES/STORIES-BOARD.md' > "$tmp/line"
+  awk -v f="$tmp/line" '{print} /^_exclude:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/reinclude.yml"
+  COPIER="$tmp/reinclude.yml"; probe "check 1 refuses a block-scalar _exclude entry" "check 1 cannot read"
+  printf '%s\n' '  - ["!project-management/src/02-STORIES/STORIES-BOARD.md"]' > "$tmp/line"
+  awk -v f="$tmp/line" '{print} /^_exclude:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/reinclude.yml"
+  COPIER="$tmp/reinclude.yml"; probe "check 1 refuses a flow _exclude entry" "check 1 cannot read"
   COPIER="$real_copier"
 
   # 2. Drop a _tasks move.
