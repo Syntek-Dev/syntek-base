@@ -323,18 +323,19 @@ to read; `2` a script error — a story that is not `US###`, an unknown flag, or
 
 ## CI
 
-These scripts are used by five GitHub Actions workflows. `test.yml` was renamed from
+These scripts are used by five GitHub Actions workflows (six in the template). <!-- Sixth listed 21/11/2026. --> `test.yml` was renamed from
 `test-backend.yml` when the mobile surface arrived — one stack-neutral workflow now holds both
 job sets, with the mobile jobs guarded at **step** level so they report success rather than
 "skipped" on a web-only project:
 
-| Workflow                                  | Trigger                                                                       | Scripts used                                                |
-| ----------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| `.github/workflows/test.yml`              | Every push/PR (no path filter)                                                | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh` |
-| `.github/workflows/test-api.yml`          | Push/PR on `.py` or Bruno collection changes                                  | `api.sh`                                                    |
-| `.github/workflows/test-e2e.yml`          | Push/PR on Django or Docker changes                                           | `e2e-py.sh`                                                 |
-| `.github/workflows/pm-boards.yml`         | Push/PR on `project-management/src/**` or this script                         | `pm-boards.sh`, a step of the `check` job                   |
-| `.github/workflows/audit-hook-arming.yml` | Every push/PR; `install-failure` skipped only when the change is docs/PM only | `hook-arming.sh`, one step per fixture                      |
+| Workflow                                  | Trigger                                                                       | Scripts used                                                                                    |
+| ----------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `.github/workflows/test.yml`              | Every push/PR (no path filter)                                                | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh`                                     |
+| `.github/workflows/test-api.yml`          | Push/PR on `.py` or Bruno collection changes                                  | `api.sh`                                                                                        |
+| `.github/workflows/test-e2e.yml`          | Push/PR on Django or Docker changes                                           | `e2e-py.sh`                                                                                     |
+| `.github/workflows/pm-boards.yml`         | Push/PR on `project-management/src/**` or this script                         | `pm-boards.sh`, a step of the `check` job                                                       |
+| `.github/workflows/audit-template.yml`    | Every push/PR; the template's own, absent from a generated project            | `pm-boards.sh` and `template-hooks.sh`, steps of `[1/4]` <!-- doc-references: template-only --> |
+| `.github/workflows/audit-hook-arming.yml` | Every push/PR; `install-failure` skipped only when the change is docs/PM only | `hook-arming.sh`, one step per fixture                                                          |
 
 Mutation testing (`mutmut.sh`) is intentionally excluded from CI — it is too slow for standard
 gates and is run on-demand locally against the dev stack.

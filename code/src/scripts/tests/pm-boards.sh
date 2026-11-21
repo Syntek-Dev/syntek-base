@@ -8,7 +8,8 @@
 # Proves project-management/src/00-ASSETS/scripts/pm-board.sh, pm-archive.sh and the pm-lib.sh
 # both source, for the three record registers — 15-DECISIONS (ADRs), 20-FINDINGS and 21-BUGS —
 # beside the five status registers they already index. The probe body lives here, never in a
-# workflow (.github/workflows/pm-boards.yml only calls this script).
+# workflow: .github/workflows/pm-boards.yml only calls this script, and so, in the template alone,
+# does audit-template.yml's required [1/4] job (21/11/2026).  # doc-references: template-only
 #
 # The fixture is SYNTHETIC: a `git init` in a `mktemp -d` directory holding the eight register
 # folders, a handful of invented records, and COPIES of the three scripts (never a symlink), so
