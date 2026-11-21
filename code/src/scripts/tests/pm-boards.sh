@@ -81,6 +81,11 @@ for tool in git python3; do
   command -v "$tool" >/dev/null 2>&1 || { echo "pm-boards.sh: $tool not found" >&2; exit 2; }
 done
 
+# No host configuration reaches the fixture: a developer's global `core.autocrlf` once turned one
+# of the round-5 reds green on one host only (21/11/2026). A probe sets what it attacks with.
+export GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1
+unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_CONFIG_PARAMETERS GIT_CONFIG_COUNT
+
 FX="$(mktemp -d)"
 cleanup() { if $KEEP; then echo "fixture kept: $FX"; else rm -rf "$FX"; fi; }
 trap cleanup EXIT
