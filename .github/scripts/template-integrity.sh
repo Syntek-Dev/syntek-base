@@ -29,7 +29,8 @@
 # no replace objects and no grafts file, and a shallow repository, which has lost the history the
 # decision reads, is refused outright (round 8). The ancestry is read from origin/main AS LAST
 # FETCHED, which the pusher can still make stale or point elsewhere — CI is the record. A commit
-# older than a script origin/main does not yet hold reads it deleted until origin/main does. One it holds that exits 127 is a failure like any other. A push
+# older than a script origin/main does not yet hold reads it deleted until origin/main does. One
+# it holds that exits 127 is a failure like any other. A push
 # with no commit to judge (a deletion only, or no ref lines on stdin) says so and exits 0. CI runs
 # the same nine self-tests on every push to any branch, unfiltered, in audit-template.yml
 # (pm-boards.sh in [1/4] from 21/11/2026, beside pm-board.sh --check, the archive freeze).
@@ -43,9 +44,10 @@
 # red tip can reach them; and main's ruleset lets its bypass actor (the admin role, bypass mode
 # "always") merge or push past the required checks AND force-push or delete main, so a red tip can
 # reach main through that bypass too (21/11/2026). Nor does main yet require a branch to be up to
-# date before it merges — strict required checks, with merges restricted to merge and rebase (a
-# squash would fold an archive move into one commit and lock --check red), are pending the
-# maintainer's ruleset change — so a merged result is not re-judged against the latest main.
+# date before it merges, so a merged result is not re-judged against the latest main: merge
+# commits only (main by ruleset, every branch by repository setting — a squash or rebase merge
+# would fold or flatten an archive move and lock --check red) and strict checks on main are
+# pending the maintainer's commands (round 10, 21/11/2026).
 # Two self-tests run in CI alone, needing toolchains or a generated project:
 # check-template-parsers.sh's and shipped-artefacts.sh's.
 #
@@ -65,8 +67,9 @@
 # GIT, READ HERE. Every git command this script runs in this repository runs with no system or
 # global configuration, no caller `-c` options (GIT_CONFIG_PARAMETERS / GIT_CONFIG_COUNT), no
 # external diff or pager, no replace objects (GIT_NO_REPLACE_OBJECTS), no grafts file
-# (GIT_GRAFT_FILE=/dev/null, round 9), and the output-shaping
-# keys pinned (colour, quoting, relative paths, renames, line endings, the attributes file): a
+# (GIT_GRAFT_FILE=/dev/null, round 9; its deprecation hint silenced, round 10), and the
+# output-shaping keys pinned (colour, quoting, relative paths, renames, line endings, the
+# attributes file): a
 # repository's own .git/config cannot be switched off, and the copy's tree check is what stands
 # against it.
 #
@@ -111,8 +114,9 @@ scratch() { # VAR — a fresh directory, removed on exit, its path in VAR
 g() {
   env -u GIT_CONFIG_PARAMETERS -u GIT_CONFIG_COUNT -u GIT_EXTERNAL_DIFF -u GIT_DIFF_OPTS \
     -u GIT_PAGER -u GIT_ATTR_SOURCE GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
-    GIT_NO_REPLACE_OBJECTS=1 GIT_GRAFT_FILE=/dev/null git --no-pager -c color.ui=false -c core.quotePath=true -c diff.relative=false \
-      -c diff.noprefix=false -c diff.renames=false -c core.autocrlf=false -c core.eol=lf \
+    GIT_NO_REPLACE_OBJECTS=1 GIT_GRAFT_FILE=/dev/null \
+    git --no-pager -c advice.graftFileDeprecated=false -c color.ui=false -c core.quotePath=true \
+      -c diff.relative=false -c diff.noprefix=false -c diff.renames=false -c core.autocrlf=false -c core.eol=lf \
       -c core.attributesFile=/dev/null "$@"
 }
 # git, and anything run, in another tree: none of this repository's environment and no
@@ -273,6 +277,6 @@ case "${1:-}" in
     cd "$PROJECT_ROOT"
     sha="$(g rev-parse --verify -q "${2:-HEAD}^{commit}")" || die "no commit ${2:-HEAD}"
     self_tests "$sha" ;;
-  --help|-h) sed -n '2,77p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  --help|-h) sed -n '2,80p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) die "usage: template-integrity.sh --pre-commit | --pre-push [REMOTE [URL]] | --self-tests [COMMIT]" ;;
 esac
