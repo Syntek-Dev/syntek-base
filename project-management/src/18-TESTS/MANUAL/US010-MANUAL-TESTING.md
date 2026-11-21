@@ -2,7 +2,7 @@
 
 _The manual testing guide for US010 — the gates, the self-tests, the CI runs and the read-acrosses a tester follows step by step, and, once walked, whether each passed. Authored from the specs at `17-story-plans` Step 7.2 on 03/10/2026, before any code; walked at `22-implementation-documentation` Step 4._
 
-**Last Updated**: 19/11/2026 · **Story**: US010 · **Status**: Authored — not yet walked; re-cut 19/11/2026
+**Last Updated**: 21/11/2026 · **Story**: US010 · **Status**: Authored — not yet walked; re-cut 19/11/2026
 
 - **Story:** `../../02-STORIES/US010.md` — the seven register indexes are born seeded, and the map index leaves the file that ships
 - **Story plan:** `../../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` — the code master this guide was authored beside
@@ -828,9 +828,11 @@ commit hook runs a self-test; a `pre-push` leg runs every one against the tip of
 and CI runs them all — superseding round 2's D4; **Q2** closes the archive merge-commit gap,
 probe-first. The three round-4 reports were deduplicated into the list below (the brief labelled
 `r4-03` security and `r4-04` QA; by content `r4-03` is the QA re-attack and `r4-04` the security
-review, and the sources are cited by content). Entries dated 21/11/2026. Every new probe was
-committed red in its own commit before its fix, as an ordinary commit — the first round in which
-that needed no allowance.
+review, and the sources are cited by content). Entries dated 21/11/2026. Every red commit was an
+ordinary commit, ahead of its fix — the first round in which that needed no allowance — but not
+every new probe in it ran red: see the deviations. _Amended 21/11/2026 (round 6, H) — was: "Every
+new probe was committed red in its own commit before its fix"; why: 27 of `template-hooks.sh`'s
+33 probes first ran at the fix, and the hostile-config probes were guards._
 
 | #   | Finding (sources)                                                                                                                                                                                                     | Disposition                                                                                                                                                                                                                                                                                                                                                             | Red → fix                                       |
 | --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
@@ -853,13 +855,13 @@ that needed no allowance.
 
 **Reds, each an ordinary commit, and how to reproduce them** (`git checkout <sha>`, then):
 
-| Red        | Command                                                  | Reading at the red                                                                         |
-| ---------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `1fe46f26` | `bash code/src/scripts/tests/pm-boards.sh`               | the merge, mode, type, hostile-config and root-commit probes fail (recorded at `b42b004f`) |
-| `ef944b1f` | `bash code/src/scripts/tests/template-hooks.sh`          | exit 1: 2 passed, 4 shape probes failed (no pre-push leg; the commit-msg leg remains)      |
-| `32c6c9b7` | `bash code/src/scripts/tests/hook-arming.sh --fixture A` | exit 1: 26 passed, 3 failed — the three R3-01 pre-push probes                              |
-| `5ec8e51e` | `bash .github/scripts/shipped-boards.sh --self-test`     | exit 1: exactly the four round-5 check-2 probes fail                                       |
-| `5c1c418b` | `bash code/src/scripts/tests/pm-boards.sh`               | exit 1: 1 of 109 failed — the smudge-filter probe                                          |
+| Red        | Command                                                  | Reading at the red                                                                                                                                                                                                                        |
+| ---------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `1fe46f26` | `bash code/src/scripts/tests/pm-boards.sh`               | exit 1: 10 of 107 failed — the merge, mode, type and root-commit probes; the hostile-config probe passed, a guard (amended 21/11/2026, round 6 H; was "… hostile-config and root-commit probes fail")                                     |
+| `ef944b1f` | `bash code/src/scripts/tests/template-hooks.sh`          | exit 1: 2 passed, 4 shape probes failed (no pre-push leg; the commit-msg leg remains)                                                                                                                                                     |
+| `32c6c9b7` | `bash code/src/scripts/tests/hook-arming.sh --fixture A` | exit 1: 26 passed, 3 failed — the three R3-01 pre-push probes                                                                                                                                                                             |
+| `5ec8e51e` | `bash .github/scripts/shipped-boards.sh --self-test`     | exit 1: exactly the four round-5 check-2 probes fail                                                                                                                                                                                      |
+| `5c1c418b` | `bash code/src/scripts/tests/pm-boards.sh`               | exit 1: **2** of 109 failed — the caller-autocrlf and smudge-filter probes, with no host git configuration; 1 of 109 under this host's global `core.autocrlf` (amended 21/11/2026, round 6 D/H; was "1 of 109 … the smudge-filter probe") |
 
 From any later checkout, `bash .github/scripts/template-integrity.sh --self-tests <sha>` replays
 the self-tests of one commit in a copy of its tree: it read exit 1 at `32c6c9b7` (only
@@ -868,8 +870,13 @@ the self-tests of one commit in a copy of its tree: it read exit 1 at `32c6c9b7`
 **Deviations, recorded rather than repaired:**
 
 - **Each red at `ef944b1f` is shape-only:** with no pre-push leg in `lefthook.yml` the fixture's
-  hooks cannot be driven, so the push and replay probes first ran at the fix. The hostile probes,
-  and `pm-boards.sh`'s caller-`autocrlf` probe, were green from their first run — guards, not reds.
+  hooks cannot be driven, so the push and replay probes first ran at the fix: **27 of
+  `template-hooks.sh`'s 33 probes never ran red**. The hostile probes were green from their first
+  run — guards, not reds — and the caller-`-c` one could not fail at all (round 6, A).
+  `pm-boards.sh`'s caller-`autocrlf` probe was a real red: it read green at `5c1c418b` only under
+  this host's global `core.autocrlf`, and red with no host configuration, fixed at `c676e5f2`.
+  _Amended 21/11/2026 (round 6, H) — was: "The hostile probes, and `pm-boards.sh`'s caller-`autocrlf`
+  probe, were green from their first run — guards, not reds."_
 - **The pre-push leg was proved without a push**, per the brief: in `template-hooks.sh`'s
   scratch fixture with a bare remote, through `template-integrity.sh --pre-push` fed git's ref
   lines on stdin, and through `lefthook run pre-push` with the same stdin. No remote was touched.
@@ -900,6 +907,76 @@ bar its own four citations, so the whole-tree citation diff is taken on the guid
 | `audits/doc-references.sh` (whole tree)                                       | 1    | 18 findings, **identical** to P0's 18 (normalised `diff` exit 0), on the guide's tree; detector hash `12e81359…` unchanged. A first run at `3681c95e` held 5 more, `planned-red.sh`'s removed path cited in the story and in this guide, fixed at `003041db` and in this commit |
 | ShellCheck 0.11.0 over every shell script this round edited (`-x`)            | 0    | `template-integrity.sh`, `self-test-ledger.sh`, the five detectors, `register-index-routes.sh`, `template-hooks.sh`, `pm-boards.sh`, `hook-arming.sh`, `install-hooks.sh`, `pm-board.sh`                                                                                        |
 | `[3/4]` landing run                                                           | —    | **not run**: it needs CI                                                                                                                                                                                                                                                        |
+
+### Fix round 6 — 21/11/2026
+
+The three round-5 reviews (code review, QA re-attack, security review, in that order) were
+deduplicated into A to I below. Sam's rulings of 21/11/2026 bind three of them: **B** option (a),
+make `pm-boards.sh` a real gate; **E** skip a self-test absent from the judged commit with a
+notice; **I** add code owners. Each red is an ordinary commit ahead of its fix.
+
+| #   | Finding (sources)                                                                                                                                                   | Disposition                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | Red → fix                             |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| A   | `template-hooks.sh`'s "a caller's -c options leave the red tip red" ran `-c` as a command (127), so it could not fail (CR-M1)                                       | Fixed: the push runs through `git -c core.autocrlf=true -c color.ui=always -c tar.umask=0111 push origin side`, and the probe now also requires that the self-tests ran and the refusal line `shipped-readme.sh --self-test — exit 1`. `tar.umask` is pinned nowhere, so only `g()` stripping `GIT_CONFIG_PARAMETERS` keeps it out of `git archive`. The code under test was already correct, so **no red commit exists**; the red is shown by mutation (below)                                                                                                                                                                                     | `4fcb0661`, `2c97121c` (mutation red) |
+| B   | "CI runs every self-test on every push, the check of record" was false for `pm-boards.sh` — path-filtered, chain branches only, not required (Sec-M1, CR-L1, QA-L4) | Fixed, option (a): `pm-boards.sh` is a step of `audit-template.yml` `[1/4] Template Tokens` — every branch, no path filter, already a required check on `main`, so **no new check name**. `pm-boards.yml` keeps its run (it ships; a generated project has no `audit-template.yml`). A shape probe requires every `SELF_TESTS` entry as a step there. Wording corrected in `template-integrity.sh`, `lefthook.yml` (the _ONLY THE CHEAP HALF_ block included), `COMMITS.md` and `02-tdd-cycle/STEPS.md`; `check-template-parsers.sh` and `shipped-artefacts.sh` self-tests stated CI-only (toolchains; a generated project — neither cheap at push) | `76e6e5ec` → `01ae497f`               |
+| C   | Check 2 missed a glob, `//`, `/./` or `..` in the `.copier` name; the header overclaimed (CR-L2, QA-L2, Sec-L1)                                                     | Fixed: each word of an ungated task line is read as a path — `$'…'`/`$"…"` unquoted, `//` and `/./` collapsed, `..` resolved lexically, and a component opening with `.` matched against `.copier` as a glob, by pattern match only (no `eval`). The header's residual is now exact: a name built at run time, a `..` through a symlink, a component opening with a wildcard (which `sh` never matches against a leading dot)                                                                                                                                                                                                                       | `2ec575a2` → `dcf4f663`               |
+| D   | `pm-boards.sh` read the host's global git config, so `5c1c418b`'s recorded red depended on the host (CR-L4, QA-L5, Sec-L2)                                          | Fixed: it exports `GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1` and unsets the location and `-c` variables, as `template-hooks.sh` does. The round-5 reading is corrected above: **2 of 109** failed at `5c1c418b` in a clean environment, the autocrlf probe a real red fixed at `c676e5f2` (replayed 21/11/2026)                                                                                                                                                                                                                                                                                                                            | `273c0f26`                            |
+| E   | Pre-push and `--self-tests <sha>` read a `SELF_TESTS` script absent from the judged commit as red, exit 127 (CR-L3, QA-L3)                                          | Fixed, by Sam's ruling: an absent script is printed `absent at <sha> — skipped (not run, not a pass)` and counted in no total; a present one exiting 127 or crashing still refuses (that probe a guard). The summary reads `<n> run, <n> red, <n> absent and skipped`. `02-tdd-cycle/STEPS.md`'s replay paragraph says so                                                                                                                                                                                                                                                                                                                           | `90956566` → `4f7ac7e7`               |
+| F   | A repository-local `log.diffMerges` (`combined`, `dense-combined`, `off`) hid a deletion inside a merge from `--check` (QA-L1)                                      | Fixed: `archive_events()` names `--diff-merges=separate`, and `GIT_PIN` pins `log.diffMerges=separate`; three repo-config probes added beside the caller-config one                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | `8e673918` → `7b91945c`               |
+| G   | `--pre-push` with no ref lines passed silently (Sec-L3)                                                                                                             | Fixed: no pushed commit (a deletion only, or empty stdin) prints `no pushed commit to judge` and exits 0; the deletion probe kept, and now reads the notice                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `90956566` → `4f7ac7e7`               |
+| H   | Round-5 record lines overstated red-first (QA-L5)                                                                                                                   | Corrected in place with dated amendments: the round-5 intro, the `1fe46f26` and `5c1c418b` rows, and the first deviation (27 of `template-hooks.sh`'s 33 probes never ran red; the hostile-config probe at `1fe46f26` was a guard)                                                                                                                                                                                                                                                                                                                                                                                                                  | this record                           |
+| I   | The check of record lives in the tree it judges, and `main` requires no code-owner review (Sec-L4)                                                                  | Done, by Sam's ruling. `.github/CODEOWNERS` already existed (`*` and `/.github/`), owned by the repository's one admin — the login read from the collaborators API, no teams — and `copier.yml` already excludes it, so it never ships and needs no token. It now names `code/src/scripts/tests/`, `project-management/src/00-ASSETS/scripts/` and `lefthook.yml` too. It binds nothing until `main`'s ruleset sets `require_code_owner_review`: Sam's change, command in his hand-off                                                                                                                                                              | `96d94e7d`                            |
+
+**Noted, not findings:** the push leg omitting two self-tests is resolved under B (both stay CI-only,
+each needing what a push cannot cheaply provide). **The ~460 MB per pushed tip is confirmed and
+kept:** one copy is 46 MB (28 MB tree, 18 MB `.git`, measured 21/11/2026), and the leg holds ten —
+the checked copy and one per self-test — removed by its `EXIT` trap; 386 GB were free on this host.
+Sharing them (hard links, `--shared` clones) would let one self-test's writes reach another's tree,
+which is the isolation the copies exist for. An absent script now costs no copy.
+
+**The window that remains (B, I) — recorded here for gate 22's TM-15 implementation record,** the
+planning model being frozen (`10-SECURITY/THREAT-MODEL/PLANNING/CLAUDE.md`): only `main` is
+protected, so a red or weakened tip can reach `dev`, `staging` or `testing` and stops at a merge
+into `main`; a pushed commit can still edit the workflow or `SELF_TESTS` that judges it; and with
+one code owner, who cannot approve their own pull request, an owner review binds outside
+contributors only — the owner merges through the admin bypass. A self-test gutted so that it stays
+green is still review's alone.
+
+**Reds and how to reproduce them** (`bash .github/scripts/template-integrity.sh --self-tests <sha>`
+from any checkout, or `git checkout <sha>` and the named script):
+
+| Red        | Command                                              | Reading at the red                                                              | Reading at the fix             |
+| ---------- | ---------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------ |
+| `8e673918` | `bash code/src/scripts/tests/pm-boards.sh`           | exit 1: 3 of 112 failed — the three `log.diffMerges` probes                     | `7b91945c`: exit 0, 112 passed |
+| `2ec575a2` | `bash .github/scripts/shipped-boards.sh --self-test` | exit 1: exactly the 8 new check-2 probes fail                                   | `dcf4f663`: exit 0, 51 probes  |
+| `90956566` | `bash code/src/scripts/tests/template-hooks.sh`      | exit 1: 4 of 44 failed — absent-skip (2) and the two "no pushed commit" notices | `4f7ac7e7`: exit 0, 44 passed  |
+| `76e6e5ec` | `bash code/src/scripts/tests/template-hooks.sh`      | exit 1: 1 of 47 failed — `pm-boards.sh` is no step of `audit-template.yml`      | `01ae497f`: exit 0, 47 passed  |
+
+Each pair was also replayed through `template-integrity.sh --self-tests <sha>` on 21/11/2026: every
+red exits 1 with only its own self-test red (`9 run, 1 red`), every fix exits 0 (`9 run, 0 red`),
+59 to 62 s each. E's effect on an early commit: `--self-tests b42b004f` (round 5's archive fix,
+older than `template-hooks.sh`) now exits 0, `8 run, 0 red, 1 absent and skipped`, where it read
+exit 1 (127) before.
+
+**A's red, by mutation** (no red commit can exist — the code was right and the probe was not):
+`git archive 2c97121c | tar -x -C "$S"` into a `mktemp -d`, delete `-u GIT_CONFIG_PARAMETERS`
+from `g()` in its `.github/scripts/template-integrity.sh`, then `bash
+code/src/scripts/tests/template-hooks.sh` there with its own `TMPDIR`: **33 passed, 2 failed** —
+"the self-tests still ran" and "the refusal names the red self-test". Clear the copy with
+`chmod -R u+rwx` first: `tar.umask=0111` strips the directories' execute bits.
+
+**Deviations, recorded rather than repaired:**
+
+- **A has no red commit** (above), and three probes added this round are guards, green at their
+  red: E's exit-127 refusal, its "never counts it as a pass" (vacuous while the script read 127),
+  and G's deletion probe's base half.
+- **The TM-15 mitigation and the remaining window are recorded here, not in the threat model**,
+  whose planning half is frozen once the sprint began; the implementation record is gate 22's.
+- **The `gh api` ruleset change is not made here** — outward-facing, and Sam's.
+- **TM-15 did not fire this round:** no fix commit touches a probe — `7b91945c`, `4f7ac7e7` and
+  `01ae497f` change no file holding one, and `dcf4f663`'s hunks (`git diff -U0 2ec575a2 dcf4f663`)
+  are the header, `--help`, a new helper and `run_checks`, none in `self_test()`. `4fcb0661` and `2c97121c`
+  rewrite an existing probe alone, strengthening it, with no check beside it.
 
 ## Journeys
 
