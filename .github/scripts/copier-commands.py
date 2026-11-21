@@ -4,7 +4,7 @@ its `_exclude` entries (round 10).
 
 Read by shipped-boards.sh checks 1 and 2 (run as `python3 -I`, standard library only: the project's
 python3 has no YAML library, and the pre-commit leg adds no dependency). It is a MINIMAL YAML
-reader for the shapes those two lists are written in, never a general parser:
+reader for the shapes those three lists are written in, never a general parser:
 
   - each list item is a scalar (a string task) or a block mapping of scalar keys to scalar values;
   - a scalar is plain, single-quoted, double-quoted or a `|` / `>` block scalar, and is DECODED as

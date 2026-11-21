@@ -116,8 +116,8 @@ g() {
     -u GIT_PAGER -u GIT_ATTR_SOURCE GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
     GIT_NO_REPLACE_OBJECTS=1 GIT_GRAFT_FILE=/dev/null \
     git --no-pager -c advice.graftFileDeprecated=false -c color.ui=false -c core.quotePath=true \
-      -c diff.relative=false -c diff.noprefix=false -c diff.renames=false -c core.autocrlf=false -c core.eol=lf \
-      -c core.attributesFile=/dev/null "$@"
+      -c diff.relative=false -c diff.noprefix=false -c diff.renames=false \
+      -c core.autocrlf=false -c core.eol=lf -c core.attributesFile=/dev/null "$@"
 }
 # git, and anything run, in another tree: none of this repository's environment and no
 # configuration.
