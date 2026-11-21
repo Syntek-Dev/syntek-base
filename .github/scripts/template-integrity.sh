@@ -18,11 +18,15 @@
 # tree: for each distinct tip (a deletion has none, and is skipped), every self-test in SELF_TESTS
 # runs, in parallel, each in its own copy of that commit's tree. The push is refused when any
 # exits non-zero; exit 2, a self-test that crashed or stopped early (self-test-ledger.sh's guard),
-# is named as a script error and never read as a pass. A listed script the commit does not hold,
-# and that no commit in its history ever touched (a tip older than it), is named "absent at <sha>
-# — skipped": not run, and never counted as a pass or a red. One its history did hold is named
-# "deleted at <sha>" and refuses the push — a deletion is a red, never a skip (21/11/2026); one it
-# holds that exits 127 is a failure like any other. A push with no commit to
+# is named as a script error and never read as a pass. A listed script the commit does not hold
+# is named "absent at <sha> — skipped" (not run, never counted as a pass or a red) only when the
+# commit is genuinely older than it: no commit in its history touched the script, and the commit
+# is an ancestor of one that introduced it on the first-parent history of HEAD, main or
+# origin/main. Any other lack — a deletion, an orphan tip, a squash or graft of a deleting tree,
+# a tip forked before the script with commits of its own — is named "deleted at <sha>" and
+# refuses the push: a red, never a skip, counted red but not run (21/11/2026). git here sees no
+# replace objects, and a shallow repository, which has lost the history the decision reads, is
+# refused outright (round 8). One it holds that exits 127 is a failure like any other. A push with no commit to
 # judge (a deletion only, or no ref lines on stdin) says so and exits 0. CI runs the same nine
 # self-tests on every push to any branch, unfiltered, in audit-template.yml (pm-boards.sh in [1/4]
 # from 21/11/2026, beside pm-board.sh --check, the archive freeze): template-hooks.sh proves, of
@@ -39,9 +43,9 @@
 #
 # --self-tests [COMMIT] is the same judgement for one commit (default HEAD) — the reviewer's
 # replay. A red probe's own commit exits 1 and its fix exits 0; the two review rules this
-# replays are code/workflows/02-tdd-cycle/STEPS.md's. A commit older than a listed script reads
-# that script absent and skipped, so the replay judges what the commit held; a commit that
-# deleted one reads it red.
+# replays are code/workflows/02-tdd-cycle/STEPS.md's. A commit genuinely older than a listed
+# script reads that script absent and skipped, so the replay judges what the commit held; any
+# other commit lacking one reads it red.
 #
 # THE COPY. `git archive <commit>` extracted into a `mktemp -d`, then checked: re-added under a
 # fresh repository with every content attribute unset, its tree must be the commit's tree, byte
@@ -52,9 +56,10 @@
 #
 # GIT, READ HERE. Every git command this script runs in this repository runs with no system or
 # global configuration, no caller `-c` options (GIT_CONFIG_PARAMETERS / GIT_CONFIG_COUNT), no
-# external diff or pager, and the output-shaping keys pinned (colour, quoting, relative paths,
-# renames, line endings, the attributes file): a repository's own .git/config cannot be switched
-# off, and the copy's tree check is what stands against it.
+# external diff or pager, no replace objects (GIT_NO_REPLACE_OBJECTS), and the output-shaping
+# keys pinned (colour, quoting, relative paths, renames, line endings, the attributes file): a
+# repository's own .git/config cannot be switched off, and the copy's tree check is what stands
+# against it.
 #
 # Usage: template-integrity.sh --pre-commit | --pre-push [REMOTE [URL]] | --self-tests [COMMIT]
 #        | --help
@@ -97,7 +102,7 @@ scratch() { # VAR — a fresh directory, removed on exit, its path in VAR
 g() {
   env -u GIT_CONFIG_PARAMETERS -u GIT_CONFIG_COUNT -u GIT_EXTERNAL_DIFF -u GIT_DIFF_OPTS \
     -u GIT_PAGER -u GIT_ATTR_SOURCE GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null \
-    git --no-pager -c color.ui=false -c core.quotePath=true -c diff.relative=false \
+    GIT_NO_REPLACE_OBJECTS=1 git --no-pager -c color.ui=false -c core.quotePath=true -c diff.relative=false \
       -c diff.noprefix=false -c diff.renames=false -c core.autocrlf=false -c core.eol=lf \
       -c core.attributesFile=/dev/null "$@"
 }
@@ -143,21 +148,44 @@ copy_of() {
     -c core.hooksPath=/dev/null commit -q --no-verify -m "copy of $sha" || die "could not commit the copy of $sha"
 }
 
+# never_held SHA PATH — SHA is genuinely older than PATH: no commit in its history touched PATH,
+# and SHA is an ancestor of a commit that introduced PATH (holds it where its first parent does
+# not) on the first-parent history of HEAD, main or origin/main. Anything else — an orphan, a
+# squash or a graft of a deleting tree, a tip forked before the script with commits of its own —
+# reads as deleted (round 8, 21/11/2026).
+never_held() {
+  local sha="$1" path="$2" ref c
+  [[ -z "$(g rev-list -1 --full-history "$sha" -- "$path")" ]] || return 1
+  for ref in HEAD refs/heads/main refs/remotes/origin/main; do
+    g rev-parse -q --verify "$ref^{commit}" >/dev/null || continue
+    while IFS= read -r c; do
+      g cat-file -e "$c:$path" 2>/dev/null || continue
+      ! g cat-file -e "$c^1:$path" 2>/dev/null || continue
+      g merge-base --is-ancestor "$sha" "$c" && return 0
+    done < <(g rev-list --first-parent "$ref" -- "$path")
+  done
+  return 1
+}
+
 # self_tests SHA — every self-test against SHA, each in its own copy, in parallel; refuses on any red.
 self_tests() {
   local sha="$1" base i path dirs=() pids=() rc bad=() run=() absent=() deleted=() t0=$SECONDS
+  # A shallow repository has lost the history that tells a deleted script from one never held, so
+  # it judges nothing (round 8).
+  [[ "$(g rev-parse --is-shallow-repository)" == false ]] \
+    || refuse "this repository is shallow — the history that tells a deleted self-test from one never held is missing, so ${sha:0:12} cannot be judged (git fetch --unshallow, then push again)"
   scratch base
   mkdir "$base/copy"
   copy_of "$sha" "$base/copy"
-  # A listed script the commit does not hold, and that no commit in its history ever touched — a
-  # tip older than it — is skipped and named, never run and never counted as a pass. One its
-  # history did hold is deleted: a red, never a skip (round 7). One it holds that exits 127 or
-  # crashes is a failure. --full-history, so a deletion inside a merge is never simplified away.
+  # A listed script the commit does not hold is skipped and named — never run and never counted
+  # as a pass — only when the commit is genuinely older than it (never_held). Any other absence is
+  # a deletion: a red, never a skip (round 7; the rewritten histories round 8), counted red but not
+  # run. One it holds that exits 127 or crashes is a failure.
   for i in "${!SELF_TESTS[@]}"; do
     path="${SELF_TESTS[$i]%% *}"
     if [[ -f "$base/copy/$path" ]]; then
       run+=("$i")
-    elif [[ -z "$(g rev-list -1 --full-history "$sha" -- "$path")" ]]; then
+    elif never_held "$sha" "$path"; then
       absent+=("$i")
     else
       deleted+=("$i")
@@ -229,6 +257,6 @@ case "${1:-}" in
     cd "$PROJECT_ROOT"
     sha="$(g rev-parse --verify -q "${2:-HEAD}^{commit}")" || die "no commit ${2:-HEAD}"
     self_tests "$sha" ;;
-  --help|-h) sed -n '2,63p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
+  --help|-h) sed -n '2,68p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//' ;;
   *) die "usage: template-integrity.sh --pre-commit | --pre-push [REMOTE [URL]] | --self-tests [COMMIT]" ;;
 esac
