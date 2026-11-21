@@ -270,7 +270,9 @@ pre-commit:
 # Self-gating on copier.yml as the pre-commit leg is, so downstream it exits 0 before calling
 # anything. Armed by `lefthook install`, which install-hooks.sh runs; a checkout armed before this
 # leg existed has no pre-push hook, and install-hooks.sh --notice reports it unarmed.
-# COST: the self-tests run in parallel, so the slowest sets it — PUSHCOST.
+# COST, measured 21/11/2026: ~63 seconds a pushed tip (63.1 / 63.1 through the script, 66.6
+# through `lefthook run pre-push`). The self-tests run in parallel, so the slowest sets it —
+# shipped-ai.sh's copy-and-update self-test (~60s); the others finish inside ~20.
 # CI runs every one of them on every push too (audit-template.yml, pm-boards.yml): this leg is
 # the early signal, CI the check of record. It replaces the commit-msg leg (19/11/2026 to
 # 20/11/2026), which existed only for the planned-red trailer.
