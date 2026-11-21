@@ -11,7 +11,10 @@
 #   shape      lefthook.yml declares the pre-commit leg (`--pre-commit`) and a pre-push leg
 #              (`--pre-push`, `use_stdin: true`), and no commit-msg leg; neither the leg nor the
 #              script carries any opt-in that lets a red self-test through; (round 6) every
-#              SELF_TESTS entry is a step of audit-template.yml, unfiltered and on every branch.
+#              SELF_TESTS entry is a step of audit-template.yml, unfiltered and on every branch;
+#              (round 7) each sits in a job named as a required [n/4] context with no `if:` or
+#              `continue-on-error` on it or its job, as does pm-board.sh --check, whose job checks
+#              out with full history, and the `**` branches line is on.push's own.
 #   commit     a commit runs only the plain checks: a red self-test commits (none runs), and a red
 #              plain check blocks the commit.
 #   push       a push runs every self-test against the commit being pushed — the tip of each
@@ -38,7 +41,7 @@
 # Usage: template-hooks.sh [--keep] [--help]
 #   --keep   Leave the fixture directory in place and print its path.
 #
-# Requires: bash, git, tar. No network, no Docker.
+# Requires: bash, git, tar, python3 (the workflow's line parse). No network, no Docker.
 # Exit codes: 0 = every probe passed  1 = a probe failed  2 = script error
 set -euo pipefail
 
@@ -49,11 +52,11 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,42p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,45p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'template-hooks.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
-for tool in git tar; do
+for tool in git tar python3; do
   command -v "$tool" >/dev/null 2>&1 || { echo "template-hooks.sh: $tool not found" >&2; exit 2; }
 done
 
@@ -121,6 +124,85 @@ in_ci() { local t; for t in "${LISTED[@]}"; do grep -qxE "[[:space:]]*run: bash 
 check "audit-template.yml runs every self-test the push leg runs" in_ci
 check "  on a push to any branch, with no path filter" \
   bash -c 'grep -qF "branches: [\"**\"]" "$1" && ! grep -qE "^[[:space:]]+paths(-ignore)?:" "$1"' _ "$AUDIT"
+# (round 7) Presence is not enough: each of those steps, and pm-board.sh --check (the archive
+# freeze on this repository's own history), must sit in a job named as one of the four required
+# [n/4] contexts, with no `if:` and no `continue-on-error` on the step or its job; the freeze's job
+# must check out with full history; and the `branches: ["**"]` line must be on.push's own. A line
+# parse of the workflow's fixed indentation (python3 -I, no YAML library) — it reads the shape this
+# file is written in, and the names, not the live ruleset, stand for "required".
+REQUIRED_JOBS=("[1/4] Template Tokens" "[2/4] Shipped Documentation" "[3/4] Template Generation" "[4/4] Parser Probes")
+ci_shape() {
+  python3 -I - "$AUDIT" <<'PY'
+import sys
+sect = on_sub = None
+job = step = None
+push_all = False
+jobs = []
+for line in open(sys.argv[1], encoding="utf-8").read().split("\n"):
+    t = line.strip()
+    if not t or t.startswith("#"):
+        continue
+    i = len(line) - len(line.lstrip(" "))
+    key = t.split(":", 1)[0]
+    if i == 0:
+        sect, job, step = key, None, None
+    elif sect == "on":
+        if i == 2:
+            on_sub = key
+        elif i == 4 and on_sub == "push" and t == 'branches: ["**"]':
+            push_all = True
+    elif sect == "jobs":
+        if i == 2:
+            job = {"name": "", "if": 0, "coe": 0, "depth0": 0, "steps": []}
+            jobs.append(job)
+            step = None
+        elif job is None:
+            continue
+        elif i == 4:
+            if key == "name":
+                job["name"] = t.split(":", 1)[1].strip().strip('"')
+            elif key == "if":
+                job["if"] = 1
+            elif key == "continue-on-error":
+                job["coe"] = 1
+        elif i == 6 and t.startswith("- "):
+            step = {"run": "", "if": 0, "coe": 0}
+            job["steps"].append(step)
+            t, key = t[2:], t[2:].split(":", 1)[0]
+            i = 8
+        if step is not None and sect == "jobs" and i == 8:
+            if key == "run":
+                step["run"] = t.split(":", 1)[1].strip()
+            elif key == "if":
+                step["if"] = 1
+            elif key == "continue-on-error":
+                step["coe"] = 1
+        if job is not None and i == 10 and t.split("#", 1)[0].strip() == "fetch-depth: 0":
+            job["depth0"] = 1
+print("PUSH_ALL\t%d" % push_all)
+for j in jobs:
+    for s in j["steps"]:
+        print("STEP\t%s\t%d\t%d\t%d\t%d\t%d\t%s" % (j["name"], j["if"], j["coe"], s["if"], s["coe"], j["depth0"], s["run"]))
+PY
+}
+SHAPE="$(ci_shape)" || { echo "template-hooks.sh: could not read audit-template.yml's shape" >&2; exit 2; }
+# required_step CMD [full] — CMD is `run: bash CMD` in a required job, unconditioned (and, with
+# `full`, that job checks out with full history).
+required_step() {
+  local tag jname jif jcoe sif scoe depth run r
+  while IFS=$'\t' read -r tag jname jif jcoe sif scoe depth run; do
+    [[ "$tag" == STEP && "$run" == "bash $1" ]] || continue
+    [[ "$jif$jcoe$sif$scoe" == 0000 ]] || continue
+    [[ "${2:-}" != full || "$depth" == 1 ]] || continue
+    for r in "${REQUIRED_JOBS[@]}"; do [[ "$jname" == "$r" ]] && return 0; done
+  done <<< "$SHAPE"
+  return 1
+}
+all_required() { local t; for t in "${LISTED[@]}"; do required_step "$t" || return 1; done; }
+check "every listed self-test is a step of a required [n/4] job, with no if: or continue-on-error" all_required
+check "pm-board.sh --check is a step of a required [n/4] job, unconditioned, with full history" \
+  required_step "project-management/src/00-ASSETS/scripts/pm-board.sh --check" full
+check "the branches: [\"**\"] line is on.push's own" grep -qx $'PUSH_ALL\t1' <<< "$SHAPE"
 [[ -n "$PRE_COMMIT" && -n "$PRE_PUSH" ]] || { printf '\n%d passed, %d failed — the legs are missing, so no hook can be driven\n' "$PASSES" "$FAILS"; exit 1; }
 
 # ── The fixture ───────────────────────────────────────────────────────────────
