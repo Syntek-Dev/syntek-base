@@ -520,6 +520,20 @@ self_test() {
       printf '\033[31m  ✗ %s produced %d finding(s)\033[0m\n' "${ung#*|}" "${#FINDINGS[@]}"
     fi
   done
+  # 2i. Round 7: the .copier directory glued to a short option, alone or after other flags.
+  for ung in 'tar -C.copier -cf x .|the directory glued to a short option' \
+             'tar -xC.copier -f x|the directory glued after combined short options'; do
+    printf '%s\n' "  - command: ${ung%%|*}" > "$tmp/line"
+    awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+    COPIER="$tmp/ungated.yml"; run_checks; ST_PROBES=$((ST_PROBES + 1))
+    if [[ ${#FINDINGS[@]} -eq ${#BOARDS[@]} && "$(printf '%s\n' "${FINDINGS[@]}" | grep -c 'outside the copy-gated task' || true)" -eq ${#BOARDS[@]} ]]; then
+      log "  ✓ check 2 fires for every board on ${ung#*|}"
+      st_record pass "check 2 fires for every board on ${ung#*|}"
+    else
+      ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 fires for every board on ${ung#*|}"
+      printf '\033[31m  ✗ %s produced %d finding(s)\033[0m\n' "${ung#*|}" "${#FINDINGS[@]}"
+    fi
+  done
   # A guard, kept as round 6 left it: a different directory whose name only starts .copier is
   # no seed, so it is no finding.
   printf '%s\n' '  - command: mv .copierx/STORIES-BOARD.md x' > "$tmp/line"
