@@ -31,18 +31,21 @@
 #                         eight seeds into its folder, on a line that begins with the mv and
 #                         ends with its `&&` (an echoed or commented-out move is not one); and
 #                         no other task's non-comment line names a board seed at all — by
-#                         any command, quoted or not, behind any prefix (`./`, `$PWD/`), by a
-#                         glob matching it, or by the bare .copier directory holding it. Each
-#                         word is read with `$'…'` quoting, quotes and backslashes removed, then
-#                         as a path: `//` and `/./` collapse, a `..` cancels the component before
-#                         it, a component opening with `.` names .copier when it matches it as a
-#                         glob (`.cop?er`, `.c*r`, `.[c]opier`), and a `{A,B}` brace expansion is
+#                         any command, quoted or not, behind a path prefix (`./`, `$PWD/`) or
+#                         an `=`, `,` or `:` (`F=…`, `if=…`, `--dir=…`, a list), by a glob
+#                         matching it, or by the bare .copier directory holding it. Each word
+#                         is read with `$'…'` quoting, quotes and backslashes removed, then
+#                         whole and as each span an `=`, `,` or `:` bounds, each as a path:
+#                         `//` and `/./` collapse, a `..` cancels the component before it, a
+#                         component opening with `.` names .copier when it matches it as a glob
+#                         (`.cop?er`, `.c*r`, `.[c]opier`), and a `{A,B}` brace expansion is
 #                         either alternative. One in any other task would run on every update
 #                         and overwrite the project's own board. It stays a deny-list over the
-#                         text: a name built at run time (a variable, `$(…)`, backticks, `eval`,
-#                         a script the task runs), a `..` through a symlink, and a component
-#                         opening with a wildcard (`*`, `?`, `[.]`, which sh never matches
-#                         against a leading dot) are review's, and the [3/4] render's.
+#                         text, and exactly these are review's, and the [3/4] render's: a name
+#                         built at run time (a variable, `$(…)`, backticks, `eval`, a script
+#                         the task runs), a `..` through a symlink, a component opening with a
+#                         wildcard (`*`, `?`, `[.]`, which sh never matches against a leading
+#                         dot), and a value glued to a short option (`-C.copier`).
 #                      3. Each seed exists.
 #                      4. Each seed is byte-identical to the board `pm-board.sh` renders for
 #                         the seed-only tree — which proves it carries none of syntek-base's
@@ -105,7 +108,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,70p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,73p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done
@@ -243,6 +246,29 @@ seed_word() {
   return 1
 }
 
+# seed_any WORD BOARD — seed_word over WORD and over every span of it that a separator bounds, so
+# a path behind an assignment or an `=value` (`F=.copier/…`, `if=.copier/…`, `--dir=.copier`), or
+# inside a comma or colon list, is read as the path it is (round 7, 21/11/2026). The separators are
+# `=`, `,` and `:`, read wherever they sit — quoted ones included, since the quotes are gone by
+# now — so the reading errs towards a finding, never away from one. Brace alternatives still read
+# as a whole word.
+seed_any() {
+  local w="$1" board="$2" n=${#1} i j starts=(0) ends=()
+  for ((i = 0; i < n; i++)); do
+    case "${w:i:1}" in
+      [=,:]) starts+=("$((i + 1))"); ends+=("$i") ;;
+    esac
+  done
+  ends+=("$n")
+  for i in "${starts[@]}"; do
+    for j in "${ends[@]}"; do
+      [[ $j -gt $i ]] || continue
+      seed_word "${w:i:j-i}" "$board" && return 0
+    done
+  done
+  return 1
+}
+
 run_checks() {
   FINDINGS=()
   local tasks others folder board seed
@@ -302,10 +328,11 @@ run_checks() {
     # The line is read as the shell will hand it to the command: `$'…'` / `$"…"` quoting and the
     # quotes and backslashes inside a word are removed first (`.cop""ier`, `.co'p'ier`, `.cop\ier`,
     # `.cop$'i'er` all name .copier), then each word is read as a path by seed_word below
-    # (round 5, 20/11/2026; the path reading round 6, 21/11/2026).
+    # (round 5, 20/11/2026; the path reading round 6, 21/11/2026; the spans between `=`, `,` and
+    # `:` round 7, 21/11/2026).
     local word hit=false
     while IFS= read -r word; do
-      if seed_word "$word" "$board"; then hit=true; break; fi
+      if seed_any "$word" "$board"; then hit=true; break; fi
     done < <(grep -vE '^[[:space:]]*#' <<< "$others" | sed -e "s/\\\$'/'/g" -e 's/\$"/"/g' \
                | tr -d "\"'\\\\" | tr -s ' \t;&|<>()' '\n' | grep -v '^$' || true)
     if $hit; then
