@@ -353,6 +353,28 @@ graft_replay() { (cd "$FX" && bash .github/scripts/template-integrity.sh --self-
 check "a replace-graft cutting the deleting commit off its parents still reads it red" rc_is 1 graft_replay
 check "  and names it deleted, not absent" says "template-hooks\.sh.*deleted at ${DELETED:0:12}"
 fgit replace -d "$DELETED" >/dev/null
+# (round 9) Ancestry is judged against origin/main alone, with no grafts file read. A grafts file
+# hanging the commit that added the script on the orphan, and a local HEAD crafted on the orphan
+# that re-adds it, each made the orphan an ancestor of an "introducing" commit — both still read
+# it deleted. With no origin/main to judge against, a missing script is red, and says why.
+ADDED="$(fgit log --format=%H --diff-filter=A main -- code/src/scripts/tests/template-hooks.sh | tail -n 1)"
+orphan_replay() { (cd "$FX" && bash .github/scripts/template-integrity.sh --self-tests "$ORPHAN") > "$OUT" 2>&1; }
+printf '%s %s\n' "$ADDED" "$ORPHAN" > "$FX/.git/info/grafts"
+check "a grafts file hanging the introducing commit on the orphan still reads it red" rc_is 1 orphan_replay
+check "  and names it deleted, not absent" says "template-hooks\.sh.*deleted at ${ORPHAN:0:12}"
+rm -f "$FX/.git/info/grafts"
+fgit checkout -q orphan
+stub code/src/scripts/tests/template-hooks.sh; fgit add -A
+commit "a crafted HEAD re-adding the script on the orphan"
+check "a local HEAD re-adding the script on the orphan still reads the orphan red" rc_is 1 orphan_replay
+check "  and names it deleted, not absent" says "template-hooks\.sh.*deleted at ${ORPHAN:0:12}"
+fgit checkout -q main
+ORIGIN_MAIN="$(fgit rev-parse origin/main)"
+replay_older() { (cd "$FX" && bash .github/scripts/template-integrity.sh --self-tests "$OLDER") > "$OUT" 2>&1; }
+fgit update-ref -d refs/remotes/origin/main
+check "with no origin/main, a genuinely older tip's missing script is red" rc_is 1 replay_older
+check "  and the refusal names the missing origin/main" says 'no origin/main to judge ancestry against'
+fgit update-ref refs/remotes/origin/main "$ORIGIN_MAIN"
 git clone -q --depth 1 --branch deleted "file://$FX" "$TMP/shallow" 2>/dev/null
 shallow_replay() { (cd "$TMP/shallow" && bash .github/scripts/template-integrity.sh --self-tests HEAD) > "$OUT" 2>&1; }
 check "--self-tests in a shallow clone is refused" rc_is 1 shallow_replay
