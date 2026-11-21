@@ -16,7 +16,16 @@ reader for the shapes those two lists are written in, never a general parser:
     a nested sequence, an unknown escape, an unterminated quote — is an error.
 
 An error is a finding (fail closed): check 2 cannot say what such an entry runs, so it never
-reads it as harmless. A repeated top-level `_tasks:` or `_migrations:` key is an error too.
+reads it as harmless.
+
+THE TOP LEVEL (round 9, 21/11/2026). copier.yml is read as ONE DOCUMENT OF PLAIN TOP-LEVEL KEYS,
+and anything else is refused. Every column-0 line must be blank, a comment, or an unquoted
+identifier and `:`; a quoted or escaped key (`"_tasks":`, `"\\x5fmigrations":`), an explicit `?`
+key, a `---` or `...` document marker, a `%` directive, a `!` tag (copier's `!include`), a `<<:`
+merge, a flow collection, a column-0 sequence entry or an indented line before the first key is
+one finding, as is a tag, anchor or alias opening a top-level value, and a repeated plain key —
+because copier (PyYAML, its `!include`, its merge of later documents over earlier ones) can read a
+`_tasks`, `_migrations` or `_exclude` there that this reader, and check 1, never see.
 
 Output, one record per line, tab-separated:
   S <raw line>      a raw line of a copy-gated seed task (its `when:` decodes to the copy test,
@@ -41,6 +50,7 @@ README_MOVE = "mv .copier/README.md README.md"
 # removes the seeds rather than reading them. Exempt only when its whole decoded command is
 # exactly this; anything added to it is read like any other entry.
 STAGING_RM = "rm -rf .copier"
+TOP_KEY = re.compile(r"^([A-Za-z_][A-Za-z0-9_]*):(?:\s|$)")
 KEY = re.compile(r"""^("(?:[^"\\]|\\.)*"|'(?:[^']|'')*'|[A-Za-z_][\w-]*)\s*:(?:\s|$)""")
 ESCAPES = {
     "0": "\0",
@@ -221,7 +231,7 @@ def scalar(rest: str, more: list[str], parent: int) -> str:
     return fold(lines) if lines else ""
 
 
-def items(section: list[str], seq: int, label: str):
+def items(section: list[str], seq: int):
     """Yield (number, raw lines) for each item of the list at indent seq."""
     starts = [
         i
@@ -273,6 +283,65 @@ def parse_item(raw: list[str], seq: int, label: str):
     return value
 
 
+def top_level_kind(line: str) -> str:
+    """What a column-0 line that is no plain `key:` is, for the finding."""
+    if line[0] in "\"'":
+        return "a quoted or escaped key"
+    if line[0] == "?":
+        return "an explicit `?` key"
+    if line.startswith(("---", "...")):
+        return "a document marker (copier merges a later document over this one)"
+    kinds = {
+        "%": "a directive",
+        "!": "a tag (copier's `!include` among them)",
+        "<": "a merge key",
+        "[": "a flow collection",
+        "{": "a flow collection",
+        "-": "a sequence entry at column 0",
+        "&": "an anchor",
+        "*": "an alias",
+        "\t": "a tab-indented line",
+    }
+    return kinds.get(line[0], "not a plain `key:`")
+
+
+def top_level(lines: list[str], out: list[str]) -> list[tuple[int, str]]:
+    """The plain top-level keys, as (line index, key); every other column-0 shape refused."""
+    keys: list[tuple[int, str]] = []
+    seen: set[str] = set()
+    refused: list[str] = []
+    for i, ln in enumerate(lines):
+        if blank_or_comment(ln):
+            continue
+        if ln.startswith(" "):
+            if not keys:
+                refused.append(f"line {i + 1} is indented before any top-level key")
+            continue
+        m = TOP_KEY.match(ln)
+        if not m:
+            refused.append(f"line {i + 1} (`{ln[:40]}`) is {top_level_kind(ln)}")
+            continue
+        value = re.sub(r"(^|\s)#.*$", "", ln[m.end() :]).strip()
+        if value[:1] in ("!", "&", "*"):
+            refused.append(f"line {i + 1} gives `{m.group(1)}:` {top_level_kind(value)}")
+        key = m.group(1)
+        if key in seen:
+            out.append(
+                f"E\tcopier.yml repeats the top-level key {key}: — YAML keeps the last, so "
+                "the value copier reads is not the one first read"
+            )
+        seen.add(key)
+        keys.append((i, key))
+    if refused:
+        more = f" (and {len(refused) - 1} more)" if len(refused) > 1 else ""
+        out.append(
+            "E\tcopier.yml is not one document of plain top-level keys — "
+            f"{refused[0]}{more}; copier may read a _tasks, _migrations or _exclude there "
+            "that checks 1 and 2 never see, so it is a finding"
+        )
+    return keys
+
+
 def main() -> int:
     try:
         text = open(sys.argv[1], encoding="utf-8").read()
@@ -281,27 +350,18 @@ def main() -> int:
         return 2
     lines = text.split("\n")
     out: list[str] = []
-    seen: dict[str, int] = {}
-    for i, ln in enumerate(lines):
-        m = re.match(r"^(_tasks|_migrations)\s*:\s*(#.*)?$", ln)
-        if not m:
-            if re.match(r"^(_tasks|_migrations)\s*:", ln):
-                out.append(
-                    f"E\tcopier.yml {ln.split(':')[0]}: is not a block sequence this "
-                    "reader knows — check 2 cannot read it"
-                )
+    keys = top_level(lines, out)
+    for i, name in keys:
+        if name not in SECTIONS:
             continue
-        name = m.group(1)
-        seen[name] = seen.get(name, 0) + 1
-        if seen[name] > 1:
+        if not re.match(r"^(_tasks|_migrations)\s*:\s*(#.*)?$", lines[i]):
             out.append(
-                f"E\tcopier.yml repeats the top-level key {name}: — YAML keeps the last, "
-                "so the list that runs is not the one first read"
+                f"E\tcopier.yml {name}: is not a block sequence this reader knows — check 2 "
+                "cannot read it"
             )
-        j = i + 1
-        while j < len(lines) and (
-            blank_or_comment(lines[j]) or indent(lines[j]) > 0 or lines[j].startswith("-")
-        ):
+            continue
+        j = i + 1  # the section ends at the next column-0 line, a key or a refused shape
+        while j < len(lines) and (blank_or_comment(lines[j]) or lines[j].startswith(" ")):
             j += 1
         section = lines[i + 1 : j]
         body = [ln for ln in section if not blank_or_comment(ln)]
@@ -314,7 +374,7 @@ def main() -> int:
                     f"E\tcopier.yml {name}: a line left of its list — check 2 cannot read it"
                 )
                 break
-        for k, raw in items(section, seq, f"copier.yml {name}"):
+        for k, raw in items(section, seq):
             try:
                 value = parse_item(raw, seq, f"copier.yml {name} entry {k}")
             except RefusedError as exc:

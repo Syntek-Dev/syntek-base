@@ -35,11 +35,16 @@
 #                         an `=`, `,` or `:` (`F=…`, `if=…`, `--dir=…`, a list), by a glob
 #                         matching it, or by the bare .copier directory holding it (the one
 #                         exemption: the migration whose whole command is `rm -rf .copier`).
-#                         Both lists are read through copier-commands.py first, which DECODES
-#                         every YAML scalar as copier does (a double-quoted `\x2e`, `''`, line
-#                         folding, block chomping) and refuses — as a finding — an entry it
-#                         cannot read: a key repeated in one entry (two `when:`), a flow
-#                         collection, an anchor, alias or tag, an unknown escape. Each word is
+#                         Both lists are read through copier-commands.py first, which reads
+#                         copier.yml as one document of plain top-level keys — anything else is
+#                         refused, as one finding: a quoted or escaped key, a `?` key, a `---`
+#                         or `...` marker, a `%` directive, a `!` tag (`!include`), a `<<:`
+#                         merge, a repeated key (round 9, 21/11/2026; check 1's `_exclude`
+#                         reading rests on the same refusal) — DECODES every YAML scalar as
+#                         copier does (a double-quoted `\x2e`, `''`, line folding, block
+#                         chomping) and refuses — as a finding — an entry it cannot read: a key
+#                         repeated in one entry (two `when:`), a flow collection, an anchor,
+#                         alias or tag, an unknown escape. Each word is
 #                         then read with `$'…'` quoting, quotes and backslashes removed, whole,
 #                         as the spans an `=`, `,` or `:` bounds, and (a word opening with one
 #                         `-`) from each later `.`, for a short option's glued value
@@ -50,9 +55,10 @@
 #                         would run on every update and overwrite the project's own board.
 #                         WHAT IT DOES NOT READ (round 8, 21/11/2026): check 2 reads the literal
 #                         words left after YAML decoding and shell quote removal, and nothing
-#                         more. Any shell construct that builds the name at run time —
-#                         parameter expansion (defaults such as `${S:-…}` and `${S:=…}`
-#                         included), command substitution (backticks included), the escapes
+#                         more. Jinja in a command (`<% … %>`, copier's render layer, run before
+#                         the shell sees the text; round 9) and any shell construct that builds
+#                         the name at run time — parameter expansion (defaults such as
+#                         `${S:-…}` and `${S:=…}` included), command substitution (backticks included), the escapes
 #                         inside `$'…'`, `eval`, a variable, a short option glued on inside a
 #                         span, a script the task runs — is review's alone. The [3/4] job is
 #                         NO backstop for it: its render is a copy, and shipped-ai.py's update
@@ -71,7 +77,7 @@
 #            move, moves a seed into an ungated task, removes a seed, adds a row to a seed,
 #            drops a `SEEDED` entry — and asserts each check catches its own, exactly once; and
 #            (round 8) a YAML-escaped or `_migrations` move, a repeated `when:`, and a long word
-#            read in linear time.
+#            read in bounded time; (round 9) each top-level shape that is no plain key.
 #            Each kind runs on one of the first five boards and on each of the later three.
 #
 # --fix      Re-render the eight seeds from the generator. Run it after changing how
@@ -123,7 +129,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,88p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,94p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done
