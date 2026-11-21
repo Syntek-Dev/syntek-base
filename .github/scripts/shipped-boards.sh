@@ -145,6 +145,9 @@ command -v python3 >/dev/null 2>&1 || die "python3 is required"
 # The self-test crash guard (exit 2, never a red or a pass) and the optional probe ledger.
 # shellcheck source=self-test-ledger.sh
 . "$SCRIPT_DIR/self-test-ledger.sh"
+# Check 2's word reading — seed_word, seed_any and BRACE_CAP (split out round 9, 21/11/2026).
+# shellcheck source=shipped-boards-words.sh
+. "$SCRIPT_DIR/shipped-boards-words.sh"
 
 RENDER_DIR=""
 # shellcheck disable=SC2329  # invoked by the EXIT trap below
@@ -236,81 +239,10 @@ negation_matches() { # path pattern
   return 1
 }
 
-# seed_word WORD BOARD — WORD, read as a path the shell resolves, names the .copier directory
-# itself or .copier/BOARD. `//` and `/./` collapse and a `..` cancels the component before it, so a
-# path spelt the long way round reads as the short one. A component names .copier when it matches
-# it as a glob (`.cop?er`, `.c*r`, `.[c]opier`) — only one that opens with a literal `.` or an
-# alternation, because sh never matches a leading dot by a wildcard — and a `{A,B}` brace
-# expansion is read as either alternative. What follows it must then be nothing (the directory)
-# or one component matching BOARD as a glob. Pattern matching only: nothing is expanded or run.
-seed_word() {
-  local w="$1" board="$2" inner comp i parts=() out=() rest=()
-  # No `.` and no brace: no component can open with `.` or `@(`, so nothing here names .copier.
-  [[ "$w" == *.* || "$w" == *\{* ]] || return 1
-  while [[ "$w" =~ \{([^{}]*)\} ]]; do
-    inner="${BASH_REMATCH[1]}"; w="${w/"{$inner}"/"@(${inner//,/|})"}"
-  done
-  IFS=/ read -ra parts <<< "$w"
-  for comp in "${parts[@]}"; do
-    case "$comp" in
-      ''|.) ;;
-      ..) if [[ ${#out[@]} -gt 0 && "${out[-1]}" != .. ]]; then unset 'out[-1]'; out=("${out[@]}"); else out+=(..); fi ;;
-      *) out+=("$comp") ;;
-    esac
-  done
-  for i in "${!out[@]}"; do
-    comp="${out[$i]}"
-    [[ "$comp" == .* || "$comp" == @\(* ]] || continue
-    # shellcheck disable=SC2053  # $comp is a glob on purpose: a pattern matching .copier names it
-    [[ .copier == $comp ]] || continue
-    rest=("${out[@]:i+1}")
-    [[ ${#rest[@]} -eq 0 ]] && return 0
-    # shellcheck disable=SC2053  # the same, for the board name
-    [[ ${#rest[@]} -eq 1 && "$board" == ${rest[0]} ]] && return 0
-  done
-  return 1
-}
-
-# seed_any WORD BOARD — seed_word over WORD and over the spans of it that a separator bounds, so
-# a path behind an assignment or an `=value` (`F=.copier/…`, `if=.copier/…`, `--dir=.copier`), or
-# inside a comma or colon list, is read as the path it is (round 7, 21/11/2026). The separators are
-# `=`, `,` and `:`, read wherever they sit — quoted ones included, since the quotes are gone by
-# now — so the reading errs towards a finding, never away from one. A word opening with a single
-# `-` is also read from each `.` after its first two characters, for a short option with its value
-# glued on (`-C.copier`, `-xC.copier`). Each start is read to three ends (round 8, 21/11/2026):
-# the next separator, the next one outside a `{…}` brace or `[…]` bracket (a brace's or a
-# bracket's own `,` or `:` is part of the path), and the word's end — linear in the separators,
-# where round 7 read every pair of them (13 s at 150).
-seed_any() {
-  local w="$1" board="$2" n=${#1} i c depth=0 inbr=false starts=(0) seps=() tops=() a=0 b=0
-  for ((i = 0; i < n; i++)); do
-    c="${w:i:1}"
-    case "$c" in
-      [=,:]) starts+=("$((i + 1))"); seps+=("$i"); [[ $depth -eq 0 ]] && ! $inbr && tops+=("$i") ;;
-      .) [[ "$w" == -[!-]* && $i -ge 2 ]] && starts+=("$i") ;;
-      '{') $inbr || depth=$((depth + 1)) ;;
-      '}') $inbr || { [[ $depth -gt 0 ]] && depth=$((depth - 1)); } ;;
-      '[') inbr=true ;;
-      ']') inbr=false ;;
-    esac
-  done
-  seps+=("$n"); tops+=("$n")
-  for i in "${starts[@]}"; do
-    while [[ ${seps[a]} -lt $i ]]; do a=$((a + 1)); done
-    while [[ ${tops[b]} -lt $i ]]; do b=$((b + 1)); done
-    [[ $i -lt $n ]] || continue
-    if [[ ${seps[a]} -gt $i ]]; then seed_word "${w:i:seps[a]-i}" "$board" && return 0; fi
-    if [[ ${tops[b]} -gt ${seps[a]} && ${tops[b]} -lt $n ]]; then
-      seed_word "${w:i:tops[b]-i}" "$board" && return 0
-    fi
-    if [[ ${seps[a]} -lt $n ]]; then seed_word "${w:i}" "$board" && return 0; fi
-  done
-  return 1
-}
 
 run_checks() {
   FINDINGS=()
-  local tasks others folder board seed
+  local tasks others folder board seed c
 
   # ── 1. Nothing re-includes a board ───────────────────────────────────────────
   # Every `_exclude` negation, read as copier reads it — either quote style or none, a trailing
@@ -342,6 +274,20 @@ run_checks() {
   while IFS= read -r e; do
     [[ -n "$e" ]] && finding "$e"
   done < <(sed -n 's/^E\t//p' <<< "$read_out")
+  # Every word of every decoded task and migration line, as the shell will hand it over (below).
+  local words word capped=""
+  words=$(sed -e "s/\\\$'/'/g" -e 's/\$"/"/g' <<< "$others" \
+            | tr -d "\"'\\\\" | tr -s ' \t;&|<>()' '\n' | grep -v '^$' || true)
+  # A word with more brace spans than BRACE_CAP is not read for a seed (seed_any skips it, so the
+  # reading ends in bounded time) and is a finding of its own, since check 2 cannot say what it
+  # names (round 9, 21/11/2026).
+  while IFS= read -r word; do
+    [[ "$word" == *\{* ]] || continue
+    c="${word//[^\{]/}"
+    if [[ ${#c} -gt $BRACE_CAP ]]; then capped="$word"; break; fi
+  done <<< "$words"
+  [[ -z "$capped" ]] \
+    || finding "copier.yml has a task or migration word with more than $BRACE_CAP brace expansions (${capped:0:40}…) — check 2 caps its reading so it ends in bounded time, so it cannot say the word names no seed"
   for b in "${BOARDS[@]}"; do
     folder="${b%%|*}"; board="${b##*|}"; seed="$SEED_DIR/$board"
 
@@ -366,8 +312,7 @@ run_checks() {
     local word hit=false
     while IFS= read -r word; do
       if seed_any "$word" "$board"; then hit=true; break; fi
-    done < <(sed -e "s/\\\$'/'/g" -e 's/\$"/"/g' <<< "$others" \
-               | tr -d "\"'\\\\" | tr -s ' \t;&|<>()' '\n' | grep -v '^$' || true)
+    done <<< "$words"
     if $hit; then
       finding "copier.yml moves .copier/$board outside the copy-gated task — it names the seed, a glob matching it or the .copier directory in a task or migration that runs on every update and overwrites the project's own board"
     fi
@@ -610,7 +555,8 @@ self_test() {
     printf '\033[31m  ✗ a duplicate when: in the seed task produced %d finding(s), none naming the repeat\033[0m\n' "${#FINDINGS[@]}"
   fi
   COPIER="$real_copier"
-  # 2k. Round 8: the span reading is linear in a word's separators — a 500-separator word reads
+  # 2k. Round 8: three spans per separator, not every pair (round 9: "linear" was not true — a
+  #     span is read along its length; see seed_any) — a 500-separator word reads
   #     inside 2 s (round 7's every-pair reading took 13 s at 150).
   local long="" k pid t=0
   for ((k = 0; k < 500; k++)); do long+=".,"; done
