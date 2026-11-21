@@ -72,7 +72,9 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   not `Completed` or `Complete`; on any later change but the rewrite of a path ending at a `.md`
   filename (an `archive/` segment or a `./` / `../` depth); and on a file whose status is not its
   kind's archive status. No formatter or lint leg reads an archived record; `archive/`'s
-  own `CONTEXT.md` and `CLAUDE.md` are read like any pair. <!-- Finding archive status Resolved from 19/11/2026; it read Triaged before. The rewrite scope and the formatter exclusion stated 19/11/2026; the move, deletion, rename and status rules, and the records-only exclusion, 20/11/2026. -->
+  own `CONTEXT.md` and `CLAUDE.md` are read like any pair. The freeze guards a record from its
+  move on, and **does not vouch for the status it arrived with**: a status set in a live commit and
+  moved unedited later is ordinary history, judged by review like any other edit. <!-- Boundary stated 21/11/2026. --> <!-- Finding archive status Resolved from 19/11/2026; it read Triaged before. The rewrite scope and the formatter exclusion stated 19/11/2026; the move, deletion, rename and status rules, and the records-only exclusion, 20/11/2026. -->
 - **Look a file up by ID across the folder and its `archive/`.** Any reader, script or
   numbering step that globs only the live folder breaks the day an item is archived.
 - **`*-BOARD.md` is generated — never hand-edit it.** Run `pm-board.sh --write` after any status
