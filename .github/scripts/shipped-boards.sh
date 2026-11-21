@@ -392,6 +392,8 @@ self_test() {
   local sb=project-management/src/02-STORIES/STORIES-BOARD.md refused
   refused=( # a YAML core tag resolving to the string: `!!str`, the non-specific `!`, verbatim
     "!!str \"!$sb\"" "! \"!$sb\"" "!<tag:yaml.org,2002:str> \"!$sb\""
+    # Jinja beyond the one `if` wrap: an else branch, a comment, a variable rendering the `!`
+    "\"${LT}: if false :>x${LT}: else :>!$sb${LT}: endif :>\"" "\"${LT}~ c ~>!$sb\"" "\"${LT}% '!' %>$sb\""
   )
   for neg in "${refused[@]}"; do
     awk -v l="  - $neg" '{print} /^_exclude:/{print l}' "$real_copier" > "$tmp/reinclude.yml"
