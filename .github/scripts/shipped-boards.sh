@@ -32,12 +32,17 @@
 #                         ends with its `&&` (an echoed or commented-out move is not one); and
 #                         no other task's non-comment line names a board seed at all — by
 #                         any command, quoted or not, behind any prefix (`./`, `$PWD/`), by a
-#                         glob matching it, or by the bare .copier directory holding it — read
-#                         with quotes and backslashes removed and a `{A,B}` brace expansion
-#                         matched as either alternative. One in any other task would run on
-#                         every update and overwrite the project's own board. It stays a
-#                         deny-list: a name built at run time (a variable, `$(…)`, `eval`) is
-#                         review's, and the [3/4] render's.
+#                         glob matching it, or by the bare .copier directory holding it. Each
+#                         word is read with `$'…'` quoting, quotes and backslashes removed, then
+#                         as a path: `//` and `/./` collapse, a `..` cancels the component before
+#                         it, a component opening with `.` names .copier when it matches it as a
+#                         glob (`.cop?er`, `.c*r`, `.[c]opier`), and a `{A,B}` brace expansion is
+#                         either alternative. One in any other task would run on every update
+#                         and overwrite the project's own board. It stays a deny-list over the
+#                         text: a name built at run time (a variable, `$(…)`, backticks, `eval`,
+#                         a script the task runs), a `..` through a symlink, and a component
+#                         opening with a wildcard (`*`, `?`, `[.]`, which sh never matches
+#                         against a leading dot) are review's, and the [3/4] render's.
 #                      3. Each seed exists.
 #                      4. Each seed is byte-identical to the board `pm-board.sh` renders for
 #                         the seed-only tree — which proves it carries none of syntek-base's
@@ -100,7 +105,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,54p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,70p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done
@@ -205,6 +210,39 @@ negation_matches() { # path pattern
   return 1
 }
 
+# seed_word WORD BOARD — WORD, read as a path the shell resolves, names the .copier directory
+# itself or .copier/BOARD. `//` and `/./` collapse and a `..` cancels the component before it, so a
+# path spelt the long way round reads as the short one. A component names .copier when it matches
+# it as a glob (`.cop?er`, `.c*r`, `.[c]opier`) — only one that opens with a literal `.` or an
+# alternation, because sh never matches a leading dot by a wildcard — and a `{A,B}` brace
+# expansion is read as either alternative. What follows it must then be nothing (the directory)
+# or one component matching BOARD as a glob. Pattern matching only: nothing is expanded or run.
+seed_word() {
+  local w="$1" board="$2" inner comp i parts=() out=() rest=()
+  while [[ "$w" =~ \{([^{}]*)\} ]]; do
+    inner="${BASH_REMATCH[1]}"; w="${w/"{$inner}"/"@(${inner//,/|})"}"
+  done
+  IFS=/ read -ra parts <<< "$w"
+  for comp in "${parts[@]}"; do
+    case "$comp" in
+      ''|.) ;;
+      ..) if [[ ${#out[@]} -gt 0 && "${out[-1]}" != .. ]]; then unset 'out[-1]'; out=("${out[@]}"); else out+=(..); fi ;;
+      *) out+=("$comp") ;;
+    esac
+  done
+  for i in "${!out[@]}"; do
+    comp="${out[$i]}"
+    [[ "$comp" == .* || "$comp" == @\(* ]] || continue
+    # shellcheck disable=SC2053  # $comp is a glob on purpose: a pattern matching .copier names it
+    [[ .copier == $comp ]] || continue
+    rest=("${out[@]:i+1}")
+    [[ ${#rest[@]} -eq 0 ]] && return 0
+    # shellcheck disable=SC2053  # the same, for the board name
+    [[ ${#rest[@]} -eq 1 && "$board" == ${rest[0]} ]] && return 0
+  done
+  return 1
+}
+
 run_checks() {
   FINDINGS=()
   local tasks others folder board seed
@@ -260,20 +298,16 @@ run_checks() {
     # Any reference to the seed outside the gated task — whatever the command (mv, cp, ln, a cat
     # redirect…), quoted or not, behind any prefix ($PWD/, ./) — or to a glob matching it, or to
     # the bare .copier directory that holds it, reads it on every update and can overwrite the
-    # project's own board. Comment lines are skipped; any other mention counts.
-    # The line is read as the shell will hand it to the command: quotes and backslashes inside a
-    # word are removed first (`.cop""ier`, `.co'p'ier`, `.cop\ier` all name .copier), and a brace
-    # expansion `{A,B}` is matched as either alternative (round 5, 21/11/2026).
-    local src hit=false inner
-    while IFS= read -r src; do
-      src="${src#*.copier}"; src="${src#/}"
-      while [[ "$src" =~ \{([^{}]*)\} ]]; do
-        inner="${BASH_REMATCH[1]}"; src="${src/"{$inner}"/"@(${inner//,/|})"}"
-      done
-      # shellcheck disable=SC2053  # $src is a glob on purpose: a pattern matching the board names it
-      if [[ -z "$src" || "$board" == $src ]]; then hit=true; break; fi
-    done < <(grep -vE '^[[:space:]]*#' <<< "$others" | tr -d "\"'\\\\" \
-               | grep -oE "(^|[^[:alnum:]_.-])\.copier(/[^[:space:]\"';&|<>()]*)?" || true)
+    # project's own board. Comment lines are skipped; any other word on any line counts.
+    # The line is read as the shell will hand it to the command: `$'…'` / `$"…"` quoting and the
+    # quotes and backslashes inside a word are removed first (`.cop""ier`, `.co'p'ier`, `.cop\ier`,
+    # `.cop$'i'er` all name .copier), then each word is read as a path by seed_word below
+    # (round 5, 20/11/2026; the path reading round 6, 21/11/2026).
+    local word hit=false
+    while IFS= read -r word; do
+      if seed_word "$word" "$board"; then hit=true; break; fi
+    done < <(grep -vE '^[[:space:]]*#' <<< "$others" | sed -e "s/\\\$'/'/g" -e 's/\$"/"/g' \
+               | tr -d "\"'\\\\" | tr -s ' \t;&|<>()' '\n' | grep -v '^$' || true)
     if $hit; then
       finding "copier.yml moves .copier/$board outside the copy-gated task — it names the seed, a glob matching it or the .copier directory in a task that runs on every update and overwrites the project's own board"
     fi
