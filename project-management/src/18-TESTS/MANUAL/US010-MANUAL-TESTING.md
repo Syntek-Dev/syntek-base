@@ -1802,6 +1802,25 @@ pending statement, so it is unchanged.
 
 No scratch copy was made this pass; every `/tmp` log it wrote is deleted.
 
+### Countersignature — 21/11/2026
+
+**Sam countersigns all US010 work, 21/11/2026.** He gave the countersignature on 19/11/2026 on
+condition the work landed clean, and it is recorded here once it did:
+
+- **Fix rounds 5 to 10 and the final fix pass** closed every review finding; the open items
+  each round carried forward are listed in that round's section above.
+- **The final pass's verification** (qa-tester, scope limited by Sam to its four fixes) read
+  clean at `cdbcd700`: F1 to F4 closed with replayed red-then-green evidence, nothing regressed.
+  Its two LOW wording points in `PR-AND-REQUIRED-CHECKS.md` are fixed at `24be9bcc` — strict
+  checks _require_ a current branch, and the read-back now covers the branch's rules
+  (`gh api repos/{owner}/{repo}/rules/branches/{branch}`, read against `main` on 21/11/2026:
+  allowed merge methods `["merge"]`, strict `true`).
+- **GitHub settings** applied by Sam on 21/11/2026 and read back: ruleset 20221742 merge-only with
+  strict checks, 4 rules and 27 checks kept; repository squash and rebase merges off.
+- **Not covered by it:** CI on the pushed branch (R7-8), gate 22's walk and the _Tester
+  sign-off_ below, and the flagged "no merge-strategy rule exists" lines in the US010 and US011
+  plans (Sam's call).
+
 ## Journeys
 
 ### Approved remediation evidence
