@@ -139,7 +139,7 @@ must not touch the probe. An exit `2` at either commit is a script error, never 
 In this template the replay is one command per commit, run from any checkout: <!-- doc-references: template-only -->
 `bash .github/scripts/template-integrity.sh --self-tests <sha>` runs every self-test against a copy <!-- doc-references: template-only -->
 of that commit, and names a listed script the commit lacks "absent — skipped", never a pass or a <!-- doc-references: template-only -->
-red, only when the commit is an ancestor of the one that introduced it — any other lack (a deletion, an orphan, a squash, a graft) is "deleted", red but not run, and a shallow repository is refused; <!-- doc-references: template-only --> <!-- Deletion refused 21/11/2026; rewritten histories and shallow 21/11/2026 (round 8). -->
+red, only when the commit is an ancestor of the one on `origin/main`, as last fetched, that introduced it — any other lack (a deletion, an orphan, a squash, a graft, no `origin/main`) is "deleted", red but not run, and a shallow repository is refused; <!-- doc-references: template-only --> <!-- Deletion refused 21/11/2026; rewritten histories and shallow 21/11/2026 (round 8); origin/main alone, no grafts 21/11/2026 (round 9). -->
 `SELF_TEST_LEDGER=<file>` on a detector's `--self-test` records each probe's label <!-- doc-references: template-only -->
 and result, so the two ledgers show the label unchanged and its result gone `fail` to `pass`. <!-- doc-references: template-only -->
 <!-- 21/11/2026: the planned-red opt-in (19/11/2026 to 20/11/2026) was removed; both rules became review rules. -->
