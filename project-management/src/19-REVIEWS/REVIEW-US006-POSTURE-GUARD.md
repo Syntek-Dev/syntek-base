@@ -141,7 +141,7 @@ Review IDs map one to one onto the findings record; the `F-0NN` there carries th
 - `../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md` — the plan this code was written from
 - `../18-TESTS/AUTOMATED/US006-TEST-STATUS.md` · `../18-TESTS/MANUAL/US006-MANUAL-TESTING.md` — the test records
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US006-POSTURE-GUARD-15-11-2026.md` — the paired QA review
-- `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-001 to F-029
+- `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-001 to F-029
 - `../21-BUGS/BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md` — the R-004 bug
 - `../21-BUGS/BUG-MANAGEUSERS-CREATE-STAFF-SHELL-INJECTION-15-11-2026.md` — the R-011 bug
 - `project-management/workflows/23-pr-and-review/` · `code/workflows/07-review/` — the workflows run

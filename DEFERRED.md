@@ -20,7 +20,7 @@ unrelated). **A row a map claims, or a story is cut carrying, leaves this file i
 ## US005 — Exactly one layer decides to retry, and every budget says how long it may take
 
 Deferred 12/11/2026 at `22-implementation-documentation`, from
-"project-management/src/20-FINDINGS/FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md".
+"project-management/src/20-FINDINGS/archive/FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md".
 
 | Item                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Finding | Target                                                   |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------------------------------------------- |
@@ -29,7 +29,7 @@ Deferred 12/11/2026 at `22-implementation-documentation`, from
 ## US007 — The story status vocabulary gets one owner
 
 Deferred 02/11/2026 at the `23-pr-and-review` final pass, from
-"project-management/src/20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md".
+"project-management/src/20-FINDINGS/archive/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md".
 
 | Item                                                                                                                                                                                                                                                               | Finding | Target |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------ |

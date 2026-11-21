@@ -191,6 +191,6 @@ left Open, now carry shipped controls.
 - `../../AUDITS/IMPLEMENTATION/` — no US006 audit; Section 1 says why
 - `../../VULNERABILITIES/IMPLEMENTATION/` — nothing escalated
 - `../../../02-STORIES/US006.md` — the source story
-- `../../../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-001, F-002, F-018, and the workflow 23 review's F-020 to F-026 (its F-020 and F-021 are this record's, same numbers)
+- `../../../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-001, F-002, F-018, and the workflow 23 review's F-020 to F-026 (its F-020 and F-021 are this record's, same numbers)
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE, OWASP, and NIST CSF standards
 - `code/docs/SECURITY.md` — the enforcement side these claims must stay consistent with

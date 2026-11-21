@@ -8,9 +8,10 @@
 | **Severity**     | Low — a false green, but only off the normal path (CI and the hooks run inside a repository)   |
 | **Date found**   | 16/11/2026                                                                                     |
 | **Last Updated** | 16/11/2026                                                                                     |
-| **Status**       | Open                                                                                           |
 | **Found during** | Manual walk — CITE-05 of `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md`, in a `git archive` copy |
 | **Reporter**     | Claude (`22-implementation-documentation` Step 5), from finding F-035                          |
+
+**Status:** Open
 
 ---
 
@@ -91,7 +92,7 @@ fails. Leave the `|| true` for the genuinely-empty case, or drop it once the gua
   a release tarball, a container build context. CI and lefthook run inside a repository and are not
   affected, which is why it is Low.
 - **Related stories:** US008 (where it surfaced).
-- **Related records:** `../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` F-035 ·
+- **Related records:** `../20-FINDINGS/archive/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` F-035 ·
   `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md` CITE-05 and _Walk provenance_.
 
 ## 9. Verification
@@ -111,6 +112,6 @@ fails. Leave the `|| true` for the genuinely-empty case, or drop it once the gua
 
 ## Cross-references
 
-- `../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — finding F-035
+- `../20-FINDINGS/archive/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — finding F-035
 - `code/docs/GATE-REPORTING.md` — absent tool versus absent surface
 - `code/workflows/10-debug/` — the TDD debug procedure (failing test first)

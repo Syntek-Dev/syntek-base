@@ -110,7 +110,7 @@ phase breakdown below is mostly empty.
 US007.** `../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` was written for
 US002, now in SPRINT-02, and US007 applies its rule to `doctrine-drift.sh` — a gate that can read
 the files under test but decides none of the question stays in the manifest, narrowed.
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` was written for US003, now
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` was written for US003, now
 SPRINT-02's stretch, and its Decision states it binds **every story in this backlog until the gate
 is green**; US007's own Decisions section says it binds US007 "not only US003", and extends the
 same treatment to `skill-conformance.sh`. US001 predates both and is deliberately left as it
@@ -122,7 +122,7 @@ which the 18-TESTS split superseded for the manual testing guide's path alone (s
 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 
 <!-- Read, until 07/09/2026: "**One ADR in the set is not this sprint's.**
-     ../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md was written for US003 in
+     ../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md was written for US003 in
      SPRINT-02, and its Decision states it binds every story in this backlog until the gate is
      green. US002 honours it; US001 predates it and is deliberately left as it stands, per that
      record's own Consequences." US002 has left, US007 honours the record in its place, and
@@ -456,7 +456,7 @@ question** — the rule `code/docs/GATE-REPORTING.md` states. Per gate:
 
 - **`doc-references.sh` is red before either story starts.** It is read as an **identity diff**
   against a baseline captured before the first edit, never as exit 0 —
-  `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which binds every story
+  `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which binds every story
   in this backlog until US004, now in SPRINT-03, retires it — superseded 30/09/2026 by
   `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,

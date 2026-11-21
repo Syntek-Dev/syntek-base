@@ -1,6 +1,6 @@
 # SPRINT-06
 
-**Last Updated**: 17/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 19/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -30,7 +30,22 @@
      Q15) are named under Acceptance Criteria rather than here: they sit in neither the title nor
      the Client Summary this goal is derived from. -->
 
-**Status:** Planned
+**Status:** In Progress — US010 started 19/11/2026, its first story
+
+> **Re-cut 19/11/2026 — scope and estimate, recorded without a status change.** US010 was re-cut
+> at its build's first step (`../02-STORIES/US010.md` -> _Re-cut — 19/11/2026_; grilling rounds 1
+> to 4 with <%DEVELOPER_NAME%>). It now builds three generated boards — decisions, findings and
+> bugs — on 7.7.0's `pm-board.sh` and seed chain, not seven hand-written index files. **US011's
+> remaining criteria are absorbed into US010** (round 2 Q1); US011's own status is left for a
+> separate developer decision and is not changed here, and `SPRINT-07.md` is not edited by this
+> note. **The 72-case `[3/4]` matrix splits out of US010** (round 4 Q1). 19/11/2026: the matrix
+> moved from the withdrawn US021 to `project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md`
+> (Sam: map first; CUT-PLAN P14; the number was not validly allocated). **US010 stays 8 SP, so this
+> sprint stays 8 / 11 SP**, the re-estimate threshold
+> being a fourth fixture family or a second new CI job (round 4 Q2). Where the goal, criteria,
+> tasks and Definition of Done below name index files, the third `shipped-registers.sh` family,
+> the debt lines, the map enum, the literal grep, the link check or every render path, they are
+> superseded 19/11/2026 by the story's re-cut criteria, and kept as the record.
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
@@ -226,7 +241,7 @@ completing in that record in full.
   record.
 - **US010 does not block on US004, and the reason is the one SPRINT-04 recorded for US006 and
   SPRINT-05 for US008.**
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is a
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is a
   reporting regime — "A story cannot be blocked on a gate it is forbidden to repair" — binding every
   story until `doc-references.sh` goes green; it sequences nothing. Its successor of 30/09/2026,
   `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
@@ -579,8 +594,8 @@ ordinary state between opening and filling.
 
 **`15-decisions` ran for US010 on 21/09/2026.** It records its second candidate and a new read
 rule, and declines its first on the record:
-`project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` and
-`project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`, both written
+`project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` and
+`project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`, both written
 `Proposed` and accepted in the 27/09/2026 write-back pass, after an independent review and before
 the US010 commit (settled 27/09/2026, grilling round 4 Q27 to Q29). Each record's own `**Status:**`
 line is the record of that acceptance, not this paragraph: both read `Accepted`, committed with
@@ -700,7 +715,7 @@ did not move with the sign-off, so the QA sections below stand as rewritten too.
      gate 11 closed three days after the rewrite. -->
 
 **The citation gate is inherited red, and this record adds its own findings to it — expected, not a
-regression.** `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
+regression.** `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
 superseded 30/09/2026 by
 `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged but for the manual testing guide's path, <!-- UPDATED 30/09/2026: successor added beside the superseded record,

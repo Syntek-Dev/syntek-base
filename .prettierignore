@@ -92,6 +92,14 @@ project-management/src/00-ASSETS/WALK-TESTS/*-PROMPT.md
 project-management/src/00-ASSETS/WALK-TESTS/*-REPORT.md
 project-management/src/00-ASSETS/WALK-TESTS/*-TRANSCRIPT.jsonl
 
+# Archived PM records — frozen (project-management/src/CLAUDE.md). pm-archive.sh's rewrite of a
+# path inside one can unalign a table, and re-padding it would edit a frozen file, so no
+# formatter reads them. pm-board.sh --check is their gate. Added 19/11/2026. Narrowed 20/11/2026 to
+# the records alone (every instance name holds a hyphen, bar US###.md): archive/'s own CONTEXT.md
+# and CLAUDE.md ship, are hand-edited, and are formatted like any other pair.
+project-management/src/*/archive/*-*.md
+project-management/src/*/archive/US[0-9][0-9][0-9].md
+
 # Misc
 .git/
 coverage/

@@ -7,8 +7,8 @@ attempts and so breached the rule it illustrates. Corrected in place rather than
 because the record had not yet reached a commit and no reader could have relied on it. Detail in
 _The clamp's correct form_ below.
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** None
+**Superseded by:** None
 **Related:** US005
 
 ---

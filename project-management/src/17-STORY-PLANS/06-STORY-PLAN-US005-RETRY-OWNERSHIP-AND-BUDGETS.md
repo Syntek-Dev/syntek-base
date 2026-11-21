@@ -488,7 +488,7 @@ is **fixed rather than marked**. That is the misuse `AC-GAP-12` removed from the
 ### Carried from US004's findings, 05/11/2026
 
 `22-implementation-documentation` Step 5 carries the `Next story` rows of
-`../20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md` into this plan, the next one
+`../20-FINDINGS/archive/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md` into this plan, the next one
 built. They overtake the 05/09/2026 measurement above wherever the two disagree:
 
 | Finding       | Carried as                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |

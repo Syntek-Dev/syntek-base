@@ -25,7 +25,7 @@ project-management/workflows/17-story-plans/
      `src/17-STORY-PLANS/STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`; Governing documents
      named "project-management/src/17-STORY-PLANS/STORY-PLAN-US000-TEMPLATE.md". -->
 
-<!-- 08/09/2026, later the same day: the three "Plans Index" mentions were rewritten to
+<!-- UPDATED 08/09/2026, later the same day: the three "Plans Index" mentions were rewritten to
      describe what exists. Superseded text, preserved rather than deleted — _Why the filename
      carries a number_ read "A number can be **reserved** in the Plans Index before its plan is
      written" (added earlier today); Inputs listed "`src/17-STORY-PLANS/CONTEXT.md` → Plans

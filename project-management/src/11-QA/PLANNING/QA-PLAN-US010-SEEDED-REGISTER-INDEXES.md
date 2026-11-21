@@ -6,7 +6,7 @@
 | **Date**      | 21/09/2026                                                                                                                                                                                                                                                                                                                                |
 | **Sprint**    | SPRINT-06 — its sole member, 8 of 11 SP, holding a 5 SP reservation for US009's carry (13 / 11 SP at grace if it lands) (corrected 17/11/2026, F-022 of `FINDING-US009-HOOK-ARMING-17-11-2026.md`: the reservation is **released** — US009 completes in SPRINT-05, which is 16 / 11 — so SPRINT-06 is **8 / 11** with nothing carried in) |
 | **Wireframe** | N/A — this story ships Markdown, one YAML `_tasks` chain, one bash array, one bash check family and one Python probe; no screen, no component, no route                                                                                                                                                                                   |
-| **Status**    | Signed off · **corrected in place 30/09/2026 and 03/10/2026** — see below                                                                                                                                                                                                                                                                 |
+| **Status**    | Signed off · **corrected in place 30/09/2026 and 03/10/2026** · **19/11/2026** (re-cut) — see below                                                                                                                                                                                                                                       |
 
 <!-- STEP 1's GRILLING PASS RAN on 21/09/2026: two rounds with the developer over US010 and US011
      together, frontier empty. Its decisions are cited below as "settled 21/09/2026, grilling round
@@ -177,6 +177,43 @@
 > because the two expected outcomes move to what the signed-off family and fixture produce, and no
 > gap, finding or severity moves. The Status row read
 > "Signed off · **corrected in place 30/09/2026** — see below" until then.
+
+> **Corrected in place, 19/11/2026, at US010's re-cut, and kept signed off — a developer decision
+> of 19/11/2026** (re-cut grilling rounds 1 to 4 with <%DEVELOPER_NAME%>; `../../02-STORIES/US010.md`
+> -> _Re-cut — 19/11/2026_; `../../15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`).
+> The story now builds three generated boards, not seven hand-written index files, so scenarios
+> that test the dropped work are superseded, each mapped to the control that replaces it. Nothing
+> below this note is edited; read each superseded scenario through this map.
+>
+> - **The third `shipped-registers.sh` family and the hand-written seeds** — HP-02, HP-03, HP-05,
+>   ES-03 to ES-08, ES-16, EC-14 and EC-17 → `shipped-boards.sh` at eight boards: check 1 (no
+>   negation re-includes a board), check 3 (seed present), check 4 (seed byte-identical to the
+>   seed-only render, which no seeded row or literal can pass) and check 5 (`SEEDED`).
+> - **The seed chain** — HP-04, ES-01, ES-02, ES-10, ES-11 → unchanged in substance for three
+>   board lines; ES-02's ungated task is now caught statically by `shipped-boards.sh` check 2 as
+>   tightened to the copy-gated task, with its own probe red first.
+> - **The update probe** — HP-06 to HP-08, ES-09, ES-20, EC-15 → the same probe over an edited,
+>   committed board; the ungated-`when:` mutation red before byte-identity lands.
+> - **The map index, the map enum and the read rule** — HP-10 to HP-15, HP-21, ES-12 to ES-14,
+>   EC-01 to EC-07, EC-22 → dropped as superseded by 7.7.0 (the feature-maps board and the plain
+>   map status line); the read rule is replaced by plain status lines on the three new kinds.
+> - **The finding, bug and ADR carriers** — EC-08 to EC-10 → status normalisation to a plain
+>   `**Status:**` plus `**Status note:**`; EC-11's ordering → the board's stated lifecycle order and
+>   the decisions board's two tail columns.
+> - **The debt lines, the index files and their CONTEXT sections** — HP-14, HP-16, HP-17, ES-15,
+>   ES-17, EC-12, EC-13, EC-16 → dropped: no index file and no debt line exists; each register's
+>   `CONTEXT.md` names its board.
+> - **The generated-tree literal grep and the link check** — HP-01's grep half, HP-09's, ES-18 →
+>   dropped, byte-identity covering both (round 3 Q4). HP-18's joined-line search survives.
+> - **Every render path** — HP-01 → the 72-case matrix moves to MAP-GENERATION-COVERAGE S-01,
+>   uncut. 19/11/2026: the matrix moved from the withdrawn US021 to
+>   `project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md` (Sam: map first;
+>   CUT-PLAN P14; the number was not validly allocated).
+> - **Map boxes** — HP-19 → the index-row box is removed, not ticked; HP-20 (Umbrella ADRs) stands.
+> - **Unchanged:** ES-19, EC-18 to EC-21, PA-01 to PA-04 (PA-01 and PA-04 re-read for boards).
+>
+> **New controls with no scenario here**, walked in the manual guide: the three kinds' generator
+> tests, the supersession walk, the archive trigger and the title-legibility read.
 
 ---
 
@@ -379,7 +416,7 @@ started`, string-equal under the read rule to that map's own header; Instance a 
   span do not escape in CommonMark, "as" has no space before it, and the continuation at :471 is
   indented one space rather than six. Settled 21/09/2026, grilling round 1 Q5: one read rule for all
   seven carriers, recorded in
-  `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (Proposed).
+  `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (Proposed).
   **The rule applies to the value after the key, never to the whole line.** For a finding, cutting
   the metadata line at its first middle dot loses the Status entirely (EC-08). **Resolution:** :311
   reads "the Status column holds the artefact's own value under the one read rule — the carrier value
@@ -394,7 +431,7 @@ started`, string-equal under the read rule to that map's own header; Instance a 
   carry four values and allow bold, and no task edits the definition site.** US010.md:323-329
   (as read 21/09/2026), :447-449 and :518-520.
   Settled 21/09/2026, grilling round 2 Q11 (with round 1 Q4's fifth value) and recorded in
-  `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`
+  `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`
   (Proposed): the header is `<enum> · <prose>`, the value plain — no bold, no backticks — over five
   values, `Charting`, `Resolving`, `Blockers clear — stories may start`, `Complete` and `Not
 started`. "Begins with one of" (:326) admits a bold value, which ten of the twelve headers being
@@ -648,7 +685,7 @@ started`. "Begins with one of" (:326) admits a bold value, which ten of the twel
   **32 findings, exit 1, every one `[instance citation]`** (Section 7); the handoff's 47 was taken
   while the file was untracked. The developer settled on 20/09/2026 to **wait for US004** rather
   than add interim markers (SPRINT-06.md:361-362, working tree, as read 21/09/2026), so
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` governs
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` governs
   until US004 lands. Separately, "every citation this story writes … resolves" is assigned to a
   script that reads backticked tokens only, and MAP-INDEX.md's Instance cells are Markdown links,
   so none is read (`project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`).
@@ -1249,11 +1286,11 @@ the five values and the re-derivation of every header stand, and no criterion ho
 - `project-management/src/02-STORIES/US010.md` — the story this plan tests; all twenty-three gaps above are `[RESOLVED] 27/09/2026` in it, the citations re-measured 30/09/2026 against the story as the 16-sprint-plans gate corrected it (27/09/2026 against its pre-commit text until then)
 - `project-management/src/03-SPRINTS/SPRINT-06.md` — the record whose mirrored criteria follow the story's
 - `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US010-SEEDED-REGISTER-INDEXES.md` · `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US010-SEEDED-REGISTER-INDEXES.md` — the security gate Section 5 traces, TM-01 to TM-18 and Sections 7.1 to 7.15
-- `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` · `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the writer format and reader rule, both `Accepted` — committed so at `0c5e635`, after the independent review round 4 Q27 required (settled 27/09/2026). AMENDED 30/09/2026: read "both `Proposed`, accepted in the 27/09/2026 write-back pass only after an independent review and before the US010 commit" until then
+- `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` · `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the writer format and reader rule, both `Accepted` — committed so at `0c5e635`, after the independent review round 4 Q27 required (settled 27/09/2026). AMENDED 30/09/2026: read "both `Proposed`, accepted in the 27/09/2026 write-back pass only after an independent review and before the US010 commit" until then
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md` — the sibling plan sharing AC-GAP-3 and AC-GAP-7
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US012-SEED-PRESENCE-GATE.md` — the seed presence loop this story's `SEEDED` growth meets
 - `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` — S-01, S-02, S-03 and N-001 to N-006
-- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the reporting regime AC-GAP-15 applies, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+- `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the reporting regime AC-GAP-15 applies, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
   which the 18-TESTS split superseded for the manual testing guide's path alone (settled
   30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - `project-management/docs/QA-GUIDE.md` — the governing QA guide

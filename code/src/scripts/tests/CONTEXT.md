@@ -39,7 +39,9 @@ code/src/scripts/tests/
 ├── hook-arming.sh            ← US009 probes: install-hooks.sh, its --notice mode, the manifest edits
 ├── mutmut.sh                 ← Python mutation testing (local-only; dev stack required)
 ├── open-coverage.sh          ← opens the backend coverage HTML in a browser
+├── pm-boards.sh              ← probes for the PM board and archive scripts, on a synthetic fixture
 ├── server.sh                 ← start or manage the test stack containers
+├── template-hooks.sh         ← test-only, copier-excluded: probes the template's own hook shape <!-- doc-references: template-only -->
 ├── test-record.sh            ← generator: US### → 18-TESTS/AUTOMATED/ (writes OUTSIDE code/)
 └── reports/                  ← generated reports (all gitignored; sub-dirs below)
     ├── a11y/                 ← axe results from e2e-py.sh (created on demand)
@@ -53,19 +55,21 @@ code/src/scripts/tests/
 
 ## Scripts
 
-| Script                      | Tool                | Pattern | Stack required      | Default output dir                                                                   |
-| --------------------------- | ------------------- | ------- | ------------------- | ------------------------------------------------------------------------------------ |
-| `all.sh`                    | orchestrator        | both    | Depends on flags    | (delegates to sub-scripts)                                                           |
-| `api.sh`                    | Bruno CLI           | host    | Test stack up       | `reports/api/`                                                                       |
-| `backend.sh`                | pytest              | exec    | Full test stack up  | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml)          |
-| `backend-coverage.sh`       | pytest + cov        | exec    | Full test stack up  | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)                  |
-| `cookie-preview-fixture.sh` | Copier + git        | host    | None (needs Copier) | N/A (console output; scratch removed on exit) <!-- doc-references: template-only --> |
-| `e2e-py.sh`                 | pytest + playwright | host    | Dev stack up (:81)  | `reports/a11y/` + `reports/e2e/results.xml`                                          |
-| `hook-arming.sh`            | git + pnpm + strace | host    | None                | `reports/hook-arming/<fixture>/` (evidence; scratch fixtures removed on exit)        |
-| `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                                 |
-| `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                                  |
-| `server.sh`                 | docker compose      | host    | N/A                 | N/A                                                                                  |
-| `test-record.sh`            | report parser       | host    | None (reads files)  | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**                   |
+| Script                      | Tool                | Pattern | Stack required      | Default output dir                                                                           |
+| --------------------------- | ------------------- | ------- | ------------------- | -------------------------------------------------------------------------------------------- |
+| `all.sh`                    | orchestrator        | both    | Depends on flags    | (delegates to sub-scripts)                                                                   |
+| `api.sh`                    | Bruno CLI           | host    | Test stack up       | `reports/api/`                                                                               |
+| `backend.sh`                | pytest              | exec    | Full test stack up  | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml)                  |
+| `backend-coverage.sh`       | pytest + cov        | exec    | Full test stack up  | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)                          |
+| `cookie-preview-fixture.sh` | Copier + git        | host    | None (needs Copier) | N/A (console output; scratch removed on exit) <!-- doc-references: template-only -->         |
+| `e2e-py.sh`                 | pytest + playwright | host    | Dev stack up (:81)  | `reports/a11y/` + `reports/e2e/results.xml`                                                  |
+| `hook-arming.sh`            | git + pnpm + strace | host    | None                | `reports/hook-arming/<fixture>/` (evidence; scratch fixtures removed on exit)                |
+| `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                                         |
+| `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                                          |
+| `pm-boards.sh`              | git + python3       | host    | None                | N/A (console output; scratch fixture removed on exit)                                        |
+| `server.sh`                 | docker compose      | host    | N/A                 | N/A                                                                                          |
+| `template-hooks.sh`         | git + tar           | host    | None                | N/A (console output; scratch fixture removed on exit) <!-- doc-references: template-only --> |
+| `test-record.sh`            | report parser       | host    | None (reads files)  | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**                           |
 
 `backend.sh`, `backend-coverage.sh`, and `api.sh` fall back to `.env.test.example` when
 `.env.test` is absent — every value in it has a working default in
@@ -196,6 +200,14 @@ handler on every exit path, exits `2` if this checkout's `node_modules` changes 
 whether `BASE..HEAD` needs the `install-failure` job, and is what the workflow's `changes` job
 runs. The `change-filter` fixture tests that decision offline against a scratch repository.
 
+## pm-boards.sh — the PM board and archive probes
+
+`bash code/src/scripts/tests/pm-boards.sh` (`--keep` leaves the fixture) proves `pm-board.sh`,
+`pm-archive.sh` and `pm-lib.sh` (`project-management/src/00-ASSETS/scripts/`) for the decisions,
+findings and bugs boards, on a synthetic `git init` holding **copies** of the three scripts — never
+a path back into this checkout. Host only, git and python3; exit `0` / `1` / `2` as below.
+`template-hooks.sh` proves the template's own hook legs the same way, template-only. <!-- doc-references: template-only --> <!-- 21/11/2026: replaced planned-red.sh -->
+
 ## --output flag
 
 Every runner accepts `--output DIR` to write reports to a custom directory (must be within the project root). The directory is created automatically.
@@ -311,17 +323,19 @@ to read; `2` a script error — a story that is not `US###`, an unknown flag, or
 
 ## CI
 
-These scripts are used by four GitHub Actions workflows. `test.yml` was renamed from
+These scripts are used by five GitHub Actions workflows (six in the template). <!-- Sixth listed 21/11/2026. --> `test.yml` was renamed from
 `test-backend.yml` when the mobile surface arrived — one stack-neutral workflow now holds both
 job sets, with the mobile jobs guarded at **step** level so they report success rather than
 "skipped" on a web-only project:
 
-| Workflow                                  | Trigger                                                                       | Scripts used                                                |
-| ----------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| `.github/workflows/test.yml`              | Every push/PR (no path filter)                                                | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh` |
-| `.github/workflows/test-api.yml`          | Push/PR on `.py` or Bruno collection changes                                  | `api.sh`                                                    |
-| `.github/workflows/test-e2e.yml`          | Push/PR on Django or Docker changes                                           | `e2e-py.sh`                                                 |
-| `.github/workflows/audit-hook-arming.yml` | Every push/PR; `install-failure` skipped only when the change is docs/PM only | `hook-arming.sh`, one step per fixture                      |
+| Workflow                                  | Trigger                                                                       | Scripts used                                                                                    |
+| ----------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `.github/workflows/test.yml`              | Every push/PR (no path filter)                                                | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh`                                     |
+| `.github/workflows/test-api.yml`          | Push/PR on `.py` or Bruno collection changes                                  | `api.sh`                                                                                        |
+| `.github/workflows/test-e2e.yml`          | Push/PR on Django or Docker changes                                           | `e2e-py.sh`                                                                                     |
+| `.github/workflows/pm-boards.yml`         | Push/PR on `project-management/src/**` or this script                         | `pm-boards.sh`, a step of the `check` job                                                       |
+| `.github/workflows/audit-template.yml`    | Every push/PR; the template's own, absent from a generated project            | `pm-boards.sh` and `template-hooks.sh`, steps of `[1/4]` <!-- doc-references: template-only --> |
+| `.github/workflows/audit-hook-arming.yml` | Every push/PR; `install-failure` skipped only when the change is docs/PM only | `hook-arming.sh`, one step per fixture                                                          |
 
 Mutation testing (`mutmut.sh`) is intentionally excluded from CI — it is too slow for standard
 gates and is run on-demand locally against the dev stack.

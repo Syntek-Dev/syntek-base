@@ -124,6 +124,6 @@ exits 0 as a warning. None of the 72 is a US001 test, because the story wrote no
 - `../../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — the implementation plan this record closes
 - `../MANUAL/US001-MANUAL-TESTING.md` — the paired manual testing guide, authored before code and walked after it; it carries the story's only executed checks
 - `../../11-QA/IMPLEMENTATION/QA-IMPL-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md` — whether the specified scenarios were met
-- `../../20-FINDINGS/FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md` — the findings
+- `../../20-FINDINGS/archive/FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md` — the findings
 - `code/docs/TESTING.md` — coverage floors, test structure, and mocking strategy
 - `code/src/scripts/tests/CLAUDE.md` — the runners, their exit-code contract, and the generator

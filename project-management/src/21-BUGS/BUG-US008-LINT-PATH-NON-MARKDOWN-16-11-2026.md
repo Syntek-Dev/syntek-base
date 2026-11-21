@@ -8,9 +8,10 @@
 | **Severity**     | Low — a false red on a scoped run; the unscoped run is unaffected                                     |
 | **Date found**   | 16/11/2026                                                                                            |
 | **Last Updated** | 16/11/2026                                                                                            |
-| **Status**       | Open                                                                                                  |
 | **Found during** | Build and closeout tooling (findings record Section 2.3) — scoping the lint to one shell or YAML file |
 | **Reporter**     | Claude (`22-implementation-documentation` Step 5), from finding F-033                                 |
+
+**Status:** Open
 
 ---
 
@@ -90,7 +91,7 @@ Python leg narrows by directory prefix at `:262`, not by extension).
 - **Impact:** anyone scoping the lint to one non-Markdown file — the documented `format.sh` /
   `lint.sh --path <f>` closeout loop. The unscoped and directory-scoped runs are unaffected.
 - **Related stories:** US008 (where it surfaced).
-- **Related records:** `../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` F-033 ·
+- **Related records:** `../20-FINDINGS/archive/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` F-033 ·
   `BUG-LINT-READS-GITIGNORED-GRAPHIFY-OUT-02-11-2026.md` (another scoping defect in the same leg).
 
 ## 9. Verification
@@ -110,6 +111,6 @@ Python leg narrows by directory prefix at `:262`, not by extension).
 
 ## Cross-references
 
-- `../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — finding F-033
+- `../20-FINDINGS/archive/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — finding F-033
 - `code/src/scripts/syntax/lint.sh` — the script at fault
 - `code/workflows/10-debug/` — the TDD debug procedure (failing test first)

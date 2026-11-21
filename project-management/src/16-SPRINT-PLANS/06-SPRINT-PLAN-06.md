@@ -35,6 +35,21 @@
 
 ## Sprint Goal
 
+> **Re-cut 19/11/2026 — scope and estimate, recorded without a status change.** US010 was re-cut
+> at its build's first step (`../02-STORIES/US010.md` -> _Re-cut — 19/11/2026_; grilling rounds 1
+> to 4 with <%DEVELOPER_NAME%>). It now builds three generated boards — decisions, findings and
+> bugs — on 7.7.0's `pm-board.sh` and seed chain, not seven hand-written index files. **US011's
+> remaining criteria are absorbed into US010** (round 2 Q1); US011's own status is left for a
+> separate developer decision and is not changed here, and `../03-SPRINTS/SPRINT-07.md` is not edited
+> by this note. **The 72-case `[3/4]` matrix splits out of US010** (round 4 Q1). 19/11/2026: the
+> matrix moved from the withdrawn US021 to `project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md`
+> (Sam: map first; CUT-PLAN P14; the number was not validly allocated). **US010 stays 8 SP, so the
+> sprint stays 8 / 11 SP** (`../03-SPRINTS/SPRINT-06.md` wins on sprint facts), the re-estimate threshold
+> being a fourth fixture family or a second new CI job (round 4 Q2). Where the goal, lane, constraints,
+> checklist and Definition of Done below name index files, the third `shipped-registers.sh` family,
+> the debt lines, the map enum, the literal grep, the link check or every render path, they are
+> superseded 19/11/2026 by the story's re-cut criteria and its plan's re-cut phase plan, and kept as the record.
+
 > Every register folder gains an index file of its own, born seeded and seed-once so no
 > `copier update` can overwrite a filled one; the feature-map index is backfilled and leaves the
 > `CONTEXT.md` that ships; and every shipped site still instructing the old index row stops doing
@@ -531,8 +546,8 @@ its supply-chain subject.
 
 | ADR                                                                                     | Authored at           | What it binds                                                                                                                                                                 |
 | --------------------------------------------------------------------------------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `../15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`                  | `15-decisions`, 21/09 | A map's Status header is one of five plain values, any prose after the first middle dot; every live map re-derived by measurement against the map's own counts                |
-| `../15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                        | `15-decisions`, 21/09 | One rule for reading any register's Status into an index row, across all seven registers; US011 applies it and `S-03` inherits it                                             |
+| `../15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`          | `15-decisions`, 21/09 | A map's Status header is one of five plain values, any prose after the first middle dot; every live map re-derived by measurement against the map's own counts                |
+| `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                | `15-decisions`, 21/09 | One rule for reading any register's Status into an index row, across all seven registers; US011 applies it and `S-03` inherits it                                             |
 | `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` | Inherited, 30/09      | A red `doc-references.sh` is read as a diff against a baseline captured before the first edit. It supersedes the 02/09/2026 record and restates it unchanged but for one path |
 
 **All three read `Accepted`, measured 03/10/2026.** Both US010 records were written `Proposed` on
@@ -541,7 +556,7 @@ its supply-chain subject.
 
 **One decision is declined on the record and two records do not bind.** The four incomplete indexes
 ship declaring their own debt, with no ADR (settled 21/09/2026, grilling round 2 Q10), on reasons
-US010 -> _Decisions_ states. `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+US010 -> _Decisions_ states. `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
 reads `Superseded`, and only its successor binds.
 `../15-DECISIONS/ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL-08-09-2026.md` reads `Proposed`; its
 sign-off is the read-rule record's Follow-on, and it binds nothing here.

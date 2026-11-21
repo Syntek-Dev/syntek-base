@@ -1,6 +1,6 @@
 # Generation — What Copier Actually Does
 
-**Last Updated**: 31/10/2026
+**Last Updated**: 19/11/2026
 
 A precise account of what happens between running `copier copy` and having a project. Read this
 when something went wrong, when you are reviewing a change to `copier.yml`, or when you simply <!-- doc-references: template-only -->
@@ -129,9 +129,9 @@ Six notes:
   `scantree` and skips one entry at a time, and it re-creates parent directories for any file it
   renders. `.github/scripts/shipped-artefacts.sh` asserts the result on a real generation. <!-- doc-references: template-only -->
 - **The PM boards start empty, and the `archive/` folders ship empty.** The `*-BOARD.md` files in
-  `01-FEATURE-MAPS`, `02-STORIES`, `03-SPRINTS`, `16-SPRINT-PLANS` and `17-STORY-PLANS` list this
-  template's own maps, stories and sprints, so your project never inherits them: it starts with
-  boards listing nothing — bar the feature-maps board, which lists the seeded
+  `01-FEATURE-MAPS`, `02-STORIES`, `03-SPRINTS`, `15-DECISIONS`, `16-SPRINT-PLANS`,
+  `17-STORY-PLANS`, `20-FINDINGS` and `21-BUGS` list this template's own artefacts, so your
+  project never inherits them: it starts with boards listing nothing — bar the feature-maps board, which lists the seeded
   `MAP-SCALE-PLANNING.md` under `Charting` — and `pm-board.sh --write` fills them as your first artefacts land. Each
   `archive/` arrives holding only its `CONTEXT.md`/`CLAUDE.md` pair.
 - **PDFs are excluded because they are binary.** With `_templates_suffix: ""` Copier attempts to
@@ -149,7 +149,7 @@ Six notes:
 ## 4 — Write
 
 The rendered tree lands in your destination directory, including a staging directory `.copier/`
-holding the nine seed files a task then moves into place and removes.
+holding the seed files a task then moves into place and removes.
 
 ## 5 — Record answers
 
@@ -165,26 +165,19 @@ confirmation) because these execute on your machine.
 
 | #   | Task                                      | Why                                                                                                                                       |
 | --- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | empty `.copier/` into place, then `rmdir` | Seeds the nine files below, since the repo-root originals belong to the template.                                                         |
+| 1   | empty `.copier/` into place, then `rmdir` | Seeds the files below, since the repo-root originals belong to the template.                                                              |
 | 2   | brand `pyproject.toml`'s `[project] name` | `uv` rejects the delimiters in a package name, so the manifest ships the house constant `syntek-base` and is rewritten to your slug here. |
 | 3   | `uv lock` (non-fatal)                     | Creates the lockfile every Dockerfile needs. Prints a warning instead of failing if `uv` is absent.                                       |
 | 4   | `git init --initial-branch=main`          | Starts history. Skipped on `copier update`.                                                                                               |
 
-Task 1 moves nine files:
+**Task 1's `mv` lines are the list** — read the copy-gated task (the one whose `when:` tests the
+copy operation, ending `rmdir .copier`) in `copier.yml` rather than a count here. It moves the <!-- doc-references: template-only -->
+README, the version state (`VERSION` at `0.1.0`, an empty history, changelog and release notes),
+a blank `.claude/MEMORY.md`, blank `GAPS.md` and `DEFERRED.md`, a blank cut plan, the
+scale-planning map, and one `*-BOARD.md` per boarded folder — each listing nothing, bar the
+feature-maps board, which lists the seeded map.
 
-```text
-.copier/README.md              →  README.md
-.copier/VERSION                →  VERSION                     (0.1.0)
-.copier/VERSION-HISTORY.md     →  VERSION-HISTORY.md          (empty)
-.copier/CHANGELOG.md           →  CHANGELOG.md                (empty)
-.copier/RELEASES.md            →  RELEASES.md                 (empty)
-.copier/MEMORY.md              →  .claude/MEMORY.md           (headings and rules, no entries)
-.copier/GAPS.md                →  GAPS.md                     (format block, no entries)
-.copier/DEFERRED.md            →  DEFERRED.md                 (writing rules, no rows)
-.copier/MAP-SCALE-PLANNING.md  →  project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md
-```
-
-The last one exists because six shipped guides cite that map, and a citation resolving to nothing
+The scale-planning map is seeded because six shipped guides cite it, and a citation resolving to nothing
 is the defect `code/src/scripts/audits/doc-references.sh` exists to catch — so the project starts
 with the map present and every row reading `TBD`.
 

@@ -248,7 +248,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   trailing HTML comment and requires "the divergence from N-003's string-equality clause" to be
   recorded; the Decisions section (:183-187) leaves the question to `15-decisions`. Settled
   21/09/2026, grilling round 1 Q5: **one** read rule, designed in US010's spine and recorded as
-  `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — an index
+  `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — an index
   row's Status is the register's carrier value with bold markers, backticks, any trailing HTML
   comment and everything from the first space-middle-dot-space onward removed, then trimmed. US011
   applies it; S-03 inherits it, so N-003's string-equality is asserted against the normalised
@@ -394,7 +394,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   five findings where the replaced text carried three. The developer settled on 20/09/2026 to
   **wait for US004** rather than add interim `template-only` markers, recorded in both sprint
   records' citation-gate paragraphs.
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` governs
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` governs
   until US004 lands. The handoff's figure of 27 was taken while the file was untracked, and is a
   different reading that now happens to share the number. The figure moves with every edit, which
   is the argument for the diff: the baseline is whatever the committed text reads immediately
@@ -941,8 +941,8 @@ Each was raised during the pass, each was plausible, and each fails on a measure
 - `project-management/src/02-STORIES/US010.md` — the story that creates the four files, their tails, ordering prose and debt lines
 - `project-management/src/03-SPRINTS/SPRINT-07.md` — the record US011 is the stretch `Should` of
 - `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` — `N-002`, `N-003` and the `S-05` row
-- `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the read rule this plan tests every Status against
-- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the citation reporting regime, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
+- `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the read rule this plan tests every Status against
+- `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the citation reporting regime, superseded 30/09/2026 by `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
   which the 18-TESTS split superseded for the manual testing guide's path alone (settled
   30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — the baseline-diff procedure Section 6 routes to

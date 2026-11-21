@@ -3,8 +3,8 @@
 **Status:** Accepted
 **Date:** 17/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** None
+**Superseded by:** None
 **Related:** US009 · `project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md` AC-GAP-1 · `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US009-HOOK-ARMING.md` TM-01 and Section 3b · `project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md` N-019
 
 ---
@@ -41,7 +41,7 @@ invocations. Five carry `--ignore-scripts`:
 
 `--frozen-lockfile` freezes resolution; it does not suppress lifecycle scripts.
 
-> **Correction 17/11/2026 (F-025, `project-management/src/20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md`)
+> **Correction 17/11/2026 (F-025, `project-management/src/20-FINDINGS/archive/FINDING-US009-HOOK-ARMING-17-11-2026.md`)
 > — the measurement above, not the decision.** The decision and its date stand. Re-measured
 > 17/11/2026 across the whole tree: **18** executable `pnpm install` invocations, **6** carrying
 > `--ignore-scripts`, **12** not. The sixth suppressed is

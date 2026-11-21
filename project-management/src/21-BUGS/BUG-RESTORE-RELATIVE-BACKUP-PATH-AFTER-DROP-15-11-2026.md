@@ -1,16 +1,18 @@
 # BUG: `restore.sh` drops the database before discovering a relative backup path is wrong
 
-| Field            | Value                                                                                                          |
-| ---------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Story**        | N/A — cross-cutting (surfaced by US006)                                                                        |
-| **Story doc**    | N/A — surfaced in the workflow 23 review of `../02-STORIES/US006.md`                                           |
-| **Story plan**   | N/A — cross-cutting                                                                                            |
-| **Severity**     | Low                                                                                                            |
-| **Date found**   | 15/11/2026                                                                                                     |
-| **Last Updated** | 15/11/2026                                                                                                     |
-| **Status**       | Fixed — on `us006/posture-guard`, uncommitted at the time of writing                                           |
-| **Found during** | Review — workflow `23-pr-and-review` for US006, finding R-004                                                  |
-| **Reporter**     | Claude, on the developer's behalf; finding F-023 in `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` |
+| Field            | Value                                                                                                                  |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Story**        | N/A — cross-cutting (surfaced by US006)                                                                                |
+| **Story doc**    | N/A — surfaced in the workflow 23 review of `../02-STORIES/US006.md`                                                   |
+| **Story plan**   | N/A — cross-cutting                                                                                                    |
+| **Severity**     | Low                                                                                                                    |
+| **Date found**   | 15/11/2026                                                                                                             |
+| **Last Updated** | 15/11/2026                                                                                                             |
+| **Found during** | Review — workflow `23-pr-and-review` for US006, finding R-004                                                          |
+| **Reporter**     | Claude, on the developer's behalf; finding F-023 in `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` |
+
+**Status:** Fixed
+**Status note:** on `us006/posture-guard`, uncommitted at the time of writing
 
 **Pre-existing, not introduced by US006.** The defect dates from `f0681f2` (18/04/2026) and is
 present on `origin/testing`; US006's posture guard does not touch the path handling, so it takes
@@ -127,7 +129,7 @@ temporarily reverted to the path, four restore cases fail.
   dev database and kept nothing restored. No deployed environment is affected; above `development`
   the US006 guard already refuses the script without an override.
 - **Related stories:** US006 (surfaced it at review; fixed on its branch).
-- **Related records:** `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-023 ·
+- **Related records:** `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-023 ·
   `../11-QA/IMPLEMENTATION/QA-IMPL-US006-POSTURE-GUARD-15-11-2026.md` EC-N8 ·
   `../18-TESTS/AUTOMATED/US006-TEST-STATUS.md` _Behavioural cases_.
 
@@ -152,7 +154,7 @@ temporarily reverted to the path, four restore cases fail.
 ## Cross-references
 
 - `../02-STORIES/US006.md` — the story whose review surfaced it
-- `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-023
+- `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-023
 - `code/src/scripts/database/restore.sh` — the fixed script
 - `code/src/scripts/database/_migrate-self-test.sh` — `st_behavioural`, the regression cases
 - `code/workflows/10-debug/` — the TDD debug procedure

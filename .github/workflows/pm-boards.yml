@@ -3,9 +3,10 @@
 # Two jobs, and only the first can fail the run:
 #
 #   check  `pm-board.sh --check` — every committed *-BOARD.md in 01-FEATURE-MAPS, 02-STORIES,
-#          03-SPRINTS, 16-SPRINT-PLANS and 17-STORY-PLANS matches what the status lines
-#          generate, and nothing under */archive/ has changed since it was archived beyond the
-#          reference-path rewrites pm-archive.sh makes. The frozen check reads git history, so
+#          03-SPRINTS, 15-DECISIONS, 16-SPRINT-PLANS, 17-STORY-PLANS, 20-FINDINGS and 21-BUGS
+#          matches what the status lines generate, and nothing under */archive/ has changed
+#          since it was archived beyond the reference-path rewrites pm-archive.sh makes; then
+#          code/src/scripts/tests/pm-boards.sh probes the two scripts on a synthetic fixture. The frozen check reads git history, so
 #          this job checks out with full depth: a shallow clone would see every archived file
 #          as just added and wave every change through.
 #   warn   `pm-board.sh --warn` — stale-status warnings (a Blocked story whose dependencies have
@@ -28,12 +29,22 @@ on:
       - "project-management/src/**"
       - ".copier-answers.yml"
       - ".github/workflows/pm-boards.yml"
+      - "code/src/scripts/tests/pm-boards.sh"
+      # pm-boards.sh also proves the formatters skip */archive/ (19/11/2026).
+      - ".prettierignore"
+      - ".markdownlint-cli2.jsonc"
+      - "lefthook.yml"
   pull_request:
     branches: [main, staging, dev, testing]
     paths:
       - "project-management/src/**"
       - ".copier-answers.yml"
       - ".github/workflows/pm-boards.yml"
+      - "code/src/scripts/tests/pm-boards.sh"
+      # pm-boards.sh also proves the formatters skip */archive/ (19/11/2026).
+      - ".prettierignore"
+      - ".markdownlint-cli2.jsonc"
+      - "lefthook.yml"
   workflow_dispatch:
 
 jobs:
@@ -47,6 +58,12 @@ jobs:
 
       - name: Every committed board is current and archive/ is untouched
         run: bash project-management/src/00-ASSETS/scripts/pm-board.sh --check
+
+      # The generator's own probes, on a synthetic fixture: the record registers render, the
+      # templates are excluded by name, pm-archive.sh archives only from an end state, and
+      # --check freezes what it archived. A step of this job, not a job of its own.
+      - name: The board and archive scripts pass their probes
+        run: bash code/src/scripts/tests/pm-boards.sh
 
   warn:
     name: Stale statuses (advisory)

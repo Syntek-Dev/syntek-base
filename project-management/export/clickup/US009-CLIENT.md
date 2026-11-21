@@ -2,7 +2,7 @@
 
 | Status | MoSCoW | Story Points |
 | --- | --- | --- |
-| In Review | Should Have | 8 |
+| Accepted | Should Have | 8 |
 
 ## Client Summary
 

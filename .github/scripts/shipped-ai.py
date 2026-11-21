@@ -14,6 +14,7 @@ import argparse
 import copy
 import json
 import os
+import re
 import shutil
 import tempfile
 import tomllib
@@ -42,6 +43,8 @@ ANSWERS = {
 TEMPLATE_MEMORY = "Template memory must never become project memory."
 PROJECT_MEMORY = "Project memory must survive a template update."
 UPDATED_SKILL = "Shared skill update reached both coding tools."
+BOARD_CHANGED = "was not byte-identical to the project's own edit after copier update"
+SEED_TASK_COUNT = "copier.yml must carry exactly one seed task (the one moving .copier/README.md)"
 
 
 def require(condition: bool, message: str) -> None:
@@ -100,13 +103,16 @@ def fixture(directory: Path, config: dict, *, legacy: bool = False) -> None:
             duplicate(source, directory / ".copier" / source.name)
     migration = ".copier/migrations/shared-ai-symlinks.sh"
     duplicate(ROOT / migration, directory / migration)
-    # One marker per seed destination folder: the scale-planning map and the five PM boards.
+    # One marker per seed destination folder: the scale-planning map and the eight PM boards.
     for folder in (
         "01-FEATURE-MAPS",
         "02-STORIES",
         "03-SPRINTS",
+        "15-DECISIONS",
         "16-SPRINT-PLANS",
         "17-STORY-PLANS",
+        "20-FINDINGS",
+        "21-BUGS",
     ):
         marker = f"project-management/src/{folder}/CONTEXT.md"
         duplicate(ROOT / marker, directory / marker)
@@ -199,6 +205,23 @@ def check_links(project: Path, enabled: bool, *, updated: bool = False) -> None:
     require(not (project / ".copier").exists(), "Seed staging directory survived")
 
 
+SEED_MOVE = "mv .copier/README.md README.md"
+
+
+def seed_task(config: dict) -> dict:
+    """The copy-gated seed task: the one `_tasks` entry carrying the README move, exactly one."""
+    tasks = [task for task in config["_tasks"] if SEED_MOVE in task.get("command", "")]
+    require(len(tasks) == 1, f"{SEED_TASK_COUNT}; found {len(tasks)}")
+    return tasks[0]
+
+
+def seeded_boards(config: dict) -> dict[str, str]:
+    """Map each board seed under .copier/ to its destination, read from the seed task itself."""
+    moves = dict(re.findall(r"mv \.copier/(\S+-BOARD\.md) (\S+)", seed_task(config)["command"]))
+    require(len(moves) >= 1, "The seed task moves no PM board")
+    return moves
+
+
 def copy_project(template: Path, project: Path, enabled: bool) -> None:
     data = {**ANSWERS, **dict.fromkeys(OPTIONAL.values(), enabled)}
     run_copy(
@@ -210,13 +233,23 @@ def copy_project(template: Path, project: Path, enabled: bool) -> None:
 def exercise(directory: Path, config: dict) -> None:
     template = directory / "template"
     fixture(template, config)
+    boards = seeded_boards(config)
+    edited: dict[bool, dict[str, bytes]] = {}
     for enabled in (False, True):
         project = directory / f"project-{enabled}"
         copy_project(template, project, enabled)
         with (project / ".ai/MEMORY.md").open("a") as memory:
             memory.write(f"\n### Local knowledge\n\n{PROJECT_MEMORY}\n")
+        # The project's own board edits, committed: what a seed-once board must never lose.
+        edited[enabled] = {}
+        for destination in boards.values():
+            board = project / destination
+            require(board.is_file(), f"{destination} was not seeded by copier copy")
+            with board.open("a") as handle:
+                handle.write(f"\n| PROJECT-ROW | The project's own row in {board.name} |\n")
+            edited[enabled][destination] = board.read_bytes()
         git(project, "init", "--quiet", "--initial-branch=main")
-        commit(project, "Record generated project and its own memory")
+        commit(project, "Record generated project, its own memory and its own boards")
 
     with (template / ".claude/skills/global-workflow/SKILL.md").open("a") as skill:
         skill.write(f"\n{UPDATED_SKILL}\n")
@@ -224,7 +257,12 @@ def exercise(directory: Path, config: dict) -> None:
     # as preservation. It must never be present under either path in the project.
     with (template / ".claude/MEMORY.md").open("a") as memory:
         memory.write("An additional template-only entry.\n")
-    commit(template, "Update a shared skill and template memory")
+    # Every board seed changes too, so an update that re-seeds a board cannot hide behind an
+    # unchanged seed.
+    for seed in boards:
+        with (template / ".copier" / seed).open("a") as handle:
+            handle.write("\nA template-side change to the blank board seed.\n")
+    commit(template, "Update a shared skill, template memory and every board seed")
     git(template, "tag", "v1.1.0")
 
     for enabled in (False, True):
@@ -232,10 +270,16 @@ def exercise(directory: Path, config: dict) -> None:
         run_update(
             project, defaults=True, unsafe=True, overwrite=True, vcs_ref="v1.1.0", quiet=True
         )
+        for destination, contents in edited[enabled].items():
+            require(
+                (project / destination).is_file()
+                and (project / destination).read_bytes() == contents,
+                f"{destination} {BOARD_CHANGED}",
+            )
         check_links(project, enabled, updated=True)
         print(
-            f"PASS: copy/update with optional skills {enabled}; "
-            "aliases resolve and project memory survives"
+            f"PASS: copy/update with optional skills {enabled}; aliases resolve, project memory "
+            f"survives, and {len(edited[enabled])} edited boards are byte-identical"
         )
 
 
@@ -259,6 +303,34 @@ def self_test(directory: Path, config: dict) -> None:
             print(f"PASS: detector rejects {name}")
         else:
             raise AssertionError(f"Detector accepted the broken {name} fixture")
+
+    # The seed task is found by its README move, and must be the only one: a second task
+    # carrying that move would let the board seeds be read from either.
+    mutated = copy.deepcopy(config)
+    duplicate_task = copy.deepcopy(mutated["_tasks"][0])
+    mutated["_tasks"] = [{"command": "true"}, *mutated["_tasks"], duplicate_task]
+    try:
+        seeded_boards(mutated)
+    except AssertionError as error:
+        require(SEED_TASK_COUNT in str(error), f"Mutation failed for an unexpected reason: {error}")
+        print(f"PASS: detector rejects duplicate-seed-task — {error}")
+    else:
+        raise AssertionError("Detector accepted the broken duplicate-seed-task fixture")
+
+    # The seed-once gate itself. Without its `when:` the seed task runs on `update` too, and
+    # moves every blank board seed over the project's own committed board. This runs the
+    # whole copy/update exercise, because only the update path can see it.
+    mutated = copy.deepcopy(config)
+    seed_task(mutated).pop("when", None)
+    ungated = directory / "ungated-seed-task"
+    ungated.mkdir()
+    try:
+        exercise(ungated, mutated)
+    except (AssertionError, TaskError) as error:
+        require(BOARD_CHANGED in str(error), f"Mutation failed for an unexpected reason: {error}")
+        print(f"PASS: detector rejects ungated-seed-task — {error}")
+    else:
+        raise AssertionError("Detector accepted the broken ungated-seed-task fixture")
 
 
 def exercise_legacy(directory: Path, config: dict) -> None:
@@ -331,14 +403,10 @@ def main() -> None:
     )
     args = parser.parse_args()
     config = yaml.safe_load((ROOT / "copier.yml").read_text())
-    config["_tasks"] = [
-        task
-        for task in config["_tasks"]
-        if "mv .copier/MEMORY.md .claude/MEMORY.md" in task["command"]
-    ]
+    config["_tasks"] = [seed_task(config)]
     require(
-        len(config["_tasks"]) == 1,
-        "The repository must provide exactly one project-memory seed task",
+        "mv .copier/MEMORY.md .claude/MEMORY.md" in config["_tasks"][0]["command"],
+        "The seed task must seed the project memory",
     )
     config["_migrations"] = [
         task

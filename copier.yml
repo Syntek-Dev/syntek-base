@@ -53,6 +53,11 @@ _exclude:
   # P5 cases read this copier.yml's `_migrations:`. A generated project holds neither, so it
   # could only ever fail there. Test-only and template-only, settled 16/11/2026.
   - /code/src/scripts/tests/cookie-preview-fixture.sh
+  # Proves .github/scripts/template-integrity.sh, the template's own hook legs. That script and
+  # the detectors it runs are excluded above, so this could only ever fail there. Test-only and
+  # template-only, settled 19/11/2026 (as planned-red.sh; renamed 21/11/2026 when the planned-red
+  # allowance it proved was removed).
+  - /code/src/scripts/tests/template-hooks.sh
   # toolchain-pins.sh's held register names PIN S-01 in MAP-PIN-DETECT-MOVE, and
   # /project-management/src/** below excludes that map. Shipped, it would hold the unpinned uv
   # class in every generated project against an owner that is not there and a release condition
@@ -1117,12 +1122,13 @@ _tasks:
   # trusted: `.github/scripts/shipped-memory.sh` for the first,
   # `.github/scripts/shipped-registers.sh` for the other two.
   #
-  # The five PM boards (*-BOARD.md) ride it last. In syntek-base each lists syntek-base's own
-  # maps, stories, sprints and plans, and `/project-management/src/**` above already keeps the
+  # The eight PM boards (*-BOARD.md) ride it last. In syntek-base each lists syntek-base's own
+  # maps, stories, sprints, plans, decisions, findings and bugs, and `/project-management/src/**` above already keeps the
   # live ones from travelling; the seeds are what `pm-board.sh --write` renders for a project
   # holding nothing but the seeded MAP-SCALE-PLANNING.md — so a new project's first
   # `pm-board.sh --check` is green, and every board but the maps one starts with no rows.
-  # `.github/scripts/shipped-boards.sh` proves the seeds are exactly that render.
+  # `.github/scripts/shipped-boards.sh` proves the seeds are exactly that render, and that
+  # each board's move sits in THIS task — the one gated to `copy` — so no update re-seeds it.
   #
   # CUT-PLAN.md follows (7.7.0, 31/10/2026). syntek-base's own plan in 02-STORIES/ maps its
   # maps' slices to its stories and never travels; the seed is the same canvas with no rows,
@@ -1144,6 +1150,9 @@ _tasks:
       mv .copier/SPRINTS-BOARD.md project-management/src/03-SPRINTS/SPRINTS-BOARD.md &&
       mv .copier/SPRINT-PLANS-BOARD.md project-management/src/16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md &&
       mv .copier/STORY-PLANS-BOARD.md project-management/src/17-STORY-PLANS/STORY-PLANS-BOARD.md &&
+      mv .copier/DECISIONS-BOARD.md project-management/src/15-DECISIONS/DECISIONS-BOARD.md &&
+      mv .copier/FINDINGS-BOARD.md project-management/src/20-FINDINGS/FINDINGS-BOARD.md &&
+      mv .copier/BUGS-BOARD.md project-management/src/21-BUGS/BUGS-BOARD.md &&
       mv .copier/CUT-PLAN.md project-management/src/02-STORIES/CUT-PLAN.md &&
       rmdir .copier
     when: "<% _copier_operation == 'copy' %>"

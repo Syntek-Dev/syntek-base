@@ -1,6 +1,6 @@
 # SPRINT-05
 
-**Last Updated**: 17/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 19/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -30,7 +30,7 @@ moment nobody chose.
      (Subdomain Routing and Gate Parity), which is the ordinary shape here: SPRINT-01, SPRINT-02
      and SPRINT-04 each span two. -->
 
-**Status:** In Progress — US008 started 16/11/2026, its first story
+**Status:** Done — US008 and US009, both members, Accepted (PR #35, PR #37); nothing carried over; Done and US008's Story Summary tick confirmed by Sam 19/11/2026
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
@@ -144,10 +144,10 @@ ceiling is wrong — this was the first to take it, and it is now the first to o
 
 ## Story Summary
 
-| ID    | Title                                                                                                  | MoSCoW      | SP  |
-| ----- | ------------------------------------------------------------------------------------------------------ | ----------- | --- |
-| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Must Have   | 8   |
-| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Should Have | 8   |
+| ID      | Title                                                                                                  | MoSCoW      | SP  |
+| ------- | ------------------------------------------------------------------------------------------------------ | ----------- | --- |
+| US008 ✓ | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Must Have   | 8   |
+| US009 ✓ | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Should Have | 8   |
 
 **Total:** 16 SP — **8 committed, 8 stretch.** Rows listed in build order. The all-`Must` shape
 this record opened with on 09/09/2026 is repaired rather than inherited; see Notes.
@@ -203,7 +203,7 @@ this record opened with on 09/09/2026 is repaired rather than inherited; see Not
   (`project-management/src/03-SPRINTS/SPRINT-03.md` -> Notes). Everything else runs beside, not
   behind, and US008 runs beside all seven.
 - **US008 does not block on US004, and the reason is the one SPRINT-04 recorded for US006.**
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is a
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` is a
   reporting regime — "A story cannot be blocked on a gate it is forbidden to repair" — binding
   every story until `doc-references.sh` goes green; it sequences nothing. Its successor of
   30/09/2026,
@@ -710,7 +710,7 @@ tasks on 30/09/2026, at gate `11`'s, from both QA plans as signed off that day (
      QA plans' sign-off and the QA write-back landed (round 3 Q9 and Q10). -->
 
 **The citation gate is inherited red, and this record adds its own findings to it — expected, not
-a regression.** `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
+a regression.** `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
 superseded 30/09/2026 by
 `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged but for the manual testing guide's path, <!-- UPDATED 30/09/2026: successor added beside the superseded record,
@@ -739,7 +739,7 @@ is measured with the whole change staged, and a re-measurement is only comparabl
 accounted for.** The 5 instance findings are the sprint name inside the quotation from SPRINT-04's
 Notes in the first paragraph of these Notes (a fifth record holding US006 alone) and the four
 sprint-record cells of the arithmetic table above — the class
-`project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` is
+`project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` is
 the doctrine for, which the gate flags by defect until US004 lands in SPRINT-03, and the same
 class from the same cause as SPRINT-04's own cascade table. The 1 dangling is the forward
 reference in Dependencies to the reliability family US001 creates — the class SPRINT-04 already
@@ -904,7 +904,7 @@ rewritten to `bash install.sh` and its Development-scripts table gains an "insta
       paths, line numbers and setting names, never a value (assessment 7.9, 7.11, 7.12)
 - [ ] **US008 — the advisory ships as two `_migrations:` entries, and the keyed one names the
       release that ships the doctrine**, per
-      `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`. The
+      `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`. The
       always-wrong state — any `SESSION_COOKIE_DOMAIN` or `CSRF_COOKIE_DOMAIN` still assigned in a
       settings module — rides the unversioned, state-gated `cookie-domain-conflict.sh`, which runs
       on every update, so no key can strand a project still carrying the old mandate. The one-time
@@ -1058,7 +1058,7 @@ rewritten to `bash install.sh` and its Development-scripts table gains an "insta
       `(file, kind, token)` triple with the line number dropped and multiplicity kept, the
       detector's `git hash-object` recorded beside it and re-asserted at close, and every new line
       at close classified by whether its file is in the story's edit set — a count is never the
-      test (`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
+      test (`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
       superseded 30/09/2026 by
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
       which restates it unchanged)
@@ -1076,7 +1076,7 @@ rewritten to `bash install.sh` and its Development-scripts table gains an "insta
       print-only advisories already shipped, `v3.0.0`, `v5.0.0` and `v6.0.0`'s report-only third.
       The story repairs the preview blindness rather than reproducing it (QA-PLAN-US008 HP-08,
       HP-09 and AC-GAP-2, inverted 17/09/2026;
-      `project-management/src/15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`;
+      `project-management/src/15-DECISIONS/archive/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`;
       assessment 7.11)
 - [ ] **US008 — the failed-copy walk.** Against a scratch update that fails on the copy, with the
       repair in place, the `template-update.sh` preview prints the failure tail
@@ -1129,17 +1129,17 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      section and the guides are the doctrine the settings implement — on SPRINT-04's precedent,
      which carried US005's documentation deliverables under its Security Tasks. -->
 
-| Story | Task                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Done |
-| ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
-| US008 | Make the settings assignments — the `__Host-` names per TLS environment and `CSRF_COOKIE_HTTPONLY = True` — in one change, with no `Domain` set                                                                                                                                                                                                                                                                                                                                                                                                    | [ ]  |
-| US008 | Update the settings `CONTEXT.md` table for the settings that moved                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | [ ]  |
-| US008 | Widen `code/src/scripts/audits/negative-space.sh` to assert presence and absence, widen its fixture pair, repoint the self-test scope                                                                                                                                                                                                                                                                                                                                                                                                              | [ ]  |
-| US008 | Rewrite the five guides so `code/docs/security/CRYPTO-AND-DATA.md` owns the rule and the other four defer to it                                                                                                                                                                                                                                                                                                                                                                                                                                    | [ ]  |
-| US008 | On the story's `22-implementation-documentation` pass, open the `GAPS.md` entry `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` promises at `:191`, dated the day it is written and citing the ADR's 17/09/2026 claim as the date it was owed from — never backdated to it: `.copier/migrations/shared-ai-symlinks.sh` shipped with no row in `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md`'s register; recorded there, not repaired by this story (settled 28/09/2026, 16-sprint-plans grilling round 2 Q6) | [ ]  |
-| US009 | Add the git-hooks step to `install.sh` as the last step of Phase 1, guarded on `git rev-parse --git-dir`, running `pnpm exec lefthook install` and failing at exit 2 otherwise, and renumber `usage()` to match — Phase 1 to nine steps, Phase 2 to steps 10 and 11                                                                                                                                                                                                                                                                                | [ ]  |
-| US009 | Leave `install-frontend.sh` unchanged — the three `--ignore-scripts` flags are asserted by tests, not edited — and remove `package.json`'s `prepare`, adding the announcing `postinstall` (`project-management/src/15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md`)                                                                                                                                                                                                                                                          | [ ]  |
-| US009 | Re-read `.copier/README.md:442` against the changed script, confirm it is now true, and record the re-read — **no edit to that sentence**; the file's `pnpm prepare` line is rewritten to `bash install.sh` and its Development-scripts table gains an "install-hooks.sh" row, per the story plan's P3                                                                                                                                                                                                                                             | [ ]  |
-| US009 | Update `how-to/docs/DEVELOPMENT.md` and `how-to/docs/CLI-TOOLING.md` where either enumerates `install.sh`'s steps                                                                                                                                                                                                                                                                                                                                                                                                                                  | [ ]  |
+| Story | Task                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Done |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| US008 | Make the settings assignments — the `__Host-` names per TLS environment and `CSRF_COOKIE_HTTPONLY = True` — in one change, with no `Domain` set                                                                                                                                                                                                                                                                                                                                                                                                            | [ ]  |
+| US008 | Update the settings `CONTEXT.md` table for the settings that moved                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | [ ]  |
+| US008 | Widen `code/src/scripts/audits/negative-space.sh` to assert presence and absence, widen its fixture pair, repoint the self-test scope                                                                                                                                                                                                                                                                                                                                                                                                                      | [ ]  |
+| US008 | Rewrite the five guides so `code/docs/security/CRYPTO-AND-DATA.md` owns the rule and the other four defer to it                                                                                                                                                                                                                                                                                                                                                                                                                                            | [ ]  |
+| US008 | On the story's `22-implementation-documentation` pass, open the `GAPS.md` entry `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` promises at `:191`, dated the day it is written and citing the ADR's 17/09/2026 claim as the date it was owed from — never backdated to it: `.copier/migrations/shared-ai-symlinks.sh` shipped with no row in `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md`'s register; recorded there, not repaired by this story (settled 28/09/2026, 16-sprint-plans grilling round 2 Q6) | [ ]  |
+| US009 | Add the git-hooks step to `install.sh` as the last step of Phase 1, guarded on `git rev-parse --git-dir`, running `pnpm exec lefthook install` and failing at exit 2 otherwise, and renumber `usage()` to match — Phase 1 to nine steps, Phase 2 to steps 10 and 11                                                                                                                                                                                                                                                                                        | [ ]  |
+| US009 | Leave `install-frontend.sh` unchanged — the three `--ignore-scripts` flags are asserted by tests, not edited — and remove `package.json`'s `prepare`, adding the announcing `postinstall` (`project-management/src/15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md`)                                                                                                                                                                                                                                                                  | [ ]  |
+| US009 | Re-read `.copier/README.md:442` against the changed script, confirm it is now true, and record the re-read — **no edit to that sentence**; the file's `pnpm prepare` line is rewritten to `bash install.sh` and its Development-scripts table gains an "install-hooks.sh" row, per the story plan's P3                                                                                                                                                                                                                                                     | [ ]  |
+| US009 | Update `how-to/docs/DEVELOPMENT.md` and `how-to/docs/CLI-TOOLING.md` where either enumerates `install.sh`'s steps                                                                                                                                                                                                                                                                                                                                                                                                                                          | [ ]  |
 
 <!-- AMENDED 28/09/2026 at gate 10's sign-off. The two US009 rows above read "Add the git-hooks
      step to `install.sh` after the JavaScript-dependency step, guarded on `.git`, failing at exit
@@ -1172,7 +1172,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
 | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
 | US008 | Close `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US008-HOST-ONLY-COOKIES.md` Section 7, 7.1 to 7.13, with evidence — signed off 28/09/2026, on the pattern of US005's                                                                                                                                                                                                                                                                                                                                           | [ ]  |
 | US008 | Confirm each promotion trigger in `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US008-HOST-ONLY-COOKIES.md` Section 3a names a surface or event that can actually fire it                                                                                                                                                                                                                                                                                                                                       | [ ]  |
-| US008 | State the session invalidation the rename causes, a rollback's second one and why the cutover cannot be rolling, in the keyed cutover advisory whose key is derived at release per `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` (7.9, 7.13)                                                                                                                                                                                                                                                         | [ ]  |
+| US008 | State the session invalidation the rename causes, a rollback's second one and why the cutover cannot be rolling, in the keyed cutover advisory whose key is derived at release per `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` (7.9, 7.13)                                                                                                                                                                                                                                                 | [ ]  |
 | US009 | Assert `--ignore-scripts` on all three `install-frontend.sh` branches, scoped in the assertions' own names to three invocations of sixteen, each naming its own single line, and that `package.json` carries no `prepare` script (ST01, ST02, ST08)                                                                                                                                                                                                                                                                                           | [ ]  |
 | US009 | Confirm the step resolves `lefthook` from the project's `node_modules` via `pnpm exec`, not the host, and writes nowhere outside `.git/hooks/` (ST03, ST05)                                                                                                                                                                                                                                                                                                                                                                                   | [ ]  |
 | US009 | Close `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US009-HOOK-ARMING.md` Section 7, 7.1 to 7.14, with evidence — signed off 28/09/2026                                                                                                                                                                                                                                                                                                                                                                            | [ ]  |

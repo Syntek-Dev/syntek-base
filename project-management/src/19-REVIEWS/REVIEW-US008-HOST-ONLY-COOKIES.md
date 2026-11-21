@@ -55,7 +55,7 @@ ruling Q15 every finding below Medium is a documented limit; the cheap record fi
 | R-007 | Low      | `../10-SECURITY/AUDITS/IMPLEMENTATION/AUDIT-IMPL-US008-HOST-ONLY-COOKIES-16-11-2026.md:12`          | The audit's scope stopped at `43acdf5`, before the CSRF control merged                                                                           | Fixed at workflow 23 — dated addendum; the stale "observed" bullet struck                                                                   |
 | R-008 | Low      | `.github/workflows/audit-{dev-static,worktree-overlay}.yml`                                         | Actions pinned by tag, not SHA (`code/docs/security/SUPPLY-CHAIN.md`); three earlier workflows do the same and the `cicd` skill allows tags      | Documented limit — the doctrine conflict is the owner's to settle                                                                           |
 | R-009 | Low      | `code/src/scripts/audits/dev-static.sh:323`                                                         | A crashed detector exits 2 with no report                                                                                                        | Documented limit — already stated in `audits/CONTEXT.md` _Reports_                                                                          |
-| R-010 | Info     | `../21-BUGS/BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md` Section 6                              | Pre-fix approach text and an open `TODO(verify)` read as current                                                                                 | Fixed at workflow 23 — marked superseded                                                                                                    |
+| R-010 | Info     | `../21-BUGS/archive/BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md` Section 6                      | Pre-fix approach text and an open `TODO(verify)` read as current                                                                                 | Fixed at workflow 23 — marked superseded                                                                                                    |
 | R-011 | Info     | `handoffs/HANDOFF-US008-STATIC-404-THEN-PR-16-11-2026.md`                                           | The handoff is consumed                                                                                                                          | Removed at workflow 23                                                                                                                      |
 
 ---
@@ -131,7 +131,7 @@ Accepted` is Sam's, after CI and his approval.
 - `../18-TESTS/AUTOMATED/US008-TEST-STATUS.md` · `../18-TESTS/MANUAL/US008-MANUAL-TESTING.md` — the
   test records this review reads against
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US008-HOST-ONLY-COOKIES-16-11-2026.md` — the paired QA review
-- `../20-FINDINGS/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — F-001 to F-039
-- `../21-BUGS/BUG-US008-DEV-STATIC-404-16-11-2026.md` · `../21-BUGS/BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md` — the two fixes PR'd here
+- `../20-FINDINGS/archive/FINDING-US008-HOST-ONLY-COOKIES-16-11-2026.md` — F-001 to F-039
+- `../21-BUGS/archive/BUG-US008-DEV-STATIC-404-16-11-2026.md` · `../21-BUGS/archive/BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md` — the two fixes PR'd here
 - `project-management/workflows/23-pr-and-review/` — the PM workflow where this review is written
 - `code/workflows/07-review/` — the code-review workflow the reviewer ran

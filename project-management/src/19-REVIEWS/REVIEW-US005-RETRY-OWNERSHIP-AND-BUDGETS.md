@@ -156,5 +156,5 @@ rather than "a usable" `Retry-After`; still true, since the class exists only wi
 - `../18-TESTS/AUTOMATED/US005-TEST-STATUS.md` · `../18-TESTS/MANUAL/US005-MANUAL-TESTING.md` — the
   test records
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md` — the paired QA record
-- `../20-FINDINGS/FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md` — the story's findings
+- `../20-FINDINGS/archive/FINDING-US005-RETRY-OWNERSHIP-AND-BUDGETS-12-11-2026.md` — the story's findings
 - `project-management/workflows/23-pr-and-review/` · `code/workflows/07-review/`

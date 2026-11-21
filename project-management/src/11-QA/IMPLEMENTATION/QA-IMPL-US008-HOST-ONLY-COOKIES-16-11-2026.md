@@ -235,7 +235,7 @@ Reviewer approval stays open: it is Sam's, at `23-pr-and-review`.
 - `../../02-STORIES/US008.md` — the story under review
 - `../../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` — the code master, and the P0 to P5 phases cited above
 - `../../18-TESTS/AUTOMATED/US008-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US008-MANUAL-TESTING.md` — the downstream test records, the self-test runs and the walked rows cited as evidence
-- `../../15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md` — the controlling record for the migration lifecycle and the pending entry
+- `../../15-DECISIONS/archive/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md` — the controlling record for the migration lifecycle and the pending entry
 - `../../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US008-HOST-ONLY-COOKIES.md` — the security constraints Section 8 reads against
 - `../../19-REVIEWS/` — code-review notes from the same PR
 - `code/src/scripts/audits/_lib/negative-space-cookies.sh` — the cookie clauses and the self-test cases cited

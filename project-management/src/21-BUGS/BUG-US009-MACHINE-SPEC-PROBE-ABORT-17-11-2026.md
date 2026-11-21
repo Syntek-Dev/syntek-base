@@ -1,16 +1,17 @@
 # BUG: US009 — `install.sh`'s host-profile probes abort the whole install when one probe fails
 
-| Field            | Value                                                                                                                                                 |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Story**        | US009 — the git hooks arm on purpose at install, and the README claim that they already do becomes true                                               |
-| **Story doc**    | `../02-STORIES/US009.md`                                                                                                                              |
-| **Story plan**   | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`                                                                                                |
-| **Severity**     | Medium                                                                                                                                                |
-| **Date found**   | 17/11/2026                                                                                                                                            |
-| **Last Updated** | 17/11/2026                                                                                                                                            |
-| **Status**       | Fixed                                                                                                                                                 |
-| **Found during** | QA — the US009 probe runner (EC-07 red on every full run until the fix)                                                                               |
-| **Reporter**     | Claude (US009 build), recorded at `22-implementation-documentation` Step 5; finding F-002 in `../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md` |
+| Field            | Value                                                                                                                                                         |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**        | US009 — the git hooks arm on purpose at install, and the README claim that they already do becomes true                                                       |
+| **Story doc**    | `../02-STORIES/US009.md`                                                                                                                                      |
+| **Story plan**   | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`                                                                                                        |
+| **Severity**     | Medium                                                                                                                                                        |
+| **Date found**   | 17/11/2026                                                                                                                                                    |
+| **Last Updated** | 17/11/2026                                                                                                                                                    |
+| **Found during** | QA — the US009 probe runner (EC-07 red on every full run until the fix)                                                                                       |
+| **Reporter**     | Claude (US009 build), recorded at `22-implementation-documentation` Step 5; finding F-002 in `../20-FINDINGS/archive/FINDING-US009-HOOK-ARMING-17-11-2026.md` |
+
+**Status:** Fixed
 
 ---
 
@@ -98,7 +99,7 @@ Healthy-host output is unchanged.
   server, could not complete `bash install.sh` or `--spec`. For US009 it would have killed the
   install-failure job at Step 8, before the step under test.
 - **Related stories:** US009 — the install-failure fixture depends on reaching Step 9.
-- **Related records:** `../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md` F-002 and F-017
+- **Related records:** `../20-FINDINGS/archive/FINDING-US009-HOOK-ARMING-17-11-2026.md` F-002 and F-017
   (the macOS and Windows branches were guarded but not exercised).
 
 ## 9. Verification
@@ -124,6 +125,6 @@ Healthy-host output is unchanged.
 
 - `../02-STORIES/US009.md` — the story this defect was found in
 - `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md` — the code master the fix closes the loop on
-- `../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md` — F-002
+- `../20-FINDINGS/archive/FINDING-US009-HOOK-ARMING-17-11-2026.md` — F-002
 - `code/workflows/10-debug/` — the TDD debug procedure (failing test first)
 - `../18-TESTS/MANUAL/` · `../18-TESTS/AUTOMATED/` — the story's manual guide and automated record

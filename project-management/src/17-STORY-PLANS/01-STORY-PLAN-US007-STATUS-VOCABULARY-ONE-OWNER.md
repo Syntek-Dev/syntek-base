@@ -33,7 +33,7 @@ a PM `src/` citation in either form, so every citation here is human-checked),
 by a human read-across; `doctrine-drift.sh` is a regression guard only),
 `../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md` (a gate that reads the files
 under test but decides none of the question stays in the manifest, narrowed) and
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red `doc-references.sh`
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red `doc-references.sh`
 is read as an identity diff against a recorded baseline until US004 retires the regime; superseded
 30/09/2026 by
 `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,

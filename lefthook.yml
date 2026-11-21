@@ -18,6 +18,10 @@ pre-commit:
       glob: "*.{js,mjs,cjs,ts,tsx,json,yaml,yml,css,html,md}"
       exclude:
         - "project-management/export/**"
+        # Archived PM records are frozen — never reformatted (also .prettierignore; 19/11/2026).
+        # The records only: archive/'s CONTEXT.md and CLAUDE.md are read (20/11/2026).
+        - "project-management/src/*/archive/*-*.md"
+        - "project-management/src/*/archive/US[0-9][0-9][0-9].md"
         # Prettier rejects explicitly supplied symlinks before applying its ignore file.
         - ".agents/**"
         - ".ai/skills/**"
@@ -58,6 +62,10 @@ pre-commit:
       glob: "*.md"
       exclude:
         - "project-management/export/**"
+        # Archived PM records are frozen — never linted into a rewrite (19/11/2026; records only,
+        # 20/11/2026).
+        - "project-management/src/*/archive/*-*.md"
+        - "project-management/src/*/archive/US[0-9][0-9][0-9].md"
         - ".agents/**"
         - ".ai/skills/**"
         - ".ai/MEMORY.md"
@@ -91,11 +99,12 @@ pre-commit:
       run: bash code/src/scripts/development/sync-trees.sh --write --staged
       stage_fixed: true
 
-    # Regenerate the five PM boards (01-FEATURE-MAPS, 02-STORIES, 03-SPRINTS, 16-SPRINT-PLANS,
-    # 17-STORY-PLANS) when anything in those folders is staged. It renders from the INDEX, so an
-    # unstaged status edit never reaches a committed board, WRITES the board into the working
-    # tree and RE-STAGES NOTHING — deliberately no stage_fixed (unlike sync-trees above, which
-    # restages its fixes and fails only on a TODO row): the board is staged by the author, with
+    # Regenerate the eight PM boards (01-FEATURE-MAPS, 02-STORIES, 03-SPRINTS, 15-DECISIONS,
+    # 16-SPRINT-PLANS, 17-STORY-PLANS, 20-FINDINGS, 21-BUGS) when anything in those folders is
+    # staged. It renders from the INDEX, so an unstaged status edit never reaches a committed
+    # board, WRITES the board into the working tree and RE-STAGES NOTHING — deliberately no
+    # stage_fixed (unlike sync-trees above, which restages its fixes and fails only on a TODO
+    # row): the board is staged by the author, with
     # the status edit that moved it. When a staged *-BOARD.md is stale the script names it and
     # exits 1, because a board left unstaged would sail through here and fail
     # `pm-board.sh --check` in CI instead. Re-commit once it is staged.
@@ -201,8 +210,9 @@ pre-commit:
     # ONLY THE CHEAP HALF. audit-template.yml has four jobs and two of them belong to CI
     # alone: [3/4] Template Generation runs a full `copier copy` twice over, and [4/4]
     # Parser Probes drives uv, cargo, pnpm and docker compose. Both need a network and a
-    # toolchain, and neither survives contact with a pre-commit hook. [1/4] Template Tokens
-    # and [2/4] Shipped Documentation are pure text over the working tree — those ride here.
+    # toolchain, and neither survives contact with a pre-commit hook. The PLAIN checks of [1/4]
+    # Template Tokens and [2/4] Shipped Documentation are pure text over the working tree — those
+    # ride here; their self-tests ride the pre-push leg below (21/11/2026).
     #
     # `set -e` IS LOAD-BEARING, not decoration. lefthook reports the exit status of the run
     # block, which without it is the status of the LAST command alone: five failures
@@ -210,62 +220,36 @@ pre-commit:
     # looked is the precise fault this leg exists to catch elsewhere, and it would be
     # worthless carrying that fault itself.
     #
-    # THE SELF-TESTS RUN WHEN A DETECTOR IS STAGED, AND WHEN THEY RUN THEY RUN FIRST. Why
-    # they exist at all is the reason audit-template.yml gives in its own comment, and it
-    # holds verbatim here: every check in these scripts is a presence test, so the ordinary
-    # run is green whether the matching rules still discriminate or not. The token script's
-    # check 3 once policed a delimiter that does not exist and reported 1974 well-formed
-    # tokens while a bare opener was breaking every generation. Each self-test mutates a
-    # copy of its own input and asserts the check fires on it, which is what makes the
-    # ordinary run worth believing — so it has to come before that run, never after.
-    #
-    # Why they do not run every time is the other half of the same sentence: a detector
-    # stops discriminating only when somebody EDITS it, so re-proving an untouched script
-    # on every commit is the cost without the reason. The discriminator is therefore the
-    # staged set — `git diff --cached --name-only` matched against `.github/scripts/*.sh`.
-    # Touch a detector and all three self-tests run, ahead of the plain checks, exactly as
-    # they did unconditionally before; the trigger is that a detector moved, not which one,
-    # because these three share one token contract and one shipped-docs surface.
+    # NO SELF-TEST RUNS AT COMMIT (21/11/2026). Why the self-tests exist at all is the reason
+    # audit-template.yml gives in its own comment: every check in these scripts is a presence
+    # test, so the ordinary run is green whether the rules still discriminate or not, and each
+    # self-test mutates a copy of its input and asserts the check fires. They ran here, ahead of
+    # the plain checks, whenever a detector was staged (16/08/2026) — and so a probe committed
+    # red ahead of its fix, which test-first requires, could never be committed. The planned-red
+    # allowance (19/11/2026) let one through by named opt-in; four review rounds each found a
+    # narrower bypass of it, because the hook had to judge code the commit itself could change.
+    # It was removed on 20/11/2026: the self-tests run at PUSH, in the
+    # pre-push leg below, against the commit being pushed, and in CI. A red probe is an ordinary
+    # commit, durable in history and replayable (`git checkout <sha>` and its `--self-test`, or
+    # template-integrity.sh --self-tests <sha>); "never weaken a red probe" and "red in a commit
+    # of its own before its fix" are review rules (code/workflows/02-tdd-cycle/STEPS.md).
     #
     # UNGLOBBED AND SELF-GATING. `.github/scripts/` and audit-template.yml are both copier
-    # _exclude'd, but THIS FILE ships — so in a generated project the leg would attempt three
-    # invocations of scripts that are not there (three, not six: with `.github/scripts/`
-    # excluded downstream, no `.sh` under it can ever be staged, so the self-test branch is
-    # unreachable there). The discriminator is copier.yml, itself _exclude'd and so
-    # present only in syntek-base: the template-docs-readonly leg above, run the other way
-    # round. Unglobbed for the same reason as docs-pairing and docs-length — these are
-    # whole-tree checks over the token contract, the shipped README and the memory seed,
-    # and a per-staged-file run cannot see any of them.
+    # _exclude'd, but THIS FILE ships — so in a generated project the leg would attempt five
+    # invocations of scripts that are not there. The discriminator is copier.yml, itself
+    # _exclude'd and so present only in syntek-base: the template-docs-readonly leg above, run
+    # the other way round. Unglobbed for the same reason as docs-pairing and docs-length — these
+    # are whole-tree checks over the token contract, the shipped README and the seeds, and a
+    # per-staged-file run cannot see any of them.
     #
-    # COST, measured on 16/08/2026 rather than estimated, and now in two shapes. An
-    # ordinary commit runs the three plain checks alone: ~3.9 seconds (3.99 / 3.97 / 3.93
-    # over three consecutive runs), inside the ~6 second budget. A commit that edits a
-    # detector runs all six: ~10.8 seconds (10.82 / 10.83 / 10.69). Nearly the whole
-    # difference is one command — shipped-readme.sh --self-test at 6.75s. Its 26 probes do
-    # NOT each re-run the check: instrumented, it drives the full check 8 times and settles
-    # the other 18 with in-memory assertions — and that is the cost the condition
-    # exists to stop charging for nothing. Both shapes are carried on the asymmetry
-    # audit-template.yml argues: a template-integrity defect is invisible until somebody
-    # generates, and whoever generates is not whoever broke it. pre-commit is
-    # `parallel: true`, so this leg is still the critical path either way, but on an
-    # ordinary commit it now clears docs-pairing (2.73s) by about a second rather than
-    # eight.
+    # COST: the five plain checks, ~14 seconds on 21/11/2026 (14.25 / 13.67 / 13.73 over three
+    # commits). pre-commit is `parallel: true`, so this leg is the critical path. The procedure
+    # lives in .github/scripts/template-integrity.sh (19/11/2026), so that it can be tested:
+    # code/src/scripts/tests/template-hooks.sh proves both legs as written here.
     template-integrity:
       run: |
-        set -e
         [ -f copier.yml ] || exit 0
-        if git diff --cached --name-only | grep -q '^\.github/scripts/.*\.sh$'; then
-          bash .github/scripts/check-template-tokens.sh --self-test
-          bash .github/scripts/shipped-readme.sh --self-test
-          bash .github/scripts/shipped-memory.sh --self-test
-          bash .github/scripts/shipped-registers.sh --self-test
-          bash .github/scripts/shipped-boards.sh --self-test
-        fi
-        bash .github/scripts/check-template-tokens.sh
-        bash .github/scripts/shipped-readme.sh
-        bash .github/scripts/shipped-memory.sh
-        bash .github/scripts/shipped-registers.sh
-        bash .github/scripts/shipped-boards.sh
+        bash .github/scripts/template-integrity.sh --pre-commit
 
     # Regenerate the read-only ClickUp client exports from source stories and re-stage
     # them. Self-gating: exits instantly unless a story or generated file is staged.
@@ -279,3 +263,28 @@ pre-commit:
       run: |
         [ -f project-management/src/00-ASSETS/scripts/precommit-clickup.sh ] || exit 0
         bash project-management/src/00-ASSETS/scripts/precommit-clickup.sh
+
+# The push half of the template-integrity leg (above): every self-test — the six detectors',
+# shipped-ai.sh's, pm-boards.sh and template-hooks.sh — against the tip of each pushed ref, each in
+# its own copy of that commit's tree, never the working tree; a red or crashed self-test refuses
+# the push. `use_stdin: true` hands it git's ref lines (without it lefthook holds stdin open).
+# Self-gating on copier.yml as the pre-commit leg is, so downstream it exits 0 before calling
+# anything. Armed by `lefthook install`, which install-hooks.sh runs; a checkout armed before this
+# leg existed has no pre-push hook, and install-hooks.sh --notice reports it unarmed.
+# COST, measured 21/11/2026: ~63 seconds a pushed tip (63.1 / 63.1 through the script, 66.6
+# through `lefthook run pre-push`). The self-tests run in parallel, so the slowest sets it —
+# shipped-ai.sh's copy-and-update self-test (~60s); the others finish inside ~20.
+# CI runs every one of them on every push to any branch too, unfiltered, in audit-template.yml's
+# jobs (pm-boards.sh in [1/4] since 21/11/2026), which are required checks on main alone: this
+# leg is the early signal, CI the record. CI binds only where a ruleset requires it — dev, staging
+# and testing are unprotected, and main's ruleset bypass actor can merge or push past its required
+# checks and force-push or delete main (corrected 21/11/2026), so a red tip can reach any of them. Two self-tests are CI's only: the parser
+# probes' (toolchains) and shipped-artefacts.sh's (a generated project). It replaces the commit-msg leg (19/11/2026 to
+# 20/11/2026), which existed only for the planned-red trailer.
+pre-push:
+  commands:
+    template-integrity:
+      use_stdin: true
+      run: |
+        [ -f copier.yml ] || exit 0
+        bash .github/scripts/template-integrity.sh --pre-push

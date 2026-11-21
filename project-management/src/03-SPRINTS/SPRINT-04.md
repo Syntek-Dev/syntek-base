@@ -1,6 +1,6 @@
 # SPRINT-04
 
-**Last Updated**: 17/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 19/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -18,7 +18,7 @@ the operator names the live posture out loud.
      US003. The goal is written in build order — US005 then US006 — on SPRINT-02's convention for a
      sprint with two subjects. -->
 
-**Status:** In Progress — US005 started 11/11/2026, its first story; US006 started 15/11/2026
+**Status:** Done — US005 and US006, both members, Accepted 19/11/2026 (PR #30, PR #34); nothing carried over; Done confirmed by Sam 19/11/2026
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
@@ -76,10 +76,10 @@ deliberately** (07/09/2026), all-`Must`, and **CLOSED** to further admission. Se
 
 ## Story Summary
 
-| ID    | Title                                                                                        | MoSCoW    | SP  |
-| ----- | -------------------------------------------------------------------------------------------- | --------- | --- |
-| US005 | Exactly one layer decides to retry, and every budget says how long it may take               | Must Have | 5   |
-| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development | Must Have | 8   |
+| ID      | Title                                                                                        | MoSCoW    | SP  |
+| ------- | -------------------------------------------------------------------------------------------- | --------- | --- |
+| US005 ✓ | Exactly one layer decides to retry, and every budget says how long it may take               | Must Have | 5   |
+| US006 ✓ | The destructive dev scripts read the deployment posture, and refuse to run above development | Must Have | 8   |
 
 **Total:** 13 SP — **all committed, no stretch tier, 2 SP over capacity and at the grace ceiling.**
 Rows are in build order, US005 then US006, settled 07/09/2026. **This is the sprint's known
@@ -109,7 +109,7 @@ weakness, and it is worse than when the record opened**; see Notes.
   07/09/2026.** US006's citation-gate Verification Check is written against two different regimes
   depending on whether **US004** — now SPRINT-03's sole `Must`, moved there from SPRINT-02 in the
   cascade re-plan — has landed. US004 retires the baseline-diff regime of
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
   superseded 30/09/2026 by
   `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which restates it unchanged, retirement terms included <!-- UPDATED 30/09/2026: successor added beside the superseded record,
@@ -749,7 +749,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       US004, now SPRINT-03's sole `Must`, and both branches are named for both members.** If US004
       has landed — the expected case, SPRINT-03 being built before this sprint — the gate exits `0`
       on a clean tree and is read as a plain pass for both, the baseline-diff regime of
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+      `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
       (superseded 30/09/2026 by
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
       which restates it unchanged)

@@ -149,7 +149,7 @@ Accepted` is Sam's, after CI and his approval.
 - `../18-TESTS/AUTOMATED/US009-TEST-STATUS.md` · `../18-TESTS/MANUAL/US009-MANUAL-TESTING.md` — the
   test records this review reads against
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US009-HOOK-ARMING-17-11-2026.md` — the paired QA review
-- `../20-FINDINGS/FINDING-US009-HOOK-ARMING-17-11-2026.md` — F-001 to F-032
+- `../20-FINDINGS/archive/FINDING-US009-HOOK-ARMING-17-11-2026.md` — F-001 to F-032
 - `../21-BUGS/BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md` — F-002
 - `../15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md` — the decision the code implements
 - `project-management/workflows/23-pr-and-review/` — the PM workflow where this review is written

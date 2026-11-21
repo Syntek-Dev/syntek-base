@@ -113,7 +113,7 @@ shellcheck -x \
 F-001 fix** in `development/server.sh` and `database/_migrate-self-test.sh` **and the
 F-018 fix** in `_lib/posture-guard.sh` and `database/_migrate-self-test.sh`, both since committed
 in `0a6db24`, **plus the workflow 23 review fixes** (F-020 to F-026 in
-`../../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md`), uncommitted at the time of writing,
+`../../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md`), uncommitted at the time of writing,
 in `_lib/posture-guard.sh`, `database/_migrate-self-test.sh`, `database/restore.sh` and the six
 callers' guard calls, **plus the env-print fixes** (F-028, 15/11/2026, uncommitted at the time of
 writing) in `reset.sh`, `seed-dev.sh`, `backup.sh`, `restore.sh`, the five `tests/` stack and e2e

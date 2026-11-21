@@ -2,7 +2,9 @@
 
 _Template — copy to `FINDING-US###-<DESCRIPTOR>-DD-MM-YYYY.md`, replace every `{PLACEHOLDER}`, delete the `[EXAMPLE]` rows. This record captures what shipping one story revealed about the project's standards — what diverged, why it matters, the smallest fix, and what the next story should carry forward. It records; it does not fix._
 
-**Last Updated**: {DD/MM/YYYY} · **Story**: US### · **Status**: {Open → Triaged}
+**Last Updated**: {DD/MM/YYYY} · **Story**: US###
+**Status:** Open
+**Status note:** [optional — one line; Open while any row is undispositioned, Resolved once every row carries a disposition]
 
 | Field                | Value                                                  |
 | -------------------- | ------------------------------------------------------ |

@@ -130,7 +130,7 @@ gave 130.
 
 Totals 208: 130 at the first closeout, 156 after the first fix round, 174 after the second, 182 after the F-021 round, 198 after F-051, 208 after its round 4. Every F-051 and round 4 probe was red before its fix and red again when that fix alone was reverted; mutants M7 to M9 now fail. Round 2 proved each repair by reverting it alone: 33 reverts, every one red. The reference self-test at the branch point `173abff`, re-measured in a clone at the
 walk, gave **15**; it is not the before-edit capture, which was never taken (finding F-001 in
-`../../20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md`).
+`../../20-FINDINGS/archive/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md`).
 
 **Every new probe was red against the detector it was written for.** The red phases are commits
 `e3d5187` (P1 to P4), `9abb477` (round 2), the round-4 red dispatch before `53a8713`, and the phase 9
@@ -211,7 +211,7 @@ warning. None of the 72 is a US004 test, because the story wrote none.
 - `../MANUAL/US004-MANUAL-TESTING.md` — the paired manual testing guide, authored before code and walked after it; it carries the whole-tree runs and the A/B
 - `../../11-QA/IMPLEMENTATION/QA-IMPL-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md` — whether the specified scenarios were met
 - `../../19-REVIEWS/REVIEW-US004-CITATION-GATE-GIT-INDEX.md` — the phase 9 review, QA pass, verifiers and fix round
-- `../../20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md` — the findings this record cites
+- `../../20-FINDINGS/archive/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md` — the findings this record cites
 - `code/src/scripts/audits/CONTEXT.md` — what each `doc-references.sh` clause checks
 - `code/docs/TESTING.md` — coverage floors, test structure, and mocking strategy
 - `code/src/scripts/tests/CLAUDE.md` — the runners, their exit-code contract, and the generator

@@ -32,7 +32,7 @@ every state but two — a rendered carrier naming `development`, or a template c
 `../15-DECISIONS/ADR-US006-OVERRIDE-NAMES-THE-LIVE-POSTURE-05-09-2026.md` (the override is
 `--force-posture <posture>`, space-separated, naming the posture the project is at now, buying
 nothing else, and a refusal exits `4`), under
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red `doc-references.sh`
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red `doc-references.sh`
 is read as a diff against a recorded baseline until US004 retires the regime; superseded 30/09/2026
 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged but for the manual testing guide's path). <!-- UPDATED 30/09/2026: successor added beside the superseded record,
@@ -246,7 +246,7 @@ alone, it prints `nope`. The shipped guard therefore treats both selectors set a
 **unknown** and fails the target check, whichever one the CLI honours. Both set and naming the same
 endpoint passes. So the control holds under either precedence, and the reference page and the CLI
 cannot pull it in different directions. Recorded in
-`../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` (decided by <%DEVELOPER_NAME%>, 15/11/2026).
+`../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` (decided by <%DEVELOPER_NAME%>, 15/11/2026).
 
 A target passes only with one unambiguous `unix:///absolute/path` endpoint and with
 `COMPOSE_PROJECT_NAME` absent/empty or equal to the caller's last compose file's declared name.
@@ -261,7 +261,7 @@ declared `name:` (lower-cased, characters outside `a-z 0-9 _ -` dropped, leading
 but refuses an explicit `COMPOSE_PROJECT_NAME` not already in that form. So the guard compares
 `COMPOSE_PROJECT_NAME` with the **normalised** declared name, refuses one Compose would reject, and
 fails closed on a declared name that normalises to empty. Fixed on this branch, decided by
-<%DEVELOPER_NAME%>; `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-018.
+<%DEVELOPER_NAME%>; `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-018.
 
 On success the helper supplies a `posture_`-prefixed validated endpoint and an explicit validity
 indicator, cleared at entry to prevent stale reuse. Each caller binds **every subsequent Docker
@@ -363,7 +363,7 @@ comment and its usage heredoc — twelve lines across six files. Per script:
 **Erratum 15/11/2026 — the `up --seed` guard is its own block, not inside the `--seed` branch
 (F-001).** It now runs, with its bind, in a block ahead of `compose up -d` on the `--seed` path, so
 no daemon call precedes it. Still bound on `--seed` only — case 21 unchanged. Decided by
-<%DEVELOPER_NAME%>; `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-001.
+<%DEVELOPER_NAME%>; `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-001.
 
 "Before the first destructive command" is the firing point in the five refusing scripts; the two
 `server.sh` scripts have an env-file preflight but no container preflight, and the guard precedes
@@ -467,7 +467,7 @@ container preflight and every guarded-path Docker/Compose call, including seed f
 
 **Erratum 15/11/2026 — four corrections from the workflow 23 review (F-020 to F-022, F-024).**
 Decided by <%DEVELOPER_NAME%>, who directed every review finding fixed on this branch; detail in
-`../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md`.
+`../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md`.
 
 - **A sixth input, the env-file (F-020).** After the compose name and before the invocation, the
   caller hands the helper the file it passes Compose as `--env-file`, or empty — so the contract
@@ -594,7 +594,7 @@ is recorded as such, not hidden by a fresh baseline reconstructed after editing.
 **The story's own baseline, inherited rather than re-measured here:** 103 tree-wide and 9 on
 `../02-STORIES/US006.md`, at HEAD `c6df520` on a clean tree, 05/09/2026; 127 tree-wide with the story's five
 artefacts staged, every one of the 24 added being an instance citation of a PM artefact — the class
-`../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` exempts once US004 lands —
+`../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` exempts once US004 lands —
 or a forward reference to "code/docs/ABSENCE.md" (US003), "code/docs/reliability/" (US001) or this
 story's own helper. None is of a class this story owns. The same tree gave 153 an hour earlier with
 a parallel session's two plan files untracked; **a figure without its index state is not a
@@ -642,7 +642,7 @@ entry, with no `docker`. Its body moved at P2 to `code/src/scripts/database/_mig
 which `migrate.sh` sources only for that arm. Two reasons. Kept inline, `migrate.sh` would have
 reached about 680 of the 750-line source limit. And the structural checks would have read their own
 search strings back out of the file they inspect. Reported at P2 and approved by <%DEVELOPER_NAME%>
-with it, 15/11/2026; finding F-005 of `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md`.
+with it, 15/11/2026; finding F-005 of `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md`.
 
 <!-- UPDATED 03/11/2026 (US002 QA L-1): the "Where the proof lives" row's Why read "in a file with almost no headroom that US002 owns", undated and false once US002 ships; the figure is now dated history. The rejection stands on the harness pattern, which holds at any headroom. -->
 

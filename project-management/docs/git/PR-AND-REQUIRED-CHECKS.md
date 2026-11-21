@@ -144,6 +144,44 @@ This guide holds the criteria and the traps; branch protection holds the members
   so they do not exist in a generated project — never carry them into one's own protection
   rules.
 
+### Merge methods and the archive freeze
+
+<!-- Added 21/11/2026; merge-only and squash off repo-wide 21/11/2026; rebase off repo-wide too, merge commits only on every branch, 21/11/2026. -->
+
+- **Never squash a range that carries an `archive/` move.** `pm-board.sh --check` judges each
+  archived file against the live copy in the parent of the commit that moved it. A squash folds
+  the record's earlier edits, or its creation, into the move, so every later run reads it "changed
+  as it was archived" or "entered archive/ with no live … before it" — and history cannot be
+  changed. On a branch whose required checks run `--check`, one squash locks it red for good.
+- **A merge commit is safe:** it keeps the moving commit on its own, so the live copy is still in
+  its parent and `--check` holds. **A rebase is safe only on a range with no merges** — measured
+  there, where each moving commit is replayed on its own. GitHub's rebase merge flattens a pull
+  request that contains merge commits, as every promotion pull request does, and what that does
+  to `--check` is **unmeasured**, so it is not relied on.
+- **Merge commits only, on every branch.** The repository settings `allow_squash_merge=false`
+  and `allow_rebase_merge=false` turn squash and rebase off for every pull request on every
+  branch, which no ruleset on one branch can; where `--check` is a required check, the
+  pull-request rule's allowed merge methods say merge only as well. Restricting one branch is not
+  the whole answer: an unprotected branch that takes a squash, or a rebase merge of a range with
+  merges, carries it into every branch it is later merged into, so the rule binds on every branch
+  in the promotion order, protected or not.
+- **A pull-request branch is brought up to date with a merge commit, never "Update with rebase".**
+  Strict required checks require a branch to be current with its base before it merges, and
+  GitHub offers to bring it up to date by rebase as well as by merge; a rebase flattens the merges a promotion branch
+  carries, as a rebase merge does. Whether `allow_rebase_merge=false` also hides that button is
+  **unmeasured**, so choose "Update with merge commit" whatever the button offers.
+- **A ruleset bypass actor in `always` mode skips the ruleset** — it can merge or push past the
+  required checks and force-push or delete the branch. Read who holds it before relying on a rule.
+- **The required settings:** merge commits only — the repository settings above on every branch,
+  and the pull-request rule's allowed merge methods on each branch whose required checks run
+  `--check` — and strict required checks there. Read both halves back before the first
+  promotion: the repository settings
+  (`gh api repos/{owner}/{repo} --jq '{allow_squash_merge,allow_rebase_merge,allow_merge_commit}'`)
+  and the rules in force on each such branch (`gh api repos/{owner}/{repo}/rules/branches/{branch}`
+  — the `pull_request` rule's `allowed_merge_methods` and the `required_status_checks` rule's
+  `strict_required_status_checks_policy`); until they are set, squash and rebase are offered on every branch
+  and must not be chosen (21/11/2026).
+
 ---
 
 ## Toolchain pins

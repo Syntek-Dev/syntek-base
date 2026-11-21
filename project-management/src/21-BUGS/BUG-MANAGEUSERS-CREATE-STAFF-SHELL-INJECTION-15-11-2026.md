@@ -1,16 +1,18 @@
 # BUG: `manageusers.sh create-staff` interpolates its arguments into a `manage.py shell -c` string
 
-| Field            | Value                                                                                                          |
-| ---------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Story**        | N/A — cross-cutting (surfaced by US006)                                                                        |
-| **Story doc**    | N/A — surfaced in the env-print audit during workflow 23 of `../02-STORIES/US006.md`                           |
-| **Story plan**   | N/A — cross-cutting                                                                                            |
-| **Severity**     | Low                                                                                                            |
-| **Date found**   | 15/11/2026                                                                                                     |
-| **Last Updated** | 15/11/2026                                                                                                     |
-| **Status**       | Open — not fixed in US006                                                                                      |
-| **Found during** | Review — the env-print audit run under workflow `23-pr-and-review` for US006                                   |
-| **Reporter**     | Claude, on the developer's behalf; finding F-029 in `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` |
+| Field            | Value                                                                                                                  |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Story**        | N/A — cross-cutting (surfaced by US006)                                                                                |
+| **Story doc**    | N/A — surfaced in the env-print audit during workflow 23 of `../02-STORIES/US006.md`                                   |
+| **Story plan**   | N/A — cross-cutting                                                                                                    |
+| **Severity**     | Low                                                                                                                    |
+| **Date found**   | 15/11/2026                                                                                                             |
+| **Last Updated** | 15/11/2026                                                                                                             |
+| **Found during** | Review — the env-print audit run under workflow `23-pr-and-review` for US006                                           |
+| **Reporter**     | Claude, on the developer's behalf; finding F-029 in `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` |
+
+**Status:** Open
+**Status note:** not fixed in US006
 
 **Pre-existing, not introduced by US006.** The interpolation dates from `ee5c2bb` (01/08/2026),
 and US006 does not edit `manageusers.sh`. The audit that found it was looking for env-file values
@@ -111,7 +113,7 @@ recording `docker`, and can assert on the recorded `exec` arguments without a st
   wrong account; a password given as a flag is visible to other local users. No deployed
   environment runs this script.
 - **Related stories:** US006 (surfaced it in the env-print audit; not fixed there).
-- **Related records:** `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-029 ·
+- **Related records:** `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-029 ·
   `../19-REVIEWS/REVIEW-US006-POSTURE-GUARD.md` R-011.
 
 ## 9. Verification
@@ -129,7 +131,7 @@ recording `docker`, and can assert on the recorded `exec` arguments without a st
 ## Cross-references
 
 - `../02-STORIES/US006.md` — the story whose review surfaced it
-- `../20-FINDINGS/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-029
+- `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` — F-029
 - `code/src/scripts/database/manageusers.sh` — the script
 - `code/docs/MANAGEMENT-COMMANDS.md` — where arguments are treated as untrusted input
 - `code/workflows/10-debug/` — the TDD debug procedure

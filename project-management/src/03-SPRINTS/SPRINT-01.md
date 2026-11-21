@@ -536,7 +536,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
 - [ ] `bash code/src/scripts/audits/doc-references.sh` — **two regimes, one per member, and neither
       is a bare pass while a non-empty baseline stands.** US007 reads it as an identity diff against
       the baseline captured before its first edit
-      (`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
+      (`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
       which binds every story in this backlog until US004 — now in SPRINT-03 — retires it;
       superseded 30/09/2026 by
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
