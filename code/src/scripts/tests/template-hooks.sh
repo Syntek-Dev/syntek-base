@@ -16,7 +16,9 @@
 #   push       a push runs every self-test against the commit being pushed — the tip of each
 #              pushed ref, in a copy of that commit's tree, never the working tree — and refuses
 #              the push when any is red or crashes (exit 2 read as a script error, never a pass);
-#              a deletion pushes nothing to judge; two refs are judged one by one.
+#              a deletion pushes nothing to judge; two refs are judged one by one; (round 6) a
+#              self-test absent from the commit is skipped with a notice, never a pass, while one
+#              present that exits 127 refuses; no ref lines at all is said, never silent.
 #   hostile    a local attribute that drops a file from the copy, a caller's `-c`, or a repository
 #              configuration that reshapes git's output, never makes a red commit read green.
 #   replay     `template-integrity.sh --self-tests <commit>` is the reviewer's replay of one
@@ -44,7 +46,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,37p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,39p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'template-hooks.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -206,10 +208,33 @@ fgit checkout -q main
 check "two refs pushed together, one red, are refused" refused push main side
 check "the refusal names the red ref's commit" says "${RED2:0:12}"
 
+# (round 6) A self-test absent from the commit judged — a tip older than the script — is skipped
+# with a notice naming the commit: never a red, never counted as a pass. One present that exits
+# 127, or crashes, is still a failure.
+fgit checkout -q -b older main
+fgit rm -q code/src/scripts/tests/template-hooks.sh
+commit "a tip older than one self-test"
+OLDER="$(fgit rev-parse HEAD)"
+check "a tip without one listed self-test pushes" push older
+check "  and names it absent at that commit, skipped" says "template-hooks\.sh.*absent at ${OLDER:0:12} — skipped"
+check "  and never counts it as a pass" bash -c '! grep -qE "✓.*template-hooks" "$1"' _ "$OUT"
+check "  and the others still ran" ran 'self-test'
+fgit checkout -q -b exit127 main
+set_stub register-index-routes self-test 127
+commit "a self-test that exits 127"
+check "a present self-test that exits 127 refuses the push" refused push exit127
+check "  and the refusal reads exit 127" says 'register-index-routes\.sh --self-test — exit 127'
+fgit checkout -q main
+
 # A deletion has nothing to judge.
 git -C "$REMOTE" update-ref refs/heads/gone "$GREEN_SHA"
 deleted_unjudged() { push :gone && ! grep -q self-test "$LOG"; }
 check "a ref deletion pushes with no self-test run" deleted_unjudged
+check "  and says it judged no commit" says 'no pushed commit to judge'
+# (round 6) No ref lines at all — lefthook not forwarding stdin — is said, never silent.
+empty_push() { (cd "$FX" && bash .github/scripts/template-integrity.sh --pre-push < /dev/null) > "$OUT" 2>&1; }
+check "--pre-push with no ref lines exits 0" empty_push
+check "  and says there was no pushed commit to judge" says 'no pushed commit to judge'
 
 # ── hostile ───────────────────────────────────────────────────────────────────
 echo "hostile"
