@@ -138,8 +138,9 @@ probe lives in must exit `1` with the new probe failing and every older one pass
 must not touch the probe. An exit `2` at either commit is a script error, never a red.
 In this template the replay is one command per commit, run from any checkout: <!-- doc-references: template-only -->
 `bash .github/scripts/template-integrity.sh --self-tests <sha>` runs every self-test against a copy <!-- doc-references: template-only -->
-of that commit, and names any listed script the commit does not yet hold "absent — skipped", <!-- doc-references: template-only -->
-never a pass or a red, so an early commit is judged on what it held; `SELF_TEST_LEDGER=<file>` on a detector's `--self-test` records each probe's label <!-- doc-references: template-only -->
+of that commit, and names any listed script the commit's history never held "absent — skipped", <!-- doc-references: template-only -->
+never a pass or a red, so an early commit is judged on what it held — while one its history held and the commit lacks is "deleted", a red; <!-- doc-references: template-only --> <!-- Deletion refused 21/11/2026. -->
+`SELF_TEST_LEDGER=<file>` on a detector's `--self-test` records each probe's label <!-- doc-references: template-only -->
 and result, so the two ledgers show the label unchanged and its result gone `fail` to `pass`. <!-- doc-references: template-only -->
 <!-- 21/11/2026: the planned-red opt-in (19/11/2026 to 20/11/2026) was removed; both rules became review rules. -->
 
