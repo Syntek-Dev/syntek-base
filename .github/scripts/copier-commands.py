@@ -41,8 +41,11 @@ Output, one record per line, tab-separated:
   O <line>          a line of the decoded command of every other `_tasks` / `_migrations` entry
   X <entry>         one `_exclude` entry, decoded — for check 1 (round 10, 21/11/2026). An entry
                     that is not one line of one string (a block scalar, a flow collection, a
-                    mapping, a decoded line break) is an E record instead; an unquoted entry
-                    opening `!` (a tag to YAML) is read as the negation it looks like.
+                    mapping, a decoded line break) is an E record instead, as is one opening
+                    with a YAML tag that can resolve to a string — `!!`, a verbatim `!<`, the
+                    non-specific `!` then a space (21/11/2026); any other unquoted entry opening
+                    `!` (an unknown tag, which copier refuses to load) is read as the negation
+                    it looks like.
   E <message>       an entry this reader refuses
 
 Usage: python3 -I copier-commands.py COPIER_YML
@@ -386,7 +389,9 @@ def section_of(lines: list[str], i: int) -> list[str]:
 def exclude_entry(raw: list[str], seq: int, label: str) -> str:
     """One `_exclude` entry, decoded — or refused when it is not one line of one string."""
     head = raw[0][seq + 1 :].strip()
-    if head.startswith("!"):  # unquoted: a tag to YAML, a negation to the eye — read as one
+    if re.match(r"!(?:!|<|\s)", head):  # a core tag: `!!str`, verbatim `!<…>`, non-specific `!`
+        raise RefusedError("a YAML tag, which may resolve to the string copier reads")
+    if head.startswith("!"):  # unquoted: an unknown tag to YAML (copier refuses to load it)
         if len(raw) > 1:
             raise RefusedError("an unquoted `!` entry on more than one line")
         return re.sub(r"\s+#.*$", "", head)
