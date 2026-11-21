@@ -146,7 +146,7 @@ This guide holds the criteria and the traps; branch protection holds the members
 
 ### Merge methods and the archive freeze
 
-<!-- Added 21/11/2026; merge-only and squash off repo-wide 21/11/2026. -->
+<!-- Added 21/11/2026; merge-only and squash off repo-wide 21/11/2026; rebase off repo-wide too, merge commits only on every branch, 21/11/2026. -->
 
 - **Never squash a range that carries an `archive/` move.** `pm-board.sh --check` judges each
   archived file against the live copy in the parent of the commit that moved it. A squash folds
@@ -158,17 +158,18 @@ This guide holds the criteria and the traps; branch protection holds the members
   there, where each moving commit is replayed on its own. GitHub's rebase merge flattens a pull
   request that contains merge commits, as every promotion pull request does, and what that does
   to `--check` is **unmeasured**, so it is not relied on.
-- **Where `--check` is a required check, allow merge only** — the pull-request rule's allowed
-  merge methods. Restricting one branch is not the whole answer: an unprotected branch that takes
-  a squash carries it into every branch it is later merged into, so the first rule binds on every
-  branch in the promotion order, protected or not — and the repository setting
-  `allow_squash_merge=false` turns squash off for every pull request on every branch, which no
-  ruleset on one branch can.
+- **Merge commits only, on every branch.** The repository settings `allow_squash_merge=false`
+  and `allow_rebase_merge=false` turn squash and rebase off for every pull request on every
+  branch, which no ruleset on one branch can; where `--check` is a required check, the
+  pull-request rule's allowed merge methods say merge only as well. Restricting one branch is not
+  the whole answer: an unprotected branch that takes a squash, or a rebase merge of a range with
+  merges, carries it into every branch it is later merged into, so the rule binds on every branch
+  in the promotion order, protected or not.
 - **A ruleset bypass actor in `always` mode skips the ruleset** — it can merge or push past the
   required checks and force-push or delete the branch. Read who holds it before relying on a rule.
-- **In syntek-base**, `main` allowing merge only, strict required checks, and squash off for the
-  repository are **pending** the maintainer's commands; until they run, squash and rebase are
-  still offered on `main` and must not be chosen.
+- **In syntek-base**, merge commits only — `main` by its ruleset, every branch by the repository
+  settings — and strict required checks on `main` are **pending** the maintainer's commands;
+  until they run, squash and rebase are still offered on every branch and must not be chosen.
 
 ---
 
