@@ -166,17 +166,20 @@ This guide holds the criteria and the traps; branch protection holds the members
   merges, carries it into every branch it is later merged into, so the rule binds on every branch
   in the promotion order, protected or not.
 - **A pull-request branch is brought up to date with a merge commit, never "Update with rebase".**
-  Strict required checks make a branch current with its base before it merges, and GitHub offers
-  to do that by rebase as well as by merge; a rebase flattens the merges a promotion branch
+  Strict required checks require a branch to be current with its base before it merges, and
+  GitHub offers to bring it up to date by rebase as well as by merge; a rebase flattens the merges a promotion branch
   carries, as a rebase merge does. Whether `allow_rebase_merge=false` also hides that button is
   **unmeasured**, so choose "Update with merge commit" whatever the button offers.
 - **A ruleset bypass actor in `always` mode skips the ruleset** — it can merge or push past the
   required checks and force-push or delete the branch. Read who holds it before relying on a rule.
 - **The required settings:** merge commits only — the repository settings above on every branch,
   and the pull-request rule's allowed merge methods on each branch whose required checks run
-  `--check` — and strict required checks there. Read them back
+  `--check` — and strict required checks there. Read both halves back before the first
+  promotion: the repository settings
   (`gh api repos/{owner}/{repo} --jq '{allow_squash_merge,allow_rebase_merge,allow_merge_commit}'`)
-  before the first promotion; until they are set, squash and rebase are offered on every branch
+  and the rules in force on each such branch (`gh api repos/{owner}/{repo}/rules/branches/{branch}`
+  — the `pull_request` rule's `allowed_merge_methods` and the `required_status_checks` rule's
+  `strict_required_status_checks_policy`); until they are set, squash and rebase are offered on every branch
   and must not be chosen (21/11/2026).
 
 ---
