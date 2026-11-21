@@ -628,6 +628,22 @@ self_test() {
   sed 's/^_exclude:.*$/_exclude: !include extra.yml/' "$real_copier" > "$tmp/toplevel.yml"
   COPIER="$tmp/toplevel.yml"; probe "copier.yml refuses a tag on a top-level value" "not one document of plain top-level keys"
   COPIER="$real_copier"
+  # 2m. Round 9: a `command:` whose value is on the next line, or a bare `-` with its keys below,
+  #     is one finding — never a reader traceback, which stopped the check at exit 2.
+  local rc
+  for ung in '  - command:\n      mv .copier/STORIES-BOARD.md x|a command: with its value on the next line' \
+             '  -\n    command: mv .copier/STORIES-BOARD.md x|a bare - with its keys on the lines below'; do
+    printf '%b\n' "${ung%%|*}" > "$tmp/line"
+    awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+    rc=0; python3 -I "$SCRIPT_DIR/copier-commands.py" "$tmp/ungated.yml" > "$tmp/read.out" 2>&1 || rc=$?
+    if [[ $rc -eq 0 ]] && ! grep -q Traceback "$tmp/read.out"; then
+      COPIER="$tmp/ungated.yml"; probe "check 2 reads ${ung#*|} as a finding" "on the lines after"
+    else
+      ST_PROBES=$((ST_PROBES + 1)); ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 reads ${ung#*|} as a finding"
+      printf '\033[31m  ✗ %s: the reader exited %d (%s)\033[0m\n' "${ung#*|}" "$rc" "$(tail -n 1 "$tmp/read.out")"
+    fi
+  done
+  COPIER="$real_copier"
   # A guard, kept as round 6 left it: a different directory whose name only starts .copier is
   # no seed, so it is no finding.
   printf '%s\n' '  - command: mv .copierx/STORIES-BOARD.md x' > "$tmp/line"
