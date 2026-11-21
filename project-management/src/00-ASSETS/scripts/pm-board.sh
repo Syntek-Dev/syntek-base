@@ -295,9 +295,21 @@ def render_json(kind, cols, grouped, warns):
                        "columns": [{"id": slug(c), "title": c, "items": grouped[c]} for c in shown],
                        "warnings": warns}, indent=2, ensure_ascii=False) + "\n"
 
+# The freeze reads git, so no configuration a caller carries in may change what git prints: no
+# system or global file, no `-c` options passed down (GIT_CONFIG_PARAMETERS / GIT_CONFIG_COUNT), no
+# external diff, no repository-location override, and the output-shaping keys pinned. It reads
+# only --raw listings and `cat-file blob`, which no diff driver, textconv or colour reaches.
+GIT_ENV = {k: v for k, v in os.environ.items()
+           if not (k.startswith("GIT_CONFIG") or k in ("GIT_EXTERNAL_DIFF", "GIT_DIR", "GIT_WORK_TREE",
+                   "GIT_INDEX_FILE", "GIT_OBJECT_DIRECTORY", "GIT_COMMON_DIR", "GIT_NAMESPACE",
+                   "GIT_PAGER", "PAGER"))}
+GIT_ENV.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
+GIT_PIN = ["--no-pager", "-c", "core.quotePath=false", "-c", "log.showSignature=false",
+           "-c", "color.ui=never", "-c", "core.attributesFile=" + os.devnull, "-c", "diff.renameLimit=0"]
+
 def git(*args):
     try:
-        r = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
+        r = subprocess.run(["git", *GIT_PIN, *args], cwd=ROOT, capture_output=True, text=True, env=GIT_ENV)
         return r.returncode, r.stdout
     except OSError:
         return 1, ""
@@ -342,18 +354,30 @@ def move_norm(text, kind):
     return text
 
 def archive_events(folders):
-    """(commit, status, src, dst) for every change under the archive folders, oldest first."""
-    code, out = git("log", "--reverse", "-M", "--name-status", "--format=@%H", "--", *folders)
+    """(commit, status, src, dst, src mode, dst mode) for every change under the archive folders,
+    oldest first. `-m` diffs a merge commit against each of its parents, so a deletion, rename or
+    move made inside a merge is an event like any other (a plain log shows a merge no diff)."""
+    code, out = git("log", "--reverse", "-m", "-M", "--raw", "--no-abbrev", "--no-ext-diff",
+                    "--no-textconv", "--no-color", "--format=@%H", "--", *folders)
     ev, c = [], None
     if code != 0:
         return ev
     for line in out.splitlines():
         if line.startswith("@"):
             c = line[1:]
-        elif line.strip():
-            parts = line.split("\t")
-            ev.append((c, parts[0][:1], parts[1], parts[-1]))
+        elif line.startswith(":"):
+            meta, *paths = line.split("\t")
+            f = meta[1:].split()
+            if len(f) < 5 or not paths:
+                continue
+            ev.append((c, f[4][:1], paths[0], paths[-1], f[0], f[1]))
     return ev
+
+REGULAR = "100644"
+
+def lrel(p):
+    """A path from the root WITHOUT resolving symlinks, so a link is named as itself."""
+    return Path(os.path.abspath(p)).relative_to(Path(os.path.abspath(ROOT))).as_posix()
 
 def frozen_breaches():
     out = []
@@ -363,13 +387,27 @@ def frozen_breaches():
     # (a) and (b): a committed deletion under archive/, or a rename whose source is there. A path-
     # limited log reports a move out of archive/ as a deletion, and a move in from the live folder
     # as an addition, so these two cover every way an archived file can leave or change its name.
-    for c, st, src, dst in archive_events(folders):
+    # A merge commit appears once per parent, so one breach can be reported twice: keep the first.
+    seen = set()
+    def breach(msg):
+        if msg not in seen:
+            seen.add(msg); out.append(msg)
+    for c, st, src, dst, m_src, m_dst in archive_events(folders):
         if st == "D" and frozen(src):
-            out.append(f"{src} was deleted from archive/ in {c[:9]} — archive/ is frozen (an "
-                       "archived item is never deleted or moved back out)")
+            breach(f"{src} was deleted from archive/ in {c[:9]} — archive/ is frozen (an "
+                   "archived item is never deleted or moved back out)")
         elif st == "R" and frozen(src):
-            out.append(f"{src} was renamed to {dst} in {c[:9]} — archive/ is frozen (an archived "
-                       "file is never renamed)")
+            breach(f"{src} was renamed to {dst} in {c[:9]} — archive/ is frozen (an archived "
+                   "file is never renamed)")
+        elif st == "T" and frozen(src):
+            breach(f"{src} changed type (mode {m_src} to {m_dst}, a symlink or submodule swapped "
+                   f"in) in {c[:9]} — archive/ is frozen (an archived file stays a regular file)")
+        elif st == "M" and frozen(src) and m_src != m_dst:
+            breach(f"{src} changed mode {m_src} to {m_dst} in {c[:9]} — archive/ is frozen (an "
+                   "archived file stays a regular, non-executable file)")
+        elif st in "ARC" and frozen(dst) and m_dst != REGULAR:
+            breach(f"{dst} entered archive/ with mode {m_dst} in {c[:9]} — an archived file is a "
+                   f"regular, non-executable file (mode {REGULAR})")
     # (c): each archived file against the live copy it was moved from, as the move commit left it,
     # and every later state against the move commit's.
     for key in ORDER:
@@ -378,18 +416,34 @@ def frozen_breaches():
         if not adir.is_dir():
             continue
         for p in sorted(adir.iterdir()):
-            if not p.is_file() or p.name in PAIR:
+            if p.name in PAIR:
                 continue
-            r, live = rel(p), f"{SRC_REL}/{kind.folder}/{p.name}"
+            if p.is_symlink():
+                out.append(f"{lrel(p)} is a symlink in the working tree — archive/ is frozen (an "
+                           "archived file stays the regular file pm-archive.sh moved in)")
+                continue
+            if not p.is_file():
+                continue
+            r, live = lrel(p), f"{SRC_REL}/{kind.folder}/{p.name}"
+            if os.access(p, os.X_OK):
+                out.append(f"{r} is executable in the working tree (mode changed) — archive/ is "
+                           "frozen (an archived file stays a regular, non-executable file)")
             code, log = git("log", "--diff-filter=A", "--format=%H", "--", r)
             commits = log.split() if code == 0 else []
+            root = False
             if commits:
                 add, where = commits[-1], commits[-1][:9]
-                _c, archived = git("show", f"{add}:{r}")
-                code, base = git("show", f"{add}^:{live}")
+                _c, archived = git("cat-file", "blob", f"{add}:{r}")
+                root = git("rev-parse", "-q", "--verify", f"{add}^")[0] != 0
+                code, base = git("cat-file", "blob", f"{add}^:{live}")
             else:                       # moved in, not yet committed: against HEAD's live copy
                 where, archived = "the working tree", read(p)
-                code, base = git("show", f"HEAD:{live}")
+                code, base = git("cat-file", "blob", f"HEAD:{live}")
+            if code != 0 and root:
+                out.append(f"{r} was added in the root commit {where}, so no move into archive/ "
+                           "can be read — a history imported in one commit (a squash) or a shallow "
+                           "clone holds no live copy before it; --check needs the full history")
+                continue
             if code != 0:
                 out.append(f"{r} entered archive/ ({where}) with no live {kind.noun} at {live} "
                            "before it — only pm-archive.sh moves an item in, from its folder")
@@ -407,12 +461,17 @@ def frozen_breaches():
                            "archive/ is frozen (only pm-archive.sh's path rewrites are allowed)")
     # An archived file committed at HEAD must still be there: deleting one, or moving it back
     # out of archive/, is as much a breach as editing it.
-    code, listing = git("ls-tree", "-r", "--name-only", "HEAD", "--", *folders)
+    code, listing = git("ls-tree", "-r", "HEAD", "--", *folders)
     if code == 0:
-        for r in listing.splitlines():
-            if os.path.basename(r) in PAIR:
+        for line in listing.splitlines():
+            meta, _t, r = line.partition("\t")
+            if not r or os.path.basename(r) in PAIR:
                 continue
-            if not (ROOT / r).is_file():
+            mode = meta.split()[0] if meta.split() else ""
+            if mode != REGULAR:
+                breach(f"{r} is committed at HEAD with mode {mode} — an archived file is a "
+                       f"regular, non-executable file (mode {REGULAR})")
+            if not os.path.lexists(ROOT / r):
                 out.append(f"{r} was archived at HEAD and is gone from the working tree — "
                            "archive/ is frozen (an archived item is never deleted or moved back)")
     # (d): everything under archive/ holds its kind's archive status.
