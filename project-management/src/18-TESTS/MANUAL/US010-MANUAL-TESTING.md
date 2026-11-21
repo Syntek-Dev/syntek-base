@@ -1193,7 +1193,9 @@ The three round-7 reviews (code review, QA re-attack, security review, in that o
 deduplicated into R8-1 to R8-6 below. Sam's rulings of 21/11/2026 bind all six: **R8-1** `main`
 takes merge and rebase only, never squash, set by his own command; **R8-2** check 2 reads the YAML
 layer and `_migrations`, refuses a repeated key and runs in linear time, and its header states
-honestly what it does not read — no arms race over shell shapes; **R8-3** a deleted self-test is
+honestly what it does not read — no arms race over shell shapes (_amended 21/11/2026 (round 9,
+R9-5) — was: "runs in linear time"; why: each span is read along its length, so the cost grows
+with the square of a word's length, and an uncapped brace word took 45 s; R9-5 below_); **R8-3** a deleted self-test is
 refused on rewritten histories too; **R8-4** the CI shape probe's claim is narrowed, not the probe
 tightened; **R8-5** every bypass statement names force-push and deletion; **R8-6** the record's
 `ls-remote` line corrected. Each red is an ordinary commit ahead of its fix.
@@ -1205,7 +1207,9 @@ tightened; **R8-5** every bypass statement names force-push and deletion; **R8-6
   rule binds every branch in the promotion order; the bypass skips it) with `main`'s restriction
   **pending Sam's command**; its folder `CONTEXT.md` row names it. `.claude/MEMORY.md`'s TruffleHog
   entry now says reword or rewrite the offending commit on the branch before merging, squash not
-  being allowed on `main`. Commit `675d7eff`; no probe (a ruleset value has no executable reading).
+  being allowed on `main` (_amended 21/11/2026 (round 9, R9-7) — the entry stated the ruling as
+  live; it now reads "never squash into `main` … the ruleset and repository restrictions are
+  pending"; and `main` is now merge only, not merge and rebase — R9-6 below_). Commit `675d7eff`; no probe (a ruleset value has no executable reading).
   **The rebase claim, measured** in a scratch repository (`git init` in a `mktemp -d`,
   `GIT_CONFIG_GLOBAL=/dev/null`, this branch, `testing` and `origin/main` fetched read-only from
   the checkout; deleted after), at `37d2cd44`: the 140 commits of `testing..branch` (no merges)
@@ -1226,8 +1230,12 @@ tightened; **R8-5** every bypass statement names force-push and deletion; **R8-6
   `_tasks` and `_migrations` in the shapes they are written in, **decodes** every scalar as YAML
   does (double-quoted escapes, `''`, folding, block chomping) and refuses, as a finding, an entry
   it cannot read — a key repeated in one entry, a flow collection, an anchor, alias or tag, an
-  unknown escape, a repeated top-level key. Check 2 reads the seed task's raw lines for its wired
-  test and every other task's and migration's decoded command for the word rule; the one exemption
+  unknown escape, a repeated top-level key (_amended 21/11/2026 (round 9, R9-1) — a repeated
+  `_tasks:` or `_migrations:` only, and a quoted, escaped, `?` or `!include` key went unread; R9-1
+  below_). Check 2 reads the seed task's raw lines for its wired test (_amended 21/11/2026 (round
+  9, R9-4) — raw lines missed an `echo` or `true #` line folded into a move; it now reads the
+  decoded command's `&&` steps_) and every other task's and migration's decoded command for the
+  word rule; the one exemption
   is the migration whose whole command is `rm -rf .copier`, which removes the seeds rather than
   reading them. Shell comments inside a command now count (YAML comments are gone with the
   decoding), which errs towards a finding. **The header is corrected:** the `[3/4]` job is no
@@ -1246,7 +1254,9 @@ tightened; **R8-5** every bypass statement names force-push and deletion; **R8-6
   repository before any copy, naming it; and a listed script the tip lacks is absent and skipped
   only when no commit in its history touched it **and** the tip is an ancestor of a commit that
   introduced it (holds it where its first parent does not) on the first-parent history of `HEAD`,
-  `main` or `origin/main` — otherwise "deleted at <sha>", red, counted red but not run. Header,
+  `main` or `origin/main` — otherwise "deleted at <sha>", red, counted red but not run
+  (_amended 21/11/2026 (round 9, R9-3) — was: "HEAD, `main` or `origin/main`"; why: a crafted HEAD
+  or a grafts file forged the ancestry; it is now `origin/main` alone, with no grafts file read_). Header,
   `--help` and `code/workflows/02-tdd-cycle/STEPS.md` updated. New probes: an orphan tip of the
   deleting tree, a `commit-tree` squash of it onto a pre-script commit, a `replace --graft` cutting
   the deleting commit off its parents, and `--self-tests` in a `clone --depth 1`. The
@@ -1254,7 +1264,10 @@ tightened; **R8-5** every bypass statement names force-push and deletion; **R8-6
   are unchanged and it passes at the red and the fix. A tip forked before the script with commits
   of its own now reads deleted, by the ruling — the squash probe is exactly that shape. On this
   repository's own history `b42b004f` (older than `template-hooks.sh`) is an ancestor of its
-  introducing commit `ef944b1f`, so its replay still reads absent. Red `3554ac5a` → fix
+  introducing commit `ef944b1f`, so its replay still reads absent (_amended 21/11/2026 (round 9,
+  R9-3) — true at round 8; `origin/main` does not yet hold `template-hooks.sh`, so since `68747533`
+  that replay exits 1, "deleted at b42b004fd491 (no commit on origin/main that adds it descends
+  from this one)", 8 run, 1 red, measured 21/11/2026, until the branch reaches `main`_). Red `3554ac5a` → fix
   `f76ddab6`. Reproduce: `bash code/src/scripts/tests/template-hooks.sh`.
 - **R8-4 — the CI shape probe's claim was broader than the probe (CR L2, QA L2, Sec L2).** Narrowed,
   by the ruling, the probe untouched: `template-integrity.sh`'s header, `template-hooks.sh`'s
@@ -1276,7 +1289,9 @@ tightened; **R8-5** every bypass statement names force-push and deletion; **R8-6
 **Sam's command — merge methods and strict, not run here.** Built from the live ruleset read
 21/11/2026 (`gh api` GET only). A `PUT` replaces every rule, so it carries all four rules and all
 27 required checks, changes two values, and drops the two `"parameters": null` keys (on
-`deletion` and `non_fast_forward`) the PUT may reject:
+`deletion` and `non_fast_forward`) the PUT may reject (_amended 21/11/2026 (round 9, R9-6) — that
+reason was wrong: the live GET carries no `parameters` key on either rule, so the `del` step did
+nothing. **This command is superseded** by round 9's merge-only command below; never run it_):
 
 ```bash
 gh api repos/Syntek-Dev/syntek-base/rulesets/20221742 \
@@ -1339,7 +1354,8 @@ red exits 1 with only its own self-test red (`9 run, 1 red, 0 absent and skipped
 - **TM-15 did not fire this round:** no fix commit touches a probe — `a5eae71d` changes the header,
   `seed_word`, `seed_any` and `run_checks` above `self_test()`, and adds the decoder; `f76ddab6`
   changes `template-integrity.sh` and `STEPS.md`; `37d2cd44` edits comments only in
-  `template-hooks.sh`.
+  `template-hooks.sh` (_amended 21/11/2026 (round 9, R9-7) — and its own `--help` sed range,
+  `6,45p` to `6,49p`, which is no probe_).
 - **The mitigations are recorded here, not in the threat model,** whose planning half is frozen.
 - **No GitHub setting was changed:** the ruleset was read, never written.
 
@@ -1366,6 +1382,173 @@ red exits 1 with only its own self-test red (`9 run, 1 red, 0 absent and skipped
 | Ruff over `copier-commands.py` (lefthook's staged legs at `a5eae71d`)           | 0    | lint and format clean; `syntax/lint.sh` and `format.sh` do not reach it (their ruff scope is `code/src/django/`)                                                                                                       |
 | actionlint                                                                      | —    | **unmeasured**: no `code/src/scripts/**` script runs it, so it was not run                                                                                                                                             |
 | `[1/4]` with `pm-board.sh --check` at full depth, and the `[3/4]` render        | —    | **not run**: they need CI — R7-8, pending the push                                                                                                                                                                     |
+
+### Fix round 9 — 21/11/2026
+
+The three round-8 reviews (code review, QA re-attack, security review, in that order) were
+deduplicated into R9-1 to R9-7 below. Sam's rulings of 21/11/2026 bind all seven: **R9-1** check
+2 fails closed at copier.yml's top level; **R9-2** the reader never crashes on an empty value;
+**R9-3** ancestry is judged against `origin/main` alone, with no grafts file, and fails closed
+without it; **R9-4** the seed task's wired test reads the decoded command; **R9-5** brace spans
+are capped and the "linear" wording corrected; **R9-6** `main` allows merge only and squash is off
+for the repository, both set by Sam's own commands; **R9-7** the records and nits. Each red is an
+ordinary commit ahead of its fix, and no fix commit edits a probe's body.
+
+- **R9-1 — check 2 missed a quoted, escaped, `?` or `!include` top-level `_tasks` / `_migrations`,
+  and check 1 the same for `_exclude` (CR M1, QA M1, Sec M1).** Fixed in `copier-commands.py`:
+  copier.yml is read as **one document of plain top-level keys, and anything else is refused** —
+  every column-0 line must be blank, a comment, or an unquoted identifier and `:`; a quoted or
+  escaped key, a `?` key, a `---` or `...` marker, a `%` directive, a `!` tag, a merge key (two angle brackets and a colon), a
+  flow collection, a column-0 sequence entry, or an indented line before the first key is one
+  finding, as is a tag, anchor or alias opening a top-level value; a repeated plain key (any, not
+  only `_tasks` / `_migrations`) is its own finding. A section now ends at the next column-0 line,
+  so lines after a refused shape are never read into it. The finding is file-wide, so check 1's
+  `_exclude` reading rests on it too. **The real copier.yml passes unchanged**: its 49 top-level
+  lines are all plain keys, and the reader's `S` / `O` output on it was byte-identical before and
+  after the fix. The header's claim is now exactly "copier.yml as one document of plain top-level
+  keys; anything else is refused", and Jinja in a command (copier's render layer, in its own delimiters) joins
+  the shell run-time constructs as review's alone. Red `01feac3c` → fix `ac00e69a`.
+- **R9-2 — the reader crashed on an empty value (QA L1).** `r[:1] in "\"'"` is true for `''`, so
+  `command:` with its value on the next line, or a bare `-` with its keys below, raised
+  `IndexError` and stopped check 2 at exit 2. Now `if r and r[0] in "\"'"`, and both shapes reach
+  the refusal "a value on the lines after its key or `-`", an E finding. The probes run the reader
+  first and count a traceback as a failure of their own, never a crash of the self-test. Red
+  `12ed7226` → fix `aeb43d82`.
+- **R9-3 — "absent" could be forged through `.git/info/grafts` or a crafted local `HEAD` (CR L3,
+  QA L2, Sec L1).** Fixed in `template-integrity.sh`: `g()` sets `GIT_GRAFT_FILE=/dev/null` beside
+  `GIT_NO_REPLACE_OBJECTS=1`; `never_held()` reads only `refs/remotes/origin/main`'s first-parent
+  history, never `HEAD` or local `main`; with no `origin/main` a missing script reads deleted, "no
+  origin/main to judge ancestry against"; every deletion names its reason. The header says the
+  ancestry is `origin/main` as last fetched, which the pusher can still make stale — CI is the
+  record. New probes: a grafts file hanging the introducing commit on the orphan, a local HEAD on
+  the orphan re-adding the script, and no `origin/main`; the genuinely-older probe still passes
+  (the fixture's push gives it `refs/remotes/origin/main`). `STEPS.md` (02-tdd-cycle) updated.
+  **Consequence, recorded:** `origin/main` does not yet hold `register-index-routes.sh`,
+  `pm-boards.sh` or `template-hooks.sh`, so a replay of a branch commit older than one of them
+  now reads it deleted until the branch reaches `main` — the earlier rounds' recorded "absent and
+  skipped" readings were true when taken. Red `dbe2c07b` → fix `68747533`; the probe file's header
+  in `7a113d87` (comments and `--help` range only).
+- **R9-4 — the seed task's wired test read raw lines (CR L2).** `copier-commands.py` now emits the
+  seed task as the `&&` steps of its **decoded** folded command; check 2 requires each board's
+  move to be exactly one step, and every step to be a plain `mv .copier/<seed> <dest>` or, last,
+  the closing `rmdir .copier`. A step naming a board already found unwired is that finding, so
+  each mutation stays one finding. New probes: an `echo` line and a `true #` line inserted before
+  the STORIES move, and a `true #` before the first step. Red `81db5712` → fix `606f51ea`.
+- **R9-5 — "linear time" was untrue (Sec L4).** A word with more than `BRACE_CAP` (8) `{` spans is
+  skipped by `seed_any` and reported once by `run_checks`; the words are built once per run, not
+  per board. Measured 21/11/2026 at the cap: 0.5 s for a 2 KB word, 1.6 s for 4 KB — the cost grows
+  with the square of a word's length, and the comments now say so. New probe: 300 × `.{a,b}=` (45 s
+  at round 8), whole check, inside 2 s, the cap the one finding. `seed_word`, `seed_any` and the
+  cap moved unchanged but for the cap into `.github/scripts/shipped-boards-words.sh`, sourced,
+  holding `shipped-boards.sh` at 733 lines. Red `5eac4d88` → fix `71b06e3f`.
+- **R9-6 — merge methods (Sec L3, nit 4; QA nit; Sam's ruling).** `main` allows **merge only**,
+  and the repository setting `allow_squash_merge=false` turns squash off for every pull request on
+  every branch; repository-wide rebase is unchanged. `PR-AND-REQUIRED-CHECKS.md` _Merge methods
+  and the archive freeze_ now says a merge commit is safe, a rebase only on a range with no merges
+  (GitHub's rebase merge flattens a pull request containing merges, as every promotion pull
+  request does — its effect on `--check` **unmeasured**), merge only where `--check` is required,
+  and squash off repository-wide; both restrictions **pending Sam's commands** below. Commit
+  `e7ccef99`. Round 8's command is marked superseded above.
+- **R9-7 — records and nits.** `.claude/MEMORY.md`'s TruffleHog entry now reads "never squash into
+  `main` — reword or rewrite the offending commit on the branch before merging (Sam's ruling
+  21/11/2026; the ruleset and repository restrictions are pending)" (`e7ccef99`). Round 8's note on
+  `37d2cd44` is corrected above. **The `template-hooks.sh` probe label** "with no if: or
+  continue-on-error" is left as it is — it is a probe label, and changing it is a probe edit; **the
+  header is the claim**, and it says "unquoted" and lists what is not detected. **R7-8 stays
+  pending** the push.
+
+**Sam's commands — not run here.** Both built from live reads on 21/11/2026 (`gh api` GET only).
+
+(a) The ruleset, merge only and strict. A `PUT` replaces every rule, so it carries all four rules
+and all 27 required checks and changes two values; the live GET has no `parameters` key on
+`deletion` or `non_fast_forward`, so no `del` step is needed:
+
+```bash
+gh api repos/Syntek-Dev/syntek-base/rulesets/20221742 \
+  | jq '{name,target,enforcement,conditions,bypass_actors,rules:(.rules|map(if .type=="required_status_checks" then .parameters.strict_required_status_checks_policy=true elif .type=="pull_request" then .parameters.allowed_merge_methods=["merge"] else . end))}' \
+  | gh api -X PUT repos/Syntek-Dev/syntek-base/rulesets/20221742 --input -
+```
+
+The `jq` step dry-run against the live JSON (no `PUT`), `diff -u` of the same projection before
+and after:
+
+```diff
+@@ -39,16 +39,14 @@
+         "required_review_thread_resolution": true,
+         "require_extra_approval_for_unattributed_changes": true,
+         "allowed_merge_methods": [
+-          "merge",
+-          "squash",
+-          "rebase"
++          "merge"
+         ]
+       }
+     },
+     {
+       "type": "required_status_checks",
+       "parameters": {
+-        "strict_required_status_checks_policy": false,
++        "strict_required_status_checks_policy": true,
+         "do_not_enforce_on_create": false,
+         "required_status_checks": [
+```
+
+Those are the only differences: 4 rules and 27 checks in both, the check list hashing identically
+(`62fe2e77…`), and `name`, `target`, `enforcement`, `conditions` and `bypass_actors` hashing
+identically to the live GET (`9634c3d8…`). Afterwards,
+`gh api repos/Syntek-Dev/syntek-base/rulesets/20221742 --jq '.rules[] | .parameters | objects | (.strict_required_status_checks_policy, .allowed_merge_methods) | select(. != null)'`
+should print `true` and `["merge"]`.
+
+(b) Squash off for the repository. Read first —
+`gh api repos/Syntek-Dev/syntek-base --jq '{allow_squash_merge,allow_rebase_merge,allow_merge_commit}'`
+printed `{"allow_merge_commit":true,"allow_rebase_merge":true,"allow_squash_merge":true}` on
+21/11/2026 — then:
+
+```bash
+gh api -X PATCH repos/Syntek-Dev/syntek-base -F allow_squash_merge=false
+```
+
+Afterwards the same read should print `"allow_squash_merge":false` with the other two still
+`true`. **Status of both: pending Sam's commands** — recorded "set by Sam on <date>" only once he
+confirms; until then squash and rebase are still offered on `main`.
+
+**Reds and how to reproduce them** (`bash .github/scripts/template-integrity.sh --self-tests <sha>`
+from a checkout whose `origin/main` is fetched, or `git checkout <sha>` and the named script):
+
+| Red        | Command                                              | Reading at the red                                                                      | Reading at the fix            |
+| ---------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------- | ----------------------------- |
+| `01feac3c` | `bash .github/scripts/shipped-boards.sh --self-test` | exit 1: exactly the 10 new top-level probes fail                                        | `ac00e69a`: exit 0, 76 probes |
+| `12ed7226` | `bash .github/scripts/shipped-boards.sh --self-test` | exit 1: exactly the 2 new probes fail, each "the reader exited 1 (IndexError …)"        | `aeb43d82`: exit 0, 78 probes |
+| `81db5712` | `bash .github/scripts/shipped-boards.sh --self-test` | exit 1: exactly the 3 new folded-step probes fail, 0 findings each                      | `606f51ea`: exit 0, 81 probes |
+| `5eac4d88` | `bash .github/scripts/shipped-boards.sh --self-test` | exit 1: the 300-brace probe fails, still reading after 2 s                              | `71b06e3f`: exit 0, 82 probes |
+| `dbe2c07b` | `bash code/src/scripts/tests/template-hooks.sh`      | exit 1: 6 of 69 failed — the grafts, crafted-HEAD and no-`origin/main` probes, two each | `68747533`: exit 0, 69 passed |
+
+Each pair was also replayed through `template-integrity.sh --self-tests <sha>` on 21/11/2026,
+four at a time, with `origin/main` at `eb902ea5`: every red (`01feac3c`, `12ed7226`, `81db5712`,
+`5eac4d88`, `dbe2c07b`) exits 1 with only its own self-test red (`9 run, 1 red, 0 absent and
+skipped`), and every fix (`ac00e69a`, `aeb43d82`, `606f51ea`, `71b06e3f`, `68747533`), the header
+commit `7a113d87` and the tip `e7ccef99` exit 0 (`9 run, 0 red, 0 absent and skipped`), 86 to
+91 s each. The named suites, each in a `git archive` copy of the commit (deleted after): the
+`shipped-boards.sh --self-test` counts in the table above, read failure by failure (10, 2, 3, 1 at
+the reds; 76, 78, 81, 82 probes at the fixes); `template-hooks.sh` at `68747533`, 69 passed, 0
+failed. **The closing gate run for this round was not taken before the round-10 reviews began;**
+round 10's closing readings, taken over the same scripts at its own tip, stand in for it.
+
+**Deviations, recorded rather than repaired:**
+
+- **R9-5 adds a file:** `shipped-boards-words.sh`, sourced, because the new probes took
+  `shipped-boards.sh` to 810 lines; `.github/scripts/` is excluded, so it never ships.
+- **The 2k probe's comment changed in the R9-5 fix** (`71b06e3f`) — the word "linear" corrected;
+  its body is untouched.
+- **R9-1 also refuses a column-0 sequence entry**, which the reader used to read inside a section:
+  the ruling admits only plain keys, comments and blanks at column 0, and the real copier.yml has
+  none.
+- **One command ran in the real checkout, not the fixture,** while inspecting R9-3's red: a `cd`
+  to a mistyped fixture path failed, and the next command, `git update-ref -d
+refs/remotes/origin/main`, deleted this checkout's remote-tracking ref. It was restored at once
+  to `eb902ea5…`, the value read at the start of the round; no commit, branch or remote changed.
+- **The mitigations are recorded here, not in the threat model,** whose planning half is frozen.
+- **No GitHub setting was changed:** the ruleset and the repository were read, never written.
 
 ## Journeys
 
