@@ -233,7 +233,7 @@ caller_c_push() {
 }
 check "a caller's -c options leave the red tip red" refused caller_c_push
 check "  and the self-tests still ran, in a copy of the commit" ran 'self-test'
-check "  and the refusal names the red self-test" says 'shipped-readme'
+check "  and the refusal names the red self-test" says 'shipped-readme\.sh --self-test — exit 1'
 # The staged read at pre-commit: a staged detector with an unstaged change beside it is refused,
 # whatever colour, external diff or relative setting the repository carries.
 fgit checkout -q main
