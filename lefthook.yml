@@ -278,7 +278,7 @@ pre-commit:
 # jobs (pm-boards.sh in [1/4] since 21/11/2026), which are required checks on main alone: this
 # leg is the early signal, CI the record. CI binds only where a ruleset requires it — dev, staging
 # and testing are unprotected, and main's ruleset bypass actor can merge or push past its required
-# checks (corrected 21/11/2026), so a red tip can reach any of them. Two self-tests are CI's only: the parser
+# checks and force-push or delete main (corrected 21/11/2026), so a red tip can reach any of them. Two self-tests are CI's only: the parser
 # probes' (toolchains) and shipped-artefacts.sh's (a generated project). It replaces the commit-msg leg (19/11/2026 to
 # 20/11/2026), which existed only for the planned-red trailer.
 pre-push:

@@ -23,7 +23,7 @@
 # judges it in the same commit, so these always want a close read. main's ruleset does not require
 # code-owner review, by decision (21/11/2026): the sole owner cannot approve their own pull
 # request, so requiring it would send every merge through the admin bypass, which skips the
-# required checks as well.
+# required checks as well (and can force-push or delete main).
 /code/src/scripts/tests/                    @Syntek-Studio
 /code/src/scripts/audits/                   @Syntek-Studio
 /project-management/src/00-ASSETS/scripts/  @Syntek-Studio

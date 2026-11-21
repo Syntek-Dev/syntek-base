@@ -12,9 +12,12 @@
 #              (`--pre-push`, `use_stdin: true`), and no commit-msg leg; neither the leg nor the
 #              script carries any opt-in that lets a red self-test through; (round 6) every
 #              SELF_TESTS entry is a step of audit-template.yml, unfiltered and on every branch;
-#              (round 7) each sits in a job named as a required [n/4] context with no `if:` or
-#              `continue-on-error` on it or its job, as does pm-board.sh --check, whose job checks
-#              out with full history, and the `**` branches line is on.push's own.
+#              (round 7) each listed step is present in a job named as a required [n/4] context,
+#              with no unquoted `if:` or `continue-on-error` on the step or its job, as is
+#              pm-board.sh --check, whose job has a `fetch-depth: 0` checkout, and the `**`
+#              branches line is on.push's own. (round 8) It does not detect a quoted key, a
+#              `shell:` or `defaults:` override, `needs:` on a skipped job, or a second, shallow
+#              checkout: a workflow diff is review's.
 #   commit     a commit runs only the plain checks: a red self-test commits (none runs), and a red
 #              plain check blocks the commit.
 #   push       a push runs every self-test against the commit being pushed — the tip of each
@@ -24,7 +27,8 @@
 #              self-test absent from the commit is skipped with a notice, never a pass, while one
 #              present that exits 127 refuses; no ref lines at all is said, never silent; (round 7)
 #              only a tip whose history never held the script is skipped — one that deletes it is
-#              refused, "deleted at <sha>".
+#              refused, "deleted at <sha>"; (round 8) so is an orphan, a commit-tree squash or a
+#              replace-graft of the deleting tree, and a shallow clone is refused outright.
 #   hostile    a local attribute that drops a file from the copy, a caller's `-c`, or a repository
 #              configuration that reshapes git's output, never makes a red commit read green.
 #   replay     `template-integrity.sh --self-tests <commit>` is the reviewer's replay of one
@@ -52,7 +56,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,45p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,49p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'template-hooks.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -116,7 +120,8 @@ check "neither the legs nor the script carries a red-probe opt-in" \
   bash -c '! grep -qE -- "$1|$2" "$3" "$4"' _ "$OPT_IN" "$TRAILER" "$LEFTHOOK" "$INTEGRITY"
 # (round 6) CI is the record only if it runs every self-test the push leg runs, in a workflow with
 # no path filter that runs on a push to any branch: audit-template.yml, whose four jobs are
-# required checks on main (which its ruleset's bypass actor can still merge past — round 7).
+# required checks on main (whose ruleset's bypass actor can still merge or push past them, and
+# force-push or delete main — rounds 7 and 8).
 AUDIT="$PROJECT_ROOT/.github/workflows/audit-template.yml"
 mapfile -t LISTED < <(sed -n '/^SELF_TESTS=(/,/^)/p' "$INTEGRITY" | grep -oE '"[^"]+"' | tr -d '"')
 check "template-integrity.sh lists its self-tests (SELF_TESTS read)" test "${#LISTED[@]}" -ge 9
@@ -126,10 +131,12 @@ check "  on a push to any branch, with no path filter" \
   bash -c 'grep -qF "branches: [\"**\"]" "$1" && ! grep -qE "^[[:space:]]+paths(-ignore)?:" "$1"' _ "$AUDIT"
 # (round 7) Presence is not enough: each of those steps, and pm-board.sh --check (the archive
 # freeze on this repository's own history), must sit in a job named as one of the four required
-# [n/4] contexts, with no `if:` and no `continue-on-error` on the step or its job; the freeze's job
-# must check out with full history; and the `branches: ["**"]` line must be on.push's own. A line
-# parse of the workflow's fixed indentation (python3 -I, no YAML library) — it reads the shape this
-# file is written in, and the names, not the live ruleset, stand for "required".
+# [n/4] contexts, with no unquoted `if:` and no `continue-on-error` on the step or its job; the
+# freeze's job must have a `fetch-depth: 0` checkout; and the `branches: ["**"]` line must be
+# on.push's own. A line parse of the workflow's fixed indentation (python3 -I, no YAML library) —
+# it reads the shape this file is written in, and the names, not the live ruleset, stand for
+# "required". Not detected (round 8): a quoted key, a `shell:` or `defaults:` override, `needs:`
+# on a skipped job, a second shallow checkout — a workflow diff is review's.
 REQUIRED_JOBS=("[1/4] Template Tokens" "[2/4] Shipped Documentation" "[3/4] Template Generation" "[4/4] Parser Probes")
 ci_shape() {
   python3 -I - "$AUDIT" <<'PY'
