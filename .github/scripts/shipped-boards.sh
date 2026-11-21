@@ -35,7 +35,9 @@
 #                         an `=`, `,` or `:` (`F=…`, `if=…`, `--dir=…`, a list), by a glob
 #                         matching it, or by the bare .copier directory holding it. Each word
 #                         is read with `$'…'` quoting, quotes and backslashes removed, then
-#                         whole and as each span an `=`, `,` or `:` bounds, each as a path:
+#                         whole, as each span an `=`, `,` or `:` bounds, and (a word opening
+#                         with one `-`) from each later `.`, for a short option's glued value
+#                         (`-C.copier`) — each as a path:
 #                         `//` and `/./` collapse, a `..` cancels the component before it, a
 #                         component opening with `.` names .copier when it matches it as a glob
 #                         (`.cop?er`, `.c*r`, `.[c]opier`), and a `{A,B}` brace expansion is
@@ -45,7 +47,8 @@
 #                         built at run time (a variable, `$(…)`, backticks, `eval`, a script
 #                         the task runs), a `..` through a symlink, a component opening with a
 #                         wildcard (`*`, `?`, `[.]`, which sh never matches against a leading
-#                         dot), and a value glued to a short option (`-C.copier`).
+#                         dot), and a name a program composes from its own syntax beyond these
+#                         (an argument file, a `--long` option's value glued on without `=`).
 #                      3. Each seed exists.
 #                      4. Each seed is byte-identical to the board `pm-board.sh` renders for
 #                         the seed-only tree — which proves it carries none of syntek-base's
@@ -108,7 +111,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,73p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,76p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done
@@ -250,13 +253,15 @@ seed_word() {
 # a path behind an assignment or an `=value` (`F=.copier/…`, `if=.copier/…`, `--dir=.copier`), or
 # inside a comma or colon list, is read as the path it is (round 7, 21/11/2026). The separators are
 # `=`, `,` and `:`, read wherever they sit — quoted ones included, since the quotes are gone by
-# now — so the reading errs towards a finding, never away from one. Brace alternatives still read
-# as a whole word.
+# now — so the reading errs towards a finding, never away from one. A word opening with a single
+# `-` is also read from each `.` after its first two characters, for a short option with its value
+# glued on (`-C.copier`, `-xC.copier`). Brace alternatives still read as a whole word.
 seed_any() {
   local w="$1" board="$2" n=${#1} i j starts=(0) ends=()
   for ((i = 0; i < n; i++)); do
     case "${w:i:1}" in
       [=,:]) starts+=("$((i + 1))"); ends+=("$i") ;;
+      .) [[ "$w" == -[!-]* && $i -ge 2 ]] && starts+=("$i") ;;
     esac
   done
   ends+=("$n")
