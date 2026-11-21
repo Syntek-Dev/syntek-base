@@ -48,7 +48,9 @@
 #              unedited (a failure, not a warning), and a pair file nested below archive/;
 #              and (round 5) on a deletion, rename or move out made inside a merge commit, a
 #              mode or type change (a symlink swapped in, named by the archived path), a
-#              caller's hostile git configuration, and a one-commit history (named as such).
+#              caller's hostile git configuration, and a one-commit history (named as such);
+#              (round 6) a merge deletion under a repository log.diffMerges of combined,
+#              dense-combined or off.
 #              (round 5) --write --staged renders the same boards under a caller's autocrlf or a
 #              smudge filter an attribute names.
 #   formatters the real .prettierignore, .markdownlint-cli2.jsonc and lefthook.yml skip every
@@ -73,7 +75,7 @@ KEEP=false
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '6,65p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '6,67p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'pm-boards.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -501,6 +503,14 @@ probe_freeze_round5() {  # round 5: merges, modes, symlinks and a one-commit his
   merge_breach "--check fails on an archived file moved back out inside a merge commit" \
     fgit mv "$victim" "$SRC/20-FINDINGS/FINDING-US001-RESOLVED-01-01-2026.md"
   check "  and names the move out" grep -qE "FINDING-US001-RESOLVED-01-01-2026\.md was (deleted from archive/|renamed)" <<< "$MERGE_OUT"
+  # (round 6) The repository's own log.diffMerges cannot be switched off from outside, and three
+  # of its values make `-m` show a merge as a combined diff or none, hiding the deletion inside it.
+  local dm
+  for dm in combined dense-combined off; do
+    fgit config log.diffMerges "$dm"
+    merge_breach "--check fails on a deletion inside a merge under a repository log.diffMerges=$dm" fgit rm -q "$victim"
+    fgit config --unset log.diffMerges
+  done
 
   chmod +x "$victim"; fgit add -A; fgit commit -q -m mode-change
   rc=0; out="$(board --check --root "$FX" 2>&1)" || rc=$?
