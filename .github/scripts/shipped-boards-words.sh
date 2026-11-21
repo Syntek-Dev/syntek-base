@@ -65,7 +65,7 @@ seed_word() {
 # than WORD_CAP characters (round 10), is skipped here and reported by run_checks. Each word's
 # reading is therefore bounded, and the whole reading grows linearly with the number of words —
 # bounded per word, not overall. Measured 21/11/2026, plain check, one word at both caps (1 KB,
-# 8 braces): 1.8 s, about 1.5 s over the 0.3 s baseline; ten such words: 14.7 s. Uncapped, 300
+# 8 braces): 1.8 s, about 1.4 s over the 0.4 s baseline; ten such words: 14.7 s. Uncapped, 300
 # `.{a,b}=` took 45 s (round 8) and a brace-free `.=` × 8000 172 s (round 9).
 seed_any() {
   local w="$1" board="$2" n=${#1} i c depth=0 inbr=false starts=(0) seps=() tops=() a=0 b=0
