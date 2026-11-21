@@ -1391,19 +1391,24 @@ deduplicated into R9-1 to R9-7 below. Sam's rulings of 21/11/2026 bind all seven
 **R9-3** ancestry is judged against `origin/main` alone, with no grafts file, and fails closed
 without it; **R9-4** the seed task's wired test reads the decoded command; **R9-5** brace spans
 are capped and the "linear" wording corrected; **R9-6** `main` allows merge only and squash is off
-for the repository, both set by Sam's own commands; **R9-7** the records and nits. Each red is an
+for the repository, both set by Sam's own commands (_amended 21/11/2026 (round 10, R10-4) — rebase is off for the
+repository too, by Sam's ruling of option (a): merge commits only on every branch_); **R9-7** the records and nits. Each red is an
 ordinary commit ahead of its fix, and no fix commit edits a probe's body.
 
 - **R9-1 — check 2 missed a quoted, escaped, `?` or `!include` top-level `_tasks` / `_migrations`,
   and check 1 the same for `_exclude` (CR M1, QA M1, Sec M1).** Fixed in `copier-commands.py`:
-  copier.yml is read as **one document of plain top-level keys, and anything else is refused** —
+  copier.yml is read as **one document of plain top-level keys, and anything else is refused**
+  (_amended 21/11/2026 (round 10, R10-1) — not yet true: a NEL, U+2028, U+2029 or lone CR, line breaks to
+  PyYAML, still hid a top-level key from the reader; refused since `aad5c032`_) —
   every column-0 line must be blank, a comment, or an unquoted identifier and `:`; a quoted or
   escaped key, a `?` key, a `---` or `...` marker, a `%` directive, a `!` tag, a merge key (two angle brackets and a colon), a
   flow collection, a column-0 sequence entry, or an indented line before the first key is one
   finding, as is a tag, anchor or alias opening a top-level value; a repeated plain key (any, not
   only `_tasks` / `_migrations`) is its own finding. A section now ends at the next column-0 line,
   so lines after a refused shape are never read into it. The finding is file-wide, so check 1's
-  `_exclude` reading rests on it too. **The real copier.yml passes unchanged**: its 49 top-level
+  `_exclude` reading rests on it too (_amended 21/11/2026 (round 10, R10-2) — at the top level only: check 1
+  read each entry undecoded, so a double-quoted `\x21` negation or a block-scalar entry passed; it
+  reads them decoded since `72357977`_). **The real copier.yml passes unchanged**: its 49 top-level
   lines are all plain keys, and the reader's `S` / `O` output on it was byte-identical before and
   after the fix. The header's claim is now exactly "copier.yml as one document of plain top-level
   keys; anything else is refused", and Jinja in a command (copier's render layer, in its own delimiters) joins
@@ -1436,14 +1441,17 @@ ordinary commit ahead of its fix, and no fix commit edits a probe's body.
   the STORIES move, and a `true #` before the first step. Red `81db5712` → fix `606f51ea`.
 - **R9-5 — "linear time" was untrue (Sec L4).** A word with more than `BRACE_CAP` (8) `{` spans is
   skipped by `seed_any` and reported once by `run_checks`; the words are built once per run, not
-  per board. Measured 21/11/2026 at the cap: 0.5 s for a 2 KB word, 1.6 s for 4 KB — the cost grows
+  per board. Measured 21/11/2026 at the cap: 0.5 s for a 2 KB word, 1.6 s for 4 KB (_amended 21/11/2026 (round 10,
+  R10-3) — of brace words only: a brace-free 4 KB word took 14 s and 16 KB 172 s; a word over
+  1 KB is capped since `f3883663`_) — the cost grows
   with the square of a word's length, and the comments now say so. New probe: 300 × `.{a,b}=` (45 s
   at round 8), whole check, inside 2 s, the cap the one finding. `seed_word`, `seed_any` and the
   cap moved unchanged but for the cap into `.github/scripts/shipped-boards-words.sh`, sourced,
   holding `shipped-boards.sh` at 733 lines. Red `5eac4d88` → fix `71b06e3f`.
 - **R9-6 — merge methods (Sec L3, nit 4; QA nit; Sam's ruling).** `main` allows **merge only**,
   and the repository setting `allow_squash_merge=false` turns squash off for every pull request on
-  every branch; repository-wide rebase is unchanged. `PR-AND-REQUIRED-CHECKS.md` _Merge methods
+  every branch; repository-wide rebase is unchanged (_amended 21/11/2026 (round 10, R10-4) — superseded:
+  `allow_rebase_merge=false` too, merge commits only on every branch_). `PR-AND-REQUIRED-CHECKS.md` _Merge methods
   and the archive freeze_ now says a merge commit is safe, a rebase only on a range with no merges
   (GitHub's rebase merge flattens a pull request containing merges, as every promotion pull
   request does — its effect on `--check` **unmeasured**), merge only where `--check` is required,
@@ -1499,7 +1507,8 @@ identically to the live GET (`9634c3d8…`). Afterwards,
 `gh api repos/Syntek-Dev/syntek-base/rulesets/20221742 --jq '.rules[] | .parameters | objects | (.strict_required_status_checks_policy, .allowed_merge_methods) | select(. != null)'`
 should print `true` and `["merge"]`.
 
-(b) Squash off for the repository. Read first —
+(b) Squash off for the repository (_amended 21/11/2026 (round 10, R10-4) — **superseded** by round 10's
+command, which turns rebase off as well; never run this one_). Read first —
 `gh api repos/Syntek-Dev/syntek-base --jq '{allow_squash_merge,allow_rebase_merge,allow_merge_commit}'`
 printed `{"allow_merge_commit":true,"allow_rebase_merge":true,"allow_squash_merge":true}` on
 21/11/2026 — then:
@@ -1547,6 +1556,135 @@ round 10's closing readings, taken over the same scripts at its own tip, stand i
   to a mistyped fixture path failed, and the next command, `git update-ref -d
 refs/remotes/origin/main`, deleted this checkout's remote-tracking ref. It was restored at once
   to `eb902ea5…`, the value read at the start of the round; no commit, branch or remote changed.
+- **The mitigations are recorded here, not in the threat model,** whose planning half is frozen.
+- **No GitHub setting was changed:** the ruleset and the repository were read, never written.
+
+### Fix round 10 — 21/11/2026
+
+The three round-9 reviews (code review, QA re-attack, security review, in that order) were
+deduplicated into R10-0 to R10-7 below. Sam's rulings of 21/11/2026 bind them: **R10-4** is his
+option (a) — merge commits only on every branch, rebase turned off for the repository beside
+squash, both by his own commands; the rest are the reviews' fixes as recommended. Each red is an
+ordinary commit ahead of its fix, and no fix commit touches `self_test()` (every fix hunk in
+`shipped-boards.sh` sits above it).
+
+- **R10-0 — round 9's record was unfinished (CR L3, QA L2, Sec L3).** The replays were re-run and
+  recorded in place of the placeholder, the two token-unsafe spellings in the R9-1 entry reworded
+  (the hook refused them), and the round-9 section committed as one record: `6524557d`. Round 9's
+  closing gate run was never taken; round 10's closing readings below stand in for it.
+- **R10-1 — a YAML line break other than `\n` hid a top-level key (CR M1, QA M1, Sec M1).** PyYAML
+  6.0.3's `scan_line_break` breaks at `\r\n`, `\r`, `\n`, NEL (`\x85`), U+2028 and U+2029; the
+  reader split at `\n` only, after Python's universal newlines had folded `\r` into it. So
+  `_zz_note: hi<U+2028>_migrations:` was one line to the reader and a second `_migrations` to
+  copier — confirmed against that PyYAML for all four breaks, each yielding the injected list.
+  `copier-commands.py` now reads copier.yml raw (`newline=""`), splits at `\n` with `\r\n` as one
+  break, and refuses a lone CR, NEL, U+2028 or U+2029 anywhere in the file as one E finding naming
+  the first, its line and the count of the rest. The docstring and `shipped-boards.sh`'s header
+  name the break set. Eight probes, one per break for `_migrations` and for `_exclude`. The reader's
+  output on the real copier.yml is byte-identical. Red `7569cece` → fix `aad5c032`.
+- **R10-2 — check 1 read `_exclude` undecoded (QA L1).** `copier-commands.py` now emits each
+  `_exclude` entry decoded (`X` records), refusing one that is not one line of one string — a
+  block scalar, a flow collection, a mapping, a decoded line break — as an E finding ending "check
+  1 cannot read what it excludes". `negations()` reads those records, strips block tags and keeps
+  the entries opening `!`. On the real copier.yml the reader reads 104 entries, as copier does, and
+  the 25 negations are identical to the old reading's. Check 1's header says it reads decoded
+  entries. Three probes: a `"\x21…STORIES-BOARD.md"` negation, a `>-` block-scalar entry and a
+  flow entry. Red `fe3671ca` → fix `72357977`.
+- **R10-3 — "bounded time" held for brace words only (CR L1).** `WORD_CAP=1024` beside
+  `BRACE_CAP`: `seed_any` skips a longer word and `run_checks` reports the first capped word as
+  one finding, under the brace cap when it breaks both. Measured 21/11/2026, plain check, one task
+  word at both caps (1 KB, 8 braces): 1.8 s, about 1.4 s over the 0.4 s baseline; ten such words:
+  14.7 s. The wording now says that: each word's reading is bounded, the whole grows linearly with
+  the number of words — bounded per word, not overall. New probe: `.=` × 8000 (172 s at round 9),
+  whole check, inside 2 s, the length cap the one finding. Red `f3177c04` → fix `f3883663`; the timing comment's baseline
+  corrected in `8f0cda32`.
+- **R10-4 — merge methods (Sec L1; Sam's ruling, option a).** `PR-AND-REQUIRED-CHECKS.md` _Merge
+  methods and the archive freeze_ now says merge commits only, on every branch, by the repository
+  settings `allow_squash_merge=false` and `allow_rebase_merge=false`, and on `main` by the ruleset
+  as well — pending Sam's commands below (`27c2a5bc`). `.claude/MEMORY.md`'s TruffleHog entry
+  names no rebase, so it is unchanged. Round 9's `PATCH` is marked superseded above.
+- **R10-5 — `template-integrity.sh`'s header still said "merge and rebase" (CR L2, Sec L2).** It
+  now reads merge commits only (`main` by ruleset, every branch by repository setting) and strict
+  checks on `main`, pending the maintainer's commands (`05751282`). The repository grep for "merge
+  and rebase" and "squash" found nothing else untrue in a shipped or gate file; the three
+  planning-time lines "No merge-strategy rule exists" are under _Deviations_.
+- **R10-6 — `STEPS.md` stated the replay rule without its limit (QA L3).**
+  `code/workflows/02-tdd-cycle/STEPS.md` now says a commit older than a listed self-test that
+  `origin/main` does not yet hold reads it deleted until the branch reaches `main`, and how a
+  reviewer reads that red: the printed reason, that script the only red and absent from
+  `origin/main`, the commit's own probe judged from its suite run, and a replay again once `main`
+  holds it (`9eb93e13`).
+- **R10-7 — nits.** `g()` passes `-c advice.graftFileDeprecated=false`, so the grafts hint no
+  longer prints (none in any round-10 replay log); the ~150-character header line and `g()`'s git
+  line are wrapped (`05751282`). The awk `\.` warnings in the R9-4 probes are stderr only and are
+  left, the lines being probe bodies. **R7-8 stays pending** the push.
+
+**Sam's commands — not run here.** Both built from live reads on 21/11/2026 (`gh api` GET only).
+
+(a) The ruleset, merge only and strict — **round 9's command (a), unchanged**, re-verified today:
+the live GET piped through its `jq` step (no `PUT`) differs from the live projection only in
+`allowed_merge_methods` (`["merge","squash","rebase"]` to `["merge"]`) and
+`strict_required_status_checks_policy` (`false` to `true`); 4 rules and 27 checks before and
+after, the check list hashing `62fe2e77…` and `name`, `target`, `enforcement`, `conditions` and
+`bypass_actors` `9634c3d8…` on both sides; `deletion` and `non_fast_forward` carry no `parameters`
+key. Pre-check, the read in round 9's block, prints `["merge","squash","rebase"]` then `false`
+today; afterwards it should print `["merge"]` then `true`.
+
+(b) Squash and rebase off for the repository, merge commits kept. Pre-check —
+`gh api repos/Syntek-Dev/syntek-base --jq '{allow_squash_merge,allow_rebase_merge,allow_merge_commit}'`
+printed `{"allow_merge_commit":true,"allow_rebase_merge":true,"allow_squash_merge":true}` on
+21/11/2026 — then:
+
+```bash
+gh api -X PATCH repos/Syntek-Dev/syntek-base -F allow_squash_merge=false -F allow_rebase_merge=false
+```
+
+Afterwards the same read should print
+`{"allow_merge_commit":true,"allow_rebase_merge":false,"allow_squash_merge":false}`. **Status of
+both: pending Sam's commands** — recorded "set by Sam on <date>" only once he confirms; until then
+squash and rebase are still offered on every branch.
+
+**Reds and how to reproduce them** (`bash .github/scripts/template-integrity.sh --self-tests <sha>`
+from a checkout whose `origin/main` is fetched, or `git checkout <sha>` and the named script):
+
+| Red        | Command                                              | Reading at the red                                                                                                  | Reading at the fix            |
+| ---------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `7569cece` | `bash .github/scripts/shipped-boards.sh --self-test` | exit 1: exactly the 8 new probes fail — NEL, U+2028, U+2029 with 0 findings each; the lone CR the wrong finding set | `aad5c032`: exit 0, 90 probes |
+| `fe3671ca` | `bash .github/scripts/shipped-boards.sh --self-test` | exit 1: exactly the 3 new probes fail, 0 findings each                                                              | `72357977`: exit 0, 93 probes |
+| `f3177c04` | `bash .github/scripts/shipped-boards.sh --self-test` | exit 1: the 16 KB probe fails, still reading after 2 s                                                              | `f3883663`: exit 0, 94 probes |
+
+The refactor ahead of them, `d118a397`, exits 0 with 82 probes, as round 9's tip did. Each counted
+in a `git archive` copy of its commit, deleted after. Each commit was also replayed through
+`template-integrity.sh --self-tests <sha>` on 21/11/2026, `origin/main` at `eb902ea5`: each red
+exits 1 with only `shipped-boards.sh` red (`9 run, 1 red, 0 absent and skipped`); `d118a397`, each
+fix and `9eb93e13` exit 0 (`9 run, 0 red, 0 absent and skipped`), 85 to 116 s each, four at a time.
+`05751282` exited 1 in that batch with `shipped-boards.sh` red, its failing probe outside the
+20-line tail, and exited 0 run alone (73 s) — see _Deviations_.
+
+**Deviations, recorded rather than repaired:**
+
+- **A refactor commit precedes the reds:** `d118a397` moves `glob_matches` and `negation_matches`
+  unchanged into `shipped-boards-words.sh`, so the round's probes fit the 750-line limit;
+  `shipped-boards.sh` ends the round at 739 lines.
+- **More probes than the items name:** R10-1 adds U+2029 and a lone CR beside the NEL and U+2028
+  asked for (PyYAML breaks at both); R10-2 adds a flow entry beside the escaped and block-scalar
+  ones. Each was red at its red commit.
+- **An unquoted `_exclude` entry opening `!`** is a tag to YAML, not a string, and copier would
+  refuse to load it; the reader reads it as the negation it looks like, as check 1 did before,
+  which errs towards a finding and keeps the unquoted-negation probe passing as it was.
+- **A tag on the `_exclude:` value** stays the one top-level finding (R9-1's probe); the
+  `_exclude` reader adds nothing for it.
+- **A timing probe is load-sensitive.** `05751282` (a header and `g()` change, which no
+  `shipped-boards.sh` probe reads) replayed red once among four concurrent `--self-tests` runs, 36
+  self-tests at once on 16 cores, and green alone. Which probe failed is **unmeasured** (outside
+  the logged tail); the shape points at one of the three 2 s timing probes (rounds 8, 9, 10). Two
+  load runs — eight concurrent `shipped-boards.sh --self-test`, then three `--self-tests HEAD` with
+  four self-tests beside them — did not reproduce it. Recorded, not repaired: widening a timing
+  budget is a probe edit.
+- **Three planning-time lines are now untrue** — "No merge-strategy rule exists in
+  `project-management/docs/git/`" in US010's story plan (`Risks`) and twice in US011's. They are
+  left: US010's plan records the planning state, and US011's is that story's to correct at its own
+  planning pass. Flagged for Sam.
 - **The mitigations are recorded here, not in the threat model,** whose planning half is frozen.
 - **No GitHub setting was changed:** the ruleset and the repository were read, never written.
 
