@@ -29,8 +29,9 @@ because copier (PyYAML, its `!include`, its merge of later documents over earlie
 `_tasks`, `_migrations` or `_exclude` there that this reader, and check 1, never see.
 
 Output, one record per line, tab-separated:
-  S <raw line>      a raw line of a copy-gated seed task (its `when:` decodes to the copy test,
-                    and its command holds the README move) — for check 2's line-shaped wired test
+  S <step>          one `&&` step of the DECODED command of a copy-gated seed task (its `when:`
+                    decodes to the copy test, and its command holds the README move), stripped,
+                    a line break or tab in it written `\\n` / `\\t` — for check 2's wired test
   O <line>          a line of the decoded command of every other `_tasks` / `_migrations` entry
   E <message>       an entry this reader refuses
 
@@ -394,8 +395,12 @@ def main() -> int:
                 and COPY_GATE.match(when.strip()) is not None
                 and README_MOVE in command
             )
-            if seed:
-                out.extend("S\t" + r for r in raw)
+            if seed:  # each `&&` step of the decoded command, its breaks and tabs made visible
+                steps = (
+                    st.strip().replace("\n", "\\n").replace("\t", "\\t")
+                    for st in command.split("&&")
+                )
+                out.extend("S\t" + st for st in steps)
                 continue
             if name == "_migrations" and command.strip() == STAGING_RM:
                 continue  # removes the staging directory and reads nothing in it (see STAGING_RM)

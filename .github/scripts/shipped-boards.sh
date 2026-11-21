@@ -28,8 +28,10 @@
 #                         any depth, and a trailing slash re-includes the folder below it.
 #                      2. The copy-gated `_tasks` entry — the one whose `when:` tests the copy
 #                         operation and which carries the README move — moves each of the
-#                         eight seeds into its folder, on a line that begins with the mv and
-#                         ends with its `&&` (an echoed or commented-out move is not one); and
+#                         eight seeds into its folder, as a step of its DECODED command split at
+#                         `&&` that is exactly the mv, and holds no step but seed moves and the
+#                         closing `rmdir` (an echoed, commented-out or folded-into move is not
+#                         one; round 9, 21/11/2026); and
 #                         no other `_tasks` or `_migrations` entry names a board seed at all —
 #                         by any command, quoted or not, behind a path prefix (`./`, `$PWD/`) or
 #                         an `=`, `,` or `:` (`F=…`, `if=…`, `--dir=…`, a list), by a glob
@@ -129,7 +131,7 @@ while [[ $# -gt 0 ]]; do
     --quiet|-q)  QUIET=true; shift ;;
     --self-test) SELF_TEST=true; shift ;;
     --fix)       FIX=true; shift ;;
-    --help|-h)   sed -n '2,94p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h)   sed -n '2,96p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *)           die "unknown argument: $1" ;;
   esac
 done
@@ -335,6 +337,7 @@ run_checks() {
   read_out=$(python3 -I "$SCRIPT_DIR/copier-commands.py" "$COPIER") \
     || die "copier-commands.py could not read $COPIER"
   tasks=$(sed -n 's/^S\t//p' <<< "$read_out")
+  local unwired=() step last named ub
   others=$(sed -n 's/^O\t//p' <<< "$read_out")
   while IFS= read -r e; do
     [[ -n "$e" ]] && finding "$e"
@@ -343,11 +346,13 @@ run_checks() {
     folder="${b%%|*}"; board="${b##*|}"; seed="$SEED_DIR/$board"
 
     # ── 2. Wired ──────────────────────────────────────────────────────────────
-    # A real move: a line of the gated task that STARTS with the mv (after the folded block's
-    # indent, or `- command:` for a one-line task) and ends with the `&&` chaining it — so an
-    # echoed or commented-out move is not read as one.
-    grep -qE "^[[:space:]]*(- command:[[:space:]]*)?mv \.copier/${board//./\\.} project-management/src/$folder/${board//./\\.} &&[[:space:]]*\$" <<< "$tasks" \
-      || finding "copier.yml's copy-gated _tasks entry does not move .copier/$board into $folder/ — a generated project gets no board, or an update re-seeds it"
+    # A real move: a step of the gated task's DECODED command, split at `&&`, that is exactly the
+    # mv (round 9, 21/11/2026) — so an echoed or commented-out move, or a line folded into it
+    # (`echo`, `true #`), is not read as one.
+    if ! grep -qxF "mv .copier/$board project-management/src/$folder/$board" <<< "$tasks"; then
+      finding "copier.yml's copy-gated _tasks entry does not move .copier/$board into $folder/ — a generated project gets no board, or an update re-seeds it"
+      unwired+=("$board")
+    fi
     # Any reference to the seed outside the gated task — whatever the command (mv, cp, ln, a cat
     # redirect…), quoted or not, behind any prefix ($PWD/, ./) — or to a glob matching it, or to
     # the bare .copier directory that holds it, reads it on every update and can overwrite the
@@ -381,6 +386,21 @@ run_checks() {
     grep -qF "\"$folder/$board\"" "$ARTEFACTS" \
       || finding "shipped-artefacts.sh SEEDED does not list $folder/$board — its leak check would flag the seeded board"
   done
+
+  # ── 2, the seed task's own steps ──────────────────────────────────────────────
+  # Every step of the decoded seed command is a plain seed move or, last, the closing rmdir: any
+  # other step runs in the shell, and a `#` in it comments out every step after it (round 9). A
+  # step naming a board already found unwired above is that finding, not a second one.
+  local seed_step='^mv \.copier/[A-Za-z0-9][A-Za-z0-9._-]* [A-Za-z0-9._][A-Za-z0-9._/-]*$'
+  last=$(tail -n 1 <<< "$tasks")
+  while IFS= read -r step; do
+    [[ -z "$step" ]] && continue
+    [[ "$step" =~ $seed_step && "$step" != *..* ]] && continue
+    [[ "$step" == "rmdir .copier" && "$step" == "$last" ]] && continue
+    named=false
+    for ub in "${unwired[@]}"; do [[ "$step" == *".copier/$ub"* ]] && named=true; done
+    $named || finding "copier.yml's copy-gated _tasks entry holds a step that is not a seed move or the closing rmdir (\`${step:0:70}\`) — the shell runs it, and a # in it skips every step after it"
+  done <<< "$tasks"
 }
 
 ST_FAILS=0
