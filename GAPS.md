@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 17/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 21/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -1321,3 +1321,212 @@ record copier excludes, and the gate stayed green. Story: "project-management/sr
 whether the scan widens to comment lines in shipped `*.yaml` / `*.yml` (JSON carries no comments,
 so only its string values could cite) and adds a fixture for a dead citation in each, or records
 why config files stay out of scope. No map or story claims this entry.
+
+---
+
+## 21/11/2026 — US010's walk has thirteen blocking Fails and one unwalked row, each waiting on a ruling
+
+**Type:** Active gap
+**Summary:** The walk of 21/11/2026 ("project-management/src/18-TESTS/MANUAL/US010-MANUAL-TESTING.md",
+at `7d54df26`) recorded 44 Pass, 17 Fail and 1 unwalked. Thirteen of the Fails block the story,
+and so does LEGIBLE-02, which is unwalked. They come from four causes:
+
+1. Five _Recorded during the build_ slots are blank and were never recorded as missed (F-001).
+   These are the landing run, the rebase state, the clean landing HEAD and base, the export
+   provenance, and the legibility readings. CI-03, CI-06, CI-07, CI-08, SEEDED-05 and SITES-05
+   depend on them; the CI substance is green in runs `44949084218` and `44950192371`.
+2. R4's red was taken locally only and landed with its check at `3d136347` (F-002: REDFIRST-01,
+   REDFIRST-02, BOARDGATE-03). R1's green commit edited a probe, and two reds are under-recorded
+   (F-003: REDFIRST-02, REDFIRST-03).
+3. The reach (F-004: REACH-01, REACH-02, REACH-04) shows paths outside ST05 that no path-by-path
+   ruling covers, plus the regenerated US005, US006 and US009 exports.
+4. LEGIBLE-02 has not been walked (F-005).
+
+Findings F-001 to F-005 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+**Blocked by / Action:** Sam's rulings:
+
+- whether entering a durable CI run ID now counts as reconstructing a capture;
+- whether R4's local red stands;
+- the reach paths that no ruling covers.
+
+Then the three fresh legibility sessions run and Sam reviews them, and gate 23's verification is
+re-run (F-006). US010 cannot move to `Completed` until each blocking row passes or is ruled on.
+No map or story claims this entry.
+
+---
+
+## 21/11/2026 — TM-10: `S-03` has nothing left to assert once the boards are gated — its disposal is the map owner's
+
+**Type:** Active gap
+**Summary:** TM-10, absorbed from US011 into US010 (re-cut 19/11/2026, round 2 Q1), named a
+window in which four indexes read as complete with no gate, running until
+`MAP-REGISTER-INDEXES.md` `S-03` (N-003, N-004) was cut. US010 made every register index a
+generated board ("project-management/src/15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md").
+`pm-board.sh --check` fails a stale board in required `[1/4]` (`audit-template.yml:84`), and
+`shipped-boards.sh` gates the seeds. So the window does not open. N-003's presence, symmetry and
+status clauses are satisfied by construction for every boarded register. The story states that
+`S-03` has nothing left to assert that those two do not ("project-management/src/02-STORIES/US010.md",
+Dependencies, re-cut). That is the story's claim; this gate did not measure it clause by clause.
+TM-10 stays LOW. The map's `:421-422` sentence ("may run once S-02 has landed") still contradicts
+N-003's presence clause. Finding F-019 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. The map owner's next sitting on
+`project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` decides `S-03`'s disposal:
+withdraw it, or re-scope it to whatever it still asserts, such as N-004's template duty and the
+compatibility-surface header. The same sitting settles `:421-422`. No map or story claims this
+entry.
+
+---
+
+## 21/11/2026 — a project generated before the boards receives the routes on update but never the files
+
+**Type:** Active gap
+**Summary:** TM-14 (assessment Section 7.14). The decisions, findings and bugs boards are seeded
+by the copy-gated task, and no migration writes them. A project generated before they existed
+receives on update the guides that route to them, the generator and the check, but not the
+three board files. It must run `pm-board.sh --write` and put its ADR, finding and bug status
+lines into the plain shape by hand. US010 documented this in
+`how-to/src/TEMPLATE-GUIDE/14-UPDATING.md:48-59` and fixed nothing (settled 27/09/2026, US010
+grilling round 3 Q15). The complete fix is a seed-if-absent update migration, which is a second
+`copier.yml` decision. The cost grows with every project generated in the meantime. Finding F-020
+(the record's one expensive-to-retrofit row) in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. A story decides the migration, idempotent and
+refusing to overwrite, on the `.copier/migrations/` precedent, and proves it against a project
+generated before the boards. No map or story claims this entry.
+
+---
+
+## 21/11/2026 — `copier recopy` moves every blank seed over the project's own file
+
+**Type:** Active gap
+**Summary:** TM-18 (assessment Section 7.15). `copier recopy`, or `copier copy` into an existing
+project, runs as a copy, so the copy-gated task moves every blank seed over the project's own
+file with no prompt: the README, version state, memory, registers, cut plan and boards. An
+uncommitted edit to any of them is lost outright. US010 documented this in
+`how-to/src/TEMPLATE-GUIDE/14-UPDATING.md:61-65`, and the template ships no guard (settled
+27/09/2026, US010 grilling round 3 Q15). Finding F-021 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. A story decides a guard that refuses an existing
+target, reconciled with ST08's one-line task form. No map or story claims this entry.
+
+---
+
+## 21/11/2026 — the memory-survival probe never changes the memory seed between its tags
+
+**Type:** Active gap
+**Summary:** `.github/scripts/shipped-ai.py`'s update probe changes the template's
+`.claude/MEMORY.md` between its two tags (`:258-259`), but never the seed `.copier/MEMORY.md`.
+The probe would therefore pass with the memory seed task ungated: an update that re-seeded
+memory over the project's own copy would move an unchanged seed and go unseen. US010 closed this
+blind case for every board seed (`:262-265` change each between tags, and `:270-278` assert
+byte-identity) but not for memory (settled 27/09/2026, US010 grilling round 3 Q16; TM-01, TM-04;
+plan Section 8 item 4). Finding F-022 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Append to `.copier/MEMORY.md` between the tags as
+the board seeds are, assert that the project's memory is byte-identical after the update, and
+record the mutation's red first. No map or story claims this entry.
+
+---
+
+## 21/11/2026 — the prerequisites a sprint plan checks do not state the gates as settled
+
+**Type:** Active gap
+**Summary:** Routed to US010's gate 22 by the `16-sprint-plans` grilling (settled 28/09/2026,
+round 1 Q2, the GDPR half by the call recorded that day; the third defect settled 30/09/2026,
+round 3 Q9, and routed by round 5 Q16). Three defects, re-measured 21/11/2026:
+
+1. **The Security prerequisite is flag-blind.**
+   `project-management/workflows/16-sprint-plans/STEPS.md:56`,
+   `project-management/workflows/16-sprint-plans/CHECKLIST.md:22` and
+   `project-management/docs/planning/CADENCE.md:139` each demand the security gate's artefacts
+   with no flag condition.
+2. **The GDPR prerequisite is flag-blind** at `CADENCE.md:138`, where the GDPR lines of that
+   Step 1 and that checklist already read the flag.
+3. **No rule says gate 11 closes only on a `Signed off` QA plan.** Neither
+   `project-management/workflows/11-qa-checks/STEPS.md` nor its `CHECKLIST.md` has a sign-off
+   step. The Execution Checklist's "QA documents exist" and `CADENCE.md:140` ("no unresolved
+   `AC-GAP` entries") are each met by a plan reading only `Reviewed`.
+
+Each contradicts `CADENCE.md:96`, "A downstream checklist reads the flag". Until the fix lands,
+each line is read by its flag. Finding F-023 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. One fix pass over those files: each Security and
+GDPR line reads its flag, and `11-qa-checks` gains a `Signed off` step that the QA lines
+require. No map or story claims this entry.
+
+---
+
+## 21/11/2026 — the 09/10/2026 build-start remediation never reached the procedures
+
+**Type:** Active gap
+**Summary:** The remediation approved on 09/10/2026 (grill-with-docs, Q1) is quoted in
+US010's manual guide _Preconditions_. It required that, after US007, the
+`Open` → `In Progress` transition is recorded after the due pre-edit captures and before the
+first source edit. US007 has landed, but the transition still sits in
+`code/workflows/01-implement-story/` Prerequisites, ahead of the captures. There is no rule for
+a documentation-only story (code phases N/A) and no statement that a board adapter publishes the
+committed transition without becoming a second status authority (REMEDY-01). Separately, the
+sprint-plan _Story Plans_ Status cells do not mirror their plans (US010 reads `Open` against
+In Review), live `Not started` placeholders remain in sprint plans 01, 02 and 06, and nothing
+generates or checks the mirror (REMEDY-02). Findings F-016 and F-017 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. One change moves the transition and adds the N/A and
+adapter sentences. A decision follows on whether the sprint-plan mirror is generated, gated or
+dropped. No map or story claims this entry.
+
+---
+
+## 21/11/2026 — only `main` is protected, and the merge-only settings no gate re-reads
+
+**Type:** Active gap
+**Summary:** US010's security audit, 21/11/2026, findings 2, 6 and 7:
+
+- **Only `main` is protected.** A red or weakened tip can be pushed directly to `testing`,
+  `dev` or `staging`, hooks can be skipped, and a commit can edit the workflow or
+  `SELF_TESTS` that judges it.
+- **The settings live outside the tree.** The merge-only settings Sam set on 21/11/2026 (squash
+  and rebase off; ruleset `20221742` merge-only with strict checks) are not in the repository,
+  and no gate re-reads them. A settings change would silently re-open the squash lock on
+  `pm-board.sh --check`.
+- **One check stands in the way of a squash.** A squashed archive move pushed directly to an
+  unprotected branch is stopped only by CI's `--check`.
+- **One effect is unmeasured.** Whether `allow_rebase_merge=false` hides "Update with rebase"
+  has not been measured.
+
+The admin bypass actor (RepositoryRole 5, `always`) is accepted by Sam (R7-3) and is not part
+of this entry. Finding F-025 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+**Blocked by / Action:** Nothing blocks it, and every option is Sam's because each touches
+GitHub settings. One option is a scheduled, read-only settings check running the `gh api`
+read-back in `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md`. The other is a recorded
+decision that the unprotected branches stay unprotected. No map or story claims this entry.
+
+---
+
+## 21/11/2026 — three things US010 shipped that nothing measures
+
+**Type:** Active gap
+**Summary:** Three things, from US010's security audit findings 11 and 15:
+
+1. **actionlint has never run.** It was not run in any of US010's rounds: it is not installed
+   here, and no `code/src/scripts/**` script runs it. The workflow edits of rounds 6 to 9 are
+   unmeasured by it.
+2. **The Copier version is unnamed.** CI's `[3/4]` calls an unpinned
+   `uvx --offline --from copier` (`.github/scripts/shipped-ai.sh:35`) and prints no version.
+3. **A task count has no gate.** The quickstart's "the four at the bottom of `copier.yml`"
+   counts tasks. That is true at `7d54df26` (`copier.yml:1138`, `:1188`, `:1195`, `:1199`),
+   but nothing holds it (the TM-13 residual).
+
+Findings F-030 and F-031 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Print `copier --version` in `[3/4]`. Add an
+actionlint leg, or record why there is none. Name the tasks rather than count them, as the
+seed-count sites now do. No map or story claims this entry.
+
+---
+
+## 21/11/2026 — the test record cannot see a Bash-only story's suite
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/tests/test-record.sh` and `code/src/scripts/audits/story-markers.sh`
+read only pytest, Bruno, axe and coverage artefacts. A story whose proof is gate self-tests and
+probe runners therefore generates an empty table, and its record is hand-written in the free
+sections. US009 was the first such story (its F-029 named a second Bash-only story as this
+entry's trigger), and US010 is the second: its record lists 0 attributed tests against nine
+self-tests, `pm-boards.sh`, `template-hooks.sh` and `hook-arming.sh`. Finding F-033 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Teach the generator a Bash probe-report format (each
+runner already prints a pass/fail summary), or record Bash suites as out of its scope in
+`code/docs/TESTING.md`. No map or story claims this entry.
