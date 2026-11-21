@@ -389,6 +389,16 @@ self_test() {
     awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
     COPIER="$tmp/ungated.yml"; probe "check 2 fires on ${ung#*|}" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
   done
+  # 2f. Round 5: what the shell un-splits before mv sees it — quotes splitting the name and a
+  #     backslash inside it, and brace expansion naming a board among alternatives.
+  for ung in 'mv .cop""ier/STORIES-BOARD.md x|a seed path split by empty quotes' \
+             "mv .co'p'ier/STORIES-BOARD.md x|a seed path split by single quotes" \
+             'mv .cop\ier/STORIES-BOARD.md x|a seed path split by a backslash' \
+             'mv .copier/{STORIES,X}-BOARD.md x|a brace expansion naming a board'; do
+    printf '%s\n' "  - command: ${ung%%|*}" > "$tmp/line"
+    awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+    COPIER="$tmp/ungated.yml"; probe "check 2 fires on ${ung#*|}" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
+  done
   printf '%s\n' '  - command: cp -r .copier/ project-management/src/' > "$tmp/line"
   awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
   COPIER="$tmp/ungated.yml"; run_checks; ST_PROBES=$((ST_PROBES + 1))
