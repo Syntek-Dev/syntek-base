@@ -43,11 +43,10 @@
 # where a ruleset requires it, and only main is protected: dev, staging and testing are not, so a
 # red tip can reach them; and main's ruleset lets its bypass actor (the admin role, bypass mode
 # "always") merge or push past the required checks AND force-push or delete main, so a red tip can
-# reach main through that bypass too (21/11/2026). Nor does main yet require a branch to be up to
-# date before it merges, so a merged result is not re-judged against the latest main: merge
-# commits only (main by ruleset, every branch by repository setting — a squash or rebase merge
-# would fold or flatten an archive move and lock --check red) and strict checks on main are
-# pending the maintainer's commands (round 10, 21/11/2026).
+# reach main through that bypass too (21/11/2026). Merge commits only (main by ruleset, every
+# branch by repository setting — a squash or rebase merge would fold or flatten an archive move and
+# lock --check red) and strict checks on main, so a branch is brought up to date with main before
+# it merges and the merged result is judged against the latest main: set 21/11/2026.
 # Two self-tests run in CI alone, needing toolchains or a generated project:
 # check-template-parsers.sh's and shipped-artefacts.sh's.
 #

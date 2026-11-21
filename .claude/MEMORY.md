@@ -99,8 +99,9 @@ scan reads **file contents and commit messages, across every commit in a PR's ra
 the old name in a changelog, a commit message or a PR body re-arms it, and a later fixing commit
 cannot clear the PR. Describe it ("a 41-character `test_` name") instead. If a branch commit
 already carries it, **never squash into `main` — reword or rewrite the offending commit on the
-branch before merging** (Sam's ruling 21/11/2026; the ruleset and repository restrictions are
-pending), so the literal never reaches `main`. A full-history scan (`workflow_dispatch`) still
+branch before merging** (Sam's ruling 21/11/2026; merge commits only, set 21/11/2026 — the
+repository has squash and rebase off, and ruleset `20221742` allows merge only with strict checks
+on `main`), so the literal never reaches `main`. A full-history scan (`workflow_dispatch`) still
 fails on `47e84cf`, by design.
 
 ### The Playwright pin's value comes from this machine's Nix config — 18/09/2026
