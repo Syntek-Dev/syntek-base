@@ -388,6 +388,15 @@ self_test() {
   printf '%s\n' '  - ["!project-management/src/02-STORIES/STORIES-BOARD.md"]' > "$tmp/line"
   awk -v f="$tmp/line" '{print} /^_exclude:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/reinclude.yml"
   COPIER="$tmp/reinclude.yml"; probe "check 1 refuses a flow _exclude entry" "check 1 cannot read"
+  # 1e. 21/11/2026: an entry copier reads as a negation that check 1 cannot read, refused.
+  local sb=project-management/src/02-STORIES/STORIES-BOARD.md refused
+  refused=( # a YAML core tag resolving to the string: `!!str`, the non-specific `!`, verbatim
+    "!!str \"!$sb\"" "! \"!$sb\"" "!<tag:yaml.org,2002:str> \"!$sb\""
+  )
+  for neg in "${refused[@]}"; do
+    awk -v l="  - $neg" '{print} /^_exclude:/{print l}' "$real_copier" > "$tmp/reinclude.yml"
+    COPIER="$tmp/reinclude.yml"; probe "check 1 refuses the _exclude entry $neg" "check 1 cannot read"
+  done
   COPIER="$real_copier"
 
   # 2. Drop a _tasks move.
