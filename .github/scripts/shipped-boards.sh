@@ -467,6 +467,45 @@ self_test() {
     printf '\033[31m  ✗ the bare .copier/ directory produced %d finding(s)\033[0m\n' "${#FINDINGS[@]}"
   fi
   COPIER="$real_copier"
+  # 2h. Round 7: a seed path behind `=`, `,` or `:` inside one word — a shell assignment, an
+  #     operand or option `=value`, a comma or colon list — which round 6's path reading skipped
+  #     (a regression from round 5, whose substring search caught it).
+  for ung in 'F=.copier/STORIES-BOARD.md; mv "$F" x|a seed path in a shell assignment' \
+             'dd if=.copier/STORIES-BOARD.md of=x|an operand=value seed path' \
+             'cp --no-target-directory=.copier/STORIES-BOARD.md x|a --option=value seed path' \
+             'cp --files=a,.copier/STORIES-BOARD.md x|a seed path in a comma list' \
+             'X=a:.copier/STORIES-BOARD.md; cp "$X" x|a seed path in a colon list'; do
+    printf '%s\n' "  - command: ${ung%%|*}" > "$tmp/line"
+    awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+    COPIER="$tmp/ungated.yml"; probe "check 2 fires on ${ung#*|}" "moves .copier/STORIES-BOARD.md outside the copy-gated task"
+  done
+  # The bare .copier directory behind `=`: every board is a finding.
+  for ung in 'tar --directory=.copier -cf x .|the directory as --option=value' \
+             'rsync -a src=.copier/ x|the directory as name=value'; do
+    printf '%s\n' "  - command: ${ung%%|*}" > "$tmp/line"
+    awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+    COPIER="$tmp/ungated.yml"; run_checks; ST_PROBES=$((ST_PROBES + 1))
+    if [[ ${#FINDINGS[@]} -eq ${#BOARDS[@]} && "$(printf '%s\n' "${FINDINGS[@]}" | grep -c 'outside the copy-gated task' || true)" -eq ${#BOARDS[@]} ]]; then
+      log "  ✓ check 2 fires for every board on ${ung#*|}"
+      st_record pass "check 2 fires for every board on ${ung#*|}"
+    else
+      ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 fires for every board on ${ung#*|}"
+      printf '\033[31m  ✗ %s produced %d finding(s)\033[0m\n' "${ung#*|}" "${#FINDINGS[@]}"
+    fi
+  done
+  # A guard, kept as round 6 left it: a different directory whose name only starts .copier is
+  # no seed, so it is no finding.
+  printf '%s\n' '  - command: mv .copierx/STORIES-BOARD.md x' > "$tmp/line"
+  awk -v f="$tmp/line" '{print} /^_tasks:/{while ((getline l < f) > 0) print l; close(f)}' "$real_copier" > "$tmp/ungated.yml"
+  COPIER="$tmp/ungated.yml"; run_checks; ST_PROBES=$((ST_PROBES + 1))
+  if [[ ${#FINDINGS[@]} -eq 0 ]]; then
+    log "  ✓ check 2 does not fire on .copierx, a different directory"
+    st_record pass "check 2 does not fire on .copierx, a different directory"
+  else
+    ST_FAILS=$((ST_FAILS + 1)); st_record fail "check 2 does not fire on .copierx, a different directory"
+    printf '\033[31m  ✗ .copierx produced %d finding(s)\033[0m\n' "${#FINDINGS[@]}"
+  fi
+  COPIER="$real_copier"
   # 2c. A move line that names the board but is not a move: echoed, or commented out inside the
   #     folded command. A substring search reads both as wired; one finding each.
   sed 's#^      mv \.copier/SPRINTS-BOARD\.md #      echo mv .copier/SPRINTS-BOARD.md #' "$real_copier" > "$tmp/echoed.yml"
