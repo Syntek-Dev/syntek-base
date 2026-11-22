@@ -331,6 +331,17 @@ self_test() {
   probe "check 4 fires when a named template file does not ship" "${NAMED_SHIPPED[0]} did NOT ship"
   mv "$tmpdir/held" "$GEN/$SRC_TREE/${NAMED_SHIPPED[0]}"
 
+  # ── 4b. A seeded file does not land ─────────────────────────────────────────
+  #
+  # The LAST entry, by index expression: a loop that reads only the first element passes a
+  # first-entry probe, and ${SEEDED[-1]} is a syntax error on bash 3.2. The substring runs
+  # from the path into the seed wording, so a finding copied from the named-file message
+  # above cannot satisfy it.
+  local last_seed="${SEEDED[${#SEEDED[@]}-1]}"
+  mv "$GEN/$SRC_TREE/$last_seed" "$tmpdir/held"
+  probe "check 4 fires when a seeded file does not land" "$last_seed was seeded but did not land"
+  mv "$tmpdir/held" "$GEN/$SRC_TREE/$last_seed"
+
   # ── 5. A nested .gitignore leaks ────────────────────────────────────────────
   printf '*\n' > "$GEN/questionnaires/.gitignore"
   probe "check 5 fires when an artefact-tree .gitignore leaks" "questionnaires/.gitignore leaked"
