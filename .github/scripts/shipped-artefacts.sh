@@ -59,10 +59,9 @@
 #
 # SELF-TEST. --self-test plants a stray artefact in a copy of the generated tree,
 #            deletes a named shipped file and moves the last seeded file away, asserting
-#            each is caught. A guard nobody has
-#            seen fail is a guard nobody knows works. It reuses the caller's generated
-#            tree rather than generating again — the generation is the expensive part and
-#            [3/4] has already paid for it.
+#            each is caught. A guard nobody has seen fail is a guard nobody knows works.
+#            It reuses the caller's generated tree rather than generating again — the
+#            generation is the expensive part and [3/4] has already paid for it.
 #
 # Requirements: bash, find, grep. No network. Does NOT generate — the caller supplies a
 #               tree that `copier copy` produced.
@@ -352,9 +351,9 @@ self_test() {
   # ── 4b. A seeded file does not land ─────────────────────────────────────────
   #
   # The LAST entry, by index expression: a loop that reads only the first element passes a
-  # first-entry probe, and ${SEEDED[-1]} is a syntax error on bash 3.2. The substring runs
-  # from the path into the seed wording, so a finding copied from the named-file message
-  # above cannot satisfy it.
+  # first-entry probe, and bash before 4.3, 3.2 included, rejects ${SEEDED[-1]} as a bad
+  # array subscript. The substring runs from the path into the seed wording, so a finding
+  # copied from the named-file message above cannot satisfy it.
   local last_seed="${SEEDED[${#SEEDED[@]}-1]}"
   mv "$GEN/$SRC_TREE/$last_seed" "$tmpdir/held"
   probe "check 4 fires when a seeded file does not land" "$last_seed was seeded but did not land"
