@@ -1326,6 +1326,13 @@ why config files stay out of scope. No map or story claims this entry.
 
 ## 21/11/2026 — US010's walk has no blocking Fails; REMEDY-01 stays open, not blocking, under F-016
 
+✅ CLOSED 22/11/2026 — gate 23's verification re-run (third run, 22/11/2026) passed with no
+blockers, closing F-006, and US010 moved to `Accepted` at `2d7e5370` (finding F-006 in
+"project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md"). Nothing
+this entry tracked is left open: REMEDY-01 stays open, not blocking, in its own entry "the
+09/10/2026 build-start remediation never reached the procedures" (F-016), which this closure does
+not touch.
+
 **Type:** Active gap
 **Heading updated 22/11/2026:** was "US010's walk has thirteen blocking Fails and one unwalked
 row, each waiting on a ruling" (21/11/2026). The heading now states the current state.
