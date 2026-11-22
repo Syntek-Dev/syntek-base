@@ -268,6 +268,11 @@ run_checks() {
       [[ -f "$1" ]] \
         || finding "$SRC_TREE/$n matched nothing — the allowlist is too tight; check its '!' negation in copier.yml"
     done
+    # A seed lands by its `mv .copier/...` line in the copy-gated _task, never by a negation.
+    for n in "${SEEDED[@]}"; do
+      [[ -f "$GEN/$SRC_TREE/$n" ]] \
+        || finding "$SRC_TREE/$n was seeded but did not land — repair its .copier/ source file or its 'mv .copier/...' line in copier.yml's copy-gated _tasks entry"
+    done
   fi
 }
 
