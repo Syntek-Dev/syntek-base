@@ -336,14 +336,21 @@ on that plan is owed to this order.
 Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. Both plans exist,
 written on 02/09/2026, and both carry a `| Sprint |` row repointed to this sprint on 07/09/2026.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                   | Status |
-| ----- | ------------------------------------------------------------------- | ------ |
-| US002 | `../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` | Open   |
-| US003 | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`            | Open   |
+| Story | Story plan (`../17-STORY-PLANS/`)                                   | Status            |
+| ----- | ------------------------------------------------------------------- | ----------------- |
+| US002 | `../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` | Customer Accepted |
+| US003 | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`            | Customer Accepted |
 
 <!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
      both cells held the placeholder and now carry each plan's own `| Status |` header row, `Open`.
      The paragraph and comments below describing the placeholder record the old state. -->
+
+<!-- RE-MIRRORED 22/11/2026 under Sam's ruling 3 on the US010 re-walk (manual-test row REMEDY-02):
+     a sprint plan's Story Plans Status cell mirrors the STORY's status as
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` lists it, because a plan has no status of its own
+     (`.claude/skills/completion/SKILL.md` -> Plans). This supersedes, on this point, the 09/10/2026
+     remediation wording "the plan's own Status field", the ruling-D comment above, and any prose
+     in this section that calls the column a mirror of the plan's own `Status` field. Cells: US002 Open -> Customer Accepted; US003 Open -> Customer Accepted. -->
 
 **Both cells read `Not started`, and the value is knowingly false** (08/09/2026). It is a value in
 no status set anywhere in this repository, and both plans it points at carry `Open` in their own

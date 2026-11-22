@@ -383,10 +383,17 @@ constraint.
 
 Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here.
 
-| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status |
-| ---------------------- | ------------------------------------------------------------------ | ------ |
-| US004                  | `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | `Open` |
-| US003 — reserved carry | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`           | `Open` |
+| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status              |
+| ---------------------- | ------------------------------------------------------------------ | ------------------- |
+| US004                  | `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | `Customer Accepted` |
+| US003 — reserved carry | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`           | `Customer Accepted` |
+
+<!-- RE-MIRRORED 22/11/2026 under Sam's ruling 3 on the US010 re-walk (manual-test row REMEDY-02):
+     a sprint plan's Story Plans Status cell mirrors the STORY's status as
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` lists it, because a plan has no status of its own
+     (`.claude/skills/completion/SKILL.md` -> Plans). This supersedes, on this point, the 09/10/2026
+     remediation wording "the plan's own Status field", the ruling-D comment above, and any prose
+     in this section that calls the column a mirror of the plan's own `Status` field. Cells: US004 Open -> Customer Accepted; US003 Open -> Customer Accepted. -->
 
 **The Status column mirrors each plan's own `Status` field, verbatim** — the value in the named
 file's `| Status |` header row, which carries the story-status set and nothing else. That has been

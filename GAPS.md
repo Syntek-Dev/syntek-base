@@ -1327,6 +1327,21 @@ why config files stay out of scope. No map or story claims this entry.
 ## 21/11/2026 — US010's walk has thirteen blocking Fails and one unwalked row, each waiting on a ruling
 
 **Type:** Active gap
+**Update 22/11/2026 (second re-walk):** Sam's rulings 1 to 3 of 22/11/2026 (on the re-walk and on
+gate 23's returned items) were applied, and a second, independent re-walk the same day passes
+BOARDGATE-03, REMEDY-02 and LEGIBLE-02. **No manual row blocks US010 now** (61 Pass, 1 Fail,
+92 retired stubs). What remains:
+
+- REMEDY-01 fails without blocking, routed to the 21/11/2026 entry "the 09/10/2026 build-start
+  remediation never reached the procedures" (F-016).
+- Sam's countersignature of the walk is pending; he reviewed LEGIBLE-02's reader sessions
+  22/11/2026 (ruling 2).
+- Gate 23's verification is re-run (F-006), including whether REMEDY-01 may stand open at
+  `Accepted` (R-007).
+
+US010 cannot move to `Completed` until those are done. No map or story claims this entry. The
+earlier 22/11/2026 update follows, as it stood.
+
 **Update 22/11/2026:** Sam ruled on the walk 22/11/2026, every point "as recommended" (rulings A
 to D), and an independent re-walk of the fifteen affected rows followed. **US010 now has one
 blocking Fail and one row awaiting Sam's review** (58 Pass, 3 Fail, 1 unmarked, 92 retired
@@ -1480,6 +1495,10 @@ re-mirrored 22/11/2026 in sprint plans 01, 02, 04, 05 and 06, and no live `Not s
 survives, but the re-walk still fails it: the cells copy each plan's stale Status row rather than
 the status the plan shows (its story's), and only US010 and US011 match the board (F-017). The
 mirror decision below stands.
+**Update 22/11/2026 (second):** Sam's ruling 3 reads the mirror as the story's status on
+`STORY-PLANS-BOARD.md`; 12 live cells were re-mirrored, and REMEDY-02 passes at the second
+re-walk of 22/11/2026. REMEDY-01 still fails. Still open here: the transition move with its N/A
+and adapter sentences, and whether the sprint-plan mirror is generated, gated or dropped.
 **Summary:** The remediation approved on 09/10/2026 (grill-with-docs, Q1) is quoted in
 US010's manual guide _Preconditions_. It required that, after US007, the
 `Open` → `In Progress` transition is recorded after the due pre-edit captures and before the
@@ -1504,6 +1523,8 @@ illegible or restating their filename. Ten belong to records under `*/archive/`,
 frozen, so their titles cannot be edited: seven superseded ADRs (F-053 to F-059) and three
 resolved findings (F-060 to F-062). The other nine are live and carried to the next story. Findings F-053 to F-062 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md",
 Section 2.10; the readers' reasons are quoted in "project-management/src/18-TESTS/MANUAL/US010-MANUAL-TESTING.md".
+**Update 22/11/2026:** Sam reviewed the reader sessions 22/11/2026 (ruling 2), and LEGIBLE-02
+passes at the second re-walk; the per-title decision below is what remains.
 **Blocked by / Action:** Sam reviews the reader sessions first (LEGIBLE-02). For each frozen title
 he accepts as flagged, he decides whether it stands as frozen history or the board gains another
 way to show it; nothing under `archive/` is edited by hand. No map or story claims this entry.

@@ -254,14 +254,21 @@ and the reading this plan's dated comment below already calls "the settled readi
 sprint plan". A cell written correct in a column of wrong ones would split the population that
 story corrects in a single pass.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                      | Status |
-| ----- | ---------------------------------------------------------------------- | ------ |
-| US007 | `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` | Open   |
-| US001 | `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`   | Open   |
+| Story | Story plan (`../17-STORY-PLANS/`)                                      | Status            |
+| ----- | ---------------------------------------------------------------------- | ----------------- |
+| US007 | `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` | Customer Accepted |
+| US001 | `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`   | Customer Accepted |
 
 <!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
      both cells held the placeholder and now carry each plan's own `| Status |` header row, `Open`.
      The paragraph above and the comments below describing the placeholder record the old state. -->
+
+<!-- RE-MIRRORED 22/11/2026 under Sam's ruling 3 on the US010 re-walk (manual-test row REMEDY-02):
+     a sprint plan's Story Plans Status cell mirrors the STORY's status as
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` lists it, because a plan has no status of its own
+     (`.claude/skills/completion/SKILL.md` -> Plans). This supersedes, on this point, the 09/10/2026
+     remediation wording "the plan's own Status field", the ruling-D comment above, and any prose
+     in this section that calls the column a mirror of the plan's own `Status` field. Cells: US007 Open -> Customer Accepted; US001 Open -> Customer Accepted. -->
 
 <!-- 08/09/2026, `17-story-plans` Step 10: US007's plan was written and this section took the row,
      the Status cell and the rewritten opening paragraph in the same change. SUPERSEDED WORDING,

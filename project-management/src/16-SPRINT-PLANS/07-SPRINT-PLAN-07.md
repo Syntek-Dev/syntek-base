@@ -271,8 +271,15 @@ repointed at its file by that workflow's Step 10. Neither prefix was assigned by
 
 | Story | Story plan (`../17-STORY-PLANS/`)                                  | Status  |
 | ----- | ------------------------------------------------------------------ | ------- |
-| US012 | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`      | Open    |
+| US012 | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`      | Pending |
 | US011 | `../17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` | Blocked |
+
+<!-- RE-MIRRORED 22/11/2026 under Sam's ruling 3 on the US010 re-walk (manual-test row REMEDY-02):
+     a sprint plan's Story Plans Status cell mirrors the STORY's status as
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` lists it, because a plan has no status of its own
+     (`.claude/skills/completion/SKILL.md` -> Plans). This supersedes, on this point, the 09/10/2026
+     remediation wording "the plan's own Status field", the ruling-D comment above, and any prose
+     in this section that calls the column a mirror of the plan's own `Status` field. Cells: US012 Open -> Pending; US011 Blocked -> Blocked. -->
 
 The run on disk is contiguous `00-` to `12-`: US010's plan took "10-" in the `17-story-plans`
 change committed before US012's, and US011's took "12-" in the change after it (settled 03/10/2026,

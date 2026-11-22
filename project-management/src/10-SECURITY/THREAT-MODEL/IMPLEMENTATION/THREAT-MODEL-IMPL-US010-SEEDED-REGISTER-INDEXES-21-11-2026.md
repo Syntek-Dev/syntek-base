@@ -134,8 +134,12 @@ None is CRITICAL or HIGH; nothing is escalated to `../../VULNERABILITIES/IMPLEME
 
 **Overall verdict:** no CRITICAL or HIGH was planned, built or found; the four MEDIUM integrity
 threats are mitigated by shipped, CI-green controls, and TM-15's promotion and the seven new
-threats are known, tracked residuals, not regressions — subject to the four `GAPS.md` entries
-this gate still owes.
+threats are known, tracked residuals, not regressions — with the four `GAPS.md` entries this
+gate owed written 21/11/2026 (F-019 to F-022).
+
+<!-- Corrected 22/11/2026 (gate-23 return R-005): the verdict read "subject to the four `GAPS.md`
+     entries this gate still owes", a residual from before Step 5; the Outcome row already records
+     them written 21/11/2026. -->
 
 ---
 
