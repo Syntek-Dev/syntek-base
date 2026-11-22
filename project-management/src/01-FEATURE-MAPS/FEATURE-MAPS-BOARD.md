@@ -9,7 +9,7 @@ One row per feature map in `01-FEATURE-MAPS/` and `01-FEATURE-MAPS/archive/`, fi
 
 | Column         | Items |
 | -------------- | ----- |
-| Charting       | 1     |
+| Charting       | 2     |
 | Resolving      | 7     |
 | Blockers Clear | 4     |
 | Complete       | 9     |
@@ -17,9 +17,10 @@ One row per feature map in `01-FEATURE-MAPS/` and `01-FEATURE-MAPS/archive/`, fi
 
 ## Charting
 
-| ID                 | Title                                                                                   | Status   | File                                           |
-| ------------------ | --------------------------------------------------------------------------------------- | -------- | ---------------------------------------------- |
-| MAP-SENTENCE-RULES | Text a reader acts on gets eight sentence rules, one owner, and a gate on changed lines | Charting | [MAP-SENTENCE-RULES.md](MAP-SENTENCE-RULES.md) |
+| ID                      | Title                                                                                   | Status   | File                                                     |
+| ----------------------- | --------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------- |
+| MAP-GENERATION-COVERAGE | Every valid offered configuration generates a complete, gated project                   | Charting | [MAP-GENERATION-COVERAGE.md](MAP-GENERATION-COVERAGE.md) |
+| MAP-SENTENCE-RULES      | Text a reader acts on gets eight sentence rules, one owner, and a gate on changed lines | Charting | [MAP-SENTENCE-RULES.md](MAP-SENTENCE-RULES.md)           |
 
 ## Resolving
 

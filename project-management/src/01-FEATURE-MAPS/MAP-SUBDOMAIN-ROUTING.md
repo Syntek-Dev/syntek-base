@@ -42,14 +42,14 @@ whether or not any application code is touched.
 
 ## Notes
 
-| Field                    | Value                                                                                                                                                        |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Domain                   | URL and host architecture — the seam between `code/docs/URL-STRATEGY.md` and `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md`                           |
-| Skills to load           | `backend` · `stack-django` · `security` · `cicd` · `doc-writer` · `seo` · `scale-planning` (the edge contract is one of its two snapshots)                   |
-| Standing preferences     | This repo **specifies**, the deploy repo **implements** · a rule ships with a gate (**tested by N-020**) · no new copier token — **enforced, not preferred** |
-| Umbrella ADRs            | **None, and none may be authored here** — a dated house rule (`../15-DECISIONS/CLAUDE.md:34-41`, 16/08/2026), **not** a mechanical impossibility. See below  |
-| Register entries triaged | **0 closes · 0 blocks · 1 unrelated** — exhaustive; `DEFERRED.md` holds no rows                                                                              |
-| Scope confirmed by Sam   | 28/08/2026 — `Q1→3` mechanism not pre-committed · `Q2→1` all shipped hosts are inventory rows · `Q3→3` `SITE_URL` in scope, `API_DOCS_ENABLED` out           |
+| Field                    | Value                                                                                                                                                                |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                   | URL and host architecture — the seam between `code/docs/URL-STRATEGY.md` and `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md`                                   |
+| Skills to load           | `backend` · `stack-django` · `security` · `cicd` · `doc-writer` · `seo` · `scale-planning` (the edge contract is one of its two snapshots)                           |
+| Standing preferences     | This repo **specifies**, the deploy repo **implements** · a rule ships with a gate (**tested by N-020**) · no new copier token — **enforced, not preferred**         |
+| Umbrella ADRs            | Any ADR is authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story |
+| Register entries triaged | **0 closes · 0 blocks · 1 unrelated** — exhaustive; `DEFERRED.md` holds no rows                                                                                      |
+| Scope confirmed by Sam   | 28/08/2026 — `Q1→3` mechanism not pre-committed · `Q2→1` all shipped hosts are inventory rows · `Q3→3` `SITE_URL` in scope, `API_DOCS_ENABLED` out                   |
 
 **The ADR row is corrected, and the correction is somebody else's node.** This map previously read
 _"None, and none is possible"_. That is false: `15-DECISIONS/` ships `ADR-000-TEMPLATE.md`, its
@@ -456,8 +456,6 @@ existence in DNS or CT logs is itself information.
       three censuses die with it. N-004 – N-008 are recorded in
       _The cookie spine_, graduating with the slice N-019 gates
 - [x] **Every slice has a flag manifest** — four slices cut and backfilled 01/09/2026; S-03 carries `—`, stated not omitted
-- [x] **No index row in `CONTEXT.md`** — the interim decline `MAP-RULE-OWNERSHIP` N-010 settled on
-      28/08/2026; the row arrives with that map's slice S-06
 
 **Slices here become stories** — Sam, 01/09/2026, superseding the earlier no-stories reading;
 `02-story-creation` cuts them once the blocking frontier resolves. The three named gates — the

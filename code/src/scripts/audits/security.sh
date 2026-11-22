@@ -5,7 +5,7 @@
 #   Mirrors the CI "[8/8] Security" gate so a clean local run predicts a clean CI run.
 #   The gate runs, per ecosystem:
 #     JS/TS:  pnpm audit --audit-level low      (honours audit.ignore in
-#                                                 pnpm-workspace.yaml — read natively by pnpm 11)
+#                                                 pnpm-workspace.yaml — read natively by pnpm 11+)
 #     Python: uv run pip-audit                  (CVE scan of the locked backend deps)
 #
 #   Runs on the host by default (like the other audits/ scripts). Pass --docker to run the

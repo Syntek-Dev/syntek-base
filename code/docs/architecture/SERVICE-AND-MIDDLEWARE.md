@@ -257,13 +257,22 @@ MIDDLEWARE = [
 | **Scheduled**       | Runs on a cron schedule (daily digest, cleanup) | Scheduled       | Yes, alert on repeated failure  |
 | **Chained**         | Sequence of dependent steps                     | Default         | Each step retries independently |
 
+Whether a job retries at all is decided by [`../reliability/RETRIES.md`](../reliability/RETRIES.md),
+and only for an idempotent operation, and how far by [`../reliability/BUDGETS.md`](../reliability/BUDGETS.md).
+A scheduled job whose schedule re-runs it — the retention purge is the example — does not retry
+itself: the schedule is the one layer that decides ([`../reliability/RETRIES.md`](../reliability/RETRIES.md)
+Section _One layer decides to retry_). The _Retry_ column's reduction to that pointer is tracked
+separately.
+
 ### Rules
 
 - Each job has a single, clear responsibility.
 - Chain jobs explicitly rather than having one job trigger the next implicitly.
 - Failed jobs must be monitored. Set up alerts for job failure rates exceeding a threshold.
 - Long-running jobs (> 30 seconds) must send heartbeats or progress updates.
-- Jobs that interact with external APIs must implement circuit breaker patterns.
+- Circuit breakers on jobs that call external APIs are deferred, not mandated — the triggers that
+  reopen them and the partial mechanism already in the tree are
+  [`../RELIABILITY.md`](../RELIABILITY.md) Section _Deferred, with triggers_.
 
 ---
 

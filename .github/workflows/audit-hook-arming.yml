@@ -1,0 +1,215 @@
+# Hook-arming probes — the CI half of code/src/scripts/tests/hook-arming.sh.
+#
+# The git hooks arm in exactly one place: install.sh's last Phase 1 step, which calls
+# code/src/scripts/development/install-hooks.sh. package.json carries no `prepare`; its
+# `postinstall` only prints a notice (install-hooks.sh --notice). This job proves both against
+# disposable checkouts of this repository — never a bare `git init` — and NEVER inlines an
+# assertion: every step below calls the script, which owns the fixtures and the oracles.
+#
+# Not folded into a template-generation check: such a check sets up uv only and never executes
+# a generated install.sh, so at most it can grep for the step's presence on both INCLUDE_MOBILE
+# poles. Running the step is this workflow's job.
+#
+# CI IS SET ON EVERY RUNNER, and the `pnpm install` below fires the new postinstall under it —
+# one of the notice's silent clauses. The probe's printing cases therefore run with `env -u CI`
+# inside the script; a probe that inherited CI would pass against the suppressed state.
+#
+# THE PROBES JOB IS UNFILTERED. The arming path spans install.sh, package.json, lefthook.yml, the
+# lockfile and the installer scripts; a path filter would be a hand-kept copy of that set.
+#
+# ONLY install-failure IS FILTERED, at job level, and the filter is INVERTED (settled
+# 17/11/2026): it is skipped only when EVERY changed file is documentation or PM —
+# `*.md`, `project-management/**`, `research/**`, `handoffs/**` — and runs otherwise. A
+# dependency list of the install path was tried first and three review passes found it
+# incomplete; a deny-list of what cannot matter is the shape that stays true. A workflow-level
+# `paths:` would filter both jobs, so the `changes` job below diffs the event's range and the
+# job is gated on its output. It fails OPEN: a manual run, a new branch (no `before`), an empty
+# diff or a base it cannot read all run the fixture. A skipped job reports "skipped", which is
+# why this job must never be a required status check.
+#
+# Every checkout sets `persist-credentials: false` (SEC-05): the fixtures run real installers
+# and git hooks, and none of them needs the token. The pnpm cache key carries a `hook-arming`
+# prefix so this job never shares an entry with claude.yml's.
+#
+# Exit 3 from the script is UNMEASURED and fails the step: a fixture that could not look is
+# never reported clean (code/docs/GATE-REPORTING.md).
+name: Audit — Hook Arming
+
+on:
+  push:
+    branches: [main, staging, dev, testing]
+  pull_request:
+    branches: [main, staging, dev, testing]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probes:
+    name: Hook-arming probes
+    runs-on: ubuntu-latest
+    # Measured 17/11/2026 on a workstation with a warm pnpm store: every fixture but
+    # install-failure, run back to back, took 4 min 18 s, most of it hook-paths and graph-reclaim
+    # (several real pre-commit runs each). 20 is about 4x that, for a cold store, the
+    # lefthook 1.13.0 fetch and a slower runner.
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Get pnpm store directory
+        run: echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-hook-arming-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-hook-arming-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # graph-reclaim runs the real code-review-graph at the script's pinned version through uvx.
+      - name: Install uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: "0.13.7"
+          ignore-nothing-to-cache: true
+
+      # binary-provenance and notice-streams trace with strace; without it they report unmeasured.
+      - name: Provision strace
+        run: command -v strace || { sudo apt-get update -q && sudo apt-get install -y -q strace; }
+
+      - name: Manifest and installer assertions (ST01, ST02, ST02b, P1, P2, HP-06)
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture manifest
+
+      - name: Fixture A — committed checkout and worktree (HP-01 to HP-04, EC-01, EC-03, EC-06, EC-07, ES-04)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture A
+
+      - name: Fixture B — unborn HEAD (EC-04)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture B
+
+      - name: Fixture C — no .git (ES-05)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture C
+
+      - name: The postinstall notice through pnpm install (HP-08, EC-09 to EC-12, ES-06)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture notice
+
+      - name: Notice streams (PA-03, EC-18)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture notice-streams
+
+      - name: Effective hook paths (EC-14 to EC-16, S-m2)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture hook-paths
+
+      - name: An existing pre-commit.old is moved aside, never lost (Q2, SEC-02, R4-QA-01/03)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture old-backup
+
+      - name: Repository shapes — shared hooks dirs, nested, GIT_DIR, broken and bare repos
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture repo-shapes
+
+      - name: The install-failure change filter, offline (R4-SEC-03)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture change-filter
+
+      - name: install.sh --spec survives every failing host probe (machine-spec)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture machine-spec
+
+      - name: Write boundary (ST05, EC-17)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture write-boundary
+
+      - name: Graph reclaim (EC-05, S-M1)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture graph-reclaim
+
+      - name: Binary provenance (EC-02)
+        if: success() || failure()
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture binary-provenance
+
+      - name: Upload probe evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: hook-arming-evidence
+          path: code/src/scripts/tests/reports/hook-arming/
+          if-no-files-found: ignore
+
+  changes:
+    name: Does install-failure need to run?
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      install: ${{ steps.diff.outputs.install }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # The filter lives in hook-arming.sh (--needs-install-failure), where the change-filter
+      # fixture tests it offline: `git -c core.quotePath=false diff --no-renames --name-only`, so
+      # both sides of a rename count and a non-ASCII path still matches. `true` on any doubt.
+      - name: Skip install-failure only when every changed file is docs or PM
+        id: diff
+        env:
+          BASE: ${{ github.event_name != 'workflow_dispatch' && (github.event.pull_request.base.sha || github.event.before) || '' }}
+        run: |
+          install="$(bash code/src/scripts/tests/hook-arming.sh --needs-install-failure "$BASE")"
+          echo "install=$install" >> "$GITHUB_OUTPUT"
+          echo "install-failure needed: $install (base: ${BASE:-none})"
+
+  # Its own job because root install.sh needs what the probes job does not: a docker daemon, uv,
+  # and passwordless `sudo tee -a /etc/hosts`. A GitHub-hosted runner has all three; the script
+  # refuses this fixture on any other host unless --allow-install-sh is given.
+  install-failure:
+    name: Hook-install failure stops install.sh (ES-01 to ES-03)
+    needs: changes
+    if: needs.changes.outputs.install == 'true'
+    runs-on: ubuntu-latest
+    # uv sync of the full project, a pnpm install and the hooks step; well under 10 minutes on a
+    # GitHub runner by the shape of the work. This fixture was not run locally (CI-only), so the
+    # figure is an estimate with headroom, not a measurement.
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: "0.13.7"
+
+      - name: install.sh with an obstructed hooks directory
+        run: bash code/src/scripts/tests/hook-arming.sh --fixture install-failure
+
+      - name: Upload probe evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: hook-arming-install-failure-evidence
+          path: code/src/scripts/tests/reports/hook-arming/install-failure/
+          if-no-files-found: ignore

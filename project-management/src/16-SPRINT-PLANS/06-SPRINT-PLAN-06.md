@@ -1,7 +1,7 @@
 # SPRINT-PLAN-06 — The seven register indexes are born seeded, and the map index leaves the file that ships
 
-**Last Updated**: 03/10/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
-**Source sprint:** `../03-SPRINTS/SPRINT-06.md` · **Capacity:** 8 / 11 — 13 / 11 if US009's reserved carry lands · **Stories:** 1, plus one reservation
+**Last Updated**: 17/11/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
+**Source sprint:** `../03-SPRINTS/SPRINT-06.md` · **Capacity:** 8 / 11 — the US009 carry reservation released 17/11/2026 (it read "13 / 11 if US009's reserved carry lands" until US009's re-estimate to 8 SP that day, then 16 / 11) · **Stories:** 1
 
 <!-- Written 03/10/2026 by a `16-sprint-plans` run. The title is US010's, the sole member, on the
      precedent ./03-SPRINT-PLAN-03.md set for a record with one member.
@@ -34,6 +34,21 @@
 ---
 
 ## Sprint Goal
+
+> **Re-cut 19/11/2026 — scope and estimate, recorded without a status change.** US010 was re-cut
+> at its build's first step (`../02-STORIES/US010.md` -> _Re-cut — 19/11/2026_; grilling rounds 1
+> to 4 with <%DEVELOPER_NAME%>). It now builds three generated boards — decisions, findings and
+> bugs — on 7.7.0's `pm-board.sh` and seed chain, not seven hand-written index files. **US011's
+> remaining criteria are absorbed into US010** (round 2 Q1); US011's own status is left for a
+> separate developer decision and is not changed here, and `../03-SPRINTS/SPRINT-07.md` is not edited
+> by this note. **The 72-case `[3/4]` matrix splits out of US010** (round 4 Q1). 19/11/2026: the
+> matrix moved from the withdrawn US021 to `project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md`
+> (Sam: map first; CUT-PLAN P14; the number was not validly allocated). **US010 stays 8 SP, so the
+> sprint stays 8 / 11 SP** (`../03-SPRINTS/SPRINT-06.md` wins on sprint facts), the re-estimate threshold
+> being a fourth fixture family or a second new CI job (round 4 Q2). Where the goal, lane, constraints,
+> checklist and Definition of Done below name index files, the third `shipped-registers.sh` family,
+> the debt lines, the map enum, the literal grep, the link check or every render path, they are
+> superseded 19/11/2026 by the story's re-cut criteria and its plan's re-cut phase plan, and kept as the record.
 
 > Every register folder gains an index file of its own, born seeded and seed-once so no
 > `copier update` can overwrite a filled one; the feature-map index is backfilled and leaves the
@@ -162,10 +177,21 @@ SPRINT-07 has nothing to edit until the seven files exist. A slip here stalls al
 
 ### Should
 
-_None committed._ **US009's 5 SP `Should` carry is reserved into this plan from SPRINT-05**, and
+_None committed, and nothing reserved since 17/11/2026._ **The US009 carry is RELEASED**:
+<%DEVELOPER_NAME%> settled "Keep all of US009 on SPRINT-05 as we are implementing", so US009
+completes in `../03-SPRINTS/SPRINT-05.md` and the carry future below is closed. Until that day:
+**US009's 5 SP `Should` carry is reserved into this plan from SPRINT-05**, and
 this section holds that reservation rather than a member. `../03-SPRINTS/SPRINT-05.md` ->
 _Definition of Done_ reserves it here if US009 is dropped rather than delivered, and the record
 holds it from this side.
+
+**Since 17/11/2026 the reserved carry is 8 SP, not 5.** US009 was re-estimated from 5 to 8 during
+implementation (settled with <%DEVELOPER_NAME%>, /implement-story grilling round 5), so a landed
+carry would stand this plan at **16 / 11 — 8 `Must` + 8 `Should`, 3 SP past grace** — which the
+20/09/2026 grace licence below does not cover. The table and paragraph below are as of 20/09/2026
+and are kept as written. Later the same day the reservation was released, so the second row of
+that table no longer describes a possible future: this plan stands at **8 / 11, all `Must`**, the
+first row's reading, and the grace licence has no subject.
 
 **The all-`Must` weakness stands, and the reservation is its only contingent repair.** US010 alone is
 a single all-`Must` member — the shape `../../docs/planning/SPRINTS.md` warns has no give, where the
@@ -299,10 +325,24 @@ exists.** It was written 03/10/2026 by `17-story-plans` under the "10-" reserved
 table was repointed at it by that workflow's Step 10. The reserved-carry row points at a plan that
 also exists, so whoever takes the carry finds it from this index; it is not a membership claim.
 
-| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status      |
-| ---------------------- | ------------------------------------------------------------------ | ----------- |
-| US010                  | `../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` | Open        |
-| US009 — reserved carry | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`             | Not started |
+| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status    |
+| ---------------------- | ------------------------------------------------------------------ | --------- |
+| US010                  | `../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` | In Review |
+| US009 — reserved carry | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`             | Accepted  |
+
+<!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
+     US010's cell read `Open`; its plan's `| Status |` row was removed 19/11/2026 (a plan carries no
+     status since 7.7.0), so the cell mirrors the column STORY-PLANS-BOARD.md files that plan under,
+     its story's `In Review`. US009's cell held the placeholder and now carries its plan's own
+     `| Status |` header row, `Open`. The comments below describing the placeholder record the old
+     state. -->
+
+<!-- RE-MIRRORED 22/11/2026 under Sam's ruling 3 on the US010 re-walk (manual-test row REMEDY-02):
+     a sprint plan's Story Plans Status cell mirrors the STORY's status as
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` lists it, because a plan has no status of its own
+     (`.claude/skills/completion/SKILL.md` -> Plans). This supersedes, on this point, the 09/10/2026
+     remediation wording "the plan's own Status field", the ruling-D comment above, and any prose
+     in this section that calls the column a mirror of the plan's own `Status` field. Cells: US010 In Review -> In Review; US009 Open -> Accepted. -->
 
 The run on disk is contiguous `00-` to `10-`, measured 03/10/2026 once US010's plan was written.
 **The prefix is the story's
@@ -520,8 +560,8 @@ its supply-chain subject.
 
 | ADR                                                                                     | Authored at           | What it binds                                                                                                                                                                 |
 | --------------------------------------------------------------------------------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `../15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`                  | `15-decisions`, 21/09 | A map's Status header is one of five plain values, any prose after the first middle dot; every live map re-derived by measurement against the map's own counts                |
-| `../15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                        | `15-decisions`, 21/09 | One rule for reading any register's Status into an index row, across all seven registers; US011 applies it and `S-03` inherits it                                             |
+| `../15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`          | `15-decisions`, 21/09 | A map's Status header is one of five plain values, any prose after the first middle dot; every live map re-derived by measurement against the map's own counts                |
+| `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                | `15-decisions`, 21/09 | One rule for reading any register's Status into an index row, across all seven registers; US011 applies it and `S-03` inherits it                                             |
 | `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` | Inherited, 30/09      | A red `doc-references.sh` is read as a diff against a baseline captured before the first edit. It supersedes the 02/09/2026 record and restates it unchanged but for one path |
 
 **All three read `Accepted`, measured 03/10/2026.** Both US010 records were written `Proposed` on
@@ -530,7 +570,7 @@ its supply-chain subject.
 
 **One decision is declined on the record and two records do not bind.** The four incomplete indexes
 ship declaring their own debt, with no ADR (settled 21/09/2026, grilling round 2 Q10), on reasons
-US010 -> _Decisions_ states. `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+US010 -> _Decisions_ states. `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
 reads `Superseded`, and only its successor binds.
 `../15-DECISIONS/ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL-08-09-2026.md` reads `Proposed`; its
 sign-off is the read-rule record's Follow-on, and it binds nothing here.

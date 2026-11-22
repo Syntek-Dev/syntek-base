@@ -34,7 +34,8 @@ decide how every failure in this codebase is classified.
   adapter knows which of a provider SDK's exceptions mean "the network"
   (`code/docs/architecture/PROVIDER-NEUTRALITY.md`).
 - Retry, backoff and circuit-breaker behaviour is **not** decided here — retries and backoff are
-  `code/docs/RELIABILITY.md`, circuit breakers `architecture/SERVICE-AND-MIDDLEWARE.md`.
+  `code/docs/RELIABILITY.md`, and circuit breakers are deferred in that guide's Section
+  _Deferred, with triggers_.
 - Files ≤ 750 lines (800 grace).
 
 ## Output & naming

@@ -181,7 +181,7 @@ None. Every scenario was walked; the re-walk covered every row the walk-fail fix
 - `../../02-STORIES/US003.md` — the story under review
 - `../../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md` — the plan, its Key Decisions (Q1 to Q4, D1, D2)
 - `../../18-TESTS/AUTOMATED/US003-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US003-MANUAL-TESTING.md` — downstream test records
-- `../../20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md` — the findings this review cites
+- `../../20-FINDINGS/archive/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md` — the findings this review cites
 - `../../19-REVIEWS/REVIEW-US003-ABSENCE-GUIDE.md` — the three review rounds and the QA breaker pass
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `project-management/workflows/22-implementation-documentation/` — where this review is written

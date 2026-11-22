@@ -41,7 +41,7 @@ and the findings record.
 
 Four passes. Severity is each pass's own grade; a Nit is recorded Low. A finding a later round
 re-reported is listed once, at its first round. "Finding F-0NN" points into
-`../20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md`.
+`../20-FINDINGS/archive/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md`.
 
 ### 2.1 Round 1 — `code-reviewer` and `qa-tester`, at `e1afd7b`; fixed in `8a9e245`
 
@@ -262,5 +262,5 @@ of its own (finding F-025).
 - `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md` — the plan, its pre-build Key Decisions (Q1 to Q4) and review-fix decisions (D1, D2)
 - `../18-TESTS/AUTOMATED/US003-TEST-STATUS.md` · `../18-TESTS/MANUAL/US003-MANUAL-TESTING.md` — the test records
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US003-ABSENCE-GUIDE-05-11-2026.md` — the paired QA review
-- `../20-FINDINGS/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md` — the findings
+- `../20-FINDINGS/archive/FINDING-US003-ABSENCE-GUIDE-05-11-2026.md` — the findings
 - `project-management/workflows/22-implementation-documentation/` · `project-management/workflows/23-pr-and-review/` — `22` drafted this record; `23` completes it with its final passes (Section 2.5) and verifies it

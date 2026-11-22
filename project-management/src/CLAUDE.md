@@ -61,10 +61,20 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
   renumber if it ships a migration in the same commit that moves the developer's files
   (`.copier/migrations/`) — exercised at v2.0.0 and v7.0.0, and never because one merely could <!-- doc-references: template-only -->
   be written. Enforced by `code/src/scripts/audits/template-orphans.sh`.
-- **`*/archive/` is frozen.** In `01`, `02`, `03`, `16` and `17`, a `Closed` item is moved into
-  the folder's `archive/` by `00-ASSETS/scripts/pm-archive.sh` and never edited again —
-  `pm-board.sh --check` fails on any change there other than the archive rename and the
-  reference-path rewrites `pm-archive.sh` makes.
+- **`*/archive/` is frozen.** In each of the eight boarded folders an item that has reached its
+  archive status (`Closed`; an ADR `Superseded` or `Deprecated`, a finding `Resolved`, a bug
+  `Verified`) is moved into the folder's `archive/` by `00-ASSETS/scripts/pm-archive.sh` and never
+  edited again. `pm-board.sh --check` fails on any deletion from `archive/` or rename within it; on
+  a move that changes the file beyond what `pm-archive.sh` rewrites — a status register's status
+  line to `Closed` and a story's history row, reference-path depth and folder, and whitespace-only
+  re-padding of a table row (allowed because a move made before the formatters skipped `archive/`
+  re-padded the tables it unaligned); on a move with no live copy before it, or of a story or map
+  not `Completed` or `Complete`; on any later change but the rewrite of a path ending at a `.md`
+  filename (an `archive/` segment or a `./` / `../` depth); and on a file whose status is not its
+  kind's archive status. No formatter or lint leg reads an archived record; `archive/`'s
+  own `CONTEXT.md` and `CLAUDE.md` are read like any pair. The freeze guards a record from its
+  move on, and **does not vouch for the status it arrived with**: a status set in a live commit and
+  moved unedited later is ordinary history, judged by review like any other edit. <!-- Boundary stated 21/11/2026. --> <!-- Finding archive status Resolved from 19/11/2026; it read Triaged before. The rewrite scope and the formatter exclusion stated 19/11/2026; the move, deletion, rename and status rules, and the records-only exclusion, 20/11/2026. -->
 - **Look a file up by ID across the folder and its `archive/`.** Any reader, script or
   numbering step that globs only the live folder breaks the day an item is archived.
 - **`*-BOARD.md` is generated — never hand-edit it.** Run `pm-board.sh --write` after any status
@@ -78,7 +88,7 @@ plus `23-INCIDENTS`, the one record that is not anchored to a story.
 ## Output & naming
 
 - **Hand-written:** all artefacts under every numbered folder, from the per-story templates.
-- **Generated:** the five `*-BOARD.md` (committed) and their `*-board.json` / `*-board.html`
+- **Generated:** the eight `*-BOARD.md` (committed) and their `*-board.json` / `*-board.html`
   siblings (gitignored), by `pm-board.sh --write`; client-facing PDFs and zips live one level up
   in `project-management/export/`. All are regenerated from these sources, never hand-edited.
 - Numbered folders `NN-SCREAMING-SNAKE-CASE/`; artefacts follow their fixed patterns —

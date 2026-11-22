@@ -1,6 +1,9 @@
 # Worktree isolation override — development stack. TEMPLATE: copy, never edit in place.
 #
 # Replace NNN with the story number throughout (e.g. story 3 → us003, 127.0.0.3, 10.3.1.0/24).
+# Names keep the zero padding (us008); IPs and subnets take the story number WITHOUT leading
+# zeros (story 8 → 127.0.0.8, 10.8.1.0/24, never 127.0.0.008). A zero-padded IP in the CSRF
+# origin below never matches the browser's Origin, and every form POST is a 403 again.
 # Save as docker-compose.us<NNN>.dev.yml; server.sh auto-detects it on a us<NNN>/* branch.
 #
 # Usage (manual):
@@ -26,6 +29,14 @@
 name: <%PROJECT_SLUG%>-dev-usNNN
 
 services:
+  django:
+    environment:
+      # Dev nginx forwards Host without the port, so the browser's :3080 Origin never
+      # matches the request host — Django refuses every form POST unless both published
+      # origins are trusted. config/settings/dev.py appends these to its :81 defaults and
+      # refuses a wildcard or a malformed entry.
+      DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA: "http://dev-usNNN.<%PROJECT_SLUG%>.localhost:3080,http://127.0.0.NNN:3080"
+
   nginx:
     ports: !override
       - "127.0.0.NNN:3080:80"

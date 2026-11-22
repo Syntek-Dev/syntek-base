@@ -7,7 +7,7 @@
 #                     This audit correlates that file with the code, by name, in both
 #                     directions and on both surfaces.
 #
-#                     Twelve [gate: fail] clauses and one [gate: warn]:
+#                     Fifteen [gate: fail] clauses and one [gate: warn]:
 #                       constraint-unregistered        a Meta.constraints entry with no row
 #                       constraint-absent              a row naming a constraint no model declares
 #                       key-unraised                   a row whose Key nothing raises
@@ -20,6 +20,9 @@
 #                       mcp-error-middleware-absent    tools exist, no on_call_tool middleware
 #                       mcp-masking-off                tools exist, mask_error_details not True
 #                       mcp-request-id-absent          tools exist, the router mints no request id
+#                       csrf-cookie-httponly-absent    base.py lacks CSRF_COOKIE_HTTPONLY = True
+#                       cookie-host-prefix-absent      a TLS module lacks a __Host- name or its SECURE
+#                       cookie-scope-widened           a settings *.py sets a cookie Domain, or Path != /
 #                       worked-row-stale        [warn]  the teaching example beside real rows
 #
 #                     What it CANNOT decide, and does not pretend to — both are marked
@@ -39,7 +42,7 @@
 # SELF-TEST. --self-test runs every clause over the fixture pair in
 # fixtures/negative-space/ and asserts it separates them: `broken/` must trip every fail
 # clause, `clean/` must trip none. The fixtures are NOT a scan scope. This is what proves
-# the gate in a repository where seven of the twelve clauses are no-ops: apps/ carries no
+# the gate in a repository where seven of the fifteen clauses are no-ops: apps/ carries no
 # models, no template uses hx-, and the MCP surface is unwired, so an ordinary run here is
 # green having measured almost nothing.
 #
@@ -90,6 +93,10 @@ TS_DIR="code/src/mobile"
 TEMPLATES_DIR="code/src/django"
 STATIC_DIR="code/src/django/static"
 SETTINGS_FILE="code/src/django/config/settings/base.py"
+# The cookie doctrine is split across three modules by the settings folder's own rule, so
+# its clauses read the DIRECTORY; the module names inside it are fixed, as settings.py is
+# under --self-test. SETTINGS_FILE above stays the middleware clause's single file.
+SETTINGS_DIR="code/src/django/config/settings"
 TSCONFIG_FILE="code/src/mobile/tsconfig.json"
 MCP_TOOLS_DIR="code/src/django/apps"
 MCP_CONFIG_FILE="code/src/django/config/mcp.py"
@@ -138,7 +145,7 @@ register row backed outside the narrowed path report as backed nowhere, and hide
 findings that run the other way. --self-test is the only scope change, and it repoints
 every scope together.
 
-Clauses — twelve [gate: fail], one [gate: warn]:
+Clauses — fifteen [gate: fail], one [gate: warn]:
   constraint-unregistered       a Meta.constraints entry with no register row
   constraint-absent             a row naming a constraint no model declares
   key-unraised                  a row whose Key nothing raises
@@ -151,6 +158,9 @@ Clauses — twelve [gate: fail], one [gate: warn]:
   mcp-error-middleware-absent   tools exist, config/mcp.py has no on_call_tool middleware
   mcp-masking-off               tools exist, mask_error_details is not True
   mcp-request-id-absent         tools exist, the ASGI router mints no request id
+  csrf-cookie-httponly-absent   settings/base.py does not assign CSRF_COOKIE_HTTPONLY = True
+  cookie-host-prefix-absent     staging.py/production.py lack a __Host- name or its SECURE line
+  cookie-scope-widened          a settings/*.py assigns a cookie Domain, or a Path other than /
   worked-row-stale      [warn]  the worked-row example still sits beside real rows
 
 Options:
@@ -202,7 +212,8 @@ cd "$PROJECT_ROOT"
 
 TMP_FAIL=$(mktemp); TMP_WARN=$(mktemp); TMP_ROWS=$(mktemp)
 TMP_CONSTRAINTS=$(mktemp); TMP_KEYS=$(mktemp)
-trap 'rm -f "$TMP_FAIL" "$TMP_WARN" "$TMP_ROWS" "$TMP_CONSTRAINTS" "$TMP_KEYS"' EXIT
+COOKIE_TMP=""   # the cookie self-test's variant trees (_lib/negative-space-cookies.sh)
+trap 'rm -f "$TMP_FAIL" "$TMP_WARN" "$TMP_ROWS" "$TMP_CONSTRAINTS" "$TMP_KEYS"; [[ -z "$COOKIE_TMP" ]] || rm -rf "$COOKIE_TMP"' EXIT
 
 TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
@@ -462,10 +473,18 @@ run_mcp_clauses() {
   fi
 }
 
+# ── The cookie doctrine (US008) ───────────────────────────────────────────────
+# csrf-cookie-httponly-absent, cookie-host-prefix-absent and cookie-scope-widened, plus the
+# cookie half of --self-test, live in _lib/negative-space-cookies.sh to keep this file under
+# the source-file limit. They read SETTINGS_DIR, declared above beside SETTINGS_FILE.
+# shellcheck source=code/src/scripts/audits/_lib/negative-space-cookies.sh
+source "$SCRIPT_DIR/_lib/negative-space-cookies.sh"
+
 run_all() {
   run_register_clauses "$REGISTER_FILE" "$MODELS_DIR" "$PY_DIR" "$TS_DIR"
   run_htmx_clause "$TEMPLATES_DIR" "$STATIC_DIR"
   run_middleware_clause "$SETTINGS_FILE"
+  run_cookie_clauses "$SETTINGS_DIR"
   run_ts_flags_clause "$TSCONFIG_FILE"
   run_mcp_clauses "$MCP_TOOLS_DIR" "$MCP_CONFIG_FILE" "$ASGI_FILE"
 }
@@ -479,6 +498,7 @@ point_scopes_at() {
   TEMPLATES_DIR="$root"
   STATIC_DIR="$root"
   SETTINGS_FILE="$root/settings.py"
+  SETTINGS_DIR="$root/settings"
   TSCONFIG_FILE="$root/tsconfig.json"
   MCP_TOOLS_DIR="$root"
   MCP_CONFIG_FILE="$root/mcp.py"
@@ -489,7 +509,10 @@ point_scopes_at() {
 if $SELF_TEST; then
   log ""
   bold "▸ negative-space.sh --self-test — $TIMESTAMP"
-  [[ -d "$FIXTURES_DIR/broken" && -d "$FIXTURES_DIR/clean" ]] ||
+  # The settings/ subtrees are checked here too: without clean/settings/ the cookie clauses
+  # would skip on clean/, and "clean/ trips none" would pass having measured nothing.
+  [[ -d "$FIXTURES_DIR/broken" && -d "$FIXTURES_DIR/clean" &&
+     -d "$FIXTURES_DIR/broken/settings" && -d "$FIXTURES_DIR/clean/settings" ]] ||
     die "fixtures missing at $FIXTURES_DIR — refusing to report a proof that never ran"
 
   point_scopes_at "$FIXTURES_DIR/broken"
@@ -502,28 +525,35 @@ if $SELF_TEST; then
   : > "$TMP_FAIL"; : > "$TMP_WARN"; SKIP_NOTES=""
   run_all
   CLEAN_BODY="$(cat "$TMP_FAIL")"
+  CLEAN_SKIPS="$SKIP_NOTES"
 
   EXPECTED=(constraint-unregistered constraint-absent key-unraised key-unregistered
             key-duplicated htmx-handler-absent request-id-middleware-absent ts-flags-loosened
-            mcp-error-middleware-absent mcp-masking-off mcp-request-id-absent)
+            mcp-error-middleware-absent mcp-masking-off mcp-request-id-absent
+            "${COOKIE_CLAUSES[@]}")
   MISSING=""
   for clause in "${EXPECTED[@]}"; do
     printf '%s\n' "$BROKEN_CLAUSES" | grep -qx -- "$clause" || MISSING="$MISSING $clause"
   done
 
   ST_FAIL=0
-  if [[ -n "$MISSING" ]]; then
+  st_fail() {
     ST_FAIL=1
     log ""
-    printf '\033[31m  ✗ broken/ did not trip:%s\033[0m\n' "$MISSING"
+    printf '\033[31m  ✗ %s\033[0m\n' "$1"
+    [[ -z "${2:-}" ]] || printf '%s\n' "$2" | sed 's/^/    /'
+  }
+
+  if [[ -n "$MISSING" ]]; then
+    st_fail "broken/ did not trip:$MISSING"
     log "    the detector no longer separates the fixtures — fix the detector, not the fixtures"
   fi
   if [[ -n "$CLEAN_BODY" ]]; then
-    ST_FAIL=1
-    log ""
-    printf '\033[31m  ✗ clean/ produced findings — false positives:\033[0m\n'
-    printf '%s\n' "$CLEAN_BODY" | sed 's/^/    /'
+    st_fail "clean/ produced findings — false positives:" "$CLEAN_BODY"
   fi
+
+  # The cookie clauses' own assertions, including their absent-directory pass.
+  cookie_self_test "$CLEAN_SKIPS"
 
   log ""
   if [[ "$ST_FAIL" -eq 0 ]]; then
@@ -555,7 +585,7 @@ WARN_COUNT=$(grep -c . "$TMP_WARN" || true); WARN_COUNT=${WARN_COUNT:-0}
 FAIL_BODY="$(cat "$TMP_FAIL")"
 WARN_BODY="$(cat "$TMP_WARN")"
 
-log "  register: $REGISTER_FILE · surfaces: django + mcp + mobile · 12 fail, 1 warn"
+log "  register: $REGISTER_FILE · surfaces: django + mcp + mobile · 15 fail, 1 warn"
 log ""
 
 if [[ -n "$SKIP_NOTES" ]] && ! $QUIET; then

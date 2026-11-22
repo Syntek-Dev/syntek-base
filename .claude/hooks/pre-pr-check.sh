@@ -21,7 +21,7 @@
 # Exit codes:  0 = all checks passed   2 = one or more checks failed / mismatched
 #
 # Pinned versions (update when the project's pinned toolchain moves):
-#   uv 0.13.7   pnpm 11.28.9
+#   uv 0.13.7   pnpm 12.18.0
 #
 set -uo pipefail
 

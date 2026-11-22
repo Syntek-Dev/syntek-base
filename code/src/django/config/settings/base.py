@@ -158,8 +158,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
-# SESSION_COOKIE_SECURE is intentionally absent — dev inherits Django's default of
-# False (correct for localhost over HTTP); staging and production each set it True.
+CSRF_COOKIE_HTTPONLY = True
+# SESSION_COOKIE_SECURE and CSRF_COOKIE_SECURE are intentionally absent — dev inherits
+# Django's default of False (correct for localhost over HTTP); staging and production
+# each set both True.
 
 # Django's own admin never mounts at /admin/: that prefix is reserved for the project's
 # own admin surface, and a guessable path draws credential-stuffing traffic. Configurable

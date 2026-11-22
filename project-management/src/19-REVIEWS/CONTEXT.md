@@ -10,7 +10,8 @@ real records are added by copying the template per story.
 project-management/src/19-REVIEWS/
 ├── CONTEXT.md                 ← this file
 ├── CLAUDE.md                  ← operating rules for this folder
-└── REVIEW-US000-TEMPLATE.md   ← the per-story review template — copy for each review
+├── REVIEW-US000-TEMPLATE.md   ← the per-story review template — copy for each review
+└── REVIEW-US###-<DESCRIPTOR>.md ← one review record per story, written at workflow 23
 ```
 
 Real records (`REVIEW-US###-<DESCRIPTOR>.md`) are **not** shipped in the base repo; each is

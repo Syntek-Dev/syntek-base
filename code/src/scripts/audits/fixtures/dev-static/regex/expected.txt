@@ -1,0 +1,2 @@
+# A regex location (~ ^/static/) serving from disk shadows the proxy — any /static-prefixed location counts, whatever its modifier.
+static-alias

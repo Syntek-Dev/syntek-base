@@ -545,8 +545,9 @@ concrete content from that project's live code. Specific ADRs are referenced by 
 uvx copier copy gh:Syntek-Dev/syntek-base my-project
 ```
 
-Copier prompts for each token above, renders the tree, then runs its four `_tasks`: move the nine
-seeded files into place, brand `pyproject.toml` with your slug, generate the lock, and `git init`.
+Copier prompts for each token above, renders the tree, then runs its four `_tasks`: move the
+seeded files into place (the copy-gated task's `mv` lines are the list), brand `pyproject.toml`
+with your slug, generate the lock, and `git init`.
 Full detail — including what to do when `uv` is not installed — is in
 `TEMPLATE-GUIDE/06-GENERATION.md`.
 

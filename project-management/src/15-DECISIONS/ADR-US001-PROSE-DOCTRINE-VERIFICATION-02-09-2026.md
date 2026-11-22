@@ -3,8 +3,8 @@
 **Status:** Accepted
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** None
+**Superseded by:** None
 **Related:** US001
 
 ---

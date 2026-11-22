@@ -1,13 +1,13 @@
 # CUT-PLAN — which map slice becomes which story, and in what order
 
-**Last Updated**: 01/11/2026 **Version**: 0.2.5 **Maintained By**: Sam
+**Last Updated**: 19/11/2026 **Version**: 0.2.7 **Maintained By**: Sam
 **Language**: British English (en_GB)
 
 ---
 
 **What this is.** The one cut plan across every map in 01-FEATURE-MAPS: for each slice, the story
 it becomes, its cut order, size, priority, dependencies and status. It exists so that nobody has
-to reopen twenty-one maps to answer "what slice should be what story, and which is next".
+to reopen twenty-two maps to answer "what slice should be what story, and which is next".
 
 **What this is not.**
 
@@ -127,9 +127,10 @@ appended to their maps on 17/10/2026.
 | DESIGN-HANDOFF               | —      | —       | —        | —      | —     | 4       | 4       |
 | MUTATION-TESTING             | —      | —       | —        | —      | —     | 6       | 6       |
 | FRAMEWORK-NEUTRAL-FOUNDATION | —      | —       | —        | —      | —     | 9       | 9       |
-| **Total**                    | **13** | **6**   | **58**   | **15** | **1** | **36**  | **129** |
+| GENERATION-COVERAGE          | —      | —       | —        | —      | —     | 1       | 1       |
+| **Total**                    | **13** | **6**   | **58**   | **15** | **1** | **37**  | **130** |
 
-**Slice arithmetic:** 13 + 6 + 58 + 15 + 1 + 36 = 129. Retired slice IDs (GATE-PARITY S-01, S-02,
+**Slice arithmetic:** 13 + 6 + 58 + 15 + 1 + 37 = 130. Retired slice IDs (GATE-PARITY S-01, S-02,
 S-04, S-06) are not counted.
 
 **Cut stories: 14.** Twelve carry the 13 cut slices (US010 carries two). US002 and US007 were cut from
@@ -182,6 +183,7 @@ renumber.
 | 18  | DESIGN-HANDOFF               | S-01 with S-02 (:209-210)                                                                   | N-010, N-012, N-014 (:199)                                                                                       | US002, only if a new audits row is chosen (:240)                                         | After row 17: its S-02 to S-04 wait on row 17's nodes (:234, :237-242)                                                                                                              |
 | 19  | MUTATION-TESTING             | S-01 (:171)                                                                                 | eight blocking nodes (:162)                                                                                      | US002, only if the hygiene check takes an audits row (:211)                              | Last but one: 17 blocking nodes, and S-06 waits on MAP-NATIVE-MOBILE-SURFACE (:218)                                                                                                 |
 | 20  | FRAMEWORK-NEUTRAL-FOUNDATION | none — "slice order is an index" (:198); the first batch is N-003, N-004 and N-007 (:77-80) | four blocking nodes on S-01 (:144)                                                                               | US010, US004, US002 (:101-102, :108)                                                     | Last: no stated first slice, 20 blocking nodes, and it holds nothing                                                                                                                |
+| 21  | GENERATION-COVERAGE          | S-01, its only slice                                                                        | N-005 to N-008 and N-011, five blocking nodes (MAP-GENERATION-COVERAGE.md → Frontier)                            | none — US010, US011 and US012 consume it, none waits on it                               | Charted 19/11/2026, appended under the append-never-renumber rule. Ranks with the `Blocked` maps: one slice, five blocking nodes, and P14 holds its cut                             |
 
 ---
 
@@ -469,7 +471,10 @@ story-plan status vocabularies" as fog, now at :610 (US007.md:12 cites it as :55
 in **Owed**); the fog item itself is `F-01`, recorded at :505-519, and only `F-06` is still open. **A risk no row carries:**
 N-007 on MAP-NATIVE-DESIGN-TIER may add a `Superseded` status beside
 ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026's five values (MAP-NATIVE-DESIGN-TIER.md:231),
-which would change the vocabulary US010 counts and S-03's gate matches — not a hold (P11).
+which would change the vocabulary US010 counts and S-03's gate matches — not a hold (P11). That
+ADR is `Superseded` and archived since 19/11/2026, so the amendment's target is now its successor,
+`ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026` (noted 19/11/2026; settled at
+MAP-NATIVE-DESIGN-TIER's next RESOLVE).
 
 | Order | Slice(s)                   | Working title                                                       | SP  | MoSCoW  | Depends on                                                                                                          | Status     | Story            |
 | ----- | -------------------------- | ------------------------------------------------------------------- | --- | ------- | ------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------- |
@@ -478,6 +483,12 @@ which would change the vocabulary US010 counts and S-03's gate matches — not a
 | —     | S-01 + S-02 (narrowed)     | The seven register indexes are born seeded; MAP-INDEX.md backfilled | 8   | Must    | owned by the story                                                                                                  | `Cut`      | US010, SPRINT-06 |
 | —     | S-05 (appended 20/09/2026) | The four indexes that shipped blank get their rows                  | 8   | Should  | owned by the story                                                                                                  | `Cut`      | US011, SPRINT-07 |
 | —     | — (fog row, :610)          | The story status vocabulary gets one owner                          | 5   | Must    | owned by the story                                                                                                  | `Cut`      | US007, SPRINT-01 |
+
+**Split 19/11/2026 (US010 re-cut grilling, round 4 Q1), and charted, not cut.** The 72-case
+`[3/4]` generation matrix, approved into US010 on 09/10/2026 as a remediation rather than a slice,
+leaves US010. 19/11/2026: the matrix moved from the withdrawn US021 to
+`project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md` (Sam: map first; CUT-PLAN P14;
+the number was not validly allocated). Its row is that map's section below; US010 stays 8 SP.
 
 ---
 
@@ -691,13 +702,13 @@ audits headroom (only if N-015 picks a new row), the Playwright pin, the one Git
 the external store (:116-119). N-007 lists this file's CLAUDE-DESIGN-HANDOFF rows among the
 citations its S-01 repairs, by line (:231; see **Owed**).
 
-| Order | Slice(s) | Working title                                                       | SP                                | MoSCoW | Depends on                                                                                                                                                                                               | Status    | Story |
-| ----- | -------- | ------------------------------------------------------------------- | --------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----- |
-| 1     | S-01     | Claude Design out of `04`-`08`; the design-tier docs tell the truth | 2 (rough, :211; re-sized at `03`) | —      | N-007 (:202, :231), settled with N-014 on MAP-DESIGN-HANDOFF; one of its two mechanisms amends ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026 to add `Superseded` (:231)                              | `Blocked` | —     |
-| 2     | S-02     | Diagrams build headless from Markdown                               | 8 (rough, :211; re-sized at `03`) | —      | N-008, N-009, N-011, N-013, N-015, N-016 (:203); building waits on the Playwright pin (N-013, :117; MAP-NATIVE-DESIGN-TIER's N-013 note, from `GAPS.md` 09/10/2026) and the external store (N-023, :119) | `Blocked` | —     |
-| 3     | S-03     | One token source; brand guide and component sheet as HTML + PDF     | 8 (rough, :211)                   | —      | S-01, S-02 (:210-211); N-010, N-014, N-016 (:204)                                                                                                                                                        | `Blocked` | —     |
-| 4     | S-04     | Wireframes seeded from Markdown, then edited as HTML                | 5 (rough, :211)                   | —      | S-03 (:210-211); N-012, N-016 (:205)                                                                                                                                                                     | `Blocked` | —     |
-| 5     | S-05     | Only a human can approve a design                                   | 5 (rough, :211)                   | —      | last (:210-211); N-017, N-018 (:206); building needs the identity or key N-017 names (:118; MAP-NATIVE-DESIGN-TIER's N-017 note, from `GAPS.md` 09/10/2026)                                              | `Blocked` | —     |
+| Order | Slice(s) | Working title                                                       | SP                                | MoSCoW | Depends on                                                                                                                                                                                                                                                                                   | Status    | Story |
+| ----- | -------- | ------------------------------------------------------------------- | --------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----- |
+| 1     | S-01     | Claude Design out of `04`-`08`; the design-tier docs tell the truth | 2 (rough, :211; re-sized at `03`) | —      | N-007 (:202, :231), settled with N-014 on MAP-DESIGN-HANDOFF; one of its two mechanisms amends ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026 to add `Superseded` (:231) — archived 19/11/2026, so its successor ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026 is the target | `Blocked` | —     |
+| 2     | S-02     | Diagrams build headless from Markdown                               | 8 (rough, :211; re-sized at `03`) | —      | N-008, N-009, N-011, N-013, N-015, N-016 (:203); building waits on the Playwright pin (N-013, :117; MAP-NATIVE-DESIGN-TIER's N-013 note, from `GAPS.md` 09/10/2026) and the external store (N-023, :119)                                                                                     | `Blocked` | —     |
+| 3     | S-03     | One token source; brand guide and component sheet as HTML + PDF     | 8 (rough, :211)                   | —      | S-01, S-02 (:210-211); N-010, N-014, N-016 (:204)                                                                                                                                                                                                                                            | `Blocked` | —     |
+| 4     | S-04     | Wireframes seeded from Markdown, then edited as HTML                | 5 (rough, :211)                   | —      | S-03 (:210-211); N-012, N-016 (:205)                                                                                                                                                                                                                                                         | `Blocked` | —     |
+| 5     | S-05     | Only a human can approve a design                                   | 5 (rough, :211)                   | —      | last (:210-211); N-017, N-018 (:206); building needs the identity or key N-017 names (:118; MAP-NATIVE-DESIGN-TIER's N-017 note, from `GAPS.md` 09/10/2026)                                                                                                                                  | `Blocked` | —     |
 
 ---
 
@@ -768,6 +779,25 @@ MAP-RULE-OWNERSHIP's doctrine slices write: a risk, recorded in that section, no
 | 7     | S-07     | Linux distributions and machine-role configuration | —   | —      | N-014, N-015 (:150)                                                                                                         | `Blocked` | —     |
 | 8     | S-08     | Cybersecurity project profiles                     | —   | —      | N-016 (:151)                                                                                                                | `Blocked` | —     |
 | 9     | S-09     | Adding and maintaining profiles                    | —   | —      | N-032 (:152), which waits on N-005, N-006, N-007 and N-022 (:194); MAP-INSTRUCTION-DELIVERY S-02 and S-05 evidence (:111)   | `Blocked` | —     |
+
+---
+
+## MAP-GENERATION-COVERAGE — blocked
+
+`Charting`, charted 19/11/2026: 8 open, 5 blocking, 4 resolved, 1 slice
+(MAP-GENERATION-COVERAGE.md → header, Frontier). It holds the 72-case `[3/4]` generation matrix
+that US010's re-cut split out (round 4 Q1, 19/11/2026). That split was first cut straight to a
+story, US021, and withdrawn the same day (Sam, 19/11/2026): stories are cut from a map's slice,
+P14 pauses every cut, and no number was validly allocated (_What this is not_, first row), so
+US015 stays the next free number and the provisional US015 to US020 run is unchanged. It states no
+SP or MoSCoW, and the 21/09/2026 assessment never scoped it, so both read `—` (the withdrawn draft
+proposed 8 SP and Should; neither binds). It
+holds nothing on another map; MAP-NATIVE-MOBILE-SURFACE S-01 deleting `INCLUDE_MOBILE` would change
+its case count, a risk (P11), not a hold.
+
+| Order | Slice(s) | Working title                                                         | SP  | MoSCoW | Depends on                                                                                          | Status    | Story |
+| ----- | -------- | --------------------------------------------------------------------- | --- | ------ | --------------------------------------------------------------------------------------------------- | --------- | ----- |
+| 1     | S-01     | Every valid offered configuration generates a complete, gated project | —   | —      | N-005 to N-008, N-011 (blocking); N-009, N-010 research; merges after US010 (its boards and search) | `Blocked` | —     |
 
 ---
 

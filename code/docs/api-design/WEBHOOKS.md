@@ -83,12 +83,22 @@ Standards (Approved algorithms; Rules). Do not restate them; use HMAC-SHA256.
 
 - **HTTPS only.** Reject non-`https` delivery URLs. Validate the scheme and host on save and before
   each send to prevent SSRF into internal ranges.
-- **Retry with exponential back-off:** up to 5 attempts spread over 24 hours on connection failure or
-  a non-2xx response.
+- **Retry to the budget table's _Outbound webhook delivery_ override row**, never to numbers stated
+  here ([`../reliability/BUDGETS.md`](../reliability/BUDGETS.md) Section _The budget table_). Its
+  waits exceed the broker's visibility timeout, so the schedule is **persisted** — a delivery row
+  carrying `next_attempt_at` and the attempt count, enqueued by a periodic task when due — as that
+  guide's Section _No counted-down wait outlasts redelivery_ says.
+- **Which failures repeat is the retry guide's classification**
+  ([`../reliability/RETRIES.md`](../reliability/RETRIES.md) Section _Classify the failure first_), not this guide's; a failure it calls permanent counts as a failed delivery below.
+- **A repeat is re-signed and keeps its identity** — a fresh signature timestamp (`t=`) over the
+  same body, the same event `id` — per [`../reliability/BUDGETS.md`](../reliability/BUDGETS.md) Section _Overrides_. The consumer's
+  de-duplication on the `id` is the replay defence.
 - **Disable after N consecutive failures** (e.g. 15) and alert; require manual or verified
   re-enablement.
-- **Log every attempt** (endpoint, event id, status, latency, attempt number) — but never the secret
-  or signature material.
+- **Log every attempt to the attempt-log rule** ([`../reliability/RETRIES.md`](../reliability/RETRIES.md) Section _What an attempt log
+  records_): attempt number, elapsed budget, error class (the response status), latency, and the
+  endpoint's and event's **identifiers**. Never the delivery URL, the response body, the secret or
+  signature material.
 
 ---
 

@@ -31,6 +31,11 @@ all run inside Docker via `docker compose exec`.
 
 - **`reset.sh` and `restore.sh` are destructive** — they drop and recreate the dev
   database; confirm the target and take a `backup.sh` first.
+- **`reset.sh`, `restore.sh`, `seed-dev.sh` and `migrate.sh` call the posture guard** — what it
+  permits, refuses or warns at each posture is the contract block in `_lib/posture-guard.sh`,
+  and the caller rules are `code/src/scripts/_lib/CLAUDE.md`'s. Never pass `--force-posture` to
+  get past a refusal you did not expect. After a change to any guarded script, run
+  `bash code/src/scripts/database/migrate.sh --self-test`; it needs no stack.
 - **Never hand-edit or rewrite an applied migration** — squash, never rewrite
   history.
 - `verify-db-security.sh` guards role permissions — treat a failure as a real

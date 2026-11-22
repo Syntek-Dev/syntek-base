@@ -20,6 +20,8 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_NAME = "__Host-sessionid"
+CSRF_COOKIE_NAME = "__Host-csrftoken"
 
 # HSTS is served by the edge in front of this app; the values here are the
 # app-level backstop for a direct-origin request.

@@ -9,12 +9,23 @@
 #   migrate.sh check        [--database DB]
 #   migrate.sh fake         [--database DB] --migration MIGRATION [--app APP]
 #   migrate.sh fake-initial [--database DB]
+#   migrate.sh --self-test
 #   migrate.sh --help
+#
+# --self-test proves _lib/posture-guard.sh over a throwaway fixture tree, and its six callers'
+# wiring by line order over their text (the harness: _migrate-self-test.sh). It is dispatched
+# at entry, ahead of the posture guard, the command validator and the container check, and
+# invokes no docker: the guard exists for the stack-down case, so its proof must run in it.
 #
 # Use --database DB only when the project defines more than one DATABASES entry.
 # Omit --database to target the default database (the baseline has one).
 #
+# The posture guard (_lib/posture-guard.sh) runs here in warn mode, at entry: it prints the
+# posture and the expand-then-contract obligation and never refuses, so no --force-posture.
+# --help (like --self-test) answers ahead of it, so usage stays free of the notice.
+#
 # Exit codes:  0 = success   1 = command failed   2 = script error
+#              4 = refused by the posture guard — never raised here: this script only warns
 #
 set -euo pipefail
 
@@ -25,6 +36,10 @@ ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/posture-guard.sh
+source "$SCRIPT_DIR/../_lib/posture-guard.sh"
+# The plain CLI until the guard validates a target; then the binding pinned to it.
+DOCKER=(docker)
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 die()  { printf 'migrate.sh error: %s\n' "$*" >&2; exit 2; }
@@ -42,6 +57,7 @@ Usage:
   migrate.sh check                 Exit non-zero if any migrations are pending
   migrate.sh fake                  Mark migrations as applied without running SQL
   migrate.sh fake-initial          Fake initial migrations for pre-existing tables
+  migrate.sh --self-test           Prove the posture guard and its callers' wiring (no docker)
 
 Options (run, show, check, fake, fake-initial):
   --database DB      Target a non-default DATABASES alias.
@@ -73,6 +89,7 @@ Examples (<app> is a package under code/src/django/apps/):
   migrate.sh check --database <alias>
 
 Exit codes:  0 = success   1 = command failed   2 = script error
+             4 = refused by the posture guard — never raised here: this script only warns
 EOF
 }
 
@@ -82,13 +99,38 @@ require_arg() { [[ $# -gt 1 ]] || die "$1 requires a value"; }
 # substring grep over the full `ps` table also matches image names and other services.
 container_running() {
   cd "$PROJECT_ROOT"
-  docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} ps --services --status running 2>/dev/null \
+  "${DOCKER[@]}" compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} ps --services --status running 2>/dev/null \
     | grep -qx "django"
 }
 
 manage() {
-  docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} exec -T -w /workspace/code/src/django django python manage.py "$@"
+  "${DOCKER[@]}" compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} exec -T -w /workspace/code/src/django django python manage.py "$@"
 }
+
+# Dispatched here, ahead of the command validator and container_running: the proof of a guard
+# built for the stack-down case must not need a running stack. The harness lives beside this
+# script in _migrate-self-test.sh and is read only on this arm.
+if [[ "${1:-}" == "--self-test" ]]; then
+  # shellcheck source=code/src/scripts/database/_migrate-self-test.sh
+  source "$SCRIPT_DIR/_migrate-self-test.sh"
+  self_test
+fi
+# --help answers ahead of the guard too, as in the other five callers: usage text needs no
+# posture notice and must not touch Docker metadata.
+if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then usage; exit 0; fi
+
+# ── Posture guard (warn) ──────────────────────────────────────────────────────
+# At entry, before argument dispatch: run, make, show, check, fake and fake-initial all pass
+# here. A warning never moves the exit code. On a validated target every Docker call below is
+# pinned to it; on an unverified one the guard has said so and the existing selection stands —
+# no local fallback is invented and no earlier endpoint is reused (the guard clears its outputs).
+COMPOSE_NAME="$(posture_compose_name "$COMPOSE_FILE" "$OVERRIDE_DEV_FILE")"
+posture_guard "$PROJECT_ROOT" warn "" "$COMPOSE_NAME" "$ENV_FILE" \
+  bash code/src/scripts/database/migrate.sh "$@" || exit "$?"
+if [[ "${posture_target_valid-}" == 1 ]]; then
+  posture_docker_bind || exit "$?"
+  DOCKER=("${posture_docker[@]}")
+fi
 
 # ── Command ───────────────────────────────────────────────────────────────────
 COMMAND="${1:-}"

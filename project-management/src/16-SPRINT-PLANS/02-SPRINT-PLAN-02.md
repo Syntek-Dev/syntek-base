@@ -275,7 +275,7 @@ constraints put it there:
   US003 was only ever blocked in ordering, not in content — its baseline-diff scenario is written
   for exactly the regime it is now worked under. Two consequences follow. The **revision pass** of
   05/09/2026 — recast that scenario, its before/after QA task and
-  `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (superseded 30/09/2026 by
+  `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (superseded 30/09/2026 by
   `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which
   restates it unchanged but for the manual testing guide's path) as a plain pass once US004
   has landed — is **inapplicable while US003 is worked here**, and revives only if US003 carries
@@ -336,10 +336,21 @@ on that plan is owed to this order.
 Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. Both plans exist,
 written on 02/09/2026, and both carry a `| Sprint |` row repointed to this sprint on 07/09/2026.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                   | Status      |
-| ----- | ------------------------------------------------------------------- | ----------- |
-| US002 | `../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` | Not started |
-| US003 | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`            | Not started |
+| Story | Story plan (`../17-STORY-PLANS/`)                                   | Status            |
+| ----- | ------------------------------------------------------------------- | ----------------- |
+| US002 | `../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` | Customer Accepted |
+| US003 | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`            | Customer Accepted |
+
+<!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
+     both cells held the placeholder and now carry each plan's own `| Status |` header row, `Open`.
+     The paragraph and comments below describing the placeholder record the old state. -->
+
+<!-- RE-MIRRORED 22/11/2026 under Sam's ruling 3 on the US010 re-walk (manual-test row REMEDY-02):
+     a sprint plan's Story Plans Status cell mirrors the STORY's status as
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` lists it, because a plan has no status of its own
+     (`.claude/skills/completion/SKILL.md` -> Plans). This supersedes, on this point, the 09/10/2026
+     remediation wording "the plan's own Status field", the ruling-D comment above, and any prose
+     in this section that calls the column a mirror of the plan's own `Status` field. Cells: US002 Open -> Customer Accepted; US003 Open -> Customer Accepted. -->
 
 **Both cells read `Not started`, and the value is knowingly false** (08/09/2026). It is a value in
 no status set anywhere in this repository, and both plans it points at carry `Open` in their own
@@ -531,18 +542,18 @@ to match the other.**
 
 ### Decisions binding this sprint
 
-| ADR                                                                    | Binds                                                                                                                                                                                                                                                                                                    |
-| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `../15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md` | The AI-slop rationale splits into `slop-family/CONTEXT.md`, a path `docs-length.sh` measures — never a bare sibling                                                                                                                                                                                      |
-| `../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md`   | A gate that cannot open the files under test leaves the `QA` manifest; one that reads them but cannot decide stays, narrowed                                                                                                                                                                             |
-| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`  | A red `doc-references.sh` is read as an identity diff against a recorded baseline. **Still in force** — see below. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path |
-| `../15-DECISIONS/ADR-US003-CRIB-SELF-CONTAINED-AT-BIRTH-02-09-2026.md` | US003's crib cells cite nothing that does not yet exist; `S-02`, `S-03` and `S-04` retro-fit their own back-links                                                                                                                                                                                        |
-| `../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`  | Prose doctrine is verified by human read-across; `doctrine-drift.sh` is a regression guard only                                                                                                                                                                                                          |
-| `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` | No gate verifies a PM `src/` instance citation in either form; every such citation here is human-checked                                                                                                                                                                                                 |
+| ADR                                                                           | Binds                                                                                                                                                                                                                                                                                                    |
+| ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `../15-DECISIONS/ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH-02-09-2026.md`        | The AI-slop rationale splits into `slop-family/CONTEXT.md`, a path `docs-length.sh` measures — never a bare sibling                                                                                                                                                                                      |
+| `../15-DECISIONS/ADR-US002-BLIND-GATE-LEAVES-THE-FLAG-02-09-2026.md`          | A gate that cannot open the files under test leaves the `QA` manifest; one that reads them but cannot decide stays, narrowed                                                                                                                                                                             |
+| `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` | A red `doc-references.sh` is read as an identity diff against a recorded baseline. **Still in force** — see below. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path |
+| `../15-DECISIONS/ADR-US003-CRIB-SELF-CONTAINED-AT-BIRTH-02-09-2026.md`        | US003's crib cells cite nothing that does not yet exist; `S-02`, `S-03` and `S-04` retro-fit their own back-links                                                                                                                                                                                        |
+| `../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`         | Prose doctrine is verified by human read-across; `doctrine-drift.sh` is a regression guard only                                                                                                                                                                                                          |
+| `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`        | No gate verifies a PM `src/` instance citation in either form; every such citation here is human-checked                                                                                                                                                                                                 |
 
 **One ADR in the set supersedes another, and the superseded record is not listed.**
 `ADR-US002-SPLIT-TARGET-IS-A-BOUND-PATH` supersedes
-`../15-DECISIONS/ADR-US002-REGISTER-SPLITS-RATHER-THAN-RELOCATES-02-09-2026.md` on a measured false
+`../15-DECISIONS/archive/ADR-US002-REGISTER-SPLITS-RATHER-THAN-RELOCATES-02-09-2026.md` on a measured false
 claim — the split rule stands, the named target did not, because a bare `SLOP-FAMILY.md` sibling is
 bound by no length gate. The superseded record's own header says so.
 

@@ -3,19 +3,19 @@
 **Status:** Accepted
 **Date:** 30/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
-**Superseded by:** —
+**Supersedes:** `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+**Superseded by:** None
 **Related:** US003
 
 ---
 
 ## Context
 
-`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` decided
+`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` decided
 on 02/09/2026 that while `code/src/scripts/audits/doc-references.sh` is red, a story's citation
 criterion is a diff against a baseline captured before the first edit. Its decision names one path:
 the diff "costs one measurement recorded in `../18-TESTS/US###-MANUAL-TESTING.md` before editing
-begins" (`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:97`).
+begins" (`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:97`).
 
 **That location no longer exists.** On 30/09/2026 `project-management/src/18-TESTS/` split by
 record type: the manual testing guide moved into `MANUAL/` and the automated record into
@@ -34,7 +34,7 @@ filename in **Supersedes** and one driving story in its name, and a superseded d
 force only where its successor states it.
 
 **Nothing else about the problem has moved.** The superseded record's Context stands as written
-(`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:12-45`):
+(`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:12-45`):
 the red gate, the seven pre-existing findings measured at `82ec176`, the fifteen more that US003's
 own artefacts added (22 in all), and slice `S-06`'s ownership of the script, which forbids any
 story in this backlog to repair it. Those figures are dated evidence of 02/09/2026, and this record neither
@@ -59,7 +59,7 @@ binds the file, as the superseded record did, and names no section.
 
 The superseded record's own options analysis — keep US001's flat must-pass, baseline-and-diff,
 block the backlog on `S-06`, exempt the PM `src/` tree in the script now — stands as written
-(`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:47-88`)
+(`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:47-88`)
 and is not re-argued here. The options below are about how that decision crosses the split, not
 about the decision.
 
@@ -97,8 +97,8 @@ about the decision.
 
 - **Summary:** A single record superseding this one and the two US004 records the split also
   re-pointed,
-  `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` and
-  `project-management/src/15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md`.
+  `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` and
+  `project-management/src/15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md`.
 - **Pros:** One record for one cause.
 - **Cons:** Three decisions in one ADR
   (`project-management/src/15-DECISIONS/ADR-US000-TEMPLATE.md:7`), three filenames in a
@@ -154,7 +154,7 @@ one **Supersedes** filename and one driving story to each ADR (D).
   record other than that path carries over: the scope (every story in this backlog until the gate
   is green), the before-the-first-edit capture, the diff criterion, the never-a-pass reporting, and
   the figures measured on 02/09/2026. Its consequences
-  (`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:107-123`)
+  (`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:107-123`)
   are restated in full below, so that they stay in force; the only wording adapted is the
   `GAPS.md` Follow-on's "the measurement above", which now points at the superseded record's table.
 - **Where in the guide — the folder rule's, not this decision.** Which section of the guide holds
@@ -180,9 +180,9 @@ one **Supersedes** filename and one driving story to each ADR (D).
   that Follow-on is triggered by US004 landing with the whole-tree gate green. ADR-US008-SCOPED
   stays Accepted, now excepting from the method as this record states it, and its trigger is
   unchanged. That the regime retires when US004 lands is stated in force by
-  `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`
+  `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`
   and
-  `project-management/src/15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`.
+  `project-management/src/15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`.
 - **Follow-on:** US003's implementation reads this record, not the superseded one. Its baseline
   goes in `project-management/src/18-TESTS/MANUAL/US003-MANUAL-TESTING.md`, whose
   `## Recorded during the build` section already carries the slot (`:61`, `:74`, `:79`), and the
@@ -206,5 +206,5 @@ one **Supersedes** filename and one driving story to each ADR (D).
   point the baseline discipline is unnecessary and the flat must-pass is correct again — a new
   record should supersede this one rather than editing it.
 - **Follow-on:** `GAPS.md`'s 02/09/2026 entry gains the measurement of 02/09/2026
-  (`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:31-37`)
+  (`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md:31-37`)
   as further evidence of the defect's live cost.

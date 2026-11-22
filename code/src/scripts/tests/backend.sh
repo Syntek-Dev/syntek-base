@@ -63,7 +63,13 @@ fi
 mkdir -p "$OUTPUT_DIR"
 CONTAINER_OUTPUT="/workspace/${OUTPUT_DIR#"$PROJECT_ROOT/"}"
 
-DC_TEST=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+# Pinned with -p to the project the compose files declare (normalised as Compose does), so a
+# COMPOSE_PROJECT_NAME in .env.test or the shell can never select a different project, nor have
+# its value printed back as a project or container name (_lib/posture-guard.sh).
+# shellcheck source=code/src/scripts/_lib/posture-guard.sh
+source "$SCRIPT_DIR/../_lib/posture-guard.sh"
+COMPOSE_PROJECT="$(posture_compose_project "$COMPOSE_FILE" "$OVERRIDE_TEST_FILE")" || exit 2
+DC_TEST=(docker compose -p "$COMPOSE_PROJECT" --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
     ${OVERRIDE_TEST_FILE:+-f "$OVERRIDE_TEST_FILE"})
 
 printf '[backend] Building django-test image…\n'

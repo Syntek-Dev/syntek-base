@@ -3,8 +3,8 @@
 **Status:** Accepted
 **Date:** 17/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** None
+**Superseded by:** None
 **Related:** US009 · `project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md` AC-GAP-1 · `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US009-HOOK-ARMING.md` TM-01 and Section 3b · `project-management/src/01-FEATURE-MAPS/MAP-GATE-PARITY.md` N-019
 
 ---
@@ -40,6 +40,20 @@ invocations. Five carry `--ignore-scripts`:
 | `.github/workflows/test-api.yml:90`                               | 1     | On push and pull request        |
 
 `--frozen-lockfile` freezes resolution; it does not suppress lifecycle scripts.
+
+> **Correction 17/11/2026 (F-025, `project-management/src/20-FINDINGS/archive/FINDING-US009-HOOK-ARMING-17-11-2026.md`)
+> — the measurement above, not the decision.** The decision and its date stand. Re-measured
+> 17/11/2026 across the whole tree: **18** executable `pnpm install` invocations, **6** carrying
+> `--ignore-scripts`, **12** not. The sixth suppressed is
+> `code/src/scripts/dependencies/audit.sh:401`; the twelfth unsuppressed is US009's own CI setup
+> step, `.github/workflows/audit-hook-arming.yml:78`. The citations above have moved, their text
+> unchanged: `install-frontend.sh` `:67` `:84` `:93` are now `:71` `:104` `:113`;
+> `claude.yml` `:154` `:210` `:271` `:346` `:575` are now `:153` `:209` `:270` `:345` `:574`;
+> `audit-deps.yml:89` is now `:93`. The rest hold. The _Consequences_ follow-on "`GAPS.md` carries
+> it from 17/09/2026" was **false until 17/11/2026**: no row existed until US009's
+> `22-implementation-documentation` pass opened "17/11/2026 — twelve `pnpm install` invocations
+> still run dependency lifecycle scripts" (F-026), citing this ADR's claim as the date it was owed
+> from.
 
 **This is not a hypothesis.** `.git/hooks/pre-commit` exists on this machine, is lefthook's
 generated hook, and is dated 16/09/2026 — in a repository whose `install.sh` has never written a
@@ -171,7 +185,8 @@ the story keeps one subject.
   execute arbitrary lifecycle scripts from the dependency graph — is TM-02 of
   `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US009-HOOK-ARMING.md`,
   raised and left open deliberately rather than absorbed. A later story owns it; `GAPS.md` carries it
-  from 17/09/2026.
+  from 17/09/2026. _(Corrected 17/11/2026, F-025: false until 17/11/2026, when the row was opened,
+  and the eleven are twelve — see the correction under Context.)_
 - **Follow-on:** `project-management/src/01-FEATURE-MAPS/MAP-BUN-TOPOLOGY.md:220` (N-012) records
   that lefthook's hook template has no bun branch. Removing `prepare` removes one pnpm-shaped
   surface from that swap's path and changes nothing else about it.

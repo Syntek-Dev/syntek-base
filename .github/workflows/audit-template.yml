@@ -45,6 +45,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # the archive freeze below reads every commit; a shallow clone fails it
 
       # The self-test runs FIRST, for the reason the shipped-docs job below spells out and
       # this job learned the hard way: every check here is a presence test, so the ordinary
@@ -56,6 +58,30 @@ jobs:
 
       - name: Check token syntax integrity
         run: bash .github/scripts/check-template-tokens.sh
+
+      # The template's own hook legs (.github/scripts/template-integrity.sh): plain checks at
+      # commit, every self-test at push against the pushed commit. No detector's self-test
+      # exercises the legs, so their proof runs here on every push. git and tar only. It replaced
+      # the planned-red allowance's proof on 21/11/2026, when the allowance was removed (Q1).
+      - name: Prove the hook legs (plain checks at commit, self-tests at push)
+        run: bash code/src/scripts/tests/template-hooks.sh
+
+      # The PM board and archive probes — the proof of the archive/ freeze — are the ninth
+      # self-test the push leg runs, and the one no required job ran: pm-boards.yml runs them too,
+      # but path-filtered, on the chain branches only, and as no required check. Here they run on
+      # every push to any branch, inside a required job (21/11/2026). git and python3 only.
+      - name: Prove the PM board and archive scripts (synthetic fixture)
+        run: bash code/src/scripts/tests/pm-boards.sh
+
+      # The archive freeze itself, on this repository's own history: every board current, nothing
+      # under */archive/ changed since its move. pm-boards.yml runs it too, and keeps that run
+      # because it ships — but there it is path-filtered, chain branches only and no required
+      # check. Here it runs on every push to any branch, in a required job (21/11/2026). It needs
+      # the full history (the checkout above): on a shallow or one-commit history it fails closed,
+      # naming every archived file it cannot trace to a move. `--warn` stays in pm-boards.yml
+      # alone — advisory, it always exits 0, so a required job gains nothing from it.
+      - name: Every committed board is current and archive/ is frozen (this repository's history)
+        run: bash project-management/src/00-ASSETS/scripts/pm-board.sh --check
 
   # The two documents that describe the template to whoever generates from it. Neither
   # has a consumer that fails when it goes stale: .copier/README.md is only read after
@@ -123,7 +149,7 @@ jobs:
           # syntek-base has committed its own since 16/08/2026.
           ignore-nothing-to-cache: true
 
-      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
 
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -161,11 +187,21 @@ jobs:
       # answers are this job's (CI Probe, a fixed DATE, the derived slug `ci-probe`), so a local
       # render and CI's answer the same questions the same way (US004 B-2). `--ref HEAD` renders
       # the checked-out commit, as `--vcs-ref=HEAD` did; the post-generation tasks still run.
+      # US009 HP-07: each generated install.sh carries the git-hooks step. A grep and nothing
+      # more: this job never executes a generated install.sh, which would need docker, uv, pnpm
+      # and `sudo tee -a /etc/hosts` here. The behaviour is .github/workflows/audit-hook-arming.yml's.
       - name: Generate a project both ways
         run: |
           for mobile in false true; do
             bash code/src/scripts/development/template-render.sh --ref HEAD \
               --data INCLUDE_MOBILE=$mobile --target "$RUNNER_TEMP/gen-$mobile"
+            gen="$RUNNER_TEMP/gen-$mobile"
+            if ! grep -qF '# ── Phase 1 · Step 9 — Git hooks' "$gen/install.sh" ||
+               ! grep -qF 'bash "$PROJECT_ROOT/code/src/scripts/development/install-hooks.sh"' "$gen/install.sh"; then
+              echo "::error::INCLUDE_MOBILE=$mobile — the generated install.sh does not carry the git-hooks step"
+              exit 1
+            fi
+            echo "INCLUDE_MOBILE=$mobile — the generated install.sh carries the git-hooks step"
           done
 
       - name: Shared AI aliases must survive copy and update without leaking memory
@@ -209,6 +245,7 @@ jobs:
                      .github/PULL_REQUEST_TEMPLATE.md .github/scripts \
                      .github/workflows/audit-template.yml \
                      code/src/scripts/development/template-render.sh \
+                     code/src/scripts/tests/cookie-preview-fixture.sh \
                      .copier; do
               if [ -e "$f" ]; then
                 echo "::error::INCLUDE_MOBILE=$mobile — $f leaked into the generated project"
@@ -247,6 +284,9 @@ jobs:
                      project-management/src/03-SPRINTS/SPRINTS-BOARD.md \
                      project-management/src/16-SPRINT-PLANS/SPRINT-PLANS-BOARD.md \
                      project-management/src/17-STORY-PLANS/STORY-PLANS-BOARD.md \
+                     project-management/src/15-DECISIONS/DECISIONS-BOARD.md \
+                     project-management/src/20-FINDINGS/FINDINGS-BOARD.md \
+                     project-management/src/21-BUGS/BUGS-BOARD.md \
                      how-to/src/CONTRIBUTING.md .github/workflows/claude.yml \
                      how-to/src/TEMPLATE-TOKENS.md \
                      how-to/src/TEMPLATE-GUIDE/GUIDE-TO-SKILLS.md \
@@ -387,6 +427,19 @@ jobs:
             exit 1
           fi
           echo "every shared file is byte-identical"
+
+      # A register's index is its generated *-BOARD.md, so no shipped instruction may still name
+      # a CONTEXT.md as a register's index, nor say a register has no index, no board, or that its
+      # index is deferred. The search — read as paragraphs, both orders and the possessives, the
+      # PM-only bare "row to … CONTEXT.md", and a dated comment exempt only when it OPENS with a
+      # historical marker — lives in .github/scripts/register-index-routes.sh, whose --self-test
+      # plants every intended form and the recorded false positives and fails on 0 hits, so a
+      # broken pattern can no longer pass as a clean tree. Moved into the script 19/11/2026.
+      - name: Prove the register-index route search (self-test against planted forms)
+        run: bash .github/scripts/register-index-routes.sh --self-test
+
+      - name: No shipped instruction may route a register's index to a CONTEXT.md
+        run: bash .github/scripts/register-index-routes.sh "$RUNNER_TEMP/gen-false" "$RUNNER_TEMP/gen-true"
 
       # NOT CHECKED, deliberately: "a web-only project contains no reference to
       # scripts/mobile/". It does contain them — the CI workflows and the two script

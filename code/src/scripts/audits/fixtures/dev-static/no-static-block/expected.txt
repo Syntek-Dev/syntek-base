@@ -1,0 +1,2 @@
+# Fails closed: no /static/ location is a finding, not a pass.
+static-missing

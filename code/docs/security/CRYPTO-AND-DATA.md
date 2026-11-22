@@ -119,10 +119,107 @@ and XSS payloads. Store data in the most restrictive location appropriate.
   with a key derived from user authentication.
 - `SameSite=Lax` is the minimum for all cookies. Use `SameSite=Strict` where the cookie does not
   need to be sent on cross-site navigations.
-- Set an explicit `Path` and `Domain` on cookies to prevent them being sent more broadly than
-  intended.
+- **Cookies are host-only, and the session and CSRF cookies take `__Host-` names in every
+  environment that serves TLS.** **[gate: fail]** (`csrf-cookie-httponly-absent`,
+  `cookie-host-prefix-absent`, `cookie-scope-widened`) Never set `SESSION_COOKIE_DOMAIN` or
+  `CSRF_COOKIE_DOMAIN`: with no `Domain` a cookie is sent only to the host that issued it, so a
+  subdomain cannot _read_ it. Omitting `Domain` does not stop a subdomain _writing_ a cookie the
+  apex accepts — the `__Host-` prefix does. So each TLS-serving settings module assigns
+  `SESSION_COOKIE_NAME = "__Host-sessionid"` and `CSRF_COOKIE_NAME = "__Host-csrftoken"` beside
+  its `SESSION_COOKIE_SECURE = True` and `CSRF_COOKIE_SECURE = True` (`staging.py:21-24`,
+  `production.py:21-24`); `dev.py` keeps Django's plain names, because a `__Host-` cookie cannot
+  be set over HTTP. `base.py` assigns `CSRF_COOKIE_HTTPONLY = True` once, for every environment
+  (`base.py:159-164`).
+  - **The prefix's three preconditions**, each checked by the browser before it stores the
+    cookie: `Secure` (the bullet below); `Path=/`, Django's default, so `SESSION_COOKIE_PATH` and
+    `CSRF_COOKIE_PATH` are never set to anything else; and no `Domain`. Break one and the browser
+    discards the cookie silently — no error, no log, just an anonymous request.
+  - **Three limits.** Protection is **per cookie name**: only the two named cookies carry it. A
+    **browser without prefix support** accepts a prefixed cookie unconditionally, so the prefix is
+    defence in depth over the settings, never a substitute for them. And **`CSRF_COOKIE_HTTPONLY`
+    does not defend the CSRF token against XSS**: `{% csrf_token %}` renders it into the DOM and
+    `hx-headers` into a `<body>` attribute, both readable by injected script. It stops a script
+    reading the _cookie_, and that is all.
 - Set `Secure` on all cookies. There is no valid reason for a cookie to be sent over HTTP in
   production.
+
+### Cookie scope — what the rule rests on, and what it reaches
+
+This section owns cookie-scope doctrine; every other guide that names a cookie setting defers here.
+
+- **Client code takes the CSRF token from the page, never from the cookie.** With `HttpOnly` set,
+  `document.cookie` cannot see it, and the cookie's name differs by environment anyway. Any
+  JavaScript or HTMX request reads the token from `{% csrf_token %}` or the `hx-headers` attribute.
+- **Development and the TLS environments name the cookies differently** — `sessionid` and
+  `csrftoken` in dev, `__Host-sessionid` and `__Host-csrftoken` in staging and production. A
+  fixture, Playwright selector, monitoring rule or edge config matching `sessionid` literally
+  passes in dev and fails in production; match on `settings.SESSION_COOKIE_NAME` or
+  `settings.CSRF_COOKIE_NAME` instead.
+- **The edge is a precondition.** `__Host-` requires the cookie to have been set over a genuinely
+  secure connection. Django emits the `Secure` attribute from the setting, so that half is this
+  repository's and is gated. `SECURE_SSL_REDIRECT` is not: it trusts `request.is_secure()`, which
+  `SECURE_PROXY_SSL_HEADER` (`staging.py:19`, `production.py:19`) derives from
+  `X-Forwarded-Proto`. A plain-HTTP request carrying a client-supplied `X-Forwarded-Proto: https`
+  skips the redirect, is served over HTTP, and the browser discards the prefixed cookie. The edge
+  must strip any client-supplied value and set its own —
+  `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` Section 6. No gate covers it: whether an
+  edge strips a header is not a property of this tree.
+- **Scope: the session and CSRF cookies only.** `django.contrib.messages` is installed, and its
+  default storage falls back to a cookie that stays unprefixed and subdomain-writable, as would
+  any language cookie. Neither is covered by this rule.
+- **What the gate can and cannot see.** `code/src/scripts/audits/negative-space.sh` reads every
+  `*.py` under `code/src/django/config/settings/`, packages and symlinks included, and evaluates
+  the **code part** of each line — a trailing comment neither hides an assignment nor satisfies
+  one, string contents (multi-line strings and docstrings too) are never read as code, and a
+  CRLF line ending changes nothing. It recognises plain, indented, annotated (`NAME: str = …`),
+  chained (`A = NAME = …`) and augmented (`NAME += …`) assignments, and **the last occurrence in
+  a module wins**: a later plain name, a later `*_COOKIE_SECURE = False`, or a
+  `CSRF_COOKIE_HTTPONLY` left anything but `True` in **any** module is a finding naming that
+  module. Presence still needs an unconditional, column-0 compliant line; an indented one alone
+  is not presence. The TLS modules it holds to the `__Host-` rule are `staging.py` and
+  `production.py` (or `staging/__init__.py` and `production/__init__.py` when they are
+  packages) and **any other module where `SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE` or
+  `CSRF_COOKIE_SECURE` occurs other than as a plain `= False` or `= None`** — a recognised
+  `= True`, an unrecognised occurrence, or a value it cannot read all make a module TLS. So a
+  computed value — `SESSION_COOKIE_SECURE = env.bool(...)` in `base.py` — makes that module TLS
+  and asks it for `__Host-` names; set the `SECURE` lines literally, `True` or `False`, in each
+  environment module, as the template does. A `Domain` of `None` and a `Path` of exactly `"/"` (`'/'`,
+  `r"/"`) are host-only, not findings.
+  - **It fails closed.** Any other whole-token occurrence of a cookie setting name in code — after
+    a semicolon, in tuple unpacking, `del`, a walrus, a parenthesised, `for` or `import … as`
+    target, a subscript-first chain — is an **unrecognised occurrence**: it never counts as
+    presence and always counts as an override or a widened scope. **A read is one too**:
+    `X = SESSION_COOKIE_SECURE` or `if CSRF_COOKIE_HTTPONLY:` in a settings module is a finding.
+    The remedy is to read `django.conf.settings` from the code that needs the value, never from
+    inside a settings module, and to write each setting as one plain assignment. There is no
+    suppression annotation, by design.
+  - **A module it cannot read is a finding** naming that module, never a silent pass.
+  - The copier migration `cookie-domain-conflict.sh` carries the same detector, byte for byte,
+    names unreadable modules the same way, and the self-test proves the two report the same
+    settings.
+
+  **A green run proves that directory, not a global rule.** It is line-based, not a parser, so
+  these remain invisible or misread:
+  - a runtime write to `django.conf.settings` — an `AppConfig.ready()` is the canonical place;
+  - an environment-driven value — `env("X")` is read as "not compliant", never as what it holds;
+  - any settings module outside `code/src/django/config/settings/`, and anything reaching the
+    directory through `from … import *`, `setattr`, `globals()`, `exec` or a name built at
+    runtime — none of them spells the setting as a token;
+  - an identifier spelt with fullwidth or other NFKC-equivalent characters, which Python folds
+    to the setting's name and the scanner does not, and a name inside an f-string's braces;
+  - a multi-line value, or one built by concatenation or a variable, which reads as "not
+    compliant" — a false finding, never a false pass;
+  - a keyword argument on its own line inside a call (`NAME=True,`), which reads as an assignment;
+  - control flow: an unconditional line after an `if` block wins whether or not the block ran;
+  - an unreadable sub-directory under `settings/`, which is skipped rather than reported — the
+    gate names an unreadable file, never a directory. Git cannot record that permission state,
+    and Python could not import from it either;
+  - `staging.py` beside a `staging/` package (or `production.py` beside `production/`): the gate
+    holds the `.py` file to the presence rule, while Python imports the package;
+  - a Python 3.12+ f-string reusing its own quote inside its braces, which can desynchronise the
+    string tracking and hide the rest of the module;
+  - a lone CR (a classic-Mac line ending) after a comment, which hides the next line — CRLF is
+    handled.
 
 ### Libraries that write to client storage by default
 

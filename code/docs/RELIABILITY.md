@@ -15,10 +15,11 @@ has to answer: when a call fails, is it retried and how; and when an operation r
 second run safe. The questions are the same on every surface that can fail or repeat — an outbound
 HTTP client, a database transaction, a queue consumer, an inbound webhook, an MCP tool, a
 management command — so the rules live here once, and each surface's own guide is to state only
-how that surface expresses them. Today only the task surface has been reduced to that; the
-outbound-webhook policy in [`api-design/WEBHOOKS.md`](api-design/WEBHOOKS.md) and the _Retry_ column of the job
-classification in [`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md)
-still state retry rules of their own, and are not yet reduced to routes here.
+how that surface expresses them. The outbound-webhook delivery budget is an override row of the
+budget table in [`reliability/BUDGETS.md`](reliability/BUDGETS.md), which
+[`api-design/WEBHOOKS.md`](api-design/WEBHOOKS.md) cites rather than restates. One statement is not yet reduced: the _Retry_ column of the job classification in
+[`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) still states
+retry rules of its own.
 
 **A surface guide routes here for the rule and keeps its own expression.** The background-task
 surface, for instance, keeps its delivery guarantee, its broker-eviction requirement, its
@@ -36,10 +37,27 @@ duplicated effects.
 
 ## Sub-documents
 
-| Document                                                   | Covers                                                                                                                          |
-| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| [`reliability/IDEMPOTENCY.md`](reliability/IDEMPOTENCY.md) | The run-twice contract, the proof ladder (constraint → conditional transition → idempotency key), the run-twice acceptance test |
-| [`reliability/RETRIES.md`](reliability/RETRIES.md)         | Classifying a failure, jittered exponential backoff, bounds, the stated end of retrying, what a failure record carries          |
+| Document                                                   | Covers                                                                                                                                                                                    |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`reliability/IDEMPOTENCY.md`](reliability/IDEMPOTENCY.md) | The run-twice contract, the proof ladder (constraint → conditional transition → idempotency key), the run-twice acceptance test                                                           |
+| [`reliability/RETRIES.md`](reliability/RETRIES.md)         | Who decides to retry, classifying a failure, backoff, honouring `Retry-After`, the attempt log, staleness, the stated end, the failure record                                             |
+| [`reliability/BUDGETS.md`](reliability/BUDGETS.md)         | How much: the attempt defined, the declarative default, the budget table, overrides, the worst-case formula, the redelivery limit and the persisted schedule, the manual `self.retry` ban |
+
+## Deferred, with triggers
+
+Each deferral records the condition that reopens it — a trigger, not a shrug.
+
+| Deferred                                            | Revisit when                                                                                                                                                                     |
+| --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Circuit breakers on calls to external providers** | The first incident in which bounded retries against a live provider degrade service, **or** the story that integrates a second rate-limited external API — whichever comes first |
+
+**Why deferred, and what already stands in for it.** The retry budget bounds one operation, not
+the fleet: fifty workers each within budget still present fifty chains to one degraded provider,
+and a breaker is what would cut them. Until a trigger fires, the partial mechanism already in the
+tree is the outbound-webhook rule that disables an endpoint after N consecutive failed deliveries
+([`api-design/WEBHOOKS.md`](api-design/WEBHOOKS.md) Section _Delivery_) — a breaker for one
+surface, so the deferral is not a contradiction of it. A guide that mandates a breaker routes here
+rather than restating a rule with nothing behind it.
 
 ## What this family does not own
 
@@ -49,7 +67,7 @@ duplicated effects.
 | The task surface's delivery guarantee, broker eviction, argument freshness, signature drift | [`TASK-AUTHORING.md`](TASK-AUTHORING.md) → _Idempotency_                                                         |
 | The task surface's class table — how a queue carries the taxonomy                           | [`TASK-AUTHORING.md`](TASK-AUTHORING.md) → _The error taxonomy on this surface_                                  |
 | Failed-job visibility                                                                       | [`performance/API-AND-MONITORING.md`](performance/API-AND-MONITORING.md) → _Background Jobs and Queues (Celery)_ |
-| Job classification, circuit breakers on jobs that call external APIs                        | [`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) → _Background Job Patterns_   |
+| Job classification                                                                          | [`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) → _Background Job Patterns_   |
 | `transaction.atomic()` on multi-write services                                              | [`BACKEND-CODING-PRINCIPLES.md`](BACKEND-CODING-PRINCIPLES.md)                                                   |
 | Error tracking and alert routing                                                            | [`LOGGING.md`](LOGGING.md)                                                                                       |
 

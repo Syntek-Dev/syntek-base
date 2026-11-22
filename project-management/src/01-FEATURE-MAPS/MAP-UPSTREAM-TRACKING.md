@@ -42,7 +42,7 @@ and an explicit decision about what a trigger is allowed to cost.
 | Domain                   | Template maintenance — syntek-base's own upstream surface, not a generated project's                                                                                                               |
 | Skills to load           | `cicd` (the pipelines and the dependency set) · `runbook` (the register and its guide) · `doc-writer` · `security` (the supply-chain half)                                                         |
 | Standing preferences     | The obligation belongs to whoever maintains the template · `CONTRIBUTING.md` is copier-excluded and is why it currently holds the one obligation that exists                                       |
-| Umbrella ADRs            | **None, and none may be authored here** — a dated house rule (`../15-DECISIONS/CLAUDE.md:34-41`, 16/08/2026), **not** a mechanical impossibility. See below                                        |
+| Umbrella ADRs            | Any ADR is authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story                               |
 | Register entries triaged | **0 closes · 0 blocks · 1 unrelated** — exhaustive; `DEFERRED.md` holds no rows                                                                                                                    |
 | Scope confirmed by Sam   | 28/08/2026 — `Q4→2` the register's grain is **human-declared (113)** · `Q5→1` CI actions and container images are **in scope** · `Q6→2` the Rust advisory gap is corrected here and **routed out** |
 
@@ -538,8 +538,6 @@ sheet ships (`Q2→2`), and the mechanism ships secret-gated (`Q4→1`).
       map and nothing outside it.** Deliberate, and named as a cost
 - [x] **Every slice has a flag manifest** — S-01, S-02, S-03 cut 01/09/2026, all flags `N/A` as
       expected (no model, endpoint, screen or personal-data path)
-- [x] **No index row in `CONTEXT.md`** — the interim decline `MAP-RULE-OWNERSHIP` N-010 settled on
-      28/08/2026; the row arrives with that map's slice S-06
 
 **This is a template-development map, so there are no stories to cut.** The equivalent gate is that
 **All four blocking nodes settled 01/09/2026** — Renovate self-hosted, the two-file split,

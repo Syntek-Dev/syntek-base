@@ -1,0 +1,4 @@
+# The pre-US008 dev shape: /static/ aliased onto a mounted, never-filled staticfiles dir.
+static-no-proxy
+static-alias
+staticfiles-mount

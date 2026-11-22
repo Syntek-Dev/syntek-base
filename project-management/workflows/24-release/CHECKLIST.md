@@ -25,6 +25,7 @@ model: opus
       its **Used** count filled, and the same text is entered in App Store Connect and the Play
       Console. Nothing in this repository can verify the store side — it is a review artefact,
       not an audit artefact (`code/docs/discoverability/APP-STORE.md`)
+- [ ] **Template releases only:** every pending `_migrations:` entry in `copier.yml` (`when: false`, no `version:`) that this release ships is activated **in the release commit** — `version:` set to this release, after `git tag --sort=-v:refname | head -1` confirms it is the next one; the script renamed `v<RELEASE>-*.sh`; `when:` set to the after-stage predicate — and only that commit is tagged. Never tag a partially activated state <!-- doc-references: template-only -->
 - [ ] Full test suite passes
 - [ ] Deployed to production successfully
 - [ ] The release itself sets no story's status — `bash project-management/src/00-ASSETS/scripts/pm-board.sh --warn`

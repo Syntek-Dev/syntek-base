@@ -21,34 +21,66 @@ time-limited personal data must define a Celery Beat task and schedule it at sta
 
 ```python
 # apps/myapp/tasks.py
+import logging
+from datetime import timedelta
+
 from celery import shared_task
+from django.conf import settings
+from django.db import DatabaseError
+from django.utils import timezone
+
+from apps.myapp.models import MyModel
+
+logger = logging.getLogger("apps.myapp")
 
 
-@shared_task(name="apps.myapp.purge_expired_data", bind=True, max_retries=3)
-def purge_expired_data(self) -> dict:
-    """Delete rows past the configured retention window.
+class PurgeFailed(Exception):
+    """Terminal: recorded and alerted, never retried. Carries identifiers only."""
 
-    Returns a summary dict with the count of rows deleted/anonymised.
+
+@shared_task(
+    name="apps.myapp.purge_expired_data",
+    time_limit=300,  # hard limit, seconds
+)  # no autoretry_for, no max_retries: the next Beat run is the retry
+def purge_expired_data() -> int:
+    """Delete rows past the configured retention window; return how many were deleted.
+
+    Idempotent: a repeat recomputes the cutoff and finds nothing older left to delete.
     """
-    import logging
-    from django.conf import settings
-    from django.utils import timezone
-
-    logger = logging.getLogger("apps.myapp")
-    cfg = getattr(settings, "MYAPP", {})
-    retention_days = cfg.get("RETENTION_DAYS", 365)
-    cutoff = timezone.now() - timezone.timedelta(days=retention_days)
-
+    retention_days = getattr(settings, "MYAPP", {}).get("RETENTION_DAYS", 365)
+    cutoff = timezone.now() - timedelta(days=retention_days)
     try:
         deleted, _ = MyModel.objects.filter(created_at__lt=cutoff).delete()
-        logger.info("apps.myapp: purged %d expired rows", deleted)
-        return {"deleted": deleted}
-    except Exception as exc:
-        logger.error("apps.myapp: purge_expired_data failed", exc_info=True)
-        raise self.retry(exc=exc)
+    except DatabaseError:
+        deleted = None  # the driver's error goes no further than this block
+    if deleted is None:
+        raise PurgeFailed("apps.myapp.purge_expired_data") from None  # after the block
+    logger.info("apps.myapp: purged %d expired rows", deleted)
+    return deleted
 ```
 
+**The purge makes one attempt, and the schedule is its retry.** It runs daily on Beat and is
+idempotent, so tomorrow's run deletes whatever today's failed to — and exactly one layer decides to
+repeat an operation ([`code/docs/reliability/RETRIES.md`](../../../code/docs/reliability/RETRIES.md)
+Section _One layer decides to retry_). Here that layer is Beat, so the task carries no
+`autoretry_for` and no `max_retries`: a task-level retry would be a second deciding layer on top of
+the schedule, for a job a day's delay does not harm. `time_limit=` stays, because a task without a
+time limit can hold a worker slot for ever.
+
+**A failure is recorded with identifiers only, then alerted.** The driver's message can name hosts
+and SQL, and an uncaught `DatabaseError` would carry it into the `ERROR` line Celery writes and into
+the tracker. So the fence drops the driver's error inside the `except` block and raises
+`PurgeFailed` after it, `from None`, naming only the task — the shorter of the two safe shapes. The
+other leaves the driver's error uncaught and relies on a filter on Celery's `celery.app.trace`
+logger plus a tracker scrubber to drop its text, and nothing at baseline wires either. A fault outside the database — a bad setting, a missing field — is not a
+`DatabaseError`, so it still fails with its own traceback ([`code/docs/reliability/RETRIES.md`](../../../code/docs/reliability/RETRIES.md) Section
+_What a failure record carries_).
+
 ### Scheduling in settings
+
+**The task only retries through its schedule if it is on one**: every retention task gets its entry
+in the project's `CELERY_BEAT_SCHEDULE` below, as `purge_expired_data` does. A retention task
+absent from it never runs again after a failure.
 
 ```python
 # config/settings/base.py
@@ -67,13 +99,22 @@ CELERY_BEAT_SCHEDULE = {
         "task": "apps.<%AUDIT_APP%>.tasks.run_audit_integrity_check",
         "schedule": crontab(hour=3, minute=0),  # daily 03:00 UTC
     },
+    "apps.myapp.purge_expired_data": {  # the standard retention task above
+        "task": "apps.myapp.purge_expired_data",
+        "schedule": crontab(hour=2, minute=0),  # daily 02:00 UTC
+    },
 }
 ```
 
 ### Rules
 
 - Retention tasks must use `admin_db` when querying user-scoped rows to bypass RLS.
-- Tasks must log both success and failure at `INFO` / `ERROR` level respectively.
+- Tasks log success at `INFO`. A failure is not caught to be logged: it is raised once, identifiers
+  only, and reaches the error tracker as
+  [`code/docs/reliability/RETRIES.md`](../../../code/docs/reliability/RETRIES.md) Section _What a
+  failure record carries_ says — never with the driver's message. Alerting on it is monitoring's
+  rule; until the task surface is wired it is unenforced, not met.
+- A scheduled retention task does not retry itself — the next scheduled run is its retry.
 - Tasks must be idempotent — running twice in the same window must be a no-op.
 - Retention periods are configured via `<APP>['RETENTION_DAYS']` in Django settings. Never
   hardcode periods.

@@ -21,13 +21,13 @@
 
 ## Notes
 
-| Field                    | Value                                                       |
-| ------------------------ | ----------------------------------------------------------- |
-| Domain                   | [PLACEHOLDER]                                               |
-| Skills to load           | [PLACEHOLDER]                                               |
-| Standing preferences     | [PLACEHOLDER — decisions already made that bound this work] |
-| Umbrella ADRs            | [PLACEHOLDER]                                               |
-| Register entries triaged | [n] closes · [n] blocks · [n] unrelated                     |
+| Field                    | Value                                                                                                                               |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                   | [PLACEHOLDER]                                                                                                                       |
+| Skills to load           | [PLACEHOLDER]                                                                                                                       |
+| Standing preferences     | [PLACEHOLDER — decisions already made that bound this work]                                                                         |
+| Umbrella ADRs            | [PLACEHOLDER — ADRs this map's slices drive; each is authored by the slice's story, never by the map (`../15-DECISIONS/CLAUDE.md`)] |
+| Register entries triaged | [n] closes · [n] blocks · [n] unrelated                                                                                             |
 
 ---
 
@@ -183,6 +183,5 @@ One row per RESOLVE session, so the map's history is legible without git archaeo
 - [ ] **Every node marked "blocking a story" is resolved**
 - [ ] Every resolved node links to the artefact it became
 - [ ] **Every slice has a flag manifest** — every gate it needs, `N/A` omitted
-- [ ] Index row in `CONTEXT.md` current
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked.**

@@ -1,6 +1,6 @@
 # Generation — What Copier Actually Does
 
-**Last Updated**: 31/10/2026
+**Last Updated**: 19/11/2026
 
 A precise account of what happens between running `copier copy` and having a project. Read this
 when something went wrong, when you are reviewing a change to `copier.yml`, or when you simply <!-- doc-references: template-only -->
@@ -129,9 +129,9 @@ Six notes:
   `scantree` and skips one entry at a time, and it re-creates parent directories for any file it
   renders. `.github/scripts/shipped-artefacts.sh` asserts the result on a real generation. <!-- doc-references: template-only -->
 - **The PM boards start empty, and the `archive/` folders ship empty.** The `*-BOARD.md` files in
-  `01-FEATURE-MAPS`, `02-STORIES`, `03-SPRINTS`, `16-SPRINT-PLANS` and `17-STORY-PLANS` list this
-  template's own maps, stories and sprints, so your project never inherits them: it starts with
-  boards listing nothing — bar the feature-maps board, which lists the seeded
+  `01-FEATURE-MAPS`, `02-STORIES`, `03-SPRINTS`, `15-DECISIONS`, `16-SPRINT-PLANS`,
+  `17-STORY-PLANS`, `20-FINDINGS` and `21-BUGS` list this template's own artefacts, so your
+  project never inherits them: it starts with boards listing nothing — bar the feature-maps board, which lists the seeded
   `MAP-SCALE-PLANNING.md` under `Charting` — and `pm-board.sh --write` fills them as your first artefacts land. Each
   `archive/` arrives holding only its `CONTEXT.md`/`CLAUDE.md` pair.
 - **PDFs are excluded because they are binary.** With `_templates_suffix: ""` Copier attempts to
@@ -149,7 +149,7 @@ Six notes:
 ## 4 — Write
 
 The rendered tree lands in your destination directory, including a staging directory `.copier/`
-holding the nine seed files a task then moves into place and removes.
+holding the seed files a task then moves into place and removes.
 
 ## 5 — Record answers
 
@@ -165,26 +165,19 @@ confirmation) because these execute on your machine.
 
 | #   | Task                                      | Why                                                                                                                                       |
 | --- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | empty `.copier/` into place, then `rmdir` | Seeds the nine files below, since the repo-root originals belong to the template.                                                         |
+| 1   | empty `.copier/` into place, then `rmdir` | Seeds the files below, since the repo-root originals belong to the template.                                                              |
 | 2   | brand `pyproject.toml`'s `[project] name` | `uv` rejects the delimiters in a package name, so the manifest ships the house constant `syntek-base` and is rewritten to your slug here. |
 | 3   | `uv lock` (non-fatal)                     | Creates the lockfile every Dockerfile needs. Prints a warning instead of failing if `uv` is absent.                                       |
 | 4   | `git init --initial-branch=main`          | Starts history. Skipped on `copier update`.                                                                                               |
 
-Task 1 moves nine files:
+**Task 1's `mv` lines are the list** — read the copy-gated task (the one whose `when:` tests the
+copy operation, ending `rmdir .copier`) in `copier.yml` rather than a count here. It moves the <!-- doc-references: template-only -->
+README, the version state (`VERSION` at `0.1.0`, an empty history, changelog and release notes),
+a blank `.claude/MEMORY.md`, blank `GAPS.md` and `DEFERRED.md`, a blank cut plan, the
+scale-planning map, and one `*-BOARD.md` per boarded folder — each listing nothing, bar the
+feature-maps board, which lists the seeded map.
 
-```text
-.copier/README.md              →  README.md
-.copier/VERSION                →  VERSION                     (0.1.0)
-.copier/VERSION-HISTORY.md     →  VERSION-HISTORY.md          (empty)
-.copier/CHANGELOG.md           →  CHANGELOG.md                (empty)
-.copier/RELEASES.md            →  RELEASES.md                 (empty)
-.copier/MEMORY.md              →  .claude/MEMORY.md           (headings and rules, no entries)
-.copier/GAPS.md                →  GAPS.md                     (format block, no entries)
-.copier/DEFERRED.md            →  DEFERRED.md                 (writing rules, no rows)
-.copier/MAP-SCALE-PLANNING.md  →  project-management/src/01-FEATURE-MAPS/MAP-SCALE-PLANNING.md
-```
-
-The last one exists because six shipped guides cite that map, and a citation resolving to nothing
+The scale-planning map is seeded because six shipped guides cite it, and a citation resolving to nothing
 is the defect `code/src/scripts/audits/doc-references.sh` exists to catch — so the project starts
 with the map present and every row reading `TBD`.
 
@@ -204,21 +197,28 @@ wrote.** Copier tracks only what it generated, so a renumbered directory takes i
 the new path and strands every hand-written artefact, with no conflict and no error
 (`14-UPDATING.md`).
 
-| Version   | What it does                                                                                                                                                                                                         |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `v7.0.0`  | Renumbers `project-management/src/` again to open `14-LOGGING`, shifting `14-DECISIONS` and everything after it up by one. **Acts**, and never overwrites — a name present on both sides is reported and left alone. |
-| `v2.0.0`  | The first such renumber, carrying your stories, ADRs and sprint records with it. **Acts**, on the same terms.                                                                                                        |
-| `v3.0.0`  | Reports any agent definition you wrote yourself in the now-deleted agents directory. **Advisory.**                                                                                                                   |
-| `v4.0.0`  | Restores `pyproject.toml`'s `[project] name` to your slug after an update rewrote it to the template's. **Acts** — the alternative is a broken build.                                                                |
-| `v5.0.0`  | Reports citations you wrote at a section of the old single-file `GIT-GUIDE.md`, now split into `docs/git/`. **Advisory.** Keyed at both `v4.0.0` and `v5.0.0`, deliberately.                                         |
-| `v6.0.0`  | Reports work stranded by the `feature` → `implement-story` / `feature-map` renames. **Advisory.**                                                                                                                    |
-| _(every)_ | `rm -rf .copier` — the staging directory is not project content, and `_tasks` do not run on an update to clear it.                                                                                                   |
+| Version                | What it does                                                                                                                                                                                                                                                                                                   |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `v7.0.0`               | Renumbers `project-management/src/` again to open `14-LOGGING`, shifting `14-DECISIONS` and everything after it up by one. **Acts**, and never overwrites — a name present on both sides is reported and left alone.                                                                                           |
+| `v2.0.0`               | The first such renumber, carrying your stories, ADRs and sprint records with it. **Acts**, on the same terms.                                                                                                                                                                                                  |
+| `v3.0.0`               | Reports any agent definition you wrote yourself in the now-deleted agents directory. **Advisory.**                                                                                                                                                                                                             |
+| `v4.0.0`               | Restores `pyproject.toml`'s `[project] name` to your slug after an update rewrote it to the template's. **Acts** — the alternative is a broken build.                                                                                                                                                          |
+| `v5.0.0`               | Reports citations you wrote at a section of the old single-file `GIT-GUIDE.md`, now split into `docs/git/`. **Advisory.** Keyed at both `v4.0.0` and `v5.0.0`, deliberately.                                                                                                                                   |
+| `v6.0.0`               | Reports work stranded by the `feature` → `implement-story` / `feature-map` renames. **Advisory.**                                                                                                                                                                                                              |
+| _(every, state-gated)_ | Reports any settings module that sets a session or CSRF cookie Domain, or a Path other than `/`, which the `__Host-` cookie names forbid — file, line and setting, never a value. Silent when it finds nothing. No version key: the combination is wrong whenever it holds. **Advisory.**                      |
+| _(pending — inactive)_ | The one-time `__Host-` cutover notice: the first deploy logs every user out, a rollback does it again, a rolling deploy is unsafe, and anything matching the cookies by name must be repointed. **Inactive until the release that ships it** assigns its version and activates it in one commit. **Advisory.** |
+| _(every)_              | `rm -rf .copier` — the staging directory is not project content, and `_tasks` do not run on an update to clear it.                                                                                                                                                                                             |
 
 **Order is declaration order, not version order**, which is why `v7.0.0` is declared first: it must <!-- doc-references: template-only -->
 not run before the `v2.0.0` pass has settled an older project's tree.
 
 The last entry has no `version:` on purpose: it must hold for every future release that stages a
 file that way, and `rm -rf` on a normally-absent directory is a no-op.
+
+Two more forms carry no version, for different reasons. A **state-gated** entry runs on every
+update because what it reports is wrong whatever release produced it, and stays silent until it
+finds something. A **pending** entry belongs to a release not yet cut: it ships switched off, and
+that release assigns its version and switches it on in the commit it tags — never before.
 
 **Advisory versus acting is a deliberate split.** A migration acts only where exactly one correct
 value exists and a human left to do it would be left behind a success message — `v4.0.0`'s manifest

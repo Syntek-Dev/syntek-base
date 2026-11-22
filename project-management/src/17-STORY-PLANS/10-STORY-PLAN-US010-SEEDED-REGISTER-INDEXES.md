@@ -6,7 +6,10 @@
 | Branch | `us010/seeded-register-indexes`    |
 | Sprint | SPRINT-06 · Wave 1 · build order 1 |
 | Author | <%ORG_NAME%>                       |
-| Status | `Open`                             |
+
+<!-- REMOVED 19/11/2026 at the re-cut: the metadata table's last row read "| Status | `Open` |".
+     A plan carries no status since 7.7.0 (./CLAUDE.md -> Guardrails); the story's own **Status:**
+     line is the only one, and STORY-PLANS-BOARD.md files this plan under it. -->
 
 <!-- BORN WITH ITS PREFIX, 03/10/2026. The number "10-" was reserved for this story on 20/09/2026,
      at 03-sprint-planning, in ../03-SPRINTS/SPRINT-06.md -> Dependencies ("The next free prefix is
@@ -32,11 +35,11 @@
      ../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md's order sentence (:417-418). Build order 1 is
      first of one: the sprint has no other member. -->
 
-Implements `../15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` (a map's
+Implements `../15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` (a map's
 `**Status**` header is one of five plain values — `Charting`, `Resolving`,
 `Blockers clear — stories may start`, `Complete`, `Not started` — with any prose after the first
 middle dot, each value derived from the map's own counts, `Blockers clear` winning the one overlap)
-and `../15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (an index reads every
+and `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (an index reads every
 register's Status by one rule: the carrier value with the trailing HTML comment, bold markers,
 backticks and everything from the first space-middle-dot-space removed, then trimmed, applied to
 the value after the key), under
@@ -45,8 +48,13 @@ the value after the key), under
 edit and read as a diff, the baseline recorded in the manual testing guide). All three read
 `Accepted`, measured 03/10/2026. Nothing else binds:
 `../15-DECISIONS/ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL-08-09-2026.md` reads `Proposed`, its
-sign-off is the read-rule record's Follow-on, and this story does not edit it.
+sign-off is the read-rule record's Follow-on, and this story does not edit it. **Amended 19/11/2026
+(review CR-M1):** that reading is of 03/10/2026 and was stale before the build — Sam accepted the
+ADR on 05/11/2026, and it read `Accepted` at P0; the story edits only its header shape.
 
+> **Superseded 19/11/2026 — a plan carries no status since 7.7.0** (the row is removed above); the
+> paragraph is kept as the record.
+>
 > **`Open` is literal, and it asserts something.** `./CLAUDE.md` makes any value other than
 > `Blocked` an assertion that the blockers are cleared, and this story has **none**: its map's
 > frontier is empty (`Frontier open: 0 · Blocking open: 0`), every node it carries is settled, and
@@ -68,9 +76,49 @@ sign-off is the read-rule record's Follow-on, and this story does not edit it.
 **No Table of Contents, and the omission is house practice.** None of the nine sibling plans in
 this folder, `01-` to `09-`, carries one (re-measured 03/10/2026, all nine at zero).
 
+<!-- CARRIED 17/11/2026 from US009's findings (F-001, project-management/src/20-FINDINGS/archive/FINDING-US009-HOOK-ARMING-17-11-2026.md):
+     US009 was priced at 5 SP and re-estimated to 8 mid-build on a threshold its plan named in advance -
+     six TDD rounds, new fixture families and a second CI job. When this plan's estimate is next
+     reviewed, price probe-driven shell work by fixture families and CI jobs, and name the
+     re-estimate threshold in the plan, as US009's did. -->
+
 ---
 
 ## Problem Statement
+
+**Re-cut 19/11/2026 — current state, measured at `63813fa` on `us010/seeded-register-indexes`.**
+The 03/10/2026 statement below is kept as the record; where it disagrees, this block is current.
+The story's _Re-cut — 19/11/2026_ section holds the settled design (grilling rounds 1 to 4 with
+Sam), and the new ADR,
+`../15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`, argues it.
+
+- **7.7.0 (31/10/2026) built five of the eight indexes as generated boards** — `01`, `02`, `03`,
+  `16` and `17` — by `../00-ASSETS/scripts/pm-board.sh` over `pm-lib.sh`'s `KINDS`, seeded by five
+  `mv` lines in the copy-gated `_tasks` entry (`copier.yml`, ahead of `rmdir .copier`), each seed
+  proved byte-identical to the seed-only render by `.github/scripts/shipped-boards.sh` (five
+  checks), and gated for staleness by `pm-board.sh --check`. Every map's status line is already a
+  plain value plus a `**Status note:**`.
+- **Three registers have no index**: `15-DECISIONS` (31 ADRs), `20-FINDINGS` (9 findings) and
+  `21-BUGS` (12 bugs, the cross-cutting fallback included). Their status carriers are three
+  shapes — a bold prose line, the last middle-dot field of a metadata line, a bold-keyed table row.
+- **`shipped-boards.sh` check 2 greps the whole of `_tasks`** for each seed's `mv`, so it cannot
+  tell the copy-gated task from an ungated one; `.github/scripts/shipped-ai.py` has no board update
+  probe.
+- **The shipped prose still carries the retired instructions**: the map template's and every map's
+  "Index row" checkbox, `Umbrella ADRs` rows asserting the retired no-ADR rule,
+  `../15-DECISIONS/CLAUDE.md`'s "There is no index", the programme-plan permission in the three
+  shipped `17-STORY-PLANS` files, and seed counts in the template guide.
+- **P0 is taken** (19/11/2026, the manual guide's _Recorded during the build_), and stands: the
+  re-cut changes what is built, not the baseline it is diffed against.
+
+**What this story now delivers** — the three boards (`DECISIONS-BOARD.md`, `FINDINGS-BOARD.md`,
+`BUGS-BOARD.md`) with the decisions tail columns; the three vocabularies in
+`.claude/skills/completion/SKILL.md`; every ADR, finding and bug status line normalised; archive
+support in `pm-archive.sh`; `shipped-boards.sh` at eight boards with check 2 tightened; the board
+update probe in `shipped-ai.py`; three seeds, three `mv` lines, `SEEDED` and the completeness step;
+the content repairs and the map commit; the joined-line instruction search, last. **Out of scope
+now:** the 72-case matrix (MAP-GENERATION-COVERAGE S-01, charted 19/11/2026, uncut), any hand-written index file, the
+third `shipped-registers.sh` family, the literal grep and the link check.
 
 **Why this story exists.** `../02-STORIES/US010.md` is SPRINT-06's sole `Must`, cut from
 `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` slices `S-01` and the narrowed `S-02`. The shipped
@@ -192,6 +240,12 @@ Cross-layer compliance guides that also gate this plan: `project-management/docs
 
 ## Architecture Decision
 
+**Re-cut 19/11/2026.** The table below records the design as settled up to 27/09/2026; the
+re-cut of 19/11/2026 replaces its first, second, fourth and fifth rows with the boards design
+(`../15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`, superseding both
+US010 records of 21/09/2026), and Key Decisions 15 to 22 below carry it. The phase order the
+developer chose on 03/10/2026 — mechanism, content repairs, map commit — survives as R1 to R8.
+
 **The register-index design is not decided here and is not re-opened.** It was argued on
 `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` (nodes `N-001`, `N-002`, `N-005`, `N-006`, frontier
 empty since 31/08/2026), sharpened by gates `10`, `11` and `15`, and settled in seven grilling
@@ -199,8 +253,8 @@ rounds between 21/09/2026 and 27/09/2026. What is fixed before this plan:
 
 | Decided                                                                                                            | By                                                                                    | What it fixes                                                                          |
 | ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| A map's Status is `<enum> · <prose>`, five plain values, each derived from the map's own counts                    | `../15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`                | The one register value nothing could read as a value                                   |
-| One read rule for all seven carriers                                                                               | `../15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                      | Three different answers to "what is a row's Status", and two carriers nobody had asked |
+| A map's Status is `<enum> · <prose>`, five plain values, each derived from the map's own counts                    | `../15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`        | The one register value nothing could read as a value                                   |
+| One read rule for all seven carriers                                                                               | `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`              | Three different answers to "what is a row's Status", and two carriers nobody had asked |
 | Seven lines inside the one copy-gated chain, ahead of `rmdir`, in the one-line form; no second task, no `mkdir -p` | ST01, ST02, ST08 (settled 21/09/2026, grilling round 1 Q3)                            | Seed-once, and the three parsers that read the line                                    |
 | A third `shipped-registers.sh` family holding its own constant list of seven, plus one seed-row clause             | ST03, ST06 (settled 21/09/2026, grilling round 1 Q2; settled 27/09/2026, round 7 Q34) | Emptiness proved, never trusted; the negation leak the generated-tree check cannot see |
 | An update probe that changes every seed, asserts byte-identity, and goes red with the gate removed                 | ST07 (settled 27/09/2026, grilling round 3 Q16)                                       | A probe that could otherwise pass whether or not the gate exists                       |
@@ -228,7 +282,31 @@ with their reasons. The work is planned per phase below.
 **Pre-existing bug fixes — dropped too:** the pre-existing defects this story repairs, the stale
 instruction sites and seed counts among them, are its scope (P2 and P3), not fixes made on the way.
 
-### Phase plan — five phases, in the order the developer settled
+### Phase plan — re-cut 19/11/2026 (active)
+
+**Probe-first, in this order** (the re-cut grilling of 19/11/2026; Key Decisions 15 to 22). The
+phase plan of 03/10/2026 and its P1 to P4 sections below are **superseded 19/11/2026** and kept as
+the record; P0 stands as taken. Each probe is committed red, in a commit of its own, before the
+code it proves — the TM-15 rule of Key Decision 5, unchanged.
+
+| Phase | Deliverable                                                                                                                                                                                                         | Blocked by |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| P0    | **Taken 19/11/2026** — the baselines in the manual guide's _Recorded during the build_                                                                                                                              | —          |
+| R1    | **Generator.** `pm-board.sh` tests for the kinds `DECISIONS`, `FINDINGS`, `BUGS` (patterns, bug fallback, tail columns, vocabularies) red; then `pm-lib.sh` / `pm-board.sh` green; the vocabularies in `completion` | P0         |
+| R2    | **Status normalisation, then boards.** Every ADR, finding and bug status line to plain value plus note, both ADR supersession lines; `pm-board.sh --write`; the three boards committed                              | R1         |
+| R3    | **Archive.** `pm-archive.sh` tests for the three triggers red; then archive support green                                                                                                                           | R1         |
+| R4    | **Seed gate.** `shipped-boards.sh` probes — the ungated-task probe for the tightened check 2, and the three new boards — red; then the checks at eight boards                                                       | R2         |
+| R5    | **Seeds.** Three seeds via `shipped-boards.sh --fix`, three one-line `mv` lines in the copy-gated task, `SEEDED` grown by three, the completeness step's three paths                                                | R4         |
+| R6    | **Update probe.** The `--self-test` mutation removing the seed task's `when:` key, red; then the byte-identity check over an edited, committed board                                                                | R5         |
+| R7    | **Content repairs** — instruction sites, seed-count sites and the two `14-UPDATING.md` statements, the programme-plan permission — then **the map commit**: index-row boxes and `Umbrella ADRs` rows, one commit    | R5         |
+| R8    | **Last:** the joined-line instruction search in `[3/4]`, reading the sites R7 repaired; then the citation diff against P0 and every gate reading                                                                    | R7         |
+
+**Re-estimate threshold** (settled 19/11/2026, re-cut grilling round 4 Q2): a **fourth fixture
+family**, or a **second new CI job**, within this story, sends it back for re-estimation. Counted
+now: the fixture families are `pm-board.sh`'s, `shipped-boards.sh`'s and `shipped-ai.py`'s; the one
+new CI job step is the joined-line search inside the existing `[3/4]` job.
+
+### Phase plan — five phases, in the order the developer settled — superseded 19/11/2026
 
 | Phase | Deliverable                                                                                                                                                                                                                                                                                                                                         | Blocked by          |
 | ----- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
@@ -275,7 +353,7 @@ during the build_ at capture — never reconstructed afterwards
 | ShellCheck                             | Probed with `command -v shellcheck`. **Not installed on 21/09/2026** (QA plan Section 7); the result is recorded either way                                                                                                                                                                                                                                                    |
 | US012 and US009                        | Whether either has landed on `main`, because each meets this story in a shared file — `SEEDED`'s comment, and the `[3/4]` job. Read again at the rebase before the landing commit, because either may land mid-build                                                                                                                                                           |
 
-### P1 — The mechanism
+### P1 — The mechanism — superseded 19/11/2026
 
 **The order inside P1 is forced by one obligation: each new probe is committed red, in a commit of
 its own, before the check it proves** (settled 03/10/2026, 17-story-plans grilling round 1 Q1;
@@ -367,7 +445,7 @@ before the presence assertion is reached. QA plan ES-02 and ES-08 were corrected
 change, in that file's corrected-in-place shape, on the developer's answer rather than by a re-run
 of `11-qa-checks`; the guide's FAMILY-09 and FAMILY-11 assert them.
 
-### The generated-tree grep — one step, all seven indexes, for good
+### The generated-tree grep — one step, all seven indexes, for good — superseded 19/11/2026
 
 **US010 builds the only generated-tree literal grep over the index files, and US011 adds none**
 (settled 03/10/2026, 17-story-plans grilling round 1 Q2). The step runs in the `[3/4]` job on every
@@ -391,7 +469,7 @@ below); no planted red is specified for this step. It is proven by its landing r
 render path, and the same leak has a control that is seen red: the third family's no-instance-row
 clause and its probe (TM-03, TM-08).
 
-### The link check — two halves, landing with the files they read
+### The link check — two halves, landing with the files they read — superseded 19/11/2026
 
 Every Markdown link target in the seven in-tree indexes and the seven generated ones resolves from
 the file's own folder (`../02-STORIES/US010.md` -> QA Acceptance Criteria — Automated) — the check
@@ -400,6 +478,9 @@ lands in P1.2 with the seeds it reads; the **in-tree half** lands in P3's commit
 in-tree index arrives. A check never lands before the file it reads.
 
 ### The joined-line instruction search — a `[3/4]` step, landing after P3
+
+**Re-cut 19/11/2026: this step survives** (round 3 Q4), landing after R7 rather than P3, and it
+reads the generated tree's Markdown as paragraphs, not lines, skipping dated historical comments.
 
 The story requires a search, run over joined lines, of "the files a generated project receives"
 for an instruction naming `CONTEXT.md` as a register's index or a statement that a register has no
@@ -433,7 +514,7 @@ pattern against QA plan Section 6 (SITES-05) and _Risks_ names it. Q4 settled th
 its failure, not a lifetime: nothing in it names this story, and removing it later is a change of
 its own.
 
-### P2 — The content repairs
+### P2 — The content repairs — superseded 19/11/2026
 
 **The six in-tree indexes that are not the map index.**
 
@@ -518,7 +599,7 @@ template line is re-pointed in the same change.
   wording is the build's; it promises no fix the template does not ship (settled 27/09/2026,
   grilling round 3 Q15). US015 rebases on these files after this story merges.
 
-### P3 — The map commit
+### P3 — The map commit — superseded 19/11/2026
 
 **One commit, holding every map edit and the map index that mirrors them** (settled 03/10/2026,
 17-story-plans grilling round 1 Q1). In it:
@@ -574,7 +655,7 @@ on the day this story was cut. Rebase onto `main` immediately before this commit
 re-read the existing probe definitions at that base, then re-count; a map that lands after the commit is the next session's row to add, under the instruction
 this commit repoints (EC-22).
 
-### P4 — Close
+### P4 — Close — superseded 19/11/2026
 
 **P4 opens with one commit, the joined-line instruction search added to `[3/4]`**, as described
 above, and its first run is read before anything else closes (Key Decision 13). Then the whole-tree
@@ -607,6 +688,23 @@ story. No hand edit, task-map write, credential access, network request or other
 admitted by this exception. The adapter publishes the same local transition when configured;
 export regeneration does not grant authority to change story status.
 
+**Re-cut 19/11/2026 — Key Decisions 15 to 22 are new; 2, 6, 7, 10 and 12 are superseded.** Decision
+2 (the literal grep), 6 and 7 (the index-file completeness order and the third family's constant
+list) fall with the work they governed; 10 is replaced by 21; 12 falls because a plan carries no
+status since 7.7.0 (`./CLAUDE.md`). The rest stand.
+
+| #   | Decision                                                                                                | Why, and what was rejected                                                                                                                                                                                                                                                                                                                                                                           |
+| --- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 15  | **The three indexes are `pm-board.sh` kinds, not hand-written files**                                   | One mechanism for eight registers. Rejected: the planned index files (two mechanisms side by side). Round 1 Q1; the new ADR                                                                                                                                                                                                                                                                          |
+| 16  | **Status lines are a plain value plus a status note**, the vocabularies owned by `completion`           | The 7.7.0 shape; the generator's reader needs no read rule. Rejected: teaching the generator three carrier shapes. Round 1 Q3                                                                                                                                                                                                                                                                        |
+| 17  | **Decisions board tail columns `Supersedes` / `Superseded by`; each ADR carries both lines**            | A chain readable from the board. Round 2 Q2, round 3 Q2                                                                                                                                                                                                                                                                                                                                              |
+| 18  | **Columns ID · Title · Status · File only**                                                             | The 7.7.0 columns; a Summary is hand-written and drifts. Rejected: Summary and Updated columns. Round 3 Q3                                                                                                                                                                                                                                                                                           |
+| 19  | **Archive triggers: ADR Superseded or Deprecated, finding Resolved, bug Verified**                      | Each is the kind's terminal state. Round 2 Q3, round 3 Q1. Amended 19/11/2026 (Sam, D1): the finding trigger was `Triaged`, which was never the completion skill's value                                                                                                                                                                                                                             |
+| 20  | **`shipped-boards.sh` check 2 tightened to the copy-gated task; the update probe proves byte-identity** | A whole-`_tasks` grep cannot tell a gated task from an ungated one. Round 2 Q5                                                                                                                                                                                                                                                                                                                       |
+| 21  | **8 SP holds; the 72-case matrix moves to its own story; the re-estimate threshold is named**           | Round 4 Q1 and Q2 — a fourth fixture family or a second new CI job re-estimates                                                                                                                                                                                                                                                                                                                      |
+| 22  | **Only the joined-line instruction search survives of the `[3/4]` steps**                               | Byte-identity covers the literal grep and the link check. Paragraph-joined, prints pattern and output, fails on any hit, skips dated historical comments. Round 3 Q4                                                                                                                                                                                                                                 |
+| 23  | **No commit hook runs a self-test; they run at push and in CI, and red-first is a review rule**         | Sam's Q1, 20/11/2026 (fix round 5), superseding round 2's D4: the planned-red allowance let a red probe commit by named opt-in, and four review rounds each found a narrower bypass, because the hook had to judge code the commit itself could change. Rejected: a fifth tightening of the allowance. Replay: `git checkout <sha>` and the self-test, or `template-integrity.sh --self-tests <sha>` |
+
 | #   | Decision                                                                                                                                 | Why, and what was rejected                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | --- | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | **Mechanism first, then content repairs, then every map edit and the map index last in one commit**                                      | Keeps TM-15 `LOW` with each red visible in its own commit, and reads every map's `Updated` once. Rejected: one landing commit with the reds taken locally (no red is visible in history, and TM-15 promotes), and maps first (every later commit would move the dates the index just mirrored). Settled 03/10/2026, 17-story-plans grilling round 1 Q1. Round 2 Q4 adds one commit after the map commit, touching no map (Decision 13)                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -627,6 +725,16 @@ export regeneration does not grant authority to change story status.
 ---
 
 ## Dependencies
+
+**Re-cut 19/11/2026.** The table below is the record as of 03/10/2026; where it disagrees, this
+block is current. **US011 is absorbed**: its remaining criteria are this story's (round 2 Q1), and
+its `**Status:**` is left for a separate developer decision — it no longer waits on anything here.
+**MAP-GENERATION-COVERAGE** charts the 72-case matrix as its slice S-01, uncut (19/11/2026: the
+matrix moved from the withdrawn US021 to
+`project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md` (Sam: map first; CUT-PLAN P14;
+the number was not validly allocated)), and **US012** records exhaustive coverage as unmeasured
+until that slice is cut and lands (round 4 Q1). **7.7.0** is the base built on. US009 has merged to
+`testing` and sits in this branch's base. **Blocked by:** none. **Blocks:** nothing hard.
 
 | Story / Artefact                | Model / Feature                                                                                   | Required for                                                                               | Current state                                                                                  |
 | ------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
@@ -673,6 +781,17 @@ their triggers, and TM-06 and TM-15 if an `mv` line gains a flag or **a probe is
 commit as the check it proves** — the event this plan's P1 order exists to prevent.
 
 ### The fifteen constraints, mapped to phases
+
+**Re-cut 19/11/2026 — the constraints re-mapped.** The threat model and assessment stay signed off;
+each carries a dated corrected-in-place note recording this mapping as a developer decision of
+19/11/2026. 7.1, 7.2 and 7.8 bind the three new `mv` lines (R5), 7.1 proved by the tightened check
+2 (R4) and the update probe (R6). 7.3 and 7.4 are carried by `shipped-boards.sh` check 4's
+byte-identity (R4, R5) — no third family. 7.5 is the re-cut allowlist in the story's ST05 note.
+7.6 is `shipped-boards.sh` check 1 at eight boards. 7.7 is the board update probe (R6). 7.9 is
+replaced by the generator's reader over normalised lines (R1, R2); 7.10 stays superseded by
+7.7.0; 7.11's `GAPS.md` entry is this story's at gate 22 (absorbed from US011); 7.12 unchanged;
+7.13 to 7.15 are the seed-count sites, named rather than counted, and the two `14-UPDATING.md`
+statements (R7).
 
 `../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US010-SEEDED-REGISTER-INDEXES.md` Section 7.
 7.1 to 7.8 are the story's ST01 to ST08; the implementation assessment closes each with evidence.
@@ -855,7 +974,7 @@ if the exact generated export is ignored or untracked, verify its path and prove
 and require it tracked at the landing HEAD when the enabled hook owes it.
 
 **Approved remediation 09/10/2026 (grill-with-docs, Q4).** Every valid offered configuration
-means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026_. All applicable generated-tree gates run for each case,
+means the 72 named cases in `project-management/src/17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` -> _Every valid offered configuration — approved 09/10/2026 — moved 19/11/2026 to MAP-GENERATION-COVERAGE_ (re-cited 20/11/2026). All applicable generated-tree gates run for each case,
 with its answers, source SHA, run ID and gate outcomes recorded separately. A mobile-only run or
 reduced `shipped-ai` fixture cannot establish this criterion. US010 owns the workflow expansion;
 US011 and US012 consume its exhaustive runs and add no CI implementation. If US012 lands before
@@ -865,7 +984,15 @@ unmeasured and its full-coverage completion criterion cannot be ticked.
 **No pytest, no coverage figure, no migration check** — each recorded `N/A` with its reason. There
 is no application Python in this diff.
 
-### Every valid offered configuration — approved 09/10/2026
+### Every valid offered configuration — approved 09/10/2026 — moved 19/11/2026 to MAP-GENERATION-COVERAGE
+
+**Moved 19/11/2026** (settled 19/11/2026, re-cut grilling round 4 Q1): this matrix is not this
+story's. 19/11/2026: the matrix moved from the withdrawn US021 to
+`project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md` (Sam: map first; CUT-PLAN P14;
+the number was not validly allocated); the map's N-001 and N-002 cite this section. The section is
+kept unchanged below as the approved case list that map's slice inherits; nothing in it is a US010
+criterion any more, and US012 records exhaustive coverage as unmeasured until the slice is cut and
+lands.
 
 **Q4 requires exhaustive coverage of finite configuration selectors.** Inspection of `copier.yml`
 on 09/10/2026 found five offered boolean flags: `INCLUDE_CLICKUP`, `INCLUDE_MOBILE`,
@@ -1047,6 +1174,12 @@ hand.
 
 ## Deferred Items
 
+**Re-cut 19/11/2026.** Added: **the 72-case matrix → MAP-GENERATION-COVERAGE S-01, charted
+19/11/2026 and uncut (`project-management/src/01-FEATURE-MAPS/MAP-GENERATION-COVERAGE.md`)**.
+Changed: the four-register backfill row is gone (7.7.0 and the boards replace it); the TM-10 window
+is now this story's gate-22 entry, absorbed from US011; `S-03`'s disposal is the map owner's. The
+other rows stand.
+
 | Deferred                                                                  | To                                        | Why                                                                                                 |
 | ------------------------------------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | Backfilling `STORY`, `SPRINT`, `DECISION` and `STORY-PLAN` indexes        | US011 (`S-05`), SPRINT-07                 | The split made at `02-story-creation` on 20/09/2026; each file names US011 until then               |
@@ -1066,6 +1199,17 @@ someone else's, named so it is not absorbed.
 ---
 
 ## Risks
+
+**Re-cut 19/11/2026 — risks added; those naming index files, the third family or the map index
+fall with them.**
+
+| Risk                                                                        | Likelihood | Impact | Mitigation                                                                                  |
+| --------------------------------------------------------------------------- | ---------- | ------ | ------------------------------------------------------------------------------------------- |
+| **Normalising an accepted ADR's status line reads as editing its decision** | Medium     | Medium | Only the header lines change; the note says so; the diff is read for any body edit          |
+| **A free-prose status line normalises to the wrong value**                  | Medium     | Medium | Each value read against the record's own text; the prose kept verbatim in the note          |
+| **The archive trigger moves a record a live citation names**                | Medium     | Low    | `pm-archive.sh`'s reference rewrites; the citation diff against P0                          |
+| **A fourth fixture family or a second CI job creeps in**                    | Low        | Medium | The named threshold (round 4 Q2): stop and re-estimate                                      |
+| **The joined-line search's pattern is written by the change it judges**     | Medium     | Medium | Unchanged from the row below: it prints its pattern, read at the walk against the site list |
 
 | Risk                                                                                                                                          | Likelihood                    | Impact   | Mitigation                                                                                                                                                                                                                               |
 | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -1112,6 +1256,18 @@ requires them of every plan and the worktree is still where the branch is develo
 
 ## Sprint Verification Checklist
 
+**Re-cut 19/11/2026 (active).** The checklist below is superseded where it names the third family,
+the literal grep, the link check or every render path.
+
+- [ ] `pm-board.sh --check` exit 0; the three kinds' tests red then green, the reds recorded
+- [ ] `shipped-boards.sh` and `--self-test` exit 0 at eight boards, the tightened check 2's probe red
+      first
+- [ ] `shipped-ai.sh --self-test` exit 0, the ungated-`when:` mutation red before byte-identity lands
+- [ ] `shipped-registers.sh --self-test` exit 0 and unchanged
+- [ ] The `[3/4]` job green on the landing commit with the joined-line search printing an empty
+      output
+- [ ] Lint, format, citation diff, length and pairing as below
+
 - [ ] `bash code/src/scripts/syntax/lint.sh --file-type markdown --path <each changed .md>` — clean
 - [ ] `bash code/src/scripts/syntax/format.sh --fix` scoped to the changed paths — clean
 - [ ] `bash code/src/scripts/audits/doc-references.sh --path <each changed file>` — no new finding
@@ -1143,6 +1299,18 @@ requires them of every plan and the worktree is still where the branch is develo
 ---
 
 ## Definition of Done
+
+**Re-cut 19/11/2026 (active).** The list below is superseded where it differs.
+
+- [ ] Three boards generated, seeded once and gated; archive support; vocabularies in `completion`
+- [ ] Every ADR, finding and bug status line normalised; the new ADR and both supersessions
+      cross-referenced
+- [ ] `shipped-boards.sh` at eight, check 2 tightened; the update probe's byte-identity and its red
+- [ ] Index-row boxes removed, `Umbrella ADRs` swept, instruction and seed-count sites repaired,
+      the two updating-guide statements present
+- [ ] The joined-line search in `[3/4]`, landed last
+- [ ] The five `GAPS.md` entries written by gate 22; US011's status left to the developer
+- [ ] Every gate recorded per `code/docs/GATE-REPORTING.md`
 
 - [ ] Seven in-tree indexes exist with the spine, their tails, their ordering sentences and
       `## How to read a row`; the four debt-carrying ones name US011 and carry no placeholder row

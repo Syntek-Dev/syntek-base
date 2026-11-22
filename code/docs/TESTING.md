@@ -26,4 +26,8 @@ All tests run inside Docker containers via the scripts in `code/src/scripts/test
 | [`testing/COVERAGE.md`](testing/COVERAGE.md)                                 | Coverage thresholds, Test output & readability, Rules and Principles                                                                       |
 | [`testing/ADVANCED-TESTING.md`](testing/ADVANCED-TESTING.md)                 | Property-based testing with Hypothesis, Security testing, Performance & load testing, Contract testing, Mutation testing                   |
 
+**A red probe committed before its fix is an ordinary commit, never a skipped hook** — no commit
+hook runs a self-test, and "red in a commit of its own" and "never weaken a red probe" are review
+rules replayed from history: `code/workflows/02-tdd-cycle/STEPS.md` Phase 1. <!-- 21/11/2026: was the planned-red opt-in (19/11/2026), removed. -->
+
 _Part of the `code/docs/` documentation family._

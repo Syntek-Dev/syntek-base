@@ -9,8 +9,13 @@ file → `reports/`.
 ## Purpose (one line)
 
 The test-suite entry point — `backend.sh`, `backend-coverage.sh`, `api.sh`, `e2e-py.sh`,
-`mutmut.sh`, `open-coverage.sh`, `server.sh`, the `all.sh` orchestrator, and `test-record.sh`,
-which turns what a run produced into a story's test record.
+`mutmut.sh`, `open-coverage.sh`, `server.sh`, the `all.sh` orchestrator, US009's `hook-arming.sh`
+probes, the `pm-boards.sh` probes of the PM board and archive scripts, `test-record.sh`,
+which turns what a run produced into a story's test record, and the test-only
+`cookie-preview-fixture.sh`, which builds US008's generated scratch project for its preview proof, <!-- doc-references: template-only -->
+and which `copier.yml` excludes, so a generated project never receives it, <!-- doc-references: template-only -->
+and the test-only `template-hooks.sh`, which proves the template's own hook legs (plain checks at <!-- doc-references: template-only -->
+commit, self-tests at push) and is excluded the same way. <!-- Purpose line extended 19/11/2026 (planned-red.sh); renamed and re-scoped 21/11/2026. -->
 
 ## How to work here
 
@@ -56,7 +61,13 @@ which turns what a run produced into a story's test record.
 - **`e2e-py.sh` needs a running stack and says so.** It exits `2` with instructions
   rather than failing obscurely; keep that pre-flight check when editing it.
 - `--output DIR` must stay within the project root (it is bind-mounted into the
-  container).
+  container). **One exception: `hook-arming.sh`** runs on the host and bind-mounts nothing, so its
+  `--output` may be any directory outside its own scratch tree. It also extends the exit-code
+  contract by **`3` unmeasured** — a fixture that could not look — which is never a pass.
+- **`hook-arming.sh` never shares anything from the checkout with a fixture** — no symlink,
+  bind or shared `node_modules`; each fixture gets its own install. A fixture that reached the
+  live tree would rewrite it, so the script trips (exit `2`) if this checkout's `node_modules`
+  changed during a run. Never weaken that tripwire to make a run pass.
 
 ## Output & naming
 

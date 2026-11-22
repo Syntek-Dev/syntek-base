@@ -3,11 +3,12 @@
 # install.sh — Bootstrap the <%PROJECT_SLUG%> development environment.
 #
 # Installs all Python and JavaScript dependencies, copies missing .env.*
-# files from their examples, auto-generates dev secrets, and marks every
-# project script executable.
+# files from their examples, auto-generates dev secrets, marks every
+# project script executable, and arms the lefthook git hooks
+# (code/src/scripts/development/install-hooks.sh).
 #
 # Usage:
-#   bash install.sh           Phase 1 only (deps, env files, permissions)
+#   bash install.sh           Phase 1 only (deps, env files, permissions, git hooks)
 #   bash install.sh --full    Phase 1 + Phase 2 (Docker build, migrate)
 #   bash install.sh --spec    Only (re)generate code/docs/MACHINE-SPEC.md, then exit
 #   bash install.sh --help    Show this help
@@ -41,7 +42,7 @@ usage() {
 install.sh — Bootstrap the <%PROJECT_SLUG%> development environment
 
 Usage:
-  bash install.sh           Phase 1: deps, env files, permissions
+  bash install.sh           Phase 1: deps, env files, permissions, git hooks
   bash install.sh --full    Phase 1 + Phase 2: Docker build, migrations
   bash install.sh --spec    Only (re)generate code/docs/MACHINE-SPEC.md, then exit
   bash install.sh --help    Show this help
@@ -55,10 +56,11 @@ Phase 1 (always):
   6. Auto-generate dev secrets in .env.dev  (SECRET_KEY, ENCRYPTION_KEY, LEGAL_FIELD_HMAC_KEY, MFA_FIELD_KEY, POSTGRES_PASSWORD)
   7. Mark install.sh + all code/src/scripts/**/*.sh executable
   8. Generate a gitignored host profile  (code/docs/MACHINE-SPEC.md)
+  9. Arm the lefthook git hooks  (install-hooks.sh)
 
 Phase 2 (--full only):
-  7. Build and start Docker dev stack
-  8. Apply database migrations
+  10. Build and start Docker dev stack
+  11. Apply database migrations
 
 Requirements: git, openssl, uv, pnpm, docker with the compose v2 plugin.
   Checked for presence only, not version; Python and Node are not checked.
@@ -72,6 +74,10 @@ EOF
 # Writes a gitignored hardware profile to code/docs/MACHINE-SPEC.md so each dev
 # (and Claude, when sizing worktree/Docker concurrency) can read the host's real
 # limits. Best-effort — every probe is guarded; unknown fields render as "unknown".
+# Under `set -euo pipefail` a probe that fails (exits non-zero, is absent from PATH, or feeds a
+# grep that matches nothing) would otherwise abort install.sh, so every probe assignment ends
+# `|| true`: the field keeps whatever the probe printed (a df table from a host with one stale
+# mount, say) or falls back to the placeholders below.
 # Windows is detected via a Git-Bash/MSYS uname and probed through PowerShell;
 # macOS via sysctl/system_profiler; Linux via lscpu/free/lspci/df.
 generate_machine_spec() {
@@ -84,52 +90,53 @@ generate_machine_spec() {
   case "$uname_s" in
     Linux)
       if [[ -r /etc/os-release ]]; then
-        os_name="$(. /etc/os-release && printf '%s' "${PRETTY_NAME:-Linux}")"
+        os_name="$(. /etc/os-release && printf '%s' "${PRETTY_NAME:-Linux}")" || os_name="Linux"
       else
         os_name="Linux"
       fi
       grep -qi microsoft /proc/version 2>/dev/null && os_name="$os_name (WSL)"
-      kernel="$(uname -r 2>/dev/null)"
-      cpu_model="$(lscpu 2>/dev/null | sed -n 's/^Model name:[[:space:]]*//p' | head -1)"
-      cpu_cores="$(lscpu 2>/dev/null | sed -n 's/^Core(s) per socket:[[:space:]]*//p' | head -1)"
-      cpu_threads="$(nproc 2>/dev/null)"
-      mem_total="$(free -h 2>/dev/null | awk '/^Mem:/{print $2}')"
-      mem_avail="$(free -h 2>/dev/null | awk '/^Mem:/{print $7}')"
-      mem_gib="$(free -g 2>/dev/null | awk '/^Mem:/{print $2}')"
-      mem_avail_gib="$(free -g 2>/dev/null | awk '/^Mem:/{print $7}')"
-      gpu="$(lspci 2>/dev/null | grep -Ei 'vga|3d|display' | sed 's/^[0-9a-f:.]* [^:]*: //' | paste -sd '; ' -)"
-      [[ -z "$gpu" ]] && command -v nvidia-smi >/dev/null 2>&1 \
-        && gpu="$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | paste -sd '; ' -)"
+      kernel="$(uname -r 2>/dev/null)" || true
+      cpu_model="$(lscpu 2>/dev/null | sed -n 's/^Model name:[[:space:]]*//p' | head -1)" || true
+      cpu_cores="$(lscpu 2>/dev/null | sed -n 's/^Core(s) per socket:[[:space:]]*//p' | head -1)" || true
+      cpu_threads="$(nproc 2>/dev/null)" || true
+      mem_total="$(free -h 2>/dev/null | awk '/^Mem:/{print $2}')" || true
+      mem_avail="$(free -h 2>/dev/null | awk '/^Mem:/{print $7}')" || true
+      mem_gib="$(free -g 2>/dev/null | awk '/^Mem:/{print $2}')" || true
+      mem_avail_gib="$(free -g 2>/dev/null | awk '/^Mem:/{print $7}')" || true
+      gpu="$(lspci 2>/dev/null | grep -Ei 'vga|3d|display' | sed 's/^[0-9a-f:.]* [^:]*: //' | paste -sd '; ' -)" || true
+      if [[ -z "$gpu" ]] && command -v nvidia-smi >/dev/null 2>&1; then
+        gpu="$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | paste -sd '; ' -)" || true
+      fi
       docker_root="$(docker info --format '{{.DockerRootDir}}' 2>/dev/null || true)"
-      disk_table="$(df -h 2>/dev/null | grep -vE 'tmpfs|loop|udev|devtmpfs')"
+      disk_table="$(df -h 2>/dev/null | grep -vE 'tmpfs|loop|udev|devtmpfs')" || true
       ;;
     Darwin)
-      os_name="macOS $(sw_vers -productVersion 2>/dev/null)"
-      kernel="$(uname -r 2>/dev/null)"
-      cpu_model="$(sysctl -n machdep.cpu.brand_string 2>/dev/null)"
-      cpu_cores="$(sysctl -n hw.physicalcpu 2>/dev/null)"
-      cpu_threads="$(sysctl -n hw.logicalcpu 2>/dev/null)"
-      local mem_bytes; mem_bytes="$(sysctl -n hw.memsize 2>/dev/null)"
+      os_name="macOS $(sw_vers -productVersion 2>/dev/null)" || true
+      kernel="$(uname -r 2>/dev/null)" || true
+      cpu_model="$(sysctl -n machdep.cpu.brand_string 2>/dev/null)" || true
+      cpu_cores="$(sysctl -n hw.physicalcpu 2>/dev/null)" || true
+      cpu_threads="$(sysctl -n hw.logicalcpu 2>/dev/null)" || true
+      local mem_bytes; mem_bytes="$(sysctl -n hw.memsize 2>/dev/null)" || true
       [[ "$mem_bytes" =~ ^[0-9]+$ ]] && { mem_gib=$(( mem_bytes / 1073741824 )); mem_total="${mem_gib} GiB"; }
       mem_avail="see Activity Monitor"
-      gpu="$(system_profiler SPDisplaysDataType 2>/dev/null | awk -F': ' '/Chipset Model/{print $2}' | paste -sd '; ' -)"
+      gpu="$(system_profiler SPDisplaysDataType 2>/dev/null | awk -F': ' '/Chipset Model/{print $2}' | paste -sd '; ' -)" || true
       docker_root="$(docker info --format '{{.DockerRootDir}}' 2>/dev/null || true)"
-      disk_table="$(df -h 2>/dev/null | grep -vE 'devfs|map ')"
+      disk_table="$(df -h 2>/dev/null | grep -vE 'devfs|map ')" || true
       ;;
     MINGW*|MSYS*|CYGWIN*)
       ps="powershell.exe -NoProfile -NonInteractive -Command"
-      os_name="$($ps "(Get-CimInstance Win32_OperatingSystem).Caption" 2>/dev/null | tr -d '\r')"
-      kernel="$($ps "(Get-CimInstance Win32_OperatingSystem).Version" 2>/dev/null | tr -d '\r')"
-      cpu_model="$($ps "(Get-CimInstance Win32_Processor).Name" 2>/dev/null | tr -d '\r')"
-      cpu_cores="$($ps "(Get-CimInstance Win32_Processor | Measure-Object NumberOfCores -Sum).Sum" 2>/dev/null | tr -d '\r')"
-      cpu_threads="$($ps "(Get-CimInstance Win32_Processor | Measure-Object NumberOfLogicalProcessors -Sum).Sum" 2>/dev/null | tr -d '\r')"
-      mem_gib="$($ps "[math]::Floor((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory/1GB)" 2>/dev/null | tr -d '\r')"
+      os_name="$($ps "(Get-CimInstance Win32_OperatingSystem).Caption" 2>/dev/null | tr -d '\r')" || true
+      kernel="$($ps "(Get-CimInstance Win32_OperatingSystem).Version" 2>/dev/null | tr -d '\r')" || true
+      cpu_model="$($ps "(Get-CimInstance Win32_Processor).Name" 2>/dev/null | tr -d '\r')" || true
+      cpu_cores="$($ps "(Get-CimInstance Win32_Processor | Measure-Object NumberOfCores -Sum).Sum" 2>/dev/null | tr -d '\r')" || true
+      cpu_threads="$($ps "(Get-CimInstance Win32_Processor | Measure-Object NumberOfLogicalProcessors -Sum).Sum" 2>/dev/null | tr -d '\r')" || true
+      mem_gib="$($ps "[math]::Floor((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory/1GB)" 2>/dev/null | tr -d '\r')" || true
       [[ "$mem_gib" =~ ^[0-9]+$ ]] && mem_total="${mem_gib} GiB"
-      mem_avail="$($ps "[math]::Round((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory/1MB,1)" 2>/dev/null | tr -d '\r') GiB free"
-      mem_avail_gib="$($ps "[math]::Floor((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory/1MB)" 2>/dev/null | tr -d '\r')"
-      gpu="$($ps "(Get-CimInstance Win32_VideoController | Select-Object -ExpandProperty Name) -join '; '" 2>/dev/null | tr -d '\r')"
+      mem_avail="$($ps "[math]::Round((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory/1MB,1)" 2>/dev/null | tr -d '\r') GiB free" || true
+      mem_avail_gib="$($ps "[math]::Floor((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory/1MB)" 2>/dev/null | tr -d '\r')" || true
+      gpu="$($ps "(Get-CimInstance Win32_VideoController | Select-Object -ExpandProperty Name) -join '; '" 2>/dev/null | tr -d '\r')" || true
       docker_root="$(docker info --format '{{.DockerRootDir}}' 2>/dev/null | tr -d '\r' || true)"
-      disk_table="$($ps "Get-CimInstance Win32_LogicalDisk | Format-Table DeviceID,@{n='Size(GB)';e={[math]::Round(\$_.Size/1GB)}},@{n='Free(GB)';e={[math]::Round(\$_.FreeSpace/1GB)}} -AutoSize | Out-String" 2>/dev/null | tr -d '\r')"
+      disk_table="$($ps "Get-CimInstance Win32_LogicalDisk | Format-Table DeviceID,@{n='Size(GB)';e={[math]::Round(\$_.Size/1GB)}},@{n='Free(GB)';e={[math]::Round(\$_.FreeSpace/1GB)}} -AutoSize | Out-String" 2>/dev/null | tr -d '\r')" || true
       ;;
     *)
       os_name="$uname_s"; kernel="$(uname -r 2>/dev/null || true)"
@@ -526,6 +533,14 @@ log ""
 generate_machine_spec
 ok "Host profile written → code/docs/MACHINE-SPEC.md  (gitignored — refresh with: bash install.sh --spec)"
 
+# ── Phase 1 · Step 9 — Git hooks ──────────────────────────────────────────────
+# Last in Phase 1 on purpose: a failure here abandons no earlier Phase 1 step. The script's
+# exit codes are this file's own (1 requirement missing, 2 install failed) and propagate as-is.
+section "Git hooks (lefthook)"
+log ""
+
+bash "$PROJECT_ROOT/code/src/scripts/development/install-hooks.sh" || exit $?
+
 # ── Phase 2 (--full only) ─────────────────────────────────────────────────────
 if [[ "$FULL" == "false" ]]; then
   printf '\n'
@@ -542,11 +557,13 @@ if [[ "$FULL" == "false" ]]; then
   exit 0
 fi
 
-# ── Phase 2 · Step 7 — Build and start Docker dev stack ───────────────────────
+# ── Phase 2 · Step 10 — Build and start Docker dev stack ──────────────────────
 section "Docker dev stack (build + up)"
 log ""
 
-docker compose --env-file "$ENV_DIR/.env.dev" -f "$COMPOSE_DEV" up -d --build
+# Through server.sh, never a raw `compose up`: it applies the worktree override, re-syncs the
+# database password from .env.dev against a reused volume, and prints the live URL.
+bash "$PROJECT_ROOT/code/src/scripts/development/server.sh" up --build
 log ""
 ok "Dev stack started"
 
@@ -559,8 +576,18 @@ log "  Waiting for containers to be ready..."
 MAX_WAIT=120
 elapsed=0
 
+# The probe acts on the stack server.sh just started: the same compose set (the us### worktree
+# override included, from the same detection) and the same project, pinned with -p through the
+# same helper — so neither a worktree stack nor a COMPOSE_PROJECT_NAME in .env.dev can send it
+# to a different project, where it would wait out MAX_WAIT on containers that never appear.
+# shellcheck source=code/src/scripts/_lib/worktree-detect.sh
+source "$PROJECT_ROOT/code/src/scripts/_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/posture-guard.sh
+source "$PROJECT_ROOT/code/src/scripts/_lib/posture-guard.sh"
+COMPOSE_PROJECT="$(posture_compose_project "$COMPOSE_DEV" "$OVERRIDE_DEV_FILE")" || exit 2
+
 running_services() {
-  docker compose --env-file "$ENV_DIR/.env.dev" -f "$COMPOSE_DEV" ps --services --status running 2>/dev/null
+  docker compose -p "$COMPOSE_PROJECT" --env-file "$ENV_DIR/.env.dev" -f "$COMPOSE_DEV" ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"} ps --services --status running 2>/dev/null
 }
 
 while true; do
@@ -571,7 +598,7 @@ while true; do
 
   if [[ "$elapsed" -ge "$MAX_WAIT" ]]; then
     err "Containers did not become ready within ${MAX_WAIT}s."
-    err "Check logs with: docker compose -f code/src/docker/docker-compose.dev.yml logs"
+    err "Check logs with: bash code/src/scripts/development/logs.sh"
     exit 2
   fi
 
@@ -582,7 +609,7 @@ done
 printf '\n'
 ok "All containers running (${elapsed}s)"
 
-# ── Phase 2 · Step 8 — Migrations ─────────────────────────────────────────────
+# ── Phase 2 · Step 11 — Migrations ────────────────────────────────────────────
 section "Database migrations"
 log ""
 

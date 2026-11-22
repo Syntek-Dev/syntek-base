@@ -22,6 +22,9 @@ allowBuilds:
   # ERR_PNPM_IGNORED_BUILDS (first seen in CI on 11/11/2026).
   "@parcel/watcher": false
   esbuild: false
+  # Keeps lefthook's own postinstall from arming the git hooks on every install: the hooks
+  # arm in one place only, `bash install.sh` (its install-hooks.sh step), never as a
+  # side-effect of a dependency install. Never flip this to true.
   lefthook: false
   msw: false
   protobufjs: false
@@ -359,7 +362,8 @@ allowedDeprecatedVersions:
 # an EXACT version, so it stops matching the day the package moves and `pnpm audit`
 # goes loud again. Set `allowUnusedPatches: true` alongside it: this file is
 # byte-identical on both template render paths, a web-only project may not have the
-# patched package at all, and pnpm 11 throws on a patch it could not apply.
+# patched package at all, and pnpm throws on a patch it could not apply (11, and 12.18.0
+# re-verified 15/11/2026 against a scratch project).
 # Pair it with an audit.ignore line under its own PATCHED IN PLACE heading, since
 # `pnpm audit` keys on the resolved version and cannot see a patch.
 # Source: https://pnpm.io/cli/patch

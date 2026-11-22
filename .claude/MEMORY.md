@@ -30,6 +30,49 @@ never reconstructed, so the deviation stood (Sam's ruling). When `/implement-sto
 the story's manual guide for capture slots and take every one **before phase 2**, alongside the
 `completion` status move.
 
+### No AI tool ever reads a real env file — 15/11/2026
+
+Sam: no AI tool — Claude, Codex, a subagent, a probe script — ever reads the live `.env.dev`,
+`.env.test` / `.env.testing`, `.env.staging` or `.env.prod` / `.env.production`, by any route
+(file tool, `cat`, `grep -r` over the folder, a script written to print it). The `.env.*.example`
+files may be read. **Revised 15/11/2026: a script may _use_ a live `.env.*` and still be run by
+the AI** — passing `--env-file` to `docker compose`, reading a key to build a command — **so long
+as it never _prints_ a value from one.** A script that prints a live env value (directly, in a
+URL or banner, or by giving open-ended access such as an interactive shell) is handed to Sam to
+run as a single command block. Lint, format, typecheck, test and audit scripts must never print
+an env value; one that does is a defect to fix, not a script to hand over. The classification of
+each env-using script lives in `.claude/CLAUDE.md` Section 6 and the `.claude/settings.json` deny
+list. A deny rule that blocks a read is the rule working; never work around it.
+
+### Never share a checkout's node_modules, or any working-tree path, into a scratch copy — 17/11/2026
+
+During US009's review (11:22, 17/11/2026) a workflow verifier symlinked the live `node_modules`
+into a scratch copy to save an install; that copy's `pnpm install` rewrote the shared tree to
+point into its own `/tmp` directory, which was then deleted, and lefthook and the lint legs broke
+in the working tree until `install-frontend.sh --local` repaired it (SEC-06, QA-08; F-003 in
+`project-management/src/20-FINDINGS/archive/FINDING-US009-HOOK-ARMING-17-11-2026.md`). A scratch copy is
+made with `git archive HEAD | tar -x` into a `mktemp -d` directory and provisions its **own**
+dependencies; nothing in it — `node_modules`, `.git`, `.venv`, a hooks directory — may be a
+symlink, bind mount or shared path back into a checkout, and a subagent brief that creates scratch
+copies says so in terms. `code/src/scripts/tests/hook-arming.sh` now carries a tripwire on the live
+`node_modules`; other scratch-making procedures have none.
+
+### Map first, then cut; a number is allocated only on save — 19/11/2026
+
+During US010's re-cut a work item split off a story was cut straight into a new story (US021),
+and the number was skipped past provisional rows. Sam: features are **mapped before a story is
+cut** — new work goes onto a feature map through `wayfinder` and is cut from a slice — and
+`02-STORIES/CUT-PLAN.md` allocates a number only when a `US###.md` is saved, every `Settled`-row
+number being provisional, so the next free number is the lowest unsaved one. Check the cut plan's
+pause rules (P14) before cutting anything.
+
+### A status vocabulary is the completion skill's, never a template's — 19/11/2026
+
+US010's re-cut took `Triaged` from `FINDING-US000-TEMPLATE.md` and presented it as settled; the
+`completion` skill never owned it (Sam: "we don't have a triaged status"). Before a grilling round
+lists a status value as settled, read it in `.claude/skills/completion/SKILL.md`; a value found
+only in a template or an artefact is a question, not a fact.
+
 ---
 
 ## Project Patterns
@@ -55,8 +98,11 @@ the health suite's old test name was exactly that (renamed `test_status_equals_i
 scan reads **file contents and commit messages, across every commit in a PR's range**, so quoting
 the old name in a changelog, a commit message or a PR body re-arms it, and a later fixing commit
 cannot clear the PR. Describe it ("a 41-character `test_` name") instead. If a branch commit
-already carries it, **squash-merge** so the literal never reaches `main`. A full-history scan
-(`workflow_dispatch`) still fails on `47e84cf`, by design.
+already carries it, **never squash into `main` — reword or rewrite the offending commit on the
+branch before merging** (Sam's ruling 21/11/2026; merge commits only, set 21/11/2026 — the
+repository has squash and rebase off, and ruleset `20221742` allows merge only with strict checks
+on `main`), so the literal never reaches `main`. A full-history scan (`workflow_dispatch`) still
+fails on `47e84cf`, by design.
 
 ### The Playwright pin's value comes from this machine's Nix config — 18/09/2026
 

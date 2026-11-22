@@ -171,7 +171,7 @@ walked.
 - `../../02-STORIES/US002.md` — the story under review
 - `../../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` — the plan, its Key Decisions and QA-triage corrections
 - `../../18-TESTS/AUTOMATED/US002-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` — downstream test records
-- `../../20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md` — the findings this review cites
+- `../../20-FINDINGS/archive/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md` — the findings this review cites
 - `../../19-REVIEWS/REVIEW-US002-AUDITS-REGISTER-HEADROOM.md` — the code review and QA breaker pass
 - `../../21-BUGS/BUG-US002-DOCS-PAIRING-UNSTAGED-DELETION-03-11-2026.md` — the gate defect surfaced at BITE-01
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards

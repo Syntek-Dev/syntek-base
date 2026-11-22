@@ -19,12 +19,14 @@ capturing status, context, options considered, decision, and consequences.
   Ground a contested decision or stack choice with a primary-source-cited note via
   `.claude/skills/research/SKILL.md` (ADR groundwork).
 - **Model:** Opus throughout — an ADR is a reasoned trade-off document (context, options,
-  consequences), substantive judgement; a status flip (e.g. `accepted` → `superseded`) or a
+  consequences), substantive judgement; a status flip (e.g. `Accepted` → `Superseded`) or a
   typo fix is a mechanical touch.
 - **Concrete steps:** create `ADR-US###-<DECISION>-DD-MM-YYYY.md` for the driving story
   → fill the five sections (**Status**, **Context**, **Options considered**,
   **Decision**, **Consequences**) → cross-link the `US###` that drove or consumes the
-  decision → set Status to `accepted` when signed off.
+  decision → set `**Status:** Accepted` when signed off, any prose on the `**Status note:**`
+  line → `bash project-management/src/00-ASSETS/scripts/pm-board.sh --write` and commit the
+  board with it.
 - **Definition of done:** decision named to convention, five sections complete,
   superseded ADRs cross-referenced both ways, British English throughout.
 
@@ -44,10 +46,15 @@ capturing status, context, options considered, decision, and consequences.
 - **Accepted ADRs are immutable** — never rewrite the decision in place. To change
   course, raise a new ADR and mark the old one `superseded`, cross-referencing the
   replacement ADR by **full filename**; note the supersession on both records.
-- **There is no index.** The monotonic `ADR-###` counter was retired 31/08/2026 with the rename:
-  the story number and the date carry the identity, exactly as `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md`
-  already does in `../21-BUGS/`. Two ADRs for one story on one day are distinguished by
-  `<DECISION>`, which must differ.
+- **The index is `DECISIONS-BOARD.md`, and it is generated — never hand-edit it.** The monotonic
+  `ADR-###` counter was retired 31/08/2026 with the rename: the story number and the date carry
+  the identity, exactly as `BUG-US###-<DESCRIPTOR>-DD-MM-YYYY.md` already does in `../21-BUGS/`.
+  Two ADRs for one story on one day are distinguished by `<DECISION>`, which must differ.
+  `pm-board.sh --write` rebuilds the board from each ADR's status and supersession lines; the
+  vocabulary is the `completion` skill's.
+- **Archive only through `pm-archive.sh <ID>`**, and only once an ADR is `Superseded` or
+  `Deprecated`; it keeps that status in `archive/`, which is frozen (`archive/CLAUDE.md`). Look
+  an ADR up by ID across this folder and `archive/`.
 - **This is a documentation folder** — no source, secrets, or `.env` content; an ADR
   states a security or architecture _decision_, it is enforced in `code/`.
 - Instructional `.md` limit does not apply to these root-level `src/` artefacts, but
@@ -56,7 +63,9 @@ capturing status, context, options considered, decision, and consequences.
 ## Output & naming
 
 - **Hand-written:** every `ADR-US###-<DECISION>-DD-MM-YYYY.md` in this folder.
-- **Generated:** none — nothing here is machine-produced.
+- **Generated:** `DECISIONS-BOARD.md` (committed) and `decisions-board.json` / `.html`
+  (gitignored), by `pm-board.sh --write` — never hand-edit. `archive/` is written only by
+  `pm-archive.sh`.
 - Naming: `ADR-US###-<DECISION>-DD-MM-YYYY.md` — the driving story, the decision it governs in
   `SCREAMING-SNAKE-CASE`, and the date it was made. **Flat, no subdirectories**: the `US###`
   prefix already groups a story's records on any `ls`, and a per-story folder would owe a

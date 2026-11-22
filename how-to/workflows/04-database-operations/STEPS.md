@@ -97,6 +97,10 @@ bash code/src/scripts/database/reset.sh --seed   # then load seed data
 bash code/src/scripts/database/seed-dev.sh
 ```
 
+Above `development` the posture guard refuses it at exit `4`, printing the re-run command. Only
+if that project really is the target, re-run naming the live posture:
+`bash code/src/scripts/database/seed-dev.sh --force-posture <posture>`.
+
 **Create or promote a user:**
 
 ```bash

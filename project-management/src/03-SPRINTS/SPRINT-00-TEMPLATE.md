@@ -257,7 +257,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
 | US### | Add `EncryptedField` to `[field_name]`                               | [ ]  |
 | US### | Add HMAC-SHA3-256 companion `[hmac_token]`                           | [ ]  |
 | US### | Implement / extend `[app].gdpr_erase()` to cover new PII models      | [ ]  |
-| US### | Wire `[app].gdpr_erase()` into US041 erasure orchestrator            | [ ]  |
+| US### | Wire `[app].gdpr_erase()` into the erasure orchestrator              | [ ]  |
 | US### | Create Celery Beat retention task `[task_name]`                      | [ ]  |
 | US### | Document new PII fields in Privacy Policy and Sub-Processor Register | [ ]  |
 

@@ -56,7 +56,7 @@
 > The authorities this sprint defers to are `code/docs/GATE-REPORTING.md` for how a gate's result
 > is reported, `.claude/CLAUDE.md` Section 6 for the script-first rule that keeps every
 > generated-tree run in CI, and — for US011's status column —
-> `../15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`, the one read rule every
+> `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`, the one read rule every
 > register's `Status` is mirrored under. `../01-FEATURE-MAPS/MAP-SCRIPT-GUARDS.md` node `N-005` and
 > `../01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` node `N-006` are the argued record of each slice and
 > are not re-opened here. Where a story's wording and those guides differ, the guides win.
@@ -271,8 +271,15 @@ repointed at its file by that workflow's Step 10. Neither prefix was assigned by
 
 | Story | Story plan (`../17-STORY-PLANS/`)                                  | Status  |
 | ----- | ------------------------------------------------------------------ | ------- |
-| US012 | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`      | Open    |
+| US012 | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`      | Pending |
 | US011 | `../17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` | Blocked |
+
+<!-- RE-MIRRORED 22/11/2026 under Sam's ruling 3 on the US010 re-walk (manual-test row REMEDY-02):
+     a sprint plan's Story Plans Status cell mirrors the STORY's status as
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` lists it, because a plan has no status of its own
+     (`.claude/skills/completion/SKILL.md` -> Plans). This supersedes, on this point, the 09/10/2026
+     remediation wording "the plan's own Status field", the ruling-D comment above, and any prose
+     in this section that calls the column a mirror of the plan's own `Status` field. Cells: US012 Open -> Pending; US011 Blocked -> Blocked. -->
 
 The run on disk is contiguous `00-` to `12-`: US010's plan took "10-" in the `17-story-plans`
 change committed before US012's, and US011's took "12-" in the change after it (settled 03/10/2026,
@@ -500,11 +507,11 @@ the same change as this plan. Both guides are authored at Step 7.2 and walked at
 
 | ADR                                                                                     | Authored at                                                               | What it binds                                                                                                                                                                                                                      |
 | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `../15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                        | `15-decisions` for US010, 21/09; committed `Accepted` in `0c5e635`, 27/09 | US011: every row's `Status`, and `DECISION-INDEX.md`'s tail values, read by one rule — bold markers, backticks, any trailing HTML comment and everything from the first middle dot onward removed, then trimmed. US011 owns no ADR |
+| `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                | `15-decisions` for US010, 21/09; committed `Accepted` in `0c5e635`, 27/09 | US011: every row's `Status`, and `DECISION-INDEX.md`'s tail values, read by one rule — bold markers, backticks, any trailing HTML comment and everything from the first middle dot onward removed, then trimmed. US011 owns no ADR |
 | `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` | Inherited; supersedes its predecessor, 30/09                              | Binds every story in this backlog until the citation gate is green. US011's citation criterion is read against it as a baseline diff; US012's criteria run no citation gate                                                        |
 
 **One superseded record is named beside its successor rather than dropped.**
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` reads `Superseded` since
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` reads `Superseded` since
 30/09/2026; its successor restates it unchanged but for the manual testing guide's path (settled
 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round
 7 Q18). **US012 records no decision**, its _Decisions_ section stating none was hard to reverse.

@@ -3,15 +3,15 @@
 **Status:** Accepted
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-FULL-PATHS-02-09-2026.md`
-**Superseded by:** —
+**Supersedes:** `project-management/src/15-DECISIONS/archive/ADR-US001-INSTANCE-CITATION-FULL-PATHS-02-09-2026.md`
+**Superseded by:** None
 **Related:** US001, US002
 
 ---
 
 ## Context
 
-`project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-FULL-PATHS-02-09-2026.md` chose
+`project-management/src/15-DECISIONS/archive/ADR-US001-INSTANCE-CITATION-FULL-PATHS-02-09-2026.md` chose
 Option B — cite PM instance artefacts by full repo-relative path — over Option A, stripping the
 backticks. Its deciding argument was that B alone keeps the citation doing its job:
 

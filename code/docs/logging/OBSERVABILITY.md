@@ -57,10 +57,14 @@ if SENTRY_DSN:
             LoggingIntegration(level=logging.ERROR, event_level=logging.ERROR),
         ],
         send_default_pii=False,  # GDPR: never send PII automatically
+        include_local_variables=False,  # frame locals hold exceptions and payloads; on by default
     )
 ```
 
-`SENTRY_DSN` is left blank in dev/test, where the SDK is a no-op.
+`SENTRY_DSN` is left blank in dev/test, where the SDK is a no-op. **`include_local_variables` is
+off** because a frame's locals can hold a client's exception, URL or body that a scrubbed message
+left out ([`../reliability/RETRIES.md`](../reliability/RETRIES.md) Section _What a failure record
+carries_).
 
 **There is no `traces_sample_rate` here, and its absence is deliberate.** That option sends
 transactions over the Sentry wire protocol, which would be a **second instrumentation path**

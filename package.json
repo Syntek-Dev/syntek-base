@@ -2,13 +2,13 @@
   "name": "<%PROJECT_SLUG%>",
   "description": "<%PROJECT_DESCRIPTION%>",
   "private": true,
-  "packageManager": "pnpm@11.28.9",
+  "packageManager": "pnpm@12.18.0",
   "engines": {
     "node": ">=26",
-    "pnpm": ">=11.28.9"
+    "pnpm": ">=12.18.0"
   },
   "scripts": {
-    "prepare": "[ -d .git ] && lefthook install || true",
+    "postinstall": "bash code/src/scripts/development/install-hooks.sh --notice || true",
     "lint:js": "eslint .",
     "lint:md": "markdownlint-cli2",
     "format:check": "prettier --check .",

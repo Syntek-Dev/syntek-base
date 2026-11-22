@@ -6,7 +6,7 @@
 | Branch | `us006/posture-guard`              |
 | Sprint | SPRINT-04 · Wave 1 · build order 2 |
 | Author | <%ORG_NAME%>                       |
-| Status | `Open`                             |
+| Status | `In Progress`                      |
 
 <!-- BORN WITH ITS PREFIX, 08/09/2026. The number `07-` was reserved for this story that morning,
      when the six plans in this folder were renamed by `git mv` to
@@ -32,7 +32,7 @@ every state but two — a rendered carrier naming `development`, or a template c
 `../15-DECISIONS/ADR-US006-OVERRIDE-NAMES-THE-LIVE-POSTURE-05-09-2026.md` (the override is
 `--force-posture <posture>`, space-separated, naming the posture the project is at now, buying
 nothing else, and a refusal exits `4`), under
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red `doc-references.sh`
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red `doc-references.sh`
 is read as a diff against a recorded baseline until US004 retires the regime; superseded 30/09/2026
 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged but for the manual testing guide's path). <!-- UPDATED 30/09/2026: successor added beside the superseded record,
@@ -237,6 +237,17 @@ An absent selection means Docker's default context; an unreadable or malformed c
 unknown context, failed inspection or missing endpoint is **unknown**, never a local fallback.
 Context resolution/inspection reads local metadata only; it must not contact a daemon.
 
+**Erratum 15/11/2026 — with both selectors set, `DOCKER_HOST` wins, not `DOCKER_CONTEXT`.** The
+precedence above follows the CLI reference, which still says `DOCKER_CONTEXT` "overrides
+`DOCKER_HOST`" (re-read 15/11/2026). The installed CLI does the opposite. Measured on Docker
+29.9.2, 15/11/2026: with `DOCKER_CONTEXT=nope` and `DOCKER_HOST` naming a socket, `docker context
+show` prints `default` and a daemon call dials the `DOCKER_HOST` socket; with `DOCKER_CONTEXT=nope`
+alone, it prints `nope`. The shipped guard therefore treats both selectors set and disagreeing as
+**unknown** and fails the target check, whichever one the CLI honours. Both set and naming the same
+endpoint passes. So the control holds under either precedence, and the reference page and the CLI
+cannot pull it in different directions. Recorded in
+`../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` (decided by <%DEVELOPER_NAME%>, 15/11/2026).
+
 A target passes only with one unambiguous `unix:///absolute/path` endpoint and with
 `COMPOSE_PROJECT_NAME` absent/empty or equal to the caller's last compose file's declared name.
 Named local contexts are permitted. SSH, TCP (including loopback), unsupported transports,
@@ -244,6 +255,13 @@ relative/empty socket paths and unknown endpoints fail the check. Posture overri
 template exemption cannot waive this check. A Unix socket proves a local transport, not the
 identity of a daemon behind a deliberately configured proxy; that remains outside this guard's
 operator-error threat model.
+
+**Erratum 15/11/2026 — names are compared as Compose sees them (F-018).** Compose normalises a
+declared `name:` (lower-cased, characters outside `a-z 0-9 _ -` dropped, leading `_`/`-` trimmed)
+but refuses an explicit `COMPOSE_PROJECT_NAME` not already in that form. So the guard compares
+`COMPOSE_PROJECT_NAME` with the **normalised** declared name, refuses one Compose would reject, and
+fails closed on a declared name that normalises to empty. Fixed on this branch, decided by
+<%DEVELOPER_NAME%>; `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-018.
 
 On success the helper supplies a `posture_`-prefixed validated endpoint and an explicit validity
 indicator, cleared at entry to prevent stale reuse. Each caller binds **every subsequent Docker
@@ -341,6 +359,11 @@ comment and its usage heredoc — twelve lines across six files. Per script:
 | `code/src/scripts/development/server.sh` | refuse | On the `down --volumes` path **above the env-file check**, and inside the `up` case's `--seed` branch — never at its head | Forwards `--force-posture <posture>` verbatim across the shell-out to `seed-dev.sh`; the flag is global and inert elsewhere |
 | `code/src/scripts/tests/server.sh`       | refuse | On the `down --volumes` path, above the env-file check                                                                    | Flag global and inert elsewhere                                                                                             |
 | `code/src/scripts/database/migrate.sh`   | warn   | **At entry, before argument dispatch** — the one script in which "before the first destructive command" would be vacuous  | Hosts the `--self-test`; prints the posture and the expand-then-contract obligation at every posture; exits 0 on success    |
+
+**Erratum 15/11/2026 — the `up --seed` guard is its own block, not inside the `--seed` branch
+(F-001).** It now runs, with its bind, in a block ahead of `compose up -d` on the `--seed` path, so
+no daemon call precedes it. Still bound on `--seed` only — case 21 unchanged. Decided by
+<%DEVELOPER_NAME%>; `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md` F-001.
 
 "Before the first destructive command" is the firing point in the five refusing scripts; the two
 `server.sh` scripts have an env-file preflight but no container preflight, and the guard precedes
@@ -442,6 +465,65 @@ and validity indicator on every invocation. Only a successful target check sets 
 conversion to a warning must never manufacture a binding. P2 consumes these outputs before
 container preflight and every guarded-path Docker/Compose call, including seed forwarding.
 
+**Erratum 15/11/2026 — four corrections from the workflow 23 review (F-020 to F-022, F-024).**
+Decided by <%DEVELOPER_NAME%>, who directed every review finding fixed on this branch; detail in
+`../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md`.
+
+- **A sixth input, the env-file (F-020).** After the compose name and before the invocation, the
+  caller hands the helper the file it passes Compose as `--env-file`, or empty — so the contract
+  reads `posture_guard ROOT MODE OVERRIDE COMPOSE_NAME ENV_FILE [INVOCATION...]`. Compose reads
+  `COMPOSE_PROJECT_NAME` from that file when the shell sets none, so step 3 does too: shell first,
+  then the file, read as data by the guard's own `posture_env_project` and never sourced. Compose's
+  env parser is not line-based (it strips a BOM, skips Unicode spaces, starts a statement after a
+  closing quote, and takes the last of duplicates), so the guard does not model it: every mention of
+  `COMPOSE_PROJECT_NAME` in the file counts, comments included, exactly one is accepted, on a plain
+  printable-ASCII `[export ]COMPOSE_PROJECT_NAME=value` line, and anything else — a commented-out
+  key included — fails closed, as does an interpolated value or any NUL byte in the file. The
+  commented-key refusal is deliberate: a `#` line can sit inside a quoted value Compose reads. Sam chose this over pinning `-p` in every caller. All six callers pass it.
+- **Step 2's carrier states, sharpened (F-021).** A top-level line a line reader cannot model — an
+  explicit `?` key, a tag, an anchor, an alias, a flow collection, a quoted key carrying an escape,
+  or an indented continuation line straight after the key — reads as **unrecognised** and refuses,
+  and every line break PyYAML honours — CRLF, a lone CR, NEL, U+2028, U+2029 — is turned into LF
+  first, so a key hidden after one counts as a duplicate, while a quoted answer in which Copier's
+  dumper wrote one raw still reads.
+  Copier writes none of them; PyYAML honours all of them, so a reader that skipped them could take
+  `development` from a carrier PyYAML reads as `production`.
+- **Step 3's refusal names the right repair (F-022).** A compose-project failure prints its own
+  repair — correct `COMPOSE_PROJECT_NAME` (in the shell or the env-file) or the compose file's
+  top-level `name:` — instead of the Docker-socket one, which cannot clear it. Neither is waived by
+  `--force-posture`. Warn mode likewise says "the compose project is unverified" for a project
+  failure; the socket wording is unchanged.
+- **The self-test gains a behavioural tier (F-024).** The Key Decision "How cases 20 and 21 and the
+  prompt path are proved" ruled a dynamic script-level case impossible, because the scripts resolve
+  their root from `BASH_SOURCE`. Copying the script groups into a fixture repository, with a
+  recording `docker` stub first on `PATH`, makes it possible: `st_behavioural` in
+  `code/src/scripts/database/_migrate-self-test.sh` runs the six callers refused at `staging` and
+  permitted, pinned, at `development`, and carries the override across `up --seed` into its child.
+  The structural cases and the manual walk stand; this adds the dynamic half beside them. Self-test
+  250 of 250.
+- **No env-file value reaches the output, and no AI runs these scripts (F-027).** Sam ruled during
+  the review that no AI tool reads a live `.env.*` and that a script using one is his to run
+  (`.claude/CLAUDE.md` Section 6). The guard's refusal therefore names `COMPOSE_PROJECT_NAME in the
+env-file` and prints "(value not shown)" in place of the value; a shell value is still printed.
+  The six callers stay developer-run, and the rule is enforced in the host configs the template
+  ships — `.claude/settings.json`, `.codex/config.toml`, `.zed/settings.json` — held in step by
+  `code/src/scripts/audits/env-read-deny.sh`. `migrate.sh --self-test` reads fixtures only and
+  stays runnable by an AI.
+- **The F-027 rule revised: an AI may run a script that uses a live `.env.*` if it prints no value
+  from it (F-028, F-029).** Sam's second ruling, the same day: dev tooling never prints an
+  env-file value; `database/shell.sh`, `development/shell.sh` and `development/logs.sh` stay his
+  to run, because their access is open-ended. An audit of the 23 env-reading scripts, adversarially
+  verified, found output paths that broke it, and they were fixed on this branch: `reset.sh` and
+  `seed-dev.sh` print key names, not the seeded accounts, and read only the keys they need;
+  `backup.sh`, `restore.sh` and `reset.sh` take the database name from the compose file;
+  `e2e-py.sh` confines `.env.test` to the pytest subshell; the four test-stack scripts pin `-p`
+  from the compose `name:` through a new helper, `posture_compose_project`, and refuse at exit 2
+  without one; `install.sh --full` starts the stack through `server.sh up --build`. Self-test
+  298 of 298 (after a second round that also pinned `development/server.sh`). The `create-staff` injection the audit found in `manageusers.sh` is pre-existing and
+  is a bug report, not part of this story. `.claude/settings.json` now denies running only the
+  three open-ended scripts, and the rule text in `.claude/CLAUDE.md` Section 6,
+  `.ai/INSTRUCTIONS.md` and `code/src/scripts/CLAUDE.md` matches the ruling (F-027).
+
 ### The proof-case list, and how each case is proved
 
 The story enumerates twenty-one top-level cases, with independent fixtures for each case-14 subcase — and every count
@@ -512,7 +594,7 @@ is recorded as such, not hidden by a fresh baseline reconstructed after editing.
 **The story's own baseline, inherited rather than re-measured here:** 103 tree-wide and 9 on
 `../02-STORIES/US006.md`, at HEAD `c6df520` on a clean tree, 05/09/2026; 127 tree-wide with the story's five
 artefacts staged, every one of the 24 added being an instance citation of a PM artefact — the class
-`../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` exempts once US004 lands —
+`../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` exempts once US004 lands —
 or a forward reference to "code/docs/ABSENCE.md" (US003), "code/docs/reliability/" (US001) or this
 story's own helper. None is of a class this story owns. The same tree gave 153 an hour earlier with
 a parallel session's two plan files untracked; **a figure without its index state is not a
@@ -553,6 +635,14 @@ reserves for a citation that is right and merely unprovable downstream.
 | The committed CI literal's form                       | A hard literal, `development` in this template, hand-maintained, with the owner and trigger in a comment beside it                                                                      | Rendering the posture answer into the workflow through a Copier token at generation               | The template's own CI runs the same workflow unrendered, where a token is not a legal posture and step 1 of the helper would refuse the template's own teardown — the one checkout the `copier.yml` proof exists to keep unimpeded. A hand literal is the expiring form the override ADR chose, and the comment is what keeps it maintained | `ADR-US006-OVERRIDE-NAMES-THE-LIVE-POSTURE` -> _Consequences_ · TM-10 |
 | Who writes the records and the register entries       | `22-implementation-documentation`                                                                                                                                                       | This story                                                                                        | `REFERENCES.md`'s ownership table gives them to `22`; a story that writes its own register entry produces two owners for one file                                                                                                                                                                                                           | `REFERENCES.md` -> _Ownership boundaries_                             |
 | How this plan names what does not exist yet           | Double quotes                                                                                                                                                                           | Backticks; a `template-only` marker                                                               | The citation gate reads backticked tokens; the marker is for a citation that is right and unprovable downstream, not for a dangling one                                                                                                                                                                                                     | `code/docs/FORWARD-VOICE.md` · AC-GAP-12 of US005's QA plan           |
+
+**Erratum 15/11/2026 — the harness body lives in a sourced file, not in `migrate.sh` itself.**
+The entry point is unchanged: `bash code/src/scripts/database/migrate.sh --self-test`, dispatched at
+entry, with no `docker`. Its body moved at P2 to `code/src/scripts/database/_migrate-self-test.sh`,
+which `migrate.sh` sources only for that arm. Two reasons. Kept inline, `migrate.sh` would have
+reached about 680 of the 750-line source limit. And the structural checks would have read their own
+search strings back out of the file they inspect. Reported at P2 and approved by <%DEVELOPER_NAME%>
+with it, 15/11/2026; finding F-005 of `../20-FINDINGS/archive/FINDING-US006-POSTURE-GUARD-15-11-2026.md`.
 
 <!-- UPDATED 03/11/2026 (US002 QA L-1): the "Where the proof lives" row's Why read "in a file with almost no headroom that US002 owns", undated and false once US002 ships; the figure is now dated history. The rejection stands on the harness pattern, which holds at any headroom. -->
 

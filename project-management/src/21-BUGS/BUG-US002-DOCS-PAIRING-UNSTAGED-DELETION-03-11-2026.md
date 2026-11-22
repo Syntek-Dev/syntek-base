@@ -8,9 +8,10 @@
 | **Severity**     | Low                                                                                                                               |
 | **Date found**   | 03/11/2026                                                                                                                        |
 | **Last Updated** | 03/11/2026                                                                                                                        |
-| **Status**       | Open                                                                                                                              |
 | **Found during** | QA breaker pass (M-3, L-7) and the manual walk — `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` row BITE-01                         |
-| **Reporter**     | Claude, on Sam's behalf; finding F-014 in `../20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md`                   |
+| **Reporter**     | Claude, on Sam's behalf; finding F-014 in `../20-FINDINGS/archive/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md`           |
+
+**Status:** Open
 
 Filed, not fixed: US002 is a docs-only story and its plan files this rather than changing the
 script. No target story is named yet; the fix is unscheduled.
@@ -107,7 +108,7 @@ regression check is the scripted run above.
   `doc-references.sh`'s dependence on the git index — the same class, a different script.
 - **Related records:** `../18-TESTS/MANUAL/US002-MANUAL-TESTING.md` row BITE-01 ·
   `../19-REVIEWS/REVIEW-US002-AUDITS-REGISTER-HEADROOM.md` R-022, R-030 ·
-  `../20-FINDINGS/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md` F-004, F-014.
+  `../20-FINDINGS/archive/FINDING-US002-AUDITS-REGISTER-HEADROOM-03-11-2026.md` F-004, F-014.
 
 ## 9. Verification
 

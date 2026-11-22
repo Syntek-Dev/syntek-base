@@ -17,7 +17,12 @@
     "!**/tests/e2e/results/**",
     "!**/tests/e2e/playwright-report/**",
     "!project-management/export/**",
+    // Archived PM records are frozen; pm-board.sh --check is their gate (19/11/2026). The records
+    // alone: archive/'s own CONTEXT.md and CLAUDE.md are linted (narrowed 20/11/2026).
+    "!project-management/src/*/archive/*-*.md",
+    "!project-management/src/*/archive/US[0-9][0-9][0-9].md",
     "!code/docs/MACHINE-SPEC.md",
+    "!graphify-out/**",
     "!code/src/scripts/**/reports/**",
     "!code/src/rust/target/**",
     "!project-management/src/00-ASSETS/WALK-TESTS/*-PROMPT.md",
@@ -33,6 +38,9 @@
     ".ai/skills/**",
     ".ai/MEMORY.md",
     "project-management/export/**",
+    // Archived PM records are frozen, even when staged by name (19/11/2026; records only, 20/11/2026).
+    "project-management/src/*/archive/*-*.md",
+    "project-management/src/*/archive/US[0-9][0-9][0-9].md",
     "code/docs/MACHINE-SPEC.md",
     "code/src/scripts/**/reports/**",
     "code/src/rust/target/**",

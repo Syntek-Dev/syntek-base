@@ -136,9 +136,13 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
 X_FRAME_OPTIONS = "DENY"
 SECURE_CONTENT_TYPE_NOSNIFF = True
 ```
+
+Cookie names (`__Host-` in the TLS environments) and cookie scope are owned by
+[`CRYPTO-AND-DATA.md`, _Browser Storage Policy_](CRYPTO-AND-DATA.md#browser-storage-policy).
 
 **Django Ninja auth — declare it once, per router, then never leave it off:**
 

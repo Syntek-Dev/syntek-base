@@ -1,0 +1,14 @@
+services:
+  django:
+    image: example
+    volumes:
+      - ../django:/app
+  nginx:
+    image: nginx:mainline
+    volumes:
+      - ./nginx/dev.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../django/staticfiles:/staticfiles:ro
+    depends_on:
+      - django
+volumes:
+  data:

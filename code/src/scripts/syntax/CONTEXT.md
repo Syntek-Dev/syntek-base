@@ -23,7 +23,7 @@ code/src/scripts/syntax/
 ├── check.sh                 ← type-check Python (basedpyright), TypeScript (tsc), Rust (cargo check)
 ├── CLAUDE.md                ← operating rules
 ├── CONTEXT.md               ← this file
-├── format.sh                ← format Python (ruff), JS/TS/CSS/Markdown/JSON (Prettier), Rust (rustfmt)
+├── format.sh                ← format Python (ruff), JS/TS/CSS/Markdown/YAML/JSON (Prettier), Rust (rustfmt)
 ├── lint.sh                  ← lint Python (ruff), Markdown (markdownlint-cli2), JS/TS (ESLint), Rust (clippy)
 └── reports/                 ← generated report output (all gitignored)
     ├── CONTEXT.md
@@ -33,29 +33,34 @@ code/src/scripts/syntax/
 
 ## Scripts
 
-| Script      | Tool(s)                                          | Purpose                                             |
-| ----------- | ------------------------------------------------ | --------------------------------------------------- |
-| `lint.sh`   | ruff check · markdownlint-cli2 · ESLint · clippy | Lint Python, Markdown, JavaScript, TypeScript, Rust |
-| `check.sh`  | basedpyright · tsc · cargo check                 | Type-check Python, TypeScript, Rust                 |
-| `format.sh` | ruff format · Prettier · rustfmt                 | Format Python, JS, TS, CSS, Markdown, JSON, Rust    |
+| Script      | Tool(s)                                          | Purpose                                                |
+| ----------- | ------------------------------------------------ | ------------------------------------------------------ |
+| `lint.sh`   | ruff check · markdownlint-cli2 · ESLint · clippy | Lint Python, Markdown, JavaScript, TypeScript, Rust    |
+| `check.sh`  | basedpyright · tsc · cargo check                 | Type-check Python, TypeScript, Rust                    |
+| `format.sh` | ruff format · Prettier · rustfmt                 | Format Python, JS, TS, CSS, Markdown, YAML, JSON, Rust |
 
 ## File types — one token per language
 
 `--file-type` names a **language**, and each script applies whatever tooling that language has
 here. Repeat the flag for more than one.
 
-| Token        | Surface                                         | `lint.sh`              | `check.sh`     | `format.sh` |
-| ------------ | ----------------------------------------------- | ---------------------- | -------------- | ----------- |
-| `python`     | Django (`code/src/django/`)                     | ruff                   | basedpyright   | ruff format |
-| `javascript` | **Web** — Alpine and enhancement scripts        | ESLint (root config)   | — not typed    | Prettier    |
-| `typescript` | **Mobile** — `code/src/mobile/`                 | ESLint (mobile config) | `tsc --noEmit` | Prettier    |
-| `rust`       | **Native** — `code/src/rust/`, desktop included | rustfmt + clippy       | `cargo check`  | rustfmt     |
-| `markdown`   | repo-wide                                       | markdownlint-cli2      | — not typed    | Prettier    |
-| `css`        | repo-wide — **`format.sh` only**                | — rejected, see below  | — not typed    | Prettier    |
+| Token        | Surface                                           | `lint.sh`              | `check.sh`     | `format.sh` |
+| ------------ | ------------------------------------------------- | ---------------------- | -------------- | ----------- |
+| `python`     | Django (`code/src/django/`)                       | ruff                   | basedpyright   | ruff format |
+| `javascript` | **Web** — Alpine and enhancement scripts          | ESLint (root config)   | — not typed    | Prettier    |
+| `typescript` | **Mobile** — `code/src/mobile/`                   | ESLint (mobile config) | `tsc --noEmit` | Prettier    |
+| `rust`       | **Native** — `code/src/rust/`, desktop included   | rustfmt + clippy       | `cargo check`  | rustfmt     |
+| `markdown`   | repo-wide                                         | markdownlint-cli2      | — not typed    | Prettier    |
+| `css`        | repo-wide — **`format.sh` only**                  | — rejected, see below  | — not typed    | Prettier    |
+| `yaml`       | repo-wide `.yaml`/`.yml` — **`format.sh` only**   | — rejected, see below  | — not typed    | Prettier    |
+| `json`       | repo-wide `.json`/`.jsonc` — **`format.sh` only** | — rejected, see below  | — not typed    | Prettier    |
 
 **`lint.sh` rejects `--file-type css`.** No CSS linter is configured, so a `css` lint token
 could only ever print an informational line and pass — which reads as a clean result over a
-population nothing examined. `format.sh` owns CSS and still takes the token.
+population nothing examined. `format.sh` owns CSS and still takes the token. **`yaml` and `json`
+are the same case**: no linter for either, so `lint.sh` exits `2` on them, and `format.sh` takes
+them so a bare run reads the population CI's repo-wide `prettier --check .` reads (added 12/11/2026).
+Lockfiles and fixtures whose layout is the test input are excluded in `.prettierignore`, never here.
 
 `javascript` and `typescript` name **different surfaces and never overlap**: the root ESLint
 config ignores `code/src/mobile/`, and TypeScript exists nowhere else in the tree. `check.sh`

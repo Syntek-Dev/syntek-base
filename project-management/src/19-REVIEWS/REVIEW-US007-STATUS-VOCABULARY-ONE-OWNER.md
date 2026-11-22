@@ -145,6 +145,6 @@ PR #19 (`a9378ec`), which landed between capture and close, moved no finding.
 - `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — the plan
 - `../18-TESTS/AUTOMATED/US007-TEST-STATUS.md` · `../18-TESTS/MANUAL/US007-MANUAL-TESTING.md` — the test records
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` — the paired QA review
-- `../20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` — the findings
+- `../20-FINDINGS/archive/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` — the findings
 - `../21-BUGS/` — the two tooling bugs
 - `project-management/workflows/23-pr-and-review/` — the workflow this record is written in
