@@ -36,8 +36,10 @@
 #                             and the named shipped content below. The suffix, not a bare
 #                             *TEMPLATE*: an instance whose title holds the word is not a
 #                             template, and the bare form let one ADR ship until 7.8.0.
-#                          4. Every named shipped file is PRESENT — an allowlist fails by
-#                             not shipping a new template file, and this is the reveal.
+#                          4. Every named shipped file is PRESENT, and every SEEDED file
+#                             LANDED — an allowlist fails by not shipping a new template
+#                             file, a seed by a copy-gated move that never happened, and
+#                             this is the reveal for both.
 #                          5. No artefact-tree .gitignore leaked.
 #                          6. project-management/export/clickup/ ships its README only,
 #                             never a generated US###-CLIENT.md.
@@ -48,13 +50,16 @@
 #                        4 is not redundant with 3. An allowlist has two failure modes and
 #                        they point opposite ways: too loose ships a private note, too
 #                        tight silently drops a template file a project needs. 3 catches
-#                        the first, 4 the second.
+#                        the first, 4 the second. 4 also catches a seed that did not land,
+#                        which is not a tight allowlist at all: the seed's `mv .copier/...`
+#                        line in the copy-gated _task did not run, or ran and was undone.
 #
 #                        What it CANNOT check: whether a shipped template's CONTENT is
 #                        right. Only that the file set is.
 #
-# SELF-TEST. --self-test plants a stray artefact in a copy of the generated tree and
-#            deletes a named shipped file, asserting each is caught. A guard nobody has
+# SELF-TEST. --self-test plants a stray artefact in a copy of the generated tree,
+#            deletes a named shipped file and moves the last seeded file away, asserting
+#            each is caught. A guard nobody has
 #            seen fail is a guard nobody knows works. It reuses the caller's generated
 #            tree rather than generating again — the generation is the expensive part and
 #            [3/4] has already paid for it.
@@ -65,8 +70,8 @@
 # Usage: shipped-artefacts.sh [--quiet] [--self-test] [--help] <generated-project-dir>...
 #
 # Exit codes:  0 = every artefact tree arrived empty
-#              1 = an artefact leaked, a template file is missing, or the self-test no
-#                  longer separates
+#              1 = an artefact leaked, a template file is missing, a seeded file did not
+#                  land, or the self-test no longer separates
 #              2 = script error (bad arguments, or a self-test that could not run)
 
 set -euo pipefail
@@ -114,12 +119,18 @@ NAMED_SHIPPED=(
   "23-INCIDENTS/INCIDENT-INDEX.md"
 )
 
-# An ALLOWLIST, not a proof of landing: each entry is a path the copy-gated _task may move
-# from .copier/ into $SRC_TREE, so this leak check admits it although it is not template
-# content. Being listed here proves nothing about whether the move happens — check 2 of
-# .github/scripts/shipped-boards.sh binds the board moves to the copy-gated task, and the
-# [3/4] completeness step asserts each board is present. Ten entries: the scale-planning map,
-# the eight PM boards (shipped-boards.sh proves those seeds empty), and the blank CUT-PLAN.md.
+# Read twice. Check 3 reads it as an ALLOWLIST: each entry is a path the copy-gated _task
+# moves from .copier/ into $SRC_TREE, so the leak check admits it although it is not template
+# content. Check 4 reads it as a PRESENCE list: every entry must have landed. Beside that,
+# check 2 of .github/scripts/shipped-boards.sh binds the board moves to the copy-gated task,
+# and the [3/4] completeness step asserts each board is present. Ten entries: the
+# scale-planning map, the eight PM boards (shipped-boards.sh proves those seeds empty), and
+# the blank CUT-PLAN.md.
+#
+# A seed that fails to land is repaired at its .copier/ file or its `mv` line, never with a
+# `!` negation — for a path populated in-tree that ships syntek-base's own rows on every
+# `copier update`. An entry leaves this list only when the seed is retired on purpose, with
+# its .copier/ file and its `mv` line, in one change.
 SEEDED=(
   "01-FEATURE-MAPS/MAP-SCALE-PLANNING.md"
   "01-FEATURE-MAPS/FEATURE-MAPS-BOARD.md"
@@ -148,12 +159,13 @@ shipped-artefacts.sh — Verify a generated project receives empty artefact tree
 Usage: shipped-artefacts.sh [--quiet] [--self-test] [--help] <generated-project-dir>...
 
   --quiet      Suppress progress output; print findings only
-  --self-test  Prove the checks still fire: plant a stray artefact and delete a named
-               template file in a copy of the tree, and assert each is caught
+  --self-test  Prove the checks still fire: plant a stray artefact, delete a named
+               template file and move a seeded file away in a copy of the tree, and
+               assert each is caught
   --help       Show this message
 
 Exit codes: 0 = every artefact tree arrived empty  1 = a leak, a missing template file,
-or a self-test that no longer separates  2 = script error
+a seeded file that did not land, or a self-test that no longer separates  2 = script error
 EOF
 }
 
@@ -257,7 +269,8 @@ run_checks() {
     # The other half of an allowlist. Too tight is the quieter failure: a project simply
     # never receives a template file, and nobody notices until they look for it. A glob
     # is asserted non-empty rather than enumerated — dropping its `!` negation in
-    # copier.yml empties it, which is the regression this catches.
+    # copier.yml empties it, which is the regression this catches. A seed fails a different
+    # way, by a move that did not happen, and its finding names that repair, never a `!`.
     for n in "${NAMED_SHIPPED[@]}"; do
       [[ -f "$GEN/$SRC_TREE/$n" ]] \
         || finding "$SRC_TREE/$n did NOT ship — the allowlist is too tight; add a '!' negation for it in copier.yml"
@@ -421,4 +434,8 @@ log "  syntek-base commits its own handoffs, maps, notes and lessons so they syn
 log "  devices; copier.yml's _exclude is the ONLY thing keeping them out of a generated"
 log "  project. Fix the allowlist there — and remember a bare directory entry does not"
 log "  prune its contents, so every pattern needs '/**'."
+log ""
+log "  A seeded file that did not land is not an allowlist finding: repair its .copier/"
+log "  file or its 'mv .copier/...' line in copier.yml's copy-gated _tasks entry, and never"
+log "  add a '!' negation for it."
 exit 1
