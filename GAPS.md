@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 21/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 22/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -1327,7 +1327,27 @@ why config files stay out of scope. No map or story claims this entry.
 ## 21/11/2026 — US010's walk has thirteen blocking Fails and one unwalked row, each waiting on a ruling
 
 **Type:** Active gap
-**Summary:** The walk of 21/11/2026 ("project-management/src/18-TESTS/MANUAL/US010-MANUAL-TESTING.md",
+**Update 22/11/2026:** Sam ruled on the walk 22/11/2026, every point "as recommended" (rulings A
+to D), and an independent re-walk of the fifteen affected rows followed. **US010 now has one
+blocking Fail and one row awaiting Sam's review** (58 Pass, 3 Fail, 1 unmarked, 92 retired
+stubs):
+
+- **BOARDGATE-03 fails** on its 22/11/2026 amendment, whose last clause names an R4 probe that
+  fix round 3 (`7e724e73`) replaced under a different label; the successor passes (F-044). Sam
+  rules that the successor counts, or the row is re-amended with a trail, then re-walked.
+- **LEGIBLE-02 awaits Sam's review** of the three reader sessions taken 22/11/2026 (none opened a
+  file; 19 titles flagged, F-045 to F-063). Its `Result` stays blank until he has reviewed them.
+- REMEDY-01 and REMEDY-02 fail without blocking. REMEDY-01 is routed to the 21/11/2026 entry "the
+  09/10/2026 build-start remediation never reached the procedures" (ruling D); REMEDY-02 still
+  fails after ruling D's fix (F-017, same entry).
+- The other fourteen former Fails pass: the CI and rebase rows against the slots entered late
+  under ruling A, the eight amended rows under rulings B and C, and SUPERSEDE-03.
+
+Then gate 23's verification is re-run (F-006). US010 cannot move to `Completed` until BOARDGATE-03
+passes or is ruled on and LEGIBLE-02 is marked. No map or story claims this entry. The 21/11/2026
+text follows, as it stood.
+
+**Summary (21/11/2026): The walk of 21/11/2026 ("project-management/src/18-TESTS/MANUAL/US010-MANUAL-TESTING.md",
 at `7d54df26`) recorded 44 Pass, 17 Fail and 1 unwalked. Thirteen of the Fails block the story,
 and so does LEGIBLE-02, which is unwalked. They come from four causes:
 
@@ -1455,6 +1475,11 @@ require. No map or story claims this entry.
 ## 21/11/2026 — the 09/10/2026 build-start remediation never reached the procedures
 
 **Type:** Active gap
+**Update 22/11/2026:** Sam's ruling D routes REMEDY-01 here; it stays a Fail. REMEDY-02's cells were
+re-mirrored 22/11/2026 in sprint plans 01, 02, 04, 05 and 06, and no live `Not started` cell
+survives, but the re-walk still fails it: the cells copy each plan's stale Status row rather than
+the status the plan shows (its story's), and only US010 and US011 match the board (F-017). The
+mirror decision below stands.
 **Summary:** The remediation approved on 09/10/2026 (grill-with-docs, Q1) is quoted in
 US010's manual guide _Preconditions_. It required that, after US007, the
 `Open` → `In Progress` transition is recorded after the due pre-edit captures and before the
@@ -1468,6 +1493,20 @@ generates or checks the mirror (REMEDY-02). Findings F-016 and F-017 in "project
 **Blocked by / Action:** Nothing blocks it. One change moves the transition and adds the N/A and
 adapter sentences. A decision follows on whether the sprint-plan mirror is generated, gated or
 dropped. No map or story claims this entry.
+
+---
+
+## 22/11/2026 — ten board titles a fresh reader could not use sit in frozen archive records
+
+**Type:** Active gap
+**Summary:** US010's LEGIBLE-02 reader sessions (22/11/2026) flagged nineteen board titles as
+illegible or restating their filename. Ten belong to records under `*/archive/`, which is
+frozen, so their titles cannot be edited: seven superseded ADRs (F-053 to F-059) and three
+resolved findings (F-060 to F-062). The other nine are live and carried to the next story. Findings F-053 to F-062 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md",
+Section 2.10; the readers' reasons are quoted in "project-management/src/18-TESTS/MANUAL/US010-MANUAL-TESTING.md".
+**Blocked by / Action:** Sam reviews the reader sessions first (LEGIBLE-02). For each frozen title
+he accepts as flagged, he decides whether it stands as frozen history or the board gains another
+way to show it; nothing under `archive/` is edited by hand. No map or story claims this entry.
 
 ---
 

@@ -254,10 +254,14 @@ and the reading this plan's dated comment below already calls "the settled readi
 sprint plan". A cell written correct in a column of wrong ones would split the population that
 story corrects in a single pass.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                      | Status      |
-| ----- | ---------------------------------------------------------------------- | ----------- |
-| US007 | `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` | Not started |
-| US001 | `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`   | Not started |
+| Story | Story plan (`../17-STORY-PLANS/`)                                      | Status |
+| ----- | ---------------------------------------------------------------------- | ------ |
+| US007 | `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` | Open   |
+| US001 | `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`   | Open   |
+
+<!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
+     both cells held the placeholder and now carry each plan's own `| Status |` header row, `Open`.
+     The paragraph above and the comments below describing the placeholder record the old state. -->
 
 <!-- 08/09/2026, `17-story-plans` Step 10: US007's plan was written and this section took the row,
      the Status cell and the rewritten opening paragraph in the same change. SUPERSEDED WORDING,

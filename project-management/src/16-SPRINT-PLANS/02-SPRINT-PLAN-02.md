@@ -336,10 +336,14 @@ on that plan is owed to this order.
 Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. Both plans exist,
 written on 02/09/2026, and both carry a `| Sprint |` row repointed to this sprint on 07/09/2026.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                   | Status      |
-| ----- | ------------------------------------------------------------------- | ----------- |
-| US002 | `../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` | Not started |
-| US003 | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`            | Not started |
+| Story | Story plan (`../17-STORY-PLANS/`)                                   | Status |
+| ----- | ------------------------------------------------------------------- | ------ |
+| US002 | `../17-STORY-PLANS/03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md` | Open   |
+| US003 | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`            | Open   |
+
+<!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
+     both cells held the placeholder and now carry each plan's own `| Status |` header row, `Open`.
+     The paragraph and comments below describing the placeholder record the old state. -->
 
 **Both cells read `Not started`, and the value is knowingly false** (08/09/2026). It is a value in
 no status set anywhere in this repository, and both plans it points at carry `Open` in their own

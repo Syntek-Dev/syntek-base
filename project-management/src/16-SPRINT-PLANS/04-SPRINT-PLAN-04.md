@@ -254,7 +254,12 @@ table was repointed at it the same day by that workflow's Step 10.
 | Story | Story plan (`../17-STORY-PLANS/`)                                      | Status      |
 | ----- | ---------------------------------------------------------------------- | ----------- |
 | US005 | `../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` | In Progress |
-| US006 | `../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`               | Not started |
+| US006 | `../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`               | In Progress |
+
+<!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
+     US006's cell held the placeholder and now carries its plan's own `| Status |` header row,
+     `In Progress`; US005's already matched its plan. The comments below describing the placeholder
+     record the old state. -->
 
 <!-- 08/09/2026 — THE STATUS COLUMN. US005's cell reads "Not started", and the value is
      KNOWINGLY FALSE: it is a value in no status set anywhere in this repository, and the plan it

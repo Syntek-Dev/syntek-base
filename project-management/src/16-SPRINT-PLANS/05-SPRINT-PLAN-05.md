@@ -273,10 +273,14 @@ after a three-reviewer adversarial pass at Step 9 that returned six blocking fin
 resolved. This table was repointed at each by that workflow's Step 10, in the order they were
 written.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                            | Status      |
-| ----- | ------------------------------------------------------------ | ----------- |
-| US008 | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` | Not started |
-| US009 | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`       | Not started |
+| Story | Story plan (`../17-STORY-PLANS/`)                            | Status |
+| ----- | ------------------------------------------------------------ | ------ |
+| US008 | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` | Open   |
+| US009 | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`       | Open   |
+
+<!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
+     both cells held the placeholder and now carry each plan's own `| Status |` header row, `Open`.
+     The comments below describing the placeholder record the old state. -->
 
 The run on disk is contiguous `00-` to `09-`. **The prefix is the story's position in the settled
 build order across the whole backlog, not its sprint and not a per-sprint counter** — US008 eighth,
