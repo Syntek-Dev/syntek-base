@@ -202,6 +202,6 @@ expected to add one identity of its own (finding F-009).
 - `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md` — the plan, and its Key Decisions Q1 to Q3
 - `../18-TESTS/AUTOMATED/US001-TEST-STATUS.md` · `../18-TESTS/MANUAL/US001-MANUAL-TESTING.md` — the test records
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md` — the paired QA review
-- `../20-FINDINGS/FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md` — the findings
+- `../20-FINDINGS/archive/FINDING-US001-RELIABILITY-DOCTRINE-HOME-03-11-2026.md` — the findings
 - `../01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md` — slices S-02 to S-04, the successors named above
 - `project-management/workflows/22-implementation-documentation/` — the workflow this record is written in; `23-pr-and-review` verifies it

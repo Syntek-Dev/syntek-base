@@ -1,12 +1,12 @@
 # QA Plan — US009 The git hooks arm on purpose at install
 
-| Field         | Value                                                                                                   |
-| ------------- | ------------------------------------------------------------------------------------------------------- |
-| **Story**     | US009 — The git hooks arm on purpose at install, and the README claim that they already do becomes true |
-| **Date**      | 17/09/2026                                                                                              |
-| **Sprint**    | SPRINT-05 — this story is its stretch `Should`, 5 of 13 SP                                              |
-| **Wireframe** | N/A — this story ships bash and one JSON manifest read, not a screen                                    |
-| **Status**    | Signed off · **corrected in place 30/09/2026** — see below                                              |
+| Field         | Value                                                                                                                                                                                                                      |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**     | US009 — The git hooks arm on purpose at install, and the README claim that they already do becomes true                                                                                                                    |
+| **Date**      | 17/09/2026                                                                                                                                                                                                                 |
+| **Sprint**    | SPRINT-05 — this story is its stretch `Should`, 5 of 13 SP (corrected 17/11/2026, F-021 of `FINDING-US009-HOOK-ARMING-17-11-2026.md`: the story is **8 SP** and SPRINT-05 **16 / 11** since the re-estimate of 17/11/2026) |
+| **Wireframe** | N/A — this story ships bash and one JSON manifest read, not a screen                                                                                                                                                       |
+| **Status**    | Signed off · **corrected in place 30/09/2026** — see below                                                                                                                                                                 |
 
 <!-- SIGNED OFF 30/09/2026 by <%DEVELOPER_NAME%> (settled 30/09/2026, 16-sprint-plans grilling
      round 3 Q9), against the tree at a18db0b with that gate's corrections applied. The Status row
@@ -176,7 +176,9 @@ the story re-estimated 3 to 5 SP — and AC-GAP-2 by `ST07`, which replaces `[ -
   unambiguous: **23** `pnpm exec` sites across **14** files — `lefthook.yml`, two
   `.claude/hooks/lib/` checks, three workflow files and eight scripts under `code/src/scripts/`. The story's Script Task says "Run
   `lefthook install` resolved from the project's `node_modules`" — the requirement without the
-  mechanism. Threat model TM-04; assessment Section 7.4.
+  mechanism. Threat model TM-04; assessment Section 7.4. (Corrected 17/11/2026, review QA-01,
+  workflow 23: the shipped mechanism is not `pnpm exec`; `install-hooks.sh` runs the checked
+  `node_modules/.bin/lefthook` directly and no longer requires pnpm.)
 - **AC-GAP-5** `[RESOLVED] 17/09/2026` · material — **the hard fail abandons four later steps, and nothing weighs
   that.** The story puts the step immediately after Phase 1 Step 4 (`install.sh:417-423`) and
   requires `err` plus `exit 2` on failure, matching Steps 3 and 4 (`:413`, `:421`). Both citations
@@ -444,6 +446,13 @@ flag is correctly `N/A`.
 file named `log` at the project root** — it would be deleted as root. Confirm by reading the
 assertion's form: it must not treat `:79-93` as a block whose contents it has validated.
 
+> **Correction 17/11/2026 (F-024, `FINDING-US009-HOOK-ARMING-17-11-2026.md`):** the `sudo rm -rf`
+> defect is **not live**, here or in the baseline table's `install-frontend.sh:79-81` row. It was
+> fixed upstream in `8dceffb` (14/10/2026), before this story's build began; the `--local` branch of
+> `code/src/scripts/development/install-frontend.sh` now removes an array of targets, which cannot
+> dangle a `\`. Both readings describe the pre-`8dceffb` file. The instruction above still stands:
+> confirm by the assertion's form, and never plant a file at the project root.
+
 **The severities are read with their promotion triggers.** 0 CRITICAL, 0 HIGH, 7 MEDIUM, 4 LOW,
 1 INFO is a fact about a repository with one developer, no deployment and no known compromised
 dependency — not a verdict on the design. Five findings promote to `HIGH`, the first on the first
@@ -530,6 +539,33 @@ captured immediately before the first edit, and no edit has happened.
 AC-GAP-3 both rest on, and the 5 includes two in `code/src/scripts/mobile/install.sh:33` and `:41`
 that are **mobile-only** — absent in a project generated without that surface, which is why the
 story's "all three branches" framing is right about `install-frontend.sh` specifically.
+
+> **Correction 17/11/2026 (F-019, F-024 and F-025, `FINDING-US009-HOOK-ARMING-17-11-2026.md`):**
+> re-measured row by row against the tree of 17/11/2026. The table is the `1e00a4b` reading and
+> keeps its values, each true when measured; these rows no longer describe the tree:
+>
+> - **`doc-references.sh` (whole tree)** — **18**, exit 1, on the working tree of 17/11/2026 at
+>   workflow 23 (was 259); none of the 18 is in a US009 artefact (US014, US005, US011, SPRINT-03
+>   and sprint plan 03).
+> - **`pnpm install` invocations** — **18** total, **6** suppressed, **12** not (was 16 / 5 / 11).
+>   The sixth suppressed is `code/src/scripts/dependencies/audit.sh:401`; the two mobile-only
+>   lines above are still `code/src/scripts/mobile/install.sh:33` and `:41`.
+> - **...of those 12** — 1 local hook (`check-lockfiles.sh:147`, unchanged) and **11** CI steps
+>   across **six** workflow files: `claude.yml` (5), `syntax-js-ts.yml` (2), and one each in
+>   `audit-deps.yml`, `syntax-markdown.yml`, `test-api.yml` and US009's own
+>   `.github/workflows/audit-hook-arming.yml:78`.
+> - **`package.json:22` and the lockfile** — `"^2.2.2"`, pinned **2.2.2** at the `lefthook:`
+>   importer entry (`pnpm-lock.yaml:214-216`), both since `c2abb54` (09/11/2026). AC-GAP-8's
+>   `2.1.10` and `:54-56` above are the same 17/09/2026 reading.
+> - **`.git/hooks/pre-commit`** — still present and lefthook's, now dated 31/10/2026.
+> - **`install-frontend.sh:79-81`** — fixed, not live; the F-024 correction in Section 5 (`:447`)
+>   carries it, and the `--local` removal is now the array at `:95` and `:99`.
+> - **`install.sh` length and `usage()` step list** — **629** lines, Phase 1 at `:50-59` (nine steps,
+>   Step 9 arming the hooks), Phase 2 at `:61-63`.
+>
+> Unchanged: `command -v lefthook` finds nothing; `node_modules/.bin/lefthook` is present. The
+> threat model's baseline table has the matching re-measure
+> (`../../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US009-HOOK-ARMING.md`).
 
 ## 8. Two candidates refuted, and why they are recorded
 

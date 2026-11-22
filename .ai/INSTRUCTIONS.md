@@ -67,6 +67,11 @@ run remains unmeasured under `code/docs/GATE-REPORTING.md`.
 - Follow `.claude/CLAUDE.md` Sections 0 and 6 for deployment posture, development
   commands, data protection, security and commit gates. Use the project's existing
   scripts and workflow checks through the host's terminal capability.
+- Never read a live env file (`.env.dev`, `.env.test`, `.env.testing`, `.env.staging`,
+  `.env.prod`, `.env.production`) by any route; the `.env.*.example` files may be read. A
+  script that uses one may be run so long as it prints no value from it; the interactive
+  shells and the log stream are handed to the developer. The rule is `.claude/CLAUDE.md`
+  Section 6; a host whose own settings do not block the read is still bound by it.
 - Follow `.ai/skills/global-workflow/SKILL.md` and its relevant references for writing,
   versioning, Git and documentation conventions.
 - Host permissions and sandbox restrictions remain in force. A repository instruction

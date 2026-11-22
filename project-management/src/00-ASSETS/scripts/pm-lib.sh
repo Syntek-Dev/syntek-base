@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# pm-lib.sh — The shared reader for the five PM status registers. SOURCED, NEVER INVOKED.
+# pm-lib.sh — The shared reader for the eight PM registers. SOURCED, NEVER INVOKED.
 #
 # pm-board.sh and pm-archive.sh both source this file and run the Python it defines,
 # appending their own entry point:
@@ -14,13 +14,25 @@
 # WHAT IT OWNS — one definition of each, so the board, the archive command and the
 # warnings can never disagree:
 #
-#   * The five registers: 01-FEATURE-MAPS, 02-STORIES, 03-SPRINTS, 16-SPRINT-PLANS,
-#     17-STORY-PLANS, their instance filename patterns, and their status vocabularies in
-#     board-column order. Templates (US000, SPRINT-00, MAP-000, 00-*-TEMPLATE) are never
-#     instances.
+#   * The eight registers: the five STATUS registers 01-FEATURE-MAPS, 02-STORIES, 03-SPRINTS,
+#     16-SPRINT-PLANS, 17-STORY-PLANS, and the three RECORD registers 15-DECISIONS (ADR-*.md),
+#     20-FINDINGS (FINDING-*.md) and 21-BUGS (BUG-*.md, the cross-cutting BUG-<DESCRIPTOR>-…
+#     fallback included); their instance filename patterns (the ID is the filename stem), and
+#     their status vocabularies in board-column order. Templates are never instances: in the
+#     five, a name of the shipped template pattern (TEMPLATE_NAME — …-US000-TEMPLATE,
+#     …-000-TEMPLATE, …-00-TEMPLATE, US000-TEMPLATE; never TEMPLATE anywhere in a name), and
+#     in the three only the exact name <PREFIX>-US000-TEMPLATE.md. A .md in any subfolder
+#     other than archive/ itself is a stray, off every board — bar the CONTEXT.md / CLAUDE.md
+#     pair of a first-level subfolder other than archive/; nothing below archive/ is exempt.
+#   * A record register's archive rule: an ADR is archived from Superseded or Deprecated, a
+#     findings record from Resolved, a bug from Verified, and keeps that status in archive/
+#     (the five status registers close to Closed instead).
+#   * An ADR's **Supersedes:** and **Superseded by:** lines — the ADR filenames each names, or
+#     None — the decisions board's two tail columns, and the chain warnings read from them.
 #   * LOOKUP BY ID ACROSS THE FOLDER AND ITS archive/ — every reader resolves an item this
 #     way, so archiving one never breaks a script.
-#   * The status read: the first line beginning `**Status:**` (or the older `**Status**:`),
+#   * The status read: the first line beginning `**Status:**` (or the older `**Status**:`)
+#     that sits outside an HTML comment and a fenced code block (so do the supersession lines),
 #     with `**`, backticks and a trailing HTML comment removed, cut at the first ` — `
 #     (or ` · `) — the rest is a note — and trimmed. Never translated: a value outside the
 #     vocabulary is reported as Unrecognised, not guessed at.
@@ -51,6 +63,9 @@ STORY_STATUSES = ["Open", "Pending", "In Progress", "In Review", "Accepted", "Cu
                   "Closed"]
 SPRINT_STATUSES = ["Planned", "In Progress", "Done", "Closed"]
 MAP_STATUSES = ["Charting", "Resolving", "Blockers Clear", "Complete", "Closed"]
+ADR_STATUSES = ["Proposed", "Accepted", "Superseded", "Deprecated"]
+FINDING_STATUSES = ["Open", "Resolved"]
+BUG_STATUSES = ["Open", "Fixed", "Verified"]
 POST_ACCEPTED = {"Accepted", "Customer Review", "Customer Accepted", "Completed", "Closed"}
 
 def slug(title):
@@ -58,11 +73,23 @@ def slug(title):
 
 
 class Kind:
-    def __init__(self, key, folder, board, noun, plural, pattern, statuses, parent=None):
+    """One register. The five status registers close to `Closed` and file every archived item
+    there; the three record registers (decisions, findings, bugs) set `archive_from` instead —
+    the end states a record may be archived from, and keeps, under archive/."""
+    def __init__(self, key, folder, board, noun, plural, pattern, statuses, parent=None,
+                 template=None, title_prefix=None, archive_from=None, tail=False, extras=()):
         self.key, self.folder, self.board = key, folder, board
         self.noun, self.plural = noun, plural
         self.pattern = re.compile(pattern)
         self.statuses, self.parent = statuses, parent
+        self.template, self.archive_from, self.tail = template, archive_from, tail
+        self.title_prefix = re.compile(title_prefix) if title_prefix else None
+        self.extras = set(extras)
+
+    def is_template(self, name):
+        """By exact name for a record register; by the shipped template naming pattern for the
+        other five — never `TEMPLATE` anywhere in a name, which a real descriptor may hold."""
+        return name == self.template if self.template else bool(TEMPLATE_NAME.search(name))
 
     @property
     def dir(self):
@@ -72,11 +99,16 @@ class Kind:
         return self.dir / f"{self.board}-BOARD.md"
 
 
+# The shipped template names, and only those: <X>-US000-TEMPLATE, <X>-000-TEMPLATE,
+# <X>-00-TEMPLATE and US000-TEMPLATE (.md, or .html for a wireframe). A real record whose
+# descriptor merely holds the word TEMPLATE is not one.
+TEMPLATE_NAME = re.compile(r"(?:^|-)(?:US000|000|00)-TEMPLATE\.(?:md|html)$")
+
 KINDS = {
     "maps": Kind("maps", "01-FEATURE-MAPS", "FEATURE-MAPS", "feature map", "feature maps",
                  r"^(MAP-(?!000)[A-Z0-9][A-Z0-9-]*)\.md$", MAP_STATUSES),
     "stories": Kind("stories", "02-STORIES", "STORIES", "story", "stories",
-                    r"^(US(?!000)\d{3})\.md$", STORY_STATUSES),
+                    r"^(US(?!000)\d{3})\.md$", STORY_STATUSES, extras=("CUT-PLAN.md",)),
     "sprints": Kind("sprints", "03-SPRINTS", "SPRINTS", "sprint", "sprints",
                     r"^(SPRINT-(?!00)\d{2})\.md$", SPRINT_STATUSES),
     "sprint-plans": Kind("sprint-plans", "16-SPRINT-PLANS", "SPRINT-PLANS", "sprint plan",
@@ -85,8 +117,21 @@ KINDS = {
     "story-plans": Kind("story-plans", "17-STORY-PLANS", "STORY-PLANS", "story plan",
                         "story plans", r"^(\d{2}-STORY-PLAN-(US(?!000)\d{3}))(?:-[A-Z0-9-]+)?\.md$",
                         STORY_STATUSES, parent="stories"),
+    "decisions": Kind("decisions", "15-DECISIONS", "DECISIONS", "ADR", "ADRs",
+                      r"^(ADR-[A-Z0-9][A-Z0-9-]*)\.md$", ADR_STATUSES,
+                      template="ADR-US000-TEMPLATE.md", title_prefix=r"^ADR-[A-Z0-9]+:\s+",
+                      archive_from=["Superseded", "Deprecated"], tail=True),
+    "findings": Kind("findings", "20-FINDINGS", "FINDINGS", "findings record", "findings records",
+                     r"^(FINDING-[A-Z0-9][A-Z0-9-]*)\.md$", FINDING_STATUSES,
+                     template="FINDING-US000-TEMPLATE.md",
+                     title_prefix=r"^Findings\s+[—–-]\s+US\d{3}\s+", archive_from=["Resolved"]),
+    "bugs": Kind("bugs", "21-BUGS", "BUGS", "bug report", "bug reports",
+                 r"^(BUG-[A-Z0-9][A-Z0-9-]*)\.md$", BUG_STATUSES,
+                 template="BUG-US000-TEMPLATE.md",
+                 title_prefix=r"^BUG:\s+(?:US\d{3}\s+[—–-]\s+)?", archive_from=["Verified"]),
 }
-ORDER = ["maps", "stories", "sprints", "sprint-plans", "story-plans"]
+ORDER = ["maps", "stories", "sprints", "decisions", "sprint-plans", "story-plans", "findings",
+         "bugs"]
 
 def rel(p):
     return Path(p).resolve().relative_to(ROOT).as_posix()
@@ -103,10 +148,32 @@ def strip_comments(text):
     return re.sub(r"<!--.*?-->", "", text, flags=re.S)
 
 STATUS_LINE = re.compile(r"^\*\*Status(?::\*\*|\*\*:)[ \t]*(.*)$", re.M)
+FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
+
+def masked(text):
+    """The text with every closed HTML comment and every fenced code block blanked to spaces,
+    newlines and length kept — so a header line quoted in a comment or a fence is never read as
+    the file's own, and an offset found here is the same offset in the text."""
+    out = re.sub(r"<!--.*?-->", lambda m: re.sub(r"[^\n]", " ", m.group(0)), text, flags=re.S)
+    lines, fence = out.split("\n"), None
+    for i, line in enumerate(lines):
+        m = FENCE.match(line)
+        if fence is None and m:
+            fence = m.group(1)
+        elif fence is not None:
+            if m and m.group(1)[0] == fence[0] and len(m.group(1)) >= len(fence) \
+                    and not line.strip().lstrip(fence[0]):
+                lines[i], fence = " " * len(line), None
+                continue
+        else:
+            continue
+        lines[i] = " " * len(line)
+    return "\n".join(lines)
 
 def read_status(text):
-    """(value, note) from the first status line, or (None, None) when there is none."""
-    m = STATUS_LINE.search(text)
+    """(value, note) from the first status line outside a comment or a fence, or (None, None)
+    when there is none."""
+    m = STATUS_LINE.search(masked(text))
     if not m:
         return None, None
     raw = re.sub(r"<!--.*?(-->|$)", "", m.group(1)).replace("**", "").replace("`", "").strip()
@@ -115,9 +182,11 @@ def read_status(text):
         return raw[:min(cut)].strip(), raw[min(cut) + 3:].strip()
     return raw, ""
 
-def read_title(text, ident):
+def read_title(text, ident, prefix=None):
     m = re.search(r"^# +(.+?)\s*$", text, re.M)
     title = m.group(1).strip() if m else ""
+    if prefix:
+        title = prefix.sub("", title)
     title = re.sub(r"^[A-Z0-9-]*" + re.escape(ident.split("-")[-1]) + r"\s+[—–-]\s+", "", title)
     if title in ("", ident):
         title = goal_summary(text) or title
@@ -139,6 +208,21 @@ def goal_summary(text):
     cuts = [i for i in (goal.find(" — "), goal.find(". "), goal.find("; ")) if i > 0]
     goal = goal[:min(cuts)] if cuts else goal
     return goal.rstrip(" .")
+
+SUPERSESSION = {"supersedes": re.compile(r"^\*\*Supersedes:\*\*[ \t]*(.*)$", re.M),
+                "superseded_by": re.compile(r"^\*\*Superseded by:\*\*[ \t]*(.*)$", re.M)}
+
+def supersession(text, field):
+    """The ADR IDs an ADR's `**Supersedes:**` or `**Superseded by:**` line names, as a list ([]
+    for `None`), or None when the line is absent or holds neither a filename nor `None`."""
+    m = SUPERSESSION[field].search(masked(text))
+    if not m:
+        return None
+    value = strip_comments(m.group(1))
+    ids = re.findall(r"\b(ADR-[A-Z0-9][A-Z0-9-]*?)\.md\b", value)
+    if ids:
+        return list(dict.fromkeys(ids))
+    return [] if value.replace("`", "").replace("*", "").strip() == "None" else None
 
 def section(text, heading):
     """Lines under `## heading` up to the next H2, comments removed."""
@@ -248,11 +332,14 @@ class Item:
             self.parent_id = "SPRINT-" + match.group(2)
         elif kind.key == "story-plans":
             self.parent_id = match.group(2)
-        self.title = read_title(self.text, self.id)
+        self.title = read_title(self.text, self.id, kind.title_prefix)
         if kind.parent:
             self.status, self.note = None, ""
         else:
             self.status, self.note = read_status(self.text)
+        if kind.tail:
+            self.supersedes = supersession(self.text, "supersedes")
+            self.superseded_by = supersession(self.text, "superseded_by")
 
     @property
     def rel(self):
@@ -265,12 +352,42 @@ def scan(kind):
         if not d.is_dir():
             continue
         for p in sorted(d.iterdir()):
-            if not p.is_file() or "TEMPLATE" in p.name:
+            if not p.is_file() or kind.is_template(p.name):
                 continue
             m = kind.pattern.match(p.name)
             if m:
                 items.append(Item(kind, p, m))
     return sorted(items, key=lambda i: (i.id, i.archived))
+
+PAIR = ("CONTEXT.md", "CLAUDE.md")
+
+def strays(kind):
+    """Every .md (any case) in a boarded folder or its archive/ that is none of an instance, the
+    template, the CONTEXT.md/CLAUDE.md pair, a *-BOARD.md or a file the kind documents (the cut
+    plan beside the stories). A misnamed record is otherwise silently off its board."""
+    out = []
+    for d in (kind.dir, kind.dir / "archive"):
+        if not d.is_dir():
+            continue
+        for p in sorted(d.iterdir()):
+            n = p.name
+            if not p.is_file() or p.suffix.lower() != ".md":
+                continue
+            if (kind.pattern.match(n) or kind.is_template(n) or n in PAIR or n in kind.extras
+                    or n.endswith("-BOARD.md")):
+                continue
+            out.append(rel(p))
+    # Nothing is read below archive/ or in any other subfolder, so every .md there is off the
+    # board: a stray, whatever its name.
+    for p in sorted(kind.dir.rglob("*")):
+        if not p.is_file() or p.suffix.lower() != ".md":
+            continue
+        if p.parent in (kind.dir, kind.dir / "archive"):
+            continue
+        if p.parent.parent == kind.dir and p.parent.name != "archive" and p.name in PAIR:
+            continue        # a first-level subfolder's own pair; never one below archive/
+        out.append(rel(p))
+    return out
 
 _CACHE = {}
 def items(key):
@@ -286,8 +403,8 @@ def find(key, ident):
     return None
 
 def plans_of(parent_key, ident):
-    key = "story-plans" if parent_key == "stories" else "sprint-plans"
-    return [p for p in items(key) if p.parent_id == ident] if parent_key != "maps" else []
+    key = {"stories": "story-plans", "sprints": "sprint-plans"}.get(parent_key)
+    return [p for p in items(key) if p.parent_id == ident] if key else []
 
 def effective_status(item):
     """The status a board files this item under: its own, or its parent's for a plan."""
@@ -299,6 +416,8 @@ def effective_status(item):
 def column_of(item):
     """(column title, warning-or-None)."""
     status, owner = effective_status(item)
+    if item.kind.archive_from:
+        return record_column(item)
     if item.archived or (owner is not None and owner.archived):
         if status != "Closed":
             return "Closed", f"{item.id} sits in archive/ but its status reads {status!r}, not 'Closed'"
@@ -309,6 +428,17 @@ def column_of(item):
         return status, None
     return "Unrecognised", f"{item.id}: status {status!r} is not in the {item.kind.noun} vocabulary"
 
+def record_column(item):
+    """A record register files an item under its own status, archived or not; an archived one
+    must hold one of the end states it may be archived from."""
+    kind, status = item.kind, item.status
+    if status not in kind.statuses:
+        return "Unrecognised", f"{item.id}: status {status!r} is not in the {kind.noun} vocabulary"
+    if item.archived and status not in kind.archive_from:
+        return status, (f"{item.id} sits in archive/ but its status reads {status!r}, not "
+                        + " or ".join(repr(s) for s in kind.archive_from))
+    return status, None
+
 def kind_of_id(ident):
     if re.fullmatch(r"US\d{3}", ident):
         return "stories"
@@ -316,6 +446,9 @@ def kind_of_id(ident):
         return "sprints"
     if re.fullmatch(r"MAP-[A-Z0-9][A-Z0-9-]*", ident):
         return "maps"
+    for key, prefix in (("decisions", "ADR-"), ("findings", "FINDING-"), ("bugs", "BUG-")):
+        if re.fullmatch(re.escape(prefix) + r"[A-Z0-9][A-Z0-9-]*", ident):
+            return key
     return None
 
 # ── Clock, eligibility, warnings ──────────────────────────────────────────────
@@ -357,6 +490,10 @@ def eligibility(item):
     if item.archived:
         return [f"{item.id} is already archived ({item.rel})"]
     k = item.kind.key
+    if item.kind.archive_from and item.status not in item.kind.archive_from:
+        ends = " or ".join(repr(s) for s in item.kind.archive_from)
+        why.append(f"status is {item.status!r}; {article(item.kind.noun)} {item.kind.noun} is "
+                   f"archived only from {ends}")
     if k == "stories" and item.status != "Completed":
         why.append(f"status is {item.status!r}; a story is archived only from 'Completed'")
     if k == "sprints":
@@ -382,6 +519,73 @@ def eligibility(item):
         if fog:
             why.append(f"its ## Fog of war still lists {len(fog)} item(s); each leaves by its route first")
     return why
+
+def article(noun):
+    return "an" if noun[:1].upper() in "AEIOU" else "a"
+
+def supersession_warnings():
+    """Every chain on the decisions board must walk both ways: a named record exists, names this
+    one back, and a Superseded record names its successor. No record names itself, only a
+    Superseded record names a successor, and no chain loops."""
+    out = []
+    back = {"superseded_by": "supersedes", "supersedes": "superseded_by"}
+    for adr in items("decisions"):
+        for field, label in (("supersedes", "Supersedes"), ("superseded_by", "Superseded by")):
+            named = getattr(adr, field)
+            if named is None:
+                out.append(f"{adr.id}: its **{label}:** line is missing, or names neither an "
+                           "ADR filename nor None")
+                continue
+            for other_id in named:
+                other = find("decisions", other_id)
+                if other is None:
+                    out.append(f"{adr.id}: {label} names {other_id}, which is not in "
+                               "15-DECISIONS/ or its archive/")
+                elif adr.id not in (getattr(other, back[field]) or []):
+                    # An archived target is frozen and can never be edited to answer, so it owes
+                    # no back-link — but only while its own line is empty. One that already names
+                    # a different record has its chain on record, and this claim contradicts it.
+                    if not other.archived:
+                        out.append(f"{adr.id}: {label} names {other_id}, which does not name it back")
+                    elif getattr(other, back[field]):
+                        out.append(f"{adr.id}: {label} names the archived {other_id}, whose frozen "
+                                   f"line names {', '.join(getattr(other, back[field]))} instead")
+        if adr.status == "Superseded" and not adr.superseded_by:
+            out.append(f"{adr.id} is Superseded but its **Superseded by:** line names no successor")
+        if adr.superseded_by and adr.status != "Superseded":
+            out.append(f"{adr.id} is {adr.status} but its **Superseded by:** line names "
+                       f"{', '.join(adr.superseded_by)} — only a Superseded ADR names a successor")
+        for field, label in (("supersedes", "Supersedes"), ("superseded_by", "Superseded by")):
+            if adr.id in (getattr(adr, field) or []):
+                out.append(f"{adr.id}: its **{label}:** line names itself")
+    return out + supersession_cycles()
+
+def supersession_cycles():
+    """Each cycle met walking **Superseded by:** from every ADR, reported once: a chain must end
+    on a record nothing supersedes, and a walk that meets an ID twice never ends."""
+    out, seen = [], set()
+    for adr in items("decisions"):
+        path, cur = [], adr
+        while cur is not None and cur.superseded_by:
+            if cur.id in path:
+                loop = path[path.index(cur.id):]
+                key = frozenset(loop)
+                if key not in seen and len(loop) > 1:
+                    seen.add(key)
+                    out.append("supersession cycle: " + " → ".join(loop + [cur.id])
+                               + " — a chain must end on a record nothing supersedes")
+                break
+            path.append(cur.id)
+            cur = find("decisions", cur.superseded_by[0])
+    return out
+
+def record_warnings():
+    out = []
+    for key in ("decisions", "findings", "bugs"):
+        for i in items(key):
+            if not i.archived and i.status in i.kind.archive_from:
+                out.append(f"{i.id} is {i.status} — ready to archive (pm-archive.sh {i.id})")
+    return out + supersession_warnings()
 
 def warnings():
     out = []
@@ -423,7 +627,7 @@ def warnings():
         elif not m.archived and m.status == "Complete" and not eligibility(m):
             out.append(f"{m.id} is Complete and every slice is cut — ready to archive "
                        f"(pm-archive.sh {m.id})")
-    return out
+    return out + record_warnings()
 
 # ── Markdown tables, padded the way Prettier pads ────────────────────────────
 
@@ -472,6 +676,7 @@ def append_history_row(text, date, frm, to, note):
 
 def set_status(text, value):
     """Rewrite the first status line to `**Status:** <value>` (its old note is dropped)."""
-    return STATUS_LINE.sub(lambda m: f"**Status:** {value}", text, count=1)
+    m = STATUS_LINE.search(masked(text))
+    return text if not m else text[:m.start()] + f"**Status:** {value}" + text[m.end():]
 PYEOF
 )

@@ -43,6 +43,8 @@ model: opus
 - [ ] Bruno `.bru` file created for every new Django Ninja endpoint · _opus_
 - [ ] BDD scenario written for every acceptance criterion in the user story · _opus_
 - [ ] All new tests confirmed red before proceeding · _opus_
+- [ ] A red committed ahead of its fix is a commit of its own that changes no check — replayed: exit `1` at the red commit, `0` at the fix (`STEPS.md` → Phase 1) · _opus_
+- [ ] The fix commit never weakens the red probe — `git diff <red-sha> <fix-sha>` leaves the probe and its helpers untouched · _opus_
 
 ### Phase 2 — Green
 

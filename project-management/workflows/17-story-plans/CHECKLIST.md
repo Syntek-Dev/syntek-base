@@ -111,7 +111,7 @@ Use this checklist to verify the story plan is complete before implementation be
 <!-- 08/09/2026: superseded, preserved rather than deleted — the row read
      "Plan saved to `src/17-STORY-PLANS/STORY-PLAN-US###-<descriptor>.md`". -->
 
-<!-- 08/09/2026, later the same day: both "Plans Index" rows in this file were rewritten to
+<!-- UPDATED 08/09/2026, later the same day: both "Plans Index" rows in this file were rewritten to
      describe what exists. Superseded text, preserved rather than deleted — under Template &
      Naming: "every affected plan, Plans Index row and citation was renumbered in the same
      change" (added earlier today with the `<exec-order>` prefix); here under Sign-off: "Row

@@ -1,7 +1,7 @@
 # SPRINT-PLAN-05 — The cookie doctrine lands with its advisory reaching a real operator, and the git hooks arm on purpose
 
-**Last Updated**: 30/09/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
-**Source sprint:** `../03-SPRINTS/SPRINT-05.md` · **Capacity:** 8 SP Must + 5 SP Should = 13 / 11 — at the grace ceiling, the full 2 SP taken on 17/09/2026, **CLOSED** · **Stories:** 2
+**Last Updated**: 17/11/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
+**Source sprint:** `../03-SPRINTS/SPRINT-05.md` · **Capacity:** 8 SP Must + 8 SP Should = 16 / 11 — 3 SP over the grace ceiling since US009's re-estimate from 5 to 8 SP on 17/11/2026 (13 / 11, at grace, from 17/09/2026), reconciled at the sprint's close, US009 completing here in full, **CLOSED** · **Stories:** 2
 
 <!-- Written 17/09/2026 by a `16-sprint-plans` run, immediately after `15-decisions` closed for
      both members. The record said on 09/09/2026 that this plan stayed absent deliberately because
@@ -122,7 +122,15 @@ the plan.
 
 | ID    | Title                                                                                           | Phases touched                   | SP  | Story plan                                             | Git branch          |
 | ----- | ----------------------------------------------------------------------------------------------- | -------------------------------- | --- | ------------------------------------------------------ | ------------------- |
-| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true | Script + manifest — no code lane | 5   | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md` | `us009/hook-arming` |
+| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true | Script + manifest — no code lane | 8   | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md` | `us009/hook-arming` |
+
+<!-- 17/11/2026: US009's SP cell read 5 from 17/09/2026 until that day, when it was re-estimated
+     to 8 during implementation (settled with <%DEVELOPER_NAME%>, /implement-story grilling round
+     5) — the threshold its story plan named in advance. ../03-SPRINTS/SPRINT-05.md stands at
+     16 / 11 and is re-planned at its close; this plan mirrors it and is not re-planned now.
+     Later the same day <%DEVELOPER_NAME%> settled "Keep all of US009 on SPRINT-05 as we are
+     implementing": US009 completes here in full, the SPRINT-06 carry is released, and the record
+     is now reconciled at its close rather than re-planned. The header reads so. -->
 
 <!-- 18/09/2026, `17-story-plans` Step 10 for US009: BOTH ROWS ARE NOW FILLED and this comment is
      fully discharged. US009's plan was written later the same day, and its `Branch` row fixes
@@ -173,8 +181,9 @@ _None._
   17/09/2026, but never filed, measured 28/09/2026; US008's `22-implementation-documentation` pass
   opens the row. US008 establishes the **form** a row with no version takes, because its own
   unversioned entry needs one; it does not backfill the earlier entry's row.
-- **Admitting a third story.** The record is at 13 / 11, the hard ceiling, and CLOSED. Anything
-  arriving is refused on arithmetic before it is argued.
+- **Admitting a third story.** The record is at 16 / 11 since 17/11/2026 — past the hard ceiling,
+  on US009's re-estimate — and CLOSED. Anything arriving is refused on arithmetic before it is
+  argued.
 
 <!-- AMENDED 28/09/2026. The bullets on the eleven invocations and on `shared-ai-symlinks.sh` ended
      "and `GAPS.md` carries it from 17/09/2026" and "and filed as a `GAPS.md` row of 17/09/2026"
@@ -202,9 +211,10 @@ honouring the sprint number give the same answer and both segments read `05`. A 
 `05` on both should know it was checked rather than assumed.
 
 **US008 builds first because it is the `Must`**, on `../../docs/planning/CADENCE.md`'s
-one-story-at-a-time rule. US009 is the stretch tier and **the first work dropped if US008
-overruns**; dropping it does not fail the sprint, which is the give this record has and SPRINT-04
-did not.
+one-story-at-a-time rule. US009 is the stretch tier and **completes in this sprint in full**
+(<%DEVELOPER_NAME%>, 17/11/2026: "Keep all of US009 on SPRINT-05 as we are implementing"). Until
+that call it was "the first work dropped if US008 overruns; dropping it does not fail the sprint,
+which is the give this record has and SPRINT-04 did not" — the give is now spent, not held.
 
 **One dependency looks blocking and is not.** US008's whole-tree citation criterion would block on
 US004 (SPRINT-03, Open), which is why `../15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`
@@ -221,7 +231,7 @@ story rather than of the decision.
 **`v7.6.0` must be tagged at `16aac54` before US008 writes its `copier.yml` entry.** This is a
 sprint prerequisite, not a story task and not something any member owns — settled 17/09/2026.
 
-`../15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` rules that a migration key is
+`../15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md` rules that a migration key is
 **derived at release against `git tag`**, never carried from a design-time record, because that is
 exactly how the record it supersedes was falsified eight days after it was written. Measured
 17/09/2026: `VERSION` reads `7.6.0` on `pm/story-creation` and `7.5.0` on `main`; there are 72 tags
@@ -263,10 +273,21 @@ after a three-reviewer adversarial pass at Step 9 that returned six blocking fin
 resolved. This table was repointed at each by that workflow's Step 10, in the order they were
 written.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                            | Status      |
-| ----- | ------------------------------------------------------------ | ----------- |
-| US008 | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` | Not started |
-| US009 | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`       | Not started |
+| Story | Story plan (`../17-STORY-PLANS/`)                            | Status   |
+| ----- | ------------------------------------------------------------ | -------- |
+| US008 | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` | Accepted |
+| US009 | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`       | Accepted |
+
+<!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
+     both cells held the placeholder and now carry each plan's own `| Status |` header row, `Open`.
+     The comments below describing the placeholder record the old state. -->
+
+<!-- RE-MIRRORED 22/11/2026 under Sam's ruling 3 on the US010 re-walk (manual-test row REMEDY-02):
+     a sprint plan's Story Plans Status cell mirrors the STORY's status as
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` lists it, because a plan has no status of its own
+     (`.claude/skills/completion/SKILL.md` -> Plans). This supersedes, on this point, the 09/10/2026
+     remediation wording "the plan's own Status field", the ruling-D comment above, and any prose
+     in this section that calls the column a mirror of the plan's own `Status` field. Cells: US008 Open -> Accepted; US009 Open -> Accepted. -->
 
 The run on disk is contiguous `00-` to `09-`. **The prefix is the story's position in the settled
 build order across the whole backlog, not its sprint and not a per-sprint counter** — US008 eighth,
@@ -421,7 +442,7 @@ four artefacts then read `Draft`, each not yet reviewed by <%DEVELOPER_NAME%>, a
 story counts towards a sprint plan. <%DEVELOPER_NAME%> signed all four off on 28/09/2026 (settled
 28/09/2026, 16-sprint-plans grilling round 1 Q1), and the stale text in each was corrected in place
 in the same change rather than superseded (round 2 Q5): no finding, ID or severity moved. The count
-this plan was written on — both members, 13 SP — is unchanged, and its honest date is 30/09/2026,
+this plan was written on — both members, 13 SP — held until US009's 17/11/2026 re-estimate made it 16 SP with the same members, and its honest date is 30/09/2026,
 when gate `11` closed last (see _QA_ below); `../03-SPRINTS/SPRINT-05.md` -> _Notes_ records that
 order rather than re-dating it. Reported as found, on the precedent of the QA paragraph under
 _Sprint Reference Documents_.
@@ -483,14 +504,14 @@ because **the mechanism is what the next reader reuses**.
 
 ### Decisions binding this sprint
 
-| ADR                                                                         | Authored at                | What it binds                                                                                                                                                                                                                                                                                                                                 |
-| --------------------------------------------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `../15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`          | `15-decisions`, 17/09      | Two `_migrations:` entries, gated on state and on version; the key derived at release                                                                                                                                                                                                                                                         |
-| `../15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`       | `15-decisions`, 17/09      | The `template-update.sh` preview repair, inside US008; and the rule beyond it                                                                                                                                                                                                                                                                 |
-| `../15-DECISIONS/ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION-17-09-2026.md` | `15-decisions`, 17/09      | The edge precondition, and the `EDGE-REQUIREMENTS.md` clause that carries it                                                                                                                                                                                                                                                                  |
-| `../15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md`   | `15-decisions`, 17/09      | `prepare` removed, `install.sh` the sole arming path, the announcing `postinstall`                                                                                                                                                                                                                                                            |
-| `../15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`          | `02-story-creation`, 09/09 | US008's citation criterion is the scoped run; the whole-tree figure is recorded, not claimed                                                                                                                                                                                                                                                  |
-| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`       | Inherited                  | Binds every story in this backlog until the gate is green. Superseded 30/09/2026, outside US008, by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path; US008 edits neither record, and the successor's **Superseded by** reads `—` |
+| ADR                                                                           | Authored at                | What it binds                                                                                                                                                                                                                                                                                                                                 |
+| ----------------------------------------------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `../15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`    | `15-decisions`, 17/09      | Two `_migrations:` entries, gated on state and on version; the key derived at release                                                                                                                                                                                                                                                         |
+| `../15-DECISIONS/archive/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md` | `15-decisions`, 17/09      | The `template-update.sh` preview repair, inside US008; and the rule beyond it                                                                                                                                                                                                                                                                 |
+| `../15-DECISIONS/ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION-17-09-2026.md`   | `15-decisions`, 17/09      | The edge precondition, and the `EDGE-REQUIREMENTS.md` clause that carries it                                                                                                                                                                                                                                                                  |
+| `../15-DECISIONS/ADR-US009-INSTALL-IS-THE-SOLE-ARMING-PATH-17-09-2026.md`     | `15-decisions`, 17/09      | `prepare` removed, `install.sh` the sole arming path, the announcing `postinstall`                                                                                                                                                                                                                                                            |
+| `../15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`            | `02-story-creation`, 09/09 | US008's citation criterion is the scoped run; the whole-tree figure is recorded, not claimed                                                                                                                                                                                                                                                  |
+| `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` | Inherited                  | Binds every story in this backlog until the gate is green. Superseded 30/09/2026, outside US008, by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path; US008 edits neither record, and the successor's **Superseded by** reads `—` |
 
 <!-- AMENDED 30/09/2026: the baseline-diff row's last cell read "Binds every story in this backlog
      until the gate is green; both supersession fields read `—`" until then, true until the 18-TESTS
@@ -501,7 +522,7 @@ because **the mechanism is what the next reader reuses**.
      reading `—` at close (settled 30/09/2026, 16-sprint-plans grilling round 8 Q19). -->
 
 **One record is superseded and is named rather than dropped.**
-`../15-DECISIONS/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` reads `Superseded` since
+`../15-DECISIONS/archive/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` reads `Superseded` since
 17/09/2026, cross-linked both ways by full filename. Its body is unchanged — only `Status:` and
 `Superseded by:` moved — because its reasoning is not re-derived by its replacement and a reader
 who meets the dual-gating decision should be able to read what it replaced. Its key and its
@@ -596,9 +617,11 @@ Run via the project scripts under `code/src/scripts/**/*.sh` — never a raw `py
 
 - [ ] **The `Must` story is Completed — US008.** Its plan's own DoD complete and verified by a
       reviewer — `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md`, written 18/09/2026
-- [ ] **US009 is Completed, or is dropped with its reason recorded in both records.** It is the
+- [ ] **US009 is Completed in this sprint, in full** — settled 17/11/2026 ("Keep all of US009 on
+      SPRINT-05 as we are implementing"), the SPRINT-06 carry released. Until then the row read
+      "US009 is Completed, or is dropped with its reason recorded in both records. It is the
       stretch tier and the first work dropped if US008 overruns; dropping it does not fail the
-      sprint. This is the give SPRINT-04 did not have
+      sprint. This is the give SPRINT-04 did not have"
 - [ ] **`v7.6.0` is tagged at `16aac54`, and US008's migration key was derived against `git tag`
       at the moment it was written** — not carried from any record, including the one that settled
       the rule. See _The tag this sprint waits on_

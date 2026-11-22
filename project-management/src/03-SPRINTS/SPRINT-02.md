@@ -1,6 +1,6 @@
 # SPRINT-02
 
-**Last Updated**: 11/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 17/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -166,7 +166,7 @@ born behind it.
   SPRINT-03" — the same direction, one sprint later on each side — and it agrees with the build
   order rather than fighting it.
 - **Both members read `doc-references.sh` as a diff against a recorded baseline, never as a
-  pass**, per `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+  pass**, per `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
   (superseded 30/09/2026 by
   `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
@@ -219,7 +219,7 @@ born behind it.
      acceptance reads doc-references.sh as a diff against a recorded baseline, and US004 removes
      the defect that baseline exists for. Building US004 first means US003 is worked against a
      gate that simply passes, and the regime
-     project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md
+     project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md
      imposes is never exercised. **The ordering is therefore now cross-sprint**, and is restated
      in project-management/src/03-SPRINTS/SPRINT-03.md Dependencies rather than left only here —
      a constraint recorded only in the sprint a story has left is a constraint nobody reads.
@@ -261,8 +261,8 @@ SPRINT-05 — until that day it stood in three records only, four rows long, and
 | `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11 — closed                                             |
 | `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
 | `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed                                  |
-| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
-| `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 8, stretch)             | 16 / 11 — over grace, closed; reconciled at its close       |
+| `SPRINT-06` | US010 (`Must`, 8)                                               | 8 / 11 — closed                                             |
 | `SPRINT-07` | US012 (`Must`, 2) then US011 (`Should`, 8, stretch)             | 10 / 11 — closed                                            |
 | `SPRINT-08` | US013 (`Must`, 3) then US014 (`Must`, 8)                        | 11 / 11 — at capacity, open                                 |
 
@@ -271,6 +271,21 @@ capacity change is written into every copy in the same change. It is maintained 
 reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
 `project-management/docs/planning/SPRINTS.md`. Obligation:
 `project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- TWO ROWS CHANGED, 17/11/2026, on US009's re-estimate from 5 to 8 SP during implementation
+     (settled with <%DEVELOPER_NAME%>, /implement-story grilling round 5). The `SPRINT-05` row read
+     "US009 (`Should`, 5, stretch)" and "13 / 11 — at grace, closed", and the `SPRINT-06` row
+     "US009's reserved 5 SP carry" and "13 / 11 if it lands", from 20/09/2026 until that day.
+     SPRINT-05 is re-planned at its close rather than now, and no membership moved. Checked against
+     each record's own capacity line as well as against the other copies, per
+     project-management/src/03-SPRINTS/CLAUDE.md.
+     THE SAME TWO ROWS CHANGED AGAIN LATER ON 17/11/2026, on <%DEVELOPER_NAME%>'s call "Keep all of
+     US009 on SPRINT-05 as we are implementing". US009 completes in SPRINT-05 and the carry
+     reserved into SPRINT-06 is released: the `SPRINT-06` row read "US010 (`Must`, 8), plus
+     US009's reserved 8 SP carry if it slips" and "8 / 11 — closed, holding a reservation; 16 / 11
+     if it lands", and the `SPRINT-05` row "re-planned at its close", earlier that day. SPRINT-05
+     is now reconciled at its close. No membership moved; checked against each record's own
+     capacity line as well as against the other copies. -->
 
 <!-- ONE ROW ADDED, 31/10/2026 at 03-sprint-planning. `SPRINT-08` opened that day with its first
      admitted story, US013 (`Must`, 3), cut the same day from
@@ -616,7 +631,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in each story
       baseline-diff scenario stands as written.** This re-plan (07/09/2026) works US003 ahead of
       US004, so the regime its scenario was written for is the one it is worked under. The
       revision pass recorded on 05/09/2026 — recast the scenario, the before/after QA task and
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+      `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
       (superseded 30/09/2026 by
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
       which restates it unchanged but for the manual testing guide's path)
@@ -662,7 +677,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
      documentation only, and per code/docs/GATE-REPORTING.md a skip is never reported as a pass. -->
 
 - [ ] `bash code/src/scripts/audits/doc-references.sh` — **read as a diff, not as a pass**, per
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+      `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
       (superseded 30/09/2026 by
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
       which restates it unchanged and is the record that names the MANUAL/ path below),

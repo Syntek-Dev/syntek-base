@@ -19,6 +19,10 @@ config/
 │   ├── test.py      ← pytest-django
 │   ├── CONTEXT.md
 │   └── CLAUDE.md
+├── tests/           ← computed-settings tests (dev CSRF trusted origins)
+│   ├── test_dev_settings.py
+│   ├── CONTEXT.md
+│   └── CLAUDE.md
 ├── urls.py          ← root URL conf
 └── wsgi.py          ← WSGI entry point (collectstatic tooling / fallback)
 ```
@@ -67,5 +71,6 @@ Both read `DJANGO_SETTINGS_MODULE` from the environment, defaulting to
 ## Cross-references
 
 - `code/src/django/config/settings/CONTEXT.md` — settings detail per environment
+- `code/src/django/config/tests/CONTEXT.md` — the tests over computed settings values
 - `code/docs/URL-STRATEGY.md` — route naming and the admin-path rule
 - `code/src/docker/CONTEXT.md` — how the entry points are wired in Docker

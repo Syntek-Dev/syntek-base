@@ -2,9 +2,16 @@
 
 | Status | MoSCoW | Story Points |
 | --- | --- | --- |
-| Pending | Must Have | 8 |
+| Accepted | Must Have | 8 |
 
 ## Client Summary
+
+**Re-cut 19/11/2026.** Three record folders — decisions, findings and bugs — gain a contents
+page generated from the records themselves, the way the feature-map, story, sprint and plan folders
+gained theirs in 7.7.0, and a new project starts with all eight pages present and empty bar the one
+seeded map. Each record's status line takes the same plain shape, so the page can read it, and old
+records move to an archive once they are finished with. The text below is the summary as cut, kept
+as the record.
 
 Each folder that collects project records — feature maps, stories, sprints, decisions, plans,
 findings and bugs — gains a contents page listing what is inside it, and a new project starts with

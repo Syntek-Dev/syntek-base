@@ -28,6 +28,8 @@ ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.dev"
 
 # shellcheck source=code/src/scripts/_lib/worktree-detect.sh
 source "$SCRIPT_DIR/../_lib/worktree-detect.sh"
+# shellcheck source=code/src/scripts/_lib/env-file.sh
+source "$SCRIPT_DIR/../_lib/env-file.sh"
 DC=(docker compose --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
     ${OVERRIDE_DEV_FILE:+-f "$OVERRIDE_DEV_FILE"})
 
@@ -74,10 +76,13 @@ log ""
 
 # ── Check 2: PostgreSQL log_statement ─────────────────────────────────────────
 bold "2. PostgreSQL log_statement"
-PG_USER="${POSTGRES_USER:-$(grep -E '^POSTGRES_USER=' "$ENV_FILE" | cut -d= -f2- || true)}"
+# The user is parsed (never sourced, never a grep | cut that keeps quotes — _lib/env-file.sh)
+# and passed to -U only. The database name is docker-compose.dev.yml's own literal
+# (`POSTGRES_DB: "<%PROJECT_SLUG%>_dev"`), never read from .env.dev, which compose ignores for
+# it — the same rule backup.sh, restore.sh and reset.sh follow. A shell POSTGRES_DB overrides.
+PG_USER="${POSTGRES_USER:-$(env_value POSTGRES_USER "$ENV_FILE")}"
 PG_USER="${PG_USER:-<%PROJECT_SLUG%>}"
-PG_DB="${POSTGRES_DB:-$(grep -E '^POSTGRES_DB=' "$ENV_FILE" | cut -d= -f2- || true)}"
-PG_DB="${PG_DB:-<%PROJECT_SLUG%>_dev}"
+PG_DB="${POSTGRES_DB:-<%PROJECT_SLUG%>_dev}"
 LOG_STMT=$("${DC[@]}" exec -T db \
   psql -U "$PG_USER" -d "$PG_DB" -tAc "SHOW log_statement;")
 

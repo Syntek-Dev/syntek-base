@@ -171,7 +171,7 @@ for each.
 - `../../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — the plan and its _Re-cut — 02/11/2026_
 - `../../18-TESTS/AUTOMATED/US007-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US007-MANUAL-TESTING.md`
   — downstream test records
-- `../../20-FINDINGS/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` — the findings this review cites
+- `../../20-FINDINGS/archive/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md` — the findings this review cites
 - `../../19-REVIEWS/` — code-review notes from the same PR, written at `23-pr-and-review`
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `project-management/workflows/22-implementation-documentation/` — where this review is written

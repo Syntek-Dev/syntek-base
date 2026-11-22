@@ -120,6 +120,36 @@ Verify tests are red:
 Do not proceed to Phase 2 until all new tests are red. A test that is green before any
 implementation exists is either testing the wrong thing or testing nothing.
 
+**Where the red is committed before its fix, it is an ordinary commit — never `--no-verify`.**
+No commit hook runs a gate's self-test, so a red probe inside one commits like any other change;
+self-tests run at push and in CI, against the commit pushed — bar the two that need the
+toolchains or a generated project, which run in CI only. Two rules hold it, and both are
+**review rules**, checked by replaying history rather than by a hook:
+
+- **Red in a commit of its own, before its fix.** The red commit adds the probe and changes no
+  check; the fix commit follows it.
+- **Never weaken a red probe.** The fix commit leaves the probe untouched — no edited
+  expectation, no rename, no deletion, no redefined helper. A probe and its check changing
+  together is the shape that hides a weakened check.
+
+The reviewer replays both commits: `git checkout <red-sha>` then the self-test (or suite) the
+probe lives in must exit `1` with the new probe failing and every older one passing;
+`git checkout <fix-sha>` then the same command must exit `0`; and `git diff <red-sha> <fix-sha>`
+must not touch the probe. An exit `2` at either commit is a script error, never a red.
+In this template the replay is one command per commit, run from any checkout: <!-- doc-references: template-only -->
+`bash .github/scripts/template-integrity.sh --self-tests <sha>` runs every self-test against a copy <!-- doc-references: template-only -->
+of that commit, and names a listed script the commit lacks "absent — skipped", never a pass or a <!-- doc-references: template-only -->
+red, only when the commit is an ancestor of the one on `origin/main`, as last fetched, that introduced it — any other lack (a deletion, an orphan, a squash, a graft, no `origin/main`) is "deleted", red but not run, and a shallow repository is refused; <!-- doc-references: template-only --> <!-- Deletion refused 21/11/2026; rewritten histories and shallow 21/11/2026 (round 8); origin/main alone, no grafts 21/11/2026 (round 9). -->
+so a commit older than a listed self-test that `origin/main` does not yet hold — a script the
+branch itself adds — reads it "deleted" until the branch reaches `main`, and its replay exits `1`
+even where its own probe passes. The reviewer reads that case by the reason the replay prints
+("no commit on origin/main that adds it descends from this one"), confirms that the script is the
+only red and that `origin/main` lacks it (`git cat-file -e origin/main:<path>` fails), judges the
+commit's own probe from its suite run at that commit, and replays it again once `main` holds it; <!-- The not-yet-on-main reading 21/11/2026 (round 10). -->
+`SELF_TEST_LEDGER=<file>` on a detector's `--self-test` records each probe's label <!-- doc-references: template-only -->
+and result, so the two ledgers show the label unchanged and its result gone `fail` to `pass`. <!-- doc-references: template-only -->
+<!-- 21/11/2026: the planned-red opt-in (19/11/2026 to 20/11/2026) was removed; both rules became review rules. -->
+
 ---
 
 ## Phase 2 — Green (Minimal Implementation)

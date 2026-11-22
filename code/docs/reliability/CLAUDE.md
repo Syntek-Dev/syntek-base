@@ -7,7 +7,7 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 ## Purpose (one line)
 
-The reliability sub-documents behind `code/docs/RELIABILITY.md` — idempotency and retries,
+The reliability sub-documents behind `code/docs/RELIABILITY.md` — idempotency, retries and their budgets,
 stated once for every surface that can fail or repeat.
 
 ## How to work here

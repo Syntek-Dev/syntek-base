@@ -34,10 +34,14 @@ code/src/scripts/tests/
 ├── backend-coverage.sh       ← pytest + coverage; writes HTML, Cobertura XML, JUnit XML
 ├── CLAUDE.md                 ← operating rules
 ├── CONTEXT.md                ← this file
+├── cookie-preview-fixture.sh ← test-only: US008's generated scratch project + template-update preview proof
 ├── e2e-py.sh                 ← playwright-python browser suite (host; needs a running stack)
+├── hook-arming.sh            ← US009 probes: install-hooks.sh, its --notice mode, the manifest edits
 ├── mutmut.sh                 ← Python mutation testing (local-only; dev stack required)
 ├── open-coverage.sh          ← opens the backend coverage HTML in a browser
+├── pm-boards.sh              ← probes for the PM board and archive scripts, on a synthetic fixture
 ├── server.sh                 ← start or manage the test stack containers
+├── template-hooks.sh         ← test-only, copier-excluded: probes the template's own hook shape <!-- doc-references: template-only -->
 ├── test-record.sh            ← generator: US### → 18-TESTS/AUTOMATED/ (writes OUTSIDE code/)
 └── reports/                  ← generated reports (all gitignored; sub-dirs below)
     ├── a11y/                 ← axe results from e2e-py.sh (created on demand)
@@ -45,26 +49,38 @@ code/src/scripts/tests/
     ├── backend/              ← output from backend.sh
     ├── backend-coverage/     ← output from backend-coverage.sh
     ├── e2e/                  ← JUnit XML from e2e-py.sh (created on demand)
+    ├── hook-arming/          ← per-fixture evidence from hook-arming.sh (created on demand)
     └── story-map.json        ← story markers, written at collection by django/conftest.py
 ```
 
 ## Scripts
 
-| Script                | Tool                | Pattern | Stack required     | Default output dir                                                          |
-| --------------------- | ------------------- | ------- | ------------------ | --------------------------------------------------------------------------- |
-| `all.sh`              | orchestrator        | both    | Depends on flags   | (delegates to sub-scripts)                                                  |
-| `api.sh`              | Bruno CLI           | host    | Test stack up      | `reports/api/`                                                              |
-| `backend.sh`          | pytest              | exec    | Full test stack up | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml) |
-| `backend-coverage.sh` | pytest + cov        | exec    | Full test stack up | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)         |
-| `e2e-py.sh`           | pytest + playwright | host    | Dev stack up (:81) | `reports/a11y/` + `reports/e2e/results.xml`                                 |
-| `mutmut.sh`           | mutmut              | exec    | Dev stack up       | N/A (console output)                                                        |
-| `open-coverage.sh`    | xdg-open / open     | host    | None               | N/A                                                                         |
-| `server.sh`           | docker compose      | host    | N/A                | N/A                                                                         |
-| `test-record.sh`      | report parser       | host    | None (reads files) | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**          |
+| Script                      | Tool                | Pattern | Stack required      | Default output dir                                                                           |
+| --------------------------- | ------------------- | ------- | ------------------- | -------------------------------------------------------------------------------------------- |
+| `all.sh`                    | orchestrator        | both    | Depends on flags    | (delegates to sub-scripts)                                                                   |
+| `api.sh`                    | Bruno CLI           | host    | Test stack up       | `reports/api/`                                                                               |
+| `backend.sh`                | pytest              | exec    | Full test stack up  | `reports/backend/` (2 XML files: results-unit.xml, results-integration.xml)                  |
+| `backend-coverage.sh`       | pytest + cov        | exec    | Full test stack up  | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)                          |
+| `cookie-preview-fixture.sh` | Copier + git        | host    | None (needs Copier) | N/A (console output; scratch removed on exit) <!-- doc-references: template-only -->         |
+| `e2e-py.sh`                 | pytest + playwright | host    | Dev stack up (:81)  | `reports/a11y/` + `reports/e2e/results.xml`                                                  |
+| `hook-arming.sh`            | git + pnpm + strace | host    | None                | `reports/hook-arming/<fixture>/` (evidence; scratch fixtures removed on exit)                |
+| `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                                         |
+| `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                                          |
+| `pm-boards.sh`              | git + python3       | host    | None                | N/A (console output; scratch fixture removed on exit)                                        |
+| `server.sh`                 | docker compose      | host    | N/A                 | N/A                                                                                          |
+| `template-hooks.sh`         | git + tar           | host    | None                | N/A (console output; scratch fixture removed on exit) <!-- doc-references: template-only --> |
+| `test-record.sh`            | report parser       | host    | None (reads files)  | `project-management/src/18-TESTS/AUTOMATED/` — **outside `code/`**                           |
 
 `backend.sh`, `backend-coverage.sh`, and `api.sh` fall back to `.env.test.example` when
 `.env.test` is absent — every value in it has a working default in
 `docker-compose.test.yml`, so a fresh clone runs the suite without copying anything.
+
+`backend.sh`, `backend-coverage.sh`, `api.sh` and `server.sh` pin the Compose project with `-p`,
+taken from the `name:` the test compose files declare (`_lib/posture-guard.sh`
+`posture_compose_project`). A `COMPOSE_PROJECT_NAME` in the shell or in `.env.test` is ignored, and
+compose files declaring no usable `name:` stop the script at exit `2`. `e2e-py.sh` reads
+`.env.test` only inside the subshell that runs pytest, so a key there never overrides
+`E2E_BASE_URL` or any other script variable.
 
 `api.sh` exits `0` without starting the stack when the Bruno collection holds no
 requests, and skips fixture-user seeding when `seed_api_test_user` is not a registered
@@ -110,6 +126,87 @@ so three limits hold it:
   from the table rather than an error; `bash code/src/scripts/audits/story-markers.sh` lists what
   carries none. The attribution rule and the record's own conventions:
   `project-management/src/18-TESTS/AUTOMATED/CLAUDE.md`.
+
+## cookie-preview-fixture.sh — test-only, for one story's preview proof <!-- doc-references: template-only -->
+
+```bash
+bash code/src/scripts/tests/cookie-preview-fixture.sh --case shipped-advisories \
+  --template-source "$PWD" --story-ref HEAD
+```
+
+**Template-only:** `copier.yml` excludes it (settled 16/11/2026), because it generates from this <!-- doc-references: template-only -->
+template's own tags and history and reads its `_migrations:`, none of which a generated project holds.
+
+Exists for US008's preview rows (PREVIEW-01 to PREVIEW-04) and its P4/P5 proofs.
+`development/template-update.sh` refuses to run in the template, so the proof needs a
+**generated** project old enough to cross the migrations under test. This script owns the Copier
+calls a tester would otherwise make by hand: it clones `--template-source` into a scratch
+directory (the source is never written, tagged or fetched into), generates a project at a ref
+below `v3.0.0` (`--from-ref`, default `v2.3.1`, the newest that still generates) with fixed
+non-secret answers, copies `--story-ref`'s `template-update.sh` and the library it sources into
+it, plants the case's triggers, commits, prints a fixture record (source SHA, Copier version,
+answers, refs), then runs the real wrapper from the generated root and asserts the case. Copier
+reaches the wrapper through a recording shim, and the wrapper's `TMPDIR` is a directory the script
+owns, so "Copier ran" and "cleanup ran" are observed rather than inferred. `--story-ref WORKTREE`
+snapshots the uncommitted working tree into the clone only — for a proof taken before the
+story's commit exists; the record says so, and the proof is re-run against the commit.
+
+| Case                 | Phase | Proves                                                                                                         |
+| -------------------- | ----- | -------------------------------------------------------------------------------------------------------------- |
+| `shipped-advisories` | P4    | The three pre-US008 print-only advisories (four banners) replayed once, before the preview-only line, exit `0` |
+| `missing-ref`        | P4/P5 | A nonexistent target ref: Copier ran and failed, the tail printed once, exit `2`, scratch removed              |
+| `domain-report`      | P5    | The state-gated Domain advisory names file and setting and never prints the value                              |
+| `pending-key`        | P5    | The `when: false` cutover entry prints nothing                                                                 |
+| `release-crossing`   | P5    | Activated in a scratch commit and tagged in the clone only, the cutover notice prints once                     |
+| `subsequent-update`  | P5    | An update from at or above that fixture release does not print it again                                        |
+
+Exit codes extend the folder's contract by one: `0` every expectation held, `1` an expectation
+failed, `2` script error, **`3` unmeasured** — Copier absent, generation failed, or the P5
+entries missing at `--story-ref`. A `3` is never a pass (`code/docs/GATE-REPORTING.md`).
+
+## hook-arming.sh — US009's arming probes
+
+```bash
+bash code/src/scripts/tests/hook-arming.sh --fixture A      # one fixture; default is all
+```
+
+Proves "development/install-hooks.sh" (the arming step `install.sh` calls last in Phase 1), its
+read-only `--notice` mode (the `package.json` `postinstall`), and the manifest and installer
+edits around them. Each fixture is a **snapshot of a checkout of this repository** — tracked and
+untracked-but-not-ignored files as on disk, never a `.env.*` file — with its own `lefthook.yml`,
+`package.json` and an installed `node_modules`, in a scratch directory outside it, with git
+isolated from the host's own configuration. Never a bare `git init`, which arms nothing.
+`--source DIR` snapshots another checkout instead. Evidence (transcripts, hashes, traces, never
+file contents) lands under `reports/hook-arming/`; `--help` lists every fixture and what each
+proves. CI runs it from `.github/workflows/audit-hook-arming.yml`, one step per fixture.
+
+`install-failure` runs root `install.sh` in its disposable clone, so it needs a docker daemon, uv
+and `sudo tee -a /etc/hosts`: it runs under GitHub Actions and is refused elsewhere, reported
+unmeasured, unless `--allow-install-sh` is given. In CI it is the one job filtered by path, and
+the filter is inverted: it is skipped only when every changed file is documentation or PM
+(`*.md`, `project-management/**`, `research/**`, `handoffs/**`), and runs otherwise — and always
+on a manual run or a range it cannot read. `machine-spec` is the one fixture outside hook arming:
+it puts a healthy fake of every host probe `install.sh --spec` reads first on `PATH`, breaks one
+per case, and requires exit `0` with a written spec — Linux only, unmeasured elsewhere.
+`binary-provenance` fetches lefthook `1.13.0` from the registry and traces with `strace`;
+`graph-reclaim` runs the real `code-review-graph` at the script's pinned version. Exit codes extend the folder's contract by one: `0`, `1`, `2`, and
+**`3` unmeasured** — a fixture that could not look, which is never a pass
+(`code/docs/GATE-REPORTING.md`). Its `--output` is the one exception to the rule below: it runs
+on the host and bind-mounts nothing, so the directory may sit anywhere outside its scratch tree.
+Nothing from this checkout is ever linked into a fixture, and a tripwire, run from the exit
+handler on every exit path, exits `2` if this checkout's `node_modules` changes during a run.
+
+`--needs-install-failure BASE` is a second, fixture-free mode: it prints `true` or `false` for
+whether `BASE..HEAD` needs the `install-failure` job, and is what the workflow's `changes` job
+runs. The `change-filter` fixture tests that decision offline against a scratch repository.
+
+## pm-boards.sh — the PM board and archive probes
+
+`bash code/src/scripts/tests/pm-boards.sh` (`--keep` leaves the fixture) proves `pm-board.sh`,
+`pm-archive.sh` and `pm-lib.sh` (`project-management/src/00-ASSETS/scripts/`) for the decisions,
+findings and bugs boards, on a synthetic `git init` holding **copies** of the three scripts — never
+a path back into this checkout. Host only, git and python3; exit `0` / `1` / `2` as below.
+`template-hooks.sh` proves the template's own hook legs the same way, template-only. <!-- doc-references: template-only --> <!-- 21/11/2026: replaced planned-red.sh -->
 
 ## --output flag
 
@@ -216,6 +313,7 @@ instruments nothing — counting it would inflate the figure without testing a l
 - `0` — all tests passed (coverage floor met where applicable)
 - `1` — test failures or coverage below threshold
 - `2` — script error (bad arguments, container not running, invalid `--output` path)
+- `3` — `hook-arming.sh` only: unmeasured — a fixture could not look; never a pass
 
 **`test-record.sh` reads that contract differently**, because it decides no test outcome — a red
 suite and a green one both record. Measured against the script on 09/09/2026: `0` it wrote the
@@ -225,16 +323,19 @@ to read; `2` a script error — a story that is not `US###`, an unknown flag, or
 
 ## CI
 
-These scripts are used by three GitHub Actions workflows. `test.yml` was renamed from
+These scripts are used by five GitHub Actions workflows (six in the template). <!-- Sixth listed 21/11/2026. --> `test.yml` was renamed from
 `test-backend.yml` when the mobile surface arrived — one stack-neutral workflow now holds both
 job sets, with the mobile jobs guarded at **step** level so they report success rather than
 "skipped" on a web-only project:
 
-| Workflow                         | Trigger                                      | Scripts used                                                |
-| -------------------------------- | -------------------------------------------- | ----------------------------------------------------------- |
-| `.github/workflows/test.yml`     | Every push/PR (no path filter)               | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh` |
-| `.github/workflows/test-api.yml` | Push/PR on `.py` or Bruno collection changes | `api.sh`                                                    |
-| `.github/workflows/test-e2e.yml` | Push/PR on Django or Docker changes          | `e2e-py.sh`                                                 |
+| Workflow                                  | Trigger                                                                       | Scripts used                                                                                    |
+| ----------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `.github/workflows/test.yml`              | Every push/PR (no path filter)                                                | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh`                                     |
+| `.github/workflows/test-api.yml`          | Push/PR on `.py` or Bruno collection changes                                  | `api.sh`                                                                                        |
+| `.github/workflows/test-e2e.yml`          | Push/PR on Django or Docker changes                                           | `e2e-py.sh`                                                                                     |
+| `.github/workflows/pm-boards.yml`         | Push/PR on `project-management/src/**` or this script                         | `pm-boards.sh`, a step of the `check` job                                                       |
+| `.github/workflows/audit-template.yml`    | Every push/PR; the template's own, absent from a generated project            | `pm-boards.sh` and `template-hooks.sh`, steps of `[1/4]` <!-- doc-references: template-only --> |
+| `.github/workflows/audit-hook-arming.yml` | Every push/PR; `install-failure` skipped only when the change is docs/PM only | `hook-arming.sh`, one step per fixture                                                          |
 
 Mutation testing (`mutmut.sh`) is intentionally excluded from CI — it is too slow for standard
 gates and is run on-demand locally against the dev stack.

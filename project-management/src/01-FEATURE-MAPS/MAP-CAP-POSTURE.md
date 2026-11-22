@@ -50,15 +50,15 @@ every layer.
 
 ## Notes
 
-| Field                    | Value                                                                                                                                                        |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Domain                   | Partition and staleness doctrine — the seam between `code/docs/architecture/CORE-AND-SCALING.md`, the `how-to/src/` snapshots, and the health contract       |
-| Skills to load           | `scale-planning` · `security` · `backend` · `database` · `doc-writer` · `grill-with-docs` · `codebase-design`                                                |
-| Standing preferences     | Anti-forecast is absolute (`SCALE-ARCHITECTURE/CLAUDE.md:39-46`) · route-don't-restate · a rule ships with a gate or says why not (`GATE-REPORTING.md`)      |
-| Umbrella ADRs            | None yet. **ADRs may be authored here** since 31/08/2026 (`.claude/MEMORY.md`, `MAP-PROGRESSIVE-ENHANCEMENT` N-026) — via a slice's story, never from a map  |
-| Register entries triaged | **0 closes · 0 blocks · 2 unrelated** — exhaustive; `DEFERRED.md` holds no rows; SL-1/2/3 exempt as standing limitations                                     |
-| Cross-map                | `MAP-RETRY-AND-IDEMPOTENCY` — the write-side owner; see the boundary note below. `MAP-RULE-OWNERSHIP` — the index decline and the split-doctrine class **D** |
-| Scope confirmed by Sam   | 01/09/2026 — Q1 CAP named and load-bearing, applied as posture · Q2→2 · Q3 doctrine through Phase 2, provisioning never · Q4→2 · Q5→2 (details below)        |
+| Field                    | Value                                                                                                                                                                |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                   | Partition and staleness doctrine — the seam between `code/docs/architecture/CORE-AND-SCALING.md`, the `how-to/src/` snapshots, and the health contract               |
+| Skills to load           | `scale-planning` · `security` · `backend` · `database` · `doc-writer` · `grill-with-docs` · `codebase-design`                                                        |
+| Standing preferences     | Anti-forecast is absolute (`SCALE-ARCHITECTURE/CLAUDE.md:39-46`) · route-don't-restate · a rule ships with a gate or says why not (`GATE-REPORTING.md`)              |
+| Umbrella ADRs            | Any ADR is authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story |
+| Register entries triaged | **0 closes · 0 blocks · 2 unrelated** — exhaustive; `DEFERRED.md` holds no rows; SL-1/2/3 exempt as standing limitations                                             |
+| Cross-map                | `MAP-RETRY-AND-IDEMPOTENCY` — the write-side owner; see the boundary note below. `MAP-RULE-OWNERSHIP` — the index decline and the split-doctrine class **D**         |
+| Scope confirmed by Sam   | 01/09/2026 — Q1 CAP named and load-bearing, applied as posture · Q2→2 · Q3 doctrine through Phase 2, provisioning never · Q4→2 · Q5→2 (details below)                |
 
 **The confirmed bounds, in full:**
 
@@ -653,7 +653,6 @@ S-07 carries it. `MAP-RULE-OWNERSHIP` is unaffected.
 - [x] Every resolved node links to the artefact it became — research findings → the grilling
       nodes they opened; grilling decisions → their slice rows; build nodes → S-07
 - [x] Every slice has a flag manifest — `N/A` omitted
-- [x] Index row in `CONTEXT.md` current — deliberately absent per `MAP-RULE-OWNERSHIP` N-010
 
 **Stories may be cut in `workflows/02-story-creation/` — the frontier is empty as of
 01/09/2026 and all seven slices are cuttable.**

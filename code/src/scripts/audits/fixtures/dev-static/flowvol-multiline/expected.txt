@@ -1,0 +1,3 @@
+# Prettier reflows a long inline flow list onto its own lines, so the key line is bare and the
+# children are not block-list items. The stdlib walk cannot read it: fail closed.
+compose-volumes-unparseable

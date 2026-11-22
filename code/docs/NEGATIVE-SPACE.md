@@ -210,6 +210,12 @@ silently reclassifies genuine bugs as "try again".
 | **User error**        | 4xx (422 on schema) | `INFO`               | never                     | specific and actionable   |
 | **Environment error** | 503                 | `WARNING`            | aggregated, not per event | `Retry-After` where known |
 
+**The environment-error row reports one attempt; it never repeats one.** Which layer may repeat
+it and how long that layer waits on a `Retry-After` are the retry guide's
+([`reliability/RETRIES.md`](reliability/RETRIES.md) Sections _One layer decides to retry_ and
+_Honouring `Retry-After`_ respectively); its
+budget is [`reliability/BUDGETS.md`](reliability/BUDGETS.md)'s (Section _The budget table_).
+
 **Every response carries `X-Request-ID`**, and the tracker event is tagged with it — so a user
 reporting "I got an error" is traceable to one event. It is a **header, not a body key**, because a
 rendered 500 page has no JSON body and this taxonomy holds on every surface.
@@ -224,9 +230,8 @@ Removing it fails nothing and breaks no test — every response simply stops car
 and the taxonomy above quietly loses the one thing that makes a user's report findable.
 
 **Retries, backoff and circuit breakers for environment errors are not owned here** —
-[`RELIABILITY.md`](RELIABILITY.md) carries retries and backoff, and
-[`architecture/SERVICE-AND-MIDDLEWARE.md`](architecture/SERVICE-AND-MIDDLEWARE.md) circuit
-breakers.
+[`RELIABILITY.md`](RELIABILITY.md) carries retries and backoff, and records circuit breakers as
+deferred (Section _Deferred, with triggers_).
 
 ### The taxonomy is surface-agnostic; the expression is not
 

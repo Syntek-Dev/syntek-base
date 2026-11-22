@@ -59,13 +59,13 @@
      plan in the same pass; it described the file's 05/09/2026 state and was false by the time the
      change was committed. Corrected against the plan as it stands on disk. -->
 
-Implements `../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` (Check 2 reads
+Implements `../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md` (Check 2 reads
 the citing file's name, never `is_template_only()`) and
-`../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md` (a registered path may
+`../15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md` (a registered path may
 name a class, with `###` translated to three digits exactly). Both were superseded on 30/09/2026,
 for the 18-TESTS split, by
-`../15-DECISIONS/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md` and
-`../15-DECISIONS/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`,
+`../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md` and
+`../15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restate them unchanged but for the 18-TESTS paths; this plan implements the two decisions
 as those successors state them. <!-- UPDATED 30/09/2026: the successors are added beside the two
 superseded records (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026,
@@ -122,7 +122,7 @@ Three further defects compound it, all measured at `7a82095` plus the working tr
      comment heading, which survives an edit above it. -->
 
 The cost is live and recorded: every story since 01/09/2026 carries a written disposition for this
-script's output, and `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
+script's output, and `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
 superseded 30/09/2026 by
 `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged, retirement terms included — binds

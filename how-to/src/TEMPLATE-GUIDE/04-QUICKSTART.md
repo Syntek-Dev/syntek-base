@@ -1,6 +1,6 @@
 # Quickstart — Generate to Running Stack
 
-**Last Updated**: 23/08/2026
+**Last Updated**: 19/11/2026
 
 The short path from nothing to a project serving pages. Assumes `03-PREREQUISITES.md` is satisfied.
 
@@ -19,9 +19,10 @@ Enter through the infrastructure and locale sections is a reasonable first pass.
 think about them properly, read `05-ANSWERS.md` first.
 
 You will be asked to trust the template, because generation runs post-tasks. Those tasks are the
-four at the bottom of `copier.yml` and nothing else: move the nine seeded files (README, version <!-- doc-references: template-only -->
-state, blank project memory, the two blank registers, the scale-planning map) into place, brand
-`pyproject.toml` with your slug, generate `uv.lock`, and `git init`. Read them if you like — that is why they are short.
+four at the bottom of `copier.yml` and nothing else: move the seeded files (README, version <!-- doc-references: template-only -->
+state, blank project memory, the blank registers, the PM boards, the scale-planning map) into
+place — the copy-gated task's `mv` lines are the list — brand `pyproject.toml` with your slug,
+generate `uv.lock`, and `git init`. Read them if you like — that is why they are short.
 
 To skip the interview and take every default. **Six questions have no default**, so `--defaults`
 alone is not enough — each needs its own `--data`, and `PROJECT_DESCRIPTION` must clear its
@@ -68,7 +69,8 @@ bash install.sh
 
 This installs Python and JavaScript dependencies, copies every `.env.*` file from its example,
 auto-generates development secrets with `openssl`, offers to add the `/etc/hosts` entries, marks
-every project script executable, and writes a gitignored machine profile.
+every project script executable, writes a gitignored machine profile, and arms the lefthook git
+hooks so every `git commit` runs the pre-commit checks.
 
 To go further and build the Docker stack and run migrations in the same pass:
 

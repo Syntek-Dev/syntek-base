@@ -19,8 +19,8 @@ project-management/src/00-ASSETS/
 │   ├── export-design-docs.sh  ← exports brand/component design HTML → PDF
 │   ├── export-pm-files.sh     ← exports PM artefacts (stories, sprints, plans) → zip
 │   ├── export-wireframes.sh   ← exports wireframe HTML → PDF
-│   ├── pm-archive.sh          ← archive a Closed-eligible US###/SPRINT-##/MAP-NAME into archive/
-│   ├── pm-board.sh            ← the five *-BOARD.md kanban indexes: --write / --boards-for / --check / --warn
+│   ├── pm-archive.sh          ← archive an eligible US###/SPRINT-##/MAP-NAME/ADR/finding/bug into archive/
+│   ├── pm-board.sh            ← the eight *-BOARD.md kanban indexes: --write / --boards-for / --check / --warn
 │   ├── precommit-clickup.sh   ← lefthook guard: regenerates ClickUp exports on commit
 │   └── sync-clickup.sh        ← upserts ClickUp exports into ClickUp (clickup-sync CI workflow)
 └── WALK-TESTS/              ← cold walk-test evidence: prompt, report, transcript, verified result
@@ -46,3 +46,7 @@ its pair do.
 Do not commit large unoptimised binaries.
 
 **Last Updated**: <%DATE%>
+
+<!-- 19/11/2026: the `pm-board.sh` and `pm-archive.sh` tree rows name eight boards and the ADR,
+     finding and bug archive triggers; they read "the five *-BOARD.md" and "a Closed-eligible
+     US###/SPRINT-##/MAP-NAME" until then. -->

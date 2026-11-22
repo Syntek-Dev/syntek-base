@@ -53,6 +53,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# The self-test crash guard (exit 2, never a red or a pass) and the optional probe ledger.
+# shellcheck source=self-test-ledger.sh
+. "$SCRIPT_DIR/self-test-ledger.sh"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 SEED="$PROJECT_ROOT/.copier/MEMORY.md"
@@ -97,6 +100,9 @@ while [[ $# -gt 0 ]]; do
     *)           die "unknown argument: $1" ;;
   esac
 done
+
+# Armed once the arguments are read: a self-test run that stops anywhere before its end exits 2.
+if $SELF_TEST; then st_arm; fi
 
 cd "$PROJECT_ROOT"
 [[ -f "$COPIER" ]] || die "missing $COPIER"
@@ -171,8 +177,10 @@ probe() { # $1 = label, $2 = a substring the single expected finding must contai
   run_checks
   if [[ ${#FINDINGS[@]} -eq 1 ]] && [[ "${FINDINGS[0]}" == *"$2"* ]]; then
     log "  ✓ $1"
+    st_record pass "$1"
   else
     ST_FAILS=$((ST_FAILS + 1))
+    st_record fail "$1"
     printf '\033[31m  ✗ %s produced %d finding(s): %s\033[0m\n' \
       "$1" "${#FINDINGS[@]}" "$(printf '%s; ' "${FINDINGS[@]:-(none)}")"
   fi
@@ -238,12 +246,12 @@ self_test() {
   log "  the detector no longer separates a clean seed from a polluted one —"
   log "  fix the check, never the expectation."
   log ""
-  return 1
+  return 0
 }
 
 if $SELF_TEST; then
   self_test
-  exit $?
+  st_finish "$ST_FAILS"
 fi
 
 bold "▸ shipped-memory.sh"

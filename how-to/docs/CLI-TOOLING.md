@@ -42,7 +42,7 @@ bash code/src/scripts/development/server.sh up --service django
 # Stop all services
 bash code/src/scripts/development/server.sh down
 
-# Stop and remove volumes (resets the database)
+# Stop and remove volumes (resets the DB) — like up --seed, above development: exit 4 unless --force-posture <posture>
 bash code/src/scripts/development/server.sh down --volumes
 
 # Restart a single service
@@ -193,7 +193,7 @@ bash code/src/scripts/audits/css-gradients.sh
 ## Database Management
 
 ```bash
-# Apply migrations
+# Apply migrations — warns with the posture, never refuses; migrate.sh --self-test proves the guard (no Docker)
 bash code/src/scripts/database/migrate.sh run
 
 # Create new migrations
@@ -208,7 +208,7 @@ bash code/src/scripts/database/migrate.sh show
 # Open psql shell
 bash code/src/scripts/database/shell.sh --psql
 
-# Reset the database
+# Reset — above development: exit 4 unless --force-posture <posture>; --yes is ignored
 bash code/src/scripts/database/reset.sh
 bash code/src/scripts/database/migrate.sh run
 bash code/src/scripts/database/manageusers.sh create-superuser

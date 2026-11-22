@@ -1,18 +1,18 @@
 # Security Posture Assessment (Plan) — US008 Host-only cookies under `__Host-` names
 
 > **Approved correction 09/10/2026:** the current report and migration lifecycle decision is
-> `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`.
+> `project-management/src/15-DECISIONS/archive/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`.
 > The earlier channel and dual-gate ADRs are Superseded; citations below retain their history.
 > The dated acceptance/specification correction at the end governs the repaired behaviour.
 
-| Field          | Value                                                                                                          |
-| -------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Story**      | US008 — Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule |
-| **Date**       | 17/09/2026                                                                                                     |
-| **Author**     | Claude Code — `security` skill, Opus · reviewed by <%DEVELOPER_NAME%>                                          |
-| **Sprint**     | SPRINT-05 — this story is its `Must`, 8 SP of 13 / 11 (grace taken)                                            |
-| **Status**     | Signed off · **corrected in place 28/09/2026** — see below                                                     |
-| **Frameworks** | STRIDE · OWASP Top 10 (A01–A10, 2025) · NIST CSF 2.0 (GV/ID/PR/DE/RS/RC)                                       |
+| Field          | Value                                                                                                                                                                                                                                        |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**      | US008 — Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule                                                                                                                               |
+| **Date**       | 17/09/2026                                                                                                                                                                                                                                   |
+| **Author**     | Claude Code — `security` skill, Opus · reviewed by <%DEVELOPER_NAME%>                                                                                                                                                                        |
+| **Sprint**     | SPRINT-05 — this story is its `Must`, 8 SP of 13 / 11 (grace taken) (corrected 17/11/2026, F-022 of `FINDING-US009-HOOK-ARMING-17-11-2026.md`: SPRINT-05 is **16 / 11**, over grace, since US009's re-estimate from 5 to 8 SP on 17/11/2026) |
+| **Status**     | Signed off · **corrected in place 28/09/2026** — see below                                                                                                                                                                                   |
+| **Frameworks** | STRIDE · OWASP Top 10 (A01–A10, 2025) · NIST CSF 2.0 (GV/ID/PR/DE/RS/RC)                                                                                                                                                                     |
 
 > This assessment establishes the security **baseline** for the story before any code is
 > written. It synthesises the story's STRIDE threat model and maps overall posture against
@@ -385,7 +385,7 @@ criterion:
    deliberately declined (Q11). If the repair is in scope, the story grows; if it is not, the
    second channel has to be something else, and what it is has not been decided. **Settled
    17/09/2026: it widens the story.** US008 repairs the preview and holds at a wide 8 SP, by
-   `project-management/src/15-DECISIONS/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`.
+   `project-management/src/15-DECISIONS/archive/ADR-US008-MITIGATION-OWNS-ITS-CHANNEL-17-09-2026.md`.
 2. **Is `SECURE_PROXY_SSL_HEADER` a stated precondition or an assumed one?** (7.5) **Settled
    17/09/2026: a stated one**, by
    `project-management/src/15-DECISIONS/ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION-17-09-2026.md`.
@@ -404,7 +404,7 @@ criterion:
    get amended or superseded?** (7.13) The ADR's own evidence — "72 tags including the minors
    `v7.1.0` to `v7.5.0`" — no longer supports its conclusion, and this gate cannot rewrite an ADR.
    **Settled 17/09/2026: superseded, not amended**, by
-   `project-management/src/15-DECISIONS/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`. The
+   `project-management/src/15-DECISIONS/archive/ADR-US008-MIGRATION-KEY-DUAL-GATED-17-09-2026.md`. The
    release is whichever minor carries the doctrine, and its key is derived at release against
    `git tag`.
 
@@ -432,7 +432,7 @@ asked is worse than one that says it did not ask.
 
 ## Security clarification — approved 09/10/2026
 
-The controlling successor is `project-management/src/15-DECISIONS/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`. TM-04's preview mitigation
+The controlling successor is `project-management/src/15-DECISIONS/archive/ADR-US008-REPORT-COMPLETENESS-AND-PENDING-KEY-INACTIVITY-09-10-2026.md`. TM-04's preview mitigation
 must deliver the full report, including no-value file/line/setting findings and all operator
 notes. TM-15's cutover entry is explicitly inactive with a literal false `when` until release;
 the actual version and activation land atomically. The state advisory remains active independently.

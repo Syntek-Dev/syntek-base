@@ -5,7 +5,7 @@
 | **Story**           | US010 — The seven register indexes are born seeded, and the map index leaves the file that ships                                                                                                       |
 | **Date**            | 21/09/2026                                                                                                                                                                                             |
 | **Author**          | Claude Code — `security` skill, Opus · reviewed by <%DEVELOPER_NAME%>                                                                                                                                  |
-| **Status**          | Signed off · **corrected in place 28/09/2026** — see below                                                                                                                                             |
+| **Status**          | Signed off · **corrected in place 28/09/2026** · **19/11/2026** (re-cut) — see below                                                                                                                   |
 | **Feature surface** | No runtime surface. Seven `.copier/` seeds, seven `mv` lines in one copy-gated `_tasks` chain, seven in-tree index files, one grown allowlist, one new seed-check family and one extended update probe |
 
 <!-- STEP 1's GRILLING PASS RAN on 21/09/2026 with <%DEVELOPER_NAME%>: two rounds, frontier empty.
@@ -76,8 +76,8 @@
 > gate, and the `copier.yml` citations moved with the 18-TESTS split committed beside it:
 >
 > - **Both US010 ADRs read `Accepted`**, not `Proposed` pending review:
->   `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md:3`
->   and `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md:3`,
+>   `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md:3`
+>   and `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md:3`,
 >   committed Accepted at 0c5e635 after round 4 Q27's independent review. Corrected in Section
 >   4a's round 4 Q27 row, the read-rule paragraph beneath that table, and both Cross-references
 >   entries.
@@ -110,6 +110,32 @@
 > trigger has fired. Each superseded wording is kept in a dated comment beside the table or
 > paragraph it left. Section 3b's Copier reading stays unexecuted: a measurement ST07's self-test
 > owes at implementation, which signing off does not settle.
+
+> **Corrected in place, 19/11/2026, at US010's re-cut, and kept signed off — a developer decision
+> of 19/11/2026** (re-cut grilling rounds 1 to 4 with <%DEVELOPER_NAME%>; `../../../02-STORIES/US010.md`
+> -> _Re-cut — 19/11/2026_; `../../../15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`).
+> The surface is now three board seeds and three `mv` lines in the copy-gated task, gated by
+> `shipped-boards.sh` and `pm-board.sh --check`, not seven hand-written seeds. No severity moves;
+> each threat is mapped to the control the re-cut puts in its place:
+>
+> - **TM-01, TM-04** → the three lines inside the copy-gated task, asserted statically by
+>   `shipped-boards.sh` check 2 as tightened and behaviourally by `shipped-ai.py`'s board update
+>   probe (byte-identity, red with the `when:` key removed).
+> - **TM-02, TM-09** → `shipped-boards.sh` check 1 (no negation re-includes a board) and check 5
+>   (`SEEDED`).
+> - **TM-03, TM-08** → `shipped-boards.sh` check 4: a seed is byte-identical to the generator's
+>   seed-only render, so it cannot be refreshed from a populated board or carry a literal. The
+>   third `shipped-registers.sh` family the model expected is not built.
+> - **TM-05, TM-06, TM-07** → unchanged in substance for the three new lines.
+> - **TM-10** → a board is regenerated and `--check` fails a stale one, so the window it named
+>   (indexes reading complete with no gate) does not open; the `GAPS.md` entry is still written, at
+>   US010's gate 22, absorbed from US011, stating what `S-03` has left to assert.
+> - **TM-11, TM-12** → superseded: the read rule and the map enum are replaced by plain status
+>   lines from the `completion` skill's vocabulary.
+> - **TM-13** → the seed-count sites name the copy-gated task as the list instead of a number.
+> - **TM-14, TM-18** → unchanged; the two `14-UPDATING.md` statements name the new boards.
+> - **TM-15** → unchanged: each new probe red before its check.
+> - **TM-16, TM-17** → unchanged.
 
 ---
 
@@ -591,8 +617,8 @@ rather than a defect, and is answered in the gate runs, not here.
 - `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` — `S-01`, `S-02` and `S-03`, and `N-003`'s three clauses
 - `project-management/src/02-STORIES/CUT-PLAN.md` — P8 (27/09/2026), cited above as "CUT-PLAN.md P8": SPRINT-08 is RULE-OWNERSHIP's and S-03 has no sprint
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US010-SEEDED-REGISTER-INDEXES.md` — cited above as "QA-PLAN-US010": the 24-site index inventory grilling round 3 Q14 corrects, beside TM-13's seven count sites (call recorded 27/09/2026 with round 6); and AC-GAP-2, whose seed-row clause grilling round 7 Q34 settled, and its HP-03 (TM-08)
-- `project-management/src/15-DECISIONS/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` — the writer-format record behind TM-12, `Accepted` (its :3), accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (grilling round 4 Q27), and committed Accepted at 0c5e635
-- `project-management/src/15-DECISIONS/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the reader-rule record behind TM-11, `Accepted` (its :3), accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (grilling round 4 Q27), and committed Accepted at 0c5e635
+- `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` — the writer-format record behind TM-12, `Accepted` (its :3), accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (grilling round 4 Q27), and committed Accepted at 0c5e635
+- `project-management/src/15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` — the reader-rule record behind TM-11, `Accepted` (its :3), accepted in the 27/09/2026 write-back pass after an independent review and before the US010 commit (grilling round 4 Q27), and committed Accepted at 0c5e635
 - `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US009-HOOK-ARMING.md` — the shape precedent for a story whose surface is a script rather than a feature
 - `project-management/docs/SECURITY-GUIDE.md` — STRIDE / OWASP Top 10 (2025) / NIST CSF 2.0 reference
 - `project-management/workflows/10-security-checks/` — the workflow that produces this model

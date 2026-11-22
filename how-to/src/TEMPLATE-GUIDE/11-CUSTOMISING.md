@@ -153,11 +153,11 @@ The template carries **no** pnpm patch today: the last one, for a mobile-only tr
 dependency, was removed on 09/11/2026 when Expo SDK 58 dropped the package that needed it. If you
 add one, it ships to **every** project, mobile or not, because `pnpm-workspace.yaml` is
 byte-identical on both paths and cannot conditionally name a patch. On a web-only project the
-patched package may not be in the graph, and pnpm 11 **errors** on a patch it could not apply
-(`ERR_PNPM_UNUSED_PATCH`; `ignorePatchFailures` was removed in 11.0). Set
+patched package may not be in the graph, and pnpm 12 **errors** on a patch it could not apply,
+as 11 did (`ERR_PNPM_UNUSED_PATCH`; `ignorePatchFailures` was removed in 11.0). Set
 `allowUnusedPatches: true` alongside the `patchedDependencies` entry: it turns that error into a
 warning, so it is load-bearing for the web-only render path rather than a convenience — verified
-both ways on 01/09/2026 against a scratch project.
+both ways on 01/09/2026 against a scratch project, and again on 12.18.0 on 15/11/2026.
 
 The same setting covers the other direction: key each patch to an **exact** version, so the day
 the upstream package moves the patch stops matching, the install warns instead of applying a diff

@@ -1,0 +1,2 @@
+# $django_upstream must be http://django:8000 — proxying /static/ elsewhere never reaches Django's finders.
+django-upstream-wrong

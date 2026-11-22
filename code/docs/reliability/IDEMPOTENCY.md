@@ -54,7 +54,8 @@ A surface with no row applies this guide unmodified.
 
 ## Cross-references
 
-- [`RETRIES.md`](RETRIES.md): when a failed operation is run again, and how often
+- [`RETRIES.md`](RETRIES.md): when a failed operation is run again
+- [`BUDGETS.md`](BUDGETS.md): how often, and for how long
 - [`../DATABASE.md`](../DATABASE.md): constraints, and why an invariant lives in the database
 - [`../TASK-AUTHORING.md`](../TASK-AUTHORING.md): the task surface's expression of this contract
 

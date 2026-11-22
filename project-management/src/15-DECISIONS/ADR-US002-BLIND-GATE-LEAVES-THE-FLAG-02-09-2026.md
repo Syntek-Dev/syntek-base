@@ -3,8 +3,8 @@
 **Status:** Accepted
 **Date:** 02/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** None
+**Superseded by:** None
 **Related:** US002
 
 ---
@@ -110,7 +110,7 @@ with its cause — never by deleting the line.
 - **Negative / trade-off:** US001 and US002 sit in one sprint with different manifests for the same
   gate. **US001 is left as it stands** — it was correct on its own measurement, and editing a
   signed-off story to match a later record would hide that the reasoning moved. This is the same
-  disposition `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+  disposition `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
   takes towards US001's flat must-pass, and for the same reason.
 - **Negative / trade-off:** Nothing enforces this. No script compares a story's `QA` manifest
   against the scan scope of the gates it names, so the check is a human one at `11-qa-checks`.

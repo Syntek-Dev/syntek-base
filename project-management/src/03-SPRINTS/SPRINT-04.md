@@ -1,6 +1,6 @@
 # SPRINT-04
 
-**Last Updated**: 31/10/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 19/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -18,7 +18,7 @@ the operator names the live posture out loud.
      US003. The goal is written in build order — US005 then US006 — on SPRINT-02's convention for a
      sprint with two subjects. -->
 
-**Status:** Planned
+**Status:** Done — US005 and US006, both members, Accepted 19/11/2026 (PR #30, PR #34); nothing carried over; Done confirmed by Sam 19/11/2026
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
@@ -76,10 +76,10 @@ deliberately** (07/09/2026), all-`Must`, and **CLOSED** to further admission. Se
 
 ## Story Summary
 
-| ID    | Title                                                                                        | MoSCoW    | SP  |
-| ----- | -------------------------------------------------------------------------------------------- | --------- | --- |
-| US005 | Exactly one layer decides to retry, and every budget says how long it may take               | Must Have | 5   |
-| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development | Must Have | 8   |
+| ID      | Title                                                                                        | MoSCoW    | SP  |
+| ------- | -------------------------------------------------------------------------------------------- | --------- | --- |
+| US005 ✓ | Exactly one layer decides to retry, and every budget says how long it may take               | Must Have | 5   |
+| US006 ✓ | The destructive dev scripts read the deployment posture, and refuse to run above development | Must Have | 8   |
 
 **Total:** 13 SP — **all committed, no stretch tier, 2 SP over capacity and at the grace ceiling.**
 Rows are in build order, US005 then US006, settled 07/09/2026. **This is the sprint's known
@@ -109,7 +109,7 @@ weakness, and it is worse than when the record opened**; see Notes.
   07/09/2026.** US006's citation-gate Verification Check is written against two different regimes
   depending on whether **US004** — now SPRINT-03's sole `Must`, moved there from SPRINT-02 in the
   cascade re-plan — has landed. US004 retires the baseline-diff regime of
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
   superseded 30/09/2026 by
   `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which restates it unchanged, retirement terms included <!-- UPDATED 30/09/2026: successor added beside the superseded record,
@@ -198,8 +198,8 @@ SPRINT-05 — until that day it stood in three records only, four rows long, and
 | `SPRINT-02` | US002 (`Must`, 3) then US003 (`Should`, 5, stretch)             | 8 / 11 — closed                                             |
 | `SPRINT-03` | US004 (`Must`, 8), plus US003's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
 | `SPRINT-04` | US005 (`Must`, 5) then US006 (`Must`, 8)                        | 13 / 11 — at grace, closed                                  |
-| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 5, stretch)             | 13 / 11 — at grace, closed                                  |
-| `SPRINT-06` | US010 (`Must`, 8), plus US009's reserved 5 SP carry if it slips | 8 / 11 — closed, holding a reservation; 13 / 11 if it lands |
+| `SPRINT-05` | US008 (`Must`, 8) then US009 (`Should`, 8, stretch)             | 16 / 11 — over grace, closed; reconciled at its close       |
+| `SPRINT-06` | US010 (`Must`, 8)                                               | 8 / 11 — closed                                             |
 | `SPRINT-07` | US012 (`Must`, 2) then US011 (`Should`, 8, stretch)             | 10 / 11 — closed                                            |
 | `SPRINT-08` | US013 (`Must`, 3) then US014 (`Must`, 8)                        | 11 / 11 — at capacity, open                                 |
 
@@ -208,6 +208,21 @@ capacity change is written into every copy in the same change. It is maintained 
 reads it, and that cost is filed in `GAPS.md` (17/09/2026). Rule:
 `project-management/docs/planning/SPRINTS.md`. Obligation:
 `project-management/src/03-SPRINTS/CLAUDE.md`.
+
+<!-- TWO ROWS CHANGED, 17/11/2026, on US009's re-estimate from 5 to 8 SP during implementation
+     (settled with <%DEVELOPER_NAME%>, /implement-story grilling round 5). The `SPRINT-05` row read
+     "US009 (`Should`, 5, stretch)" and "13 / 11 — at grace, closed", and the `SPRINT-06` row
+     "US009's reserved 5 SP carry" and "13 / 11 if it lands", from 20/09/2026 until that day.
+     SPRINT-05 is re-planned at its close rather than now, and no membership moved. Checked against
+     each record's own capacity line as well as against the other copies, per
+     project-management/src/03-SPRINTS/CLAUDE.md.
+     THE SAME TWO ROWS CHANGED AGAIN LATER ON 17/11/2026, on <%DEVELOPER_NAME%>'s call "Keep all of
+     US009 on SPRINT-05 as we are implementing". US009 completes in SPRINT-05 and the carry
+     reserved into SPRINT-06 is released: the `SPRINT-06` row read "US010 (`Must`, 8), plus
+     US009's reserved 8 SP carry if it slips" and "8 / 11 — closed, holding a reservation; 16 / 11
+     if it lands", and the `SPRINT-05` row "re-planned at its close", earlier that day. SPRINT-05
+     is now reconciled at its close. No membership moved; checked against each record's own
+     capacity line as well as against the other copies. -->
 
 <!-- ONE ROW ADDED, 31/10/2026 at 03-sprint-planning. `SPRINT-08` opened that day with its first
      admitted story, US013 (`Must`, 3), cut the same day from
@@ -734,7 +749,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       US004, now SPRINT-03's sole `Must`, and both branches are named for both members.** If US004
       has landed — the expected case, SPRINT-03 being built before this sprint — the gate exits `0`
       on a clean tree and is read as a plain pass for both, the baseline-diff regime of
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+      `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
       (superseded 30/09/2026 by
       `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
       which restates it unchanged)

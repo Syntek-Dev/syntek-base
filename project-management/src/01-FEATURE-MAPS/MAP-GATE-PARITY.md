@@ -43,14 +43,14 @@ template is not what ships.**
 
 ## Notes
 
-| Field                    | Value                                                                                     |
-| ------------------------ | ----------------------------------------------------------------------------------------- |
-| Domain                   | Template integrity — the copier seam, the shipped audits, and the CI over both            |
-| Skills to load           | `cicd` · `runbook` · `doc-writer` · `grill-with-docs` · `version` then `git`              |
-| Standing preferences     | See below — four already-settled constraints bound this work                              |
-| Umbrella ADRs            | None yet, and none authored here — ADRs are workflow `15`, after stories (`02`)           |
-| Register entries triaged | 0 closes · 0 blocks · 1 unrelated (3 standing limitations exempt)                         |
-| Cross-map                | `N-019 on MAP-RULE-OWNERSHIP` — charted over the same copier seam; referenced, not merged |
+| Field                    | Value                                                                                                                                                                |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                   | Template integrity — the copier seam, the shipped audits, and the CI over both                                                                                       |
+| Skills to load           | `cicd` · `runbook` · `doc-writer` · `grill-with-docs` · `version` then `git`                                                                                         |
+| Standing preferences     | See below — four already-settled constraints bound this work                                                                                                         |
+| Umbrella ADRs            | Any ADR is authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story |
+| Register entries triaged | 0 closes · 0 blocks · 1 unrelated (3 standing limitations exempt)                                                                                                    |
+| Cross-map                | `N-019 on MAP-RULE-OWNERSHIP` — charted over the same copier seam; referenced, not merged                                                                            |
 
 **Standing preferences — settled before this map and not reopened by it:**
 
@@ -682,6 +682,5 @@ not here. The map records the decision; the ADR is written when the story reache
 - [x] **Every node marked "blocking a story" is resolved** — **0 open**; `N-014` and `N-032` both closed 28/08/2026
 - [x] Every resolved node links to the artefact it became
 - [x] **Every slice has a flag manifest**
-- [ ] Index row in `CONTEXT.md` current — **deliberately absent**; see Notes
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked.**

@@ -2,7 +2,7 @@
 
 **Charted**: 11/09/2026 · **Charted by**: Sam · **Workflow**: `01-feature-map`
 **Status:** Resolving
-**Status note:** research node N-001 resolved 11/09/2026
+**Status note:** research node N-001 resolved 11/09/2026; 15/11/2026 edges to MAP-NATIVE-MOBILE-SURFACE and MAP-FRAMEWORK-NEUTRAL-FOUNDATION recorded; package manager made a Copier choice with Bun the default (FN D8) — no node moved
 **Frontier open**: 29 · **Blocking open**: 21 · **Resolved**: 1 · **Provisional slices**: 5
 
 > **Committed here, never shipped.** This file is tracked, so it syncs across devices, and
@@ -37,6 +37,14 @@ an outcome at N-016, never re-grilled. S-01 is exactly that fallback; S-02 is cu
 | Q4  | Generated projects          | Template-wide, **acting** `.copier/migrations/` script, major version bump |
 | Q5  | Supply-chain parity         | **Hard gate** — a control with no Bun equivalent stops the swap            |
 
+**Amended 15/11/2026 — Sam, this conversation (MAP-FRAMEWORK-NEUTRAL-FOUNDATION D8).** The package
+manager becomes a **Copier choice**: Bun is the **default**, with pnpm and npm offered, and every
+other language ecosystem gets the same treatment (Python: uv, pip or both). This **reverses** the
+Out-of-scope ruling against a Copier `pnpm | bun` choice, and the Destination's "Bun replaces pnpm"
+now reads "Bun is the default package manager". Q1's runtime aim, Q2, Q3 and Q5 stand for Bun. Q4's
+acting migration now applies to projects that choose Bun. Which managers are offered, and how gates
+serve each without forking, is FN [N-037](MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md#n-037).
+
 **These graduate at S-01**: the story cut from it authors the ADR recording Q1–Q5 and the parity
 table (N-024), per the graduation table — a map never authors an ADR direct.
 
@@ -44,14 +52,14 @@ table (N-024), per the graduation table — a map never authors an ADR direct.
 
 ## Notes
 
-| Field                    | Value                                                                                                                                                                |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Domain                   | The JS dev toolchain — manifests, lockfile, `code/src/scripts/`, `.claude/hooks/`, 7 CI workflows, `.mcp.json`, Copier migration, the docs that name pnpm            |
-| Skills to load           | `cicd`, `planner`, `grill-with-docs`, `research`, `prototype`, `security`, `doc-writer`, `version`; `stack-react-native` for the mobile nodes                        |
-| Standing preferences     | Q1–Q5 above. Tracers run in a throwaway worktree or scratch clone, **never this tree**. The pass/fail bar for a tracer is settled before it runs (N-002, N-003)      |
-| Umbrella ADRs            | None yet — S-01's story authors the one ADR for Q1–Q5 and the parity table                                                                                           |
-| Register entries triaged | **14 open: 2 closes · 2 blocks · 10 unrelated.** `DEFERRED.md` is empty                                                                                              |
-| Suggested first batch    | **A — grilling N-002 + N-003**: the two bars every tracer is judged against, settled before any spike runs. **B — tracers N-006 to N-010** once Bun exists somewhere |
+| Field                    | Value                                                                                                                                                                                                                                 |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                   | The JS dev toolchain — manifests, lockfile, `code/src/scripts/`, `.claude/hooks/`, 7 CI workflows, `.mcp.json`, Copier migration, the docs that name pnpm                                                                             |
+| Skills to load           | `cicd`, `planner`, `grill-with-docs`, `research`, `prototype`, `security`, `doc-writer`, `version`; `stack-react-native` for the mobile nodes                                                                                         |
+| Standing preferences     | Q1–Q5 above. Tracers run in a throwaway worktree or scratch clone, **never this tree**. The pass/fail bar for a tracer is settled before it runs (N-002, N-003)                                                                       |
+| Umbrella ADRs            | S-01's story authors the one ADR for Q1–Q5 and the parity table; any ADR is authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story |
+| Register entries triaged | **14 open: 2 closes · 2 blocks · 10 unrelated.** `DEFERRED.md` is empty                                                                                                                                                               |
+| Suggested first batch    | **A — grilling N-002 + N-003**: the two bars every tracer is judged against, settled before any spike runs. **B — tracers N-006 to N-010** once Bun exists somewhere                                                                  |
 
 ### What is load-bearing today — measured 11/09/2026 at `b6c5c25`
 
@@ -65,6 +73,28 @@ table (N-024), per the graduation table — a map never authors an ADR direct.
 | MCP                 | `context7` and `mcp-mermaid` via `npx -y` (`.mcp.json`)                                                                                                                                                                                         |
 | Docs                | ~60 instructional files name pnpm; ~229 mentions across 101 files repo-wide (scout census)                                                                                                                                                      |
 | Python-bundled Node | basedpyright (`nodejs-wheel` 24.16.0) and the Playwright driver carry their own — out of scope                                                                                                                                                  |
+
+### Edges across maps — recorded 15/11/2026
+
+Inputs only; each names the node here that weighs it. The package-manager reversal is recorded
+beside the destination bounds above (FN D8).
+
+- **React Native's retirement.** [MAP-NATIVE-MOBILE-SURFACE](MAP-NATIVE-MOBILE-SURFACE.md) S-01
+  deletes `code/src/mobile/` and the `INCLUDE_MOBILE` answer, and Sam reconfirmed native Kotlin and
+  Swift on 15/11/2026 (FN D1). If that slice lands first, Q1's and Q3's mobile conditions, S-03,
+  N-009 (the Expo SDK set), N-011, N-013, N-018, N-028, F-09, S-01's and S-04's mobile render-path acceptance, and the Metro and Expo Out-of-scope rows lose their subject. An input to **N-004** (landing order) —
+  whether they are cleared or built depends on which map's slice lands first.
+- **The package manager is a choice (FN D8).** Bun stays the default and every slice here still
+  builds it, but pnpm remains an offered manager. Inputs: **N-016** (the go/no-go now decides the
+  default, not a removal), **N-020**, **N-021** and **N-029** (a v7.x project may keep pnpm rather
+  than be migrated), **N-015** and **N-026** (supply-chain lists and gates must serve both), and
+  **N-023** (the ban list names each offered manager). FN
+  [N-037](MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md#n-037) owns the offered set and the anti-fork rule.
+- **JavaScript framework profiles** (Next, Nuxt, Angular, SvelteKit, Astro — FN, 15/11/2026)
+  take their runtime and bundler from FN [N-009](MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md#n-009) and
+  [N-018](MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md#n-018); Q2 ("no bundler") binds the Django profile.
+- **A Nix devShell as the pin's home.** FN N-009 weighs a Nix devShell against `install.sh`. If
+  chosen, it is a candidate home and enforcer for the Bun pin — an input to **N-019**.
 
 ---
 
@@ -299,29 +329,31 @@ findings are listed under _Resolved decisions_ and are not repeated here.
 
 ## Out of scope
 
-| Ruled out                                                               | Why                                                                                                                    |
-| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Bun as a bundler; replacing Metro                                       | Q2 — the web surface has no build step by doctrine, and Metro stays for mobile                                         |
-| Removing Node from a mobile project                                     | Expo still needs Node LTS for `create expo` and `expo prebuild`; the boundary itself is N-018                          |
-| A Copier `pnpm \| bun` choice                                           | Q4 — every gate and doc would fork in two                                                                              |
-| The Python (uv, pip-audit) and Rust (cargo-deny) supply chains          | Unchanged by the swap                                                                                                  |
-| Node bundled by basedpyright (`nodejs-wheel`) and the Playwright driver | Each ships its own; no doc may therefore claim "no Node" outright                                                      |
-| Authoring `renovate.json` and the Renovate setup                        | MAP-UPSTREAM-TRACKING N-009 owns it; this map only moves its target to Bun's managers, via N-004                       |
-| EAS Build adoption and `eas.json`                                       | None exists; paid cloud builds are out of scope per `02-STACK.md`                                                      |
-| Rewriting CHANGELOG, RELEASES, VERSION-HISTORY and dated PM records     | Dated records of the tree at their time are never rewritten                                                            |
-| The vendored `.agents/skills/cloudinary-react` text (`npm install`)     | Third-party, managed by `skills-lock.json`                                                                             |
-| Pre-Bun gate defects found on the way                                   | Put to Sam as `GAPS.md` candidates, 11/09/2026 — this map's only where a slice rewrites the exact lines (N-025, N-029) |
-| Collapsing restated doctrines beyond the raw-invocation ban list        | In scope only for that one rule, and only if N-023 chooses route-don't-restate                                         |
+| Ruled out                                                                        | Why                                                                                                                                                    |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Bun as a bundler; replacing Metro                                                | Q2 — the web surface has no build step by doctrine, and Metro stays for mobile                                                                         |
+| Removing Node from a mobile project                                              | Expo still needs Node LTS for `create expo` and `expo prebuild`; the boundary itself is N-018                                                          |
+| The Python (uv, pip-audit) and Rust (cargo-deny) supply chains                   | Unchanged by the swap                                                                                                                                  |
+| Node bundled by basedpyright (`nodejs-wheel`) and the Playwright driver          | Each ships its own; no doc may therefore claim "no Node" outright                                                                                      |
+| Authoring `renovate.json` and the Renovate setup                                 | MAP-UPSTREAM-TRACKING N-009 owns it; this map only moves its target to Bun's managers, via N-004                                                       |
+| EAS Build adoption and `eas.json`                                                | None exists; paid cloud builds are out of scope per `02-STACK.md`                                                                                      |
+| Rewriting CHANGELOG, RELEASES, VERSION-HISTORY and dated PM records              | Dated records of the tree at their time are never rewritten                                                                                            |
+| The vendored `.agents/skills/cloudinary-react` text (`npm install`)              | Third-party, managed by `skills-lock.json`                                                                                                             |
+| Pre-Bun gate defects found on the way                                            | Put to Sam as `GAPS.md` candidates, 11/09/2026 — this map's only where a slice rewrites the exact lines (N-025, N-029)                                 |
+| Collapsing restated doctrines beyond the raw-invocation ban list                 | In scope only for that one rule, and only if N-023 chooses route-don't-restate                                                                         |
+| Which managers each ecosystem offers; JavaScript framework runtimes and bundlers | MAP-FRAMEWORK-NEUTRAL-FOUNDATION N-037, N-009 and N-018 (15/11/2026). The former row "A Copier `pnpm \| bun` choice" was reversed by FN D8 and removed |
 
 ---
 
 ## Session log
 
-| Date       | Node settled         | Outcome                                                                                                                                                                                                                       | Frontier redrawn    |
-| ---------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| 11/09/2026 | CHART                | Destination pinned (Q1–Q5); 6 surface scouts + an independent critic drew 30 nodes and 5 slices; N-001 dispatched                                                                                                             | [x]                 |
-| 11/09/2026 | N-001                | 12 legs answered from Bun's source at `6b394bf`, each survived an independent refuter; 5 run-only legs folded into N-006, N-007, N-009, N-012                                                                                 | [x]                 |
-| 16/10/2026 | none (edge recorded) | The `pnpm-update.sh` claim meets S-03 on MAP-PIN-DETECT-MOVE (a 7-day cooldown for tool moves; re-pointed from S-01 at that map's Step 8a, same day); recorded in the `pnpm-update.sh` Register claimed row's Retired-by cell | n/a — no node moved |
+| Date       | Node settled          | Outcome                                                                                                                                                                                                                                                       | Frontier redrawn    |
+| ---------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| 11/09/2026 | CHART                 | Destination pinned (Q1–Q5); 6 surface scouts + an independent critic drew 30 nodes and 5 slices; N-001 dispatched                                                                                                                                             | [x]                 |
+| 11/09/2026 | N-001                 | 12 legs answered from Bun's source at `6b394bf`, each survived an independent refuter; 5 run-only legs folded into N-006, N-007, N-009, N-012                                                                                                                 | [x]                 |
+| 16/10/2026 | none (edge recorded)  | The `pnpm-update.sh` claim meets S-03 on MAP-PIN-DETECT-MOVE (a 7-day cooldown for tool moves; re-pointed from S-01 at that map's Step 8a, same day); recorded in the `pnpm-update.sh` Register claimed row's Retired-by cell                                 | n/a — no node moved |
+| 15/11/2026 | none (edge recorded)  | Three edges recorded under Notes — React Native's retirement (input to N-004), JavaScript framework profiles owned by MAP-FRAMEWORK-NEUTRAL-FOUNDATION (Q2/Q4 scoped, one Out-of-scope row), a Nix devShell as a candidate pin home (input to N-019)          | n/a — no node moved |
+| 15/11/2026 | none (bounds amended) | Sam made the package manager a Copier choice with Bun the default (FN D8): amendment recorded beside the destination bounds, the `pnpm \| bun` Out row removed, the package-manager edge names N-015, N-016, N-020, N-021, N-023, N-026 and N-029 as affected | n/a — no node moved |
 
 ---
 
@@ -336,7 +368,6 @@ findings are listed under _Resolved decisions_ and are not repeated here.
 - [ ] **Every node marked "blocking a story" is resolved** — 21 open
 - [x] Every resolved node links to the artefact it became
 - [x] Every slice has a flag manifest — provisional
-- [x] Index row — declined on the record (see the header note)
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked.**
 

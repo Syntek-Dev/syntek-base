@@ -33,7 +33,7 @@ three-stage artefact folders remain the source of truth a developer builds from.
 | Domain                   | The template's own design tier — `DESIGN.md`, PM workflows `04`–`08` and `18`, `src/04`–`08`                                                                                       |
 | Skills to load           | `grill-with-docs` (every grilling node) · `frontend` · `scaffold` (a new workflow folder) · `doc-writer` (`DESIGN.md`) · `runbook` (the operator half) · `cicd` (gates)            |
 | Standing preferences     | Token-first, DB-canonical · route-don't-restate · **no hosted dependency in the artefact of record** (`08-wireframes/STEPS.md` Step 2) · Figma removed from the repo on 22/08/2026 |
-| Umbrella ADRs            | None yet — **authoring one is possible since 31/08/2026** (`.claude/MEMORY.md`, the exclusion is the permission), only via a slice's driving `US###`                               |
+| Umbrella ADRs            | Any ADR is authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story               |
 | Register entries triaged | 0 closes · 0 blocks · 0 unrelated                                                                                                                                                  |
 
 ---
@@ -197,6 +197,5 @@ as a reasonable call under N-013 noted for override. The record, not open items:
 - [x] **Every node marked "blocking a story" is resolved** — all seven, 01/09/2026
 - [x] Every resolved node links to the artefact it became — a slice row or §What is already measured
 - [x] **Every slice has a flag manifest** — five slices, 01/09/2026
-- [x] No index row in `CONTEXT.md` — this map does not ship
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked.**

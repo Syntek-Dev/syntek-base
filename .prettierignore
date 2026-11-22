@@ -72,9 +72,17 @@ code/src/django/apps/content/tests/fixtures/
 # toolchain-pins self-test workflows — their YAML layout IS the test input. The `expressions`
 # fixture carries a deliberately multi-line flow-style `with: {` map that the audit must report
 # as unparsed; Prettier collapses it onto one line, which would silently gut that case and shift
-# the line numbers expected.txt pins. format.sh never checks YAML, so only CI's repo-wide
-# `prettier --check .` saw it (11/11/2026).
+# the line numbers expected.txt pins. format.sh did not check YAML then, so only CI's repo-wide
+# `prettier --check .` saw it (11/11/2026); format.sh's yaml and json legs (12/11/2026) now read it too.
 code/src/scripts/audits/fixtures/toolchain-pins/**/.github/
+
+# dev-static self-test compose files — their YAML layout IS the test input. `flowvol` carries a
+# one-line flow list and `flowvol-multiline` the shape Prettier reflows it into; formatting the
+# first turns it into the second and silently drops a case (16/11/2026).
+code/src/scripts/audits/fixtures/dev-static/flowvol/
+# `merge-key` spells the merge key `<< :` on purpose: Prettier would close the gap, and the closed
+# form contains Copier's block opener, which breaks every generation (finding F-037).
+code/src/scripts/audits/fixtures/dev-static/merge-key/
 
 # Cold walk-test evidence — a captured prompt, a walker's verbatim answer, and the transcript
 # of every tool call it made. Reformatting them edits the record the folder exists to hold, and
@@ -83,6 +91,14 @@ code/src/scripts/audits/fixtures/toolchain-pins/**/.github/
 project-management/src/00-ASSETS/WALK-TESTS/*-PROMPT.md
 project-management/src/00-ASSETS/WALK-TESTS/*-REPORT.md
 project-management/src/00-ASSETS/WALK-TESTS/*-TRANSCRIPT.jsonl
+
+# Archived PM records — frozen (project-management/src/CLAUDE.md). pm-archive.sh's rewrite of a
+# path inside one can unalign a table, and re-padding it would edit a frozen file, so no
+# formatter reads them. pm-board.sh --check is their gate. Added 19/11/2026. Narrowed 20/11/2026 to
+# the records alone (every instance name holds a hyphen, bar US###.md): archive/'s own CONTEXT.md
+# and CLAUDE.md ship, are hand-edited, and are formatted like any other pair.
+project-management/src/*/archive/*-*.md
+project-management/src/*/archive/US[0-9][0-9][0-9].md
 
 # Misc
 .git/

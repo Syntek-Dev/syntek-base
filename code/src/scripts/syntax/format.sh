@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # format.sh — Check or apply code formatting using ruff format (Python), Prettier
-#             (JavaScript, TypeScript, CSS, Markdown) and rustfmt (Rust).
+#             (JavaScript, TypeScript, CSS, Markdown, YAML, JSON) and rustfmt (Rust).
 #             Dry-run by default — no files are modified without --fix.
 #
 # WHY typescript IS NOT GATED ON THE MOBILE SURFACE, WHERE lint.sh AND check.sh ARE
@@ -11,6 +11,14 @@
 # audits/fixtures/. They ship to a WEB-ONLY project too, because dict-discipline.sh and
 # negative-space.sh both refuse to --self-test without them. Gating this token would
 # leave those four formatted by nothing here.
+#
+# WHY yaml AND json ARE LEGS HERE, AND WHY A BARE RUN INCLUDES THEM
+# CI's format job runs `prettier --check .` repo-wide, and lefthook's pre-commit gate checks
+# staged *.json/*.yaml/*.yml. Until 12/11/2026 this script handed Prettier only js/ts/css/md, so a
+# bare format.sh run reported clean over a population CI then failed (the toolchain-pins
+# fixture, 11/11/2026). A local gate narrower than CI's is "could not look" filed as clean.
+# yaml covers .yaml/.yml; json covers .json/.jsonc. Lockfiles and fixtures whose layout is
+# the test input stay excluded through .prettierignore, never through this script.
 #
 # rust delegates to scripts/rust/lint.sh --fmt-only — the narrow half, because that
 # script's --fix also runs `clippy --fix`, which rewrites logic rather than layout.
@@ -62,7 +70,7 @@ bold() { $QUIET || printf '\033[1m%s\033[0m\n' "$*"; }
 
 usage() {
   cat <<'EOF'
-format.sh — Format using ruff format (Python), Prettier (JS/TS/CSS/Markdown), rustfmt
+format.sh — Format using ruff format (Python), Prettier (JS/TS/CSS/Markdown/YAML/JSON), rustfmt
 
 Usage:
   format.sh                        Dry-run check across all file types
@@ -73,7 +81,8 @@ Usage:
 Options:
   --fix                Apply formatting (writes files). Default is dry-run check.
   --file-type TYPE     Restrict to file type (repeat for multiple):
-                         python | javascript | typescript | css | markdown | rust
+                         python | javascript | typescript | css | markdown |
+                         yaml | json | rust
   --output FORMAT      Write a report: md | txt | json | html
   --output-file PATH   Override the default report path
                          (default: code/src/scripts/reports/format-report.<FORMAT>)
@@ -83,7 +92,8 @@ Options:
 
 Notes:
   • Dry-run exit code 1 means files need formatting — run with --fix to correct.
-  • Prettier handles JavaScript, TypeScript, CSS, and Markdown.
+  • Prettier handles JavaScript, TypeScript, CSS, Markdown, YAML (.yaml/.yml) and
+    JSON (.json/.jsonc) — the same population CI's repo-wide `prettier --check .` reads.
   • ruff format handles Python (PEP 8 compatible, opinionated like Black).
   • typescript is NOT gated on the mobile surface here, unlike lint.sh and check.sh —
     Prettier also formats the audit self-test specimens, which ship everywhere.
@@ -176,8 +186,8 @@ EXPLICIT_TYPES=false
 
 for ft in "${FILE_TYPES[@]+"${FILE_TYPES[@]}"}"; do
   case "$ft" in
-    python|javascript|typescript|css|markdown|rust) ;;
-    *) die "Invalid --file-type '$ft'. Choose: python javascript typescript css markdown rust" ;;
+    python|javascript|typescript|css|markdown|yaml|json|rust) ;;
+    *) die "Invalid --file-type '$ft'. Choose: python javascript typescript css markdown yaml json rust" ;;
   esac
 done
 
@@ -189,7 +199,7 @@ if $EXPLICIT_TYPES; then
 else
   # typescript is unconditional: see the header. rust is not — rustfmt has nothing to
   # read without the workspace.
-  FILE_TYPES=(python javascript typescript css markdown)
+  FILE_TYPES=(python javascript typescript css markdown yaml json)
   if [[ -d "$RUST_DIR" ]]; then FILE_TYPES+=(rust); else SURFACES_ABSENT+=("rust — no code/src/rust/"); fi
 fi
 
@@ -236,10 +246,10 @@ fi
 log ""
 
 # ── File-type selector helpers ────────────────────────────────────────────────
-# Prettier handles js, ts, css and markdown together
+# Prettier handles js, ts, css, markdown, yaml and json together
 wants_prettier() {
   for ft in "${FILE_TYPES[@]}"; do
-    case "$ft" in javascript|typescript|css|markdown) return 0 ;; esac
+    case "$ft" in javascript|typescript|css|markdown|yaml|json) return 0 ;; esac
   done
   return 1
 }
@@ -251,6 +261,8 @@ prettier_pattern() {
   wants typescript && exts+=(ts tsx)
   wants css        && exts+=(css)
   wants markdown   && exts+=(md)
+  wants yaml       && exts+=(yaml yml)
+  wants json       && exts+=(json jsonc)
 
   # Deduplicate, then build the extension glob. A single extension must NOT use a
   # brace ({md} is not expanded by Prettier's glob — only multi-element braces
@@ -305,14 +317,14 @@ if wants python; then
   fi
 fi
 
-# ── JavaScript / TypeScript / CSS / Markdown — Prettier ───────────────────────
+# ── JavaScript / TypeScript / CSS / Markdown / YAML / JSON — Prettier ─────────
 # Prettier runs on the HOST, not in a container: no dev container mounts the whole
 # tree, so a containerised Prettier cannot reach the django app,
 # project-management, or root docs. This mirrors the lefthook pre-commit gate,
 # which also runs `pnpm exec prettier` on the host.
 if wants_prettier; then
   if host_has_pnpm; then
-    bold "── JS / TS / CSS / Markdown (Prettier) ────────────────────────────────────"
+    bold "── JS / TS / CSS / Markdown / YAML / JSON (Prettier) ──────────────────────"
     pattern="$(prettier_pattern)"
     if $FIX; then
       run_on_host pnpm exec prettier --write "$pattern"
@@ -323,7 +335,7 @@ if wants_prettier; then
     log ""
   else
     log "  ⚠  pnpm not found on host — Prettier COULD NOT RUN (it runs on the host; install pnpm/Node)"
-    UNRUN+=("JS/TS/CSS/Markdown/Prettier (pnpm not on host PATH)")
+    UNRUN+=("JS/TS/CSS/Markdown/YAML/JSON/Prettier (pnpm not on host PATH)")
     log ""
   fi
 fi

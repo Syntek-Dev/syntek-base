@@ -61,8 +61,10 @@ reads to every later session as a live system that must not be disturbed.
 | Web + API | —           | `development` | —             | —          | Seeded only   | —        |
 
 **Nothing is deployed.** The only environment is the local dev stack, whose URL `server.sh up`
-prints and whose data `code/src/scripts/database/seed-dev.sh` creates. Add a row per surface and
-environment as each first ships, and raise `DEPLOYMENT_POSTURE` in the same change.
+prints and whose data `code/src/scripts/database/seed-dev.sh` creates. Once the posture is raised,
+that script refuses at exit `4` unless the run names the live posture with
+`--force-posture <posture>`. Add a row per surface and environment as each first ships, and raise
+`DEPLOYMENT_POSTURE` in the same change.
 
 Two surfaces have no row because they are optional and absent unless the project was generated
 with them: **mobile** (`code/src/mobile/`, ships through the App Store and Google Play, so its
@@ -85,7 +87,9 @@ one written most carefully. It names three things or it is not filled in:
 
 `code/src/scripts/database/reset.sh` is never a recovery path. It is the thing recovery exists to
 undo. Beyond `development` it must not be run — a rule `.claude/CLAUDE.md` Section 0 binds Claude
-to, not yet a guard the script itself enforces (`GAPS.md`, 31/08/2026).
+to, and one the script enforces itself through `code/src/scripts/_lib/posture-guard.sh`: above
+`development` it refuses at exit `4` unless the run names the live posture with
+`--force-posture <posture>`, and even then it asks for confirmation, `--yes` notwithstanding.
 
 ## What is deliberately not registered
 

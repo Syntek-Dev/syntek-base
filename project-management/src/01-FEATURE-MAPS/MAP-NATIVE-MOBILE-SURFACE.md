@@ -2,7 +2,7 @@
 
 **Charted**: 20/09/2026 · **Charted by**: Claude (Opus) · **Workflow**: `01-feature-map`
 **Status:** Resolving
-**Status note:** chart drawn — every node typed and blocker-wired, none resolved yet (was `Charting`; normalised 31/10/2026)
+**Status note:** chart drawn — every node typed and blocker-wired, none resolved yet (was `Charting`; normalised 31/10/2026); 15/11/2026 edges to MAP-FRAMEWORK-NEUTRAL-FOUNDATION recorded and F-03 sharpened there — no node moved
 **Frontier open**: 21 · **Blocking open**: 9
 
 > A **low-resolution index**, not a storage vault — every resolved node links to the artefact it
@@ -22,13 +22,13 @@ or neither, and every gate each surface owns **reports rather than skips**
 
 ## Notes
 
-| Field                    | Value                                                                                                                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Domain                   | Template surface architecture · CI/CD · governance (skills, audits, docs, copier gating)                                                          |
-| Skills to load           | `wayfinder` · `grill-with-docs` · `scaffold` · `cicd` · `doc-writer` · `version` · `code-reviewer`                                                |
-| Standing preferences     | See **Settled before charting** below — four decisions from the 20/09/2026 grilling that bound this map                                           |
-| Umbrella ADRs            | **None, and none is authored from here.** ADRs are `ADR-US###-…` and story-bound; each slice's story authors its own at PM step `04`–`14`         |
-| Register entries triaged | **0 closes · 1 blocks · 15 unrelated** (`GAPS.md`, 16 open entries; standing limitations `SL-1`–`SL-3` exempt). `DEFERRED.md` carries **no rows** |
+| Field                    | Value                                                                                                                                                                               |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain                   | Template surface architecture · CI/CD · governance (skills, audits, docs, copier gating)                                                                                            |
+| Skills to load           | `wayfinder` · `grill-with-docs` · `scaffold` · `cicd` · `doc-writer` · `version` · `code-reviewer`                                                                                  |
+| Standing preferences     | See **Settled before charting** below — four decisions from the 20/09/2026 grilling that bound this map                                                                             |
+| Umbrella ADRs            | Any ADR is `ADR-US###-…`, authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story |
+| Register entries triaged | **0 closes · 1 blocks · 15 unrelated** (`GAPS.md`, 16 open entries; standing limitations `SL-1`–`SL-3` exempt). `DEFERRED.md` carries **no rows**                                   |
 
 ### Settled before charting
 
@@ -55,6 +55,22 @@ where one SDK bump moves five pins together.
 divergence _structurally impossible_; two codebases make it merely _cheap to fix_, and AI arguably
 makes drift **easier** because each one-sided change is cheap to make. Nothing in this repository
 gates that today. **N-019 owns it** — it is not settled by the decisions above.
+
+### Edges across maps — recorded 15/11/2026
+
+Sam widened MAP-FRAMEWORK-NEUTRAL-FOUNDATION on 15/11/2026 (this conversation, D1 and D2). Each
+edge is an input; none changes a node here.
+
+- **The standing preferences above stand.** FN D1 confirms native Kotlin and Swift and offers
+  neither React Native nor Flutter; FN [N-017](MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md#n-017) consumes
+  them rather than reopening them.
+- **Native, no wrapper of any kind** (FN D2) is now template-wide for desktop and mobile apps. FN
+  [N-035](MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md#n-035) owns the boundary cases; N-009 and N-010
+  here choose between native toolkits only.
+- **The two opt-ins may become profile selections.** FN
+  [N-004](MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md#n-004) owns the composition vocabulary, so
+  `INCLUDE_ANDROID` and `INCLUDE_IOS` may later be expressed as profile choices. An input to N-001
+  and to S-03/S-04's Copier acceptance — they keep their current wording until FN N-004 settles.
 
 ### The index row, withheld
 
@@ -205,8 +221,7 @@ not a rewrite. This is why S-02 can run ahead of the forge.
   independent surfaces down to the documentation. N-008 and N-016 will sharpen it.
 - **F-02 — What two native clients need from the API** — Whether the API needs anything for two native clients that it does not need for one — token
   handling, offline behaviour, versioned response contracts.
-- **F-03 — The desktop and Slint surface** — Whether the **desktop/Slint** surface should be reconsidered under the same reasoning. Raising
-  it now would widen this map past what it can hold honestly.
+- **F-03 → MAP-FRAMEWORK-NEUTRAL-FOUNDATION N-035** (route 1, sharpened cross-map, 15/11/2026) — the desktop/Slint question now sits with the native-boundary node there.
 - **F-04 — A forge migration deferred indefinitely** — What happens if the forge migration is deferred indefinitely. Standing preference 3 assumes it
   lands; it has no date.
 - **F-05 — Bruno as the divergence gate** — Whether Bruno API-contract tests are the divergence gate N-019 is looking for, or whether that
@@ -220,6 +235,7 @@ not a rewrite. This is why S-02 can run ahead of the forge.
 | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | KMP / Compose Multiplatform                   | Ruled out 20/09/2026. If the Xcode tax is paid anyway, KMP's saving narrows to shared business logic while adding a third toolchain and Swift interop |
 | Retaining React Native in any form            | Standing preference 2 — nothing downstream consumes it, so carrying it is upkeep on a surface with a scheduled death                                  |
+| Flutter                                       | Sam, 15/11/2026 (MAP-FRAMEWORK-NEUTRAL-FOUNDATION D1, D2)                                                                                             |
 | Building an actual mobile app                 | This is **template capability**. No generated project has opted into a mobile surface                                                                 |
 | The forge migration itself                    | A prerequisite, not part of this feature — 37 workflows and GitHub-specific required-check semantics. N-005 decides where it is charted               |
 | Changes to the Django, Rust or Slint surfaces | Untouched. Every doctrine statement scoped to "the web surface" stays scoped there                                                                    |
@@ -233,6 +249,7 @@ not a rewrite. This is why S-02 can run ahead of the forge.
 | 20/09/2026 | —                    | Charted: 21 nodes, 4 slices, register triaged 0/1/15                                                                                                                                                                                                                                         | [x]                 |
 | 15/10/2026 | none (edge recorded) | N-020's Blocking cell records the edge MAP-MUTATION-TESTING charted on 15/10/2026: N-020 blocks N-040 and N-042 on MAP-MUTATION-TESTING, the native mutation legs and their tools, which run on the test frameworks N-020 settles. Still non-blocking here; nothing else on this map changed | n/a — no node moved |
 | 16/10/2026 | none (edge recorded) | N-004 pairs with N-022 on MAP-PIN-DETECT-MOVE, the same headroom question; recorded in N-004's Decision cell                                                                                                                                                                                 | n/a — no node moved |
+| 15/11/2026 | none (edge recorded) | MAP-FRAMEWORK-NEUTRAL-FOUNDATION widened (Sam, D1/D2): edges recorded under Notes; Flutter added to Out of scope; **F-03 sharpened** (route 1) into FN [N-035](MAP-FRAMEWORK-NEUTRAL-FOUNDATION.md#n-035), the native boundary for desktop and mobile profiles, and left this map's fog      | n/a — no node moved |
 
 ---
 
@@ -246,7 +263,6 @@ not a rewrite. This is why S-02 can run ahead of the forge.
 - [ ] **Every node marked "blocking a story" is resolved** — 9 open
 - [ ] Every resolved node links to the artefact it became — none resolved yet
 - [x] **Every slice has a flag manifest**
-- [ ] Index row in `CONTEXT.md` — **withheld pending a decision**; see the note in `## Notes`
 
 **Stories may be cut in `workflows/02-story-creation/` once the boxes above are ticked.** S-01 is
 closest: four nodes, three of them unblocked today.

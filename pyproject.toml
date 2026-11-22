@@ -124,6 +124,12 @@ target-version = "py314"
 line-length = 100
 exclude = [".claude", ".venv"]
 
+[tool.ruff.format]
+# The negative-space fixtures are scanner input: their single quotes and triple-single-quoted
+# strings are what the cookie clauses' self-test proves the scanner reads. Formatting them would
+# delete the cases. Lint still covers them; only the formatter skips them.
+exclude = ["code/src/scripts/audits/fixtures/negative-space/**"]
+
 [tool.ruff.lint]
 select = [
     "E",   # pycodestyle errors

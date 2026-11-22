@@ -169,6 +169,9 @@ Two things to do on a freshly generated project:
 │       ├── audit-render-slop.yml        ← the AI-slop family, rendered half
 │       ├── audit-routing-skills.yml     ← every skill named in routing frontmatter must exist
 │       ├── audit-mcp-parity.yml         ← `.mcp.json` and `.codex/config.toml` declare the same servers
+│       ├── audit-dev-static.yml         ← dev Nginx proxies /static/ to Django, never serves it from disk
+│       ├── audit-env-read-deny.yml      ← Claude, Codex and Zed each deny reading the live env files
+│       ├── audit-hook-arming.yml        ← install.sh arms the git hooks; the postinstall only announces
 │       ├── audit-playwright-pin.yml     ← eight sites declare the Playwright pin; all must name one release
 │       ├── audit-seam-contract.yml      ← the build/operate seam in the server contract
 │       ├── audit-secrets.yml            ← scans for accidentally committed secrets
@@ -178,6 +181,7 @@ Two things to do on a freshly generated project:
 │       ├── audit-template-orphans.yml   ← artefacts a `copier update` stranded
 │       ├── audit-template-slop.yml      ← the AI-slop family, markup half
 │       ├── audit-toolchain-pins.yml     ← every Node/Python/uv/pnpm/Rust pin against its source — no path filter
+│       ├── audit-worktree-overlay.yml   ← the worktree dev overlay trusts its own :3080 CSRF origins
 │       ├── claude.yml                   ← Claude Code GitHub Actions integration
 │       ├── clickup-sync.yml             ← CLICKUP-ONLY — pushes story exports to ClickUp (push/PR)
 │       ├── pm-boards.yml                ← PM boards current and archive/ frozen; stale-status warnings
@@ -218,7 +222,7 @@ Two things to do on a freshly generated project:
 │   │   ├── OBJECT-STORAGE.md            ← private documents over the S3 API (declared, not wired)
 │   │   ├── PERFORMANCE.md               (+ performance/ — FRONTEND-PERFORMANCE, DATABASE-PERFORMANCE, API-AND-MONITORING)
 │   │   ├── PROCESS-MODEL.md             ← worker class, event loop, and the ORM's sync boundary
-│   │   ├── RELIABILITY.md               (+ reliability/ — IDEMPOTENCY, RETRIES)
+│   │   ├── RELIABILITY.md               (+ reliability/ — IDEMPOTENCY, RETRIES, BUDGETS)
 │   │   ├── RENDERING.md                 (+ rendering/ — TEMPLATES-AND-INTERACTIVITY, PITFALLS-AND-EXAMPLES)
 │   │   ├── RESPONSIVE-DESIGN.md         (+ responsive/ — BREAKPOINTS, MEDIA-QUERIES, CONTAINER-QUERIES, …)
 │   │   ├── RLS-GUIDE.md                 (+ rls/ — FUNDAMENTALS, POLICY-TEMPLATES, MIDDLEWARE-AND-NINJA, …)
@@ -317,13 +321,13 @@ Two things to do on a freshly generated project:
 │   │   ├── 12-SEO/
 │   │   ├── 13-API-DESIGN/
 │   │   ├── 14-LOGGING/
-│   │   ├── 15-DECISIONS/
+│   │   ├── 15-DECISIONS/                ← ADRs · DECISIONS-BOARD.md (generated) · archive/
 │   │   ├── 16-SPRINT-PLANS/             ← sprint plans · board (shows the sprint's status) · archive/
 │   │   ├── 17-STORY-PLANS/              ← story plans · board (shows the story's status) · archive/
 │   │   ├── 18-TESTS/                    ← MANUAL/ guides (authored before code) · AUTOMATED/ records
 │   │   ├── 19-REVIEWS/
-│   │   ├── 20-FINDINGS/
-│   │   ├── 21-BUGS/
+│   │   ├── 20-FINDINGS/                 ← findings · FINDINGS-BOARD.md (generated) · archive/
+│   │   ├── 21-BUGS/                     ← bug reports · BUGS-BOARD.md (generated) · archive/
 │   │   ├── 22-REFACTORING/
 │   │   └── 23-INCIDENTS/               ← the PII-free incident register; no story, no workflow
 │   └── workflows/                       ← 24 step-by-step PM workflows
@@ -402,7 +406,7 @@ local quality checks.
 | **Docker Engine** (or Docker Desktop) | 27+                          | run all application services                 |
 | **Docker Compose plugin**             | v2+                          | orchestrate local containers                 |
 | **Node.js**                           | 26 (see `.nvmrc`)            | root pnpm scripts and git hooks              |
-| **pnpm**                              | 11+                          | JS package manager (root workspace only)     |
+| **pnpm**                              | 12+                          | JS package manager (root workspace only)     |
 | **Python**                            | 3.14 (see `.python-version`) | root pyproject tooling (ruff, basedpyright)  |
 | **uv**                                | 0.13+                        | Python environment and dependency management |
 
@@ -582,8 +586,8 @@ appends a row to the story's _Status history_. The vocabulary, the rejection pat
 are owned by the `completion` skill (`.claude/skills/completion/SKILL.md`); the planning rules by
 `project-management/docs/planning/STORIES.md`.
 
-`01-FEATURE-MAPS/`, `02-STORIES/`, `03-SPRINTS/`, `16-SPRINT-PLANS/` and `17-STORY-PLANS/` each hold
-a generated board — `STORIES-BOARD.md` and its siblings, committed, plus a `.json` and a
+`01-FEATURE-MAPS/`, `02-STORIES/`, `03-SPRINTS/`, `15-DECISIONS/`, `16-SPRINT-PLANS/`,
+`17-STORY-PLANS/`, `20-FINDINGS/` and `21-BUGS/` each hold a generated board — `STORIES-BOARD.md` and its siblings, committed, plus a `.json` and a
 self-contained `.html` kanban that are gitignored. **Never hand-edit a board**:
 
 ```bash
@@ -593,8 +597,9 @@ bash project-management/src/00-ASSETS/scripts/pm-board.sh --warn    # list work 
 bash project-management/src/00-ASSETS/scripts/pm-archive.sh US###   # close and archive one item
 ```
 
-`pm-archive.sh` closes a `Completed` story, a sprint whose stories are all `Closed`, or a `Complete`
-map whose every slice is cut, and moves it — with its plan — into that folder's `archive/`.
+`pm-archive.sh` closes a `Completed` story, a sprint whose stories are all `Closed`, a `Complete`
+map whose every slice is cut, a `Superseded` or `Deprecated` ADR, a `Resolved` finding or a
+`Verified` bug, and moves it — with its plan — into that folder's `archive/`.
 Archived files are frozen. Every script, the ClickUp export included, finds an artefact by its ID
 across the folder **and** its `archive/`.
 
@@ -615,7 +620,7 @@ then regenerate the export:
 
 ```bash
 bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh        # all stories
-bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US014  # one story
+bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US001  # one story
 ```
 
 The exports are **generated and read-only — never hand-edit them.** Enforcement is layered: a
@@ -1123,7 +1128,7 @@ pnpm lint:md          # markdownlint — checks every Markdown file
 pnpm lint:md          # markdownlint-cli2 — checks all Markdown files
 pnpm format:check     # Prettier — dry-run format check
 pnpm format           # Prettier — apply formatting
-pnpm prepare          # Install Lefthook git hooks (runs automatically after install.sh)
+bash install.sh       # Install everything and arm the Lefthook git hooks (Phase 1 Step 9)
 ```
 
 ### Development scripts (`code/src/scripts/development/`)
@@ -1137,6 +1142,7 @@ pnpm prepare          # Install Lefthook git hooks (runs automatically after ins
 | `new-django-view.sh`    | Scaffold a new public marketing page (Django view + template + URL)   |
 | `install-backend.sh`    | Update `uv.lock` and optionally sync Python backend dependencies      |
 | `install-frontend.sh`   | Update `pnpm-lock.yaml` and optionally sync frontend dependencies     |
+| `install-hooks.sh`      | Arm the Lefthook git hooks (`install.sh` runs it); `--notice` reminds |
 | `install.sh`            | Compatibility shim — forwards to `install-frontend.sh`                |
 | `pnpm-update.sh`        | Self-update pnpm and pin the new version across project files         |
 | `hosts-story-add.sh`    | Add `/etc/hosts` entries for a story worktree (worktree dev setup)    |
@@ -1282,6 +1288,9 @@ table ever falls behind it.
 | `skill-conformance.sh` | Every skill matches the Agent Skills spec and the six keys this project authors                |
 | `routing-skills.sh`    | Every skill named in routing frontmatter exists, and gated names co-vary with their flag       |
 | `mcp-parity.sh`        | `.mcp.json` and `.codex/config.toml` declare the same MCP servers, commands and arguments      |
+| `dev-static.sh`        | Dev Nginx proxies `/static/` to Django and mounts no collected tree                            |
+| `env-read-deny.sh`     | Claude, Codex and Zed each deny AI reads of the six live `.env.*` files                        |
+| `worktree-overlay.sh`  | The worktree dev overlay trusts its own `:3080` origins, so story-stack POSTs pass CSRF        |
 | `playwright-pin.sh`    | Eight sites declare the Playwright pin - checks they agree with each other, never the host     |
 | `toolchain-pins.sh`    | Every Node, Python, uv, pnpm and Rust pin agrees with its one source of truth                  |
 | `template-orphans.sh`  | Artefacts left in a directory the current template no longer defines                           |

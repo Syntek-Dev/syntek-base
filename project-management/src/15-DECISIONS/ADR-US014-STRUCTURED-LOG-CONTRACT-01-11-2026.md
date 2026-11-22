@@ -1,10 +1,11 @@
 # ADR-US014: The application log line is a hand-written JSON contract, the collector's labels and the correlation id are the edge's, and the pipeline minimises rather than redacts
 
-**Status:** Accepted — 01/11/2026 by <%DEVELOPER_NAME%>
+**Status:** Accepted
+**Status note:** 01/11/2026 by <%DEVELOPER_NAME%>
 **Date:** 01/11/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** —
-**Superseded by:** —
+**Supersedes:** None
+**Superseded by:** None
 **Related:** US014 · `project-management/src/02-STORIES/US014.md` · `project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` Batch G1, node N-020, slice S-07 · `project-management/src/09-GDPR/PLANNING/GDPR-PLAN-US014-STRUCTURED-JSON-LOGGING.md` · `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US014-JSON-LOGGING-REQUEST-ID.md` · `project-management/src/10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US014-JSON-LOGGING-REQUEST-ID.md` · `project-management/src/11-QA/PLANNING/QA-PLAN-US014-STRUCTURED-JSON-LOGGING.md` · `project-management/src/14-LOGGING/PLANNING/LOGGING-PLAN-US014-STRUCTURED-JSON-REQUEST-ID.md`
 
 <!-- Written 01/11/2026 at 15-decisions for US014, on pm/story-creation at HEAD 5441954, after the

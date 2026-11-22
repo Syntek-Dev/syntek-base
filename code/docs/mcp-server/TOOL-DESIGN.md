@@ -136,11 +136,14 @@ why the flag is gated rather than recommended.
 The user error's `code` travels in the message, because there is no envelope to carry it. The
 wording of any of these is the project's, not this guide's — see `how-to/src/BRAND-VOICE.md`.
 
-**An environment error is never an instruction to retry.** Transient failures are retried
-**server-side** (FastMCP's `RetryMiddleware`); the text the model reads says the operation did
-not complete, and never "try again". An agent retrying thousands of times is a threat this
-surface already carries a control for ([`AUTH-AND-THREATS.md`](AUTH-AND-THREATS.md) →
-_Unbounded cost / runaway loops_), and writing the invitation into the error is how you fund it.
+**An environment error is never an instruction to retry.** The server makes one attempt and
+never retries an inbound tool call: FastMCP's `RetryMiddleware` is **deliberately unwired**,
+because a served surface is the layer beneath its caller
+([`../reliability/RETRIES.md`](../reliability/RETRIES.md) Section _Served surfaces never retry
+inbound work_). Any repeat is the calling agent's, and bounding it is the control
+[`AUTH-AND-THREATS.md`](AUTH-AND-THREATS.md) → _Unbounded cost / runaway loops_ carries. The text
+the model reads says the operation did not complete, and never "try again" — an agent retrying
+thousands of times is that threat, and writing the invitation into the error is how you fund it.
 
 ## The docstring _is_ the contract
 

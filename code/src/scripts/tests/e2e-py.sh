@@ -63,7 +63,13 @@ ENV_FILE="$PROJECT_ROOT/code/src/docker/.env.test"
 # Parsed, not sourced: `set -a; source` executes the file, so one value carrying a shell
 # metacharacter aborts it partway and leaves the rest of the settings unset — pytest-django
 # then imports a half-configured settings module (_lib/env-file.sh).
-env_export "$ENV_FILE"
+#
+# And confined to the pytest process. Exported into this shell, any key in the file would
+# overwrite a script variable of the same name — E2E_BASE_URL, E2E_DIR, the reports path — which
+# is later used or printed, so a live .env.test value could reach the output. The wrapper runs in
+# a subshell and execs its positional arguments, which the caller expanded before the file was
+# read: nothing the file sets can rewrite the command, and nothing it sets outlives the run.
+_with_test_env() { local f="$1"; shift; env_export "$f"; exec "$@"; }
 
 # Probe /health/, not the admin: the admin prefix is configurable (DJANGO_ADMIN_PATH), so a
 # project that moves it breaks this pre-flight, while /health/ is fixed by contract precisely
@@ -131,5 +137,5 @@ log "Running the e2e suite against ${E2E_BASE_URL}…"
 E2E_REPORTS="$SCRIPT_DIR/reports/e2e"
 mkdir -p "$E2E_REPORTS"
 
-E2E_BASE_URL="$E2E_BASE_URL" uv run --group test pytest -m e2e \
-  --junit-xml="$E2E_REPORTS/results.xml" "$@"
+( _with_test_env "$ENV_FILE" env "E2E_BASE_URL=$E2E_BASE_URL" uv run --group test pytest -m e2e \
+  --junit-xml="$E2E_REPORTS/results.xml" "$@" )

@@ -1,17 +1,18 @@
 # ADR-US004: The derived instance-citer rule admits the four story-less dated record families
 
-**Status:** Accepted <!-- Accepted 06/11/2026 by <%DEVELOPER_NAME%> at US004's `23-pr-and-review` (finding F-024). It read "Proposed — for <%DEVELOPER_NAME%>'s acceptance at US004's 23-pr-and-review" until then. -->
+**Status:** Accepted
+**Status note:** Accepted 06/11/2026 by <%DEVELOPER_NAME%> at US004's `23-pr-and-review` (finding F-024). It read "Proposed — for <%DEVELOPER_NAME%>'s acceptance at US004's 23-pr-and-review" until then. The superseded record's Status and Superseded by line were set in the change that accepted this one, 06/11/2026 (moved here from a comment on the Supersedes line, 19/11/2026).
 **Date:** 06/11/2026
 **Deciders:** <%DEVELOPER_NAME%>
-**Supersedes:** `project-management/src/15-DECISIONS/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md` — its Status and Superseded by line set in the change that accepted this record, 06/11/2026
-**Superseded by:** —
+**Supersedes:** `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md`
+**Superseded by:** None
 **Related:** US004
 
 ---
 
 ## Context
 
-`project-management/src/15-DECISIONS/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md`
+`project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-CITER-IS-A-DERIVED-RULE-05-11-2026.md`
 decided that Check 2 of `code/src/scripts/audits/doc-references.sh` exempts a citer whose
 basename carries `US[0-9]{3}` or `SPRINT-(PLAN-)?[0-9]{2}`, or starts `BUG-`, unless it carries
 `US000` or `-TEMPLATE.`. Its deciding factor was that the rule tracks the naming convention
@@ -34,7 +35,7 @@ citation inside one fired `[instance citation]`. Workflow 23's review raised it 
 The fix as first written matched any name ending in a real date, anywhere; the second review pass
 (H-04) showed that a dated shipped guide would then lose Check 2, so it was narrowed to the four
 families. Findings F-024 and F-042 in
-`project-management/src/20-FINDINGS/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md`.
+`project-management/src/20-FINDINGS/archive/FINDING-US004-CITATION-GATE-GIT-INDEX-05-11-2026.md`.
 
 ## Options considered
 

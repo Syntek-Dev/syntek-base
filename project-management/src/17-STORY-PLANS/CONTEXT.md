@@ -18,7 +18,6 @@ project-management/src/17-STORY-PLANS/
 ├── story-plans-board.json           ← generated, gitignored
 ├── story-plans-board.html           ← generated kanban view, gitignored
 ├── ##-STORY-PLAN-US###-<DESC>.md    ← one plan per user story (e.g. 02-STORY-PLAN-US001-<DESC>.md)
-├── PLAN-<DESCRIPTOR>.md             ← cross-cutting programme plans spanning several stories
 └── archive/                         ← plans moved here with their story by pm-archive.sh — frozen
 ```
 
@@ -26,7 +25,7 @@ This is a base-repo scaffold: the folder ships with the template only. Real plan
 added by copying it.
 
 **Naming:** `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md` per story, the prefix
-2-digit zero-padded; `PLAN-<DESCRIPTOR>.md`, unprefixed, for cross-cutting programme plans.
+2-digit zero-padded — the one instance pattern, and the only one the board lists.
 Wayfinder feature maps live upstream in `../01-FEATURE-MAPS/`, not here.
 
 ## Why the filename carries a build-order prefix
@@ -90,9 +89,9 @@ dependency DAG stays accurate.
 ## The plans index
 
 **The index is `STORY-PLANS-BOARD.md`, generated beside these plans by `pm-board.sh --write`** —
-committed, never hand-edited; its `.json` and `.html` siblings are gitignored. It is the
-excluded-and-seeded index file the register-index work called for, built for this folder (and
-`01`, `02`, `03` and `16`) by the 7.7.0 PM-boards change: a generated project starts with an
+committed, never hand-edited; its `.json` and `.html` siblings are gitignored. It is an
+excluded-and-seeded board, one of the eight `pm-board.sh` writes — the others in `01`, `02`,
+`03`, `15`, `16`, `20` and `21` — and a generated project starts with an
 empty board, so this shipped file still names no per-project plan. **A plan carries no status of
 its own** — the board files each plan under the `**Status:**` of the `US###` in its filename —
 and `pm-archive.sh US###` moves the plan into `archive/` with its story. A plan is still listed
@@ -101,7 +100,7 @@ against its sprint in that sprint plan's _Story Plans — the code master_ table
 
 **Last Updated**: <%DATE%>
 
-<!-- RENAMED 08/09/2026. The six plans in this folder were renamed by `git mv` that day from
+<!-- RENAMED 08/09/2026. The story plans were renamed by `git mv` that day from
      `STORY-PLAN-US###-<DESC>.md` to `<exec-order>-STORY-PLAN-US###-<DESC>.md`, the prefix the
      story's position in the settled build order across the whole backlog and renumbered whenever
      that order changes. This file's Directory Tree, `**Naming:**` line and copy-the-template step
@@ -112,18 +111,17 @@ against its sprint in that sprint plan's _Story Plans — the code master_ table
      Two things asked for and deliberately NOT done, both for reasons this repository has already
      settled, and both stated here WITHOUT naming the artefacts that settled them, because this
      file ships and may name no per-project story, map or plan. (1) A Plans Index table with
-     instance rows — including reserved rows for numbers taken by unwritten plans. Two of the
-     plans in this folder decline that row ON THE RECORD, the standing gap register carries it
-     claimed, and the register-index work charted in `../01-FEATURE-MAPS/` owns the file it should
-     live in; creating it here would ship per-project citations in a copier-included file. The
-     section _The plans index_ above records the decline instead, and each reserved number is
-     recorded in the story that owns it, under `../02-STORIES/`, which does not ship.
+     instance rows — including reserved rows for numbers taken by unwritten plans. The index was
+     declined: a per-plan index belongs to the register-index work, which owns the file it
+     should live in; creating it here would ship per-project citations in a copier-included file.
+     The section _The plans index_ above records the decline instead, and each reserved number is
+     recorded in the story that owns it.
      (2) `**Last Updated**` bumped to 08/09/2026 — the field holds `<%DATE%>`,
      a Copier token rendered at generation, in all 138 shipped `CONTEXT.md` files. Hard-coding a
      date here would ship 08/09/2026 into every project generated afterwards and would leave this
      file the only one of the 138 out of pattern. The update date is this comment. -->
 
-<!-- 08/09/2026, later the same day: two corrections to _The plans index_ above; the comment above
+<!-- CORRECTED 08/09/2026, later the same day: two corrections to _The plans index_ above; the comment above
      is kept as the record of the position held at that hour. (1) The section's closing sentence
      read "Until that lands, the instructions elsewhere that require a row here stand unaltered and
      the row is not added; a plan's own status lives in its metadata table and in its story." It
@@ -134,11 +132,17 @@ against its sprint in that sprint plan's _Story Plans — the code master_ table
      describes that. (2) The section named the deferred index file in backticks, as
      "STORY-PLAN-INDEX.md" — a file that exists in no repository, this one or any generated from
      it, cited from a file that ships and read by the citation gate, which takes backticked tokens
-     as paths. It is now described rather than named: the register-index work charted in
-     `../01-FEATURE-MAPS/` names its own file when it lands. -->
+     as paths. It is now described rather than named: the register-index work names its own file
+     when it lands. -->
 
-<!-- 31/10/2026 (7.7.0): _The plans index_ rewritten. It recorded the index's absence as a decision
+<!-- UPDATED 31/10/2026 (7.7.0): _The plans index_ rewritten. It recorded the index's absence as a decision
      deferred to the register-index work, and ended "a plan's own status lives in its metadata
      table and in its story". Both are superseded: the PM-boards change generates
      `STORY-PLANS-BOARD.md` here, and a plan's status row was retired — the board mirrors the
      parent story. The two comments above stay as the record of the earlier position. -->
+
+<!-- UPDATED 19/11/2026: the tree's `PLAN-<DESCRIPTOR>.md` row and the `**Naming:**` line's programme-plan
+     clause removed — the board lists only the per-story pattern, so a programme plan here would
+     be unindexed. _The plans index_ no longer calls the board "the excluded-and-seeded index file
+     the register-index work called for, built for this folder (and `01`, `02`, `03` and `16`) by
+     the 7.7.0 PM-boards change"; it names the eight boards instead. -->

@@ -1,0 +1,2 @@
+# An exact-match location (= /static/...) serves one asset from disk via root.
+static-root

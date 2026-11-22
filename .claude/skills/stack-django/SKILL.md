@@ -62,19 +62,19 @@ pages and the base template arrive with the first story (`code/src/django/templa
 dev operation goes through a script in `code/src/scripts/**/*.sh`. This is a
 non-negotiable project rule.
 
-| Task                     | Command                                                      |
-| ------------------------ | ------------------------------------------------------------ |
-| Start full-stack dev env | `bash code/src/scripts/development/server.sh`                |
-| Django shell             | `bash code/src/scripts/development/shell.sh`                 |
-| Make migrations          | `bash code/src/scripts/database/migrate.sh make`             |
-| Apply migrations         | `bash code/src/scripts/database/migrate.sh run`              |
-| Database shell (psql)    | `bash code/src/scripts/database/shell.sh --psql`             |
-| Seed dev data            | `bash code/src/scripts/database/seed-dev.sh`                 |
-| Run backend tests        | `bash code/src/scripts/tests/backend.sh`                     |
-| Backend coverage         | `bash code/src/scripts/tests/backend-coverage.sh`            |
-| Check DB security config | `bash code/src/scripts/database/verify-db-security.sh`       |
-| New Django app           | `bash code/src/scripts/development/new-django-app.sh <name>` |
-| Manage users             | `bash code/src/scripts/database/manageusers.sh`              |
+| Task                     | Command                                                                                                                                          |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Start full-stack dev env | `bash code/src/scripts/development/server.sh`                                                                                                    |
+| Django shell             | `bash code/src/scripts/development/shell.sh`                                                                                                     |
+| Make migrations          | `bash code/src/scripts/database/migrate.sh make`                                                                                                 |
+| Apply migrations         | `bash code/src/scripts/database/migrate.sh run`                                                                                                  |
+| Database shell (psql)    | `bash code/src/scripts/database/shell.sh --psql`                                                                                                 |
+| Seed dev data            | `bash code/src/scripts/database/seed-dev.sh` — refuses at exit `4` above `development` unless `--force-posture <posture>` names the live posture |
+| Run backend tests        | `bash code/src/scripts/tests/backend.sh`                                                                                                         |
+| Backend coverage         | `bash code/src/scripts/tests/backend-coverage.sh`                                                                                                |
+| Check DB security config | `bash code/src/scripts/database/verify-db-security.sh`                                                                                           |
+| New Django app           | `bash code/src/scripts/development/new-django-app.sh <name>`                                                                                     |
+| Manage users             | `bash code/src/scripts/database/manageusers.sh`                                                                                                  |
 
 After any model change run `migrate.sh make` → `migrate.sh run` (migrations stay in lockstep
 with the models; Django Ninja emits the OpenAPI schema at `/api/docs` automatically).

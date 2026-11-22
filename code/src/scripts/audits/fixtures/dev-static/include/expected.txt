@@ -1,0 +1,2 @@
+# An include cannot be evaluated statically — it may add a /static/ location; fails closed.
+conf-include

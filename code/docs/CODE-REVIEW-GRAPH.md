@@ -145,7 +145,8 @@ Always preview before applying; behaviour must stay identical (workflow `11` gol
 - **Git pre-commit stays lefthook-managed.** `code-review-graph install` appends its own check to
   `.git/hooks/pre-commit` after lefthook's, which silently makes the hook non-blocking; the graph's
   advisory `detect-changes` lives in `lefthook.yml` instead. After any `code-review-graph install`,
-  run `lefthook install` to reclaim the hook so lint and format stay blocking.
+  run `bash code/src/scripts/development/install-hooks.sh` to reclaim the hook so lint and format
+  stay blocking.
 - Root `AGENTS.md` is maintained by this repository. When registering the graph server, use
   the install command's `--no-instructions` option to preserve the shared entry point; inspect
   the diff after changing any assistant configuration.

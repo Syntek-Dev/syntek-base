@@ -85,7 +85,7 @@ Not the mass conversion of existing code, of which there is almost none.
 | Domain                   | Absence semantics · optional modelling · response contracts · lint and audit legs                                                                                                                                                                              |
 | Skills to load           | `grill-with-docs` · `doc-writer` · `stack-django` · `stack-htmx-templates` · `stack-rust` · `stack-react-native` · `code-reviewer` · `refactor`                                                                                                                |
 | Standing preferences     | Cite `TYPES-*`, never restate it · additive first · every clause declares its deletion class · a new guide is born under 270 cloc · surfaces gated by copier `_exclude` only                                                                                   |
-| Umbrella ADRs            | **None.** Fifteenth consecutive decline on the settled precedent: `15-DECISIONS/` is user-story-focused, so architecture doctrine goes to `code/docs/` and its per-project half to `how-to/src/`                                                               |
+| Umbrella ADRs            | Any ADR is authored by the story each slice becomes, never by this map — rule: `../15-DECISIONS/CLAUDE.md`; `../15-DECISIONS/DECISIONS-BOARD.md` lists them by story                                                                                           |
 | Register entries triaged | Re-triaged 31/08/2026: **0 closes · 0 blocks · 6 unrelated** — `GAPS.md` now carries 3 standing limitations, 3 dated entries and 3 loose items, none touching absence; `DEFERRED.md` still empty; `TEMPLATE-GAPS.md` no longer exists (deleted 22/08/2026)     |
 | Scope confirmed by Sam   | 15/08/2026 — five surfaces (four briefed + mobile TS) · new top-level guide · sibling of `NEGATIVE-SPACE.md` · doctrine + existing mechanical legs · HTMX pin in scope, vendoring deferred · `code-reviewer` **and the refactor setup** gain routed dimensions |
 | Research                 | All seven nodes settled at charting (N-001 to N-007), each adversarially refuted by an independent verifier. **Six of seven had absence claims overturned.** Verdicts below                                                                                    |
@@ -741,7 +741,6 @@ be clean (`code/docs/GATE-REPORTING.md`).
 - [x] **Every node marked "blocks the map" is resolved** — N-008 settled 31/08/2026
 - [x] Every resolved node links to the artefact it became
 - [x] **Every slice has a flag manifest** — S-01..S-06 cut 31/08/2026; every manifest empty by construction (all 13 flags `N/A`)
-- [x] Index row in `CONTEXT.md` current
 
 **Template-development map, slices cut 31/08/2026 on Sam's direction** — `02-story-creation`
 is the next gate. N-008 is settled, so per-surface prose may be written by the slices' stories;

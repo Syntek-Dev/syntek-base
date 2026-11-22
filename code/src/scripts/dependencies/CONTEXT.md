@@ -65,7 +65,8 @@ classification against captured transcripts in `audits/fixtures/dependencies-aud
 and `rust/audit.sh` into a scratch project with stale lockfiles, puts the stand-ins in
 `run/stubs/` first on `PATH`, and asserts that a stale lock is a finding the audit leaves
 byte-identical, that a finding with no `error[` line still reaches the summary and the report,
-and that a tool failure is NOT RUN — exit `2` from `security.sh` — never "vulnerabilities found".
+that a tool failure is NOT RUN — exit `2` from `security.sh` — never "vulnerabilities found",
+and that a pnpm 12 lockfile's importers are read from its graph document, not the first.
 
 | Exit | Means                                                                                    |
 | ---- | ---------------------------------------------------------------------------------------- |
@@ -111,9 +112,10 @@ its consumers declare, because no manifest here owns it. The distinction is not 
 advisories across three transitive packages unfixed while this script reported them "already
 current".
 
-The result is reported as the resolved versions before and after, read from `pnpm-lock.yaml`.
+The result is reported as the resolved versions before and after, read from `pnpm-lock.yaml`'s
+graph document through `_lib/pnpm-lock.sh` — pnpm 12's first document locks pnpm itself.
 An unchanged package is at the newest its ranges admit, or an override holds it, or the newer
-release is younger than pnpm 11's default 24-hour `minimumReleaseAge` — a security fix that
+release is younger than pnpm's default 24-hour `minimumReleaseAge` — a security fix that
 cannot wait takes a `minimumReleaseAgeExclude` entry. Moving past a consumer's range takes a
 bounded override in `pnpm-workspace.yaml`, never a looser range.
 

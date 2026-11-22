@@ -123,7 +123,7 @@ the story's current wording would satisfy both criteria as written and still be 
   **detector-confounded and is reported as such — never as the story's**; the recovery is to
   materialise the recorded pre-edit tree in a scratch worktree, run the _current_ detector over it,
   and diff that same-detector baseline against the close run. That is not the after-the-fact
-  reconstruction `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
+  reconstruction `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`
   forbids: the pre-edit tree is re-materialised from a recorded SHA, not from memory. Scenario 13's
   class list is widened to "every class the detector reports", so a `[plan prefix]` finding from a
   file this story edits is the story's. The same one-line hash is recorded for the other four gates

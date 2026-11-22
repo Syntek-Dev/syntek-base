@@ -36,6 +36,7 @@ django/
 │   └── CLAUDE.md
 ├── config/                 # project configuration package
 │   ├── settings/           # base.py, dev.py, staging.py, production.py, test.py
+│   ├── tests/              # computed-settings tests (dev CSRF trusted origins)
 │   ├── urls.py             # health routes at /health/, Django admin at /control/
 │   ├── asgi.py
 │   └── wsgi.py
