@@ -383,10 +383,10 @@ constraint.
 
 Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here.
 
-| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status              |
-| ---------------------- | ------------------------------------------------------------------ | ------------------- |
-| US004                  | `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | `Customer Accepted` |
-| US003 — reserved carry | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`           | `Customer Accepted` |
+| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status    |
+| ---------------------- | ------------------------------------------------------------------ | --------- |
+| US004                  | `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | Completed |
+| US003 — reserved carry | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`           | Completed |
 
 <!-- RE-MIRRORED 22/11/2026 under Sam's ruling 3 on the US010 re-walk (manual-test row REMEDY-02):
      a sprint plan's Story Plans Status cell mirrors the STORY's status as

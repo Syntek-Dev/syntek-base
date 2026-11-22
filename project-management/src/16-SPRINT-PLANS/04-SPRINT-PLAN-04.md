@@ -251,10 +251,10 @@ US005's was written 05/09/2026 and repointed 07/09/2026; US006's was written 08/
 `17-story-plans`, taking the number `07-` that had been reserved for it that morning, and this
 table was repointed at it the same day by that workflow's Step 10.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                      | Status            |
-| ----- | ---------------------------------------------------------------------- | ----------------- |
-| US005 | `../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` | Customer Accepted |
-| US006 | `../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`               | Customer Accepted |
+| Story | Story plan (`../17-STORY-PLANS/`)                                      | Status    |
+| ----- | ---------------------------------------------------------------------- | --------- |
+| US005 | `../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` | Completed |
+| US006 | `../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`               | Completed |
 
 <!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
      US006's cell held the placeholder and now carries its plan's own `| Status |` header row,

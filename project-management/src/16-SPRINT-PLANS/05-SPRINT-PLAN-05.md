@@ -273,10 +273,10 @@ after a three-reviewer adversarial pass at Step 9 that returned six blocking fin
 resolved. This table was repointed at each by that workflow's Step 10, in the order they were
 written.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                            | Status            |
-| ----- | ------------------------------------------------------------ | ----------------- |
-| US008 | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` | Customer Accepted |
-| US009 | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`       | Customer Accepted |
+| Story | Story plan (`../17-STORY-PLANS/`)                            | Status    |
+| ----- | ------------------------------------------------------------ | --------- |
+| US008 | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` | Completed |
+| US009 | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`       | Completed |
 
 <!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
      both cells held the placeholder and now carry each plan's own `| Status |` header row, `Open`.

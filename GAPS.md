@@ -1609,3 +1609,24 @@ self-tests, `pm-boards.sh`, `template-hooks.sh` and `hook-arming.sh`. Finding F-
 **Blocked by / Action:** Nothing blocks it. Teach the generator a Bash probe-report format (each
 runner already prints a pass/fail summary), or record Bash suites as out of its scope in
 `code/docs/TESTING.md`. No map or story claims this entry.
+
+---
+
+## 22/11/2026 — `cookie-preview-fixture.sh` cannot run against a ref at or after v7.10.0
+
+**Type:** Active gap
+**Summary:** The 7.10.0 release switched US008's cutover notice on: `copier.yml` now keys it
+`version: v7.10.0` and runs `.copier/migrations/v7.10.0-host-only-cookies.sh` with no
+`when: false`. `code/src/scripts/tests/cookie-preview-fixture.sh` (template-only) still assumes
+the pending entry. `make_fixture_release()` (`:266`) looks for a `- command:` line naming
+`host-only-cookies` followed by `when: false`, and stops with "no 'when: false'" when it finds
+none. So `release-crossing` and `subsequent-update` fail against `v7.10.0` or later, and
+`pending-key` (`:49`) asserts a state that no longer exists. The case table in
+`code/src/scripts/tests/CONTEXT.md` (`pending-key`, `release-crossing`, `subsequent-update`
+rows) still describes the pending state. The fixture still proves the preview against the US008
+commit, which is the proof `CHANGELOG.md` 7.10.0 cites. Found by the independent review of the
+7.10.0 release, 22/11/2026.
+**Blocked by / Action:** Nothing blocks it. Either teach the fixture to detect an
+already-activated entry and report those three cases as unmeasured (exit 3, "proved at a
+pre-v7.10.0 ref"), or document that it runs only with a pre-release `--story-ref` and update the
+CONTEXT.md case table to match. No map or story claims this entry.

@@ -15,11 +15,11 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | In Review         | 0     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
-| Customer Accepted | 10    |
+| Customer Accepted | 0     |
 | Rejected          | 0     |
 | Customer Rejected | 0     |
 | Blocked           | 1     |
-| Completed         | 0     |
+| Completed         | 10    |
 | Closed            | 1     |
 
 ## Open
@@ -51,18 +51,7 @@ _None._
 
 ## Customer Accepted
 
-| ID    | Title                                                                                                          | Status            | File                 |
-| ----- | -------------------------------------------------------------------------------------------------------------- | ----------------- | -------------------- |
-| US001 | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Customer Accepted | [US001.md](US001.md) |
-| US002 | The audits register regains the headroom nine new gates need                                                   | Customer Accepted | [US002.md](US002.md) |
-| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated                                   | Customer Accepted | [US003.md](US003.md) |
-| US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable                          | Customer Accepted | [US004.md](US004.md) |
-| US005 | Exactly one layer decides to retry, and every budget says how long it may take                                 | Customer Accepted | [US005.md](US005.md) |
-| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development                   | Customer Accepted | [US006.md](US006.md) |
-| US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Customer Accepted | [US007.md](US007.md) |
-| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule         | Customer Accepted | [US008.md](US008.md) |
-| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true                | Customer Accepted | [US009.md](US009.md) |
-| US010 | The seven register indexes are born seeded, and the map index leaves the file that ships                       | Customer Accepted | [US010.md](US010.md) |
+_None._
 
 ## Rejected
 
@@ -80,7 +69,18 @@ _None._
 
 ## Completed
 
-_None._
+| ID    | Title                                                                                                          | Status    | File                 |
+| ----- | -------------------------------------------------------------------------------------------------------------- | --------- | -------------------- |
+| US001 | Reliability doctrine gets an owning guide, and every pointer reaches it                                        | Completed | [US001.md](US001.md) |
+| US002 | The audits register regains the headroom nine new gates need                                                   | Completed | [US002.md](US002.md) |
+| US003 | Absence gets an owning guide, born under 270 with every clause's tier stated                                   | Completed | [US003.md](US003.md) |
+| US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable                          | Completed | [US004.md](US004.md) |
+| US005 | Exactly one layer decides to retry, and every budget says how long it may take                                 | Completed | [US005.md](US005.md) |
+| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development                   | Completed | [US006.md](US006.md) |
+| US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Completed | [US007.md](US007.md) |
+| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule         | Completed | [US008.md](US008.md) |
+| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true                | Completed | [US009.md](US009.md) |
+| US010 | The seven register indexes are born seeded, and the map index leaves the file that ships                       | Completed | [US010.md](US010.md) |
 
 ## Closed
 
