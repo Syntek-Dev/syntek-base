@@ -68,7 +68,7 @@ fixed en route; a defect the build finds beyond the story goes to `../21-BUGS/`,
 Write-Ups_). The four per-layer sections are dropped under _Approach_, each with its reason.
 
 <!-- CARRIED 21/11/2026 from US010's findings (F-001, F-003, F-010, F-018, F-029,
-     project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md -> Section 4):
+     project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md -> Section 4):
      - F-001, F-003: fill each _Recorded during the build_ capture slot at the commit that produces it,
        including a CI red's run ID; never leave a slot blank for the walk to find.
      - F-010, F-018: at P0, capture every touched gate's probe labels, and re-read every status a manual

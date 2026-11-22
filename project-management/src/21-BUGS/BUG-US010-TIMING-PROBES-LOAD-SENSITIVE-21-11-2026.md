@@ -13,7 +13,7 @@
 | **Reporter**     | Claude (fix round 10 session); filed by the gate-22 Step 5 subagent               |
 
 **Status:** Open
-**Status note:** Filed from finding F-038 in `../20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md`. Not reproduced on demand; which probe failed is unmeasured
+**Status note:** Filed from finding F-038 in `../20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md`. Not reproduced on demand; which probe failed is unmeasured
 
 ---
 
@@ -90,7 +90,7 @@ unrepaired for that reason.
 - **Impact:** a flaky red in a required gate's self-test (`[1/4]` and the pre-push leg). It
   trains people to re-run rather than read. Nothing ships wrong.
 - **Related stories:** US012 extends the `.github/scripts` gates next.
-- **Related records:** `../20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md`
+- **Related records:** `../20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md`
   F-038 (and F-037, the 750-line limit) · `../18-TESTS/AUTOMATED/US010-TEST-STATUS.md` Section 3.
 
 ## 9. Verification

@@ -1328,7 +1328,7 @@ why config files stay out of scope. No map or story claims this entry.
 
 ✅ CLOSED 22/11/2026 — gate 23's verification re-run (third run, 22/11/2026) passed with no
 blockers, closing F-006, and US010 moved to `Accepted` at `2d7e5370` (finding F-006 in
-"project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md"). Nothing
+"project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md"). Nothing
 this entry tracked is left open: REMEDY-01 stays open, not blocking, in its own entry "the
 09/10/2026 build-start remediation never reached the procedures" (F-016), which this closure does
 not touch.
@@ -1393,7 +1393,7 @@ and so does LEGIBLE-02, which is unwalked. They come from four causes:
    ruling covers, plus the regenerated US005, US006 and US009 exports.
 4. LEGIBLE-02 has not been walked (F-005).
 
-Findings F-001 to F-005 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+Findings F-001 to F-005 in "project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
 **Blocked by / Action:** Sam's rulings:
 
 - whether entering a durable CI run ID now counts as reconstructing a capture;
@@ -1419,7 +1419,7 @@ status clauses are satisfied by construction for every boarded register. The sto
 `S-03` has nothing left to assert that those two do not ("project-management/src/02-STORIES/US010.md",
 Dependencies, re-cut). That is the story's claim; this gate did not measure it clause by clause.
 TM-10 stays LOW. The map's `:421-422` sentence ("may run once S-02 has landed") still contradicts
-N-003's presence clause. Finding F-019 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+N-003's presence clause. Finding F-019 in "project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. The map owner's next sitting on
 `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` decides `S-03`'s disposal:
 withdraw it, or re-scope it to whatever it still asserts, such as N-004's template duty and the
@@ -1439,7 +1439,7 @@ lines into the plain shape by hand. US010 documented this in
 `how-to/src/TEMPLATE-GUIDE/14-UPDATING.md:48-59` and fixed nothing (settled 27/09/2026, US010
 grilling round 3 Q15). The complete fix is a seed-if-absent update migration, which is a second
 `copier.yml` decision. The cost grows with every project generated in the meantime. Finding F-020
-(the record's one expensive-to-retrofit row) in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+(the record's one expensive-to-retrofit row) in "project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. A story decides the migration, idempotent and
 refusing to overwrite, on the `.copier/migrations/` precedent, and proves it against a project
 generated before the boards. No map or story claims this entry.
@@ -1454,7 +1454,7 @@ project, runs as a copy, so the copy-gated task moves every blank seed over the 
 file with no prompt: the README, version state, memory, registers, cut plan and boards. An
 uncommitted edit to any of them is lost outright. US010 documented this in
 `how-to/src/TEMPLATE-GUIDE/14-UPDATING.md:61-65`, and the template ships no guard (settled
-27/09/2026, US010 grilling round 3 Q15). Finding F-021 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+27/09/2026, US010 grilling round 3 Q15). Finding F-021 in "project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. A story decides a guard that refuses an existing
 target, reconciled with ST08's one-line task form. No map or story claims this entry.
 
@@ -1469,7 +1469,7 @@ The probe would therefore pass with the memory seed task ungated: an update that
 memory over the project's own copy would move an unchanged seed and go unseen. US010 closed this
 blind case for every board seed (`:262-265` change each between tags, and `:270-278` assert
 byte-identity) but not for memory (settled 27/09/2026, US010 grilling round 3 Q16; TM-01, TM-04;
-plan Section 8 item 4). Finding F-022 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+plan Section 8 item 4). Finding F-022 in "project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. Append to `.copier/MEMORY.md` between the tags as
 the board seeds are, assert that the project's memory is byte-identical after the update, and
 record the mutation's red first. No map or story claims this entry.
@@ -1496,7 +1496,7 @@ round 3 Q9, and routed by round 5 Q16). Three defects, re-measured 21/11/2026:
    `AC-GAP` entries") are each met by a plan reading only `Reviewed`.
 
 Each contradicts `CADENCE.md:96`, "A downstream checklist reads the flag". Until the fix lands,
-each line is read by its flag. Finding F-023 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+each line is read by its flag. Finding F-023 in "project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. One fix pass over those files: each Security and
 GDPR line reads its flag, and `11-qa-checks` gains a `Signed off` step that the QA lines
 require. No map or story claims this entry.
@@ -1524,7 +1524,7 @@ a documentation-only story (code phases N/A) and no statement that a board adapt
 committed transition without becoming a second status authority (REMEDY-01). Separately, the
 sprint-plan _Story Plans_ Status cells do not mirror their plans (US010 reads `Open` against
 In Review), live `Not started` placeholders remain in sprint plans 01, 02 and 06, and nothing
-generates or checks the mirror (REMEDY-02). Findings F-016 and F-017 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+generates or checks the mirror (REMEDY-02). Findings F-016 and F-017 in "project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
 **Update 22/11/2026 (sign-offs):** Sam accepts REMEDY-01 open at `Accepted` (ruling R-007): a
 shared-procedure gap outside US010's write set, the `01-implement-story` build-start remediation
 US007 should have carried. This entry is where it is tracked; it no longer bears on US010.
@@ -1540,7 +1540,7 @@ dropped. No map or story claims this entry.
 **Summary:** US010's LEGIBLE-02 reader sessions (22/11/2026) flagged nineteen board titles as
 illegible or restating their filename. Ten belong to records under `*/archive/`, which is
 frozen, so their titles cannot be edited: seven superseded ADRs (F-053 to F-059) and three
-resolved findings (F-060 to F-062). The other nine are live and carried to the next story. Findings F-053 to F-062 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md",
+resolved findings (F-060 to F-062). The other nine are live and carried to the next story. Findings F-053 to F-062 in "project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md",
 Section 2.10; the readers' reasons are quoted in "project-management/src/18-TESTS/MANUAL/US010-MANUAL-TESTING.md".
 **Update 22/11/2026:** Sam reviewed the reader sessions 22/11/2026 (ruling 2), and LEGIBLE-02
 passes at the second re-walk; the per-title decision below is what remains.
@@ -1568,7 +1568,7 @@ way to show it; nothing under `archive/` is edited by hand. No map or story clai
   has not been measured.
 
 The admin bypass actor (RepositoryRole 5, `always`) is accepted by Sam (R7-3) and is not part
-of this entry. Finding F-025 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+of this entry. Finding F-025 in "project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
 **Blocked by / Action:** Nothing blocks it, and every option is Sam's because each touches
 GitHub settings. One option is a scheduled, read-only settings check running the `gh api`
 read-back in `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md`. The other is a recorded
@@ -1590,7 +1590,7 @@ decision that the unprotected branches stay unprotected. No map or story claims 
    counts tasks. That is true at `7d54df26` (`copier.yml:1138`, `:1188`, `:1195`, `:1199`),
    but nothing holds it (the TM-13 residual).
 
-Findings F-030 and F-031 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+Findings F-030 and F-031 in "project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. Print `copier --version` in `[3/4]`. Add an
 actionlint leg, or record why there is none. Name the tasks rather than count them, as the
 seed-count sites now do. No map or story claims this entry.
@@ -1605,7 +1605,7 @@ read only pytest, Bruno, axe and coverage artefacts. A story whose proof is gate
 probe runners therefore generates an empty table, and its record is hand-written in the free
 sections. US009 was the first such story (its F-029 named a second Bash-only story as this
 entry's trigger), and US010 is the second: its record lists 0 attributed tests against nine
-self-tests, `pm-boards.sh`, `template-hooks.sh` and `hook-arming.sh`. Finding F-033 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+self-tests, `pm-boards.sh`, `template-hooks.sh` and `hook-arming.sh`. Finding F-033 in "project-management/src/20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. Teach the generator a Bash probe-report format (each
 runner already prints a pass/fail summary), or record Bash suites as out of its scope in
 `code/docs/TESTING.md`. No map or story claims this entry.

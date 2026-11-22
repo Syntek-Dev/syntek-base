@@ -53,7 +53,7 @@ parsed row by row where it is a table. It was not presence-counted.
 | `../11-QA/IMPLEMENTATION/QA-IMPL-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md`                              | Pairs with `QA-PLAN-US010-…`; scenario verdicts against the current walk                                                                                          |
 | `../18-TESTS/AUTOMATED/US010-TEST-STATUS.md`                                                               | Generated block against the last suite run; `story-markers.sh` re-read                                                                                            |
 | `../18-TESTS/MANUAL/US010-MANUAL-TESTING.md`                                                               | All 154 rows parsed (`ID`, `Result`, `Notes`); every amendment trail; _Recorded during the build_; _Failures_; _Tester sign-off_                                  |
-| `../20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md`                                       | Present; 63 findings `F-001` to `F-063`; every `F-0NN` an amended row names is in it                                                                              |
+| `../20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md`                               | Present; 63 findings `F-001` to `F-063`; every `F-0NN` an amended row names is in it                                                                              |
 | `/GAPS.md`, `/DEFERRED.md`                                                                                 | The walk blockers, ruling D's route and the legibility entry, updated 22/11/2026; no US010 rows in `DEFERRED.md` (deferrals routed to `GAPS.md` and US012's plan) |
 
 **Out of scope:** the code itself, which merged at `7e88b9b3` and was reviewed through ten rounds
@@ -375,7 +375,7 @@ No suite or self-test was re-run. No live env file was read.
 - `../18-TESTS/AUTOMATED/US010-TEST-STATUS.md` · `../18-TESTS/MANUAL/US010-MANUAL-TESTING.md` — the
   test records this review reads against
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md` — the paired QA review, returned to `22` (R-003)
-- `../20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md` — F-044, F-045 to F-063, and Section 2.8 (Sam's rulings)
+- `../20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md` — F-044, F-045 to F-063, and Section 2.8 (Sam's rulings)
 - `../21-BUGS/` — no defect surfaced by this verification
 - `code/docs/GATE-REPORTING.md` — why R-009 is reported as unmeasured
 - `project-management/workflows/23-pr-and-review/` — the PM workflow where this review is written

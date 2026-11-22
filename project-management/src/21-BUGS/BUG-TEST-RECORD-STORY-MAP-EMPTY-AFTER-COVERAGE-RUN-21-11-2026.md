@@ -16,7 +16,7 @@
 | **Reporter**     | Claude (US010 automated-record session); filed by the gate-22 Step 5 subagent   |
 
 **Status:** Open
-**Status note:** Filed from finding F-034 in `../20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md`. Root cause inferred, not traced
+**Status note:** Filed from finding F-034 in `../20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md`. Root cause inferred, not traced
 
 ---
 
