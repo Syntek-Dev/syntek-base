@@ -9,21 +9,22 @@ One row per sprint plan in `16-SPRINT-PLANS/` and `16-SPRINT-PLANS/archive/`, fi
 
 | Column      | Items |
 | ----------- | ----- |
-| Planned     | 2     |
-| In Progress | 0     |
+| Planned     | 1     |
+| In Progress | 1     |
 | Done        | 6     |
 | Closed      | 0     |
 
 ## Planned
 
-| Plan              | Sprint                                  | Title                                                                                                        | Status  | File                                         |
-| ----------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ------- | -------------------------------------------- |
-| 07-SPRINT-PLAN-07 | [SPRINT-07](../03-SPRINTS/SPRINT-07.md) | A seed that fails to land is reported, and the four indexes that shipped declaring their debt are backfilled | Planned | [07-SPRINT-PLAN-07.md](07-SPRINT-PLAN-07.md) |
-| 08-SPRINT-PLAN-08 | [SPRINT-08](../03-SPRINTS/SPRINT-08.md) | The 09 debugging workflow runs through the scripts, and every log line carries a request_id                  | Planned | [08-SPRINT-PLAN-08.md](08-SPRINT-PLAN-08.md) |
+| Plan              | Sprint                                  | Title                                                                                       | Status  | File                                         |
+| ----------------- | --------------------------------------- | ------------------------------------------------------------------------------------------- | ------- | -------------------------------------------- |
+| 08-SPRINT-PLAN-08 | [SPRINT-08](../03-SPRINTS/SPRINT-08.md) | The 09 debugging workflow runs through the scripts, and every log line carries a request_id | Planned | [08-SPRINT-PLAN-08.md](08-SPRINT-PLAN-08.md) |
 
 ## In Progress
 
-_None._
+| Plan              | Sprint                                  | Title                                                                                                        | Status      | File                                         |
+| ----------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------ | ----------- | -------------------------------------------- |
+| 07-SPRINT-PLAN-07 | [SPRINT-07](../03-SPRINTS/SPRINT-07.md) | A seed that fails to land is reported, and the four indexes that shipped declaring their debt are backfilled | In Progress | [07-SPRINT-PLAN-07.md](07-SPRINT-PLAN-07.md) |
 
 ## Done
 

@@ -10,8 +10,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 2     |
-| In Progress       | 0     |
+| Pending           | 1     |
+| In Progress       | 1     |
 | In Review         | 0     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
@@ -30,12 +30,13 @@ _None._
 
 | ID    | Title                                                                                                                      | Status  | File                 |
 | ----- | -------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
-| US012 | A seeded file that never lands is reported, and the gate's header claim becomes true                                       | Pending | [US012.md](US012.md) |
 | US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Pending | [US013.md](US013.md) |
 
 ## In Progress
 
-_None._
+| ID    | Title                                                                                | Status      | File                 |
+| ----- | ------------------------------------------------------------------------------------ | ----------- | -------------------- |
+| US012 | A seeded file that never lands is reported, and the gate's header claim becomes true | In Progress | [US012.md](US012.md) |
 
 ## In Review
 

@@ -6,7 +6,7 @@
 | Branch | `us012/seed-presence-gate`         |
 | Sprint | SPRINT-07 · Wave 2 · build order 1 |
 | Author | <%ORG_NAME%>                       |
-| Status | `Open`                             |
+| Status | `In Progress`                      |
 
 <!-- BORN WITH ITS PREFIX, 03/10/2026. The number `11-` was reserved for this story on 21/09/2026,
      recorded in `../02-STORIES/US012.md` (its Dependencies, the bullet on SPRINT-07's close: "for

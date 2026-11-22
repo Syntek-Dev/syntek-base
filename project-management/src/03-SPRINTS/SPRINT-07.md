@@ -38,7 +38,7 @@ and a summary written for someone who has not opened it — while the `.copier/`
      is SPRINT-06's, `S-03`'s gate is uncut, and a goal reaching into either would re-merge halves
      the split exists to keep apart. -->
 
-**Status:** Planned
+**Status:** In Progress — US012 started 22/11/2026, its first story
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
