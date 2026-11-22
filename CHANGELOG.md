@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- **`url` 2.5.8 → 2.5.9 in the Rust workspace (RUSTSEC-2026-0592, GHSA-hrj5-67jp-wqp9, 20/11/2026).** `Url::origin()` recursed once per nested `blob:` prefix with no depth limit, so one crafted URL overflowed the stack and aborted the process. `url` is transitive here, reached through Slint's `webbrowser` backend. It was re-resolved alone through `dependencies/update.sh --apply --ecosystem rust --package url`, which also moved `form_urlencoded` 1.2.2 → 1.2.3. The Rust advisories leg of `dependencies/audit.sh` is clean again.
+
 ### Fixed
 
 - **`context7` gets an empty key, not a placeholder, when `CONTEXT7_API_KEY` is unset.** `.mcp.json` passed `"${CONTEXT7_API_KEY}"`, and Claude Code hands an unset reference to the server unexpanded, so the server received the literal text `${CONTEXT7_API_KEY}` as its key. `@upstash/context7-mcp` 4.7.1 recognises that, warns, and runs without a key; anything that took it at face value would send it to Context7, which answers HTTP 401. The reference is now `"${CONTEXT7_API_KEY:-}"`: unset means an empty key, which Context7 serves anonymously at its lower rate limit, and a set key is passed through as before. Codex was unaffected, as its `env_vars` forwards the variable only when it exists, and `audits/mcp-parity.sh` does not compare `env` blocks.
