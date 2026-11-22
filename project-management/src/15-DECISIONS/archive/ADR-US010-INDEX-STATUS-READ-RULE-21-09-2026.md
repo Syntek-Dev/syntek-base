@@ -6,7 +6,7 @@
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** None
 **Superseded by:** `project-management/src/15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`
-**Related:** US010 · US011 · `project-management/src/02-STORIES/US010.md` · `project-management/src/02-STORIES/US011.md` · `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` N-002, N-003 and slice S-03 · `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` (the writer-side format for maps)
+**Related:** US010 · US011 · `project-management/src/02-STORIES/US010.md` · `project-management/src/02-STORIES/archive/US011.md` · `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` N-002, N-003 and slice S-03 · `project-management/src/15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md` (the writer-side format for maps)
 
 ---
 
@@ -80,13 +80,13 @@ three shipped files, and US010 removes it from all three, as a task and a criter
 - Maps: the index cell "string-equals that leading enum value"
   (`project-management/src/02-STORIES/US010.md:329`, as read 21/09/2026).
 - Decisions: "its row carries the enum value alone", for the one ADR whose Status line carries a
-  trailing HTML comment (`project-management/src/02-STORIES/US011.md:230`, as read 21/09/2026).
+  trailing HTML comment (`project-management/src/02-STORIES/archive/US011.md:230`, as read 21/09/2026).
 - Plans: "with the backticks stripped and the value preserved" (the same story, :217, as read
   21/09/2026).
 
 Those quotations are the three answers as written. The write-back of 27/09/2026 replaced each with a
 case of the rule below: maps now at `project-management/src/02-STORIES/US010.md:577` and :586
-(the spine at :555); the decision now at `project-management/src/02-STORIES/US011.md:325`, and the plans at :304
+(the spine at :555); the decision now at `project-management/src/02-STORIES/archive/US011.md:325`, and the plans at :304
 and :307 of the same story (re-measured 27/09/2026 against the final pre-commit text).
 
 Each is silent on the others' cases — "leading enum value" presumes a prefix only maps will have,
@@ -117,8 +117,8 @@ no instance yet are the two with no reading.
 
 **Why now, and not with the gate.** S-03 follows US011 (settled 21/09/2026, grilling round 1 Q1).
 US011 writes one row per instance across four registers, 43 at cutting
-(`project-management/src/02-STORIES/US011.md:318` as read 21/09/2026, now at
-`project-management/src/02-STORIES/US011.md:450`; 47 tracked on 27/09/2026, :46-47) and
+(`project-management/src/02-STORIES/archive/US011.md:318` as read 21/09/2026, now at
+`project-management/src/02-STORIES/archive/US011.md:450`; 47 tracked on 27/09/2026, :46-47) and
 re-counted at build. Whatever reading US011
 uses becomes the rows S-03 is later built against.
 
@@ -129,7 +129,7 @@ this record lengthen that file's Decisions section, which moves the lines below 
 citation here is therefore re-verified before sign-off (discharged 27/09/2026 — see the AMENDED
 note). **AMENDED 27/09/2026:** the edits landed in the working copy with the write-back and
 fix pass of 27/09/2026, still uncommitted; by the time these citations were re-measured US010 had
-grown from 577 to 1,154 lines and `project-management/src/02-STORIES/US011.md` from 379 to 511.
+grown from 577 to 1,154 lines and `project-management/src/02-STORIES/archive/US011.md` from 379 to 511.
 Every citation of either story that locates where this record lands now names its current line
 ("now at", measured 27/09/2026); the rest stay as read 21/09/2026. **AMENDED AGAIN 27/09/2026, AT
 THE FINAL PASS:** neither story changes after the Stories phase, and every "now at" citation of
@@ -161,8 +161,8 @@ changes, so the re-measure of 27/09/2026 is the verification.
 - **Pros:** the reader becomes trivial — the text after the key.
 - **Cons:** ownership. The US004 record's comment is US004's open question, and US011 already
   refuses to edit another story's ADR "to make its own criterion easier"
-  (`project-management/src/02-STORIES/US011.md:66-68`, :232, as read 21/09/2026; now at
-  `project-management/src/02-STORIES/US011.md:84-86` and :327). The ADR template ships into every
+  (`project-management/src/02-STORIES/archive/US011.md:66-68`, :232, as read 21/09/2026; now at
+  `project-management/src/02-STORIES/archive/US011.md:84-86` and :327). The ADR template ships into every
   generated project and its comments are its authoring guidance; the plan cell's backticks are the
   story-plan template's format. And it holds only until the next file is copied from a template that
   still produces the markup: the sources are normalised once, and the templates produce the case
@@ -308,18 +308,18 @@ register (round 1 Q7).
   writes each index's `## How to read a row` at :944-951 (re-measured 27/09/2026 against the final
   pre-commit text). The build writes them into the files.
 - **Follow-on** `[RESOLVED] 27/09/2026` — US011 applies the rule and cites this record. Its
-  Gherkin lines at `project-management/src/02-STORIES/US011.md:217` and :230 were to become cases
+  Gherkin lines at `project-management/src/02-STORIES/archive/US011.md:217` and :230 were to become cases
   of it, and its task at :315-317 was to record a reading rather than a divergence (lines as read
   21/09/2026). The write-back of 27/09/2026 carried both: the carrier scenario is now at
-  `project-management/src/02-STORIES/US011.md:303-310`, the trailing-comment scenario at :322-327,
+  `project-management/src/02-STORIES/archive/US011.md:303-310`, the trailing-comment scenario at :322-327,
   and the task at :444-449. **US011 carries no ADR of its own**: its candidate (:183-187 as read
   21/09/2026) is subsumed here (settled 21/09/2026, grilling round 2, the consequential calls), and
   US011 now records it as closed as subsumed at :245-253, with the no-ADR entry at :259-264.
 - **Follow-on** `[RESOLVED] 27/09/2026` — the positive instance test (Context above) is adopted, by
   this record and by US011's count (settled 27/09/2026, grilling round 3 Q22). US011's text stated
-  N-003's negative test (`project-management/src/02-STORIES/US011.md:26-29` and its Gherkin at
+  N-003's negative test (`project-management/src/02-STORIES/archive/US011.md:26-29` and its Gherkin at
   :205, as read 21/09/2026). The write-back of 27/09/2026 corrected it before US011 is built: the
-  provenance at `project-management/src/02-STORIES/US011.md:46-62` replaces the test still quoted
+  provenance at `project-management/src/02-STORIES/archive/US011.md:46-62` replaces the test still quoted
   at :26-29, the Gherkin is now at :286, and the measurement task at :414-419. N-003's wording
   (`project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md:231-234`, as read 21/09/2026)
   was corrected on 27/09/2026 at the wayfinder resolve sitting on that map, which also made its two

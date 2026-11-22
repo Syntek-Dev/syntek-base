@@ -19,8 +19,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Rejected          | 0     |
 | Customer Rejected | 0     |
 | Blocked           | 1     |
-| Completed         | 1     |
-| Closed            | 0     |
+| Completed         | 0     |
+| Closed            | 1     |
 
 ## Open
 
@@ -80,10 +80,10 @@ _None._
 
 ## Completed
 
-| Plan                | Story                           | Title                                                                                                    | Status    | File                                                                                             |
-| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------ |
-| 12-STORY-PLAN-US011 | [US011](../02-STORIES/US011.md) | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Completed | [12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md](12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md) |
+_None._
 
 ## Closed
 
-_None._
+| Plan                | Story                                   | Title                                                                                                    | Status | File                                                                                                     |
+| ------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------- |
+| 12-STORY-PLAN-US011 | [US011](../02-STORIES/archive/US011.md) | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Closed | [12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md](archive/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md) |

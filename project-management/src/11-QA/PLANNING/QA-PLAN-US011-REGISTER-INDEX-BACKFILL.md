@@ -133,7 +133,7 @@
 >   `.github/workflows/audit-template.yml` "changed only by the grep step" the story adds — a step
 >   US011 no longer adds — and now expects the file untouched. That is a changed expectation, and
 >   the only one. The story line it cited for the task had also drifted; the task now sits at
->   project-management/src/02-STORIES/US011.md:494.
+>   project-management/src/02-STORIES/archive/US011.md:494.
 > - **HP-06 and EC-07 name six supersession chains, not three.** Each enumerated the chains as
 >   "each `Superseded` row" and "every chain" without a date, as read on 21/09/2026; the three
 >   AFTER-TESTS-SPLIT successors of US003 and US004 were accepted on 30/09/2026, so both lists had
@@ -166,7 +166,7 @@
 > answer** (settled 03/10/2026, 17-story-plans grilling round 4 Q8). US011's manual testing guide
 > could not mark its REACH-03 from the records: HP-11 expected no instance file of the four
 > registers touched, and the story's Documentation Task recorded that none was edited, while the
-> spine scenario (project-management/src/02-STORIES/US011.md:317) and EC-09 anticipate the story's
+> spine scenario (project-management/src/02-STORIES/archive/US011.md:317) and EC-09 anticipate the story's
 > own files changing, its Tasks are marked complete before a PR (:430) and its Definition of Done
 > checks them off (:531), and `23-pr-and-review` Step 3 commits the `In Review` flip on the
 > branch. The developer chose the exception. **Two scenarios change what they expect:**
@@ -193,7 +193,7 @@
 ## 1. Acceptance criteria gaps
 
 **Thirteen gaps — two blocking, eight material, three minor. All thirteen are
-`[RESOLVED] 27/09/2026`:** each was fed back into `project-management/src/02-STORIES/US011.md` as
+`[RESOLVED] 27/09/2026`:** each was fed back into `project-management/src/02-STORIES/archive/US011.md` as
 a Gherkin line, a QA criterion, a task or a corrected comment, and each names the story line its
 fix now sits at. Two resolutions also rested on text that is US010's to write (AC-GAP-3,
 AC-GAP-13), and one on SPRINT-07's drop branch (AC-GAP-5); both files carry theirs. The
@@ -221,7 +221,7 @@ by its flag, `N/A` for both members (settled 28/09/2026, 16-sprint-plans grillin
 three plans waited only on the records being corrected first (settled 28/09/2026, 16-sprint-plans
 grilling round 1 Q1, Q3 and Q4), and all three are written: the sprint plan,
 project-management/src/16-SPRINT-PLANS/07-SPRINT-PLAN-07.md, and US012's 11- plan on 03/10/2026, and
-US011's 12- plan, project-management/src/17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md,
+US011's 12- plan, project-management/src/17-STORY-PLANS/archive/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md,
 the same day, in the change that corrected this paragraph. AMENDED 03/10/2026: the paragraph read
 "The sprint plan these gaps gated is owed, and they no longer hold it back", "the close owes",
 "All three are written once" and "The three plans wait only on the records being corrected first"
@@ -261,7 +261,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   (:307-308). **Resolution:** the carrier scenario is rewritten to the one rule, citing the ADR;
   the trailing-comment scenario asserts the normalised equality and keeps "the ADR itself is not
   edited"; the flag, the manual criterion and both tasks read "under the read rule". **Written
-  back 27/09/2026**, now at project-management/src/02-STORIES/US011.md:320-327 (the carrier scenario), :339-344 (the
+  back 27/09/2026**, now at project-management/src/02-STORIES/archive/US011.md:320-327 (the carrier scenario), :339-344 (the
   trailing-comment scenario), :119 (the QA flag), :413-415 (the manual criterion), :442-445 (the
   measurement task) and :455-457 (the plan backfill task).
 - **AC-GAP-2** `[RESOLVED] 27/09/2026` · material — **`Updated` has no source, and the obvious ones are wrong.**
@@ -291,7 +291,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   rebased stays right after it. The manual criterion reads "equal to its file's last commit
   date"; an instance changed in the commit that lands US011 takes that commit's date — written
   with the intended date, then re-checked against `git log` once the commit exists (EC-09).
-  **Written back 27/09/2026**, now at project-management/src/02-STORIES/US011.md:316-317 (the spine scenario) and :413-415 (the
+  **Written back 27/09/2026**, now at project-management/src/02-STORIES/archive/US011.md:316-317 (the spine scenario) and :413-415 (the
   manual criterion).
 - **AC-GAP-3** `[RESOLVED] 27/09/2026` · **blocking** — **the ordering scenario asserts an order the settled
   decision reversed for two registers, and the settled order had no tie-break** (one was
@@ -329,7 +329,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   asserts the file's stated rule plus the chain property directly (EC-07). The tie-break was this
   gap's own open condition, so "ties broken by the rule DECISION-INDEX.md states" now asserts
   something. **Both held edits were written back 27/09/2026:** US011's ordering scenario, now at
-  project-management/src/02-STORIES/US011.md:346-353, and its four backfill tasks, now at :449-457; and US010's criterion, which now
+  project-management/src/02-STORIES/archive/US011.md:346-353, and its four backfill tasks, now at :449-457; and US010's criterion, which now
   states the settled order and both tie-breaks in the ordering line of its scenario "Every index
   carries the shared spine and states its own tail and order" (as read 27/09/2026).
 - **AC-GAP-4** `[RESOLVED] 27/09/2026` · material — **the Decisions section still carries an ADR candidate the
@@ -342,7 +342,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   (:59-68) and the Documentation task (:315-317) inherit the same stale framing. **Resolution:**
   Decisions reads "None — no ADR of its own" with the reason and the citation; the Provenance
   paragraph gains a dated note; the task records which rows the rule normalised instead of a
-  divergence. **Written back 27/09/2026**, now at project-management/src/02-STORIES/US011.md:260-290 (the Decisions section and its
+  divergence. **Written back 27/09/2026**, now at project-management/src/02-STORIES/archive/US011.md:260-290 (the Decisions section and its
   comment), :86-91 (the Provenance note) and :464-469 (the Documentation task).
 - **AC-GAP-5** `[RESOLVED] 27/09/2026` · material — **S-03 now follows this story as its hard successor, and
   the story still reads its own absence as harmless.** Graded material, not blocking: none of the
@@ -402,7 +402,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   baseline diff — captured before the first edit, with the detector recorded by `git hash-object` beside it on the
   procedure of `project-management/src/11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md`
   AC-GAP-1 — and a new finding in a file in US011's edit set is US011's. **Written back
-  27/09/2026**, now at project-management/src/02-STORIES/US011.md:387-398 (the criterion), :497-498 (the QA task) and :517-519 (the
+  27/09/2026**, now at project-management/src/02-STORIES/archive/US011.md:387-398 (the criterion), :497-498 (the QA task) and :517-519 (the
   Verification Check).
 - **AC-GAP-7** `[RESOLVED] 27/09/2026` · material — **no gate can prove the links this story writes resolve, and
   the index files are policed for the form a row might cite in.** The criterion "every one of the
@@ -421,7 +421,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   link-resolution check joins QA Automated — every Markdown link target in the four files tested
   for existence relative to the index (Section 6) — and the spine scenario gains the citation
   form: a row cites by Markdown link, and any backticked reference in a row is a full relative
-  path. **Written back 27/09/2026**, now at project-management/src/02-STORIES/US011.md:399-402 (the link check) and :318 (the
+  path. **Written back 27/09/2026**, now at project-management/src/02-STORIES/archive/US011.md:399-402 (the link check) and :318 (the
   citation form).
 - **AC-GAP-8** `[RESOLVED] 27/09/2026` · material — **"not the index itself" has an obvious implementation that
   silently drops a real row.** US011.md:200 states N-003's instance test.
@@ -453,7 +453,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   detail read "none exists today, and whether one would belong in STORY-PLAN-INDEX.md is not
   settled". N-003's own wording in MAP-REGISTER-INDEXES.md is corrected at the wayfinder resolve
   sitting that already owns the map's two Acceptance-cell fixes (round 5 Q30), not from this gate.
-  **Written back 27/09/2026**, now at project-management/src/02-STORIES/US011.md:303-305 (the instance scenario) and :434-439 (the
+  **Written back 27/09/2026**, now at project-management/src/02-STORIES/archive/US011.md:303-305 (the instance scenario) and :434-439 (the
   measurement task); Q32 needs no US011 edit, because the pattern already leaves out a file that
   may not exist.
 - **AC-GAP-9** `[RESOLVED] 27/09/2026` · material — **"no chain dangles" is undefined at the two edges the tree
@@ -471,7 +471,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   **Resolution:** a chain dangles only where a named file is absent or the two fields disagree; a
   Proposed head is mirrored verbatim and noted in the implementation record, never reconciled (the
   records are US002's); tail cells are read under the same comment-stripping and carry no marker.
-  **Written back 27/09/2026**, now at project-management/src/02-STORIES/US011.md:334-336 (the supersession scenario) and :418-420
+  **Written back 27/09/2026**, now at project-management/src/02-STORIES/archive/US011.md:334-336 (the supersession scenario) and :418-420
   (the manual criterion).
 - **AC-GAP-10** `[RESOLVED] 27/09/2026` · minor — **a story and its plan disagree, and the story does not say the
   index keeps them apart.** Plan 06-US005 carries `Blocked` in its Status row at :9; US005.md
@@ -479,7 +479,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   vocabulary" (US011.md:218) forbids translation but not reconciliation, and the difference is
   deliberate — "a plan marked anything other than Blocked asserts its blockers are cleared"
   (project-management/src/02-STORIES/US007.md:593). **Resolution:** the carrier scenario gains an `And`: each row mirrors its own
-  file, and neither is reconciled to the other. **Written back 27/09/2026**, now at project-management/src/02-STORIES/US011.md:327.
+  file, and neither is reconciled to the other. **Written back 27/09/2026**, now at project-management/src/02-STORIES/archive/US011.md:327.
 - **AC-GAP-11** `[RESOLVED] 27/09/2026` · material — **the seed-side criteria predate three settlements, and the
   literal grep has a false positive built in.** First, settled 21/09/2026, grilling round 1 Q2:
   `.github/scripts/shipped-registers.sh` gains a third family proving the seven index seeds blank,
@@ -503,7 +503,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   `[3/4]` rows at :262 and :361 that say "both answer sets" of the same key — are reworded
   path-neutral, "on every render path the template offers (the 72 valid cases approved 09/10/2026)",
   so only test code changes when MAP-NATIVE-MOBILE-SURFACE S-01 deletes the key (HP-10, PA-01).
-  **Written back 27/09/2026**, now at project-management/src/02-STORIES/US011.md:362-368 (the generated-tree scenario), :373-386
+  **Written back 27/09/2026**, now at project-management/src/02-STORIES/archive/US011.md:362-368 (the generated-tree scenario), :373-386
   (the three automated criteria) and :520-521 (the Verification Check).
 - **AC-GAP-12** `[RESOLVED] 27/09/2026` · minor — **the population figure is stale in four places, and the title
   still states one.** US011.md's title (:1) says "43 rows"; the Provenance (:26-33) counts 43;
@@ -522,7 +522,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   (:170) was stale against SPRINT-07's working tree when this plan was first written; **the
   concurrent session rewrote it at 16:56 on 21/09/2026** (:170-173 now opens "Sprint membership:
   SPRINT-07's stretch Should, beside US012 (Must, 2 SP) at 10 / 11", quoted here without its
-  backticks; now at project-management/src/02-STORIES/US011.md:233-248), so no edit is owed for it here.
+  backticks; now at project-management/src/02-STORIES/archive/US011.md:233-248), so no edit is owed for it here.
   **Resolution:** the title drops the literal, and the generated
   `project-management/export/clickup/US011-CLIENT.md:1`, which carries it, is regenerated from
   source rather than edited (`project-management/export/clickup/README.md:11`); the Provenance
@@ -552,7 +552,7 @@ project-management/src/11-QA/PLANNING/QA-PLAN-US009-HOOK-ARMING.md, whose two bl
   carry no descriptor segment; an ADR and a plan do. **Resolution:** the label is the descriptor
   where the filename carries one and the identifier where it does not, and US010's "How to read a
   row" section in each file says which — a US010 obligation, carried by the same held feedback
-  edit against US010 as AC-GAP-3's. **Written back 27/09/2026**, now at project-management/src/02-STORIES/US011.md:314; US010's
+  edit against US010 as AC-GAP-3's. **Written back 27/09/2026**, now at project-management/src/02-STORIES/archive/US011.md:314; US010's
   half is carried by the label and "How to read a row" lines of its scenario "Every index carries
   the shared spine and states its own tail and order" (as read 27/09/2026).
 
@@ -644,7 +644,7 @@ running stack. "The read rule" is the one settled 21/09/2026, grilling round 1 Q
 | HP-10 | Projects generated from the committed change on every render path the template offers (the 72 valid cases approved 09/10/2026) | The four index files in each tree are read                                                                                                                                  | Present; the empty-register placeholder row and no other; no instance identifier bar the 000 template identifiers (AC-GAP-11)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | HP-11 | The change applied                                                                                                             | `git diff --name-only` against the recorded post-rebase base SHA, the diff of each of the story's own three files, and `git log --name-only` over the story's commits       | Nothing under `.copier/`; `copier.yml` untouched; no instance file of the four registers touched but US011.md, its 12- plan and SPRINT-07.md, and those three only in their status carriers and the task, checklist and Definition-of-Done ticks the story's Tasks and gate `23` require — each status flip a commit of its own touching that carrier and, for a plan flip after US007 lands, its required sprint-plan Status mirror, a US011.md flip carrying the `project-management/export/clickup/US011-CLIENT.md` the pre-commit hook regenerates, and no tick in a backfill commit (settled 03/10/2026, 17-story-plans grilling round 4 Q8); the US011 Story Plans Status mirror in `project-management/src/16-SPRINT-PLANS/07-SPRINT-PLAN-07.md` changes with plan transitions after US007 lands and no other cell changes; `.github/workflows/audit-template.yml` untouched — US011 adds no step, the generated-tree grep being US010's one step over all seven index files (settled 03/10/2026, 17-story-plans grilling round 1 Q2) |
 | HP-12 | The change applied                                                                                                             | `shipped-artefacts.sh --self-test`, `shipped-registers.sh` and its `--self-test`, and `shipped-ai.sh --self-test` run                                                       | All green; none of the three scripts — four files, counting the `shipped-ai.py` the wrapper execs — edited by US011's diff (AC-GAP-11)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| HP-13 | Every row's Summary                                                                                                            | Read cold by a reader other than the author, who has not opened the artefact (project-management/src/02-STORIES/US011.md:416-417, :423, :503)                               | Each conveys what the artefact is; the reader is named in the walk-through, and the count of summaries read is recorded beside the count of rows — a summary not read has not been checked                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| HP-13 | Every row's Summary                                                                                                            | Read cold by a reader other than the author, who has not opened the artefact (project-management/src/02-STORIES/archive/US011.md:416-417, :423, :503)                       | Each conveys what the artefact is; the reader is named in the walk-through, and the count of summaries read is recorded beside the count of rows — a summary not read has not been checked                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 <!-- CORRECTED IN PLACE 03/10/2026 at the 17-story-plans gate (settled 03/10/2026, 17-story-plans
      grilling round 1 Q2). HP-11's Then ended "`.github/workflows/audit-template.yml` changed only by
@@ -681,10 +681,10 @@ running stack. "The read rule" is the one settled 21/09/2026, grilling round 1 Q
 | ES-05 | A row or summary citing a peer as a bare backticked story or sprint token                                                                      | `doc-references.sh --path` over the index                                                              | A new `[instance citation]` in a file in US011's edit set — US011's own finding in the baseline diff, not an inherited one (AC-GAP-7)                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ES-06 | A `.copier/` seed touched by the diff                                                                                                          | HP-11's listing                                                                                        | Fails. A seed is US010's surface and a one-way door (US010.md ST03 and ST04)                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ES-07 | The debt line left in one index, or a "Backfill owed" line removed from any other file                                                         | HP-09's listing                                                                                        | Fails                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| ES-08 | A tree-wide `grep -rl 'Backfill owed'` used as the Definition of Done check (project-management/src/02-STORIES/US011.md:536)                   | Run after the change                                                                                   | It never passes: nine files carried the phrase at 17:02 on 21/09/2026 — six tracked (US010, US011, SPRINT-06, SPRINT-07, the map and the handoff) and three untracked gate artefacts, this plan and US010's two security plans among them — and none is an index. Every gate artefact that discusses the debt adds to the figure. The check is scoped to the index files or it is noise                                                                                                                                                   |
+| ES-08 | A tree-wide `grep -rl 'Backfill owed'` used as the Definition of Done check (project-management/src/02-STORIES/archive/US011.md:536)           | Run after the change                                                                                   | It never passes: nine files carried the phrase at 17:02 on 21/09/2026 — six tracked (US010, US011, SPRINT-06, SPRINT-07, the map and the handoff) and three untracked gate artefacts, this plan and US010's two security plans among them — and none is an index. Every gate artefact that discusses the debt adds to the figure. The check is scoped to the index files or it is noise                                                                                                                                                   |
 | ES-09 | US010 not landed — the four files absent, or without their debt line                                                                           | US011 is started                                                                                       | It cannot start; SPRINT-07's Definition of Done row requiring US010 to have landed first fails before any row is written                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| ES-10 | A Summary that restates the filename in prose — for ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL, "the ADR on the cited plan prefix being optional" | The legibility pass reads it (HP-13)                                                                   | Fails: the story's own fail condition (project-management/src/02-STORIES/US011.md:416-417, :458-459), and the filename-derived label N-002 rejected                                                                                                                                                                                                                                                                                                                                                                                       |
-| ES-11 | A Summary running past one line — a hard line break inside the cell                                                                            | The file is read, and rendered                                                                         | Fails "one line" (project-management/src/02-STORIES/US011.md:315). A Markdown table row cannot span lines: the break ends the row, and the remainder renders as a stray line or a malformed row                                                                                                                                                                                                                                                                                                                                           |
+| ES-10 | A Summary that restates the filename in prose — for ADR-US004-CITED-PLAN-PREFIX-IS-OPTIONAL, "the ADR on the cited plan prefix being optional" | The legibility pass reads it (HP-13)                                                                   | Fails: the story's own fail condition (project-management/src/02-STORIES/archive/US011.md:416-417, :458-459), and the filename-derived label N-002 rejected                                                                                                                                                                                                                                                                                                                                                                               |
+| ES-11 | A Summary running past one line — a hard line break inside the cell                                                                            | The file is read, and rendered                                                                         | Fails "one line" (project-management/src/02-STORIES/archive/US011.md:315). A Markdown table row cannot span lines: the break ends the row, and the remainder renders as a stray line or a malformed row                                                                                                                                                                                                                                                                                                                                   |
 | ES-12 | A Summary containing a literal pipe character                                                                                                  | The table is rendered, and the cell-count check runs (Section 6)                                       | The pipe opens an extra cell and shifts `Updated` and the tail out from under their headers. Fails unless escaped; the cell-count check prints more than one value                                                                                                                                                                                                                                                                                                                                                                        |
 
 <!-- CORRECTED IN PLACE 03/10/2026 at the 17-story-plans gate. ES-08's Given cited the Definition of
@@ -881,7 +881,7 @@ unchanged-script checks; the original pre-edit SHA remains the historical captur
   in between makes the diff detector-confounded, reported as such, never as US011's.
 - **No gate reads any of this until S-03.** Every presence, symmetry and status check here is
   manual or a one-line command. Record the command, its output and the HEAD it ran at, so the
-  walk-through is reproducible by the second tester the story requires (project-management/src/02-STORIES/US011.md:423).
+  walk-through is reproducible by the second tester the story requires (project-management/src/02-STORIES/archive/US011.md:423).
 - **No pytest, no coverage figure, no migration.** The Verification Checks' Python rows do not
   apply; the test record says `N/A` with the reason rather than leaving them blank.
 
@@ -937,7 +937,7 @@ Each was raised during the pass, each was plausible, and each fails on a measure
 
 ## Cross-references
 
-- `project-management/src/02-STORIES/US011.md` — the story this plan tests; all thirteen gaps above are `[RESOLVED] 27/09/2026` in it
+- `project-management/src/02-STORIES/archive/US011.md` — the story this plan tests; all thirteen gaps above are `[RESOLVED] 27/09/2026` in it
 - `project-management/src/02-STORIES/US010.md` — the story that creates the four files, their tails, ordering prose and debt lines
 - `project-management/src/03-SPRINTS/SPRINT-07.md` — the record US011 is the stretch `Should` of
 - `project-management/src/01-FEATURE-MAPS/MAP-REGISTER-INDEXES.md` — `N-002`, `N-003` and the `S-05` row

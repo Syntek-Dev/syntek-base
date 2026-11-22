@@ -476,7 +476,7 @@ Four further constraints are carried by other instruments and are **not** `ST` c
       ("US011 lands and S-03 has not been cut") is retired by Q21: <%DEVELOPER_NAME%> chose LOW
       knowing S-03 is unscheduled (call recorded 27/09/2026 with round 6; threat model Section 3a).
       US011 carries the entry as a task and a Definition-of-Done line
-      (`project-management/src/02-STORIES/US011.md:470-477` and `:534-538`, re-measured
+      (`project-management/src/02-STORIES/archive/US011.md:470-477` and `:534-538`, re-measured
       30/09/2026 against the story as corrected at this gate; cited AMENDED 27/09/2026 at the
       final pass).
       AMENDED 27/09/2026: this criterion had read that the decision did not name which story's
@@ -485,8 +485,8 @@ Four further constraints are carried by other instruments and are **not** `ST` c
       round 2 Q13), which P8 superseded: SPRINT-08 is RULE-OWNERSHIP's (US013, US014) (A08, TM-10)
 - [ ] **7.12** `SEEDED`'s presence half is US012's check-4 loop and deletion probe; every citation
       of `SEEDED` describes it as an allowlist, including US011's, cited 21/09/2026 at
-      `project-management/src/02-STORIES/US011.md:73-75` and amended 27/09/2026 to read as one
-      (`project-management/src/02-STORIES/US011.md:99-103`, re-measured 27/09/2026 against the
+      `project-management/src/02-STORIES/archive/US011.md:73-75` and amended 27/09/2026 to read as one
+      (`project-management/src/02-STORIES/archive/US011.md:99-103`, re-measured 27/09/2026 against the
       final pre-commit text) (A06, TM-09)
 
 <!-- AMENDED 28/09/2026 at the 16-sprint-plans sign-off, and re-measured 30/09/2026. 7.12's

@@ -4,11 +4,11 @@ _The manual testing guide for US011 — the reads, counts, CI runs and planted m
 
 **Last Updated**: 09/10/2026 · **Story**: US011 · **Status**: Authored — not yet walked
 
-- **Story:** `../../02-STORIES/US011.md` — the four indexes that shipped blank get a row per instance, and each register stops claiming it is empty
-- **Story plan:** `../../17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` — the code master this guide was authored beside
+- **Story:** `../../02-STORIES/archive/US011.md` — the four indexes that shipped blank get a row per instance, and each register stops claiming it is empty
+- **Story plan:** `../../17-STORY-PLANS/archive/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` — the code master this guide was authored beside
 - **Branch:** `us011/register-index-backfill`
 - **Surface:** Gate — every row reads a file in the repository, runs a `git` or text reading over it, runs a `.github/scripts/` self-test or a `code/src/scripts/audits/` gate, or reads a CI run by its recorded ID. No stack, no browser
-- **Authored from:** `../../02-STORIES/US011.md` (Acceptance Criteria and its eight scenarios, QA Acceptance Criteria — Automated and — Manual, Tasks, Verification Checks, Definition of Done); `../../11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md` (Sections 1 to 8, as corrected in place 03/10/2026); `../../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US010-SEEDED-REGISTER-INDEXES.md` (TM-02, TM-03, TM-09, TM-10, TM-11 and Section 3a) and `../../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US010-SEEDED-REGISTER-INDEXES.md` (Sections 7.11 and 7.12) — US010's two signed-off security plans, the only security artefacts naming this story, whose own Security flag reads `N/A`; `../../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (Decision); `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` (Decision); `../../16-SPRINT-PLANS/07-SPRINT-PLAN-07.md` (Build order, the lane, Gate honesty, Sprint Verification Checklist, Sprint Definition of Done); `../../03-SPRINTS/SPRINT-07.md` (QA Acceptance Criteria — Manual, QA Tasks — Manual, Definition of Done); `../../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` (P2's shape of the four files, the generated-tree grep and the link check — the index shapes this story fills); `../../17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` (Approach P0 to P5, Key Decisions, Testing, Status Propagation); `project-management/workflows/23-pr-and-review/STEPS.md` (Step 3's `In Review` commit) and `lefthook.yml` with `../../00-ASSETS/scripts/precommit-clickup.sh` (the ClickUp export hook), read for REACH-03 and the question it raised, answered 03/10/2026 (_Preconditions_ → _Open questions_). No `04`–`09`, `12`–`14` artefact exists for this story: those flags read `N/A`. Never code.
+- **Authored from:** `../../02-STORIES/archive/US011.md` (Acceptance Criteria and its eight scenarios, QA Acceptance Criteria — Automated and — Manual, Tasks, Verification Checks, Definition of Done); `../../11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md` (Sections 1 to 8, as corrected in place 03/10/2026); `../../10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US010-SEEDED-REGISTER-INDEXES.md` (TM-02, TM-03, TM-09, TM-10, TM-11 and Section 3a) and `../../10-SECURITY/ASSESSMENTS/PLANNING/ASSESSMENT-PLAN-US010-SEEDED-REGISTER-INDEXES.md` (Sections 7.11 and 7.12) — US010's two signed-off security plans, the only security artefacts naming this story, whose own Security flag reads `N/A`; `../../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (Decision); `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` (Decision); `../../16-SPRINT-PLANS/07-SPRINT-PLAN-07.md` (Build order, the lane, Gate honesty, Sprint Verification Checklist, Sprint Definition of Done); `../../03-SPRINTS/SPRINT-07.md` (QA Acceptance Criteria — Manual, QA Tasks — Manual, Definition of Done); `../../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` (P2's shape of the four files, the generated-tree grep and the link check — the index shapes this story fills); `../../17-STORY-PLANS/archive/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` (Approach P0 to P5, Key Decisions, Testing, Status Propagation); `project-management/workflows/23-pr-and-review/STEPS.md` (Step 3's `In Review` commit) and `lefthook.yml` with `../../00-ASSETS/scripts/precommit-clickup.sh` (the ClickUp export hook), read for REACH-03 and the question it raised, answered 03/10/2026 (_Preconditions_ → _Open questions_). No `04`–`09`, `12`–`14` artefact exists for this story: those flags read `N/A`. Never code.
 
 > **Authored before code, walked after it.** Which workflow writes which part of this file, and
 > when, is `../CLAUDE.md` → _The record lifecycle_. Every rule for filling it — authoring, open
@@ -111,7 +111,7 @@ unmeasured and its full-coverage completion criterion cannot be ticked.
   file" for the next
 - **The tester:** someone other than the author of the story's edits
 - **Every figure is counted at the walk.** No count in this guide is a target, and none is copied
-  from the QA plan's dated readings (`../../02-STORIES/US011.md:309`)
+  from the QA plan's dated readings (`../../02-STORIES/archive/US011.md:309`)
 - **Out of scope:**
   - **HP-10's and PA-01's direct read of a generated tree's four index files** — no project script
     generates a tree locally, and the CI run prints no file's contents. Both are walked through the
@@ -141,7 +141,7 @@ unmeasured and its full-coverage completion criterion cannot be ticked.
      commits — REACH-03** — answered (Q8), the recommended option of three (settled 03/10/2026,
      17-story-plans grilling round 4 Q8). The records had pulled two ways: QA plan HP-11 expected
      "no instance file of the four registers touched" and the story's Documentation Task recorded
-     "that no instance file was edited", while the spine scenario (`../../02-STORIES/US011.md:317`)
+     "that no instance file was edited", while the spine scenario (`../../02-STORIES/archive/US011.md:317`)
      and QA plan EC-09 anticipate these files changing, the story's Tasks are marked complete before
      a PR (`:430`, "Mark each complete before a PR") and its Definition of Done checks them off
      (`:531`, "All tasks checked off"), and `23-pr-and-review` Step 3 commits the `In Review` flip
@@ -392,8 +392,8 @@ Filled at the walk.
 
 ## Cross-references
 
-- `../../02-STORIES/US011.md` — the story under test; its _QA Acceptance Criteria — Manual_ is the bar this guide is judged against
-- `../../17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` — the implementation plan this guide was authored beside
+- `../../02-STORIES/archive/US011.md` — the story under test; its _QA Acceptance Criteria — Manual_ is the bar this guide is judged against
+- `../../17-STORY-PLANS/archive/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` — the implementation plan this guide was authored beside
 - "../AUTOMATED/US011-TEST-STATUS.md" — the paired automated-test record; it does not exist until `22-implementation-documentation` writes it
 - `../../11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md` — where the `QA` column's scenario IDs are defined
 - `../../11-QA/IMPLEMENTATION/` — whether the specified scenarios were met, recorded at the closeout

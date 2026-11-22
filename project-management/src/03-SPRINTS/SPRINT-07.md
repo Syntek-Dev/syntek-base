@@ -55,7 +55,7 @@ Notes.
      closed "US012's story plan is written (03/10/2026), and US011's is not yet." until then.
      US011's plan and its manual testing guide were written that day, once US010's plan was
      committed (settled 03/10/2026, 16-sprint-plans grilling round 9 Q22) —
-     project-management/src/17-STORY-PLANS/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md and
+     project-management/src/17-STORY-PLANS/archive/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md and
      project-management/src/18-TESTS/MANUAL/US011-MANUAL-TESTING.md. The plan reads Blocked, its
      four files existing only once US010 is built; the story stays Open. The figure, the members
      and the admission posture did not move. -->
@@ -89,7 +89,7 @@ Notes.
 <!-- FLAGS — the union of the member stories' flags. Recompute this table on every story admitted,
      never edit it directly.
      Computed 20/09/2026 on US011's admission at opening — the union over one member is that
-     member's table, copied verbatim from project-management/src/02-STORIES/US011.md including the
+     member's table, copied verbatim from project-management/src/02-STORIES/archive/US011.md including the
      reasoning its Security row carries in place of a bare N/A. One row carries values: QA names
      integration and manual types. Twelve rows read N/A.
 
@@ -150,7 +150,7 @@ Notes.
      is still first-pass, for the reason stated above.
 
      RECOMPUTED 27/09/2026, per the rule at the head of this comment, on the write-back of the
-     US010 / US011 gate grilling into project-management/src/02-STORIES/US011.md. No story was
+     US010 / US011 gate grilling into project-management/src/02-STORIES/archive/US011.md. No story was
      admitted or dropped; the recompute is owed because a member's table moved. CHANGED in two
      rows, both in US011's half. US012's table was re-read from the same folder that day and is
      unchanged — its 27/09/2026 amendment touched its first Gherkin scenario only.
@@ -377,7 +377,7 @@ Notes.
      "**`MAP-REGISTER-INDEXES.md` `S-03` — the gate — ships after this sprint.**" from 20/09/2026.
      It also read "US011 is what makes its symmetry and status clauses testable" and closed "this
      record is a precondition of `S-03` being meaningful". It is brought into line with
-     project-management/src/02-STORIES/US011.md -> Dependencies as that write-back left it. The
+     project-management/src/02-STORIES/archive/US011.md -> Dependencies as that write-back left it. The
      presence clause makes US011 the condition of `S-03` landing green (round 1 Q1). `S-03` is
      unscheduled (CUT-PLAN.md P8), which supersedes the 21/09/2026 settlement that cut it into a
      new SPRINT-08 (round 1 Q1's second half, round 2 Q13). The carry bullet gained its sentence on
@@ -485,7 +485,7 @@ warrant in the process.
 declined. The alternative leaves a cut story in no Story Summary, counted nowhere — which is the
 exact argument that opened `project-management/src/03-SPRINTS/SPRINT-05.md` on 09/09/2026 for US008
 and `project-management/src/03-SPRINTS/SPRINT-06.md` on 20/09/2026 for US010 — and
-`project-management/src/02-STORIES/US011.md` already asserts this membership from its own side, so
+`project-management/src/02-STORIES/archive/US011.md` already asserts this membership from its own side, so
 holding the record would leave a story naming a record that does not exist. **Nothing in the tree
 refuses a seventh record**, measured 20/09/2026 across `project-management/` and `.claude/`.
 
@@ -1313,7 +1313,7 @@ All tasks below are sprint-level rollups. Detailed task lists live in the story 
      the one ADR, the reading taken, and why that ADR was not edited". Each now follows the
      member's own task as its write-back left it.
      AMENDED 27/09/2026 at the final pass, following
-     project-management/src/02-STORIES/US011.md -> Documentation Tasks as it now stands. One row is
+     project-management/src/02-STORIES/archive/US011.md -> Documentation Tasks as it now stands. One row is
      new, the TM-10 window's GAPS.md entry: US011's gate-22 pass writes it, gate 22 being the only
      writer of GAPS.md, and the window is TM-10's in
      project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US010-SEEDED-REGISTER-INDEXES.md
@@ -1557,7 +1557,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       exactly one branch is taken.** **DELIVERED:** US011 is marked **Completed**, and every row
       below headed _deliver branch_ binds as written. **DROPPED:** the drop and its reason are
       recorded in three places in the same change — here, in
-      `project-management/src/02-STORIES/US011.md`, and in the backlog register in every copy.
+      `project-management/src/02-STORIES/archive/US011.md`, and in the backlog register in every copy.
       **There is no `SPRINT-08` to reserve the 8 SP into**, and this record does not invent one: the
       reservation is recorded as **owed and unplaced**, and is named the moment a receiving record
       is opened — the discipline `project-management/src/03-SPRINTS/SPRINT-05.md` had to be

@@ -427,7 +427,7 @@ must track build order or it says nothing. Do not read either guardrail across t
 
 <!-- UPDATED 03/10/2026, 17-story-plans Step 10 for US010, and lifted out of the list for the
      Prettier reason SPRINT-05 recorded on 20/09/2026. The first bullet read "US010's reservation is
-     not yet recorded in the story." and went on: "../02-STORIES/US011.md and ../02-STORIES/US012.md
+     not yet recorded in the story." and went on: "../02-STORIES/archive/US011.md and ../02-STORIES/US012.md
      record theirs; ../02-STORIES/US010.md does not, measured 03/10/2026. The row above and
      ../03-SPRINTS/SPRINT-06.md -> Dependencies carry the reservation meanwhile, and US010's
      story-plan commit records it, when Step 10 item 3 references the plan in the story. This

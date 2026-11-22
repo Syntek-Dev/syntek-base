@@ -19,8 +19,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Rejected          | 0     |
 | Customer Rejected | 0     |
 | Blocked           | 1     |
-| Completed         | 1     |
-| Closed            | 0     |
+| Completed         | 0     |
+| Closed            | 1     |
 
 ## Open
 
@@ -80,10 +80,10 @@ _None._
 
 ## Completed
 
-| ID    | Title                                                                                                    | Status    | File                 |
-| ----- | -------------------------------------------------------------------------------------------------------- | --------- | -------------------- |
-| US011 | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Completed | [US011.md](US011.md) |
+_None._
 
 ## Closed
 
-_None._
+| ID    | Title                                                                                                    | Status | File                         |
+| ----- | -------------------------------------------------------------------------------------------------------- | ------ | ---------------------------- |
+| US011 | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Closed | [US011.md](archive/US011.md) |
