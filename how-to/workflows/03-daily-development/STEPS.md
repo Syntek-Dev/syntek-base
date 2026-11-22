@@ -31,8 +31,8 @@ Consult `how-to/REFERENCES.md` as you work through these steps:
 ### Step 1 — Pull Latest
 
 ```bash
-git checkout testing
-git pull origin testing
+git checkout dev
+git pull origin dev
 ```
 
 > **Model:** opus
@@ -53,7 +53,7 @@ bash code/src/scripts/development/server.sh status
 bash code/src/scripts/database/migrate.sh run
 ```
 
-Applying migrations picks up any schema changes pulled from `testing`.
+Applying migrations picks up any schema changes pulled from `dev`.
 
 > **Model:** opus
 

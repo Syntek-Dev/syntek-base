@@ -251,10 +251,10 @@ US005's was written 05/09/2026 and repointed 07/09/2026; US006's was written 08/
 `17-story-plans`, taking the number `07-` that had been reserved for it that morning, and this
 table was repointed at it the same day by that workflow's Step 10.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                      | Status   |
-| ----- | ---------------------------------------------------------------------- | -------- |
-| US005 | `../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` | Accepted |
-| US006 | `../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`               | Accepted |
+| Story | Story plan (`../17-STORY-PLANS/`)                                      | Status            |
+| ----- | ---------------------------------------------------------------------- | ----------------- |
+| US005 | `../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` | Customer Accepted |
+| US006 | `../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`               | Customer Accepted |
 
 <!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
      US006's cell held the placeholder and now carries its plan's own `| Status |` header row,
@@ -267,6 +267,10 @@ table was repointed at it the same day by that workflow's Step 10.
      (`.claude/skills/completion/SKILL.md` -> Plans). This supersedes, on this point, the 09/10/2026
      remediation wording "the plan's own Status field", the ruling-D comment above, and any prose
      in this section that calls the column a mirror of the plan's own `Status` field. Cells: US005 In Progress -> Accepted; US006 In Progress -> Accepted. -->
+
+<!-- RE-MIRRORED AGAIN 22/11/2026 by the `completion` skill, on the same rule (the cell mirrors
+     the story's status as `../17-STORY-PLANS/STORY-PLANS-BOARD.md` lists it): customer review on staging (d52abd92) and acceptance, promoted to main via PR #41 (ccca17e4), Sam's sign-off 22/11/2026.
+     Cells: US005 Accepted -> Customer Accepted; US006 Accepted -> Customer Accepted. -->
 
 <!-- 08/09/2026 — THE STATUS COLUMN. US005's cell reads "Not started", and the value is
      KNOWINGLY FALSE: it is a value in no status set anywhere in this repository, and the plan it

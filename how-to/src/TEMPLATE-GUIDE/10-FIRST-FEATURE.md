@@ -283,11 +283,15 @@ Raise a PR for this branch.
 `gh pr create` and runs eight gates — format, lint, typecheck, tests, security, stubs, cloc,
 lockfiles. It blocks the PR rather than letting CI find it later.
 
-Feature branches always target `testing`, never `dev`, `staging` or `main` directly:
+Feature branches are cut from `dev` and always target `dev`, never `testing`, `staging` or
+`main` directly:
 
 ```text
-us###/feature  →  testing  →  dev  →  staging  →  main
+us###/feature  →  dev  →  testing  →  staging  →  main
 ```
+
+A second developer reviews on `dev`, the QA team checks on `testing`, and the client accepts on
+`staging` — QA comes before the client sees anything.
 
 ## 10. Close the story
 

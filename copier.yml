@@ -1066,24 +1066,18 @@ _migrations:
   - command: bash "<% _copier_conf.src_path %>/.copier/migrations/cookie-domain-conflict.sh"
     when: "<% _stage == 'after' %>"
 
-  # PENDING, AND DISABLED. The one-time cutover notice for the same rename: the first deploy
-  # invalidates every live session and open CSRF token, a rollback does it again, a rolling
-  # deploy is unsafe, and anything matching the cookies by name must be repointed. That is an
-  # EVENT at one crossing, so unlike the entry above it needs a version key — and the key is
-  # DERIVED AT RELEASE, never at design: it names the release this doctrine ships in, and a
-  # number written here before that tag exists is the unverified claim the v6.0.0 entry's
-  # comment records this file making before. Copier runs an entry with no `version:` on every
-  # update, so until then it is switched off with a YAML boolean rather than left keyless.
-  #
-  # AT RELEASE, IN ONE COMMIT, THEN TAG THAT COMMIT: derive the key with
-  # `git tag --sort=-v:refname | head -1` (--sort is load-bearing: a bare `git tag` sorts
-  # lexically), take the release being cut, add it as `version:`, rename the script to
-  # v<RELEASE>-host-only-cookies.sh, and replace `when: false` with the after-stage predicate
-  # the entries above carry. Never tag a partially activated state. It will be a MINOR key, as
-  # the v7.7.0 and v7.8.0 entries already are: a key names the release a change shipped in,
-  # whatever that release's semver tier. 24-release/CHECKLIST.md carries the obligation.
-  - command: bash "<% _copier_conf.src_path %>/.copier/migrations/host-only-cookies.sh"
-    when: false
+  # The one-time cutover notice for the same rename: the first deploy invalidates every live
+  # session and open CSRF token, a rollback does it again, a rolling deploy is unsafe, and
+  # anything matching the cookies by name must be repointed. That is an EVENT at one crossing,
+  # so unlike the entry above it carries a version key. The key was DERIVED AT RELEASE, never at
+  # design: it names v7.10.0, the release this doctrine ships in, read off
+  # `git tag --sort=-v:refname | head -1` (v7.9.0) when that release was cut on 22/11/2026, and
+  # the entry was activated, renamed and keyed in that release's commit. It is a MINOR key, as
+  # the v7.7.0 and v7.8.0 entries are: a key names the release a change shipped in, whatever
+  # that release's semver tier.
+  - version: v7.10.0
+    command: bash "<% _copier_conf.src_path %>/.copier/migrations/v7.10.0-host-only-cookies.sh"
+    when: "<% _stage == 'after' %>"
 
   # .copier/ is a staging directory, not project content. The _task that empties it and
   # removes it is gated to `copy`, so on an `update` the staged seeds land in the project

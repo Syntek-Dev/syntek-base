@@ -29,10 +29,13 @@ does not exist. Never hardcode the name in a second place.
 
 ### The promotion tier
 
-**75% is the floor on every branch; 80% is the floor from `testing` upward.** A pull request whose
-base is `dev`, `staging` or `main` is promoting work that has already been merged once, and it
-clears the higher number or it does not promote. This guide owns the numbers only — the chain they
-key off is
+**75% is the floor on every branch; 80% is the floor from `testing` upward.** A feature pull
+request targets `dev` and clears 75%; a pull request whose base is `testing`, `staging` or `main`
+is promoting work that has already been merged once, and it clears the higher number or it does
+not promote. A fast-forward promotion has no pull request, so CI's base-branch check cannot run
+before it; the local gate (`.claude/hooks/pre-pr-check.sh`, 80% on `dev` and above) is the
+pre-promotion check, and CI on the push to the target is the record. This guide owns the numbers
+only — the chain they key off is
 [`BRANCHES-AND-WORKTREES.md`](../../../project-management/docs/git/BRANCHES-AND-WORKTREES.md).
 
 The 90% auth floor does **not** tier; it applies unchanged on both.

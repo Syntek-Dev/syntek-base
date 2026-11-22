@@ -16,8 +16,8 @@ model: opus
 
 ## Execution Checklist
 
-- [ ] On a feature branch, not on `testing`, `dev`, `staging`, or `main` · _opus_
-- [ ] Branch is up to date with `testing` · _opus_
+- [ ] On a feature branch, not on `dev`, `testing`, `staging`, or `main` · _opus_
+- [ ] Branch is up to date with `dev` · _opus_
 - [ ] All containers healthy before starting work · _opus_
 - [ ] `syntax/lint.sh` passes — it aggregates every surface, not just Python · _opus_
 - [ ] `syntax/check.sh` passes — basedpyright clean, no new `Any` · _opus_

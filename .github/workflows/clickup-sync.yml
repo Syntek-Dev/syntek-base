@@ -9,7 +9,7 @@ name: Sync stories to ClickUp
 # re-runs idempotent (no duplicate tasks). New ids are committed back to the branch. The map
 # lives OUTSIDE export/clickup/**, so committing it does not retrigger this workflow ([skip ci]
 # guards regardless). Because the map is per-branch, keep it merged through the normal git flow
-# (feature -> testing -> staging -> main) so the four branches do not create duplicate tasks.
+# (feature -> dev -> testing -> staging -> main) so the branches do not create duplicate tasks.
 #
 # Required repo secrets (to apply):
 #   CLICKUP_API_TOKEN        personal/OAuth token

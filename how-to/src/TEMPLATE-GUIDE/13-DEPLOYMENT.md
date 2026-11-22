@@ -74,11 +74,12 @@ eventually dispose of.
 ## The promotion chain
 
 ```text
-us###/feature  →  testing  →  dev  →  staging  →  main
+us###/feature  →  dev  →  testing  →  staging  →  main
 ```
 
-Every branch travels the full order; no stage is skipped. `staging` runs acceptance tests;
-`main` is production and takes client-accepted releases only.
+Every branch travels the full order; no stage is skipped. `dev` is peer code review, `testing`
+is the QA team's check, `staging` is client acceptance, and `main` is production and takes
+client-accepted releases only.
 
 ## Images
 

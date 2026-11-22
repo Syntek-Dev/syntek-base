@@ -27,19 +27,19 @@ Consult `how-to/REFERENCES.md` as you work through these steps:
 
 ## Steps
 
-### Step 1 — Ensure testing is up to date
+### Step 1 — Ensure dev is up to date
 
 ```bash
-git checkout testing
-git pull origin testing
+git checkout dev
+git pull origin dev
 ```
 
 > **Model:** opus
 
-### Step 2 — Create the feature branches from testing
+### Step 2 — Create the feature branches from dev
 
 ```bash
-git branch us###/short-description testing
+git branch us###/short-description dev
 ```
 
 Repeat for each story you are working on in parallel. Branch names must follow the

@@ -20,10 +20,11 @@ model: opus
 - [ ] Linters clean (backend + frontend)
 - [ ] `qa-tester` pass completed
 - [ ] `code-reviewer` pass completed
-- [ ] PR targets `testing` branch (not `dev`, `staging`, or `main`)
+- [ ] PR targets `dev` branch (not `testing`, `staging`, or `main`)
 - [ ] PR description includes story reference, summary, and test plan
-- [ ] CI passes on `testing`
-- [ ] QA sign-off received
+- [ ] CI passes on the PR to `dev`
+- [ ] Peer code review by a second developer approved
+- [ ] QA sign-off received on `testing` before promotion to `staging`
 
 ### Story status — every transition through `completion`
 
@@ -89,5 +90,5 @@ If any applicable record below is missing or incomplete, return to
 
 ## Definition of Done
 
-- [ ] Feature merged to `testing`
+- [ ] Feature merged to `dev`
 - [ ] Promoted through chain per `project-management/docs/GIT-GUIDE.md` gate rules

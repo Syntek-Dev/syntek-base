@@ -1,6 +1,6 @@
 # SPRINT-07
 
-**Last Updated**: 17/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 22/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -211,14 +211,19 @@ Notes.
 
 ## Story Summary
 
-| ID    | Title                                                                                                    | MoSCoW      | SP  |
-| ----- | -------------------------------------------------------------------------------------------------------- | ----------- | --- |
-| US012 | A seeded file that never lands is reported, and the gate's header claim becomes true                     | Must Have   | 2   |
-| US011 | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Should Have | 8   |
+| ID      | Title                                                                                                    | MoSCoW      | SP  |
+| ------- | -------------------------------------------------------------------------------------------------------- | ----------- | --- |
+| US012   | A seeded file that never lands is reported, and the gate's header claim becomes true                     | Must Have   | 2   |
+| US011 ✓ | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Should Have | 8   |
 
 **Total:** 10 SP — **2 committed, 8 stretch.** Rows listed in build order. The `Must` tier this
 record opened without is supplied by US012 (21/09/2026) rather than by relabelling US011; see
 Notes.
+
+<!-- 22/11/2026, `completion` skill: US011 ticked. It was absorbed into US010 (re-cut 19/11/2026,
+     round 2 Q1), delivered and reviewed under US010's gate 23, recorded Blocked -> Completed on
+     Sam's ruling 22/11/2026. US012 remains Pending, so this
+     record's Status stays Planned; it is not moved here. -->
 
 <!-- 27/09/2026: the US011 row's title read "The four indexes that shipped blank get their 43 rows,
      and each register stops claiming it is empty" until that day. It now mirrors the member's

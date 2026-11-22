@@ -105,7 +105,7 @@ Each sprint follows the same four-phase sequence. Stories map to phases by the l
 | **1** | `19-backend-code`  | Django models, services, business logic, migrations           |
 | **2** | `20-api-code`      | Django Ninja routers, endpoints, and request/response Schemas |
 | **3** | `21-frontend-code` | Django views + templates, django-components (HTMX + Alpine)   |
-| **4** | `23-pr-and-review` | PR, code review, QA sign-off, merge to `testing`              |
+| **4** | `23-pr-and-review` | PR, peer code review, merge to `dev`, then QA on `testing`    |
 
 Tests are written **alongside** each phase, not after. A story may touch only some phases — a
 purely backend change skips Phase 3 — and the plan records which each story needs.

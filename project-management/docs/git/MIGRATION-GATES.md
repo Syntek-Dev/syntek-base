@@ -18,7 +18,7 @@ again on staging when its failure mode is data loss. Index: [`../GIT-GUIDE.md`](
 ## Database Migration PR Gates
 
 These checks are **mandatory** for any PR that adds or modifies a Django migration. They run
-during code review at the `us###/feature → testing` step. A PR that fails any of these gates
+during peer code review at the `us###/feature → dev` step. A PR that fails any of these gates
 must not be merged.
 
 ### Gate 1 — HMAC Token Completeness Check
@@ -57,7 +57,7 @@ it passed before approving.
 
 ## Staging Migration Gates
 
-These checks apply at the `dev → staging` promotion step for any **risky** migration — a data
+These checks apply at the `testing → staging` promotion step for any **risky** migration — a data
 migration, a schema change with a backfill, a new constraint or trigger, or a grant change.
 
 Run **before** the migration is applied on staging, and again **after**, then record the results

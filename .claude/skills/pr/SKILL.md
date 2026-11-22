@@ -18,7 +18,7 @@ metadata:
 but the PR's summary, the story it closes and the test plan a reviewer will read are all
 settled in the conversation, so the rubric's ambiguity rule lands it inline.
 
-**Branch chain:** `us###/short-description` → `testing` → `dev` → `staging` → `main`.
+**Branch chain:** `us###/short-description` → `dev` → `testing` → `staging` → `main`.
 
 ---
 
@@ -38,7 +38,7 @@ holds, not something the runtime enforces.
 3. **Open the PR** — no dispatch:
 
    ```bash
-   gh pr create --base testing
+   gh pr create --base dev
    ```
 
    The body carries a summary, the story reference (`Closes US042`), and a test-plan checklist.

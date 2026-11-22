@@ -21,7 +21,7 @@ Use this at the start of each development session to set up your working context
 
 ## Key concepts
 
-- Always pull latest from `testing` before starting a new user story branch
+- Always pull latest from `dev` before starting a new user story branch
 - Create a branch with the format `us###/short-description`
 - Containers must be running before any development work
 

@@ -7,7 +7,7 @@ name: Claude Code
 #   does; that script drives docker-compose.test.yml, which is the ONE definition of
 #   the test db and cache.
 #   Coverage thresholds match the hooks: 75% always, 80% from `testing` upward (that is, a
-#   PR whose base is dev, staging or main), 90% on the identity app flat — AUTH_APP,
+#   PR whose base is testing, staging or main), 90% on the identity app flat — AUTH_APP,
 #   defaulting to `users`, never a hardcoded directory. Owned by
 #   code/docs/testing/COVERAGE.md; mirrored here, in test.yml, and in check-tests.sh.
 #
@@ -349,7 +349,7 @@ jobs:
   # ── [7/8] Tests ──────────────────────────────────────────────────────────────
   # Mirrors check-tests.sh + _apply_coverage_floor. Coverage thresholds:
   #   - 75% line and branch, on every branch (matches backend-coverage.sh)
-  #   - 80% when the PR's base is dev, staging or main (matches _apply_coverage_floor)
+  #   - 80% when the PR's base is testing, staging or main (matches _apply_coverage_floor)
   #   - 90% on the identity app (AUTH_APP, default `users`) — flat, it does not tier
   # code/docs/testing/COVERAGE.md owns all three; change the guide before changing these.
   #
@@ -406,7 +406,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
 
       # The promotion tier, computed exactly as test.yml computes it and pre-pr-check.sh
-      # sets it: a PR into dev, staging or main promotes work already merged once, and
+      # sets it: a PR into testing, staging or main promotes work already merged once, and
       # clears the higher floor. code/docs/testing/COVERAGE.md owns both numbers.
       - name: Determine coverage threshold
         if: steps.detect.outputs.present == 'true'
@@ -414,7 +414,7 @@ jobs:
         run: |
           BRANCH="${{ github.base_ref || github.ref_name }}"
           case "$BRANCH" in
-            dev | staging | main) echo "value=80" >> "$GITHUB_OUTPUT" ;;
+            testing | staging | main) echo "value=80" >> "$GITHUB_OUTPUT" ;;
             *) echo "value=75" >> "$GITHUB_OUTPUT" ;;
           esac
 

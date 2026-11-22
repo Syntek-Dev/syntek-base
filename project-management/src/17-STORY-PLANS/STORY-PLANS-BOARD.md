@@ -13,13 +13,13 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Pending           | 2     |
 | In Progress       | 0     |
 | In Review         | 0     |
-| Accepted          | 5     |
+| Accepted          | 0     |
 | Customer Review   | 0     |
-| Customer Accepted | 5     |
+| Customer Accepted | 10    |
 | Rejected          | 0     |
 | Customer Rejected | 0     |
-| Blocked           | 2     |
-| Completed         | 0     |
+| Blocked           | 1     |
+| Completed         | 1     |
 | Closed            | 0     |
 
 ## Open
@@ -43,13 +43,7 @@ _None._
 
 ## Accepted
 
-| Plan                | Story                           | Title                                                                                                  | Status   | File                                                                                                     |
-| ------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------ | -------- | -------------------------------------------------------------------------------------------------------- |
-| 06-STORY-PLAN-US005 | [US005](../02-STORIES/US005.md) | Exactly one layer decides to retry, and every budget says how long it may take                         | Accepted | [06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md](06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md) |
-| 07-STORY-PLAN-US006 | [US006](../02-STORIES/US006.md) | The destructive dev scripts read the deployment posture, and refuse to run above development           | Accepted | [07-STORY-PLAN-US006-POSTURE-GUARD.md](07-STORY-PLAN-US006-POSTURE-GUARD.md)                             |
-| 08-STORY-PLAN-US008 | [US008](../02-STORIES/US008.md) | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Accepted | [08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md](08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md)                     |
-| 09-STORY-PLAN-US009 | [US009](../02-STORIES/US009.md) | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Accepted | [09-STORY-PLAN-US009-HOOK-ARMING.md](09-STORY-PLAN-US009-HOOK-ARMING.md)                                 |
-| 10-STORY-PLAN-US010 | [US010](../02-STORIES/US010.md) | The seven register indexes are born seeded, and the map index leaves the file that ships               | Accepted | [10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md](10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md)         |
+_None._
 
 ## Customer Review
 
@@ -64,6 +58,11 @@ _None._
 | 03-STORY-PLAN-US002 | [US002](../02-STORIES/US002.md) | The audits register regains the headroom nine new gates need                                                   | Customer Accepted | [03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md](03-STORY-PLAN-US002-AUDITS-REGISTER-HEADROOM.md)       |
 | 04-STORY-PLAN-US003 | [US003](../02-STORIES/US003.md) | Absence gets an owning guide, born under 270                                                                   | Customer Accepted | [04-STORY-PLAN-US003-ABSENCE-GUIDE.md](04-STORY-PLAN-US003-ABSENCE-GUIDE.md)                             |
 | 05-STORY-PLAN-US004 | [US004](../02-STORIES/US004.md) | The citation gate stops depending on the git index                                                             | Customer Accepted | [05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md](05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md)         |
+| 06-STORY-PLAN-US005 | [US005](../02-STORIES/US005.md) | Exactly one layer decides to retry, and every budget says how long it may take                                 | Customer Accepted | [06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md](06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md) |
+| 07-STORY-PLAN-US006 | [US006](../02-STORIES/US006.md) | The destructive dev scripts read the deployment posture, and refuse to run above development                   | Customer Accepted | [07-STORY-PLAN-US006-POSTURE-GUARD.md](07-STORY-PLAN-US006-POSTURE-GUARD.md)                             |
+| 08-STORY-PLAN-US008 | [US008](../02-STORIES/US008.md) | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule         | Customer Accepted | [08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md](08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md)                     |
+| 09-STORY-PLAN-US009 | [US009](../02-STORIES/US009.md) | The git hooks arm on purpose at install, and the README claim that they already do becomes true                | Customer Accepted | [09-STORY-PLAN-US009-HOOK-ARMING.md](09-STORY-PLAN-US009-HOOK-ARMING.md)                                 |
+| 10-STORY-PLAN-US010 | [US010](../02-STORIES/US010.md) | The seven register indexes are born seeded, and the map index leaves the file that ships                       | Customer Accepted | [10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md](10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md)         |
 
 ## Rejected
 
@@ -75,14 +74,15 @@ _None._
 
 ## Blocked
 
-| Plan                | Story                           | Title                                                                                                    | Status  | File                                                                                             |
-| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
-| 12-STORY-PLAN-US011 | [US011](../02-STORIES/US011.md) | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Blocked | [12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md](12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md) |
-| 14-STORY-PLAN-US014 | [US014](../02-STORIES/US014.md) | Structured JSON logging with a `request_id` on every entry, queried by Compose service label             | Blocked | [14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md](14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md) |
+| Plan                | Story                           | Title                                                                                        | Status  | File                                                                                             |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
+| 14-STORY-PLAN-US014 | [US014](../02-STORIES/US014.md) | Structured JSON logging with a `request_id` on every entry, queried by Compose service label | Blocked | [14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md](14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md) |
 
 ## Completed
 
-_None._
+| Plan                | Story                           | Title                                                                                                    | Status    | File                                                                                             |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------ |
+| 12-STORY-PLAN-US011 | [US011](../02-STORIES/US011.md) | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Completed | [12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md](12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md) |
 
 ## Closed
 

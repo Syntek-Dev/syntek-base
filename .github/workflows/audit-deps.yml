@@ -17,7 +17,7 @@ name: Dependency Audit Sweep
 #   package unchanged past a consumer's range does JS take a BOUNDED override in
 #   pnpm-workspace.yaml (and a minimumReleaseAgeExclude entry for a same-day fix). Then
 #   `bash code/src/scripts/audits/security.sh` (or rust/audit.sh) to confirm. Lockfile and
-#   config changes propagate on merge to testing.
+#   config changes propagate on merge to dev.
 #
 # NOT ELIGIBLE FOR THE REQUIRED SET, and the `on:` block below is the whole reason — this is a
 # property of the file, not of anyone's branch protection. A required check is satisfied only by
@@ -198,7 +198,7 @@ jobs:
             echo "The scheduled dependency audit found advisories on \`${{ github.ref_name }}\`."
             echo "Run: [#${{ github.run_id }}]($RUN_URL) · $(date -u '+%Y-%m-%d %H:%M UTC')"
             echo
-            echo "**Fix:** \`bash code/src/scripts/dependencies/update.sh --apply --ecosystem <python|javascript|rust> --package <name>\` first — it re-resolves within the declared ranges. Only a JS package it reports unchanged past a consumer's range takes a bounded override in \`pnpm-workspace.yaml\`. Confirm with \`audits/security.sh\` / \`rust/audit.sh\`; changes propagate to \`testing\` on merge."
+            echo "**Fix:** \`bash code/src/scripts/dependencies/update.sh --apply --ecosystem <python|javascript|rust> --package <name>\` first — it re-resolves within the declared ranges. Only a JS package it reports unchanged past a consumer's range takes a bounded override in \`pnpm-workspace.yaml\`. Confirm with \`audits/security.sh\` / \`rust/audit.sh\`; changes propagate to \`dev\` on merge."
             echo
             echo "## JS — \`pnpm audit\` (${{ steps.pnpm_audit.outcome }})"
             echo '```text'

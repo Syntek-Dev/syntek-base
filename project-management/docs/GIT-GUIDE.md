@@ -38,9 +38,10 @@ open is decided by the operation in front of you.
 Work happens on a `us###/` or `pm/` branch, in its own worktree where two stories run at once.
 Every commit is preceded by the lint gates and every push by the test suite, and the message
 follows Conventional Commits with a co-author trailer naming the model that wrote it. The branch
-then travels `testing → dev → staging → main` in order, never skipping a stage, gated at each
-step by CI and a sign-off. A PR carrying a Django migration earns two more gates at review, and a
-risky one is verified on staging before it may be promoted to `main`.
+then travels `dev → testing → staging → main` in order, never skipping a stage, gated at each
+step by CI and a sign-off — peer review on `dev`, QA on `testing`, the client on `staging`. A PR
+carrying a Django migration earns two more gates at review, and a risky one is verified on
+staging before it may be promoted to `main`.
 
 ---
 

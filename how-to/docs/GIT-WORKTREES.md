@@ -71,7 +71,7 @@ code/src/docker/docker-compose.us###.dev.yml   ← dev stack isolation
 code/src/docker/docker-compose.us###.test.yml  ← test stack isolation
 ```
 
-These files are committed to `testing` and carry forward into every worktree automatically.
+These files are committed to `dev` and carry forward into every worktree automatically.
 
 ---
 
@@ -99,11 +99,11 @@ echo "127.0.0.X  dev-usXXX.<%PROJECT_SLUG%>.localhost test-usXXX.<%PROJECT_SLUG%
 
 ## Creating a Worktree
 
-Run from the main workspace, on the `testing` branch:
+Run from the main workspace, on the `dev` branch:
 
 ```bash
-# 1. Create the feature branch from testing
-git branch usXXX/short-description testing
+# 1. Create the feature branch from dev
+git branch usXXX/short-description dev
 
 # 2. Create the worktree in a sibling directory
 git worktree add ../<%PROJECT_SLUG%>-usXXX usXXX/short-description

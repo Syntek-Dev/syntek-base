@@ -37,16 +37,31 @@ branch in its own directory with an isolated Docker stack. Full guide and naming
 ## Branch Strategy
 
 ```text
-us###/feature  →  testing  →  dev  →  staging  →  main
+us###/feature  →  dev  →  testing  →  staging  →  main
 ```
 
-| Branch          | Purpose                                                                   |
-| --------------- | ------------------------------------------------------------------------- |
-| `us###/feature` | Feature work scoped to a single user story (e.g. `us001/homepage-layout`) |
-| `testing`       | Dev team QA — CI + manual testing before merging to dev                   |
-| `dev`           | Integration branch — all in-progress features merged here                 |
-| `staging`       | Pre-production — acceptance tests run here                                |
-| `main`          | Production-ready code — client-accepted releases only                     |
+| Branch          | Who checks it        | Purpose                                                                         |
+| --------------- | -------------------- | ------------------------------------------------------------------------------- |
+| `us###/feature` | The developer        | One user story built (e.g. `us001/homepage-layout`); cut from and PR'd to `dev` |
+| `dev`           | A second developer   | Peer code review + CI — the integration branch every finished story lands on    |
+| `testing`       | The QA team          | CI + manual QA, before any client sees the change                               |
+| `staging`       | The client           | Customer review and acceptance                                                  |
+| `main`          | — (the live release) | Client-accepted releases only; merge commit only, enforced by the ruleset       |
+
+**Four catch points after implementation, and peer review comes before QA.** A second developer
+reads the change on `dev` first, so the QA team on `testing` only ever tests code that has already
+been reviewed; QA still sits before `staging`, so a defect the testers can find never reaches a
+customer review. Review on `dev` is a process rule today, not a ruleset: only `main` is protected
+(`GAPS.md`).
+
+**How a change moves between them.** The unprotected branches (`dev → testing → staging`) may be
+promoted by a fast-forward push — `git push origin origin/<from>:<to>` — so the SHA that passed
+the previous gate is the SHA the next gate checks. **No PR exists for a fast-forward, so CI's
+base-branch floor never runs before it:** run `.claude/hooks/pre-pr-check.sh` on the source branch
+first — on `dev` and above it applies the 80% promotion floor — and promote only a tip whose CI is
+green. A red run on the target after the push means reverting the promotion. `main` takes a pull request with a merge
+commit. After a release lands on `main`, fast-forward `dev`, `testing` and `staging` onto it so
+the next story starts from what shipped.
 
 Branch names follow one of two prefixes:
 

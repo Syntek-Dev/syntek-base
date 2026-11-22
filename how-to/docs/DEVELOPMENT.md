@@ -96,8 +96,8 @@ running it on an existing database skips accounts that already exist.
 ## Daily Workflow
 
 ```bash
-# Pull latest (feature branches always cut from and target `testing` — see GIT-GUIDE.md)
-git checkout testing && git pull origin testing
+# Pull latest (feature branches always cut from and target `dev` — see GIT-GUIDE.md)
+git checkout dev && git pull origin dev
 
 # Create feature branch (us### must match a story ID)
 git checkout -b us###/short-description

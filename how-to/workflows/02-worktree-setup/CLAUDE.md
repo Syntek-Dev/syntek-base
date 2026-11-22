@@ -17,7 +17,7 @@ worktree, namespaced Docker stack, and local URL, so stacks never share data.
   `how-to/docs/GIT-WORKTREES.md`. For a single story, use `03-daily-development/`
   instead.
 - **Model:** Opus to revise the procedure and command/link fixes.
-- **Concrete steps:** create the worktree off up-to-date `testing` → let `server.sh`
+- **Concrete steps:** create the worktree off up-to-date `dev` → let `server.sh`
   auto-detect the branch and apply the correct
   `code/src/docker/docker-compose.us###.{dev,test}.yml` override → verify per-worktree
   container and volume namespacing. Amend by editing `STEPS.md` + `CHECKLIST.md`.

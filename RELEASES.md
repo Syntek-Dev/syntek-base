@@ -1,6 +1,6 @@
 # Releases — <%PROJECT_NAME%>
 
-**Last Updated**: 11/11/2026 **Version**: 7.9.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 22/11/2026 **Version**: 7.10.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 User-facing release notes for each published version.
@@ -8,6 +8,83 @@ User-facing release notes for each published version.
 ---
 
 ## Unreleased
+
+## v7.10.0 — 22/11/2026
+
+**Status:** Minor — the development scripts that can wipe a database now refuse to run anywhere
+but a developer's own machine, sign-in cookies are locked to the exact site that set them, and the
+safety checks that run before your work is saved now switch themselves on when you install. Work
+moves through review in a new order, with testing before the client sees anything, and the rules
+for retrying a failed call now say how long it may keep trying. Two faults that broke the local
+site are fixed.
+Nothing you have built stops working, but **your next deploy signs every user out once** — read
+"Sign-in cookies are locked to your site" before you deploy.
+
+### The scripts that can wipe a database check where they are
+
+Resetting, restoring or seeding the database, and shutting down the local services with their
+data, now first check what kind of environment the project is in. Unless it is recorded as a
+development project, they stop and say why, and they also stop if they would reach anything but
+the database on your own machine. Applying database changes warns rather than stops. Before
+this, nothing prevented one of these scripts from wiping a staging or live database.
+
+### AI assistants cannot read your live settings files
+
+The files holding your real passwords and keys are now off limits to the AI coding assistants the
+project is set up for — Claude Code, Codex and Zed — and a check fails if their settings ever
+disagree. Scripts an assistant runs may still use those files, but no longer print anything from
+them. The few commands that give open-ended access are left for you to run yourself.
+
+### Sign-in cookies are locked to your site
+
+On staging and live sites, the cookies that keep someone signed in and protect your forms are now
+tied to the exact address that set them, so no other part of your domain can read or replace
+them, and page scripts can no longer read the form-protection cookie. **The first deploy after
+updating signs every user out once**, and any form already open in a browser tab fails on its
+first submit. Deploy at a quiet time, and stop and restart the site rather than swapping servers
+one by one, because a mix of old and new servers signs people out repeatedly. When you update a
+project generated from this template, the update prints this advice once, and warns you if your
+own settings would stop the new cookies working.
+
+### The safety checks switch themselves on
+
+The checks that run automatically before your work is saved used to depend on a step that the
+project's own install deliberately skips, so on a fresh copy they were often never switched on.
+Installing the project now switches them on as a step of its own, and says so if it cannot.
+
+### Work is checked in a new order
+
+A finished piece of work now goes to a second developer for review first, then to testing, then
+to the client, then live. Review by a second developer used to come after testing; now the
+testers only ever see work another developer has already read, and both happen before the client. The review and release guides, the checklists
+and the build server's coverage threshold all follow the new order.
+
+### Retrying a failed call has limits
+
+When a call to another system fails, only one part of the code now decides whether to try again,
+because several layers each retrying turns one failure into dozens of calls against a service
+that is already struggling. Every retry now has a stated limit on attempts and on total time, and
+when the other system says how long to wait, nothing tries again before then.
+
+### Decisions, findings and bug reports get contents pages
+
+The folders holding decision records, review findings and bug reports each gain a contents page
+built automatically from the records, as stories and sprints already have, and finished records
+move into an archive that cannot then be edited by accident. The project's own self-checks now
+run when you push your work rather than on every save, which keeps saving quick.
+
+### Two local faults fixed
+
+On the local development site, every image, stylesheet and script failed to load; they load
+again. A separate copy of the site started for one piece of work refused every form; it accepts
+them now. Neither affected staging or live.
+
+### Smaller fixes
+
+Restoring a database backup from outside the project folder could delete the database before
+finding out the backup was not there; it now checks first. The documentation lookup tool works
+without an access key again, and a security fix to one of the desktop app's building blocks is
+included. The package manager used for the project's tools moves to version 12.
 
 ## v7.9.0 — 11/11/2026
 

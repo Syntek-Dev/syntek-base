@@ -38,7 +38,7 @@ GitHub → Settings → SSH and GPG keys, then verify with `ssh -T git@github.co
 
 All feature work branches from a user story:
 
-```
+```text
 us###/short-description
 ```
 
@@ -47,7 +47,7 @@ us###/short-description
 
 ### Hotfix branches
 
-```
+```text
 hotfix/<issue-number>-<short-description>
 ```
 
@@ -55,16 +55,22 @@ Example: `hotfix/123-login-crash`.
 
 ### Branch flow
 
-```
-us###/feature → testing → dev → staging → main
+```text
+us###/feature → dev → testing → staging → main
 ```
 
-| From            | To        | Condition              | On rejection            |
-| --------------- | --------- | ---------------------- | ----------------------- |
-| `us###/feature` | `testing` | Developer tests pass   | Fix in feature branch   |
-| `testing`       | `dev`     | QA tests pass          | Fix and re-submit       |
-| `dev`           | `staging` | Integration tests pass | Fix and re-submit       |
-| `staging`       | `main`    | **Client accepts**     | Back to `us###/feature` |
+| From            | To        | Condition                           | On rejection            |
+| --------------- | --------- | ----------------------------------- | ----------------------- |
+| `us###/feature` | `dev`     | Developer tests pass; peer review   | Fix in feature branch   |
+| `dev`           | `testing` | CI green on `dev`                   | Fix and re-submit       |
+| `testing`       | `staging` | **QA team signs off** (CI + manual) | Fix and re-submit       |
+| `staging`       | `main`    | **Client accepts**                  | Back to `us###/feature` |
+
+`dev → testing → staging` may be a fast-forward push (`git push origin origin/<from>:<to>`), once
+`.claude/hooks/pre-pr-check.sh` passes on the source branch;
+`main` takes a PR with a merge commit; after a release, fast-forward `dev`, `testing` and
+`staging` onto `main`. Who checks each branch and why:
+`project-management/docs/git/BRANCHES-AND-WORKTREES.md`.
 
 Never commit directly to a protected branch. If a task starts on `main`, branch
 first. Full branch protection and merge rules:
@@ -76,7 +82,7 @@ first. Full branch protection and merge rules:
 
 ### Message template
 
-```
+```text
 <type>(<scope>): <Description> — <summary>
 
 <Body — what changed and why>
@@ -122,7 +128,7 @@ quality gate (`.claude/hooks/pre-pr-check.sh`) must pass before a PR is marked r
 ### Creating
 
 ```bash
-gh pr create --base testing \
+gh pr create --base dev \
   --title "[US001] feat(auth): Add login" \
   --body-file <path-to-body>
 ```
@@ -148,12 +154,12 @@ gh pr status
 
 ### Title format
 
-```
+```text
 [<branch-type>] <type>(<scope>): <Description>
 ```
 
 Examples: `[US001] feat(auth): Add user login`, `[HOTFIX] fix(payment): Resolve
-checkout timeout`, `[TESTING→DEV] feat(auth): Authentication module`.
+checkout timeout`, `[DEV→TESTING] feat(auth): Authentication module`.
 
 ### Body template
 
@@ -219,4 +225,4 @@ gh pr close  <number> --comment "Rejected by client — creating fix branch from
 ```
 
 After rejection: branch again from the original `us###/feature`, implement fixes,
-and re-run the full flow `testing → dev → staging`.
+and re-run the full flow `dev → testing → staging`.

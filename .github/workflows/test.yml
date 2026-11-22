@@ -67,10 +67,11 @@ jobs:
           cp code/src/docker/.env.test.example code/src/docker/.env.test
           echo "SECRET_KEY=${{ secrets.TEST_SECRET_KEY }}" >> code/src/docker/.env.test
 
-      # The promotion tier, keyed off the PR's BASE branch: a PR into dev, staging or main
-      # is promoting work that has already been merged once. The local half reaches the same
-      # answer from the other side, keying off the branch you are ON (pre-pr-check.sh, where
-      # `testing` and above is the promotion tier — a PR from `testing` has base `dev`).
+      # The promotion tier, keyed off the PR's BASE branch: a PR into testing, staging or
+      # main is promoting work that has already been merged once (a feature PR targets dev
+      # and takes the always-floor). The local half reaches the same answer from the other
+      # side, keying off the branch you are ON (pre-pr-check.sh, where `dev` and above is
+      # the promotion tier — a PR from `dev` has base `testing`).
       # Both numbers are owned by code/docs/testing/COVERAGE.md; change the guide first.
       - name: Determine coverage threshold
         if: steps.detect.outputs.present == 'true'
@@ -78,7 +79,7 @@ jobs:
         run: |
           BRANCH="${{ github.base_ref || github.ref_name }}"
           case "$BRANCH" in
-            dev | staging | main) echo "value=80" >> "$GITHUB_OUTPUT" ;;
+            testing | staging | main) echo "value=80" >> "$GITHUB_OUTPUT" ;;
             *) echo "value=75" >> "$GITHUB_OUTPUT" ;;
           esac
 

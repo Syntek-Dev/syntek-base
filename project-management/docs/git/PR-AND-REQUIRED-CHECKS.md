@@ -20,19 +20,28 @@ each toolchain both CI and the developer read. Index: [`../GIT-GUIDE.md`](../GIT
 All feature branches must travel the full promotion order. Never skip a stage.
 
 ```text
-us###/feature  →  testing  →  dev  →  staging  →  main
+us###/feature  →  dev  →  testing  →  staging  →  main
 ```
 
-| Merge step                  | Gate                                                       |
-| --------------------------- | ---------------------------------------------------------- |
-| `us###/feature` → `testing` | Tests pass locally; PR opened to `testing` only            |
-| `testing` → `dev`           | CI passes on `testing`; QA sign-off                        |
-| `dev` → `staging`           | CI passes on `dev`; lead sign-off; no regressions          |
-| `staging` → `main`          | Staging sign-off; version bump and changelog entry present |
+| Merge step              | Gate                                                                     |
+| ----------------------- | ------------------------------------------------------------------------ |
+| `us###/feature` → `dev` | Tests pass locally; PR opened to `dev` only; second-developer review; CI |
+| `dev` → `testing`       | CI passes on `dev`; peer review signed off                               |
+| `testing` → `staging`   | CI passes on `testing`; QA sign-off; no regressions                      |
+| `staging` → `main`      | Client acceptance on `staging`; version bump and changelog entry present |
+
+Who checks each branch, and why QA comes before the client, is
+[`BRANCHES-AND-WORKTREES.md`](BRANCHES-AND-WORKTREES.md) → _Branch Strategy_.
 
 ### Rules
 
-- Feature branches always target `testing` — never `dev`, `staging`, or `main` directly
+- Feature branches are cut from `dev` and always target `dev` — never `testing`, `staging`, or
+  `main` directly
+- `dev → testing` and `testing → staging` may be a fast-forward push,
+  `git push origin origin/<from>:<to>`, so the tested SHA is the promoted SHA, once `pre-pr-check.sh` passes on the source branch
+  ([why](BRANCHES-AND-WORKTREES.md#branch-strategy)); `staging → main`
+  is always a pull request with a merge commit
+- After a release lands on `main`, fast-forward `dev`, `testing` and `staging` onto it
 - A branch rejection at any stage goes back to the original `us###/feature` branch for fixes
 
 ---

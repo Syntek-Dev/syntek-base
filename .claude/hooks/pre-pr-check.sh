@@ -140,9 +140,11 @@ case "$BRANCH" in
   *)                               BRANCH_TYPE="feature" ;;
 esac
 
-# The promotion tier is `testing` and above. A PR opened FROM any of those targets a
-# promotion branch, so it must clear the higher floor; a feature branch targets `testing`
-# and clears the always-floor. CI reaches the same answer from the other side, keying off
+# The promotion tier is `dev` and above (chain: feature → dev → testing → staging → main).
+# A PR opened FROM any of those targets a promotion branch (testing, staging or main), so
+# it must clear the higher floor; a feature branch targets `dev` and clears the
+# always-floor. The set below is order-independent. CI reaches the same answer from the
+# other side, keying off
 # the PR's BASE branch. Both numbers are owned by the project's coverage standard — never
 # edit one here without moving it there first.
 case "$BRANCH_TYPE" in

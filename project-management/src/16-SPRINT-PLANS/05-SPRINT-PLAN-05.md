@@ -273,10 +273,10 @@ after a three-reviewer adversarial pass at Step 9 that returned six blocking fin
 resolved. This table was repointed at each by that workflow's Step 10, in the order they were
 written.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                            | Status   |
-| ----- | ------------------------------------------------------------ | -------- |
-| US008 | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` | Accepted |
-| US009 | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`       | Accepted |
+| Story | Story plan (`../17-STORY-PLANS/`)                            | Status            |
+| ----- | ------------------------------------------------------------ | ----------------- |
+| US008 | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` | Customer Accepted |
+| US009 | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`       | Customer Accepted |
 
 <!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
      both cells held the placeholder and now carry each plan's own `| Status |` header row, `Open`.
@@ -288,6 +288,10 @@ written.
      (`.claude/skills/completion/SKILL.md` -> Plans). This supersedes, on this point, the 09/10/2026
      remediation wording "the plan's own Status field", the ruling-D comment above, and any prose
      in this section that calls the column a mirror of the plan's own `Status` field. Cells: US008 Open -> Accepted; US009 Open -> Accepted. -->
+
+<!-- RE-MIRRORED AGAIN 22/11/2026 by the `completion` skill, on the same rule (the cell mirrors
+     the story's status as `../17-STORY-PLANS/STORY-PLANS-BOARD.md` lists it): customer review on staging (d52abd92) and acceptance, promoted to main via PR #41 (ccca17e4), Sam's sign-off 22/11/2026.
+     Cells: US008 Accepted -> Customer Accepted; US009 Accepted -> Customer Accepted. -->
 
 The run on disk is contiguous `00-` to `09-`. **The prefix is the story's position in the settled
 build order across the whole backlog, not its sprint and not a per-sprint counter** — US008 eighth,

@@ -16,7 +16,7 @@ model: opus
 
 ## Execution Checklist
 
-- [ ] `testing` branch is up to date before branching · _opus_
+- [ ] `dev` branch is up to date before branching · _opus_
 - [ ] Feature branches created with correct `us###/short-description` names · _opus_
 - [ ] `git worktree list` shows the expected number of worktrees · _opus_
 - [ ] Each worktree directory exists at `../<%PROJECT_SLUG%>-us###/` · _opus_

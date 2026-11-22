@@ -8,8 +8,8 @@
 # coverage floor applies to the backend alone.
 #
 # THE NUMBERS ARE NOT DECIDED HERE. The project's coverage standard owns them:
-# COVERAGE_THRESHOLD is set by the caller from the branch tier (75 always, 80 from
-# `testing` upward); AUTH_FLOOR does not tier. Change the standard first, then these.
+# COVERAGE_THRESHOLD is set by the caller from the branch tier (75 always, 80 for a
+# promotion: CI keys off PR base `testing` and up, locally the branch you are on, `dev` and up); AUTH_FLOOR does not tier. Change the standard first, then these.
 # Sourced by the pre-PR gate runner, never executed directly.
 # Uses: SCRIPTS, BRANCH_TIER, COVERAGE_THRESHOLD, PROJECT_ROOT,
 #       CHECK_PASS, CHECK_SUMMARY, CHECK_OUTPUT, BACKEND_COV

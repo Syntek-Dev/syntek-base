@@ -325,10 +325,10 @@ exists.** It was written 03/10/2026 by `17-story-plans` under the "10-" reserved
 table was repointed at it by that workflow's Step 10. The reserved-carry row points at a plan that
 also exists, so whoever takes the carry finds it from this index; it is not a membership claim.
 
-| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status    |
-| ---------------------- | ------------------------------------------------------------------ | --------- |
-| US010                  | `../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` | In Review |
-| US009 — reserved carry | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`             | Accepted  |
+| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status            |
+| ---------------------- | ------------------------------------------------------------------ | ----------------- |
+| US010                  | `../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` | Customer Accepted |
+| US009 — reserved carry | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`             | Customer Accepted |
 
 <!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
      US010's cell read `Open`; its plan's `| Status |` row was removed 19/11/2026 (a plan carries no
@@ -343,6 +343,10 @@ also exists, so whoever takes the carry finds it from this index; it is not a me
      (`.claude/skills/completion/SKILL.md` -> Plans). This supersedes, on this point, the 09/10/2026
      remediation wording "the plan's own Status field", the ruling-D comment above, and any prose
      in this section that calls the column a mirror of the plan's own `Status` field. Cells: US010 In Review -> In Review; US009 Open -> Accepted. -->
+
+<!-- RE-MIRRORED AGAIN 22/11/2026 by the `completion` skill, on the same rule (the cell mirrors
+     the story's status as `../17-STORY-PLANS/STORY-PLANS-BOARD.md` lists it): customer review on staging (d52abd92) and acceptance, promoted to main via PR #41 (ccca17e4), Sam's sign-off 22/11/2026.
+     Cells: US010 In Review -> Customer Accepted; US009 Accepted -> Customer Accepted. -->
 
 The run on disk is contiguous `00-` to `10-`, measured 03/10/2026 once US010's plan was written.
 **The prefix is the story's

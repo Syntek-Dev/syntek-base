@@ -18,7 +18,7 @@ Consult `project-management/REFERENCES.md` as you work through these steps:
 
 | Step         | Section                                                                                                                                                              |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 5            | **Internal — Guides** → project-management/docs/GIT-GUIDE.md (gate rules: testing → dev → staging → main)                                                            |
+| 5            | **Internal — Guides** → project-management/docs/GIT-GUIDE.md (gate rules: dev → testing → staging → main)                                                            |
 | 5            | **External — Version Control & CI** → Conventional Commits 1.0, GitHub Actions, GitHub flow                                                                          |
 | Impl records | Verified here, authored in `workflows/22-implementation-documentation/` → src/09-GDPR/, src/10-SECURITY/, src/11-QA/, src/12-SEO/, src/13-API-DESIGN/, src/18-TESTS/ |
 
@@ -44,9 +44,10 @@ review
 
 Address all findings before opening the PR.
 
-### Step 3 — Open PR to `testing`
+### Step 3 — Open PR to `dev`
 
-Feature branches always target `testing` first — never `dev`, `staging`, or `main`.
+Feature branches are cut from `dev` and always target `dev` first — never `testing`, `staging`,
+or `main`.
 
 PR description must include:
 
@@ -60,17 +61,24 @@ and commit. **clickup-only:** the lefthook then regenerates the ClickUp export a
 `clickup-sync` workflow pushes it to the board. Lifecycle:
 `project-management/docs/planning/STORIES.md` → _Story statuses_; vocabulary owner: `.claude/skills/completion/SKILL.md`.
 
-### Step 4 — Await CI and QA Sign-off
+### Step 4 — Await CI and Peer Review
 
-CI must pass and QA sign-off received before merging `testing` → `dev`.
+CI must pass and a second developer's code review must approve before the PR merges to `dev`.
+QA sign-off comes later, on `testing`, before the client sees the change on `staging`.
 
 ### Step 5 — Promote Through Chain
 
 Follow the gate rules in `project-management/docs/git/PR-AND-REQUIRED-CHECKS.md`:
 
 ```text
-testing → dev → staging → main
+dev → testing → staging → main
 ```
+
+`dev → testing` and `testing → staging` may be a fast-forward push
+(`git push origin origin/<from>:<to>`) so the tested SHA is the promoted one, once `.claude/hooks/pre-pr-check.sh` passes on the source
+branch (`project-management/docs/git/BRANCHES-AND-WORKTREES.md`); `staging → main` is
+a pull request with a merge commit. After the release, fast-forward `dev`, `testing` and
+`staging` onto `main`.
 
 Record each transition through the `completion` skill — a `## Status history` row and a board
 regeneration every time:

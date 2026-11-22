@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 #
-# host-only-cookies.sh — the one-time cutover notice for the __Host- cookie rename.
+# v7.10.0-host-only-cookies.sh — the one-time cutover notice for the __Host- cookie rename.
 #
-# PENDING. Its `_migrations:` entry ships DISABLED (`when: false`) and carries no version key.
-# The release that ships this doctrine assigns the key, renames this file to
-# v<RELEASE>-host-only-cookies.sh on the v3.0.0-self-authored-agents.sh convention, and
-# replaces the false condition with the after-stage predicate — all in the release commit,
-# which is then tagged. Until that commit nothing runs it. Its sibling
-# cookie-domain-conflict.sh is the always-active, state-gated half.
+# Keyed v7.10.0, the release that ships this doctrine. It sat pending on the branches (unversioned,
+# as host-only-cookies.sh, its `_migrations:` entry `when: false`) until the 7.10.0 release
+# commit assigned the key, renamed it on the v3.0.0-self-authored-agents.sh convention and set
+# the after-stage predicate. Its sibling cookie-domain-conflict.sh is the always-active,
+# state-gated half.
 #
 # WHAT CHANGED. Staging and production now name the session cookie `__Host-sessionid` and
 # the CSRF cookie `__Host-csrftoken`, set no cookie Domain, and base settings set
@@ -27,8 +26,8 @@
 # code/src/django/config/settings/ at all: it serves no Django cookies from this template's
 # settings, so there is nothing to invalidate and the entry exits silently.
 #
-# Runs automatically as a copier `_migrations` entry when an update crosses the release
-# that activates it. Safe to run by hand; read-only, prints the same notice every time.
+# Runs automatically as a copier `_migrations` entry when an update crosses v7.10.0.
+# Safe to run by hand; read-only, prints the same notice every time.
 #
 # Working directory is the project being updated.
 #

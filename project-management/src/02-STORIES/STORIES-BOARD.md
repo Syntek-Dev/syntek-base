@@ -13,13 +13,13 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Pending           | 2     |
 | In Progress       | 0     |
 | In Review         | 0     |
-| Accepted          | 5     |
+| Accepted          | 0     |
 | Customer Review   | 0     |
-| Customer Accepted | 5     |
+| Customer Accepted | 10    |
 | Rejected          | 0     |
 | Customer Rejected | 0     |
-| Blocked           | 2     |
-| Completed         | 0     |
+| Blocked           | 1     |
+| Completed         | 1     |
 | Closed            | 0     |
 
 ## Open
@@ -43,13 +43,7 @@ _None._
 
 ## Accepted
 
-| ID    | Title                                                                                                  | Status   | File                 |
-| ----- | ------------------------------------------------------------------------------------------------------ | -------- | -------------------- |
-| US005 | Exactly one layer decides to retry, and every budget says how long it may take                         | Accepted | [US005.md](US005.md) |
-| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development           | Accepted | [US006.md](US006.md) |
-| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Accepted | [US008.md](US008.md) |
-| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Accepted | [US009.md](US009.md) |
-| US010 | The seven register indexes are born seeded, and the map index leaves the file that ships               | Accepted | [US010.md](US010.md) |
+_None._
 
 ## Customer Review
 
@@ -63,7 +57,12 @@ _None._
 | US002 | The audits register regains the headroom nine new gates need                                                   | Customer Accepted | [US002.md](US002.md) |
 | US003 | Absence gets an owning guide, born under 270 with every clause's tier stated                                   | Customer Accepted | [US003.md](US003.md) |
 | US004 | The citation gate stops depending on the git index, and the PM tree becomes checkable                          | Customer Accepted | [US004.md](US004.md) |
+| US005 | Exactly one layer decides to retry, and every budget says how long it may take                                 | Customer Accepted | [US005.md](US005.md) |
+| US006 | The destructive dev scripts read the deployment posture, and refuse to run above development                   | Customer Accepted | [US006.md](US006.md) |
 | US007 | The story status vocabulary gets one owner, and every instruction that writes it uses a value the owner admits | Customer Accepted | [US007.md](US007.md) |
+| US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule         | Customer Accepted | [US008.md](US008.md) |
+| US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true                | Customer Accepted | [US009.md](US009.md) |
+| US010 | The seven register indexes are born seeded, and the map index leaves the file that ships                       | Customer Accepted | [US010.md](US010.md) |
 
 ## Rejected
 
@@ -75,14 +74,15 @@ _None._
 
 ## Blocked
 
-| ID    | Title                                                                                                    | Status  | File                 |
-| ----- | -------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
-| US011 | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Blocked | [US011.md](US011.md) |
-| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label             | Blocked | [US014.md](US014.md) |
+| ID    | Title                                                                                        | Status  | File                 |
+| ----- | -------------------------------------------------------------------------------------------- | ------- | -------------------- |
+| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label | Blocked | [US014.md](US014.md) |
 
 ## Completed
 
-_None._
+| ID    | Title                                                                                                    | Status    | File                 |
+| ----- | -------------------------------------------------------------------------------------------------------- | --------- | -------------------- |
+| US011 | The four indexes that shipped blank get a row per instance, and each register stops claiming it is empty | Completed | [US011.md](US011.md) |
 
 ## Closed
 
