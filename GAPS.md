@@ -1324,9 +1324,18 @@ why config files stay out of scope. No map or story claims this entry.
 
 ---
 
-## 21/11/2026 — US010's walk has thirteen blocking Fails and one unwalked row, each waiting on a ruling
+## 21/11/2026 — US010's walk has no blocking Fails; REMEDY-01 stays open, not blocking, under F-016
 
 **Type:** Active gap
+**Heading updated 22/11/2026:** was "US010's walk has thirteen blocking Fails and one unwalked
+row, each waiting on a ruling" (21/11/2026). The heading now states the current state.
+**Update 22/11/2026 (sign-offs):** Sam countersigned the walk and went with the recommendations
+22/11/2026. **No blocking Fail remains** (61 Pass, 1 Fail, 92 retired stubs). REMEDY-01 is
+accepted open at `Accepted`, not blocking, as a shared-procedure gap outside US010's write set
+(ruling R-007); it is tracked in the entry "the 09/10/2026 build-start remediation never reached
+the procedures" (F-016). Sam signed off the three security implementation records (R-008), the
+journey-area box (R-006) and PA-04 as demonstration only (F-042). Still open here: gate 23's
+verification re-run (F-006). The earlier updates follow, as they stood.
 **Update 22/11/2026 (second re-walk):** Sam's rulings 1 to 3 of 22/11/2026 (on the re-walk and on
 gate 23's returned items) were applied, and a second, independent re-walk the same day passes
 BOARDGATE-03, REMEDY-02 and LEGIBLE-02. **No manual row blocks US010 now** (61 Pass, 1 Fail,
@@ -1509,6 +1518,9 @@ committed transition without becoming a second status authority (REMEDY-01). Sep
 sprint-plan _Story Plans_ Status cells do not mirror their plans (US010 reads `Open` against
 In Review), live `Not started` placeholders remain in sprint plans 01, 02 and 06, and nothing
 generates or checks the mirror (REMEDY-02). Findings F-016 and F-017 in "project-management/src/20-FINDINGS/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md".
+**Update 22/11/2026 (sign-offs):** Sam accepts REMEDY-01 open at `Accepted` (ruling R-007): a
+shared-procedure gap outside US010's write set, the `01-implement-story` build-start remediation
+US007 should have carried. This entry is where it is tracked; it no longer bears on US010.
 **Blocked by / Action:** Nothing blocks it. One change moves the transition and adds the N/A and
 adapter sentences. A decision follows on whether the sprint-plan mirror is generated, gated or
 dropped. No map or story claims this entry.

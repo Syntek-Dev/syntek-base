@@ -12,8 +12,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Open              | 0     |
 | Pending           | 2     |
 | In Progress       | 0     |
-| In Review         | 1     |
-| Accepted          | 4     |
+| In Review         | 0     |
+| Accepted          | 5     |
 | Customer Review   | 0     |
 | Customer Accepted | 5     |
 | Rejected          | 0     |
@@ -39,9 +39,7 @@ _None._
 
 ## In Review
 
-| ID    | Title                                                                                    | Status    | File                 |
-| ----- | ---------------------------------------------------------------------------------------- | --------- | -------------------- |
-| US010 | The seven register indexes are born seeded, and the map index leaves the file that ships | In Review | [US010.md](US010.md) |
+_None._
 
 ## Accepted
 
@@ -51,6 +49,7 @@ _None._
 | US006 | The destructive dev scripts read the deployment posture, and refuse to run above development           | Accepted | [US006.md](US006.md) |
 | US008 | Cookies go host-only under `__Host-` names, the CSRF cookie goes httpOnly, and one guide owns the rule | Accepted | [US008.md](US008.md) |
 | US009 | The git hooks arm on purpose at install, and the README claim that they already do becomes true        | Accepted | [US009.md](US009.md) |
+| US010 | The seven register indexes are born seeded, and the map index leaves the file that ships               | Accepted | [US010.md](US010.md) |
 
 ## Customer Review
 

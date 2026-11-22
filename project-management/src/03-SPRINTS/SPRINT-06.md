@@ -1,6 +1,6 @@
 # SPRINT-06
 
-**Last Updated**: 19/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 22/11/2026 **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -30,7 +30,9 @@
      Q15) are named under Acceptance Criteria rather than here: they sit in neither the title nor
      the Client Summary this goal is derived from. -->
 
-**Status:** In Progress — US010 started 19/11/2026, its first story
+**Status:** Done — US010, the sole member, Accepted 22/11/2026 (PR 38); nothing carried over
+
+<!-- Was until 22/11/2026: "In Progress — US010 started 19/11/2026, its first story". -->
 
 > **Re-cut 19/11/2026 — scope and estimate, recorded without a status change.** US010 was re-cut
 > at its build's first step (`../02-STORIES/US010.md` -> _Re-cut — 19/11/2026_; grilling rounds 1
@@ -186,9 +188,9 @@ admission**. **The US009 carry reserved here is RELEASED (17/11/2026)**: <%DEVEL
 
 ## Story Summary
 
-| ID    | Title                                                                                    | MoSCoW    | SP  |
-| ----- | ---------------------------------------------------------------------------------------- | --------- | --- |
-| US010 | The seven register indexes are born seeded, and the map index leaves the file that ships | Must Have | 8   |
+| ID      | Title                                                                                    | MoSCoW    | SP  |
+| ------- | ---------------------------------------------------------------------------------------- | --------- | --- |
+| US010 ✓ | The seven register indexes are born seeded, and the map index leaves the file that ships | Must Have | 8   |
 
 **Total:** 8 SP — all committed, no stretch tier. **No carry is reserved here since 17/11/2026**:
 the US009 carry from `project-management/src/03-SPRINTS/SPRINT-05.md` is released, US009

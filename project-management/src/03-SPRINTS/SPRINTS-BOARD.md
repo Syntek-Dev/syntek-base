@@ -10,8 +10,8 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 | Column      | Items |
 | ----------- | ----- |
 | Planned     | 2     |
-| In Progress | 1     |
-| Done        | 5     |
+| In Progress | 0     |
+| Done        | 6     |
 | Closed      | 0     |
 
 ## Planned
@@ -23,9 +23,7 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 
 ## In Progress
 
-| ID        | Title                                                                                                                            | Status      | File                         |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------------------------- |
-| SPRINT-06 | Every register folder gains an index file of its own, born seeded and seed-once so no `copier update` can overwrite a filled one | In Progress | [SPRINT-06.md](SPRINT-06.md) |
+_None._
 
 ## Done
 
@@ -36,6 +34,7 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 | SPRINT-03 | The citation gate gives one verdict on one sentence whichever side of the git index its file sits, and the project-management tree it could never read becomes checkable | Done   | [SPRINT-03.md](SPRINT-03.md) |
 | SPRINT-04 | Retry doctrine gets its single owner, and the posture rule gets a guard                                                                                                  | Done   | [SPRINT-04.md](SPRINT-04.md) |
 | SPRINT-05 | The cookie doctrine lands and the git hooks arm on purpose                                                                                                               | Done   | [SPRINT-05.md](SPRINT-05.md) |
+| SPRINT-06 | Every register folder gains an index file of its own, born seeded and seed-once so no `copier update` can overwrite a filled one                                         | Done   | [SPRINT-06.md](SPRINT-06.md) |
 
 ## Closed
 

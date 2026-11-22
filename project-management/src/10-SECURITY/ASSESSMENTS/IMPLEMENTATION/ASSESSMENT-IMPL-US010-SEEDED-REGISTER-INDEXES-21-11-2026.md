@@ -148,10 +148,17 @@ Section 7 as re-mapped 19/11/2026 (the plan's re-cut note).
 
 ## 8. Sign-off
 
-| Reviewer                             | Role                          | Date       |
-| ------------------------------------ | ----------------------------- | ---------- |
-| Claude Code — `security` skill, Opus | Independent recorder, gate 22 | 21/11/2026 |
-| Sam                                  | Developer — review owed       | —          |
+| Reviewer                             | Role                                                                                                                    | Date       |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ---------- |
+| Claude Code — `security` skill, Opus | Independent recorder, gate 22                                                                                           | 21/11/2026 |
+| Sam                                  | Developer and security — reviewed and signed off by Sam, 22/11/2026 — on the summary; residuals as ruled (ruling R-008) | 22/11/2026 |
+
+**Signed off 22/11/2026 (ruling R-008).** Sam gives his developer review and security sign-off on
+the summary presented: no Critical or High. Residuals as ruled — the admin bypass applies always;
+only `main` is protected; the check-2 shell/Jinja residual is review's; the CI shape probe is
+narrow; CODEOWNERS sits without required code-owner review; merge-only, with squash and rebase
+off (set 21/11/2026). Recorded at
+`../../../18-TESTS/MANUAL/US010-MANUAL-TESTING.md` -> _Sam's sign-offs — 22/11/2026_, sign-off 3.
 
 **Overall verdict:** the story meets the posture targets its baseline set — DE moved off
 **Weakest**, A08 to PASS — and introduced no CRITICAL or HIGH; it closes with one open MEDIUM

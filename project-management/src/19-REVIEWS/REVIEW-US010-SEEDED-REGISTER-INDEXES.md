@@ -281,6 +281,93 @@ none), so acceptance here rests on the QA implementation record. That record is 
 
 ---
 
+## 8. Verification re-run — 22/11/2026 (third)
+
+**Sections 1 to 7 above are kept as they stood.** This section records the third re-run, and it
+supersedes Section 7.4's verdict.
+
+**What was verified.** The working tree at `7a5a6a5a` plus the uncommitted 22/11/2026 edits.
+Those edits cover the manual guide, the findings record, the QA record, the three security
+implementation records, `US010.md` and `GAPS.md`. They record Sam's five sign-offs of 22/11/2026
+("Countersign and go with recommendations"). The verifier is independent: it wrote none of the
+code, the records, the sign-off edits or any walk, and it changed nothing but this file.
+
+**Readings taken 22/11/2026, all read-only:**
+
+- `pm-board.sh --check`: "all 8 boards are current and archive/ is untouched".
+- `docs-pairing.sh`: "split intact".
+- `story-markers.sh`: warning-only, as before.
+- `doc-references.sh` over the working tree: **18 citations do not resolve**, and none is in a
+  US010 record. They are in the US014, US005 and US011 planning records and `SPRINT-03.md`. That
+  is the same set CI reports on `b5fcede9` (the branch base), `6554cf9e` (PR 38) and `7a5a6a5a`.
+- `gh run list --commit 7a5a6a5a`: 15 runs, 14 green. `Audit — Doc References` is red on the
+  same 18 findings. That workflow has been red on every run since before US010 was cut (US008's
+  and US009's PRs included). The automated record already calls it "Not this story's"
+  (`US010-TEST-STATUS.md:160`).
+- A grep of the nine edited records for "review owed", "pending" and unticked boxes.
+
+No suite or self-test was re-run. No live env file was read.
+
+### 8.1 The five sign-offs — written, dated, consistent
+
+| Sign-off                                   | Verdict                  | Evidence                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------------------------------ | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 — the walk countersigned                 | **Recorded, consistent** | Guide _Sam's sign-offs — 22/11/2026_ (`US010-MANUAL-TESTING.md:1977`), the header status line (`:5`), _Tester_ (`:2375`), _Blockers_ and the countersignature notes (`:2424`). It is mirrored by the QA record's _Outcome_ (`:11`) and its manual sign-off box (`:252`), by findings F-007 ("Resolved") and Section 2.12, and by `GAPS.md:1332`. The counts (61 Pass, 1 Fail, 92 retired stubs) agree everywhere |
+| 2 — R-007, REMEDY-01 accepted open         | **Recorded, consistent** | There are two dated notes in `US010.md`. One sits at the active criteria (`:589`) and one beneath the build-start Gherkin (`:715`). Both name the `GAPS.md` entry and F-016. F-016's disposition (findings `:94`) and `GAPS.md:1521` record the acceptance. The walk entry's heading (`GAPS.md:1327`) now states the current state, with a dated note of what it read before                                     |
+| 3 — R-008, the security records signed off | **Recorded, consistent** | Each sign-off table reads "Developer and security — reviewed and signed off by Sam, 22/11/2026 … (ruling R-008)", with a dated paragraph listing the residuals exactly as ruled (`THREAT-MODEL-IMPL…:135`, `ASSESSMENT-IMPL…:156`, `AUDIT-IMPL…:185`). No "review owed" survives in any of the three                                                                                                             |
+| 4 — R-006, the journey-area box            | **Recorded, consistent** | The box is ticked (`US010-MANUAL-TESTING.md:2384`). Its comment gives the reason and keeps what the box read before. No unticked box remains in the guide                                                                                                                                                                                                                                                        |
+| 5 — PA-04 / F-042, demonstration only      | **Recorded, consistent** | The PA-04 rows (QA `:175`, `:186`), the deviations box (`:247`) and reviewer approval (`:253`, "Sam, 22/11/2026") record it. Findings F-042 (`:142`) records it too. The stale LEGIBLE-02 deferral (Section 7.1's nit) is gone from the QA record's Section 6                                                                                                                                                    |
+
+### 8.2 Per-item verdict
+
+| Item                                          | Verdict                 | Evidence                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------------------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Security — assessment, threat model, audit    | **Pass**                | Complete and closed (Section 3.1), and now signed off (8.1, sign-off 3). This meets the _Definition of Done_ line "Security acceptance criteria signed off"                                                                                                                                                                                                                                                                                                                |
+| QA implementation record                      | **Pass**                | It is current, and its _Outcome_ is **Pass with deviations**. Reviewer approval and the manual sign-off are ticked. The coverage-floor box is left unticked with its reason: no Python module is in scope. That is an N/A stated in prose, not an unmet floor (nit, N-1)                                                                                                                                                                                                   |
+| Automated record                              | **Pass**                | Section 3.2 stands. Since the run of record, only Markdown records have changed                                                                                                                                                                                                                                                                                                                                                                                            |
+| Manual guide                                  | **Pass**                | Every row is marked. Every amendment has its trail and finding, and every capture slot is accounted for (Section 7.1). Every sign-off box is now ticked, and the walk is countersigned. The one `Fail` (REMEDY-01) is accepted open by a recorded ruling                                                                                                                                                                                                                   |
+| Findings record                               | **Pass**                | Section 2.12 maps each sign-off to its findings, and the status note leads with it. One stale row remains: Section 4 still lists F-007 as "Sam's calls", although F-007 is now Resolved (nit, N-2)                                                                                                                                                                                                                                                                         |
+| `GAPS.md` / `DEFERRED.md`                     | **Current**             | Both US010 entries carry a dated sign-off update. Each says the only open item is this re-run (F-006). The heading nit of Section 7.1 is fixed. `DEFERRED.md` has no US010 row, and none is owed                                                                                                                                                                                                                                                                           |
+| Documentation hard gate                       | **Pass**                | No directory created and no `CONTEXT.md`/`CLAUDE.md` touched. `docs-pairing.sh` and `pm-board.sh --check` are green, and no `*/archive/` or `*-BOARD.md` file was edited. `doc-references.sh` adds nothing in US010's records. The graph is unaffected (Markdown records only)                                                                                                                                                                                             |
+| CI                                            | **Pass, one known red** | This corrects R-009: the documentation commits are now measured. On `7a5a6a5a`, 14 of 15 runs are green. `Audit — Doc References` is red on 18 citations in other stories' records, identical across the branch base, PR 38 and HEAD. US010 neither introduced nor touches them, and its automated record already names them. Not a US010 blocker                                                                                                                          |
+| Completion skill, _Before recording anything_ | **Met**                 | Rule 1 holds: the story file was read whole. Rule 2 holds: every active criterion is verified by the walk or explicitly accepted open by a recorded ruling (REMEDY-01, R-007), tests are green, and review and QA are signed off. Rule 3 holds: the documentation hard gate is met (above). The story's criteria checkboxes are unticked, as on US008 and US009. Ticking those the verified work satisfies is step 3 of _Recording a story transition_, not a precondition |
+
+### 8.3 R-items
+
+| ID    | State              | Reading                                                                                                      |
+| ----- | ------------------ | ------------------------------------------------------------------------------------------------------------ |
+| R-001 | Closed             | Section 7.2                                                                                                  |
+| R-002 | Closed             | Section 7.2                                                                                                  |
+| R-003 | Closed             | Section 7.2. The QA sign-off it left open is now closed (8.1, sign-offs 1 and 5)                             |
+| R-004 | Closed             | Section 7.2                                                                                                  |
+| R-005 | Closed             | Section 7.2                                                                                                  |
+| R-006 | **Closed**         | Sign-off 4: the box is ticked on the recorded judgement                                                      |
+| R-007 | **Closed**         | Sign-off 2: accepted open, recorded in the story at both sites, routed to F-016's `GAPS.md` entry            |
+| R-008 | **Closed**         | Sign-off 3: all three security records signed off                                                            |
+| R-009 | Closed — corrected | CI is measured on the documentation commits: 14 of 15 green, plus the long-standing Doc References red (8.2) |
+| R-010 | Closed             | F-006's re-run is this section                                                                               |
+
+**Nits, non-blocking.** These go to the `22` owner at the completion pass:
+
+- **N-1.** Mark the QA record's coverage-floor box N/A explicitly, rather than leaving it unticked.
+- **N-2.** Update the findings record's Section 4 row for F-007. Its countersignature is done, and
+  only F-039 remains Sam's call.
+- **N-3.** Once `Accepted` is recorded, mark the `GAPS.md` walk entry (`:1327`) `✅ CLOSED`.
+
+### 8.4 Overall verdict
+
+- **Verdict:** **Approve.** Every blocker in Section 7.3 is closed by a sign-off. Each one is
+  written, dated 22/11/2026 and consistent across the guide, the story, the QA, security and
+  findings records and `GAPS.md`. Nothing outstanding blocks `Accepted`. The one red CI job is a
+  long-standing, cross-story citation failure, and US010 neither caused it nor touches it.
+- **Status transition:** US010 may move **`In Review` → `Accepted`**. This verifier does not
+  record it. The `completion` skill records it: the `**Status:**` line, a `## Status history`
+  row citing this section, the criteria checkboxes the verified work satisfies, SPRINT-06's Story
+  Summary tick, and `pm-board.sh --write`. US011's closure is tied to `Completed`, not
+  `Accepted` (story _Definition of Done_), so it is not due at this transition.
+
+---
+
 ## Cross-references
 
 - `../02-STORIES/US010.md` — the story under review
