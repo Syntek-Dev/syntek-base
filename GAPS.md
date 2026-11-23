@@ -1743,3 +1743,46 @@ finish, which is the defect the fix exists for.
 
 **Blocked by / Action:** Nothing blocks them. One small `bugfix` pass on the hook, red probes
 first. No map or story claims this entry.
+
+---
+
+## 23/11/2026 — the graphify notice can repeat where it should be said once
+
+**Type:** Active gap
+**Summary:** `.claude/hooks/graph-update.sh` reports a graphify state change once by keeping the
+last state in `.code-review-graph/.graphify-notice`. Two paths repeat it. Both are noise only: no
+outcome is misreported. Recorded from findings F-028 and F-029 of
+"project-management/src/20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md", which
+gave neither a register home before this entry.
+
+- **A read-only state directory (QA 8).** The state is written with its error discarded, so where
+  `.code-review-graph/` is not writable the previous state always reads empty and the same
+  unmeasured notice is emitted on every Edit, Write and Bash call. Found by the hostile QA pass over
+  US013's graphify change and deferred at `933df1e8` as unusual host state. Smallest fix: detect an
+  unwritable state directory once and say so, or fall back to a per-session path, with a probe that
+  makes the directory read-only
+- **Two hooks at once (review n3, Nit).** Two hook runs firing together can both read the previous
+  state and both emit the same notice; the untracked-file notice already behaves so. `5b622651`'s
+  subject names n1-n4 but its body acts on n1, n2 and n4 only. Smallest fix: read and write the
+  state under the hook's existing lock, or accept the duplicate in the header
+
+**Blocked by / Action:** Nothing blocks them. One small `bugfix` pass on the hook, red probes in
+`code/src/scripts/tests/graph-update.sh` first. No map or story claims this entry.
+
+---
+
+## 23/11/2026 — `test-writer` and `qa-tester` fork when loaded inside a dispatched agent
+
+**Type:** Active gap
+**Summary:** Both are task skills that fork. Loaded inside an agent a session has already
+dispatched to do that skill's job, each started a second agent instead of guiding the first:
+`test-writer` returned only a request for a brief, so the dispatched test-writer worked without the
+skill (US013's `bugfix` red loop 2); `qa-tester` ran a walk of its own that marked GRAPH-06 `Pass`
+and missed the `README.md`:246 reason the dispatched walker caught. The dispatch's independence held
+only because each agent ignored its fork's result. Recorded from findings F-036 and F-037 of
+"project-management/src/20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md"
+(<%DEVELOPER_NAME%>'s routing, 23/11/2026).
+**Blocked by / Action:** Nothing blocks it. Through skill authoring
+(`how-to/docs/SKILL-AUTHORING.md`): an inline entry point for an agent already dispatched for the
+skill's job, or a rule that a dispatch names the skill's procedure rather than loading the skill.
+Until then a dispatch brief says not to load the forking skill. No map or story claims this entry.

@@ -1,17 +1,18 @@
 # US013 — Test Status
 
-_The automated-test record for US013: what each automated check proves and whether it passed. Written at `22-implementation-documentation` Step 4 on 23/11/2026, on `us013/log-debug-workflow-seam` at `79a22cb7`. US013 is **documentation only**: it edits workflow `09-debugging-with-logs`, the `code/src/logs/` pair, a `copier.yml` comment and help line, `TEMPLATE-TOKENS.md`, `05-ANSWERS.md` and a note on `MAP-RULE-OWNERSHIP.md`, and no `.py` or `.bru` file. The story plan's Testing section records every automated suite `N/A` — no pytest (no code path), no coverage floor (nothing instruments), no `migrate.sh check` (no model), no Bruno, no e2e (no page). So no test declares US013, and its automated proof is CI's `[3/4] Template Generation` job rendering every token. The generator cannot see that job, so Sections 2 and 3 carry it (this folder's `CLAUDE.md`, Guardrails)._
+_The automated-test record for US013: what each automated check proves and whether it passed. Rewritten at `22-implementation-documentation` Step 4 on 23/11/2026, on `us013/log-debug-workflow-seam` at `275e2548`. US013 began as a documentation-only change to workflow `09-debugging-with-logs` and was **widened at build** to run graphify beside code-review-graph in the per-edit graph hook, `.claude/hooks/graph-update.sh`, and in lefthook's pre-commit leg. That widening brought an automated suite: `code/src/scripts/tests/graph-update.sh`, 27 probe groups over the hook, plus edits to two sibling suites, `template-hooks.sh` and `hook-arming.sh`. All three are shell probe suites. None writes a JUnit, Bruno or axe artefact, and none can carry a story marker, so the generated block below stays empty and Sections 2 and 3 carry the suites by hand (this folder's `CLAUDE.md`, Guardrails)._
 
-**Last Updated**: 23/11/2026 · **Story**: US013 · **Status**: Green
+**Last Updated**: 23/11/2026 · **Story**: US013 · **Status**: Green — one CI-only case unmeasured on the host and measured in CI (Section 3)
 
-- **Story:** `../../02-STORIES/US013.md` — the 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause
-- **Story plan:** `../../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md` — the code master this record closes the loop on (read its CORRECTED 23/11/2026 block: cut from `dev` at `e306f48e`, no worktree)
-- **Manual guide:** `../MANUAL/US013-MANUAL-TESTING.md` — where the render counts, the doc gates and the live walk are read
-- **Branch:** `us013/log-debug-workflow-seam`, cut from `dev` at `e306f48e`; pushed head `58f3c78e`, local head `79a22cb7`
+- **Story:** `../../02-STORIES/US013.md`. The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause; widened 23/11/2026 to cover graphify beside code-review-graph
+- **Story plan:** `../../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`, the code master this record closes the loop on (P0 to P6 for the workflow seam, P7 to P13 for graphify)
+- **Manual guide:** `../MANUAL/US013-MANUAL-TESTING.md`. The render counts, the doc gates, the live walk (WALK-01 to WALK-06) and the graphify rows (GRAPH-01 to GRAPH-10) are read there. It also holds the P8 red-run capture this record cites
+- **Bug report:** `../../21-BUGS/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md`, the hung-run fix (`a3a4f86d`) and its two red loops
+- **Branch:** `us013/log-debug-workflow-seam`, cut from `dev` at `e306f48e`; pushed head `275e2548`
 
 > **Half this file is generated.** Everything between the `BEGIN GENERATED` and `END GENERATED`
 > markers is written by `code/src/scripts/tests/test-record.sh` from the suites' own report
-> artefacts — **never edit it by hand**, because the next run silently discards the edit. The
+> artefacts. **Never edit it by hand**, because the next run silently discards the edit. The
 > sections after it are yours. The script's contract and the story marker it filters on are in
 > this folder's `CLAUDE.md`.
 
@@ -25,16 +26,18 @@ Regenerate after any suite run, green or red:
 bash code/src/scripts/tests/test-record.sh US013
 ```
 
-**Read Section 2 before this block. A zero-row table here is not a small suite.** No pytest or
-Bruno test declares US013, and none could: the story changes no Python module and no API request.
-`story-map.json` on disk is `[]`. The coverage figures below are **whole-project** backend figures
-from the `coverage.xml` already on disk (written 09:06 GMT, 23/11/2026, by a run that was not this
-story's), so they measure nothing it did — the open defect
+**Read Section 2 before this block. A zero-row table here is not a small suite.** US013's suites
+are shell probes, and the generator reads only pytest JUnit, Bruno JSON, axe JSON and
+`coverage.xml`. `story-markers.sh` scans only pytest modules and Bruno requests. So the 199 + 69 +
+432 checks US013 runs (Section 2) are invisible to both tools by construction. This is not a
+missing marker. The coverage figures below are **whole-project** backend figures from the
+`coverage.xml` already on disk (written 09:06 GMT, 23/11/2026, by a run that was not this
+story's). They measure nothing US013 did: see the open defect
 `../../21-BUGS/BUG-TEST-RECORD-CLAIMS-PROJECT-COVERAGE-FOR-UNTESTED-STORY-02-11-2026.md`. The
-auth-critical row is left as the generator writes it: no module in the authentication, session or
-permission path is in scope.
+auth-critical row is left as the generator writes it, because no module in the authentication,
+session or permission path is in scope.
 
-The floors are **one floor, not one per layer** — template, django-component and HTMX-partial
+The floors are **one floor, not one per layer**. Template, django-component and HTMX-partial
 tests are pytest tests and count towards the same number as the rest of the backend. On
 `staging` and `main` the pre-PR gate raises every floor to **80%**, so a story green locally can
 still block the PR if a module in scope sits between its floor and 80%. **Auth-critical** means
@@ -82,99 +85,146 @@ _No attributed tests to list for US013._
 
 ## 2. How to reproduce
 
-No pytest, Bruno, E2E or axe suite exists for this story, so none was run. The one automated check
-that reads US013's change is CI's `[3/4] Template Generation` job, which renders a generated
-project with `template-render.sh` (scratch only) under `INCLUDE_MOBILE=false` and `true` in one
-shell loop, and fails on any token left unrendered. It runs on every push; nothing here starts it
-locally. The local readings:
+Every figure below was read on the host on 23/11/2026, from runs started for this record at
+`275e2548`. The working tree differed from it only in `GAPS.md` and the findings record, and
+neither is read by any suite. Every check that has no suite of its own is a **manual** row in
+`../MANUAL/US013-MANUAL-TESTING.md`. That covers the per-site render counts, the Sentry sentence,
+the four doc gates against their P0 baselines, the live walk and the graphify reads. Those rows
+are not restated here.
 
 ```bash
+# The three suites US013 adds or touches (each exits 0 pass, 1 fail, 2 script error;
+# hook-arming.sh also exits 3 when a case could not look)
+bash code/src/scripts/tests/graph-update.sh
+bash code/src/scripts/tests/template-hooks.sh
+bash code/src/scripts/tests/hook-arming.sh
+
 # Read before trusting the empty table in Section 1, then rewrite the generated block
 bash code/src/scripts/audits/story-markers.sh
 bash code/src/scripts/tests/test-record.sh US013
 
-# CI — read-only, the [3/4] job's log for the pushed head
-gh run view 45161301722 --log --job 137647123206
+# CI (read-only): the Template Integrity run on the pushed head and its [3/4] log
+gh run view 45247839004 --log --job 137949216724
 ```
 
-The per-site render counts (Bugsink 18, Fluent Bit 12, `glitchtip` 0, `sentry` 0, `loki` 10), the
-Sentry sentence, the four doc gates against their P0 baselines and the live walk are **manual**
-rows, read in `../MANUAL/US013-MANUAL-TESTING.md` (story plan, _Testing_ → _Where each criterion
-is read_). They are not restated here.
+### 2.1 The suites, run on the host
 
-### 2.1 CI — workflow "Audit — Template Integrity", job `[3/4] Template Generation`
+| Suite                     | What US013 did to it                                                                                                                                             | Exit  | Result                                                                                                                                  |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `tests/graph-update.sh`   | **New** (`e6f18b76`, then extended by `5b622651`, `933df1e8` and `a3a4f86d`): 27 probe groups over `.claude/hooks/graph-update.sh`, each in its own scratch copy | **0** | **199 passed, 0 failed**                                                                                                                |
+| `tests/template-hooks.sh` | Adds `graph-update.sh` to the self-tests the pre-push leg must run, and stubs it in the push fixture                                                             | **0** | **69 passed, 0 failed**                                                                                                                 |
+| `tests/hook-arming.sh`    | Hides `graphify` (and its `graphify-*` siblings) from `PATH` for the whole suite, so no commit fixture starts a real refresh (`5b622651`)                        | **3** | **432 passed, 0 failed, 1 unmeasured**: `[ES-01]` is CI-only, because root `install.sh` needs Docker, `uv` and `sudo tee -a /etc/hosts` |
 
-Read 23/11/2026 with read-only `gh run view`. Both runs are `push` events on
-`us013/log-debug-workflow-seam`; timestamps are the run's own creation time, 23/11/2026 UTC.
+`graph-update.sh`'s fixture is a `git archive HEAD` extraction with the **working-tree** hook
+copied over its committed one, plus `git init`. `graphify` and `code-review-graph` are stubs
+that record their argv, and the real tools are hidden from `PATH` and never invoked. No `.env.*`
+file is read. The suite's own header lists the probes. What each group checks:
 
-| Commit     | Role                                                   | Run ID        | `[3/4]` job ID | Created  | Result      | Reading                                                                                                                                                                                 |
-| ---------- | ------------------------------------------------------ | ------------- | -------------- | -------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `9afc4e44` | **Superseded** — build P1 to P5, before review and QA  | `45158695645` | `137638184563` | 10:43:31 | **success** | `INCLUDE_MOBILE=false — 0 unrendered tokens` and `INCLUDE_MOBILE=true — 0 unrendered tokens`; all four jobs success. Superseded when review fixes F-1, F-4 and QA fixes moved the head  |
-| `58f3c78e` | **Of record** — pushed head, after review and QA fixes | `45161301722` | `137647123206` | 11:01:07 | **success** | `INCLUDE_MOBILE=false — 0 unrendered tokens` and `INCLUDE_MOBILE=true — 0 unrendered tokens`; `[1/4]` Template Tokens, `[2/4]` Shipped Documentation, `[4/4]` Parser Probes all success |
+| Probe group                                                        | Source of the probe               | Checks                                                                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------ | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `absent`, `refuse`, `fail`                                         | P8, QA plan HP-16, ES-10 to ES-13 | An absent graphify, a refusal to overwrite and a failed run are each reported **unmeasured**, with their reason, once per change of state. Exit is always 0 and no line carries `--force`                                                                                                                      |
+| `lock`, `success`, `detached`                                      | P8                                | A run in flight stops a second run, and only the lock can stop it. A run starts as `graphify update .` at the root and says nothing on success. The hook returns inside 2 s with its streams closed, and the stub was still started                                                                            |
+| `regression`, `one-json`                                           | P8                                | code-review-graph's `update --skip-flows` and the untracked notice are unchanged. Two notices in one call are still **one** JSON object                                                                                                                                                                        |
+| `fp`, `commit`, `nolock`, `rc`, `atomic`                           | Review M1, M2, m5, n1, n2         | A finished run on an unchanged tree is never restarted. `--commit` (lefthook) reports a not-ok outcome on every commit and never calls code-review-graph. A missing `flock` is unmeasured. A non-numeric code still gives one valid JSON line. The outcome and exit code are one file, written with one rename |
+| `env-force`, `git-locks`, `killed`, `content`, `newline`, `setsid` | QA Q1, Q3 to Q7, Q12              | An exported `GRAPHIFY_FORCE` is unset before the run. No hook git call takes `.git/index.lock`. A killed run reads unmeasured and retries the same tree. The fingerprint is content, not HEAD. The trailer is its own line. `setsid` is used when present and not required                                     |
+| `timeout`, `notimeout`, `mktemp`, `lockwait`                       | Bugfix loop 1                     | A hung run is bounded and reported as timed out, never `ok`. A missing `timeout` is unmeasured and starts nothing. A failed `mktemp` records a failure and does not loop. A brief lock does not cancel a run                                                                                                   |
+| `timeout-kill`, `timeout-reader`, `rc124`, `timeout-env`           | Bugfix loop 2                     | A TERM-ignoring run is SIGKILLed after the grace (`exit=137`). A reader with no override reports the bound recorded at the time. graphify's own exit 124 is a failure, not a timeout. Malformed bounds fall back to 600 s                                                                                      |
 
-**The run of record rendered `58f3c78e`, not the local head `79a22cb7`.** The one commit between
-them changes only the manual guide, whose only added tokens (`DEVELOPER_NAME`, `PROJECT_SLUG`) are
-defined `copier.yml` questions (the walk's RENDER-01 Notes). Re-read the `[3/4]` job once the
-closeout head is pushed; until then this record's CI evidence is for `58f3c78e`.
+### 2.2 Red runs: each probe seen failing before its fix
 
-### 2.2 Readings taken by hand
+| Probes                                                       | Run against                                                              | Result                                                                                                                                                                     | Where recorded                                           |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| P8: the first 8 groups                                       | The **unedited hook at `83aafd23`**, suite by a dispatched `test-writer` | **Exit 1, 33 passed, 18 failed.** Every graphify probe failed because that hook never starts or reports graphify. `regression` passed 7 of 7, as it should before the edit | Manual guide, _Recorded during the build_ (row GRAPH-02) |
+| Review fixes: `fp` to `atomic`                               | The hook at `b04b278b`, as built                                         | 19 checks red; green 102 passed, 0 failed                                                                                                                                  | Commit message of `5b622651` only                        |
+| QA fixes: `env-force` to `setsid`, and a strengthened `lock` | The hook at `5b622651`                                                   | 17 checks red. Mutants show the `lock`, `setsid` and untracked probes catch a broken hook. Green 146 passed, 0 failed, twice                                               | Commit message of `933df1e8` only                        |
+| Bugfix loop 1                                                | The hook before `a3a4f86d`                                               | 151 passed, 14 failed                                                                                                                                                      | BUG report Section 7                                     |
+| Bugfix loop 2                                                | The loop-1 fix                                                           | 187 passed, 12 failed                                                                                                                                                      | BUG report Section 7                                     |
 
-| Reading                      | Where / when                              | Result                                                                                                                                                                                               |
-| ---------------------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `audits/story-markers.sh`    | Host, 23/11/2026, `79a22cb7`              | Warn-only, exit 0: "Scanned 10 test module(s) and 7 Bruno request(s)"; "8 carry a story marker; 72 do not". `US013` occurs 0 times in its report, and 0 times as a marker in `code/src` (`git grep`) |
-| `tests/test-record.sh US013` | Host, 23/11/2026, `79a22cb7`              | Exit 0, `wrote 0 test rows`; the block in Section 1 is its output, unedited                                                                                                                          |
-| Diff scope                   | `git diff --name-only e306f48e..79a22cb7` | 19 files, all Markdown or `copier.yml`; no `.py`, no `.bru`, no template, no migration                                                                                                               |
+**Only the P8 groups were ever seen red against the unedited hook.** Every group added after
+P8 — by the review fixes, the QA fixes and bugfix loops 1 and 2, nineteen in all — was seen red
+only against the hook as it stood at that moment, never against `83aafd23`. Each still failed before its fix and
+passes after it, so the red-first discipline held. But the claim "this probe fails on the hook
+before US013" has been measured for P8 alone (Section 3). The review and QA reds are recorded
+only in commit messages, not under the manual guide's _Recorded during the build_.
 
-**Why no test is marked US013, and why that is correct.** A story marker attributes a pytest test
-or a Bruno request to a story. US013 adds neither and changes no code either could exercise: its
-whole diff is documentation and one Copier comment and help line. The 72 unmarked tests the audit
-lists predate this story and belong to none of its files, so marking any of them US013 would claim
-a test of a change it does not exercise. The audit's silence about US013 is therefore the correct
-reading, not a missing marker — and it says nothing about the CI render, which no marker can
-reach.
+### 2.3 CI: workflow "Audit — Template Integrity" and "Audit — Hook Arming"
+
+Read 23/11/2026 with read-only `gh run list` and `gh run view`. `graph-update.sh` and
+`template-hooks.sh` run as template self-tests inside the `[1/4] Template Tokens` job.
+`[3/4] Template Generation` renders a generated project with `INCLUDE_MOBILE=false` and `true`
+and fails on any unrendered token. Times are each run's creation time, UTC.
+
+| Commit     | Role                                         | Run ID        | Event          | Created  | Conclusion  | Reading                                                                                                                                                                                                                           |
+| ---------- | -------------------------------------------- | ------------- | -------------- | -------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `275e2548` | **Of record**: the pushed head               | `45247839004` | `push`         | 19:20:06 | **success** | `[3/4]` job `137949216724`: `INCLUDE_MOBILE=false — 0 unrendered tokens` and `INCLUDE_MOBILE=true — 0 unrendered tokens`. `[1/4]` job `137949217154` logs `69 passed, 0 failed` and `199 passed, 0 failed`. All four jobs success |
+| `275e2548` | The same head, as the PR                     | `45247933958` | `pull_request` | 19:20:35 | **success** | `[3/4]` job `137949533219`: the same two lines, 0 unrendered tokens each. All four jobs success                                                                                                                                   |
+| `90399980` | Superseded: the walk commit                  | `45247290781` | `push`         | 19:16:59 | **success** | `[3/4]` job `137947302870`: 0 unrendered tokens under both values                                                                                                                                                                 |
+| `275e2548` | Hook Arming: the CI half of `hook-arming.sh` | `45247933816` | `pull_request` | 19:20:35 | **success** | Job "Hook-install failure stops install.sh (ES-01 to ES-03)" `137949790663`: **7 passed, 0 failed, 0 unmeasured**. This is where the host's unmeasured `[ES-01]` is measured                                                      |
+
+Earlier runs, all success and all superseded: `45204954080` (`26d7237c`), `45161301722`
+(`58f3c78e`), `45158695645` (`9afc4e44`).
+
+### 2.4 Readings taken by hand
+
+| Reading                      | Where / when                             | Result                                                                                                                                                                                                     |
+| ---------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `audits/story-markers.sh`    | Host, 23/11/2026, `275e2548`             | Warn-only, exit 0: "Scanned 10 test module(s) and 7 Bruno request(s)"; "8 carry a story marker; 72 do not". `US013` occurs 0 times in its report. It scans no shell suite, so it cannot see US013's probes |
+| `tests/test-record.sh US013` | Host, 23/11/2026, after the three suites | Exit 0, `wrote 0 test rows`. The block in Section 1 is its output, unedited                                                                                                                                |
+
+**Why no test is marked US013.** A story marker attributes a pytest test or a Bruno request to a
+story. US013 adds neither. Its tests are shell probes, which have no marker syntax
+(`code/docs/testing/TAXONOMY.md`), and the 72 unmarked tests the audit lists predate the story
+and exercise none of its files. The empty block is therefore the correct reading. Section 2.1 is
+the record of what ran.
 
 ---
 
 ## 3. Outstanding gaps and flaky tests
 
-Every suite is `N/A`, named here with its reason rather than omitted (`code/docs/GATE-REPORTING.md`;
-story plan, _Testing_).
+Every suite not run, and every claim not measured, is named here with its reason rather than
+omitted (`code/docs/GATE-REPORTING.md`).
 
-| Item                                          | Type        | Reason / owner                                                                                                                                                                  |
-| --------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Unit and integration (pytest)                 | `N/A`       | No code path: the diff carries no Python module                                                                                                                                 |
-| Coverage figure against the floors            | `N/A`       | Nothing instruments; `code/docs/TESTING.md`'s floor has nothing to bind. The Section 1 figures are whole-project and unrelated (open bug cited in Section 1)                    |
-| Migration check (`database/migrate.sh check`) | `N/A`       | No model, no migration                                                                                                                                                          |
-| API (Bruno)                                   | `N/A`       | No API surface                                                                                                                                                                  |
-| E2E and accessibility (axe)                   | `N/A`       | No page, route or rendered screen                                                                                                                                               |
-| The `[3/4]` render absent from the block      | Tooling gap | `test-record.sh` has no source for a CI job's log, and `story-markers.sh` scans only pytest and Bruno — the gap US009, US010 and US012 recorded. Written by hand in Section 2.1 |
-| CI evidence for the local head `79a22cb7`     | Pending     | The run of record rendered `58f3c78e`; re-read `[3/4]` on the pushed closeout head (Section 2.1)                                                                                |
-| Rows a person walks                           | Manual      | Owned by `../MANUAL/US013-MANUAL-TESTING.md`: the 39 mechanical rows walked Pass at `79a22cb7`; WALK-01 to WALK-05 walked live by the developer; **WALK-06 pending**            |
+| Item                                                                        | Type        | Reason / owner                                                                                                                                                                                                               |
+| --------------------------------------------------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unit and integration (pytest)                                               | `N/A`       | No code path. The diff carries no Python module                                                                                                                                                                              |
+| Coverage figure against the floors                                          | `N/A`       | Nothing instruments a shell hook. The Section 1 figures are whole-project and unrelated (open bug cited in Section 1)                                                                                                        |
+| Migration check, API (Bruno), E2E and axe                                   | `N/A`       | No model, no API surface, no page                                                                                                                                                                                            |
+| `hook-arming.sh` `[ES-01]` on the host                                      | Unmeasured  | CI-only by design (Docker, `uv`, `/etc/hosts`). Measured green in CI run `45247933816` (Section 2.3), so it is unmeasured on the host only                                                                                   |
+| Probes added after P8 (review, QA, bugfix loops 1 and 2) against `83aafd23` | Unmeasured  | Seen red only against the hook as it stood before each fix, never against the unedited hook. Section 2.2 explains why the red-first discipline still held                                                                    |
+| Review and QA red runs outside the manual guide                             | Record gap  | 19 and 17 red checks are recorded in commit messages only (`5b622651`, `933df1e8`), with no capture under _Recorded during the build_ and no full counts for the red runs                                                    |
+| Shell suites absent from the generated block                                | Tooling gap | `test-record.sh` reads no shell suite output and `story-markers.sh` scans none, so the suites are written by hand in Section 2.1                                                                                             |
+| Rows a person walks                                                         | Manual      | Owned by `../MANUAL/US013-MANUAL-TESTING.md`: WALK-01 to WALK-06 Pass, GRAPH-01 to GRAPH-04 and GRAPH-06 to GRAPH-10 Pass. **GRAPH-05 unwalked**: it reads the closeout commit's pre-commit output, which does not exist yet |
+| Two Low defects left open by the bugfix                                     | Deferred    | Findings F-018 and F-019, routed to `GAPS.md` (BUG report Section 8). Neither is probed                                                                                                                                      |
 
-**No flaky test is known.** Both `[3/4]` runs gave the result their commit was meant to.
-
-**Unmarked tests are invisible here.** `story-markers.sh` was read (Section 2.2): 72 unmarked
-tests, none of them US013's, and its silence says nothing about the CI render.
+**No flaky test is known.** `graph-update.sh` gave 199 of 199 on this run, as it did on the
+fixer's three runs and the independent QA pass's three (BUG report Section 7). The slow
+`timeout-kill` probe waits on the hook's real 10 s kill grace, and that grace is its only timing
+margin.
 
 ---
 
 ## 4. Status line
 
-**Green**: 0 attributed tests (none possible); every automated suite `N/A` with its reason; CI
-`[3/4] Template Generation` green on the pushed head `58f3c78e` (run `45161301722`, job
-`137647123206`, 0 unrendered tokens under both `INCLUDE_MOBILE` values), superseding run
-`45158695645` on `9afc4e44`; re-read pending on the closeout head · verified 23/11/2026.
+**Green**: 0 attributed tests (shell probes carry no marker). `graph-update.sh` exit 0 with 199
+passed and 0 failed; `template-hooks.sh` exit 0 with 69 passed and 0 failed; `hook-arming.sh`
+exit 3 with 432 passed, 0 failed and 1 unmeasured (`[ES-01]`, CI-only, green in CI run
+`45247933816`). CI Template Integrity is green on the pushed head `275e2548` (run `45247839004`,
+`[3/4]` job `137949216724`, 0 unrendered tokens under both `INCLUDE_MOBILE` values). Red-first was
+seen against the unedited hook for P8 only (Section 3) · verified 23/11/2026.
 
 ---
 
 ## Cross-references
 
-- `../../02-STORIES/US013.md` — the story under test
-- `../../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md` — the implementation plan this record closes; its _Testing_ section sets every suite `N/A`
-- `../MANUAL/US013-MANUAL-TESTING.md` — the paired manual testing guide, authored before code and walked after it; its _Recorded during the build_ section holds the CI capture this record cites
-- `../../11-QA/PLANNING/QA-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md` — the scenarios (HP-05, ES-04) the CI render reads
-- `../../11-QA/IMPLEMENTATION/QA-IMPL-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md` — whether the specified scenarios were met
-- `../../20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md` — what shipping the story revealed
-- `.github/workflows/audit-template.yml` — the `[3/4]` job, unchanged by this story
-- `code/docs/GATE-REPORTING.md` — why a suite not run is named, never omitted
-- `code/src/scripts/tests/CLAUDE.md` — the runners, their exit-code contract, and the generator
+- `../../02-STORIES/US013.md`: the story under test
+- `../../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`: the implementation plan this record closes
+- `../MANUAL/US013-MANUAL-TESTING.md`: the paired manual testing guide, authored before code and walked after it. Its _Recorded during the build_ section holds the P8 red capture
+- `../../21-BUGS/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md`: the hung-run bug, its two red loops and the green re-runs
+- `../../11-QA/PLANNING/QA-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`: the scenarios the probes cite (HP-16, ES-10 to ES-13) and the CI render reads (HP-05, ES-04)
+- `../../11-QA/IMPLEMENTATION/QA-IMPL-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`: whether the specified scenarios were met
+- `../../20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`: what shipping the story revealed
+- `code/src/scripts/tests/graph-update.sh`: the probe suite; its header lists every group
+- `.claude/hooks/graph-update.sh`: the hook under test
+- `.github/workflows/audit-template.yml` · `.github/workflows/audit-hook-arming.yml`: the CI jobs read in Section 2.3
+- `code/docs/GATE-REPORTING.md`: why a suite not run is named, never omitted
+- `code/src/scripts/tests/CLAUDE.md`: the runners, their exit-code contract, and the generator

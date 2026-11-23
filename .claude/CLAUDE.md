@@ -3,8 +3,6 @@
 **Last Updated**: <%DATE%> | **Version**: 0.1.0 | **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB) | **Timezone**: <%TIMEZONE%>
 
-<!-- docs-length-allow: US013 review m1 restored Section 2.6's handoff wording and rewrapped the graphify lines to printWidth 100, taking this file to 276; move detail out to its owning guides at the US013 closeout (expires 23/12/2026) -->
-
 @../CONTEXT.md
 @../REFERENCES.md
 @./CONTEXT.md
@@ -43,11 +41,9 @@ web deployable constrains a migration whatever the desktop build is doing.
 - **Never against a live environment:** a raw `manage.py` shell, manual DDL, a force-push to a
   deployed branch, or a fixture load. Section 6's script-first rule is absolute here.
 
-**Changing it is a deliberate act, not an edit.** The value is rendered from `.copier-answers.yml`;
-edit the answer there on a branch and run `copier update`
-(`how-to/src/TEMPLATE-GUIDE/14-UPDATING.md`). Hand-editing a rendered posture does not fail loudly
-— Copier's three-way merge keeps it — it leaves the answer and the rendered text disagreeing for
-good, and turns the next upstream edit to this section into a merge conflict.
+**Changing it is a deliberate act, not an edit:** edit `.copier-answers.yml` on a branch and run
+`copier update`; never hand-edit the rendered value (why: `how-to/src/DEPLOYMENT-POSTURE.md`
+Section _The posture is an answer, not an edit_).
 
 ---
 
@@ -173,20 +169,11 @@ nothing reads it on the next task and no gate applies to it.
 | `perplexity`        | Cited live-web answers at tier 3 below; source triage for `/research`.                       | `.mcp.json` + `.codex/config.toml`; optional `PERPLEXITY_API_KEY`           |
 | `scrapling`         | **Reading** a primary source at tier 4 below — the page's own markdown, not a summary.       | `.mcp.json` + `.codex/config.toml`                                          |
 
-**Every server is declared twice, and both declarations must agree** — `.mcp.json` is Claude's, `.codex/config.toml`
-is Codex's, and nothing but `audits/mcp-parity.sh` holds them in step (rule: `.ai/INSTRUCTIONS.md`
-→ _Maintain one source_). **`get` is the default tier** — it returns the page's own
-markdown with no browser, and it is what 3.2 below means by _read_. The browser-backed tools
-(`fetch`, `stealthy_fetch`, `screenshot`) are **host-dependent**: Playwright pins an exact Chromium
-_revision_ per release, so they run only where the host supplies that revision and otherwise fail
-at runtime with `Executable doesn't exist at .../chromium-<rev>`. **That is provisioning, not a
-repository gap** — report the tier unavailable (`code/docs/GATE-REPORTING.md`) rather than loosen a
-pin or fall back to `WebFetch`, which paraphrases and so cannot cite a primary source.
-**The three readers are an escalation ladder, climbed only on failure.** `get` is the default and
-needs no browser; `fetch` renders what `get` returns as an empty shell; `stealthy_fetch` is the
-anti-bot tier, for a source this project is **entitled** to read that answers `fetch` with a
-challenge. Entitled is the limit — a public standard, a vendor changelog, an advisory; never a
-paywall, a login or a rate limit, which are access controls rather than incidental protection.
+**Every server is declared twice, and both declarations must agree** — `.mcp.json` is Claude's,
+`.codex/config.toml` is Codex's, and nothing but `audits/mcp-parity.sh` holds them in step (rule:
+`.ai/INSTRUCTIONS.md` → _Maintain one source_). **`scrapling`'s reader tiers and the entitlement
+limit** are `.claude/skills/research/SKILL.md` Step 3; the missing-Chromium fix is
+`how-to/src/TEMPLATE-GUIDE/15-TROUBLESHOOTING.md`.
 
 ### 3.2 How to look something up
 
@@ -240,14 +227,7 @@ never run dev operations. Registry: `.claude/plugins/CONTEXT.md`. The `<%ORG_SLU
 
 Every session runs on **Opus** at `effortLevel: medium` with **ultracode** on (dynamic workflows) — baked into `.claude/settings.json` (`model: opus`, `effortLevel: medium`, `ultracode: true`, `enableWorkflows: true`). Opus is the default main-loop model. Use the latest in each family — never hardcode version strings.
 
-**This project runs a single tier.** Sub-agents, workflows and docs-guides all declare `model: opus` in their routing frontmatter (Section 2.5) — the value is uniform across every declaration, and the key stays because it is the carrier any future tier split would use. **Never use `fable`, `sonnet` or `haiku`.**
-
-| Alias        | Use for                                                                                                                                               |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `opus`       | **Everything.** Planning, spec and design as well as backend/frontend code, tests, migrations, review, PR, release, docs — and every mechanical touch |
-| ~~`fable`~~  | **Retired 10/09/2026 on cost.** The design tier collapsed into `opus`; substantive and mechanical work are now an effort distinction, not a model one |
-| ~~`sonnet`~~ | **Never used.**                                                                                                                                       |
-| ~~`haiku`~~  | **Never used.**                                                                                                                                       |
+**This project runs a single tier.** Sub-agents, workflows and docs-guides all declare `model: opus` in their routing frontmatter (Section 2.5) — the value is uniform across every declaration, and the key stays because it is the carrier any future tier split would use. **Never use `fable` (retired 10/09/2026 on cost), `sonnet` or `haiku`.**
 
 ---
 

@@ -44,12 +44,20 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> · dates DD/MM/YYYY.
    sources: `perplexity_research` sweeps and triages them, `perplexity_search` finds one, and what
    the note takes from either is the citations — never the answer text. **Read every web source with
    the `scrapling` MCP** (`get`, or a `css_selector` for one section), which returns the page's
-   own markdown. Escalate only when a tier returns nothing usable: `fetch` for a source that
-   arrives as an empty shell, then `stealthy_fetch` for one that answers with a challenge — and
-   only for a source the project is entitled to read. A source that refuses all three is reported
-   unavailable, not worked around; `WebFetch` answers a prompt against the page with a small fast
-   model, so citing a claim to it cites a paraphrase nobody read. `WebSearch` or Perplexity finds
-   a source; `scrapling` reads every one the note cites (`.claude/CLAUDE.md` Section 3.2).
+   own markdown. **The three readers are an escalation ladder, climbed only on failure:** `get`
+   is the default and needs no browser; `fetch` for a source that arrives as an empty shell; then
+   `stealthy_fetch` for one that answers with a challenge — and only for a source the project is
+   **entitled** to read. Entitled is the limit — a public standard, a vendor changelog, an
+   advisory; never a paywall, a login or a rate limit, which are access controls rather than
+   incidental protection. A source that refuses all three is reported unavailable, not worked
+   around. **The browser tiers (`fetch`, `stealthy_fetch`, `screenshot`) are host-dependent** —
+   Playwright pins an exact Chromium revision, so where the host lacks it they fail with
+   `Executable doesn't exist at .../chromium-<rev>`. That is provisioning, not a repository gap:
+   report the tier unavailable (`code/docs/GATE-REPORTING.md`; the fix is
+   `how-to/src/TEMPLATE-GUIDE/15-TROUBLESHOOTING.md`) rather than loosen a pin or fall back to
+   `WebFetch`, which answers a prompt against the page with a small fast model, so citing a claim
+   to it cites a paraphrase nobody read. `WebSearch` or Perplexity finds a source; `scrapling`
+   reads every one the note cites (`.claude/CLAUDE.md` Section 3.2).
    _Completion:_ every claim traces to a primary source the note's author read — a web page
    through `scrapling`, a repo path at its line, or a pinned document — and none rests on a
    secondary write-up, a Perplexity answer, or a summary of a source the note never opened.
