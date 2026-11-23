@@ -41,7 +41,7 @@ All files in this directory are gitignored. Only this `CONTEXT.md` and `.gitkeep
 
 ```bash
 # Follow live backend output
-logs.sh --service django --follow    # django.log via Docker stdout
+bash code/src/scripts/development/logs.sh --service django --follow   # the django container's stdout
 
 # Read the log file directly on the host
 tail -f code/src/logs/django.log

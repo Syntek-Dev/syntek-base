@@ -26,7 +26,7 @@ Grafana, and Prometheus for metrics (`how-to/src/PLATFORM-PROVIDERS.md`).
 
 ## Documentation (if the bug revealed a gap)
 
-- [ ] If a logging statement was missing: it is named in the handoff to `code/workflows/10-debug/`, which adds it · _opus_
+- [ ] If a logging statement was missing: it is named in the handoff to `code/workflows/10-debug/` · _opus_
 - [ ] If an observability gap was found: noted in `code/docs/logging/OBSERVABILITY.md` or raised as a story · _opus_
 
 ---
