@@ -445,7 +445,7 @@ developer's own rights against a local stack. Recorded rather than omitted, per
 
 ### Addendum — graphify beside code-review-graph (23/11/2026)
 
-**Status: awaiting <%DEVELOPER_NAME%>'s sign-off.** Added when the story widened at build
+**Status: Signed off 23/11/2026 by <%DEVELOPER_NAME%>** (implement-story session, before P7). Added when the story widened at build
 (`../../02-STORIES/US013.md` → the WIDENED comment under _Acceptance Criteria_; implement-story
 grilling rounds 1-3, 23/11/2026). The original scenarios above stand as signed off 31/10/2026;
 these cover only the new surface. Every ID continues its series.
