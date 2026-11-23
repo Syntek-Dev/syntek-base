@@ -1651,9 +1651,43 @@ CONTEXT.md case table to match. No map or story claims this entry.
 `:707` give `bash code/src/scripts/development/hosts-story-add.sh us###`. The script accepts only
 a numeric story number and exits 1 on anything else ("Story number must be numeric",
 `hosts-story-add.sh:26`). `how-to/workflows/02-worktree-setup/STEPS.md:79` has the working numeric
-form. The template's form was copied into the US006, US007, US010, US012 and US014 plans, so a
+form. The template's form was copied into the US006, US007, US010 and US014 plans (US012's plan has the numeric form), so a
 plan written from the template gives its builder a command that fails. Still the case on
 23/11/2026. Finding F-007 in "project-management/src/20-FINDINGS/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. Correct the two template lines to
 `hosts-story-add.sh ###` at the next `17-story-plans` pass. Filed plans stay as written. No map
 or story claims this entry.
+
+---
+
+## 23/11/2026 — eighteen PM citations name files that do not exist, and `doc-references` is red on the chain
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` exits 1 with 18 `[dangling path]` findings,
+and the _Audit — Doc References_ workflow has failed on `dev`, `testing` and `staging` since
+22/11/2026. The citations are in PM artefacts written before their targets existed or after the
+targets were renamed: `how-to/src/OUTBOUND-TIMEOUTS.md` (US005's QA plan, story plan, ADR and
+sprint plan 03, and `SPRINT-03.md`); `code/src/django/apps/core/observability.py` and its unit test
+(US014's story, QA plan and threat-model plan, US014 being unbuilt); and
+`project-management/src/21-BUGS/BUG-INDEX.md` (US011's QA plan, the index since replaced by
+`BUGS-BOARD.md`). None is on a line US012 changed; US012's PR inherits the red check.
+**Blocked by / Action:** Nothing blocks it. For each citation, correct the path, mark it with the
+forward-voice register (`code/docs/FORWARD-VOICE.md`) where the file is created by an unbuilt
+story, or drop it. Do not add a `PROJECT-PATHS.md` row only to quieten a finding. No map or story
+claims this entry.
+
+---
+
+## 23/11/2026 — the pre-PR hook calls two audits without the arguments they require
+
+**Type:** Active gap
+**Summary:** `.claude/hooks/lib/check-audits.sh` runs every integrity check in `.github/scripts/`
+as `bash "$script"` with no arguments (`:200`), excluding only the scripts named in
+`_INTEGRITY_SKIP`. `.github/scripts/register-index-routes.sh` needs `ROOT...` and
+`.github/scripts/template-integrity.sh` needs `--pre-commit`, `--pre-push` or `--self-tests`, so
+both exit 2 with their usage line and the gate reports them as failed, not as unrun. Every PR through
+`.claude/hooks/pre-pr-check.sh` is therefore blocked whatever the branch holds. Found by US012's
+final QA pass, 23/11/2026; neither the hook nor either script is changed on that branch.
+**Blocked by / Action:** Nothing blocks it. Name both in `_INTEGRITY_SKIP` with the owner that runs
+them with their arguments, as `shipped-artefacts.sh` already is (the guard then checks that owner
+still invokes them), or give the leg the arguments. No map or story claims this entry.
