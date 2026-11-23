@@ -269,10 +269,16 @@ Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here. **Bo
 plan first, and US011's later the same day, once US010's plan was committed; each row here was
 repointed at its file by that workflow's Step 10. Neither prefix was assigned by this file.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                          | Status  |
-| ----- | -------------------------------------------------------------------------- | ------- |
-| US012 | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`              | Pending |
-| US011 | `../17-STORY-PLANS/archive/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` | Closed  |
+| Story | Story plan (`../17-STORY-PLANS/`)                                          |
+| ----- | -------------------------------------------------------------------------- |
+| US012 | `../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md`              |
+| US011 | `../17-STORY-PLANS/archive/12-STORY-PLAN-US011-REGISTER-INDEX-BACKFILL.md` |
+
+<!-- STATUS COLUMN DROPPED 23/11/2026 under Sam's ruling on US012's manual-test row REMEDY-02: a plan
+     carries no status, so this table has no status cell (`CLAUDE.md` here -> "No status line, no
+     status cells"; `.claude/skills/completion/SKILL.md` -> Plans). `SPRINT-PLANS-BOARD.md` and
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` show each plan under its parent's status. The mirror
+     notes below are history. -->
 
 <!-- RE-MIRRORED 22/11/2026 under Sam's ruling 3 on the US010 re-walk (manual-test row REMEDY-02):
      a sprint plan's Story Plans Status cell mirrors the STORY's status as

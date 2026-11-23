@@ -325,10 +325,16 @@ exists.** It was written 03/10/2026 by `17-story-plans` under the "10-" reserved
 table was repointed at it by that workflow's Step 10. The reserved-carry row points at a plan that
 also exists, so whoever takes the carry finds it from this index; it is not a membership claim.
 
-| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status    |
-| ---------------------- | ------------------------------------------------------------------ | --------- |
-| US010                  | `../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` | Completed |
-| US009 — reserved carry | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`             | Completed |
+| Story                  | Story plan (`../17-STORY-PLANS/`)                                  |
+| ---------------------- | ------------------------------------------------------------------ |
+| US010                  | `../17-STORY-PLANS/10-STORY-PLAN-US010-SEEDED-REGISTER-INDEXES.md` |
+| US009 — reserved carry | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`             |
+
+<!-- STATUS COLUMN DROPPED 23/11/2026 under Sam's ruling on US012's manual-test row REMEDY-02: a plan
+     carries no status, so this table has no status cell (`CLAUDE.md` here -> "No status line, no
+     status cells"; `.claude/skills/completion/SKILL.md` -> Plans). `SPRINT-PLANS-BOARD.md` and
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` show each plan under its parent's status. The mirror
+     notes below are history. -->
 
 <!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
      US010's cell read `Open`; its plan's `| Status |` row was removed 19/11/2026 (a plan carries no

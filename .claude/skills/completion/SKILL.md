@@ -176,7 +176,8 @@ its board files it there. Templates (`<PREFIX>-US000-TEMPLATE.md`) are never ins
 3. Tick any remaining acceptance-criteria checkboxes the verified work satisfies.
 4. Where the story sits in an active sprint, update that sprint's Story Summary tick and
    re-evaluate the sprint below.
-5. Regenerate the boards: `pm-board.sh --write`.
+5. Regenerate the boards: `pm-board.sh --write`. An enabled board adapter publishes this
+   committed transition; it never writes a status of its own.
 
 ## Recording a sprint transition
 

@@ -383,10 +383,16 @@ constraint.
 
 Per-story implementation depth lives in `../17-STORY-PLANS/`, **not** here.
 
-| Story                  | Story plan (`../17-STORY-PLANS/`)                                  | Status    |
-| ---------------------- | ------------------------------------------------------------------ | --------- |
-| US004                  | `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` | Completed |
-| US003 — reserved carry | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`           | Completed |
+| Story                  | Story plan (`../17-STORY-PLANS/`)                                  |
+| ---------------------- | ------------------------------------------------------------------ |
+| US004                  | `../17-STORY-PLANS/05-STORY-PLAN-US004-CITATION-GATE-GIT-INDEX.md` |
+| US003 — reserved carry | `../17-STORY-PLANS/04-STORY-PLAN-US003-ABSENCE-GUIDE.md`           |
+
+<!-- STATUS COLUMN DROPPED 23/11/2026 under Sam's ruling on US012's manual-test row REMEDY-02: a plan
+     carries no status, so this table has no status cell (`CLAUDE.md` here -> "No status line, no
+     status cells"; `.claude/skills/completion/SKILL.md` -> Plans). `SPRINT-PLANS-BOARD.md` and
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` show each plan under its parent's status. The mirror
+     notes below are history. -->
 
 <!-- RE-MIRRORED 22/11/2026 under Sam's ruling 3 on the US010 re-walk (manual-test row REMEDY-02):
      a sprint plan's Story Plans Status cell mirrors the STORY's status as

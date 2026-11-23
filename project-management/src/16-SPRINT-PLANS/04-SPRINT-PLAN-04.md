@@ -251,10 +251,16 @@ US005's was written 05/09/2026 and repointed 07/09/2026; US006's was written 08/
 `17-story-plans`, taking the number `07-` that had been reserved for it that morning, and this
 table was repointed at it the same day by that workflow's Step 10.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                      | Status    |
-| ----- | ---------------------------------------------------------------------- | --------- |
-| US005 | `../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` | Completed |
-| US006 | `../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`               | Completed |
+| Story | Story plan (`../17-STORY-PLANS/`)                                      |
+| ----- | ---------------------------------------------------------------------- |
+| US005 | `../17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` |
+| US006 | `../17-STORY-PLANS/07-STORY-PLAN-US006-POSTURE-GUARD.md`               |
+
+<!-- STATUS COLUMN DROPPED 23/11/2026 under Sam's ruling on US012's manual-test row REMEDY-02: a plan
+     carries no status, so this table has no status cell (`CLAUDE.md` here -> "No status line, no
+     status cells"; `.claude/skills/completion/SKILL.md` -> Plans). `SPRINT-PLANS-BOARD.md` and
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` show each plan under its parent's status. The mirror
+     notes below are history. -->
 
 <!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
      US006's cell held the placeholder and now carries its plan's own `| Status |` header row,

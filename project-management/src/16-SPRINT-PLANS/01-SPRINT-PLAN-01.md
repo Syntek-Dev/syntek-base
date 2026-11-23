@@ -254,10 +254,16 @@ and the reading this plan's dated comment below already calls "the settled readi
 sprint plan". A cell written correct in a column of wrong ones would split the population that
 story corrects in a single pass.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                                      | Status    |
-| ----- | ---------------------------------------------------------------------- | --------- |
-| US007 | `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` | Completed |
-| US001 | `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`   | Completed |
+| Story | Story plan (`../17-STORY-PLANS/`)                                      |
+| ----- | ---------------------------------------------------------------------- |
+| US007 | `../17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` |
+| US001 | `../17-STORY-PLANS/02-STORY-PLAN-US001-RELIABILITY-DOCTRINE-HOME.md`   |
+
+<!-- STATUS COLUMN DROPPED 23/11/2026 under Sam's ruling on US012's manual-test row REMEDY-02: a plan
+     carries no status, so this table has no status cell (`CLAUDE.md` here -> "No status line, no
+     status cells"; `.claude/skills/completion/SKILL.md` -> Plans). `SPRINT-PLANS-BOARD.md` and
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` show each plan under its parent's status. The mirror
+     notes below are history. -->
 
 <!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
      both cells held the placeholder and now carry each plan's own `| Status |` header row, `Open`.

@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 22/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 23/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -1506,6 +1506,17 @@ require. No map or story claims this entry.
 ## 21/11/2026 — the 09/10/2026 build-start remediation never reached the procedures
 
 **Type:** Active gap
+**Update 23/11/2026 (US012):** Sam ruled to fix the remedies inside US012. On branch
+`us012/seed-presence-gate`, the transition moved from _Prerequisites_ to the end of
+`code/workflows/01-implement-story/STEPS.md` Step 1: after the due captures, before the first
+source edit, with no board or credentials needed. The documentation-only N/A sentence and the
+board-adapter sentence were added there and in `CHECKLIST.md`, and the skill's _Start the clock_
+in `.claude/skills/implement-story/SKILL.md` was changed to match. `.claude/skills/completion/SKILL.md`
+_Recording a story transition_ states that an enabled board adapter writes no status of its own
+(US012 F-008). **The mirror question is answered: dropped** (Sam, 23/11/2026). A plan carries
+no status (`project-management/src/16-SPRINT-PLANS/CLAUDE.md`), so the _Story Plans_ Status
+column was removed from sprint plans 01 to 07 (US012 F-009). **Nothing remains open; this entry
+closes when that branch merges.**
 **Update 22/11/2026:** Sam's ruling D routes REMEDY-01 here; it stays a Fail. REMEDY-02's cells were
 re-mirrored 22/11/2026 in sprint plans 01, 02, 04, 05 and 06, and no live `Not started` cell
 survives, but the re-walk still fails it: the cells copy each plan's stale Status row rather than
@@ -1630,3 +1641,19 @@ commit, which is the proof `CHANGELOG.md` 7.10.0 cites. Found by the independent
 already-activated entry and report those three cases as unmeasured (exit 3, "proved at a
 pre-v7.10.0 ref"), or document that it runs only with a pre-release `--story-ref` and update the
 CONTEXT.md case table to match. No map or story claims this entry.
+
+---
+
+## 23/11/2026 — the story-plan template gives a `hosts-story-add.sh` form that exits 1
+
+**Type:** Active gap
+**Summary:** `project-management/src/17-STORY-PLANS/00-STORY-PLAN-US000-TEMPLATE.md:503` and
+`:707` give `bash code/src/scripts/development/hosts-story-add.sh us###`. The script accepts only
+a numeric story number and exits 1 on anything else ("Story number must be numeric",
+`hosts-story-add.sh:26`). `how-to/workflows/02-worktree-setup/STEPS.md:79` has the working numeric
+form. The template's form was copied into the US006, US007, US010, US012 and US014 plans, so a
+plan written from the template gives its builder a command that fails. Still the case on
+23/11/2026. Finding F-007 in "project-management/src/20-FINDINGS/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md".
+**Blocked by / Action:** Nothing blocks it. Correct the two template lines to
+`hosts-story-add.sh ###` at the next `17-story-plans` pass. Filed plans stay as written. No map
+or story claims this entry.
