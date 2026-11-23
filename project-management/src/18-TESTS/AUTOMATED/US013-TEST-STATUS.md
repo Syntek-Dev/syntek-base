@@ -7,7 +7,7 @@ _The automated-test record for US013: what each automated check proves and wheth
 - **Story:** `../../02-STORIES/US013.md`. The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause; widened 23/11/2026 to cover graphify beside code-review-graph
 - **Story plan:** `../../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`, the code master this record closes the loop on (P0 to P6 for the workflow seam, P7 to P13 for graphify)
 - **Manual guide:** `../MANUAL/US013-MANUAL-TESTING.md`. The render counts, the doc gates, the live walk (WALK-01 to WALK-06) and the graphify rows (GRAPH-01 to GRAPH-10) are read there. It also holds the P8 red-run capture this record cites
-- **Bug report:** `../../21-BUGS/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md`, the hung-run fix (`a3a4f86d`) and its two red loops
+- **Bug report:** `../../21-BUGS/archive/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md`, the hung-run fix (`a3a4f86d`) and its two red loops
 - **Branch:** `us013/log-debug-workflow-seam`, cut from `dev` at `e306f48e`; pushed closeout head `aae0b8c0` (the host suite figures below were taken at `275e2548`)
 
 > **Half this file is generated.** Everything between the `BEGIN GENERATED` and `END GENERATED`
@@ -226,7 +226,7 @@ seen against the unedited hook for P8 only (Section 3) · verified 23/11/2026.
 - `../../02-STORIES/US013.md`: the story under test
 - `../../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`: the implementation plan this record closes
 - `../MANUAL/US013-MANUAL-TESTING.md`: the paired manual testing guide, authored before code and walked after it. Its _Recorded during the build_ section holds the P8 red capture
-- `../../21-BUGS/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md`: the hung-run bug, its two red loops and the green re-runs
+- `../../21-BUGS/archive/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md`: the hung-run bug, its two red loops and the green re-runs
 - `../../11-QA/PLANNING/QA-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`: the scenarios the probes cite (HP-16, ES-10 to ES-13) and the CI render reads (HP-05, ES-04)
 - `../../11-QA/IMPLEMENTATION/QA-IMPL-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`: whether the specified scenarios were met
 - `../../20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`: what shipping the story revealed

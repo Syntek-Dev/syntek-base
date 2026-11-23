@@ -189,5 +189,5 @@ they need no re-review.
 - `../18-TESTS/AUTOMATED/US013-TEST-STATUS.md` · `../18-TESTS/MANUAL/US013-MANUAL-TESTING.md`
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`
 - `../20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md` — F-001 to F-038
-- `../21-BUGS/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md` — fixed at `a3a4f86d`
+- `../21-BUGS/archive/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md` — fixed at `a3a4f86d`
 - `project-management/workflows/23-pr-and-review/` · `code/workflows/07-review/`

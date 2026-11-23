@@ -1725,7 +1725,7 @@ without the fix. No map or story claims this entry.
 
 **Type:** Active gap
 **Summary:** The `bugfix` run behind
-"project-management/src/21-BUGS/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md" closed
+"project-management/src/21-BUGS/archive/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md" closed
 its Medium and two Lows; its second, independent QA pass found two further Lows in
 `.claude/hooks/graph-update.sh`, recorded rather than fixed (<%DEVELOPER_NAME%>, 23/11/2026;
 findings F-018 and F-019 of the US013 record). Neither can report `ok` for a run that did not

@@ -3,8 +3,8 @@
 | Field            | Value                                                                                                              |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------ |
 | **Story**        | US013 — the 09 debugging workflow runs through the scripts (widened 23/11/2026: graphify beside code-review-graph) |
-| **Story doc**    | `../02-STORIES/US013.md`                                                                                           |
-| **Story plan**   | `../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`                                                 |
+| **Story doc**    | `../../02-STORIES/US013.md`                                                                                           |
+| **Story plan**   | `../../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`                                                 |
 | **Target story** | US013 — fixed on its own branch before its PR                                                                      |
 | **Severity**     | Medium (with two Low defects in the same run path, fixed together)                                                 |
 | **Date found**   | 23/11/2026                                                                                                         |
@@ -131,9 +131,9 @@ against the hook as it then stood, before its fix.
   advisory and never blocks, so nothing was corrupted; the harm was a stale cross-artefact graph
   presented as current, against the story's own gate-reporting doctrine.
 - **Related stories:** US013 introduced the hook's graphify run (P9 to P13, `b04b278b`).
-- **Related records:** `../18-TESTS/MANUAL/US013-MANUAL-TESTING.md` rows GRAPH-03 and GRAPH-04
-  (walked before the fix) · `../18-TESTS/AUTOMATED/US013-TEST-STATUS.md` ·
-  `../20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`.
+- **Related records:** `../../18-TESTS/MANUAL/US013-MANUAL-TESTING.md` rows GRAPH-03 and GRAPH-04
+  (walked before the fix) · `../../18-TESTS/AUTOMATED/US013-TEST-STATUS.md` ·
+  `../../20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`.
 - **Left open, Low — findings F-018 and F-019, routed to `GAPS.md`:** graphify printing a `timeout=<N>` line of
   its own as the penultimate line, with an ordinary failure exit, reads as timed out — still
   unmeasured, never `ok`; and the `mktemp`-failure branch writes `graphify.last` in place rather
@@ -186,8 +186,8 @@ Hook `.claude/hooks/graph-update.sh` sha256 `cfb1c349ce6ee5833d08e6063f3af71985a
 
 ## Cross-references
 
-- `../02-STORIES/US013.md` — the story this defect belongs to
-- `../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md` — the code master the fix closes the loop on
+- `../../02-STORIES/US013.md` — the story this defect belongs to
+- `../../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md` — the code master the fix closes the loop on
 - `code/workflows/10-debug/` — the TDD debug procedure (failing test first)
 - `code/docs/GATE-REPORTING.md` — the rule the defect broke
-- `../18-TESTS/MANUAL/` · `../18-TESTS/AUTOMATED/` — the walked manual testing guide and the automated test record from the same PR
+- `../../18-TESTS/MANUAL/` · `../../18-TESTS/AUTOMATED/` — the walked manual testing guide and the automated test record from the same PR
