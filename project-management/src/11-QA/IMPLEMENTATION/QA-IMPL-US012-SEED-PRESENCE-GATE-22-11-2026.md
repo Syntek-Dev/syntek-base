@@ -152,7 +152,7 @@ N/A — no personal data processed. The script reads file names in a generated t
 - `../../17-STORY-PLANS/11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md` — the plan, its CORRECTED 22/11/2026 block first
 - `../../18-TESTS/AUTOMATED/US012-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US012-MANUAL-TESTING.md`
   — downstream test records
-- `../../20-FINDINGS/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md` — the findings F-001 to F-010
+- `../../20-FINDINGS/archive/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md` — the findings F-001 to F-010
 - `../../19-REVIEWS/` — code-review notes from the same PR, written at `23-pr-and-review`
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards
 - `project-management/workflows/22-implementation-documentation/` — where this review is written

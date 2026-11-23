@@ -25,7 +25,7 @@ The branch has two parts, reviewed separately.
    — check 4's loop over `"${SEEDED[@]}"`, the `4b` self-test probe on the last seed, and the
    header, `--help`, exit-code and closing-guidance wording. It already had a build-time review
    (CR-US012-01 to -05) and a QA pass (QA-01 to -04), recorded in
-   `../20-FINDINGS/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md`. This record checks only that
+   `../20-FINDINGS/archive/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md`. This record checks only that
    nothing regressed since, and does not re-report those items.
 2. **The 23/11/2026 changes made under Sam's explicit rulings** (`532f47ac`, `40d55481`, `da345bc5`,
    `25740d72`): fix the three manual-guide remedies in-story, drop the sprint-plan _Story Plans_
@@ -210,6 +210,6 @@ above):
 - `../18-TESTS/AUTOMATED/US012-TEST-STATUS.md` · `../18-TESTS/MANUAL/US012-MANUAL-TESTING.md` — the
   test records this review reads against
 - `../11-QA/IMPLEMENTATION/QA-IMPL-US012-SEED-PRESENCE-GATE-22-11-2026.md` — the paired QA review
-- `../20-FINDINGS/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md` — findings F-001 to F-011
+- `../20-FINDINGS/archive/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md` — findings F-001 to F-011
 - `project-management/workflows/23-pr-and-review/` — the PM workflow where this review is written
 - `code/workflows/07-review/` — the code-review workflow the reviewer runs

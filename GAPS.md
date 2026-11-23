@@ -1620,7 +1620,7 @@ a numeric story number and exits 1 on anything else ("Story number must be numer
 `hosts-story-add.sh:26`). `how-to/workflows/02-worktree-setup/STEPS.md:79` has the working numeric
 form. The template's form was copied into the US006, US007 and US010 plans (the US012, US013 and US014 plans have the numeric form), so a
 plan written from the template gives its builder a command that fails. Still the case on
-23/11/2026. Finding F-007 in "project-management/src/20-FINDINGS/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md".
+23/11/2026. Finding F-007 in "project-management/src/20-FINDINGS/archive/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. Correct the two template lines to
 `hosts-story-add.sh ###` at the next `17-story-plans` pass. Filed plans stay as written. No map
 or story claims this entry.

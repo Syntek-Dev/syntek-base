@@ -29,7 +29,7 @@
      US014}. -->
 
 <!-- CARRIED 23/11/2026 from US012's findings (F-001, F-002, F-007,
-     project-management/src/20-FINDINGS/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md -> Section 4):
+     project-management/src/20-FINDINGS/archive/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md -> Section 4):
      - F-001: at P0, re-measure every count a criterion or manual-guide row states (probe totals,
        array sizes) at the commit the branch is cut from, and correct it before code.
      - F-002: this plan predates US010's re-cut and US012's build; at build start give it a dated
