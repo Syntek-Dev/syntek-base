@@ -34,8 +34,8 @@ produces the master this sequence builds from; if there is no
   `bash code/src/scripts/development/server.sh status` (the dev stack is up).
 - **Start the clock — after the captures, before the first source edit.** Once the manual
   guide's pre-edit slots are filled, `completion` moves the story `Pending` → `In Progress` with
-  a status-history row, and the sprint `Planned` → `In Progress` with its first story. No board
-  or credentials are needed; an enabled board adapter only publishes that committed move. A
+  a status-history row, and the sprint `Planned` → `In Progress` with its first story. Neither a
+  board nor credentials are needed; an enabled board adapter only publishes that committed move. A
   documentation-only story runs the same start, its code phases (Steps 2 to 8) marked N/A
   (`code/workflows/01-implement-story/STEPS.md` Step 1).
 

@@ -81,7 +81,7 @@ guide's _Recorded during the build_ slots that fall due then —
 **Then start the clock — after every due capture, before the first source edit.** `completion`
 moves the story `Pending` → `In Progress` with a _Status history_ row, and the sprint
 `Planned` → `In Progress` with its first story. The move is a committed repository edit and
-needs no board and no ClickUp credentials. **A documentation-only story** runs this same Step 1, with
+needs neither a board nor ClickUp credentials. **A documentation-only story** runs this same Step 1, with
 its code phases (Steps 2 to 8, with 3a and 7M) marked N/A in its plan and checklist, not
 skipped silently; Step 9 onward still runs.
 **Where a board adapter is enabled**, it publishes this same committed transition and never
