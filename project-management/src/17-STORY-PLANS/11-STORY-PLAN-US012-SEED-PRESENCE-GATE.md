@@ -6,7 +6,10 @@
 | Branch | `us012/seed-presence-gate`         |
 | Sprint | SPRINT-07 · Wave 2 · build order 1 |
 | Author | <%ORG_NAME%>                       |
-| Status | `In Progress`                      |
+
+<!-- REMOVED 23/11/2026 at gate 23 (review R-004): the metadata table's last row read
+     "| Status | `In Progress` |". A plan carries no status (./CLAUDE.md -> Guardrails); the story's
+     own **Status:** line is the only one, and STORY-PLANS-BOARD.md files this plan under it. -->
 
 <!-- BORN WITH ITS PREFIX, 03/10/2026. The number `11-` was reserved for this story on 21/09/2026,
      recorded in `../02-STORIES/US012.md` (its Dependencies, the bullet on SPRINT-07's close: "for
@@ -762,8 +765,9 @@ not a build-start transition performed by this documentation correction.
 `../02-STORIES/US012.md`'s `**Status:**` moves first — `Open` -> `In Progress` in a commit of its
 own, the first on `us012/seed-presence-gate` and before P1's red commit, so that the red commit
 carries the probe alone (_Key Decisions_ 1) — and -> `Completed` only at `completion`, after review
-and QA. This plan's `| Status |` header row moves with it, in the same commits. After US007 lands, the sprint plan's
-_Story Plans_ Status cell mirrors this plan's own status in each plan-transition change.
+and QA. <!-- SUPERSEDED 23/11/2026 (review R-004): this paragraph promised a `| Status |` header row here
+     and a mirrored sprint-plan _Story Plans_ Status cell. Neither exists: a plan carries no status,
+     and Sam dropped the sprint-plan column on 23/11/2026 (finding F-009). -->
 `../03-SPRINTS/SPRINT-07.md`'s Story Summary carries no status column.
 
 **The ClickUp export is generated, and pushing it is CI's.** The lefthook `clickup-export`

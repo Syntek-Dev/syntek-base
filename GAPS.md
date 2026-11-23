@@ -1651,7 +1651,7 @@ CONTEXT.md case table to match. No map or story claims this entry.
 `:707` give `bash code/src/scripts/development/hosts-story-add.sh us###`. The script accepts only
 a numeric story number and exits 1 on anything else ("Story number must be numeric",
 `hosts-story-add.sh:26`). `how-to/workflows/02-worktree-setup/STEPS.md:79` has the working numeric
-form. The template's form was copied into the US006, US007, US010 and US014 plans (US012's plan has the numeric form), so a
+form. The template's form was copied into the US006, US007 and US010 plans (the US012, US013 and US014 plans have the numeric form), so a
 plan written from the template gives its builder a command that fails. Still the case on
 23/11/2026. Finding F-007 in "project-management/src/20-FINDINGS/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md".
 **Blocked by / Action:** Nothing blocks it. Correct the two template lines to
