@@ -12,8 +12,8 @@
 | **Found during** | Manual walk — an out-of-scope observation by the independent GRAPH-row walker's `qa-tester` pass                   |
 | **Reporter**     | Claude (independent walker, `qa-tester`); fixed through `bugfix` at <%DEVELOPER_NAME%>'s instruction               |
 
-**Status:** Fixed
-**Status note:** Fix `a3a4f86d` and its regression probes (`code/src/scripts/tests/graph-update.sh`, 199/199) merged into `dev` via PR #43 at `73cee9a5`, 23/11/2026; `Verified` once seen to hold after the merge
+**Status:** Verified
+**Status note:** Fix `a3a4f86d` merged into `dev` via PR #43 at `73cee9a5`; seen to hold on `dev` at `a02d7f9c`, 23/11/2026 (section 9, _Post-merge verification_)
 
 ---
 
@@ -149,12 +149,38 @@ against the hook as it then stood, before its fix.
 - `bash code/src/scripts/tests/all.sh` — all suites passed, 23/11/2026, on the fixed working
   tree. It touches no Django code; the three hook suites above are the ones that exercise it.
 
+### Post-merge verification — 23/11/2026, `dev` at `a02d7f9c`
+
+Hook `.claude/hooks/graph-update.sh` sha256 `cfb1c349ce6ee5833d08e6063f3af71985ab36be6ee8bcf8f866a6459f87f46b`.
+
+1. **Regression probes on the merged head.** The lefthook pre-push run on `a02d7f9c` ran
+   `code/src/scripts/tests/graph-update.sh` with 0 red; the independent verifier re-ran it there: 199 passed, 0 failed.
+2. **CI on `dev`.** At `a02d7f9c`, `Audit — Template Integrity` (run 45271764449) and `Audit — Hook Arming`
+   (run 45271764237) passed, with every other check except `Audit — Doc References`. That one was
+   already red before this fix (the 21 baseline paths, `DEFERRED.md`), and it doesn't exercise the hook.
+3. **Section 3 reproduced again, independently.** An independent `general-purpose` dispatch ran the steps in a
+   scratch repo under `/tmp`, holding a copy of the dev hook, with stub tools on PATH. It never ran the real
+   graphify and never used `--force`. `GRAPH_UPDATE_GRAPHIFY_TIMEOUT=3`.
+
+   | Defect                                     | Observed on `dev`                                                                                                                                                       | Result |
+   | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+   | Medium, hung run (per-edit and `--commit`) | Stopped at the bound with `exit=124`, and the marker was cleared. Then reported once as `graphify unmeasured: its last update timed out after 3 s`, never the last `ok` | Pass   |
+   | Low 1, `mktemp` fails                      | `graphify.last` records `mktemp failed`, with no orphan marker. Reported once; `mktemp` called once and graphify 0 times over 6 calls                                   | Pass   |
+   | Low 2, lock probe                          | A tight `flock -n` probe loop and a 0.7 s hold both left the run to complete (`exit=0`). As the control, a genuinely held lock still stops a second run                 | Pass   |
+
+   **Unmeasured:** the 10 s kill grace, `timeout` absent from PATH (the suite covers both), the 600 s default
+   bound in real time, and a real graphify binary.
+
+   **Side observation, not a regression:** concurrent calls on one changed tree run graphify once per call,
+   one after another, because the fingerprint isn't re-checked under the lock. It is Low and only bites when
+   graphify is fast; it goes to US014's findings.
+
 **Sign-off:**
 
 - [x] Regression test written **first**, seen to fail, now passing
 - [x] `bash code/src/scripts/tests/all.sh` green
 - [x] Root cause identified (symptom fix rejected)
-- [ ] Fix merged under the story branch; **Status** flipped to `Fixed`, then `Verified` post-merge
+- [x] Fix merged under the story branch; **Status** flipped to `Fixed`, then `Verified` post-merge
 
 ---
 

@@ -10,8 +10,8 @@ One row per bug report in `21-BUGS/` and `21-BUGS/archive/`, filed under its sta
 | Column   | Items |
 | -------- | ----- |
 | Open     | 9     |
-| Fixed    | 3     |
-| Verified | 2     |
+| Fixed    | 2     |
+| Verified | 3     |
 
 ## Open
 
@@ -33,11 +33,11 @@ One row per bug report in `21-BUGS/` and `21-BUGS/archive/`, filed under its sta
 | ------------------------------------------------------ | ---------------------------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------- |
 | BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026 | `restore.sh` drops the database before discovering a relative backup path is wrong | Fixed  | [BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md](BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md) |
 | BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026          | `install.sh`'s host-profile probes abort the whole install when one probe fails    | Fixed  | [BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md](BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md)                   |
-| BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026     | a hung graphify run leaves the graph hook reporting the last success indefinitely  | Fixed  | [BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md](BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md)         |
 
 ## Verified
 
-| ID                                           | Title                                                   | Status   | File                                                                                                       |
-| -------------------------------------------- | ------------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------- |
-| BUG-US008-DEV-STATIC-404-16-11-2026          | every `/static/` asset 404s on the dev stack            | Verified | [BUG-US008-DEV-STATIC-404-16-11-2026.md](archive/BUG-US008-DEV-STATIC-404-16-11-2026.md)                   |
-| BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026 | a per-story dev stack on `:3080` cannot submit any form | Verified | [BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md](archive/BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md) |
+| ID                                                 | Title                                                                             | Status   | File                                                                                                           |
+| -------------------------------------------------- | --------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| BUG-US008-DEV-STATIC-404-16-11-2026                | every `/static/` asset 404s on the dev stack                                      | Verified | [BUG-US008-DEV-STATIC-404-16-11-2026.md](archive/BUG-US008-DEV-STATIC-404-16-11-2026.md)                       |
+| BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026       | a per-story dev stack on `:3080` cannot submit any form                           | Verified | [BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md](archive/BUG-US008-STORY-STACK-CSRF-ORIGIN-16-11-2026.md)     |
+| BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026 | a hung graphify run leaves the graph hook reporting the last success indefinitely | Verified | [BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md](BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md) |
