@@ -123,7 +123,8 @@ if STAGED:
     contexts = [c for c in contexts if c.parent in touched]
 
 # ── What counts as "on disk" ──────────────────────────────────────────────────
-IGNORED_DIRS = {".git", "node_modules", ".venv", "__pycache__", ".code-review-graph"}
+IGNORED_DIRS = {".git", "node_modules", ".venv", "__pycache__", ".code-review-graph",
+                "graphify-out"}
 
 def entries_on_disk(d: Path):
     """Direct children of d, split into (exists, should_be_listed).

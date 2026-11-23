@@ -42,7 +42,8 @@ Consult `code/REFERENCES.md` as you work through these steps:
 planner [feature name and scope]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:**
+> code-review-graph (code), graphify (cross-artefact) — each the other's fallback
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> about the feature's scope, data model, API surface,
@@ -114,7 +115,8 @@ Verify all new tests are **red** before proceeding.
 backend [create models for feature]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:**
+> code-review-graph, graphify as fallback
 
 Then run:
 
@@ -248,13 +250,15 @@ bash code/src/scripts/mobile/bundle.sh
 review
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `review` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `review` · **Model:** opus · **MCP:**
+> code-review-graph, graphify as fallback
 
 ```text
 qa-tester
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus · **MCP:**
+> code-review-graph, graphify as fallback
 
 ### Step 10 — Implementation Documentation (hand off to PM 22)
 
@@ -266,7 +270,8 @@ formats, destinations, or templates here; a second copy is exactly how they drif
 doc-writer
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `doc-writer` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `doc-writer` · **Model:** opus · **MCP:**
+> graphify (cross-artefact), code-review-graph (code) — each the other's fallback
 
 It covers, in order:
 
@@ -279,7 +284,8 @@ It covers, in order:
 3. the story's findings record in `project-management/src/20-FINDINGS/`
 4. the `/GAPS.md` and `/DEFERRED.md` routing for anything that cannot close in this PR
 5. the `CONTEXT.md` / `CLAUDE.md` closeout across every touched layer, **and** the
-   code-review-graph refresh alongside it
+   code-review-graph refresh alongside it (graphify's code layer too, advisory; its doc layer
+   is the developer's `/graphify --update`)
 
 **Hard gate:** implementation docs, the touched `CONTEXT.md`/`CLAUDE.md`, and the graph refresh
 must all be complete **before any commit** (`.claude/CLAUDE.md` Section 6).

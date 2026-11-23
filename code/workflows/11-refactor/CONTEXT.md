@@ -45,7 +45,8 @@ refactor separately.
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **refactor playbook**
   (`.claude/skills/refactor-safely.md`): `refactor_tool` suggest/dead_code/rename, then
-  `get_impact_radius` + `get_affected_flows` before moving any code
+  `get_impact_radius` + `get_affected_flows` before moving any code; graphify as fallback and
+  for cross-artefact questions
 - `code/docs/coding-principles/PRACTICAL-RULES.md` — Design Patterns in Refactoring (the trigger
   rule, the smell-to-pattern map, the decision record), Decision Structuring (Policy/Strategy),
   DRY, KISS, YAGNI

@@ -9,22 +9,21 @@ One row per sprint in `03-SPRINTS/` and `03-SPRINTS/archive/`, filed under its s
 
 | Column      | Items |
 | ----------- | ----- |
-| Planned     | 1     |
-| In Progress | 1     |
+| Planned     | 0     |
+| In Progress | 2     |
 | Done        | 6     |
 | Closed      | 0     |
 
 ## Planned
 
-| ID        | Title                                                                                                                                     | Status  | File                         |
-| --------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------- | ---------------------------- |
-| SPRINT-08 | Debugging an incident runs through the scripts against structured logs: the 09 workflow is honest and every log line carries a request_id | Planned | [SPRINT-08.md](SPRINT-08.md) |
+_None._
 
 ## In Progress
 
 | ID        | Title                                                                                                                                                                                       | Status      | File                         |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ---------------------------- |
 | SPRINT-07 | A seeded file that fails to land in a generated project is reported by the template-integrity gate rather than silently tolerated, and the gate's header stops claiming a coverage it lacks | In Progress | [SPRINT-07.md](SPRINT-07.md) |
+| SPRINT-08 | Debugging an incident runs through the scripts against structured logs: the 09 workflow is honest and every log line carries a request_id                                                   | In Progress | [SPRINT-08.md](SPRINT-08.md) |
 
 ## Done
 

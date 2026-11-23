@@ -12,13 +12,13 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Open              | 0     |
 | Pending           | 1     |
 | In Progress       | 0     |
-| In Review         | 1     |
+| In Review         | 2     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
 | Rejected          | 0     |
 | Customer Rejected | 0     |
-| Blocked           | 1     |
+| Blocked           | 0     |
 | Completed         | 10    |
 | Closed            | 1     |
 
@@ -28,9 +28,9 @@ _None._
 
 ## Pending
 
-| Plan                | Story                           | Title                                                                                                                      | Status  | File                                                                                             |
-| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
-| 13-STORY-PLAN-US013 | [US013](../02-STORIES/US013.md) | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Pending | [13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md](13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md) |
+| Plan                | Story                           | Title                                                                                        | Status  | File                                                                                             |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
+| 14-STORY-PLAN-US014 | [US014](../02-STORIES/US014.md) | Structured JSON logging with a `request_id` on every entry, queried by Compose service label | Pending | [14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md](14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md) |
 
 ## In Progress
 
@@ -38,9 +38,10 @@ _None._
 
 ## In Review
 
-| Plan                | Story                           | Title                                                                                | Status    | File                                                                                   |
-| ------------------- | ------------------------------- | ------------------------------------------------------------------------------------ | --------- | -------------------------------------------------------------------------------------- |
-| 11-STORY-PLAN-US012 | [US012](../02-STORIES/US012.md) | A seeded file that never lands is reported, and the gate's header claim becomes true | In Review | [11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md](11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md) |
+| Plan                | Story                           | Title                                                                                                                      | Status    | File                                                                                             |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------ |
+| 11-STORY-PLAN-US012 | [US012](../02-STORIES/US012.md) | A seeded file that never lands is reported, and the gate's header claim becomes true                                       | In Review | [11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md](11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md)           |
+| 13-STORY-PLAN-US013 | [US013](../02-STORIES/US013.md) | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | In Review | [13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md](13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md) |
 
 ## Accepted
 
@@ -64,9 +65,7 @@ _None._
 
 ## Blocked
 
-| Plan                | Story                           | Title                                                                                        | Status  | File                                                                                             |
-| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
-| 14-STORY-PLAN-US014 | [US014](../02-STORIES/US014.md) | Structured JSON logging with a `request_id` on every entry, queried by Compose service label | Blocked | [14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md](14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md) |
+_None._
 
 ## Completed
 

@@ -37,7 +37,8 @@ For each conflicting file, find why each side changed it — the commit message,
 `project-management/src/17-STORY-PLANS/` holds what the branch set out to do, and
 `src/15-DECISIONS/` holds the decisions it must not re-litigate.
 
-Use the `code-review-graph` MCP for structural impact before Grep/Read.
+Use the `code-review-graph` MCP for structural impact before Grep/Read, and `graphify` for the
+docs and PM artefacts a conflicted change reaches; each is the other's fallback.
 
 _Done when each side's change has a stated purpose, not a guess._
 

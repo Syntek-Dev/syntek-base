@@ -14,24 +14,27 @@ Runtime log files written by the Django backend in **dev and test only**
 
 - **Routing:** debugging with logs → workflow `code/workflows/09-debugging-with-logs/`;
   configuration lives in `code/docs/LOGGING.md`. Read logs with **`logs.sh`**
-  (`--service backend --follow`) or tail the files directly — never invoke
+  (`--service django --follow`) or tail the files directly — never invoke
   `docker` or `python` directly to run the stack.
 - **Model:** Opus — this folder is read-only operational output; there is nothing
   to author here.
 - **Concrete steps:** follow a service with `logs.sh --service <name> --follow`, or
   `grep ERROR code/src/logs/django.log`; to reset,
-  truncate via the documented `docker compose … exec backend` command in `CONTEXT.md`.
+  truncate the file inside a `shell.sh` session, as `CONTEXT.md` → _Log rotation_ shows.
 - **Definition of done:** no file in this directory is committed; only `CONTEXT.md`,
   `CLAUDE.md`, `.gitignore`, and `.gitkeep` are tracked.
 
 ## Guardrails
 
+The reference deployment runs Grafana Alloy shipping logs to Loki, queried with LogQL in
+Grafana, and Prometheus for metrics (`how-to/src/PLATFORM-PROVIDERS.md`).
+
 - **Dev/test only** — staging and production log to stdout (JSON) for Grafana Alloy →
-  Loki; never wire disk logging into a non-local settings module.
+  <%LOG_AGGREGATOR%>; never wire disk logging into a non-local settings module.
 - **Everything except the tracked marker files is gitignored** — never commit a log,
   and never add application code here.
-- Exception reports go to Glitchtip, metrics to Prometheus, aggregated logs to Loki,
-  bug notes to `project-management/src/21-BUGS/` — not here.
+- Exception reports go to <%ERROR_TRACKING%>, metrics to Prometheus, aggregated logs to
+  <%LOG_AGGREGATOR%>, bug notes to `project-management/src/21-BUGS/` — not here.
 
 ## Output & naming
 

@@ -35,7 +35,7 @@ still reads `TBD`, stop: `how-to/workflows/01-first-time-setup/` Step 9 has not 
 
 ### Step 1 — Grill, then Identify Required Components
 
-> **Model:** opus · **MCP:** code-review-graph (reference only)
+> **Model:** opus · **MCP:** code-review-graph (reference only; graphify as fallback)
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and
 interview <%DEVELOPER_NAME%> about the required components, their states and

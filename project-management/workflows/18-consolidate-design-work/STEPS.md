@@ -181,7 +181,8 @@ row asserting a superseded design becomes a test of the wrong thing.
 
 > **Model:** opus
 
-- Update each touched `CONTEXT.md`/`CLAUDE.md` and refresh the code-review-graph
+- Update each touched `CONTEXT.md`/`CLAUDE.md` and refresh the code-review-graph, with graphify's
+  code layer alongside (advisory); its doc layer is the developer's `/graphify --update`
 - Confirm every stage-1 artefact is either carried forward or recorded as superseded
 - Satisfy `CHECKLIST.md`
 

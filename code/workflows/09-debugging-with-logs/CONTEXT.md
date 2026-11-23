@@ -4,6 +4,11 @@ Finding the cause is a different job from fixing it, which is why this workflow 
 `10-debug/`: the signal you need lives in a different place in each environment, and reaching for
 the wrong tier wastes the most time on the environments where debugging is already hardest.
 
+The reference deployment runs Grafana Alloy shipping logs to Loki, queried with LogQL in
+Grafana, and Prometheus for metrics (`how-to/src/PLATFORM-PROVIDERS.md`). The tool
+matrix and the query tools named below describe that deployment; a project that answered
+another log aggregator adapts them to its own.
+
 ## Directory Tree
 
 ```text
@@ -33,14 +38,14 @@ environments with different tooling at each tier.
 | --------------------------------------- | --- | ---- | ------- | ---- |
 | Local log files (`code/src/logs/`)      | ✅  | ✅   | ❌      | ❌   |
 | Console output (`docker compose logs`)  | ✅  | ✅   | ✅      | ✅   |
-| Glitchtip exception tracker             | ❌  | ❌   | ✅      | ✅   |
+| <%ERROR_TRACKING%> exception tracker    | ❌  | ❌   | ✅      | ✅   |
 | Loki / Alloy (LogQL queries in Grafana) | ❌  | ❌   | ✅      | ✅   |
 | Prometheus + Grafana dashboards         | ❌  | ❌   | ✅      | ✅   |
 
 ## Outputs
 
 - Root cause identified and documented
-- A regression test added to prevent recurrence (see `code/workflows/10-debug/`)
+- The fix and its regression test handed to `code/workflows/10-debug/`
 - If a staging/prod incident: a bug report filed in `project-management/src/21-BUGS/`
 
 ## Cross-references
@@ -53,10 +58,11 @@ None — log-based debugging is observational; start with whichever signal is av
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **debug playbook**
   (`.claude/skills/debug-issue.md`): trace the code path structurally once a log signal points
-  at a suspect area
+  at a suspect area; graphify as fallback and for cross-artefact questions
 - `code/docs/logging/DJANGO-LOGGING.md` — Django logging configuration, log levels, Django Ninja extension
 - `code/docs/logging/FRONTEND-LOGGING.md` — browser logging setup, HTMX error forwarding, dev vs prod behaviour
-- `code/docs/logging/OBSERVABILITY.md` — GlitchTip, Loki, Prometheus, Grafana tool details
+- `code/docs/logging/OBSERVABILITY.md` — <%ERROR_TRACKING%>, <%LOG_AGGREGATOR%>, Prometheus, Grafana
+  tool details
 - `code/workflows/10-debug/` — code-logic debugging workflow (complements this one)
 - `how-to/workflows/08-debugging/` — operational complement to this observability workflow
 - `code/src/logs/CONTEXT.md` — local log file location and access commands

@@ -32,7 +32,8 @@ Consult `code/REFERENCES.md` as you work through these steps:
 backend [describe model change]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` · **Model:** opus · **MCP:**
+> code-review-graph, graphify as fallback
 
 ### Step 1a — Register or Update the Model in Django Admin (`/control/`)
 

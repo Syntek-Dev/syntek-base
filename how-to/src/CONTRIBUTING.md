@@ -215,5 +215,6 @@ tests, security, stubs, cloc, lockfiles — blocking the PR rather than letting 
 
 The **documentation hard gate** must also be satisfied: directory trees updated, new directories
 carrying both `CONTEXT.md` and `CLAUDE.md`, implementation records written, `GAPS.md` and
-`DEFERRED.md` current, and the code-review-graph refreshed. See
+`DEFERRED.md` current, and the code-review-graph refreshed (graphify's code layer alongside,
+advisory; its doc layer is the developer's `/graphify --update`). See
 `project-management/workflows/22-implementation-documentation/`.

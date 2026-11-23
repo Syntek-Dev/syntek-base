@@ -30,8 +30,9 @@ links to. The decisions it graduates land in their existing homes (ADRs, plans, 
 `GAPS.md`, `DEFERRED.md`); the stories it spawns sync to ClickUp through the existing
 `clickup-sync` workflow — wayfinder writes markdown only, never to ClickUp directly.
 
-Facts are looked up, not asked: `code-review-graph` MCP → Read/Grep/Glob → `.claude/plugins/*.py`
-(and `context7` for library docs). Only genuine decisions with a real trade-off go to <%DEVELOPER_NAME%>.
+Facts are looked up, not asked: `code-review-graph` MCP (or `graphify`, across artefacts) →
+Read/Grep/Glob → `.claude/plugins/*.py` (and `context7` for library docs). Only genuine decisions
+with a real trade-off go to <%DEVELOPER_NAME%>.
 
 **The standing register is read, not only written.** `GAPS.md` (active gaps, blockers, sprint
 dependencies) and `DEFERRED.md` (work explicitly deferred from a shipped story to a named future
@@ -81,10 +82,12 @@ mode — no map, and no edit to the register.
    blocks / unrelated._
 2. **Pin the destination.** Open a `/grill-with-docs` pass to name what "done" looks like in one
    or two lines, and the epic's bounds — what is in, what is consciously out. Look the repo up
-   before asking (`code-review-graph` → Read/Grep/Glob → `.claude/plugins/*.py`). _Done when the
+   before asking (`code-review-graph`, or `graphify` across artefacts → Read/Grep/Glob →
+   `.claude/plugins/*.py`). _Done when the
    Destination and Out-of-scope bounds are written and <%DEVELOPER_NAME%> has confirmed them._
 3. **Map the frontier breadth-first.** Explore the epic's surface with the `code-review-graph`
-   explore playbook (`code/docs/CODE-REVIEW-GRAPH.md`) plus the target `CONTEXT.md`, surfacing
+   explore playbook (`code/docs/CODE-REVIEW-GRAPH.md`), `graphify` for how it reaches the docs and
+   PM artefacts (each the other's fallback), plus the target `CONTEXT.md`, surfacing
    every currently-knowable open decision. Anything still too vague to state as a decision goes to
    **Fog of war** as an `F-NN` item (_Fog of war — every item leaves by one route_). _Done when
    every knowable decision is either captured as a node or parked in Fog of war._
@@ -195,7 +198,8 @@ renumbered or reused. It leaves the fog by **exactly one** route:
   `Complete` or `Closed` map whose Fog of war still lists an item.
 - **An open item is a list item; a departed one may leave a record.** Once it has gone, the fog
   section may keep one bold paragraph, `**F-NN → <where it went> (route n).**`, as history — never
-  the open form `**F-NN — <title>**`, which the board counts as open with or without a leading `- `.
+  the open form `**F-NN — <title>**`, which the board counts as open with or without a leading
+  list-item dash.
 
 ### Claiming removes the entry
 

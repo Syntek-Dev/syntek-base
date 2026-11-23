@@ -35,6 +35,42 @@ conventions). Neither is authoritative alone, and they are kept in lockstep:
   **`code-review-graph update`** (or the `build_or_update_graph_tool` MCP tool) so flows and
   communities reconcile too — the docs and the graph never drift apart.
 
+## Two graphs — the role split
+
+A second graph, **graphify**, sits beside code-review-graph. They answer different questions:
+
+| Question                                                                 | Ask first           |
+| ------------------------------------------------------------------------ | ------------------- |
+| Code relationships — callers, impact radius, tests for X, a diff's reach | `code-review-graph` |
+| Cross-artefact — docs, PM artefacts, a concept across code and docs      | `graphify`          |
+
+- **Each is the other's fallback.** When the first graph is absent or silent, ask the other, then
+  Grep/Glob/Read.
+- **graphify is advisory.** One script, `.claude/hooks/graph-update.sh`, owns its refresh: per
+  edit as the `PostToolUse` hook, and at commit as `--commit`, lefthook's `graphify` step beside
+  `detect-changes`. Either way it starts `graphify update .` detached, under a lock, and only when
+  the tree's content differs from the last run's or that run died mid-way; it is **never run with
+  `--force`**, nor with `GRAPHIFY_FORCE` set. An absent tool or a refused, killed, timed-out or
+  failed refresh is reported **unmeasured** (`code/docs/GATE-REPORTING.md`) — once per state change per
+  edit, on every commit — and never blocks.
+- **The automatic refresh reaches graphify's code layer only.** `graphify update .` re-extracts
+  code, with no LLM; a docs or PM change reaches graphify's doc layer only through the
+  developer's `/graphify --update`. So wherever a procedure refreshes the graphs alongside a docs
+  change, it means **graphify's code layer alongside (advisory); its doc layer is the developer's
+  `/graphify --update`**.
+- **The commit gate stays code-review-graph's alone** — staged first, then refreshed
+  (`.claude/CLAUDE.md` Section 6). graphify's code layer is refreshed alongside it, never instead
+  of it.
+- **The semantic rebuild (`/graphify`) is the developer's call.** The automatic refresh is
+  AST-only; it refuses to overwrite semantic nodes it cannot rebuild, and that refusal is the
+  unmeasured case above, not a fault.
+- Both are host-provided, like every CLI here: `install.sh` installs neither. graphify's output is
+  `graphify-out/` (gitignored). The automatic refresh has two further **advisory host
+  prerequisites, `flock`** (util-linux) **and `timeout`** (coreutils): without either no refresh
+  starts, and the hook reports that unmeasured rather than run unlocked or unbounded. Each run is
+  bounded at 600 s (`GRAPH_UPDATE_GRAPHIFY_TIMEOUT` overrides it), so a hung graphify is reported
+  timed out rather than leaving the last success standing.
+
 ## The four task playbooks
 
 The `code-review-graph install` step generates four quick-reference cards under `.claude/skills/`.
@@ -59,7 +95,8 @@ matching card.
   demonstrably insufficient.
 - **Target ≤ 5 tool calls / ≤ 800 output tokens** for a single review, debug, or refactor pass.
 - The graph indexes source (`python`, `typescript`, `tsx`, `javascript`, `bash`) — for the
-  instructional `.md`/config layer (`.claude/**`, `**/docs/`), read the files directly.
+  instructional `.md`/config layer (`.claude/**`, `**/docs/`), ask graphify or read the files
+  directly.
 
 ## Explore playbook — understand structure
 
@@ -150,6 +187,7 @@ Always preview before applying; behaviour must stay identical (workflow `11` gol
 - Root `AGENTS.md` is maintained by this repository. When registering the graph server, use
   the install command's `--no-instructions` option to preserve the shared entry point; inspect
   the diff after changing any assistant configuration.
-- Tool config lives in `.mcp.json` for Claude Code and `.codex/config.toml` for Codex;
-  the graph store is `.code-review-graph/` (gitignored). Codex uses the explicit refresh
-  procedure above; Claude's lifecycle hooks do not run in Codex.
+- Tool config lives in `.mcp.json` for Claude Code and `.codex/config.toml` for Codex, both
+  servers in each; the stores are `.code-review-graph/` and `graphify-out/` (both gitignored).
+  Codex uses the explicit refresh procedure above, plus `graphify update .` for graphify's code
+  layer (its doc layer is `/graphify --update`); Claude's lifecycle hooks do not run in Codex.

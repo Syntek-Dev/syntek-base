@@ -36,6 +36,7 @@ code/src/scripts/tests/
 ├── CONTEXT.md                ← this file
 ├── cookie-preview-fixture.sh ← test-only: US008's generated scratch project + template-update preview proof
 ├── e2e-py.sh                 ← playwright-python browser suite (host; needs a running stack)
+├── graph-update.sh           ← test-only, copier-excluded: US013 probes of the graph hook <!-- doc-references: template-only -->
 ├── hook-arming.sh            ← US009 probes: install-hooks.sh, its --notice mode, the manifest edits
 ├── mutmut.sh                 ← Python mutation testing (local-only; dev stack required)
 ├── open-coverage.sh          ← opens the backend coverage HTML in a browser
@@ -63,6 +64,7 @@ code/src/scripts/tests/
 | `backend-coverage.sh`       | pytest + cov        | exec    | Full test stack up  | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)                          |
 | `cookie-preview-fixture.sh` | Copier + git        | host    | None (needs Copier) | N/A (console output; scratch removed on exit) <!-- doc-references: template-only -->         |
 | `e2e-py.sh`                 | pytest + playwright | host    | Dev stack up (:81)  | `reports/a11y/` + `reports/e2e/results.xml`                                                  |
+| `graph-update.sh`           | git + tar + stubs   | host    | None                | N/A (console output; scratch copies removed on exit) <!-- doc-references: template-only -->  |
 | `hook-arming.sh`            | git + pnpm + strace | host    | None                | `reports/hook-arming/<fixture>/` (evidence; scratch fixtures removed on exit)                |
 | `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                                         |
 | `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                                          |
@@ -91,10 +93,7 @@ already-running stack over HTTP, so it needs neither the test container nor the 
 engines in Docker require significant dependency setup for no benefit here. Everything else runs
 inside a container.
 
-**One browser driver, in Python.** There is no Node test path: HTMX, Alpine, axe, and real-layout
-overflow are browser-bound, and Django's test client executes no JavaScript. Anything that does
-_not_ need a browser belongs in `apps/<app>/tests/` through that client — faster, in CI on every
-push, and counted towards the coverage floor. See `code/src/django/tests/e2e/CONTEXT.md`.
+Why there is one browser driver, in Python, and what belongs in it: `code/src/django/tests/e2e/CONTEXT.md`.
 
 ## test-record.sh — the one script here that writes outside `code/`
 
@@ -114,18 +113,9 @@ the `18-TESTS/` root, where records sat before the folder split by record type, 
 an error naming the move, and nothing is written.
 
 **Every other script in this folder writes only into the gitignored `reports/` tree.** This one
-writes a tracked file in another layer, which is exactly the thing a reader assumes is not true,
-so three limits hold it:
-
-- **Only between the markers.** It replaces what sits between
-  `<!-- BEGIN GENERATED: test-record -->` and `<!-- END GENERATED -->` and touches no other byte
-  of the file. Either marker absent is a loud failure, never an append at the end.
-- **Never a suite's exit code.** It is a separate invocation rather than a step inside a runner,
-  so the exit-code contract below is untouched and a **failing** run still records.
-- **It records only what it is told about.** A test carrying no story marker is silently absent
-  from the table rather than an error; `bash code/src/scripts/audits/story-markers.sh` lists what
-  carries none. The attribution rule and the record's own conventions:
-  `project-management/src/18-TESTS/AUTOMATED/CLAUDE.md`.
+writes a tracked file in another layer, which is exactly the thing a reader assumes is not true.
+The limits that hold it: `CLAUDE.md` → _Guardrails_, and for the story marker,
+`project-management/src/18-TESTS/AUTOMATED/CLAUDE.md` → _The story marker_.
 
 ## cookie-preview-fixture.sh — test-only, for one story's preview proof <!-- doc-references: template-only -->
 
@@ -189,12 +179,9 @@ on a manual run or a range it cannot read. `machine-spec` is the one fixture out
 it puts a healthy fake of every host probe `install.sh --spec` reads first on `PATH`, breaks one
 per case, and requires exit `0` with a written spec — Linux only, unmeasured elsewhere.
 `binary-provenance` fetches lefthook `1.13.0` from the registry and traces with `strace`;
-`graph-reclaim` runs the real `code-review-graph` at the script's pinned version. Exit codes extend the folder's contract by one: `0`, `1`, `2`, and
-**`3` unmeasured** — a fixture that could not look, which is never a pass
-(`code/docs/GATE-REPORTING.md`). Its `--output` is the one exception to the rule below: it runs
-on the host and bind-mounts nothing, so the directory may sit anywhere outside its scratch tree.
-Nothing from this checkout is ever linked into a fixture, and a tripwire, run from the exit
-handler on every exit path, exits `2` if this checkout's `node_modules` changes during a run.
+`graph-reclaim` runs the real `code-review-graph` at the script's pinned version. Exit `3`
+(unmeasured, `code/docs/GATE-REPORTING.md`), the `--output` exception and the `node_modules`
+tripwire: `CLAUDE.md` → _Guardrails_.
 
 `--needs-install-failure BASE` is a second, fixture-free mode: it prints `true` or `false` for
 whether `BASE..HEAD` needs the `install-failure` job, and is what the workflow's `changes` job
@@ -207,6 +194,10 @@ runs. The `change-filter` fixture tests that decision offline against a scratch 
 findings and bugs boards, on a synthetic `git init` holding **copies** of the three scripts — never
 a path back into this checkout. Host only, git and python3; exit `0` / `1` / `2` as below.
 `template-hooks.sh` proves the template's own hook legs the same way, template-only. <!-- doc-references: template-only --> <!-- 21/11/2026: replaced planned-red.sh -->
+
+`bash code/src/scripts/tests/graph-update.sh` (`--probe NAME`, `--keep`) proves the hook <!-- doc-references: template-only -->
+`.claude/hooks/graph-update.sh` in a `git archive HEAD` scratch copy per probe, with stub `graphify`
+and `code-review-graph` on `PATH`; host only, exit `0` / `1` / `2`; test-only and copier-excluded.
 
 ## --output flag
 
@@ -239,10 +230,8 @@ The report must already exist — run `backend-coverage.sh` first. The script ex
 ./code/src/scripts/tests/server.sh up --build
 ```
 
-`e2e-py.sh` is the exception: it targets the **dev** stack behind nginx on host port 81, because
-it drives a browser against a live site rather than a one-shot container.
-
 ```bash
+# browser e2e runs against the dev stack
 bash code/src/scripts/development/server.sh up
 bash code/src/scripts/tests/e2e-py.sh
 ```
@@ -288,25 +277,12 @@ bash code/src/scripts/tests/e2e-py.sh
 
 ## Coverage thresholds
 
-| Layer   | Metric | Floor | Enforced by                                                                      |
-| ------- | ------ | ----- | -------------------------------------------------------------------------------- |
-| Backend | Line   | 75%   | `--cov-fail-under=75`                                                            |
-| Backend | Branch | 75%   | `--cov-branch`                                                                   |
-| Backend | Auth   | 90%   | `backend-coverage.sh` auth gate — `apps/$AUTH_APP` line rate from `coverage.xml` |
-
-**Baseline exception, and only that.** While `code/src/django/apps/` holds no modules,
-`backend-coverage.sh` prints a NOTE and runs with the floor at 0 — a 75% bar on a tree
-with nothing to cover fails a correct repo. The auth gate is likewise skipped while
-`apps/$AUTH_APP` (default `users`) does not exist. Both arm themselves the moment that
-code lands; if the app exists but coverage measures none of it, the gate fails **closed**.
-Never relax a floor any other way.
+The floors, the baseline exception and why the browser suite counts for nothing:
+`code/docs/testing/COVERAGE.md`. `backend-coverage.sh` is what enforces them.
 
 Both phases also treat pytest's exit code `5` (nothing collected) as a pass, so the
 template's zero-test baseline is green rather than red. A collected test that fails still
 fails the run.
-
-The browser suite is **excluded from coverage**. It exercises a running stack over HTTP, so it
-instruments nothing — counting it would inflate the figure without testing a line more.
 
 ## Exit codes
 
@@ -328,14 +304,14 @@ These scripts are used by five GitHub Actions workflows (six in the template). <
 job sets, with the mobile jobs guarded at **step** level so they report success rather than
 "skipped" on a web-only project:
 
-| Workflow                                  | Trigger                                                                       | Scripts used                                                                                    |
-| ----------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `.github/workflows/test.yml`              | Every push/PR (no path filter)                                                | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh`                                     |
-| `.github/workflows/test-api.yml`          | Push/PR on `.py` or Bruno collection changes                                  | `api.sh`                                                                                        |
-| `.github/workflows/test-e2e.yml`          | Push/PR on Django or Docker changes                                           | `e2e-py.sh`                                                                                     |
-| `.github/workflows/pm-boards.yml`         | Push/PR on `project-management/src/**` or this script                         | `pm-boards.sh`, a step of the `check` job                                                       |
-| `.github/workflows/audit-template.yml`    | Every push/PR; the template's own, absent from a generated project            | `pm-boards.sh` and `template-hooks.sh`, steps of `[1/4]` <!-- doc-references: template-only --> |
-| `.github/workflows/audit-hook-arming.yml` | Every push/PR; `install-failure` skipped only when the change is docs/PM only | `hook-arming.sh`, one step per fixture                                                          |
+| Workflow                                  | Trigger                                                                       | Scripts used                                                                                                       |
+| ----------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `.github/workflows/test.yml`              | Every push/PR (no path filter)                                                | `backend-coverage.sh`, `mobile/test.sh`, `mobile/bundle.sh`                                                        |
+| `.github/workflows/test-api.yml`          | Push/PR on `.py` or Bruno collection changes                                  | `api.sh`                                                                                                           |
+| `.github/workflows/test-e2e.yml`          | Push/PR on Django or Docker changes                                           | `e2e-py.sh`                                                                                                        |
+| `.github/workflows/pm-boards.yml`         | Push/PR on `project-management/src/**` or this script                         | `pm-boards.sh`, a step of the `check` job                                                                          |
+| `.github/workflows/audit-template.yml`    | Every push/PR; the template's own, absent from a generated project            | `pm-boards.sh`, `template-hooks.sh` and `graph-update.sh`, steps of `[1/4]` <!-- doc-references: template-only --> |
+| `.github/workflows/audit-hook-arming.yml` | Every push/PR; `install-failure` skipped only when the change is docs/PM only | `hook-arming.sh`, one step per fixture                                                                             |
 
 Mutation testing (`mutmut.sh`) is intentionally excluded from CI — it is too slow for standard
 gates and is run on-demand locally against the dev stack.

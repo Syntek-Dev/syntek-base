@@ -1,6 +1,6 @@
 # Answering the Questions
 
-**Last Updated**: 31/10/2026
+**Last Updated**: 23/11/2026
 
 Copier asks **thirty-eight questions** on a web-only project. The optional surfaces add four more
 between them: two for mobile, one to offer the desktop surface once Rust is on, and one for the
@@ -121,7 +121,7 @@ interface**, so answering differently does not put you off-doctrine:
 | `HOSTING_PROVIDER`    | Where it runs. The reference deployment is a self-hosted NixOS host driven by `DEPLOY_REPO`; a managed platform is an equally valid answer.     |
 | `OBJECT_STORE`        | S3-compatible store for private documents and attachments. The code talks boto3, so any S3 API works — MinIO, Garage, Ceph RGW, AWS S3, R2, B2. |
 | `ERROR_TRACKING`      | Wired through the Sentry SDK, so any Sentry-wire-compatible backend works — GlitchTip (default), Sentry, Bugsink.                               |
-| `LOG_AGGREGATOR`      | The app writes structured JSON to stdout, so the collector is purely a deployment choice — Loki, Vector, Fluent Bit, Alloy, CloudWatch.         |
+| `LOG_AGGREGATOR`      | The app writes structured JSON to stdout, so the collector is purely a deployment choice — Loki, Vector, Fluent Bit, CloudWatch.                |
 | `OBSERVABILITY_STACK` | The app exposes the Prometheus exposition format; anything that scrapes it works — Prometheus, VictoriaMetrics, Alloy, a vendor agent.          |
 | `TRACING_BACKEND`     | The seam is OTLP, but nothing is instrumented at baseline — **pressing Enter is the expected answer**. Tempo, Jaeger, SigNoz, Honeycomb.        |
 | `ANALYTICS_PROVIDER`  | The one with no wire standard — the seam is the project's own event ingestion API, so this records what sits behind it, or `own store`.         |

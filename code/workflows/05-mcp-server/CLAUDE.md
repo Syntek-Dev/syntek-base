@@ -30,7 +30,9 @@ mounting, auth, tools, tests, and hardening.
   `manage.py`, or `docker`.**
 - **Definition of done:** the `CHECKLIST.md` is satisfied end to end; coverage floors met
   (75%, **90%** on the verifier and `current_user()`); `08-security-hardening` run before
-  public exposure; touched `CONTEXT.md` files and the code-review-graph refreshed.
+  public exposure; touched `CONTEXT.md` files and the code-review-graph refreshed
+  (graphify's code layer alongside, advisory; its doc layer is the developer's
+  `/graphify --update`).
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
   `workflow`/`phase`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` Section 2.5).
 

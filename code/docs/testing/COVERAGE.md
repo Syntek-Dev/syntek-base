@@ -10,6 +10,11 @@ model: opus
 **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Coverage floors, pytest-cov config, readable test output
 
+<!-- Ceiling: this file ends at or under 200 counted lines, as docs-length.sh counts them — the
+     receiving-file ceiling code/docs/DOCUMENTATION-LENGTH.md Section 6 requires. Set 23/11/2026,
+     when US013 moved the coverage-threshold text here from code/src/scripts/tests/CONTEXT.md.
+     Held at review: no gate enforces it. Route new text elsewhere; never raise the figure. -->
+
 ---
 
 ## Coverage Thresholds
@@ -25,7 +30,20 @@ enforce them — a PR that drops any metric below the floor is blocked.
 
 **Which app that is, is a per-project answer.** `code/src/scripts/tests/backend-coverage.sh` reads
 it from `AUTH_APP` (default `users`) and skips the leg — saying so in its output — while that app
-does not exist. Never hardcode the name in a second place.
+does not exist. Never hardcode the name in a second place. Line and branch are enforced by
+`--cov-fail-under=75` with `--cov-branch`; the auth leg reads the `apps/$AUTH_APP` line rate from
+`coverage.xml`.
+
+The browser suite (`e2e-py.sh`) is **excluded from coverage**. It exercises a running stack over
+HTTP, so it instruments nothing — counting it would inflate the figure without testing a line more.
+
+### Baseline exception, and only that
+
+While `code/src/django/apps/` holds no modules, `backend-coverage.sh` prints a NOTE and runs with
+the floor at 0 — a 75% bar on a tree with nothing to cover fails a correct repo. The auth leg is
+likewise skipped while `apps/$AUTH_APP` does not exist. Both arm themselves the moment that code
+lands; if the app exists but coverage measures none of it, the gate fails **closed**. Never relax
+a floor any other way.
 
 ### The promotion tier
 

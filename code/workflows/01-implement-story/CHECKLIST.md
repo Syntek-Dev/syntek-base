@@ -67,7 +67,9 @@ confirms they exist before the PR. The record formats, templates, and destinatio
 - [ ] No spec left with a `PLANNING/` artefact but no `IMPLEMENTATION/` record · _opus_
 - [ ] Findings record written to `project-management/src/20-FINDINGS/` (even if nothing was found) · _opus_
 - [ ] `/GAPS.md` and `/DEFERRED.md` updated from those findings · _opus_
-- [ ] Touched `CONTEXT.md`/`CLAUDE.md` complete and the code-review-graph refreshed — hard gate before commit (`.claude/CLAUDE.md` Section 6) · _opus_
+- [ ] Touched `CONTEXT.md`/`CLAUDE.md` complete and the code-review-graph refreshed (graphify's
+      code layer alongside, advisory; its doc layer is the developer's `/graphify --update`) —
+      hard gate before commit (`.claude/CLAUDE.md` Section 6) · _opus_
 
 ### Owned by this layer
 

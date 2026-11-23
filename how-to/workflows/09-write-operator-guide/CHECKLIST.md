@@ -58,6 +58,8 @@ model: opus
 - [ ] New constraints, patterns, or decisions are documented in the relevant `CONTEXT.md`
 - [ ] Every new directory created during this workflow has a `CONTEXT.md` and a `CLAUDE.md` inside it
 - [ ] The code-review-graph refreshed alongside the docs (`code-review-graph update`)
+- [ ] graphify's code layer refreshed alongside (`graphify update .`, never `--force`) — or
+      recorded unmeasured; advisory. Its doc layer is the developer's `/graphify --update`
 
 ---
 
@@ -70,4 +72,5 @@ model: opus
 - [ ] Discoverable from both directions: listed in its folder `CONTEXT.md` tree and in
       `how-to/REFERENCES.md`, and the workflows that should route to it now do · _opus_
 - [ ] `docs-length.sh`, markdownlint and Prettier clean; the code-review-graph refreshed
-      alongside the docs · _opus_
+      alongside the docs, and graphify's code layer beside it (advisory; its doc layer is the
+      developer's `/graphify --update`) · _opus_

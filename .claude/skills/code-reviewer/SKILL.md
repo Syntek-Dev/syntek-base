@@ -37,8 +37,9 @@ review reported as a whole one.
 
 ## Before reviewing
 
-1. **Search for the existing patterns and shared code first** (`code-review-graph`, or
-   Grep/Glob) so genuine duplication is distinguishable from established convention.
+1. **Search for the existing patterns and shared code first** (`code-review-graph`, `graphify`
+   as its fallback, or Grep/Glob) so genuine duplication is distinguishable from established
+   convention.
 2. **Read the folder's `CONTEXT.md`** before critiquing code in it — the patterns recorded
    there are the baseline being reviewed against.
 3. **Run the graph review playbook** for structural impact — `detect_changes` →

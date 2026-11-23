@@ -14,14 +14,14 @@ model: opus
 
 ## Key references
 
-| Step   | Reference                                                                          |
-| ------ | ---------------------------------------------------------------------------------- |
-| All    | `.claude/skills/wayfinder/SKILL.md` — SUGGEST, CHART, RESOLVE, the map, node types |
-| Step 0 | `GAPS.md` · `DEFERRED.md` — the standing register                                  |
-| Step 1 | This folder's `CONTEXT.md` → _Reading order_                                       |
-| Step 2 | The claim-removes-the-entry rule in the wayfinder skill                            |
-| Step 4 | `code/docs/CODE-REVIEW-GRAPH.md` — the explore playbook                            |
-| Step 8 | The graduation table in the wayfinder skill                                        |
+| Step   | Reference                                                                           |
+| ------ | ----------------------------------------------------------------------------------- |
+| All    | `.claude/skills/wayfinder/SKILL.md` — SUGGEST, CHART, RESOLVE, the map, node types  |
+| Step 0 | `GAPS.md` · `DEFERRED.md` — the standing register                                   |
+| Step 1 | This folder's `CONTEXT.md` → _Reading order_                                        |
+| Step 2 | The claim-removes-the-entry rule in the wayfinder skill                             |
+| Step 4 | `code/docs/CODE-REVIEW-GRAPH.md` — the explore playbook and the graphify role split |
+| Step 8 | The graduation table in the wayfinder skill                                         |
 
 ---
 
@@ -75,7 +75,7 @@ Load in order, each layer narrowing the next:
 4. The relevant `**/docs/` guides for the constraints a decision must respect
 5. **`GAPS.md` and `DEFERRED.md`** — the standing register of unfinished business
 6. **The whole of `project-management/src/`** — stories, specs, decisions, plans, and records
-7. The codebase, via the `code-review-graph` explore playbook
+7. The codebase, via the `code-review-graph` explore playbook (`graphify` for cross-artefact links)
 
 `src/` is the living state: the `IMPLEMENTATION/` records say what shipped **and where it
 diverged from the plan**. Map against that, not against intentions. **Read the `*/archive/`

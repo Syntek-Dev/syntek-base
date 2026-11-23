@@ -9,7 +9,8 @@ model: opus
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Security threat modelling, STRIDE analysis, OWASP review, cross-layer security design
-**MCP Servers:** code-review-graph (security pattern analysis, vulnerability detection)
+**MCP Servers:** code-review-graph (security pattern analysis, vulnerability detection) · graphify
+(security docs and PM artefacts against the code; each is the other's fallback)
 
 ---
 

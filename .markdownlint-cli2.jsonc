@@ -42,6 +42,8 @@
     "project-management/src/*/archive/*-*.md",
     "project-management/src/*/archive/US[0-9][0-9][0-9].md",
     "code/docs/MACHINE-SPEC.md",
+    // Local graphify output, gitignored and regenerated: excluded even when named explicitly.
+    "graphify-out/**",
     "code/src/scripts/**/reports/**",
     "code/src/rust/target/**",
     // Captured walk-test evidence: a prompt handed to a cold reader and its verbatim answer.

@@ -230,10 +230,16 @@ For every layer the implementation touched (`code/`, `how-to/`, `project-managem
 
 This is the documentation hard gate — it must be complete before any commit.
 
-### Step 7 — Refresh the Code-Review-Graph
+### Step 7 — Refresh the Code-Review-Graph and graphify
 
 Run `code-review-graph update` (or the `build_or_update_graph_tool` MCP tool) so the
 layered docs and the graph stay in lockstep. See `code/docs/CODE-REVIEW-GRAPH.md`.
+
+Refresh graphify's code layer alongside with `graphify update .` — **advisory**, never `--force`.
+An absent tool or a refused or failed refresh is recorded as **unmeasured**
+(`code/docs/GATE-REPORTING.md`), never as a pass, and does not block the commit. That command
+reaches the code layer only: a docs or PM change reaches graphify's doc layer through the
+developer's `/graphify --update` (`code/docs/CODE-REVIEW-GRAPH.md`).
 
 ### Step 8 — Confirm Every Record Is Linked and No Plan Is Orphaned
 

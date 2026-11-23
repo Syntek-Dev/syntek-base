@@ -79,4 +79,6 @@ model: opus
 - [ ] `**Last Updated**` date is current in any `CONTEXT.md` modified
 - [ ] New constraints, patterns, or decisions are documented in the relevant `CONTEXT.md`
 - [ ] Every new directory created during this workflow has a `CONTEXT.md` and a `CLAUDE.md` inside it
-- [ ] The code-review-graph refreshed alongside the docs (`code-review-graph update`)
+- [ ] The code-review-graph refreshed alongside the docs (`code-review-graph update`); graphify's
+      code layer alongside (`graphify update .`, never `--force`) — advisory, or recorded
+      unmeasured; its doc layer is the developer's `/graphify --update`

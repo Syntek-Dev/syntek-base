@@ -9,7 +9,8 @@ model: opus
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — planning cadence, story and sprint conventions
-**MCP Servers:** code-review-graph (scope and dependency impact analysis)
+**MCP Servers:** code-review-graph (scope and dependency impact analysis) · graphify (how a story's
+scope connects across docs and PM artefacts; each is the other's fallback)
 
 ---
 

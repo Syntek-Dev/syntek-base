@@ -24,7 +24,8 @@ Ninja API, never a client-side build for the Django-served pages.
   `tsc` or `jest`. The scripts table is in `CONTEXT.md`.
 - **Concrete steps:** read `CONTEXT.md` → implement under `app/` → `lint.sh` → `typecheck.sh` →
   `test.sh --coverage` → `bundle.sh` before raising a PR → update this pair if the structure
-  changed → refresh the code-review-graph.
+  changed → refresh the code-review-graph, with graphify's code layer alongside (advisory); its
+  doc layer is the developer's `/graphify --update`.
 - **Definition of done:** lint, typecheck, tests and the bundle export all exit `0`; coverage at
   or above 75% lines and branches (90% on auth-adjacent code); WCAG 2.2 AA satisfied by the
   React Native techniques in `code/docs/accessibility/MOBILE.md`; British English throughout.

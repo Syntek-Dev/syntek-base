@@ -75,7 +75,8 @@ back to `22`, never through this gate.
 ## Definition of done
 
 QA and review both ran as separate dispatches; the PR body names its story and its test plan;
-the documentation gate is satisfied and the code-review-graph refreshed alongside it; the
+the documentation gate is satisfied and the code-review-graph refreshed alongside it (graphify's
+code layer too, advisory; its doc layer is the developer's `/graphify --update`); the
 automated gates are green on the PR rather than asserted locally; the worktree is exited where
 one was used.
 

@@ -18,7 +18,7 @@ debugging (`how-to/workflows/08-debugging/`) and log-based debugging (workflow `
   the regression test and the commit as well. Confirm the environment is healthy first via
   `how-to/workflows/08-debugging/`, then fix the logic here. Trace the fault with the
   code-review-graph **debug playbook** (`.claude/skills/debug-issue.md`; guide
-  `code/docs/CODE-REVIEW-GRAPH.md`).
+  `code/docs/CODE-REVIEW-GRAPH.md`), with graphify as fallback and for cross-artefact questions.
 - **Model:** Opus for root-cause analysis and the fix and mechanical
   edits to the workflow files.
 - **Concrete steps:** confirm containers up and the bug reproducible → bisect to the

@@ -16,7 +16,7 @@ behaviour held identical throughout.
 - **Routing:** execute via `STEPS.md`, typically with the `refactor` skill
   (Opus). Requires a green baseline from `code/workflows/02-tdd-cycle/`. Scope the move with
   the code-review-graph **refactor playbook** (`.claude/skills/refactor-safely.md`; guide
-  `code/docs/CODE-REVIEW-GRAPH.md`).
+  `code/docs/CODE-REVIEW-GRAPH.md`), with graphify as fallback and for cross-artefact questions.
 - **Model:** Opus for restructuring decisions and mechanical edits to
   the workflow files.
 - **Concrete steps:** confirm all tests green and scope defined → read the hard gate

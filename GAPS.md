@@ -632,34 +632,6 @@ to hold without ClickUp, in one change. No map or story claims this entry.
 
 ---
 
-## 02/11/2026 — the PR and release steps order the status lifecycle out of step with its owner
-
-**Type:** Active gap
-**Summary:** US007's `23-pr-and-review` final pass found four places where the workflows that
-order status moves disagree with `.claude/skills/completion/SKILL.md`, the vocabulary's owner:
-
-- **No step orders a sprint's `Done` move (F-015).** The skill names
-  `project-management/workflows/24-release/` as the procedure of record for sprint completion
-  (`:178-179`), but no file in that workflow mentions a sprint. The build-start move `Planned` →
-  `In Progress` is on `code/workflows/01-implement-story/CHECKLIST.md:28`, while
-  `code/workflows/01-implement-story/STEPS.md:31` names only the story's move.
-- **`In Review` is set after the work it names (F-016).** The skill's meaning (`:55`) is "Code
-  review and QA running"; workflow 23 runs QA and review at Steps 1 and 2 and sets `In Review`
-  at Step 3, when the PR opens.
-- **The release step assumes customer review (F-017).** `project-management/workflows/24-release/STEPS.md:90-91` says each
-  released story went through `Customer Review`; a story whose `Customer review` flag is `N/A`
-  skips it.
-- **Step 3 of workflow 23 reads as though `completion` commits (F-018)**
-  (`project-management/workflows/23-pr-and-review/STEPS.md:57-59`); it never
-  does, and Step 3 lacks the `↳ New dispatch` line Steps 1 and 2 carry.
-
-Findings F-015 to F-018 in "project-management/src/20-FINDINGS/archive/FINDING-US007-STATUS-VOCABULARY-ONE-OWNER-02-11-2026.md".
-**Blocked by / Action:** F-016 needs a decision first: whether `In Review` moves earlier in
-workflow 23 or the skill's meaning is reworded. The other three are a docs pass over the two
-workflows and `code/workflows/01-implement-story/STEPS.md`, in one change. No map or story claims this entry.
-
----
-
 ## 03/11/2026 — the Playwright install instruction is an operating rule held in the audits register by a pin gate
 
 **Type:** Active gap
@@ -1128,28 +1100,23 @@ lock agreement only. No map or story claims this entry.
 
 ---
 
-## 11/11/2026 — two small doc and lint defects found during the Node 26 move
+## 11/11/2026 — `03-PREREQUISITES.md` says `install.sh` checks version floors it never checks
 
 **Type:** Active gap
-**Summary:**
+**Heading updated 23/11/2026:** was "two small doc and lint defects found during the Node 26
+move" (11/11/2026). US013 claimed the lint half, so it has left this entry.
+**Summary:** `how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md` says the floors in its table "are the
+ones `install.sh` actually checks ... it refuses rather than warning". `install.sh` compares no
+version of any tool. It checks that git, openssl, uv, pnpm and the Docker Compose v2 plugin are on
+`PATH` and prints their versions; it does not check Python or Node at all. So the sentence is false
+for every row of the table: Docker 24+, uv 0.13+, Python 3.14+, Node 26+ and pnpm 12.18.0+ (pnpm's
+floor is enforced, but by `package.json` `packageManager` and `engines`, not by `install.sh`). Found
+for Node while moving the floor to 26, and widened on 11/11/2026; the header and `--help` of
+`install.sh`, which also implied floors, now say presence only.
 
-- `how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md` says the floors in its table "are the ones
-  `install.sh` actually checks ... it refuses rather than warning". `install.sh` compares no
-  version of any tool. It checks that git, openssl, uv, pnpm and the Docker Compose v2 plugin are
-  on `PATH` and prints their versions; it does not check Python or Node at all. So the sentence
-  is false for every row of the table: Docker 24+, uv 0.13+, Python 3.14+, Node 26+ and pnpm
-  12.18.0+ (pnpm's floor is enforced, but by `package.json` `packageManager` and `engines`, not by
-  `install.sh`). Found for Node while moving the floor to 26, and widened on 11/11/2026; the
-  header and `--help` of `install.sh`, which also implied floors, now say presence only.
-- `code/src/scripts/syntax/lint.sh --file-type markdown` lints the gitignored `graphify-out/`
-  directory, because its markdownlint globs carry no `!graphify-out/**` exclusion. A local
-  graphify run (412 issues in `GRAPH_REPORT.md` on 11/11/2026) therefore turns the whole
-  markdown lint red on any machine that has one.
-
-**Blocked by / Action:** Nothing blocks either. Add real floor checks to `install.sh` for uv,
+**Blocked by / Action:** Nothing blocks it. Add real floor checks to `install.sh` for uv,
 Python, Node and Docker, read from the same sources `audits/toolchain-pins.sh` uses, or narrow the
-guide's sentence to "presence only". Add the exclusion to `.markdownlint-cli2.jsonc`
-(or the script's glob list), matching `.gitignore`. No map or story claims this entry.
+guide's sentence to "presence only". No map or story claims this entry.
 
 ---
 
@@ -1691,3 +1658,131 @@ final QA pass, 23/11/2026; neither the hook nor either script is changed on that
 **Blocked by / Action:** Nothing blocks it. Name both in `_INTEGRITY_SKIP` with the owner that runs
 them with their arguments, as `shipped-artefacts.sh` already is (the guard then checks that owner
 still invokes them), or give the leg the arguments. No map or story claims this entry.
+
+## 23/11/2026 — four US013 deferrals no slice owns
+
+**Type:** Active gap
+**Summary:** US013's closeout deferred these, and no story or uncut slice of any feature map
+owns them — the one fitting slice, `S-04` of `MAP-RULE-OWNERSHIP`, took the three that concern
+09's workflow shape (`DEFERRED.md`, the US013 entry). Recorded from
+"project-management/src/20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md"
+(<%DEVELOPER_NAME%>'s routing, 23/11/2026).
+
+- **GlitchTip and Loki literals outside US013's six files.** Re-measured 23/11/2026 at `79a22cb7`,
+  case-insensitive, outside the 09 folder's four files, the `code/src/logs/` pair and
+  `project-management/src/`: **53 lines, 69 occurrences, 20 files** (the story's "about 58 lines in
+  21 files" does not reproduce; F-016). Occurrences by file: `code/docs/logging/DJANGO-LOGGING.md`
+  9; `.copier/README.md` 6; `code/docs/security/AUDIT-TRAIL.md` 6;
+  `code/docs/architecture/PROVIDER-NEUTRALITY.md` 5; `code/workflows/CONTEXT.md` 5;
+  `code/docs/BACKEND-CODING-PRINCIPLES.md` 4; `code/docs/logging/FRONTEND-LOGGING.md` 4;
+  `code/docs/logging/HEALTH-CONTRACT.md` 4; `code/docs/performance/API-AND-MONITORING.md` 4;
+  `copier.yml` 4; `how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md` 3; `code/CONTEXT.md` 2;
+  `code/docs/PERFORMANCE.md` 2; `how-to/src/TEMPLATE-GUIDE/05-ANSWERS.md` 2;
+  `how-to/src/TEMPLATE-GUIDE/13-DEPLOYMENT.md` 2; `how-to/src/TEMPLATE-TOKENS.md` 2; `RELEASES.md`
+  2; `code/docs/FRONTEND-CODING-PRINCIPLES.md` 1; `code/docs/logging/CLOUDINARY.md` 1;
+  `code/docs/security/MONITORING-AND-INCIDENT.md` 1. The `copier.yml`, `TEMPLATE-TOKENS.md` and
+  `05-ANSWERS.md` hits name the answers themselves and `RELEASES.md` is history, so not every hit is
+  a defect; each is triaged at the pass that takes them (F-016)
+- **Two "proven alternates" lists still name Alloy as a log destination.**
+  `code/docs/logging/OBSERVABILITY.md` "Proven alternates: Vector · Fluent Bit · Alloy · CloudWatch
+  Logs" (`:104` at `79a22cb7`, cited `:100` in the plan) and `how-to/src/PLATFORM-PROVIDERS.md`
+  _Logs_ row (`:38`). Alloy is a shipper, the reason Q16/Q18 dropped it from `LOG_AGGREGATOR`'s help
+  (11-qa round 4, Q17)
+- **`LOG_AGGREGATOR` offers pure shippers, so five rendered sentences are false.**
+  `TEMPLATE-TOKENS.md` defines the token as where logs are "shipped and queried", but `copier.yml`
+  offers Vector and Fluent Bit. On a Fluent Bit render: 09 `STEPS.md` "query `<%LOG_AGGREGATOR%>`
+  next" (Step 3), "no frontend log stream in" and "the Django exception in" (Step 4);
+  `code/src/logs/CONTEXT.md` "captures and ships to"; `code/src/logs/CLAUDE.md` "Grafana Alloy →".
+  Narrow the answer list or reword the five sites; a decision, not an edit. US014 edits the two
+  `code/src/logs/` files and reads this row before touching those lines (F-003)
+- **The "Prometheus + Grafana dashboards" cell** in 09 `CONTEXT.md`'s matrix stays literal under the
+  marker (N-012, Q11). A candidate for `<%OBSERVABILITY_STACK%>`, which is cell-shaped and would
+  fit; a later decision
+
+**Blocked by / Action:** Nothing blocks them. Each needs a feature map to claim it; the first three
+are one provider-neutrality slice in waiting. No map or story claims this entry.
+
+---
+
+## 23/11/2026 — `doc-references.sh` does not test a `bash <path>` token for a template-only citation
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` flags a bare backticked path to a
+copier-excluded file as a `[template-only citation]`, but not the same path written as a
+backticked command, `bash <path>`. Proof, in a `git archive HEAD` scratch copy at `5b622651`:
+`code/src/scripts/tests/CONTEXT.md:215` opened with the unmarked `bash` form of the excluded
+`graph-update.sh` suite and `--path` on that file reported "Clean"; with the token cut to the bare
+path, the same run reported `code/src/scripts/tests/CONTEXT.md:215 [template-only citation]`. So a
+shipped guide can promise a generated project a command whose script never travels, and the gate
+stays green. Found by US013's QA pass (Q9); that line now carries the marker by hand.
+**Blocked by / Action:** Nothing blocks it. Extract the path operand of a backticked `bash <path>`
+(and `sh`, `./<path>`) token and test it as the bare path is tested, with a fixture that fails
+without the fix. No map or story claims this entry.
+
+---
+
+## 23/11/2026 — two graphify-hook defects left open by the hung-run fix
+
+**Type:** Active gap
+**Summary:** The `bugfix` run behind
+"project-management/src/21-BUGS/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md" closed
+its Medium and two Lows; its second, independent QA pass found two further Lows in
+`.claude/hooks/graph-update.sh`, recorded rather than fixed (<%DEVELOPER_NAME%>, 23/11/2026;
+findings F-018 and F-019 of the US013 record). Neither can report `ok` for a run that did not
+finish, which is the defect the fix exists for.
+
+- **graphify can forge the timeout marker.** The reader takes a penultimate line
+  `timeout=<digits>` as the bound having fired without checking the exit code beside it. A
+  graphify whose own output ends `timeout=30`, exiting 1, is reported "timed out after 30 s",
+  and a refusal printed in the same run is masked. Still unmeasured, never `ok`. Smallest fix:
+  accept the marker only when the trailer is `exit=124` or `exit=137`, with a probe for each case
+- **The `mktemp`-failure branch writes `graphify.last` in place.** Every other outcome lands by
+  rename; this one truncates and rewrites, so a reader landing in that instant reads no outcome
+  and reports "no graphify update recorded yet" for one call, against the header's single-rename
+  claim. Smallest fix: write a sibling path and rename it, or say so in the header
+
+**Blocked by / Action:** Nothing blocks them. One small `bugfix` pass on the hook, red probes
+first. No map or story claims this entry.
+
+---
+
+## 23/11/2026 — the graphify notice can repeat where it should be said once
+
+**Type:** Active gap
+**Summary:** `.claude/hooks/graph-update.sh` reports a graphify state change once by keeping the
+last state in `.code-review-graph/.graphify-notice`. Two paths repeat it. Both are noise only: no
+outcome is misreported. Recorded from findings F-028 and F-029 of
+"project-management/src/20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md", which
+gave neither a register home before this entry.
+
+- **A read-only state directory (QA 8).** The state is written with its error discarded, so where
+  `.code-review-graph/` is not writable the previous state always reads empty and the same
+  unmeasured notice is emitted on every Edit, Write and Bash call. Found by the hostile QA pass over
+  US013's graphify change and deferred at `933df1e8` as unusual host state. Smallest fix: detect an
+  unwritable state directory once and say so, or fall back to a per-session path, with a probe that
+  makes the directory read-only
+- **Two hooks at once (review n3, Nit).** Two hook runs firing together can both read the previous
+  state and both emit the same notice; the untracked-file notice already behaves so. `5b622651`'s
+  subject names n1-n4 but its body acts on n1, n2 and n4 only. Smallest fix: read and write the
+  state under the hook's existing lock, or accept the duplicate in the header
+
+**Blocked by / Action:** Nothing blocks them. One small `bugfix` pass on the hook, red probes in
+`code/src/scripts/tests/graph-update.sh` first. No map or story claims this entry.
+
+---
+
+## 23/11/2026 — `test-writer` and `qa-tester` fork when loaded inside a dispatched agent
+
+**Type:** Active gap
+**Summary:** Both are task skills that fork. Loaded inside an agent a session has already
+dispatched to do that skill's job, each started a second agent instead of guiding the first:
+`test-writer` returned only a request for a brief, so the dispatched test-writer worked without the
+skill (US013's `bugfix` red loop 2); `qa-tester` ran a walk of its own that marked GRAPH-06 `Pass`
+and missed the `README.md`:246 reason the dispatched walker caught. The dispatch's independence held
+only because each agent ignored its fork's result. Recorded from findings F-036 and F-037 of
+"project-management/src/20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md"
+(<%DEVELOPER_NAME%>'s routing, 23/11/2026).
+**Blocked by / Action:** Nothing blocks it. Through skill authoring
+(`how-to/docs/SKILL-AUTHORING.md`): an inline entry point for an agent already dispatched for the
+skill's job, or a rule that a dispatch names the skill's procedure rather than loading the skill.
+Until then a dispatch brief says not to load the forking skill. No map or story claims this entry.

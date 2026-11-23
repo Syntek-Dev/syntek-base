@@ -26,7 +26,9 @@ and carries three responsibilities:
    the implementation touched — this is the project's **documentation hard gate**: docs
    must be complete before any commit — then refresh the code-review-graph
    (`code-review-graph update`, or the `build_or_update_graph_tool` MCP tool) so the
-   layered docs and the graph stay in lockstep.
+   layered docs and the graph stay in lockstep. graphify's code layer is refreshed alongside
+   (`graphify update .`) — advisory, never `--force`; absent or refused is recorded unmeasured.
+   Its doc layer is the developer's `/graphify --update`.
 2. **PM implementation records.** Write the IMPLEMENTATION-side record for each
    design/compliance spec that applied to the story — GDPR, security, QA, SEO, API — one
    per story, copied from its `US000-TEMPLATE.md` and closing the matching `PLANNING/`
@@ -72,7 +74,8 @@ and carries three responsibilities:
 - One findings record in `src/20-FINDINGS/`, written whether or not anything was found.
 - Updated `CONTEXT.md`/`CLAUDE.md` (trees, `Last Updated` dates, new constraints) across
   every touched layer.
-- A refreshed code-review-graph matching the updated docs.
+- A refreshed code-review-graph matching the updated docs, and graphify's code layer refreshed
+  alongside or recorded unmeasured (its doc layer is the developer's `/graphify --update`).
 
 ## Key decisions
 
@@ -99,7 +102,7 @@ and carries three responsibilities:
 
 ### Governing documents
 
-- `code/docs/CODE-REVIEW-GRAPH.md` — the graph-refresh procedure the docs must stay in
+- `code/docs/CODE-REVIEW-GRAPH.md` — the graph-refresh procedure (both graphs) the docs must stay in
   lockstep with; the documentation hard gate is non-negotiable (`.claude/CLAUDE.md` Section 6).
 
 ### Related reading

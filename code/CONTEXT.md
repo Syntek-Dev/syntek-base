@@ -17,7 +17,7 @@ code/
 │   ├── API-DESIGN.md                (sub-docs: api-design/)
 │   ├── ARCHITECTURE-PATTERNS.md     (sub-docs: architecture/)
 │   ├── BACKEND-CODING-PRINCIPLES.md ← Django/Python/Celery specifics
-│   ├── CODE-REVIEW-GRAPH.md         ← code-review-graph MCP playbooks
+│   ├── CODE-REVIEW-GRAPH.md         ← code-review-graph playbooks; the graphify role split
 │   ├── CODING-PRINCIPLES.md         (sub-docs: coding-principles/)
 │   ├── CONTEXT.md
 │   ├── DATABASE.md                  ← pre-flight data-layer rules (read before any model)

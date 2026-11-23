@@ -39,9 +39,9 @@ bridge, not a memory store — prune a handoff once its work has resumed.
 ## How to write a handoff
 
 1. **State the goal.** Open with one or two sentences naming what the work is trying to achieve,
-   so the fresh agent orients before any detail. Look facts up (`code-review-graph` → Read/Grep/
-   Glob → `.claude/plugins/*.py`) rather than guessing them. _Complete when:_ the goal sits in
-   one or two sentences at the top.
+   so the fresh agent orients before any detail. Look facts up (`code-review-graph`, or `graphify`
+   across artefacts → Read/Grep/Glob → `.claude/plugins/*.py`) rather than guessing them.
+   _Complete when:_ the goal sits in one or two sentences at the top.
 
 2. **Record what is DONE.** List the work already landed this session — files changed, decisions
    settled, checks passed — each named by its repo path. _Complete when:_ every finished item is

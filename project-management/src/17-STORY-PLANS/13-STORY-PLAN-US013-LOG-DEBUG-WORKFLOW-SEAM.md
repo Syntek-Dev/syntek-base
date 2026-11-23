@@ -37,6 +37,64 @@
      - F-007: already met here; this plan gives the numeric `hosts-story-add.sh 013` form. The
        template fix is tracked in `GAPS.md`, 23/11/2026. -->
 
+<!-- CORRECTED 23/11/2026, at build start (implement-story grilling, 23/11/2026). Re-measured at
+     `e306f48e` on `dev`, the commit `us013/log-debug-workflow-seam` is cut from. Where the body
+     below disagrees with this block, this block is the reading; the body is left as written so the
+     planning record is not reshaped by the build (F-002).
+     - BRANCH. Cut from `dev` and PR'd up `dev` -> `testing` -> `staging` -> `main`, never cut from
+       `main` (<%DEVELOPER_NAME%>, implement-story grilling round 1, Q1, 23/11/2026;
+       `project-management/docs/git/BRANCHES-AND-WORKTREES.md:45`). `pm/story-creation` has merged
+       to both `main` and `dev`, so it is no longer a precondition; read _Dependencies_ ("Cutting
+       `us013/` from `main`", "Can be done now") accordingly.
+     - NO WORKTREE. One story in flight, so the branch is checked out in the main checkout and
+       none of the four Docker & Nginx override files is created, nor the hosts entry
+       (<%DEVELOPER_NAME%>, 23/11/2026). The live walk (Key Decision 10) runs on the main
+       checkout's dev stack, which is still "this host's dev stack". The _Docker & Nginx
+       Infrastructure_ section below is void for this build.
+     - COPIER.YML DRIFT. The two comment paragraphs cited at `copier.yml`:470-483 now sit at
+       `:503-516` (+33 lines, from 7.10.0), the PostgreSQL line at `:516`; `ERROR_TRACKING` at
+       `:533`, `LOG_AGGREGATOR` at `:541`. Text unchanged. `TEMPLATE-TOKENS.md` `:125` and
+       `:138-141` and `05-ANSWERS.md`:124 hold as _Measured divergences_ records them.
+     - F-001 RE-MEASURE. Every count a criterion or guide row states was re-measured at
+       `e306f48e` and holds: 10 raw `docker` calls; 35 sites (18 GlitchTip, 17 Loki; 18 / 12 / 4
+       held / 1 reworded); 15 of the folder's 16 spelt `Glitchtip`; six fix boxes; the
+       `CHECKLIST.md`:38, :39, :43, :56 cites. The inventory is in the guide's _Recorded during the
+       build_.
+     - BUILD NOTE, 23/11/2026 (review F-1). 09 `STEPS.md` Step 4's browser-errors sentence writes
+       both tokens bare, without backticks. The PM artefacts quote every token in backticks as an
+       identifier; the AC gherkin (`../02-STORIES/US013.md`:264) and READ-02's and EC-01's render
+       expectations ("… forwards them to Bugsink (Step 3), never to Fluent Bit.") fix the target as
+       bare, so READ-02's "exactly" source half is read with its backticks as quotation, not text. -->
+
+<!-- CORRECTED 23/11/2026, later the same day — THE STORY WIDENED AT BUILD (implement-story
+     grilling rounds 1-3, <%DEVELOPER_NAME%>). graphify is added beside code-review-graph; the
+     story's WIDENED comment and its six new scenarios, the "graphify Tasks (added 23/11/2026)"
+     table, and the QA plan's _Addendum — graphify beside code-review-graph_ (HP-15 to HP-20, ES-10
+     to ES-13, EC-08 to EC-10) are the specification. Where the body below says "documentation
+     only", "no code lane", "no executable surface" or "six files", read it for the original scope
+     only:
+     - LANE. One executable surface now exists: `.claude/hooks/graph-update.sh`, proved by a
+       red-first probe suite `code/src/scripts/tests/graph-update.sh` in US012's shape (scratch
+       copy, stub `graphify` on `PATH`). Key Decision 1's "no code lane" holds for Django only.
+     - PHASES. P7 inventory (every `code-review-graph` site outside `project-management/src/` and
+       the release logs, 122 files / 218 lines at `58f3c78e`, with its site kind) before the first
+       graphify edit; P8 probe suite red; P9 hook and lefthook, suite green; P10 MCP declarations
+       and `mcp-parity.sh`; P11 `.claude/CLAUDE.md` 3.1, 3.3, 6 and `CODE-REVIEW-GRAPH.md` (the role
+       split, advisory status, the Section 6 gate unchanged); P12 the remaining sites per the role
+       split, `THIRD-PARTY-NOTICES.md`; P13 the markdownlint exclusion and the `GAPS.md` close;
+       P14 gates, review and QA as separate dispatches, then the closeout's records extended.
+     - DECISIONS (all implement-story grilling, 23/11/2026): full parity (R1 Q1 = 3); advisory, an
+       absent tool or a refusal reported as unmeasured (R1 Q2 = 2, Q4 = 2 — never `--force`); per
+       edit and at commit (R1 Q3 = 1+2), the per-edit run detached under a lock (R2 Q1 = 2); the
+       role split (R2 Q2 = 1); unpinned (R2 Q3 = 1); shipped as an optional tool (R2 Q4 = 1),
+       host-provisioned like code-review-graph, never by `install.sh` (R3 Q1 = 1); the GAPS
+       lint entry closed (R1 Q5 = 1); spec by addendum (R2 Q5 = 1); re-estimated 3 -> 8 SP and
+       SPRINT-08 approved at 16 / 11, over its 13 SP grace (R2 Q6 = 1; sprint skill). No ADR: every
+       change is reversible documentation and an optional, advisory tool.
+     - FACTS (looked up 23/11/2026): graphify 0.9.91, PyPI `graphifyy`, console script
+       `graphify-mcp` behind the `[mcp]` extra, Apache-2.0; one AST-only `graphify update .` takes
+       about 16 s here and refuses to overwrite a graph holding semantic nodes it cannot rebuild. -->
+
 <!-- STEP 1 DREW ITS ROUND FROM THE RECORDED ANSWERS (.claude/skills/grilling/SKILL.md -> A decision
      already recorded is a fact). The story's cutting interview (grilling round 1, 31/10/2026, Q1 to
      Q10), the four 11-qa-checks rounds of 31/10/2026 (Q1 to Q18, all twelve AC-GAPs resolved and the

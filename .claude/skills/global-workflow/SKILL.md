@@ -74,7 +74,9 @@ shared baseline, they are the source of truth:
 - `project-management/docs/VERSIONING-GUIDE.md` — single-track semver, changelog format.
 - `.claude/CLAUDE.md` — global non-negotiables and routing.
 - `code/docs/DOCUMENTATION-PAIRING.md` — the `CONTEXT.md`/`CLAUDE.md` split and route-don't-restate.
-- `code/docs/CODE-REVIEW-GRAPH.md` — the graph refresh that ships alongside every docs change.
+- `code/docs/CODE-REVIEW-GRAPH.md` — the graph refresh that ships alongside every docs change
+  (graphify's code layer alongside, advisory; its doc layer is the developer's
+  `/graphify --update`).
 
 ## Governing procedures (route here — do not restate at length)
 

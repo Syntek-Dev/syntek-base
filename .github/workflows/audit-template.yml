@@ -73,6 +73,13 @@ jobs:
       - name: Prove the PM board and archive scripts (synthetic fixture)
         run: bash code/src/scripts/tests/pm-boards.sh
 
+      # The per-edit graph hook's probes (.claude/hooks/graph-update.sh, US013): graphify started
+      # detached under a lock and a timeout, never forced, an absent tool or a refused, failed or
+      # timed-out run reported unmeasured once, and code-review-graph's pass unchanged. The tenth
+      # self-test the push leg runs (23/11/2026). Stubs only; git, tar, flock and timeout.
+      - name: Prove the graph hook (graphify detached, advisory; code-review-graph unchanged)
+        run: bash code/src/scripts/tests/graph-update.sh
+
       # The archive freeze itself, on this repository's own history: every board current, nothing
       # under */archive/ changed since its move. pm-boards.yml runs it too, and keeps that run
       # because it ships — but there it is path-filtered, chain branches only and no required

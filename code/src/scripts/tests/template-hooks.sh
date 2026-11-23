@@ -220,7 +220,7 @@ check "the branches: [\"**\"] line is on.push's own" grep -qx $'PUSH_ALL\t1' <<<
 stub() {  # stub PATH — a stub detector or self-test at PATH
   mkdir -p "$FX/$(dirname "$1")"
   printf '%s\n' '#!/usr/bin/env bash' \
-    'n="$(basename "$0" .sh)"; m=plain; [[ "${1:-}" == --self-test || "$n" == pm-boards || "$n" == template-hooks ]] && m=self-test' \
+    'n="$(basename "$0" .sh)"; m=plain; [[ "${1:-}" == --self-test || "$n" == pm-boards || "$n" == template-hooks || "$n" == graph-update ]] && m=self-test' \
     'printf "%s %s %s\n" "$n" "$m" "$PWD" >> "$STUB_LOG"' \
     'f="stub/$n.$m"; rc=0; [[ -f "$f" ]] && rc="$(cat "$f")"; exit "$rc"' > "$FX/$1"
   chmod +x "$FX/$1"
@@ -238,6 +238,7 @@ build_fixture() {
     stub ".github/scripts/$s.sh"
   done
   stub code/src/scripts/tests/pm-boards.sh
+  stub code/src/scripts/tests/graph-update.sh
   touch "$FX/stub/.keep"
   # (round 7) A commit from before template-hooks.sh existed, so a tip can be genuinely older.
   # (round 8) The older tip is the very parent of the commit that adds the script — an ancestor
@@ -286,7 +287,7 @@ echo "push"
 check "a push whose tip holds a red self-test is refused" refused push main
 check "the refusal names the red self-test" says 'shipped-boards'
 check "the remote did not move" test "$(remote_tip main)" != "$RED_SHA"
-check "every self-test ran at pre-push" bash -c 'for n in check-template-tokens shipped-readme shipped-memory shipped-registers shipped-boards register-index-routes shipped-ai pm-boards template-hooks; do grep -q "^$n self-test " "$1" || exit 1; done' _ "$LOG"
+check "every self-test ran at pre-push" bash -c 'for n in check-template-tokens shipped-readme shipped-memory shipped-registers shipped-boards register-index-routes shipped-ai pm-boards template-hooks graph-update; do grep -q "^$n self-test " "$1" || exit 1; done' _ "$LOG"
 check "the self-tests ran in a copy, never the working tree" bash -c '! grep -q " $1\$" "$2"' _ "$FX" "$LOG"
 set_stub shipped-boards self-test 0
 commit "the fix"

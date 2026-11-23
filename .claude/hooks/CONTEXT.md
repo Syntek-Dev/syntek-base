@@ -7,7 +7,8 @@ window fills, and `pre-compact-handoff.sh` (PreCompact) intercepts compaction �
 session to the `handoff` skill (see `.claude/CLAUDE.md` Section 2.6).
 `template-docs-readonly.sh` (PreToolUse) blocks writes to the template documentation a generated
 project receives and does not own. `graph-update.sh` (PostToolUse) refreshes the
-code-review-graph and reports what the refresh could not reach.
+code-review-graph, starts graphify's advisory update beside it, and reports what either could not
+reach.
 
 ## Directory Tree
 
@@ -98,7 +99,22 @@ hook's own header carries the rest of the reasoning, including why a `permission
 
 `graph-update.sh` is registered under `hooks.PostToolUse` on `Edit|Write|Bash`. It runs the
 incremental `code-review-graph update --skip-flows`, then reports how many **untracked** files in
-a parsed language sit outside the graph.
+a parsed language sit outside the graph. Beside it, it starts `graphify update .` detached (its
+own session where `setsid` exists) under a `flock` lock and a `timeout` bound (600 s, or
+`GRAPH_UPDATE_GRAPHIFY_TIMEOUT`), never with `--force`, and only when the
+tree's content fingerprint (the index, the worktree diff, each untracked file's content and
+`graphify-out/graph.json`'s mtime, never HEAD) differs from the one the last run started from, or
+the last run died mid-way. It unsets `GRAPHIFY_FORCE` and takes no git optional locks. That
+refreshes graphify's **code layer** only; its doc layer is the developer's `/graphify --update`.
+The outcome is one file, `.code-review-graph/graphify.last`, ending `exit=<N>` on its own line;
+`graphify.running` marks a run in progress, so one that was killed reads as unknown, never as the
+previous success. A run the bound stopped writes `timeout=<bound>` before its trailer, and that
+line — never the exit code alone — is what reads as timed out. Per edit, an absent graphify,
+`flock` or `timeout`, a refusal, a killed, timed-out or failed run is reported **unmeasured** (`code/docs/GATE-REPORTING.md`) once per state change; lefthook's
+`graphify` step calls `graph-update.sh --commit`, which reports the same outcome on every commit
+and starts the same refresh. Neither mode blocks. `graphify`, `flock` and `timeout` are host
+prerequisites; the hook looks for `timeout` by that name only, so a macOS host with Homebrew's
+`gtimeout` alone reads as missing it.
 
 The report exists because the refresh is honest about the wrong thing: it diffs against a git
 ref, so a new and unstaged file is never parsed and the update still reports success. The graph

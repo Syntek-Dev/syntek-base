@@ -9,7 +9,7 @@ One row per bug report in `21-BUGS/` and `21-BUGS/archive/`, filed under its sta
 
 | Column   | Items |
 | -------- | ----- |
-| Open     | 9     |
+| Open     | 10    |
 | Fixed    | 2     |
 | Verified | 2     |
 
@@ -26,6 +26,7 @@ One row per bug report in `21-BUGS/` and `21-BUGS/archive/`, filed under its sta
 | BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026                            | `doc-references.sh` outside a git work tree reports "Nothing to check" and exits 0               | Open   | [BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026.md](BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026.md)                                                       |
 | BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026                           | `lint.sh --path` runs markdownlint over a non-Markdown file                                      | Open   | [BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026.md](BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026.md)                                                     |
 | BUG-US010-TIMING-PROBES-LOAD-SENSITIVE-21-11-2026                     | `shipped-boards.sh`'s three 2 s timing probes fail under load                                    | Open   | [BUG-US010-TIMING-PROBES-LOAD-SENSITIVE-21-11-2026.md](BUG-US010-TIMING-PROBES-LOAD-SENSITIVE-21-11-2026.md)                                         |
+| BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026                    | a hung graphify run leaves the graph hook reporting the last success indefinitely                | Open   | [BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md](BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md)                                       |
 
 ## Fixed
 

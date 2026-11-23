@@ -32,7 +32,8 @@ Every box must be ticked before `02-story-creation/` may begin.
 - [ ] **`GAPS.md` and `DEFERRED.md`** read — every open entry, with the records behind it
 - [ ] **The whole of `project-management/src/`** read — including `IMPLEMENTATION/` records, so
       the map reflects what shipped rather than what was once intended
-- [ ] The codebase explored via the `code-review-graph` playbook
+- [ ] The codebase explored via the `code-review-graph` playbook, and cross-artefact questions via
+      `graphify`
 
 ## SUGGEST — only if Step 0 was run
 

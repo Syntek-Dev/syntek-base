@@ -135,11 +135,6 @@ this column exists to prevent, and it has happened once already. The rule is exc
 where a product needs qualifying, that detail belongs in the question's `help:` text, never in
 its default.
 
-**Four are prose-shaped; two of those also render into the `code/docs/` guides** for their
-capability — `<%OBJECT_STORE%>` and `<%ERROR_TRACKING%>`. The other two reach
-`PLATFORM-PROVIDERS.md` only. Shape is the constraint on where a token may be written; reach is
-which files it lands in, and they are not the same claim.
-
 **The interface each one sits behind** — this is what makes a different answer safe:
 
 | Concern        | The seam the code is written against                          |

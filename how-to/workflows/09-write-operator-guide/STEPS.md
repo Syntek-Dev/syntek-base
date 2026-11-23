@@ -117,7 +117,9 @@ Fix what you find, in the guide rather than in your shell:
 - Run the Markdown gates — `pnpm exec markdownlint-cli2` and Prettier — via
   workflow `06-quality-gates`.
 - Update `**Last Updated**` on every `CONTEXT.md` you touched, and refresh the
-  code-review-graph so the docs and the graph stay in lockstep.
+  code-review-graph so the docs and the graph stay in lockstep; graphify's code layer is refreshed
+  alongside (`graphify update .`) — advisory, never `--force`, and an absent tool is recorded
+  unmeasured. Its doc layer is the developer's `/graphify --update`.
 
 ---
 

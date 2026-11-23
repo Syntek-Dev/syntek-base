@@ -86,6 +86,15 @@ pre-commit:
     code-review-graph:
       run: if command -v code-review-graph >/dev/null 2>&1; then code-review-graph detect-changes --brief || true; fi
 
+    # graphify beside it (US013, 23/11/2026; review M2): advisory too, and never --force. The
+    # hook's commit mode reports the per-edit run's last recorded outcome (none yet, refused,
+    # failed, absent) as unmeasured on every commit, then starts the same detached, locked,
+    # fingerprinted `graphify update .` the per-edit hook does — one implementation, in
+    # .claude/hooks/graph-update.sh. It returns at once, so the commit never waits on graphify;
+    # an absent graphify is named, never read as clean (code/docs/GATE-REPORTING.md).
+    graphify:
+      run: bash .claude/hooks/graph-update.sh --commit || true
+
     # Reconcile the Directory Tree block in any CONTEXT.md whose directory has a staged
     # change, and re-stage what it fixed. Scoped to --staged so a one-file commit does
     # not walk 195 trees. It ADDS a missing row and never deletes one: a row that names
@@ -265,9 +274,10 @@ pre-commit:
         bash project-management/src/00-ASSETS/scripts/precommit-clickup.sh
 
 # The push half of the template-integrity leg (above): every self-test — the six detectors',
-# shipped-ai.sh's, pm-boards.sh and template-hooks.sh — against the tip of each pushed ref, each in
-# its own copy of that commit's tree, never the working tree; a red or crashed self-test refuses
-# the push. `use_stdin: true` hands it git's ref lines (without it lefthook holds stdin open).
+# shipped-ai.sh's, pm-boards.sh, template-hooks.sh and graph-update.sh — against the tip of each
+# pushed ref, each in its own copy of that commit's tree, never the working tree; a red or crashed
+# self-test refuses the push. `use_stdin: true` hands it git's ref lines (without it lefthook holds
+# stdin open).
 # Self-gating on copier.yml as the pre-commit leg is, so downstream it exits 0 before calling
 # anything. Armed by `lefthook install`, which install-hooks.sh runs; a checkout armed before this
 # leg existed has no pre-push hook, and install-hooks.sh --notice reports it unarmed.
