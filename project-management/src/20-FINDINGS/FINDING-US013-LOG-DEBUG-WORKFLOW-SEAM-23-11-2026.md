@@ -2,7 +2,7 @@
 
 **Last Updated**: 23/11/2026 · **Story**: US013
 **Status:** Resolved
-**Status note:** every row dispositioned; GRAPH-05 walked Pass at `aae0b8c0` and the guide's sign-off filled (Passed with notes) — archive once <%DEVELOPER_NAME%> has reviewed the agent-walked GRAPH records
+**Status note:** every row dispositioned; GRAPH-05 walked Pass at `aae0b8c0` and the guide's sign-off filled (Passed with notes) — the agent-walked GRAPH records countersigned by <%DEVELOPER_NAME%> 23/11/2026, so the record is ready to archive
 
 | Field                | Value                                                                                                                                                                                                                                                                  |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

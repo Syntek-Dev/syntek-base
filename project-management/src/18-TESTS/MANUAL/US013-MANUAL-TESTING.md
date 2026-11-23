@@ -454,13 +454,13 @@ Filled at the walk. A tester other than the author — <%DEVELOPER_NAME%>; a fre
 agent may walk the mechanical rows (the gate runs and the counts), its record reviewed by
 <%DEVELOPER_NAME%> (QA plan Q4).
 
-| Field        | Value                                                                                                                                                           |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Tester**   | <%DEVELOPER_NAME%> (WALK-01 to WALK-06); independent general-purpose walkers (GRAPH-01 to GRAPH-10), their records for <%DEVELOPER_NAME%>'s review (QA plan Q4) |
-| **Date**     | 23/11/2026                                                                                                                                                      |
-| **Browsers** | N/A — CLI surface; no page is rendered. CI run pages are read, not tested                                                                                       |
-| **Outcome**  | Passed with notes — two rows amended with trails (GRAPH-06, GRAPH-08); the agent-walked GRAPH records await <%DEVELOPER_NAME%>'s review (QA plan Q4)            |
-| **Blockers** | None                                                                                                                                                            |
+| Field        | Value                                                                                                                                                                          |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Tester**   | <%DEVELOPER_NAME%> (WALK-01 to WALK-06); independent general-purpose walkers (GRAPH-01 to GRAPH-10), their records countersigned by <%DEVELOPER_NAME%> 23/11/2026 (QA plan Q4) |
+| **Date**     | 23/11/2026                                                                                                                                                                     |
+| **Browsers** | N/A — CLI surface; no page is rendered. CI run pages are read, not tested                                                                                                      |
+| **Outcome**  | Passed with notes — two rows amended with trails (GRAPH-06, GRAPH-08); the agent-walked GRAPH records countersigned by <%DEVELOPER_NAME%> 23/11/2026 (QA plan Q4)              |
+| **Blockers** | None                                                                                                                                                                           |
 
 - [x] Every row carries a `Pass` or a `Fail`, a retired stub excepted — an empty `Result` is an unrun step, never a pass; an unmeasured row is a `Fail` with `Unmeasured — <reason>` and a _Failures_ row, never `Pass` or blank
 - [x] _Outcome_ reads `Blocked` while any row is `Fail` with `Unmeasured — <reason>` (17-story-plans grilling round 2, Q2)
