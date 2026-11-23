@@ -2,8 +2,11 @@
 
 Runtime log files written by the Django backend in **dev and test environments only**.
 
+The reference deployment runs Grafana Alloy shipping logs to Loki, queried with LogQL in
+Grafana, and Prometheus for metrics (`how-to/src/PLATFORM-PROVIDERS.md`).
+
 > **Staging and production do not write logs to disk.** Those environments log to stdout
-> (JSON format), which Grafana Alloy captures and ships to Loki. See `code/docs/LOGGING.md`.
+> (JSON format), which Grafana Alloy captures and ships to <%LOG_AGGREGATOR%>. See `code/docs/LOGGING.md`.
 
 ## Directory Tree
 
@@ -29,16 +32,16 @@ All files in this directory are gitignored. Only this `CONTEXT.md` and `.gitkeep
 
 ## What does NOT go here
 
-- Exception reports → Glitchtip (staging/prod) or the console (dev/test)
+- Exception reports → <%ERROR_TRACKING%> (staging/prod) or the console (dev/test)
 - Metrics → Prometheus
-- Aggregated logs → Loki
+- Aggregated logs → <%LOG_AGGREGATOR%>
 - Bug reports or incident notes → `project-management/src/21-BUGS/`
 
 ## Accessing logs locally
 
 ```bash
 # Follow live backend output
-logs.sh --service backend --follow   # django.log via Docker stdout
+logs.sh --service django --follow    # django.log via Docker stdout
 
 # Read the log file directly on the host
 tail -f code/src/logs/django.log
@@ -54,11 +57,14 @@ The `RotatingFileHandler` is configured with:
 - Max file size: 10 MB
 - Backup count: 5 (so max 60 MB total on disk)
 
-To manually clear logs during development:
+To manually clear logs during development, open a shell in the `django` container and
+truncate the file inside it — this is the one copy of the step:
 
 ```bash
-docker compose -f code/src/docker/docker-compose.dev.yml exec backend \
-    sh -c "truncate -s 0 /workspace/code/src/logs/django.log"
+bash code/src/scripts/development/shell.sh
+
+# Inside the shell
+truncate -s 0 /workspace/code/src/logs/django.log
 ```
 
 ## Cross-references

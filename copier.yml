@@ -500,19 +500,17 @@ ENV_PREFIX:
 # Free text rather than `choices:` on purpose — the list of viable products is longer
 # than any list shipped here, and boxing a project into ours would defeat the point.
 #
-# PROSE-SAFE vs CELL-ONLY. OBJECT_STORE and ERROR_TRACKING are rendered into running
-# sentences, so their defaults are BARE PRODUCT NAMES and the qualifying detail lives in
-# the help text above each one. OBSERVABILITY_STACK, HOSTING_PROVIDER and TRACING_BACKEND
-# resolve to a phrase ("Prometheus + Grafana"), which reads correctly in a table cell and
-# breaks mid-sentence — they are cell-only. The rule is exception 2 in
-# code/docs/architecture/PROVIDER-NEUTRALITY.md; the classification is recorded in
+# PROSE-SAFE vs CELL-ONLY. Some of these answers are rendered into running sentences, so
+# their defaults are BARE PRODUCT NAMES and the qualifying detail lives in the help text
+# above each one; others resolve to a phrase ("Prometheus + Grafana"), which reads correctly
+# in a table cell and breaks mid-sentence, so they are cell-only. The rule is exception 2 in
+# code/docs/architecture/PROVIDER-NEUTRALITY.md; which token is which is recorded in
 # how-to/src/TEMPLATE-TOKENS.md. Do not put a parenthetical back into a prose-safe default.
 #
 # These answers render into how-to/src/PLATFORM-PROVIDERS.md — the generated project's
-# register of every infrastructure dependency, its seam kind, and its proven alternates —
-# and the two prose-safe ones also render into the code/docs guides for their capability.
-# The rule behind those verdicts (protocol seam vs adapter seam vs substrate, and the
-# evidence each demands) is code/docs/architecture/PROVIDER-NEUTRALITY.md.
+# register of every infrastructure dependency, its seam kind, and its proven alternates.
+# The rule behind its seam-kind verdicts (protocol seam vs adapter seam vs substrate, and
+# the evidence each demands) is code/docs/architecture/PROVIDER-NEUTRALITY.md.
 # PostgreSQL is absent from this list on purpose: it is substrate, not a choice.
 
 HOSTING_PROVIDER:
@@ -542,7 +540,8 @@ LOG_AGGREGATOR:
   type: str
   help: >-
     Where structured logs are shipped and queried. The app writes JSON to stdout, so
-    the collector is a deployment choice — Loki, Vector, Fluent Bit, Alloy, CloudWatch.
+    the collector is a deployment choice — Loki, Vector, Fluent Bit, CloudWatch.
+    Answer with a bare product name: this one is rendered into running prose.
   default: Loki
 
 OBSERVABILITY_STACK:
