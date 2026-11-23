@@ -81,7 +81,7 @@ _The manual testing guide for US013 — the reads, renders, gate runs and the on
 | The generated-project render record — the Bugsink / Fluent Bit `/tmp` render of the six files, the commit rendered, and the per-file counts TOKENS-03 and TOKENS-04 read                                                                                                                                                                                                                               | The story's _QA Acceptance Criteria — Manual_ ("the check records the paths it ran"); HP-06 | At the walk                                           | 23/11/2026, at the walk, commit `79a22cb7` (working tree clean). The six files written by `git show 79a22cb7:<path>` into a fresh `mktemp -d` directory, `/tmp/us013-render-bf-y0yc` (six regular files, no symlink), then `sed`: `ERROR_TRACKING` = Bugsink, `LOG_AGGREGATOR` = Fluent Bit, and at default `PROJECT_NAME` = CI Probe, `PROJECT_SLUG` = ci-probe (CI's `template-render.sh` answers) and `DEPLOY_REPO` = ci-probe-nixos-client-deployment (`copier.yml`'s default); no other token is in the six. `git status --short` printed nothing afterwards. **Bugsink** (TOKENS-03): 09 `STEPS.md` 9, `CHECKLIST.md` 2, `CONTEXT.md` 2, `CLAUDE.md` 3; `code/src/logs/` `CONTEXT.md` 1, `CLAUDE.md` 1 — 18. **Fluent Bit** (TOKENS-04): 5, 0, 1, 2, 2, 2 — 12. Also read: `glitchtip` 0, `sentry` 0, `loki` 10 (3, 1, 2, 2, 1, 1), surviving token delimiters 0                                                                                                       |
 | The EC-01 row-check render — the Sentry `/tmp` render of 09 `STEPS.md` only, the commit rendered, and the sentence READ-03 reads. A row check, **not** part of the generated-project check                                                                                                                                                                                                             | EC-01; story plan Key Decision 9 (17-story-plans grilling round 1, 01/11/2026, Q1)          | At the walk                                           | 23/11/2026, at the walk, commit `79a22cb7`. 09 `STEPS.md` only, by `git show` into a fresh `mktemp -d` directory, `/tmp/us013-render-sentry-qwSS`, then `sed`: `ERROR_TRACKING` = Sentry, `LOG_AGGREGATOR` = Loki (default), the other three tokens as the render record above. The sentence READ-03 reads (Step 4): "Browser-side errors — an unhandled script error, or an HTMX response/network error forwarded by `observability.js` — are captured by the browser SDK, which forwards them to Sentry (Step 3), never to Loki." "Sentry's Sentry" occurs 0 times                                                                                                                                                                                                                                                                                                                                                                                                         |
 | The live-walk output — the printed base URL and each command's output for WALK-01 to WALK-05, trimmed to what proves it ran, no secrets or personal data                                                                                                                                                                                                                                               | The story's _QA Acceptance Criteria — Manual_ ("its output recorded"); QA plan Sections 5-6 | At the walk                                           | 23/11/2026, walked by <%DEVELOPER_NAME%> on the main checkout's dev stack at branch head `58f3c78e`. WALK-01: `server.sh up` printed `✓ Stack is up.` and Site `http://dev.<%PROJECT_SLUG%>.localhost:81/`. WALK-02: `logs.sh — django (following)`, then the django service's `GET /health/` 200 lines, stopped with Ctrl-C. WALK-03: `shell.sh — django (bash)`, one session at the `/workspace` prompt. WALK-04: inside it, `tail -f` streamed lines of the log (stopped with Ctrl-C), the level grep printed ERROR and WARNING lines, the `apps.users` grep printed nothing, and `tail -n 100` printed the file — no missing-file error. WALK-05: in the same session the truncate ran, and `tail -n 100` afterwards printed nothing. Log contents deliberately not kept (QA plan Section 5)                                                                                                                                                                             |
-| graphify inventory — every file outside `project-management/src/`, `CHANGELOG.md`, `RELEASES.md` and `VERSION-HISTORY.md` naming `code-review-graph`, each with its site kind (refresh instruction, exploration routing, MCP declaration, configuration, licence notice), with `HEAD`; a capture missed is recorded as missed, and every row reading it is `Fail` with `Unmeasured — <capture> missed` | The story's graphify inventory task (added 23/11/2026)                                      | Before the first graphify edit                        |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| graphify inventory — every file outside `project-management/src/`, `CHANGELOG.md`, `RELEASES.md` and `VERSION-HISTORY.md` naming `code-review-graph`, each with its site kind (refresh instruction, exploration routing, MCP declaration, configuration, licence notice), with `HEAD`; a capture missed is recorded as missed, and every row reading it is `Fail` with `Unmeasured — <capture> missed` | The story's graphify inventory task (added 23/11/2026)                                      | Before the first graphify edit                        | 23/11/2026, `HEAD` `4837e2af`, index clean, before the first graphify edit: **218 lines in 122 files** — 118 exploration routing, 80 refresh instruction, 13 configuration, 4 MCP declaration, 3 licence notice. In full under _Inventory at P7_ below                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | The probe suite's red run — `bash code/src/scripts/tests/graph-update.sh` against the hook as it stood before its edit: exit code and each probe's outcome with its reason                                                                                                                                                                                                                             | The story's probe-suite task; QA plan addendum HP-16                                        | After the suite is written, before the hook is edited |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ### Inventory at P0
@@ -155,6 +155,138 @@ two of those also render into the `code/docs/` guides"), `LOG_AGGREGATOR` row `:
 `copier.yml` comment paragraphs now `:503-516` (plan cites `:470-483`; +33 since 7.10.0), the
 PostgreSQL line `:516`; `ERROR_TRACKING` `:533`, `LOG_AGGREGATOR` `:541` (its `Alloy` at `:545`).
 `how-to/src/TEMPLATE-GUIDE/05-ANSWERS.md` `LOG_AGGREGATOR` row `:124`.
+
+### Inventory at P7
+
+Measured 23/11/2026 at `4837e2af`, before the first graphify edit: every line naming
+`code-review-graph` outside `project-management/src/`, `CHANGELOG.md`, `RELEASES.md`,
+`VERSION-HISTORY.md`, `handoffs/` and `research/` — **218 lines in 122 files**. Kind, sorted by
+keyword and confirmed site by site in the sweep: **E** exploration routing (118), **R** refresh
+instruction (80), **C** configuration (13), **M** MCP declaration (4), **N** licence notice (3).
+Line numbers are this commit's only.
+
+- `.claude/CLAUDE.md` — E :166, :215, :220; R :271
+- `.claude/hooks/CLAUDE.md` — R :66
+- `.claude/hooks/CONTEXT.md` — R :10, :100
+- `.claude/hooks/graph-update.sh` — R :2, :7, :29, :32; E :41
+- `.claude/hooks/pre-pr-check.sh` — R :268, :275
+- `.claude/settings.json` — C :233
+- `.claude/skills/CLAUDE.md` — R :52; E :59
+- `.claude/skills/CONTEXT.md` — E :116, :117, :118, :119, :192
+- `.claude/skills/backend/SKILL.md` — E :65
+- `.claude/skills/bugfix/SKILL.md` — E :43
+- `.claude/skills/code-reviewer/SKILL.md` — E :40
+- `.claude/skills/codebase-design/SKILL.md` — R :106
+- `.claude/skills/doc-writer/SKILL.md` — R :89
+- `.claude/skills/domain-modelling/SKILL.md` — R :57, :58
+- `.claude/skills/explore-codebase.md` — E :8
+- `.claude/skills/git/SKILL.md` — R :52
+- `.claude/skills/grilling/SKILL.md` — E :103
+- `.claude/skills/handoff/SKILL.md` — E :42
+- `.claude/skills/implement-story/SKILL.md` — R :80
+- `.claude/skills/improve-codebase-architecture/SKILL.md` — R :126
+- `.claude/skills/incident/SKILL.md` — E :52
+- `.claude/skills/planner/SKILL.md` — E :62
+- `.claude/skills/pr/SKILL.md` — R :78
+- `.claude/skills/prototype/SKILL.md` — E :25
+- `.claude/skills/refactor/SKILL.md` — E :46
+- `.claude/skills/research/SKILL.md` — E :32
+- `.claude/skills/resolving-merge-conflicts/SKILL.md` — E :40
+- `.claude/skills/review/SKILL.md` — E :40
+- `.claude/skills/scale-planning/SKILL.md` — E :112; R :183
+- `.claude/skills/teach/SKILL.md` — E :51
+- `.claude/skills/wayfinder/SKILL.md` — E :33, :84, :86
+- `.codex/config.toml` — M :39, :41
+- `.copier/README.md` — E :384, :1024, :1522; R :1507
+- `.dockerignore` — C :37
+- `.github/scripts/shipped-readme.sh` — C :269
+- `.github/workflows/audit-hook-arming.yml` — C :80
+- `.gitignore` — C :94, :95
+- `.mcp.json` — M :3, :5
+- `.prettierignore` — C :19
+- `CONTEXT.md` — R :171
+- `README.md` — R :218; E :246
+- `REFERENCES.md` — E :50
+- `THIRD-PARTY-NOTICES.md` — N :139, :141, :150
+- `code/CLAUDE.md` — R :31, :32
+- `code/CONTEXT.md` — E :20
+- `code/REFERENCES.md` — E :40
+- `code/docs/BACKEND-CODING-PRINCIPLES.md` — E :12
+- `code/docs/CODE-REVIEW-GRAPH.md` — E :13, :128; R :35, :40, :124, :126, :127, :136, :138, :145, :147, :154
+- `code/docs/CONTEXT.md` — E :25, :104
+- `code/docs/DESIGN-TOKENS.md` — E :14
+- `code/docs/DOCUMENTATION-PAIRING.md` — R :164
+- `code/docs/FRONTEND-CODING-PRINCIPLES.md` — E :12
+- `code/docs/URL-STRATEGY.md` — E :12
+- `code/src/mobile/CLAUDE.md` — R :27
+- `code/src/scripts/audits/skill-conformance.sh` — E :75, :341
+- `code/src/scripts/development/install-hooks.sh` — R :10; E :41, :109, :182, :597, :607
+- `code/src/scripts/development/sync-trees.sh` — E :126
+- `code/src/scripts/tests/CONTEXT.md` — E :192
+- `code/src/scripts/tests/hook-arming.sh` — R :111, :822, :830, :1653; E :140, :828, :1008, :1018, :1019, :1020, :1618, :1619, :1620, :1621, :1623, :1627, :1630, :1633, :1634, :1663, :1664
+- `code/workflows/01-implement-story/CHECKLIST.md` — R :70
+- `code/workflows/01-implement-story/CONTEXT.md` — E :45; R :62
+- `code/workflows/01-implement-story/STEPS.md` — E :45, :117, :251, :257, :269; R :282
+- `code/workflows/02-tdd-cycle/CHECKLIST.md` — R :78
+- `code/workflows/02-tdd-cycle/STEPS.md` — E :208, :238; R :245
+- `code/workflows/03-database-migration/STEPS.md` — E :35
+- `code/workflows/04-api-design/STEPS.md` — E :33
+- `code/workflows/05-mcp-server/CHECKLIST.md` — R :82
+- `code/workflows/05-mcp-server/CLAUDE.md` — R :33
+- `code/workflows/05-mcp-server/STEPS.md` — E :36; R :144
+- `code/workflows/07-review/CLAUDE.md` — E :18
+- `code/workflows/07-review/CONTEXT.md` — E :57
+- `code/workflows/07-review/STEPS.md` — E :44, :68, :78; R :90
+- `code/workflows/08-security-hardening/STEPS.md` — E :35
+- `code/workflows/09-debugging-with-logs/CLAUDE.md` — E :26
+- `code/workflows/09-debugging-with-logs/CONTEXT.md` — E :59
+- `code/workflows/10-debug/CLAUDE.md` — E :20
+- `code/workflows/10-debug/CONTEXT.md` — E :43
+- `code/workflows/10-debug/STEPS.md` — E :64; R :101
+- `code/workflows/11-refactor/CLAUDE.md` — E :18
+- `code/workflows/11-refactor/CONTEXT.md` — E :46
+- `code/workflows/11-refactor/STEPS.md` — E :59; R :89
+- `code/workflows/12-rust-extension/CLAUDE.md` — R :32
+- `code/workflows/12-rust-extension/STEPS.md` — R :144
+- `code/workflows/13-desktop-app/CLAUDE.md` — R :29
+- `code/workflows/13-desktop-app/STEPS.md` — R :125
+- `copier.yml` — C :357
+- `how-to/docs/skill-authoring/CRAFT.md` — E :183
+- `how-to/docs/tooling-guide/CONFIGURATION.md` — E :61
+- `how-to/src/CONTRIBUTING.md` — R :218
+- `how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md` — E :169
+- `how-to/src/TEMPLATE-GUIDE/06-GENERATION.md` — E :110
+- `how-to/src/TEMPLATE-GUIDE/08-CLAUDE-CODE.md` — R :216; E :223, :244
+- `how-to/src/TEMPLATE-GUIDE/10-FIRST-FEATURE.md` — R :274
+- `how-to/src/TEMPLATE-GUIDE/12-EXTENDING.md` — R :150, :282
+- `how-to/src/TEMPLATE-GUIDE/15-TROUBLESHOOTING.md` — E :281; R :284
+- `how-to/src/TEMPLATE-GUIDE/GUIDE-TO-SKILLS.md` — E :135; R :136
+- `how-to/workflows/03-daily-development/STEPS.md` — E :64
+- `how-to/workflows/08-debugging/STEPS.md` — E :68, :92
+- `how-to/workflows/09-write-operator-guide/CHECKLIST.md` — R :60, :72
+- `how-to/workflows/09-write-operator-guide/STEPS.md` — R :120
+- `lefthook.yml` — C :81, :82, :84, :86, :87
+- `project-management/docs/PLANNING-GUIDE.md` — E :12
+- `project-management/docs/QA-GUIDE.md` — E :12
+- `project-management/docs/SECURITY-GUIDE.md` — E :12
+- `project-management/docs/VERSIONING-GUIDE.md` — E :12
+- `project-management/workflows/01-feature-map/CHECKLIST.md` — E :35
+- `project-management/workflows/01-feature-map/CLAUDE.md` — E :42
+- `project-management/workflows/01-feature-map/CONTEXT.md` — E :86
+- `project-management/workflows/01-feature-map/STEPS.md` — E :78
+- `project-management/workflows/04-database-schema/STEPS.md` — E :30
+- `project-management/workflows/07-component-designs/STEPS.md` — E :38
+- `project-management/workflows/18-consolidate-design-work/CHECKLIST.md` — R :92
+- `project-management/workflows/18-consolidate-design-work/STEPS.md` — R :184
+- `project-management/workflows/19-backend-code/STEPS.md` — E :33
+- `project-management/workflows/20-api-code/STEPS.md` — E :33
+- `project-management/workflows/21-frontend-code/STEPS.md` — E :60
+- `project-management/workflows/22-implementation-documentation/CHECKLIST.md` — R :93
+- `project-management/workflows/22-implementation-documentation/CLAUDE.md` — R :12, :34, :51, :93
+- `project-management/workflows/22-implementation-documentation/CONTEXT.md` — R :27, :28, :75
+- `project-management/workflows/22-implementation-documentation/STEPS.md` — R :235
+- `project-management/workflows/23-pr-and-review/CHECKLIST.md` — R :83
+- `project-management/workflows/23-pr-and-review/STEPS.md` — R :171
 
 ---
 
