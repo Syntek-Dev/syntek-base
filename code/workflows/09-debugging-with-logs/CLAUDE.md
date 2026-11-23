@@ -43,7 +43,8 @@ and prod.
 - **Observational only** — this workflow finds the cause; the fix and its regression
   test go through `code/workflows/10-debug/`.
 - **No local log files exist in staging/prod** (see the matrix) — never assume
-  `code/src/logs/` is available there; use <%LOG_AGGREGATOR%>/<%ERROR_TRACKING%> instead.
+  `code/src/logs/` is available there; use <%LOG_AGGREGATOR%> or <%ERROR_TRACKING%>
+  instead.
 - Never paste secrets, tokens, or PII from logs into commits, bug reports, or the
   workflow files.
 - Editing these workflow `.md` files: keep each **≤ 300 code lines** (instructional-file limit).

@@ -59,7 +59,12 @@
        `e306f48e` and holds: 10 raw `docker` calls; 35 sites (18 GlitchTip, 17 Loki; 18 / 12 / 4
        held / 1 reworded); 15 of the folder's 16 spelt `Glitchtip`; six fix boxes; the
        `CHECKLIST.md`:38, :39, :43, :56 cites. The inventory is in the guide's _Recorded during the
-       build_. -->
+       build_.
+     - BUILD NOTE, 23/11/2026 (review F-1). 09 `STEPS.md` Step 4's browser-errors sentence writes
+       both tokens bare, without backticks. The PM artefacts quote every token in backticks as an
+       identifier; the AC gherkin (`../02-STORIES/US013.md`:264) and READ-02's and EC-01's render
+       expectations ("… forwards them to Bugsink (Step 3), never to Fluent Bit.") fix the target as
+       bare, so READ-02's "exactly" source half is read with its backticks as quotation, not text. -->
 
 <!-- STEP 1 DREW ITS ROUND FROM THE RECORDED ANSWERS (.claude/skills/grilling/SKILL.md -> A decision
      already recorded is a fact). The story's cutting interview (grilling round 1, 31/10/2026, Q1 to
