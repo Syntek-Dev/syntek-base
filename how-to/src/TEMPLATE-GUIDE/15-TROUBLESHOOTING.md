@@ -278,14 +278,17 @@ export CLAUDE_CONTEXT_WINDOW=200000
 
 `CLAUDE_CONTEXT_ADVISE_PCT` and `CLAUDE_CONTEXT_INSIST_PCT` move the two tiers off 50 and 75.
 
-### The code-review-graph is stale
+### The code-review-graph or graphify is stale
 
 ```bash
 code-review-graph update
+graphify update .
 ```
 
-Refresh it whenever you revise the layered docs — they are two views of one codebase and are
-meant to move together.
+Refresh both whenever you revise the layered docs — they are views of one codebase and are
+meant to move together. graphify is **advisory**: never run it with `--force`. If it is absent, or
+refuses because it would drop semantic nodes, record it unmeasured; the semantic rebuild
+(`/graphify`) is your call.
 
 ---
 

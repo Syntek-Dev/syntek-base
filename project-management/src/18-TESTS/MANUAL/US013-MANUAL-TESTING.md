@@ -288,6 +288,26 @@ Line numbers are this commit's only.
 - `project-management/workflows/23-pr-and-review/CHECKLIST.md` — R :83
 - `project-management/workflows/23-pr-and-review/STEPS.md` — R :171
 
+### Sites left without graphify, with the reason (recorded at the P12 sweep)
+
+Recorded 23/11/2026 from the sweep agents' and the gates agent's returns. Each names something that
+is code-review-graph's own and has no graphify counterpart, so a graphify mention there would be
+false (the sweep brief: "never force a mention that is false"):
+
+- `.claude/skills/CLAUDE.md`, `.claude/skills/CONTEXT.md`, `.claude/skills/explore-codebase.md`,
+  `.prettierignore`:19, `how-to/src/TEMPLATE-GUIDE/GUIDE-TO-SKILLS.md`:135-137 — the four task
+  cards `code-review-graph install` generates; graphify generates none.
+- `code/docs/DOCUMENTATION-PAIRING.md`:164 and root `CONTEXT.md`:171 — the root `/CLAUDE.md`
+  `code-review-graph install` writes.
+- `code/src/scripts/audits/skill-conformance.sh`, `code/src/scripts/development/install-hooks.sh`,
+  `code/src/scripts/tests/hook-arming.sh`, `.github/workflows/audit-hook-arming.yml`:80 — the
+  cards' conformance and code-review-graph's git-hook reclaim, keyed to its own binary.
+- `README.md`:218 and :246 — _Influences_ rows crediting code-review-graph's card text, which this
+  repository commits; graphify ships no text and is recorded in `THIRD-PARTY-NOTICES.md`.
+- `.claude/settings.json`:233 — the SessionStart `code-review-graph status` line. No graphify
+  session-start step was decided (implement-story grilling R1 Q3 chose per edit and at commit);
+  adding one is a settings change for a later decision, not this sweep.
+
 ---
 
 ## Journeys

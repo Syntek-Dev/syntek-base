@@ -24,7 +24,8 @@ and prod.
   first; enter `STEPS.md` only when triggered. No hard gates — start with whichever
   signal the target environment offers (see the tool matrix). Once a log signal points at a
   suspect area, trace the code path with the code-review-graph **debug playbook**
-  (`.claude/skills/debug-issue.md`; guide `code/docs/CODE-REVIEW-GRAPH.md`). First-time use: read
+  (`.claude/skills/debug-issue.md`; guide `code/docs/CODE-REVIEW-GRAPH.md`), with graphify as
+  fallback and for cross-artefact questions. First-time use: read
   `code/docs/logging/DJANGO-LOGGING.md` and `code/docs/logging/FRONTEND-LOGGING.md`.
 - **Model:** Opus for root-cause analysis and a mechanical touch to the
   workflow files.

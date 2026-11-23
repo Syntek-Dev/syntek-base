@@ -43,7 +43,8 @@ probe tagging — and it is not restated here.
 - **Trace structurally before searching manually.** Run the code-review-graph **debug playbook**
   (`.claude/skills/debug-issue.md`; guide `code/docs/CODE-REVIEW-GRAPH.md`) —
   `semantic_search_nodes` → `query_graph` callers/callees → `get_flow` → `detect_changes` →
-  `get_impact_radius`. Fall back to Grep and Glob only where the graph does not reach.
+  `get_impact_radius`. Fall back to `graphify`, then Grep and Glob, only where the graph does
+  not reach.
 - **Locate the evidence** with the read-only helpers: `.claude/plugins/log-tool.py` for log
   files, `.claude/plugins/env-tool.py` for environment config, `.claude/plugins/git-tool.py`
   for recent changes. Staging and production faults go through

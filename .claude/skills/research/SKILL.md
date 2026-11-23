@@ -29,7 +29,8 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%> · dates DD/MM/YYYY.
 1. **Frame one answerable question.** Reduce the ask to a single question a note can settle,
    and confirm it needs synthesis rather than a lookup — `context7` for one library's API, a
    Perplexity answer for a question nothing durable will cite. Look facts up first —
-   `code-review-graph` (structure) → Read/Grep/Glob → `.claude/plugins/*.py` — so the question
+   `code-review-graph` (structure; or `graphify`, across artefacts) → Read/Grep/Glob →
+   `.claude/plugins/*.py` — so the question
    is only what the codebase cannot answer itself. _Completion:_ the question is one sentence,
    and it is research, not a lookup.
 2. **Delegate the reading to a background agent.** Dispatch the reading to a background agent

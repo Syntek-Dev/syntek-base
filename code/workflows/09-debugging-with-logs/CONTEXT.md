@@ -58,7 +58,7 @@ None — log-based debugging is observational; start with whichever signal is av
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **debug playbook**
   (`.claude/skills/debug-issue.md`): trace the code path structurally once a log signal points
-  at a suspect area
+  at a suspect area; graphify as fallback and for cross-artefact questions
 - `code/docs/logging/DJANGO-LOGGING.md` — Django logging configuration, log levels, Django Ninja extension
 - `code/docs/logging/FRONTEND-LOGGING.md` — browser logging setup, HTMX error forwarding, dev vs prod behaviour
 - `code/docs/logging/OBSERVABILITY.md` — <%ERROR_TRACKING%>, <%LOG_AGGREGATOR%>, Prometheus, Grafana tool details

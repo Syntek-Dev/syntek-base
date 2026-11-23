@@ -48,7 +48,8 @@ learning/<topic>/
    CSS, Django, django-ninja, django-components, architecture, security, testing).
    Done when `MISSION.md` states the goal and the family in <%DEVELOPER_NAME%>'s words.
 2. **Assess the level, set the next lesson.** Read `PROGRESS.md` for what is already consolidated,
-   and look up the real subject with `code-review-graph` → Read/Grep/Glob → `.claude/plugins/*.py`
+   and look up the real subject with `code-review-graph` (or `graphify`, across artefacts) →
+   Read/Grep/Glob → `.claude/plugins/*.py`
    (`project`/`db`/`env`). Pick the one next **lesson** at the edge of the current level — the
    **zone of proximal development**: a step <%DEVELOPER_NAME%> cannot yet do alone but can with support.
    Done when the next lesson is named as a single, tightly-scoped concept.

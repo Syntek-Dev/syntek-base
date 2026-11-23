@@ -61,7 +61,7 @@ interrogate-before-acting posture of `.claude/CLAUDE.md` Section 10); then test 
 variable at a time**. Tag every probe or debug log with a unique prefix such as
 `[DEBUG-a4f2]` so cleanup is a single grep.
 
-> **Model:** opus · **MCP:** code-review-graph (debug playbook — `.claude/skills/debug-issue.md`)
+> **Model:** opus · **MCP:** code-review-graph (debug playbook — `.claude/skills/debug-issue.md`), graphify as fallback
 
 ```bash
 bash code/src/scripts/development/shell.sh
@@ -98,7 +98,7 @@ bash code/src/scripts/tests/backend.sh
 2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
 3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
 4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
-5. Refresh the code-review-graph so its flows match the updated docs: `code-review-graph update` (or the `build_or_update_graph_tool` MCP tool) — keeps the graph and the layered docs in lockstep
+5. Refresh the code-review-graph so its flows match the updated docs: `code-review-graph update` (or the `build_or_update_graph_tool` MCP tool) — keeps the graph and the layered docs in lockstep; refresh graphify alongside (`graphify update .`, never `--force`) — advisory: an absent tool or a refused or failed refresh is recorded unmeasured (`code/docs/GATE-REPORTING.md`), never blocking
 
 ---
 

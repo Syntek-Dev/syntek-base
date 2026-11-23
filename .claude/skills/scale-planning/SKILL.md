@@ -109,8 +109,8 @@ Both live under `how-to/src/**` — the human-operational tier, exempt from the 
 The snapshot is **living**. On every run:
 
 - **Missing** (`how-to/src/SCALE-ARCHITECTURE/` absent) → build it first. Explore the live
-  codebase — the `code-review-graph` explore playbook (`code/docs/CODE-REVIEW-GRAPH.md`), then
-  Read/Grep/Glob — and write the snapshot before any planning.
+  codebase — the `code-review-graph` explore playbook (`code/docs/CODE-REVIEW-GRAPH.md`), with
+  `graphify` as its fallback, then Read/Grep/Glob — and write the snapshot before any planning.
 - **Present** → **reconcile it against the live code** and patch or flag drift before you plan.
   Never plan against a stale snapshot. This is the "ground in the live code, reconcile drift"
   doctrine (`code/docs/FRONTEND-CODING-PRINCIPLES.md` → Ground in the Live Code).
@@ -181,7 +181,7 @@ Follow wayfinder's graduation table:
 - **Terminology** → the glossary of the nearest `CONTEXT.md` (`domain-modelling`).
 
 Refresh the code-review-graph after any doc change so the layered docs and the graph stay in
-lockstep (`code/docs/CODE-REVIEW-GRAPH.md`).
+lockstep, and graphify alongside it, advisory (`code/docs/CODE-REVIEW-GRAPH.md`).
 
 ## Anti-patterns
 

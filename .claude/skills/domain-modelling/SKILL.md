@@ -56,7 +56,8 @@ Do these **inline, as the decision lands** — never batch them for later.
 - **Docs are a hard gate + lockstep with the graph.** A `CONTEXT.md`/ADR change is a documentation
   change: complete it before the commit and refresh the code-review-graph alongside
   (`code-review-graph update`, or `build_or_update_graph_tool`) so the layered docs and the graph
-  don't drift (`code/docs/CODE-REVIEW-GRAPH.md`).
+  don't drift; graphify is refreshed alongside (`graphify update .`), advisory
+  (`code/docs/CODE-REVIEW-GRAPH.md`).
 - **Instructional-file limit** — every `CONTEXT.md` stays ≤ 300 code lines (`.claude/CLAUDE.md` Section 8);
   split rather than overflow.
 - **Model:** the `doc-writer` skill (Opus) authors substantive glossary/ADR text; mechanical touches

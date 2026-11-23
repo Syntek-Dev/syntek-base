@@ -22,8 +22,8 @@ Locale: <%LOCALE%> · <%TIMEZONE%> · <%CURRENCY%>.
 ### 1. Frame the one question
 
 Write the single design question the spike answers, in one sentence, at the top of the work.
-Discover the surrounding context yourself — `code-review-graph` (structure) → Read/Grep/Glob
-→ `.claude/plugins/*.py` — rather than asking. A spike that chases two questions answers
+Discover the surrounding context yourself — `code-review-graph` (structure; or `graphify`,
+across artefacts) → Read/Grep/Glob → `.claude/plugins/*.py` — rather than asking. A spike that chases two questions answers
 neither.
 
 **Done when:** one sentence names the single question, and it is a design question ("does

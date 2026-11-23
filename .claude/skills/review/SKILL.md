@@ -40,7 +40,8 @@ never happened.
 Then trace the change structurally before reading it file by file: the code-review-graph
 **review playbook** (`.claude/skills/review-changes.md`; guide
 `code/docs/CODE-REVIEW-GRAPH.md`) runs `detect_changes` → `get_affected_flows` → `query_graph`
-tests_for → `get_impact_radius`. That is what tells the review dispatch where to look.
+tests_for → `get_impact_radius`; `graphify` is its fallback, and finds the docs and PM artefacts
+the change touches. That is what tells the review dispatch where to look.
 
 ## The passes
 

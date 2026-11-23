@@ -355,6 +355,7 @@ _exclude:
   # Never part of a checkout
   - node_modules
   - .code-review-graph
+  - graphify-out
   - .venv
   - __pycache__
   - "*.py[co]"

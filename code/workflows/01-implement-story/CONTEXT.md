@@ -43,7 +43,8 @@ with `wayfinder` first, then cut into stories — the unit here is one story, ne
 ### Related reading
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **explore playbook**
-  (`.claude/skills/explore-codebase.md`): map the affected area structurally before building
+  (`.claude/skills/explore-codebase.md`): map the affected area structurally before building;
+  graphify for the docs and PM artefacts around it, and as fallback
 - `code/docs/CODING-PRINCIPLES.md` — coding rules (thin index)
 - `code/docs/TESTING.md` — test requirements (thin index)
 - `code/docs/SECURITY.md` — security rules (thin index)
@@ -59,8 +60,8 @@ with `wayfinder` first, then cut into stories — the unit here is one story, ne
 - `code/docs/architecture/CORE-AND-SCALING.md` — readiness invariants (statelessness, keyset, `tenant_id`, async-safe I/O) a new capability must not break; a new route/upload/SSE surface → flag `scale-planning` for the `how-to/src/SERVER-ARCHITECTURE/` edge requirement (soft, non-blocking — anti-forecast)
 - `project-management/workflows/22-implementation-documentation/` — **the next workflow after
   this one.** It owns the implementation records, the findings record, the `CONTEXT.md`/`CLAUDE.md`
-  closeout, and the code-review-graph refresh — all a hard gate before commit. Never duplicate
-  its record formats here.
+  closeout, and the code-review-graph refresh — all a hard gate before commit; graphify is
+  refreshed alongside, advisory. Never duplicate its record formats here.
 - `project-management/workflows/23-pr-and-review/` — follows 22; raises and merges the PR, and
   only **verifies** the records 22 wrote and walked
 - `project-management/src/18-TESTS/MANUAL/` — the story's manual testing guide, authored at

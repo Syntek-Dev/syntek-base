@@ -83,7 +83,8 @@ the next:
 3. **`GAPS.md` and `DEFERRED.md`** — the standing register: what is currently blocked, and what a
    shipped story explicitly handed to a future one.
 4. **The whole of `project-management/src/`** — every story, spec, decision, plan, and record.
-5. **The codebase itself**, via the `code-review-graph` explore playbook.
+5. **The codebase itself**, via the `code-review-graph` explore playbook — and `graphify` for how it
+   connects to the docs and PM artefacts; each is the other's fallback.
 
 **`src/` is the living state of the project, not an archive.** Because every story closes with
 `IMPLEMENTATION/` records that state what shipped _and where it diverged from the plan_, reading
@@ -106,5 +107,6 @@ a map drawn from the plans alone loses the drift.
 - `.claude/skills/research/SKILL.md` — for research nodes needing primary sources
 - `.claude/skills/prototype/SKILL.md` — for tracer nodes needing a spike
 - `project-management/src/15-DECISIONS/` — where hard-to-reverse outcomes graduate
-- `code/docs/CODE-REVIEW-GRAPH.md` — the explore playbook for mapping the surface
+- `code/docs/CODE-REVIEW-GRAPH.md` — the explore playbook for mapping the surface, and the role split
+  with graphify
 - `project-management/workflows/02-story-creation/` — the next workflow; stories cut from the map

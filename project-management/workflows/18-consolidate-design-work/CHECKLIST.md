@@ -90,5 +90,6 @@ Every box must be ticked before `19-backend-code/` may begin.
 
 - [ ] Every touched `CONTEXT.md`/`CLAUDE.md` updated
 - [ ] Code-review-graph refreshed (`code-review-graph update`)
+- [ ] graphify refreshed alongside (`graphify update .`, never `--force`) — or recorded unmeasured; advisory
 - [ ] Instructional `.md` files still ≤ 300 code lines — `bash code/src/scripts/audits/docs-length.sh`
 - [ ] British English throughout; dates DD/MM/YYYY

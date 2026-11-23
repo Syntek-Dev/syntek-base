@@ -9,7 +9,8 @@ model: opus
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Semantic versioning strategy, version bumping process, changelog and release tracking
-**MCP Servers:** code-review-graph (version impact analysis)
+**MCP Servers:** code-review-graph (version impact analysis) · graphify (which docs and PM
+artefacts a change reaches; each is the other's fallback)
 
 ---
 

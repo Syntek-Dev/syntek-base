@@ -266,7 +266,7 @@ run_readme_checks() {
 
 # ── 1. Root entries ───────────────────────────────────────────────────────────
 # shellcheck disable=SC2010  # root entry names are plain; ls -A also lists the dotfiles a bare glob skips
-for entry in $(ls -A | grep -vE '^(\.git|node_modules|\.venv|\.code-review-graph)$'); do
+for entry in $(ls -A | grep -vE '^(\.git|node_modules|\.venv|\.code-review-graph|graphify-out)$'); do
   is_excluded "$entry" && continue
   case "$entry" in .*) [[ "$entry" == ".claude" || "$entry" == ".agents" || "$entry" == ".ai" || "$entry" == ".codex" || "$entry" == ".mcp.json" || "$entry" == ".zed" ]] || continue ;; esac
   in_tree "$TREE" "$entry" || finding "Project Tree omits shipping root entry: $entry"

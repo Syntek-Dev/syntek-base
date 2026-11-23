@@ -9,7 +9,8 @@ model: opus
 **Last Updated**: <%DATE%> **Version**: 0.1.0 **Maintained By**: <%ORG_NAME%> **Language**:
 British English (en_GB) **Timezone**: <%TIMEZONE%>
 **Claude Model:** opus — Frontend code review, naming conventions, error handling patterns
-**MCP Servers:** code-review-graph (structural analysis, design pattern detection)
+**MCP Servers:** code-review-graph (structural analysis, design pattern detection), graphify
+(fallback; cross-artefact questions)
 
 Read alongside **[CODING-PRINCIPLES.md](CODING-PRINCIPLES.md)**. The frontend is one surface:
 Django templates + **django-components** + **HTMX** + **Alpine** + vanilla CSS (design tokens) +

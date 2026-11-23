@@ -46,7 +46,8 @@ them "behaviour is unchanged" is an assertion, not a claim anyone can check.
 Then scope the move structurally: the code-review-graph **refactor playbook**
 (`.claude/skills/refactor-safely.md`; guide `code/docs/CODE-REVIEW-GRAPH.md`) runs
 `refactor_tool` suggest/dead_code/rename, then `get_impact_radius` and `get_affected_flows`
-before anything moves — it finds the callers faster and more cheaply than Grep.
+before anything moves — it finds the callers faster and more cheaply than Grep. `graphify` is
+its fallback, and finds the docs and PM artefacts that name what moves.
 
 ## What to look for
 

@@ -137,8 +137,7 @@ subagent returns its result to the session that spawned it rather than handing o
 **Two thresholds, measured not guessed.** The model cannot read its own context usage, so the
 `UserPromptSubmit` hook `.claude/hooks/context-threshold-handoff.sh` measures it and this rule
 reacts: at **50%** advise — finish the step in flight, start no new scoped work, name the
-stopping point and offer `/handoff`; at **75%** insist — write the handoff and stop the turn.
-See `.claude/skills/handoff/SKILL.md`.
+stopping point and offer `/handoff`; at **75%** insist — hand off and stop (`.claude/skills/handoff/SKILL.md`).
 
 ### 2.7 Dynamic workflows — the internal procedure comes first
 
@@ -164,6 +163,7 @@ nothing reads it on the next task and no gate applies to it.
 | Server              | When to use                                                                                  | How you get it                                                              |
 | ------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | `code-review-graph` | Before Grep/Glob/Read — structural context, impact analysis. Faster and token-cheaper.       | `.mcp.json` + `.codex/config.toml`                                          |
+| `graphify`          | Cross-artefact questions — docs, PM artefacts, how a concept connects code to documentation. | `.mcp.json` + `.codex/config.toml`; host-provided CLI                       |
 | `context7`          | Library/framework/SDK/CLI docs — **second**, after the internal `**/docs/`. Order in 3.2.    | `.mcp.json` + `.codex/config.toml`                                          |
 | `mcp-mermaid`       | Architecture and flow diagrams.                                                              | `.mcp.json` + `.codex/config.toml`                                          |
 | `claude-in-chrome`  | Rendered UI inspection, visual verification, browser automation. Load schema via ToolSearch. | **Install the Claude Chrome extension and pair it** — no config supplies it |
@@ -212,15 +212,15 @@ possibilities, and reading the menu first produces answers this project has alre
   correcting a genuinely stale guide is its own change, through the Section 6 gate.
 - **Synthesis is not a search.** Weighing several primary sources is `/research`
   (`.claude/skills/research/SKILL.md`), not a search result or Perplexity report pasted into an ADR.
-- **This chain answers doctrine, not project facts** — those run `code-review-graph` →
-  Read/Grep/Glob → `.claude/plugins/*.py`, owned by `.claude/skills/grilling/SKILL.md`.
+- **This chain answers doctrine, not project facts** — those run `code-review-graph` (or `graphify`,
+  across artefacts) → Read/Grep/Glob → `.claude/plugins/*.py`, owned by `.claude/skills/grilling/SKILL.md`.
 
 ### 3.3 Graph and layer docs — work in tandem
 
-The code-review-graph and the layered `CONTEXT.md`/`CLAUDE.md` docs are two synchronised views of
-the codebase: machine-derived structure and human-curated orientation. **Explore with both**, and
-**update both together** — the refresh rule is in Section 6. Guide:
-`code/docs/CODE-REVIEW-GRAPH.md`.
+The graphs and the layered `CONTEXT.md`/`CLAUDE.md` docs are synchronised views — **explore with both;
+update both together** (Section 6; `code/docs/CODE-REVIEW-GRAPH.md`). **code-review-graph answers code
+relationships**; **graphify answers cross-artefact questions** (docs, PM artefacts, concepts spanning
+both). Each is the other's fallback; graphify's refresh is **advisory** — absent or refused is unmeasured.
 
 ### 3.4 Helper scripts and disabled plugins
 
@@ -268,7 +268,7 @@ These apply in every task, regardless of layer:
 - `DEBUG=False` outside local · `CORS_ALLOWED_ORIGINS` an explicit allowlist, never `*` · all secrets via environment variables · never commit `.env` (use `.env.*.example`) · **No AI tool ever reads a live env file** — `.env.dev`, `.env.test`, `.env.testing`, `.env.staging`, `.env.prod`, `.env.production` — by any route; only the `.env.*.example` files. An AI **may run a script that uses one** (e.g. `docker compose --env-file`) **so long as the script prints no value from it**; lint, format, typecheck, test and audit scripts never print one, and one that does is a defect. `database/shell.sh`, `development/shell.sh` and `development/logs.sh` give open-ended access, so they are handed to <%DEVELOPER_NAME%> as a single command block. Enforced by `.claude/settings.json`, the Codex profile in `.codex/config.toml` and Zed's `private_files`, held in step by `audits/env-read-deny.sh`.
 - Django's built-in admin **never** mounts at `/admin/` — it lives at the non-obvious `/control/` (`code/docs/URL-STRATEGY.md`).
 - **All dev operations run through `code/src/scripts/**/*.sh`** — never a raw `python`, `pytest`, `pnpm`, `uv`, `pip`, `npx` or `docker` invocation, whether you are running it or writing it into a doc. New Django app → `development/new-django-app.sh`; new public page → `development/new-django-view.sh`.
-- Implementation docs and `CONTEXT.md`/`CLAUDE.md` updates are complete before any commit — hard gate — and the code-review-graph refreshed alongside them, **staged first, then refreshed**, because the incremental pass never sees an unstaged new file (`code/docs/CODE-REVIEW-GRAPH.md`).
+- Implementation docs and `CONTEXT.md`/`CLAUDE.md` updates are complete before any commit — hard gate — and the code-review-graph refreshed alongside them, **staged first, then refreshed**, because the incremental pass never sees an unstaged new file; graphify is refreshed alongside, advisory (`code/docs/CODE-REVIEW-GRAPH.md`).
 - **Token-first.** Design values are DB-canonical; component CSS only ever consumes `var(--token)`, and the name must resolve in the token layer — never a raw literal (`code/docs/DESIGN-TOKENS.md`, gate: `audits/css-tokens.sh`).
 - **Doctrine derived from an outside source is credited where it is written**, not retrospectively — the `README.md` Section _Influences and attribution_ table gains the row in the **same change** as the rule it credits. Attribution written once decays; written alongside, it stays true.
 - **Use, adapt and redistribute are three different permissions.** A **share-alike** source (CC-BY-SA) may be **read** as a checklist of concerns; its text and its rule wording may **never** be derived into anything this template redistributes, because every generated project would inherit the obligation. Check the licence column in `README.md` Section _Influences_ **before** deriving, not after. Permissive sources (MIT, Apache-2.0, the Unlicense) are derived freely and credited.

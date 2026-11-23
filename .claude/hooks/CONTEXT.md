@@ -7,7 +7,8 @@ window fills, and `pre-compact-handoff.sh` (PreCompact) intercepts compaction â€
 session to the `handoff` skill (see `.claude/CLAUDE.md` Section 2.6).
 `template-docs-readonly.sh` (PreToolUse) blocks writes to the template documentation a generated
 project receives and does not own. `graph-update.sh` (PostToolUse) refreshes the
-code-review-graph and reports what the refresh could not reach.
+code-review-graph, starts graphify's advisory update beside it, and reports what either could not
+reach.
 
 ## Directory Tree
 
@@ -98,7 +99,9 @@ hook's own header carries the rest of the reasoning, including why a `permission
 
 `graph-update.sh` is registered under `hooks.PostToolUse` on `Edit|Write|Bash`. It runs the
 incremental `code-review-graph update --skip-flows`, then reports how many **untracked** files in
-a parsed language sit outside the graph.
+a parsed language sit outside the graph. Beside it, it starts `graphify update .` detached under a
+lock, never with `--force`; an absent graphify, a refusal or a failed run is reported
+**unmeasured** (`code/docs/GATE-REPORTING.md`) and never blocks.
 
 The report exists because the refresh is honest about the wrong thing: it diffs against a git
 ref, so a new and unstaged file is never parsed and the update still reports success. The graph

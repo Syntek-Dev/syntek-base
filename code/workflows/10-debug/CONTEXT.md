@@ -42,7 +42,8 @@ None — debugging is reactive; no mandatory pre-reads before investigating a bu
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **debug playbook**
   (`.claude/skills/debug-issue.md`): `semantic_search_nodes` → `query_graph` callers/callees →
-  `get_flow` → `detect_changes` → `get_impact_radius`, to trace the fault structurally
+  `get_flow` → `detect_changes` → `get_impact_radius`, to trace the fault structurally; graphify
+  as fallback and for cross-artefact questions
 - `how-to/workflows/08-debugging/` — operational debugging (logs, containers, runtime errors)
 - `code/docs/testing/BACKEND-TESTING.md` — pytest test writing conventions for regression tests
 - `code/docs/testing/FRONTEND-TESTING.md` — template and HTMX-partial conventions for regression tests

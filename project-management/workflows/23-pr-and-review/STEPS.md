@@ -168,7 +168,7 @@ Do not open the PR until both files are current.
 
 ### Step 7 — Verify Documentation Closeout
 
-**Hard gate — complete before closing this story.** The primary `CONTEXT.md`/`CLAUDE.md` updates and the code-review-graph refresh are done in `22-implementation-documentation` — confirm they are complete. Then, if **this** workflow created new files, directories, or established new constraints:
+**Hard gate — complete before closing this story.** The primary `CONTEXT.md`/`CLAUDE.md` updates and the code-review-graph refresh (graphify alongside, advisory) are done in `22-implementation-documentation` — confirm they are complete. Then, if **this** workflow created new files, directories, or established new constraints:
 
 1. Update the directory tree in the relevant `CONTEXT.md` to reflect any new files or folders
 2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified

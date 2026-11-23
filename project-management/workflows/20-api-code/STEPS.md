@@ -30,7 +30,7 @@ This workflow produces code — consult **both** layer reference files:
 
 ### Step 1 — Read the Story Plan, Service Layer and Story, then Grill
 
-> **Model:** opus · **MCP:** code-review-graph (reference only)
+> **Model:** opus · **MCP:** code-review-graph (reference only; graphify as fallback)
 
 Read the story's plan in `project-management/src/17-STORY-PLANS/` first, then the specs it cites
 — the API design in `project-management/src/13-API-DESIGN/` among them. Then read the implemented

@@ -61,7 +61,8 @@ goes to `prototype`; a stack choice needing primary sources goes to `research`.
 
 Before Grep/Glob/Read for impact analysis, run the code-review-graph **explore playbook**
 (`.claude/skills/explore-codebase.md`; guide `code/docs/CODE-REVIEW-GRAPH.md`) — structural
-context, faster and token-cheaper. Read the `CONTEXT.md` of every directory the plan touches
+context, faster and token-cheaper. Cross-artefact questions — which docs and PM artefacts a
+concept reaches — go to `graphify`; each is the other's fallback. Read the `CONTEXT.md` of every directory the plan touches
 before committing it to a phase.
 
 ## What the plan must carry

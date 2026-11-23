@@ -61,7 +61,7 @@ Applying migrations picks up any schema changes pulled from `dev`.
 
 Follow the relevant `code/` workflow for the task type.
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` (or `frontend` depending on task) · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `backend` (or `frontend` depending on task) · **Model:** opus · **MCP:** code-review-graph (graphify as fallback)
 
 ### Step 5 — Lint Before Committing
 

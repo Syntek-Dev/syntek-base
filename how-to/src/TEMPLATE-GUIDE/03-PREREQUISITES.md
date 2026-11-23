@@ -166,7 +166,7 @@ hostnames.
 | **`gh` CLI**                | PR creation from the terminal; the `pr` skill uses it.                                                                                                                                                                |
 | **Claude Chrome extension** | Rendered UI inspection and browser automation. Nothing in the repository supplies it.                                                                                                                                 |
 
-The five MCP servers the project ships — `code-review-graph`, `context7`, `mcp-mermaid`,
+The six MCP servers the project ships — `code-review-graph`, `graphify`, `context7`, `mcp-mermaid`,
 `perplexity` and `scrapling` — need **no installation**. They are declared in the shipped
 `.mcp.json` (and in `.codex/config.toml`, which must declare the same set) and launched on demand
 through `uvx` and `npx`.

@@ -123,8 +123,8 @@ keep the domain model current as you go:
 - **Want to explore alternative interfaces for the deepened module?** Load
   **`.claude/skills/codebase-design`** and use its design-it-twice parallel sub-agent pattern.
 
-Refresh the code-review-graph after any doc change so the layered docs and the graph stay in lockstep
-(`code/docs/CODE-REVIEW-GRAPH.md`).
+Refresh the code-review-graph after any doc change so the layered docs and the graph stay in lockstep,
+and graphify alongside it, advisory (`code/docs/CODE-REVIEW-GRAPH.md`).
 
 ## Governing procedures (route here — do not restate at length)
 

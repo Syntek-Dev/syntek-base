@@ -26,7 +26,8 @@ Slint attribution.
   **never raw `cargo` or `slint-viewer`.**
 - **Definition of done:** the `CHECKLIST.md` is satisfied end to end; lint, tests, audit and
   `package.sh` exit `0`; the About dialog is reachable by eye; screen-reader behaviour checked;
-  touched `CONTEXT.md` files and the code-review-graph refreshed.
+  touched `CONTEXT.md` files and the code-review-graph refreshed
+  (graphify alongside, advisory).
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
   `workflow`/`phase`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` Section 2.5).
 

@@ -33,7 +33,7 @@ Steps 2 and 3 are **first-mount only** — skip them when adding a tool to an ex
 
 ### Step 1 — Grill, then Design the Tool Surface
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:** code-review-graph
+> **↳ New dispatch:** `general-purpose` · **Skill:** `planner` · **Model:** opus · **MCP:** code-review-graph (code), graphify (cross-artefact) — each the other's fallback
 
 **Grill first** (`.claude/CLAUDE.md` Section 10): load `.claude/skills/grill-with-docs` and interview
 <%DEVELOPER_NAME%>. Settle, in this order:
@@ -141,8 +141,9 @@ tool call into a timeout.
 > **↳ Model:** opus
 
 Update `code/docs/mcp-server/`, `config/CONTEXT.md`'s route table, and `code/docs/URL-STRATEGY.md`
-if the prefix set changed; refresh the code-review-graph. The implementation record itself is
-written by `project-management/workflows/22-implementation-documentation/` — not here.
+if the prefix set changed; refresh the code-review-graph, and graphify alongside (advisory). The
+implementation record itself is written by
+`project-management/workflows/22-implementation-documentation/` — not here.
 
 **Rollout:** ship read-only tools first, watch the per-tool failure rate (a tool the model calls
 then abandons has a docstring problem, not a code problem), then add mutations one at a time.

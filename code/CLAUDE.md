@@ -29,7 +29,8 @@ anything in `src/` is designed, written, tested, and reviewed.
   `src/django/` → tests to the coverage floor → run
   `src/scripts/syntax/*.sh` and `src/scripts/tests/*.sh` → update the touched
   directory's `CONTEXT.md` if structure changed → refresh the code-review-graph
-  (`code-review-graph update`) so it matches → docs hard-gate before any commit.
+  (`code-review-graph update`) so it matches, and graphify alongside (advisory) →
+  docs hard-gate before any commit.
 - **Definition of done:** file within the length limit (`docs/CODING-PRINCIPLES.md`);
   coverage floors met (`docs/testing/COVERAGE.md`); every state-changing Django Ninja
   endpoint permission-checked; no IDOR; British English; the touched `CONTEXT.md` and

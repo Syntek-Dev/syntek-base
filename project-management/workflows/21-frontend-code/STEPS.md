@@ -57,7 +57,7 @@ applying Django-template assumptions to React Native.
 
 ### Step 1 — Read the Story Plan, Wireframes and Component Designs, then Grill
 
-> **Model:** opus · **MCP:** code-review-graph (reference only)
+> **Model:** opus · **MCP:** code-review-graph (reference only; graphify as fallback)
 
 Read the story's plan in `project-management/src/17-STORY-PLANS/` first, then the specs it cites
 — the signed-off wireframes from `project-management/src/08-WIREFRAMES/` and the component

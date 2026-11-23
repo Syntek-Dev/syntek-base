@@ -141,5 +141,5 @@ Work through `CHECKLIST.md`. If the crate touches crypto or secret material, run
 `code/workflows/08-security-hardening/` before it ships.
 
 Hand off to `project-management/workflows/22-implementation-documentation/` for the
-implementation record, the `CONTEXT.md` closeout and the code-review-graph refresh — do not write
-those here.
+implementation record, the `CONTEXT.md` closeout and the code-review-graph refresh (graphify
+alongside, advisory) — do not write those here.

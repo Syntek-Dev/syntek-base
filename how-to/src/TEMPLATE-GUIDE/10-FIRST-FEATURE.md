@@ -271,7 +271,7 @@ owns it:
   the one and walks the other**; `23-pr-and-review` only verifies them
 - route findings: `20-FINDINGS/`, bugs to `21-BUGS/`, refactors to `22-REFACTORING/`
 - update `GAPS.md` and `DEFERRED.md`
-- refresh the code-review-graph
+- refresh the code-review-graph, and graphify alongside (advisory)
 
 ## 9. Raise the PR
 

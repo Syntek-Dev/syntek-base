@@ -56,7 +56,8 @@ Three recurring bites this review exists to catch, each with a non-obvious failu
 
 - `code/docs/CODE-REVIEW-GRAPH.md` — the code-review-graph **review playbook**
   (`.claude/skills/review-changes.md`): `detect_changes` → `get_affected_flows` →
-  `query_graph` tests_for → `get_impact_radius`, run before broad Grep/Glob
+  `query_graph` tests_for → `get_impact_radius`, run before broad Grep/Glob; graphify as
+  fallback and for cross-artefact questions
 - `code/docs/coding-principles/STYLE-AND-PROCESS.md` — code review checklist, error handling, naming, security
 - `code/docs/architecture/SERVICE-AND-MIDDLEWARE.md` — service layer and module structure
 - `code/docs/architecture/CORE-AND-SCALING.md` — consult the scale-readiness invariants (in-process state, unbounded queries, `tenant_id`, sync-in-async) during the review pass

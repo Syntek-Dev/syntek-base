@@ -5,6 +5,11 @@
       "args": ["code-review-graph", "serve"],
       "env": {}
     },
+    "graphify": {
+      "command": "uvx",
+      "args": ["--from", "graphifyy[mcp]", "graphify-mcp"],
+      "env": {}
+    },
     "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"],

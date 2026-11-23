@@ -1128,9 +1128,11 @@ lock agreement only. No map or story claims this entry.
 
 ---
 
-## 11/11/2026 — two small doc and lint defects found during the Node 26 move
+## 11/11/2026 — `03-PREREQUISITES.md` says `install.sh` checks version floors it never checks
 
 **Type:** Active gap
+**Heading updated 23/11/2026:** was "two small doc and lint defects found during the Node 26
+move" (11/11/2026). The lint defect is closed below; the heading now states what is still open.
 **Summary:**
 
 - `how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md` says the floors in its table "are the ones
@@ -1141,15 +1143,19 @@ lock agreement only. No map or story claims this entry.
   12.18.0+ (pnpm's floor is enforced, but by `package.json` `packageManager` and `engines`, not by
   `install.sh`). Found for Node while moving the floor to 26, and widened on 11/11/2026; the
   header and `--help` of `install.sh`, which also implied floors, now say presence only.
-- `code/src/scripts/syntax/lint.sh --file-type markdown` lints the gitignored `graphify-out/`
+- ✅ CLOSED 23/11/2026 — fixed in US013 (the graphify widening): `.markdownlint-cli2.jsonc`
+  carries `!graphify-out/**` in `globs` (since `edbdd20c`, US006, 15/11/2026) and now in
+  `ignores` too, so the exclusion holds when a file is named explicitly; a scoped
+  `lint.sh --file-type markdown --path graphify-out/GRAPH_REPORT.md` lints 0 files. Was:
+  `code/src/scripts/syntax/lint.sh --file-type markdown` lints the gitignored `graphify-out/`
   directory, because its markdownlint globs carry no `!graphify-out/**` exclusion. A local
   graphify run (412 issues in `GRAPH_REPORT.md` on 11/11/2026) therefore turns the whole
   markdown lint red on any machine that has one.
 
-**Blocked by / Action:** Nothing blocks either. Add real floor checks to `install.sh` for uv,
+**Blocked by / Action:** Nothing blocks it. Add real floor checks to `install.sh` for uv,
 Python, Node and Docker, read from the same sources `audits/toolchain-pins.sh` uses, or narrow the
-guide's sentence to "presence only". Add the exclusion to `.markdownlint-cli2.jsonc`
-(or the script's glob list), matching `.gitignore`. No map or story claims this entry.
+guide's sentence to "presence only". The lint half is closed (23/11/2026, above). No map or
+story claims this entry.
 
 ---
 

@@ -182,6 +182,18 @@ SOFTWARE.
 
 ---
 
+## `Graphify-Labs/graphify` — Safi Shamsi and the Graphify contributors
+
+**Licence:** Apache-2.0 · **Source:** <https://github.com/Graphify-Labs/graphify>
+
+The **CLI and MCP server are run as-is** (PyPI `graphifyy`, host-provided, unpinned) and need no
+notice — running a tool is not redistributing it. **None of its text is committed**: its output
+lands in `graphify-out/`, which is gitignored, so nothing it writes ships into a generated project.
+If that ever changes — a generated file committed, as code-review-graph's cards are — its row and
+its Apache-2.0 `NOTICE` text are added here in the same change.
+
+---
+
 ## Not listed here, and why
 
 Each row below was **measured**, not assumed — five-gram overlap between the upstream text and the

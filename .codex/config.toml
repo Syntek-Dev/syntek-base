@@ -40,6 +40,13 @@ enabled = false
 command = "uvx"
 args = ["code-review-graph", "serve"]
 
+# Cross-artefact knowledge graph (docs, PM artefacts and code together) over the local
+# graphify-out/ store. Advisory beside code-review-graph: an absent store is reported
+# unmeasured, never a failure (code/docs/CODE-REVIEW-GRAPH.md). Unpinned, like its sibling.
+[mcp_servers.graphify]
+command = "uvx"
+args = ["--from", "graphifyy[mcp]", "graphify-mcp"]
+
 [mcp_servers.context7]
 command = "npx"
 args = ["-y", "@upstash/context7-mcp"]

@@ -381,7 +381,7 @@ Two things to do on a freshly generated project:
 ├── pnpm-workspace.yaml
 ├── pyproject.toml                       ← Python tooling (ruff, basedpyright, uv)
 ├── skills-lock.json                     ← vendored Claude Code skills — source, version, content hash
-├── .mcp.json                            ← project MCP servers (code-review-graph, context7, mcp-mermaid, perplexity, scrapling)
+├── .mcp.json                            ← project MCP servers (code-review-graph, graphify, context7, mcp-mermaid, perplexity, scrapling)
 ├── .copier-answers.yml                  ← your generation answers — keep committed, `copier update` needs it
 └── uv.lock                              ← generated at project creation; commit it (Dockerfiles build --frozen)
 ```
@@ -1019,16 +1019,17 @@ inspect the local environment for context. They do **not** run dev operations �
 
 ### MCP servers
 
-| Server              | Scope              | Always available                                                                                      |
-| ------------------- | ------------------ | ----------------------------------------------------------------------------------------------------- |
-| `code-review-graph` | Repo — `.mcp.json` | Yes — auto-loaded for all contributors                                                                |
-| `context7`          | Repo — `.mcp.json` | Yes — reads `CONTEXT7_API_KEY` from the environment                                                   |
-| `mcp-mermaid`       | Repo — `.mcp.json` | Yes                                                                                                   |
-| `perplexity`        | Repo — `.mcp.json` | Only with `PERPLEXITY_API_KEY` set — the key is optional; without it this server alone fails to start |
-| `scrapling`         | Repo — `.mcp.json` | Yes — `get` needs no browser; the browser tiers depend on the host                                    |
-| `claude-in-chrome`  | Machine-global     | Only if installed locally                                                                             |
+| Server              | Scope              | Always available                                                                                          |
+| ------------------- | ------------------ | --------------------------------------------------------------------------------------------------------- |
+| `code-review-graph` | Repo — `.mcp.json` | Yes — auto-loaded for all contributors                                                                    |
+| `graphify`          | Repo — `.mcp.json` | Advisory — needs the host-provided CLI and a `graphify-out/` store; without one it is reported unmeasured |
+| `context7`          | Repo — `.mcp.json` | Yes — reads `CONTEXT7_API_KEY` from the environment                                                       |
+| `mcp-mermaid`       | Repo — `.mcp.json` | Yes                                                                                                       |
+| `perplexity`        | Repo — `.mcp.json` | Only with `PERPLEXITY_API_KEY` set — the key is optional; without it this server alone fails to start     |
+| `scrapling`         | Repo — `.mcp.json` | Yes — `get` needs no browser; the browser tiers depend on the host                                        |
+| `claude-in-chrome`  | Machine-global     | Only if installed locally                                                                                 |
 
-All five repo-scoped servers are also declared in `.codex/config.toml`, and
+All six repo-scoped servers are also declared in `.codex/config.toml`, and
 `code/src/scripts/audits/mcp-parity.sh` holds the two files to the same set. `perplexity` is tier 3
 of the lookup order; how its answers may be used is `.claude/CLAUDE.md` Section 3.2.
 

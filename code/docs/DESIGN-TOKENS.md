@@ -11,7 +11,8 @@ model: opus
 **Maintained By:** <%ORG_NAME%>
 **Language:** British English (en_GB)
 **Claude Model:** opus — Architecture review, schema design, frontend integration patterns
-**MCP Servers:** code-review-graph (impact analysis before implementation)
+**MCP Servers:** code-review-graph (impact analysis before implementation), graphify (fallback;
+cross-artefact questions)
 
 **Status: declared, not wired.** The token layer, the `/assets/tokens.css` view and the git
 write-back arrive with the `design_tokens` app; what exists today is this contract.

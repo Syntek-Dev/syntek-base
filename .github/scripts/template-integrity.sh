@@ -32,8 +32,9 @@
 # older than a script origin/main does not yet hold reads it deleted until origin/main does. One
 # it holds that exits 127 is a failure like any other. A push
 # with no commit to judge (a deletion only, or no ref lines on stdin) says so and exits 0. CI runs
-# the same nine self-tests on every push to any branch, unfiltered, in audit-template.yml
-# (pm-boards.sh in [1/4] from 21/11/2026, beside pm-board.sh --check, the archive freeze).
+# the same ten self-tests on every push to any branch, unfiltered, in audit-template.yml
+# (pm-boards.sh in [1/4] from 21/11/2026, beside pm-board.sh --check, the archive freeze;
+# graph-update.sh in [1/4] from 23/11/2026).
 # template-hooks.sh proves exactly this of the workflow's text: each listed step is present in a
 # job named as a required [n/4] context, with no unquoted `if:` or `continue-on-error` on the step
 # or its job, and the --check job has a `fetch-depth: 0` checkout. It does not detect a quoted
@@ -94,6 +95,7 @@ SELF_TESTS=(
   ".github/scripts/shipped-ai.sh --self-test"
   "code/src/scripts/tests/pm-boards.sh"
   "code/src/scripts/tests/template-hooks.sh"
+  "code/src/scripts/tests/graph-update.sh"
 )
 ZERO_SHA_RE='^0+$'
 SCRATCH=()

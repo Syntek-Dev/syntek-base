@@ -16,7 +16,8 @@ merge process in `project-management/workflows/23-pr-and-review/`.
 - **Routing:** execute via `STEPS.md`, typically with the `review` skill
   (Opus). Use `/code-review` on the working diff for a fast pass before the full
   workflow. Open the structural pass with the code-review-graph **review playbook**
-  (`.claude/skills/review-changes.md`; guide `code/docs/CODE-REVIEW-GRAPH.md`).
+  (`.claude/skills/review-changes.md`; guide `code/docs/CODE-REVIEW-GRAPH.md`); graphify takes
+  the cross-artefact questions and is its fallback.
 - **Model:** Opus throughout — review judgement is substantive and
   mechanical edits to the workflow files.
 - **Concrete steps:** confirm TDD is complete, linters clean, no open bugs → read the
