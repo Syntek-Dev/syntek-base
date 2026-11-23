@@ -224,7 +224,7 @@ are all N/A for this story, so no other IMPLEMENTATION record is written for it.
 - [x] GDPR & security observations confirmed (or N/A recorded)
 - [ ] Coverage floors met for all modules in scope — **N/A**, no Python module in scope (the probe suite is shell); left unticked rather than claimed
 - [x] Manual testing sign-off (see `../../18-TESTS/MANUAL/US013-MANUAL-TESTING.md`) — every row `Pass`; the guide's _Tester sign-off_ reads Passed with notes, the agent-walked GRAPH records countersigned by <%DEVELOPER_NAME%> 23/11/2026
-- [ ] Reviewer approval — **blocks merge until complete**
+- [x] Reviewer approval — approved by <%DEVELOPER_NAME%>, 23/11/2026
 
 ---
 
