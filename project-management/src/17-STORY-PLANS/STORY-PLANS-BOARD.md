@@ -11,8 +11,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 1     |
-| In Progress       | 1     |
-| In Review         | 0     |
+| In Progress       | 0     |
+| In Review         | 1     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -34,13 +34,13 @@ _None._
 
 ## In Progress
 
-| Plan                | Story                           | Title                                                                                | Status      | File                                                                                   |
-| ------------------- | ------------------------------- | ------------------------------------------------------------------------------------ | ----------- | -------------------------------------------------------------------------------------- |
-| 11-STORY-PLAN-US012 | [US012](../02-STORIES/US012.md) | A seeded file that never lands is reported, and the gate's header claim becomes true | In Progress | [11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md](11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md) |
+_None._
 
 ## In Review
 
-_None._
+| Plan                | Story                           | Title                                                                                | Status    | File                                                                                   |
+| ------------------- | ------------------------------- | ------------------------------------------------------------------------------------ | --------- | -------------------------------------------------------------------------------------- |
+| 11-STORY-PLAN-US012 | [US012](../02-STORIES/US012.md) | A seeded file that never lands is reported, and the gate's header claim becomes true | In Review | [11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md](11-STORY-PLAN-US012-SEED-PRESENCE-GATE.md) |
 
 ## Accepted
 

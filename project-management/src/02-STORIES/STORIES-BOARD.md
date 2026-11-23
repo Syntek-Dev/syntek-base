@@ -11,8 +11,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 1     |
-| In Progress       | 1     |
-| In Review         | 0     |
+| In Progress       | 0     |
+| In Review         | 1     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -34,13 +34,13 @@ _None._
 
 ## In Progress
 
-| ID    | Title                                                                                | Status      | File                 |
-| ----- | ------------------------------------------------------------------------------------ | ----------- | -------------------- |
-| US012 | A seeded file that never lands is reported, and the gate's header claim becomes true | In Progress | [US012.md](US012.md) |
+_None._
 
 ## In Review
 
-_None._
+| ID    | Title                                                                                | Status    | File                 |
+| ----- | ------------------------------------------------------------------------------------ | --------- | -------------------- |
+| US012 | A seeded file that never lands is reported, and the gate's header claim becomes true | In Review | [US012.md](US012.md) |
 
 ## Accepted
 
