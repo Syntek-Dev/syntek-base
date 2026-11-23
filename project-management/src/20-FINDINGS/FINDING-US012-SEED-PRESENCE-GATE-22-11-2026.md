@@ -60,12 +60,12 @@ None — no expensive-to-retrofit findings. No schema, scope column, constraint 
 
 ## 4. Carried into the next story
 
-| ID    | Carried as                                                                                                                                                 | Target                                                      |
-| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| F-001 | At P0, re-measure every count a criterion or guide row states (probe totals, array sizes) at the commit the branch is cut from, and correct it before code | Next `STORY-PLAN`                                           |
-| F-002 | A plan older than a sibling story's re-cut gets a dated CORRECTED block at build start, as this one did — the body left as written                         | Next `STORY-PLAN`                                           |
-| F-007 | Correct `00-STORY-PLAN-US000-TEMPLATE.md:503` and `:707` to the numeric `hosts-story-add.sh ###` form                                                      | Next `17-story-plans` pass; tracked in `GAPS.md` 23/11/2026 |
-| F-009 | Re-mirror `07-SPRINT-PLAN-07.md:274` in the same change as the status move                                                                                 | Closed 23/11/2026 — the column was dropped (F-009)          |
+| ID    | Carried as                                                                                                                                                 | Target                                                                                                                     |
+| ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| F-001 | At P0, re-measure every count a criterion or guide row states (probe totals, array sizes) at the commit the branch is cut from, and correct it before code | Next `STORY-PLAN`; carried 23/11/2026 into `13-STORY-PLAN-US013` (CARRIED block)                                           |
+| F-002 | A plan older than a sibling story's re-cut gets a dated CORRECTED block at build start, as this one did — the body left as written                         | Next `STORY-PLAN`; carried 23/11/2026 into `13-STORY-PLAN-US013` (CARRIED block)                                           |
+| F-007 | Correct `00-STORY-PLAN-US000-TEMPLATE.md:503` and `:707` to the numeric `hosts-story-add.sh ###` form                                                      | Next `17-story-plans` pass; tracked in `GAPS.md` 23/11/2026; carried 23/11/2026 into `13-STORY-PLAN-US013` (CARRIED block) |
+| F-009 | Re-mirror `07-SPRINT-PLAN-07.md:274` in the same change as the status move                                                                                 | Closed 23/11/2026 — the column was dropped (F-009)                                                                         |
 
 ---
 
