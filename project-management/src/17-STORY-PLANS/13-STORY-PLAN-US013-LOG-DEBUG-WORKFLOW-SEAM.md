@@ -37,6 +37,30 @@
      - F-007: already met here; this plan gives the numeric `hosts-story-add.sh 013` form. The
        template fix is tracked in `GAPS.md`, 23/11/2026. -->
 
+<!-- CORRECTED 23/11/2026, at build start (implement-story grilling, 23/11/2026). Re-measured at
+     `e306f48e` on `dev`, the commit `us013/log-debug-workflow-seam` is cut from. Where the body
+     below disagrees with this block, this block is the reading; the body is left as written so the
+     planning record is not reshaped by the build (F-002).
+     - BRANCH. Cut from `dev` and PR'd up `dev` -> `testing` -> `staging` -> `main`, never cut from
+       `main` (<%DEVELOPER_NAME%>, implement-story grilling round 1, Q1, 23/11/2026;
+       `project-management/docs/git/BRANCHES-AND-WORKTREES.md:45`). `pm/story-creation` has merged
+       to both `main` and `dev`, so it is no longer a precondition; read _Dependencies_ ("Cutting
+       `us013/` from `main`", "Can be done now") accordingly.
+     - NO WORKTREE. One story in flight, so the branch is checked out in the main checkout and
+       none of the four Docker & Nginx override files is created, nor the hosts entry
+       (<%DEVELOPER_NAME%>, 23/11/2026). The live walk (Key Decision 10) runs on the main
+       checkout's dev stack, which is still "this host's dev stack". The _Docker & Nginx
+       Infrastructure_ section below is void for this build.
+     - COPIER.YML DRIFT. The two comment paragraphs cited at `copier.yml`:470-483 now sit at
+       `:503-516` (+33 lines, from 7.10.0), the PostgreSQL line at `:516`; `ERROR_TRACKING` at
+       `:533`, `LOG_AGGREGATOR` at `:541`. Text unchanged. `TEMPLATE-TOKENS.md` `:125` and
+       `:138-141` and `05-ANSWERS.md`:124 hold as _Measured divergences_ records them.
+     - F-001 RE-MEASURE. Every count a criterion or guide row states was re-measured at
+       `e306f48e` and holds: 10 raw `docker` calls; 35 sites (18 GlitchTip, 17 Loki; 18 / 12 / 4
+       held / 1 reworded); 15 of the folder's 16 spelt `Glitchtip`; six fix boxes; the
+       `CHECKLIST.md`:38, :39, :43, :56 cites. The inventory is in the guide's _Recorded during the
+       build_. -->
+
 <!-- STEP 1 DREW ITS ROUND FROM THE RECORDED ANSWERS (.claude/skills/grilling/SKILL.md -> A decision
      already recorded is a fact). The story's cutting interview (grilling round 1, 31/10/2026, Q1 to
      Q10), the four 11-qa-checks rounds of 31/10/2026 (Q1 to Q18, all twelve AC-GAPs resolved and the

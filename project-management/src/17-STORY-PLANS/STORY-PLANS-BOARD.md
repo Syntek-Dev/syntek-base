@@ -10,8 +10,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 1     |
-| In Progress       | 0     |
+| Pending           | 0     |
+| In Progress       | 1     |
 | In Review         | 1     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
@@ -28,13 +28,13 @@ _None._
 
 ## Pending
 
-| Plan                | Story                           | Title                                                                                                                      | Status  | File                                                                                             |
-| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
-| 13-STORY-PLAN-US013 | [US013](../02-STORIES/US013.md) | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Pending | [13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md](13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md) |
+_None._
 
 ## In Progress
 
-_None._
+| Plan                | Story                           | Title                                                                                                                      | Status      | File                                                                                             |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------ |
+| 13-STORY-PLAN-US013 | [US013](../02-STORIES/US013.md) | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | In Progress | [13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md](13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md) |
 
 ## In Review
 

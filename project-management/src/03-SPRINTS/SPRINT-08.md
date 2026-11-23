@@ -1,6 +1,6 @@
 # SPRINT-08
 
-**Last Updated**: 17/11/2026 **Version**: 0.2.0 **Maintained By**: <%ORG_NAME%>
+**Last Updated**: 23/11/2026 **Version**: 0.2.0 **Maintained By**: <%ORG_NAME%>
 **Language**: British English (en_GB)
 
 ---
@@ -24,7 +24,7 @@ is honest and every log line carries a request_id.
      CONFIRMED 01/11/2026 on US014's admission: the goal reads true of both members as written
      and is not rewritten (03-sprint-planning grilling round 1, Settled — Goal). -->
 
-**Status:** Planned
+**Status:** In Progress — US013 started 23/11/2026, its first story
 
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->

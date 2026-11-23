@@ -10,8 +10,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 1     |
-| In Progress       | 0     |
+| Pending           | 0     |
+| In Progress       | 1     |
 | In Review         | 1     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
@@ -28,13 +28,13 @@ _None._
 
 ## Pending
 
-| ID    | Title                                                                                                                      | Status  | File                 |
-| ----- | -------------------------------------------------------------------------------------------------------------------------- | ------- | -------------------- |
-| US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Pending | [US013.md](US013.md) |
+_None._
 
 ## In Progress
 
-_None._
+| ID    | Title                                                                                                                      | Status      | File                 |
+| ----- | -------------------------------------------------------------------------------------------------------------------------- | ----------- | -------------------- |
+| US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | In Progress | [US013.md](US013.md) |
 
 ## In Review
 
