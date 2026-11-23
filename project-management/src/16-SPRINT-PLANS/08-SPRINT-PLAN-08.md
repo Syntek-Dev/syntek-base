@@ -1,7 +1,7 @@
 # SPRINT-PLAN-08 — The 09 debugging workflow runs through the scripts, and every log line carries a request_id
 
 **Last Updated**: 01/11/2026 · **Version**: 0.1.0 · **Language**: British English (en_GB)
-**Source sprint:** `../03-SPRINTS/SPRINT-08.md` · **Capacity:** 11 SP Must = 11 / 11 — at capacity, the fill trigger, all committed · **Stories:** 2
+**Source sprint:** `../03-SPRINTS/SPRINT-08.md` · **Capacity:** 16 SP Must = 16 / 11 — 3 over the 13 SP grace, approved by <%DEVELOPER_NAME%> 23/11/2026 when US013 widened at build (11 / 11 until then), all committed · **Stories:** 2
 
 <!-- Written 01/11/2026 by a `16-sprint-plans` run. The record reached the fill trigger on
      01/11/2026 when US014 was admitted at 8 SP (../03-SPRINTS/SPRINT-08.md -> Notes), and the fill,
@@ -86,10 +86,10 @@
 
 ### Must
 
-| ID    | Title                                                                                                                      | Phases touched                          | SP  | Story plan                                                         | Git branch                      |
-| ----- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | --- | ------------------------------------------------------------------ | ------------------------------- |
-| US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Docs + `copier.yml` text — no code lane | 3   | `../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md` | `us013/log-debug-workflow-seam` |
-| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label                               | Backend                                 | 8   | `../17-STORY-PLANS/14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md` | `us014/structured-json-logging` |
+| ID    | Title                                                                                                                      | Phases touched                                                                                                 | SP  | Story plan                                                         | Git branch                      |
+| ----- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --- | ------------------------------------------------------------------ | ------------------------------- |
+| US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Docs + `copier.yml` text — no code lane (widened 23/11/2026: graphify beside code-review-graph, one hook lane) | 8   | `../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md` | `us013/log-debug-workflow-seam` |
+| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label                               | Backend                                                                                                        | 8   | `../17-STORY-PLANS/14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md` | `us014/structured-json-logging` |
 
 ### Should
 

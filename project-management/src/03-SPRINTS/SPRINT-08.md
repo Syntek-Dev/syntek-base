@@ -29,7 +29,9 @@ is honest and every log line carries a request_id.
 <!-- The sprint status vocabulary and its transitions are owned by
      `.claude/skills/completion/SKILL.md` -> The status vocabulary. Not restated here. -->
 
-**Timeline:** TBD · **Capacity:** **11 SP Must = 11 / 11 SP** — at capacity, the fill trigger,
+**Timeline:** TBD · **Capacity:** **16 SP Must = 16 / 11 SP** — **3 over the 13 SP grace, approved
+by <%DEVELOPER_NAME%> 23/11/2026** when US013 widened at build (3 → 8 SP, graphify beside
+code-review-graph). It read 11 SP Must = 11 / 11 SP — at capacity, the fill trigger — until then;
 two members, all-`Must`. US014 took the 8 SP `project-management/src/02-STORIES/CUT-PLAN.md` P8
 reserved, admitted 01/11/2026. The record is **full**, and its sprint plan and both story plans
 are **owed** once every member has cleared the specify tier. See Notes.
@@ -125,10 +127,10 @@ are **owed** once every member has cleared the specify tier. See Notes.
 
 | ID    | Title                                                                                                                      | MoSCoW    | SP  |
 | ----- | -------------------------------------------------------------------------------------------------------------------------- | --------- | --- |
-| US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Must Have | 3   |
+| US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Must Have | 8   |
 | US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label                               | Must Have | 8   |
 
-**Total:** 11 SP — all committed, no stretch tier. Two members, in build order US013 then US014.
+**Total:** 16 SP — all committed, no stretch tier; 3 over grace, approved 23/11/2026 (11 SP until US013 widened). Two members, in build order US013 then US014.
 
 <!-- US013 admitted 31/10/2026 at 03-sprint-planning, cut the same day from
      project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md slice `S-01` (nodes N-001, N-012
