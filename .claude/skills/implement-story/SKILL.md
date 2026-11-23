@@ -32,9 +32,12 @@ produces the master this sequence builds from; if there is no
   through `handoff`.
 - **Check the ground.** `git status` (the branch is `us###/short-description`) and
   `bash code/src/scripts/development/server.sh status` (the dev stack is up).
-- **Start the clock.** As the branch is created, `completion` moves the story `Pending` →
-  `In Progress` with a status-history row; the sprint moves `Planned` → `In Progress` with its
-  first story.
+- **Start the clock — after the captures, before the first source edit.** Once the manual
+  guide's pre-edit slots are filled, `completion` moves the story `Pending` → `In Progress` with
+  a status-history row, and the sprint `Planned` → `In Progress` with its first story. Neither a
+  board nor credentials are needed; an enabled board adapter only publishes that committed move. A
+  documentation-only story runs the same start, its code phases (Steps 2 to 8) marked N/A
+  (`code/workflows/01-implement-story/STEPS.md` Step 1).
 
 ## The phase sequence
 

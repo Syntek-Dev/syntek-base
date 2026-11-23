@@ -6,7 +6,10 @@
 | Branch | `us012/seed-presence-gate`         |
 | Sprint | SPRINT-07 · Wave 2 · build order 1 |
 | Author | <%ORG_NAME%>                       |
-| Status | `Open`                             |
+
+<!-- REMOVED 23/11/2026 at gate 23 (review R-004): the metadata table's last row read
+     "| Status | `In Progress` |". A plan carries no status (./CLAUDE.md -> Guardrails); the story's
+     own **Status:** line is the only one, and STORY-PLANS-BOARD.md files this plan under it. -->
 
 <!-- BORN WITH ITS PREFIX, 03/10/2026. The number `11-` was reserved for this story on 21/09/2026,
      recorded in `../02-STORIES/US012.md` (its Dependencies, the bullet on SPRINT-07's close: "for
@@ -75,6 +78,42 @@ Write-Ups_). The four per-layer sections are dropped under _Approach_, each with
        row expects against the P0 tree.
      - F-029: name in advance each probe that cannot run red as a guard, and give review a TM-15
        checklist line for any fix commit that touches `self_test()`. -->
+
+<!-- CORRECTED 22/11/2026, at build start (implement-story grilling, 22/11/2026). Re-measured at
+     `8e0da02b` on `dev`, the commit `us012/seed-presence-gate` is cut from. Where the body below
+     disagrees with this block, this block is the reading; the body is left as written so the
+     planning record is not reshaped by the build.
+     - BRANCH. Cut from `dev` and PR'd up `dev` -> `testing` -> `staging` -> `main`, never cut from
+       `main` (`project-management/docs/git/BRANCHES-AND-WORKTREES.md:45`; the chain set in 7.10.0).
+       `pm/story-creation` is no longer a precondition. One story in flight, so no worktree, and no
+       Docker override files are created (`how-to/workflows/02-worktree-setup/CONTEXT.md:27`).
+     - US010 LANDED FIRST; US011 IS CLOSED, ABSORBED INTO US010. The "landed first" row of _The
+       landing order with US010_ is the one in force. `SEEDED` holds TEN entries, not one or eight:
+       `MAP-SCALE-PLANNING.md`, the eight generated `*-BOARD.md` seeds and `02-STORIES/CUT-PLAN.md`.
+       The last, which the probe moves, is `21-BUGS/BUGS-BOARD.md`.
+     - BOARDS, NOT INDEX FILES. US010's re-cut made register indexes generated boards
+       (`../15-DECISIONS/ADR-US010-REGISTER-INDEXES-ARE-GENERATED-BOARDS-19-11-2026.md`). Read every
+       "index seed" below as a board seed, and the "STORY-PLAN-INDEX.md" row of _CONTEXT.md & Index
+       Updates_ as void: no such file exists or will, and the index is `STORY-PLANS-BOARD.md`.
+     - THE PROBE COUNT IS 8 -> 9, NOT 5 -> 6. The script already runs eight probes (checks 2, 3, 3b,
+       4, 5, 6 and two for check 1). Read every "6 probes ... where it counted 5" and "the other five"
+       as "9 probes where it counted 8" and "the other eight" — the criterion's intent, exactly one
+       more than the pre-edit commit (settled 22/11/2026, Q1). The story carries the same note; the
+       guide's RED-02 and GREEN-01 are amended at `22` with their trail and a finding.
+     - ANCHORS, as at `8e0da02b` (408 lines): `SEEDED` and its comment `:117-134`; check 3's
+       allowlist read `:243`; check 4 `:255-270`; header list `:30-46`, too-tight paragraph `:48-51`,
+       "What it CANNOT check" `:53-54`, `SELF-TEST` `:56-60`, exit codes `:67-70`; `--help`
+       `:144-158`; check-4 probe `:329-332`, check-5 probe `:334-337`; self-test exit `:377`; full
+       run's green `exit 0` `:401`; closing guidance `:404-407`. The seed `mv` lines are
+       `copier.yml:1138-1150`, the chain ending `rmdir .copier` at `:1151`. In
+       `.github/workflows/audit-template.yml` the self-test is `:269` and the full run `:272`.
+     - EXHAUSTIVE COVERAGE. The 72-case matrix left US010 for `MAP-GENERATION-COVERAGE` S-01,
+       uncut; this story records it unmeasured and leaves its items unticked (`../02-STORIES/US012.md`
+       -> the amendment of 19/11/2026).
+     - SHELLCHECK is on the host (`/run/current-system/sw/bin/shellcheck`), so it is run, not
+       recorded as not run.
+     - CLOSING GUIDANCE FORM (AC-GAP-1, the build's call): the seed's repair named beside the
+       allowlist's, not the conditional form — no logic below the green `exit 0`. -->
 
 ---
 
@@ -726,8 +765,9 @@ not a build-start transition performed by this documentation correction.
 `../02-STORIES/US012.md`'s `**Status:**` moves first — `Open` -> `In Progress` in a commit of its
 own, the first on `us012/seed-presence-gate` and before P1's red commit, so that the red commit
 carries the probe alone (_Key Decisions_ 1) — and -> `Completed` only at `completion`, after review
-and QA. This plan's `| Status |` header row moves with it, in the same commits. After US007 lands, the sprint plan's
-_Story Plans_ Status cell mirrors this plan's own status in each plan-transition change.
+and QA. <!-- SUPERSEDED 23/11/2026 (review R-004): this paragraph promised a `| Status |` header row here
+     and a mirrored sprint-plan _Story Plans_ Status cell. Neither exists: a plan carries no status,
+     and Sam dropped the sprint-plan column on 23/11/2026 (finding F-009). -->
 `../03-SPRINTS/SPRINT-07.md`'s Story Summary carries no status column.
 
 **The ClickUp export is generated, and pushing it is CI's.** The lefthook `clickup-export`

@@ -28,6 +28,15 @@
      ../02-STORIES/CUT-PLAN.md — and does not move with the sprint; build order 1 is first of {US013,
      US014}. -->
 
+<!-- CARRIED 23/11/2026 from US012's findings (F-001, F-002, F-007,
+     project-management/src/20-FINDINGS/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md -> Section 4):
+     - F-001: at P0, re-measure every count a criterion or manual-guide row states (probe totals,
+       array sizes) at the commit the branch is cut from, and correct it before code.
+     - F-002: this plan predates US010's re-cut and US012's build; at build start give it a dated
+       CORRECTED block, as US012's plan did, and leave the body as written.
+     - F-007: already met here; this plan gives the numeric `hosts-story-add.sh 013` form. The
+       template fix is tracked in `GAPS.md`, 23/11/2026. -->
+
 <!-- STEP 1 DREW ITS ROUND FROM THE RECORDED ANSWERS (.claude/skills/grilling/SKILL.md -> A decision
      already recorded is a fact). The story's cutting interview (grilling round 1, 31/10/2026, Q1 to
      Q10), the four 11-qa-checks rounds of 31/10/2026 (Q1 to Q18, all twelve AC-GAPs resolved and the

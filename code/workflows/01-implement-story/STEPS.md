@@ -28,7 +28,7 @@ Consult `code/REFERENCES.md` as you work through these steps:
 
 ## Prerequisites
 
-- [ ] User story confirmed and branch created; story moved `Pending` → `In Progress` by `completion`
+- [ ] User story confirmed and branch created (the status move is Step 1's, not a prerequisite)
 - [ ] Containers running (`bash code/src/scripts/development/server.sh up`)
 - [ ] No uncommitted changes from a previous workflow
 
@@ -72,6 +72,20 @@ the planner here, with the code in view, never writes or overwrites
 goes back to `17-story-plans` Step 7.2 before Step 2 begins. Before the first edit, fill the
 guide's _Recorded during the build_ slots that fall due then —
 `project-management/src/18-TESTS/MANUAL/CLAUDE.md` → _Recorded during the build_.
+
+<!-- UPDATED 23/11/2026. The build-start transition moved here from Prerequisites, where it was
+     recorded before the pre-edit captures. Applies the remediation approved 09/10/2026
+     (grill-with-docs Q1, quoted in US010's manual guide Preconditions) and closes REMEDY-01 of
+     the US010 and US012 walks (GAPS.md 21/11/2026, findings US010 F-016, US012 F-008). -->
+
+**Then start the clock — after every due capture, before the first source edit.** `completion`
+moves the story `Pending` → `In Progress` with a _Status history_ row, and the sprint
+`Planned` → `In Progress` with its first story. The move is a committed repository edit and
+needs neither a board nor ClickUp credentials. **A documentation-only story** runs this same Step 1, with
+its code phases (Steps 2 to 8, with 3a and 7M) marked N/A in its plan and checklist, not
+skipped silently; Step 9 onward still runs.
+**Where a board adapter is enabled**, it publishes this same committed transition and never
+writes a status of its own: the `US###.md` status line is the only status authority.
 
 ### Step 2 — Write Failing Tests First (Red Phase)
 

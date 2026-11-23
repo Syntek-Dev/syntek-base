@@ -25,8 +25,10 @@ model: opus
 
 ## Execution Checklist
 
-- [ ] Story moved `Pending` → `In Progress` (and its sprint `Planned` → `In Progress` with its first story) by the `completion` skill, with a _Status history_ row · _opus_
 - [ ] Architectural plan saved to `project-management/src/17-STORY-PLANS/` · _opus_
+- [ ] The manual guide's pre-edit _Recorded during the build_ slots filled before the first source edit · _opus_
+- [ ] Then, still before the first source edit: story moved `Pending` → `In Progress` (and its sprint `Planned` → `In Progress` with its first story) by the `completion` skill, with a _Status history_ row; needs neither a board nor credentials · _opus_
+- [ ] Documentation-only story: Steps 2 to 8 (3a and 7M included) marked N/A, not skipped silently; the test, model, endpoint and frontend items below read N/A too · _opus_
 - [ ] Failing tests written before implementation · _opus_
 - [ ] The story's manual guide (`project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`) in `test-writer`'s brief, every row triaged in its handoff · _opus_
 - [ ] Models and migration created and applied · _opus_

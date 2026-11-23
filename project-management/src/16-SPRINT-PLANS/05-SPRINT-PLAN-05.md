@@ -273,10 +273,16 @@ after a three-reviewer adversarial pass at Step 9 that returned six blocking fin
 resolved. This table was repointed at each by that workflow's Step 10, in the order they were
 written.
 
-| Story | Story plan (`../17-STORY-PLANS/`)                            | Status    |
-| ----- | ------------------------------------------------------------ | --------- |
-| US008 | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` | Completed |
-| US009 | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`       | Completed |
+| Story | Story plan (`../17-STORY-PLANS/`)                            |
+| ----- | ------------------------------------------------------------ |
+| US008 | `../17-STORY-PLANS/08-STORY-PLAN-US008-HOST-ONLY-COOKIES.md` |
+| US009 | `../17-STORY-PLANS/09-STORY-PLAN-US009-HOOK-ARMING.md`       |
+
+<!-- STATUS COLUMN DROPPED 23/11/2026 under Sam's ruling on US012's manual-test row REMEDY-02: a plan
+     carries no status, so this table has no status cell (`CLAUDE.md` here -> "No status line, no
+     status cells"; `.claude/skills/completion/SKILL.md` -> Plans). `SPRINT-PLANS-BOARD.md` and
+     `../17-STORY-PLANS/STORY-PLANS-BOARD.md` show each plan under its parent's status. The mirror
+     notes below are history. -->
 
 <!-- MIRRORED 22/11/2026 under Sam's ruling D on the US010 gate-22 walk (manual-test row REMEDY-02):
      both cells held the placeholder and now carry each plan's own `| Status |` header row, `Open`.

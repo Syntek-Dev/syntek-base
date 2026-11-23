@@ -109,8 +109,10 @@ PM_WEBHOOK_SECRET=              # signature secret for inbound webhooks
 
 ## CI sync
 
-A sync workflow drives status transitions off **branch names** (`us###/…`) and **PR events** —
-opened moves to In Progress, merged moves to Done. **Reference secrets, never literals.**
+A sync workflow runs on pushes and pull requests to the chain branches and **publishes** each
+story's committed `**Status:**` to the tool through the status map. It never moves a status itself:
+the `US###.md` status line is the only status authority, and `completion` records every
+transition (`.github/workflows/clickup-sync.yml`). **Reference secrets, never literals.**
 
 ## Non-negotiables
 
