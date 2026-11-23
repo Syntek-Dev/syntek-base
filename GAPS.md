@@ -1665,7 +1665,7 @@ still invokes them), or give the leg the arguments. No map or story claims this 
 **Summary:** US013's closeout deferred these, and no story or uncut slice of any feature map
 owns them — the one fitting slice, `S-04` of `MAP-RULE-OWNERSHIP`, took the three that concern
 09's workflow shape (`DEFERRED.md`, the US013 entry). Recorded from
-"project-management/src/20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md"
+"project-management/src/20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md"
 (<%DEVELOPER_NAME%>'s routing, 23/11/2026).
 
 - **GlitchTip and Loki literals outside US013's six files.** Re-measured 23/11/2026 at `79a22cb7`,
@@ -1752,7 +1752,7 @@ first. No map or story claims this entry.
 **Summary:** `.claude/hooks/graph-update.sh` reports a graphify state change once by keeping the
 last state in `.code-review-graph/.graphify-notice`. Two paths repeat it. Both are noise only: no
 outcome is misreported. Recorded from findings F-028 and F-029 of
-"project-management/src/20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md", which
+"project-management/src/20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md", which
 gave neither a register home before this entry.
 
 - **A read-only state directory (QA 8).** The state is written with its error discarded, so where
@@ -1780,7 +1780,7 @@ dispatched to do that skill's job, each started a second agent instead of guidin
 skill (US013's `bugfix` red loop 2); `qa-tester` ran a walk of its own that marked GRAPH-06 `Pass`
 and missed the `README.md`:246 reason the dispatched walker caught. The dispatch's independence held
 only because each agent ignored its fork's result. Recorded from findings F-036 and F-037 of
-"project-management/src/20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md"
+"project-management/src/20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md"
 (<%DEVELOPER_NAME%>'s routing, 23/11/2026).
 **Blocked by / Action:** Nothing blocks it. Through skill authoring
 (`how-to/docs/SKILL-AUTHORING.md`): an inline entry point for an agent already dispatched for the

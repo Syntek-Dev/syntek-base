@@ -39,7 +39,7 @@ Deferred 02/11/2026 at the `23-pr-and-review` final pass, from
 ## US013 — The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause
 
 Deferred 23/11/2026 at `22-implementation-documentation`, from
-"project-management/src/20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md" and the
+"project-management/src/20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md" and the
 story plan's _Deferred Items_.
 
 | Item                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Finding      | Target                                                                                             |

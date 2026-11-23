@@ -149,7 +149,7 @@ protected action or role boundary.
 From the original review (F-1 to F-4), its `qa-tester` pass (QA 1 to QA 7), the graphify review (M1
 to M3, m1 to m5, n1 to n4), the graphify `qa-tester` pass (QA 1 to 13) and the walkers' passes on
 the hung-run fix — each a case the plan did not foresee. IDs are the US013 findings record's
-(`../../20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`), where each disposition is
+(`../../20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`), where each disposition is
 recorded.
 
 | ID    | Scenario                                                                                                                                                                                         | Result   | Evidence                                                                                                                                                                                                                     | Fold back?                                    |
@@ -234,7 +234,7 @@ are all N/A for this story, so no other IMPLEMENTATION record is written for it.
 - `../../02-STORIES/US013.md` — the story under review
 - `../../17-STORY-PLANS/13-STORY-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md` — the plan, its CORRECTED 23/11/2026 blocks first
 - `../../18-TESTS/MANUAL/US013-MANUAL-TESTING.md` · `../../18-TESTS/AUTOMATED/US013-TEST-STATUS.md` — the walked guide and the automated record
-- `../../20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md` — the findings whose IDs Section 5 cites
+- `../../20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md` — the findings whose IDs Section 5 cites
 - `../../21-BUGS/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md` — the hung-run bug (F-017)
 - `../../01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` — the S-07 note and the S-04 slice the deferrals route to
 - `../../19-REVIEWS/` — code-review notes from the same PR, written at `23-pr-and-review`

@@ -133,7 +133,7 @@ against the hook as it then stood, before its fix.
 - **Related stories:** US013 introduced the hook's graphify run (P9 to P13, `b04b278b`).
 - **Related records:** `../18-TESTS/MANUAL/US013-MANUAL-TESTING.md` rows GRAPH-03 and GRAPH-04
   (walked before the fix) · `../18-TESTS/AUTOMATED/US013-TEST-STATUS.md` ·
-  `../20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`.
+  `../20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`.
 - **Left open, Low — findings F-018 and F-019, routed to `GAPS.md`:** graphify printing a `timeout=<N>` line of
   its own as the penultimate line, with an ordinary failure exit, reads as timed out — still
   unmeasured, never `ok`; and the `mktemp`-failure branch writes `graphify.last` in place rather

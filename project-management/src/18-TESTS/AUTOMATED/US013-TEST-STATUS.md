@@ -229,7 +229,7 @@ seen against the unedited hook for P8 only (Section 3) · verified 23/11/2026.
 - `../../21-BUGS/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md`: the hung-run bug, its two red loops and the green re-runs
 - `../../11-QA/PLANNING/QA-PLAN-US013-LOG-DEBUG-WORKFLOW-SEAM.md`: the scenarios the probes cite (HP-16, ES-10 to ES-13) and the CI render reads (HP-05, ES-04)
 - `../../11-QA/IMPLEMENTATION/QA-IMPL-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`: whether the specified scenarios were met
-- `../../20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`: what shipping the story revealed
+- `../../20-FINDINGS/archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md`: what shipping the story revealed
 - `code/src/scripts/tests/graph-update.sh`: the probe suite; its header lists every group
 - `.claude/hooks/graph-update.sh`: the hook under test
 - `.github/workflows/audit-template.yml` · `.github/workflows/audit-hook-arming.yml`: the CI jobs read in Section 2.3
