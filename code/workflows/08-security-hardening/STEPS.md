@@ -32,7 +32,8 @@ Consult `code/REFERENCES.md` as you work through these steps:
 security [scope to review]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** opus · **MCP:** code-review-graph, graphify as fallback
+> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** opus · **MCP:**
+> code-review-graph, graphify as fallback
 
 > **CMS-only.** Skip if `code/docs/WAGTAIL.md` does not exist — the project has no CMS.
 > Two extra surfaces are in scope: Wagtail's own login, which reaches the same session as the

@@ -181,7 +181,8 @@ Follow wayfinder's graduation table:
 - **Terminology** → the glossary of the nearest `CONTEXT.md` (`domain-modelling`).
 
 Refresh the code-review-graph after any doc change so the layered docs and the graph stay in
-lockstep, and graphify alongside it, advisory (`code/docs/CODE-REVIEW-GRAPH.md`).
+lockstep, with graphify's code layer alongside (advisory); its doc layer is the developer's
+`/graphify --update` (`code/docs/CODE-REVIEW-GRAPH.md`).
 
 ## Anti-patterns
 

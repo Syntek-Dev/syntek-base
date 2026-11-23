@@ -83,7 +83,8 @@ describes.
    - Request URL, method, and status code
    - Django user ID (if available and not PII)
    - Tags: environment, release version
-4. Note the **issue ID** and **first occurrence timestamp** — use these to query <%LOG_AGGREGATOR%> next
+4. Note the **issue ID** and **first occurrence timestamp** — use these to query
+   <%LOG_AGGREGATOR%> next
 
 If the exception is new, tag the <%ERROR_TRACKING%> issue as `investigating` before continuing.
 

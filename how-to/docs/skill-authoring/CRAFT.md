@@ -180,9 +180,10 @@ downstream work begins.
 
 **Look up facts; ask about decisions.** Steer the agent to _discover_ anything derivable from the
 codebase or environment rather than offload the question to the human. In <%PROJECT_NAME%> the lookup order
-is `code-review-graph` (structural context; or `graphify`, across artefacts) → Read/Grep/Glob → `.claude/plugins/*.py`
-(`project`/`db`/`env`), and every dev operation runs through `code/src/scripts/**/*.sh`. Reserve
-questions for genuine decisions with a real trade-off. `grilling` rule 3 is the canonical
+is `code-review-graph` (structural context; or `graphify`, across artefacts) → Read/Grep/Glob →
+`.claude/plugins/*.py` (`project`/`db`/`env`), and every dev operation runs through
+`code/src/scripts/**/*.sh`. Reserve questions for genuine decisions with a real trade-off.
+`grilling` rule 3 is the canonical
 statement: "Do not ask 'does a `Customer` model exist?' — check. Do ask 'should a booking belong
 to a `Customer` or a `User`?'".
 

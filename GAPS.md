@@ -1707,10 +1707,36 @@ owns them — the one fitting slice, `S-04` of `MAP-RULE-OWNERSHIP`, took the th
 "project-management/src/20-FINDINGS/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md"
 (<%DEVELOPER_NAME%>'s routing, 23/11/2026).
 
-- **GlitchTip and Loki literals outside US013's six files.** Re-measured 23/11/2026 at `79a22cb7`, case-insensitive, outside the 09 folder's four files, the `code/src/logs/` pair and `project-management/src/`: **53 lines, 69 occurrences, 20 files** (the story's "about 58 lines in 21 files" does not reproduce; F-016). Occurrences by file: `code/docs/logging/DJANGO-LOGGING.md` 9; `.copier/README.md` 6; `code/docs/security/AUDIT-TRAIL.md` 6; `code/docs/architecture/PROVIDER-NEUTRALITY.md` 5; `code/workflows/CONTEXT.md` 5; `code/docs/BACKEND-CODING-PRINCIPLES.md` 4; `code/docs/logging/FRONTEND-LOGGING.md` 4; `code/docs/logging/HEALTH-CONTRACT.md` 4; `code/docs/performance/API-AND-MONITORING.md` 4; `copier.yml` 4; `how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md` 3; `code/CONTEXT.md` 2; `code/docs/PERFORMANCE.md` 2; `how-to/src/TEMPLATE-GUIDE/05-ANSWERS.md` 2; `how-to/src/TEMPLATE-GUIDE/13-DEPLOYMENT.md` 2; `how-to/src/TEMPLATE-TOKENS.md` 2; `RELEASES.md` 2; `code/docs/FRONTEND-CODING-PRINCIPLES.md` 1; `code/docs/logging/CLOUDINARY.md` 1; `code/docs/security/MONITORING-AND-INCIDENT.md` 1. The `copier.yml`, `TEMPLATE-TOKENS.md` and `05-ANSWERS.md` hits name the answers themselves and `RELEASES.md` is history, so not every hit is a defect; each is triaged at the pass that takes them (F-016)
-- **Two "proven alternates" lists still name Alloy as a log destination.** `code/docs/logging/OBSERVABILITY.md` "Proven alternates: Vector · Fluent Bit · Alloy · CloudWatch Logs" (`:104` at `79a22cb7`, cited `:100` in the plan) and `how-to/src/PLATFORM-PROVIDERS.md` _Logs_ row (`:38`). Alloy is a shipper, the reason Q16/Q18 dropped it from `LOG_AGGREGATOR`'s help (11-qa round 4, Q17)
-- **`LOG_AGGREGATOR` offers pure shippers, so five rendered sentences are false.** `TEMPLATE-TOKENS.md` defines the token as where logs are "shipped and queried", but `copier.yml` offers Vector and Fluent Bit. On a Fluent Bit render: 09 `STEPS.md` "query `<%LOG_AGGREGATOR%>` next" (Step 3), "no frontend log stream in" and "the Django exception in" (Step 4); `code/src/logs/CONTEXT.md` "captures and ships to"; `code/src/logs/CLAUDE.md` "Grafana Alloy →". Narrow the answer list or reword the five sites; a decision, not an edit. US014 edits the two `code/src/logs/` files and reads this row before touching those lines (F-003)
-- **The "Prometheus + Grafana dashboards" cell** in 09 `CONTEXT.md`'s matrix stays literal under the marker (N-012, Q11). A candidate for `<%OBSERVABILITY_STACK%>`, which is cell-shaped and would fit; a later decision
+- **GlitchTip and Loki literals outside US013's six files.** Re-measured 23/11/2026 at `79a22cb7`,
+  case-insensitive, outside the 09 folder's four files, the `code/src/logs/` pair and
+  `project-management/src/`: **53 lines, 69 occurrences, 20 files** (the story's "about 58 lines in
+  21 files" does not reproduce; F-016). Occurrences by file: `code/docs/logging/DJANGO-LOGGING.md`
+  9; `.copier/README.md` 6; `code/docs/security/AUDIT-TRAIL.md` 6;
+  `code/docs/architecture/PROVIDER-NEUTRALITY.md` 5; `code/workflows/CONTEXT.md` 5;
+  `code/docs/BACKEND-CODING-PRINCIPLES.md` 4; `code/docs/logging/FRONTEND-LOGGING.md` 4;
+  `code/docs/logging/HEALTH-CONTRACT.md` 4; `code/docs/performance/API-AND-MONITORING.md` 4;
+  `copier.yml` 4; `how-to/src/SERVER-ARCHITECTURE/NIXOS-HANDOFF.md` 3; `code/CONTEXT.md` 2;
+  `code/docs/PERFORMANCE.md` 2; `how-to/src/TEMPLATE-GUIDE/05-ANSWERS.md` 2;
+  `how-to/src/TEMPLATE-GUIDE/13-DEPLOYMENT.md` 2; `how-to/src/TEMPLATE-TOKENS.md` 2; `RELEASES.md`
+  2; `code/docs/FRONTEND-CODING-PRINCIPLES.md` 1; `code/docs/logging/CLOUDINARY.md` 1;
+  `code/docs/security/MONITORING-AND-INCIDENT.md` 1. The `copier.yml`, `TEMPLATE-TOKENS.md` and
+  `05-ANSWERS.md` hits name the answers themselves and `RELEASES.md` is history, so not every hit is
+  a defect; each is triaged at the pass that takes them (F-016)
+- **Two "proven alternates" lists still name Alloy as a log destination.**
+  `code/docs/logging/OBSERVABILITY.md` "Proven alternates: Vector · Fluent Bit · Alloy · CloudWatch
+  Logs" (`:104` at `79a22cb7`, cited `:100` in the plan) and `how-to/src/PLATFORM-PROVIDERS.md`
+  _Logs_ row (`:38`). Alloy is a shipper, the reason Q16/Q18 dropped it from `LOG_AGGREGATOR`'s help
+  (11-qa round 4, Q17)
+- **`LOG_AGGREGATOR` offers pure shippers, so five rendered sentences are false.**
+  `TEMPLATE-TOKENS.md` defines the token as where logs are "shipped and queried", but `copier.yml`
+  offers Vector and Fluent Bit. On a Fluent Bit render: 09 `STEPS.md` "query `<%LOG_AGGREGATOR%>`
+  next" (Step 3), "no frontend log stream in" and "the Django exception in" (Step 4);
+  `code/src/logs/CONTEXT.md` "captures and ships to"; `code/src/logs/CLAUDE.md` "Grafana Alloy →".
+  Narrow the answer list or reword the five sites; a decision, not an edit. US014 edits the two
+  `code/src/logs/` files and reads this row before touching those lines (F-003)
+- **The "Prometheus + Grafana dashboards" cell** in 09 `CONTEXT.md`'s matrix stays literal under the
+  marker (N-012, Q11). A candidate for `<%OBSERVABILITY_STACK%>`, which is cell-shaped and would
+  fit; a later decision
 
 **Blocked by / Action:** Nothing blocks them. Each needs a feature map to claim it; the first three
 are one provider-neutrality slice in waiting. No map or story claims this entry.

@@ -1019,15 +1019,15 @@ inspect the local environment for context. They do **not** run dev operations �
 
 ### MCP servers
 
-| Server              | Scope              | Always available                                                                                          |
-| ------------------- | ------------------ | --------------------------------------------------------------------------------------------------------- |
-| `code-review-graph` | Repo — `.mcp.json` | Yes — auto-loaded for all contributors                                                                    |
-| `graphify`          | Repo — `.mcp.json` | Advisory — needs the host-provided CLI and a `graphify-out/` store; without one it is reported unmeasured |
-| `context7`          | Repo — `.mcp.json` | Yes — reads `CONTEXT7_API_KEY` from the environment                                                       |
-| `mcp-mermaid`       | Repo — `.mcp.json` | Yes                                                                                                       |
-| `perplexity`        | Repo — `.mcp.json` | Only with `PERPLEXITY_API_KEY` set — the key is optional; without it this server alone fails to start     |
-| `scrapling`         | Repo — `.mcp.json` | Yes — `get` needs no browser; the browser tiers depend on the host                                        |
-| `claude-in-chrome`  | Machine-global     | Only if installed locally                                                                                 |
+| Server              | Scope              | Always available                                                                                                                                      |
+| ------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `code-review-graph` | Repo — `.mcp.json` | Yes — auto-loaded for all contributors                                                                                                                |
+| `graphify`          | Repo — `.mcp.json` | Advisory — runs through `uvx`, but reads a `graphify-out/` store only the host-provided CLI builds; without one the agent reports graphify unmeasured |
+| `context7`          | Repo — `.mcp.json` | Yes — reads `CONTEXT7_API_KEY` from the environment                                                                                                   |
+| `mcp-mermaid`       | Repo — `.mcp.json` | Yes                                                                                                                                                   |
+| `perplexity`        | Repo — `.mcp.json` | Only with `PERPLEXITY_API_KEY` set — the key is optional; without it this server alone fails to start                                                 |
+| `scrapling`         | Repo — `.mcp.json` | Yes — `get` needs no browser; the browser tiers depend on the host                                                                                    |
+| `claude-in-chrome`  | Machine-global     | Only if installed locally                                                                                                                             |
 
 All six repo-scoped servers are also declared in `.codex/config.toml`, and
 `code/src/scripts/audits/mcp-parity.sh` holds the two files to the same set. `perplexity` is tier 3

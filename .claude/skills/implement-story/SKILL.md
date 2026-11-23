@@ -77,8 +77,8 @@ Nothing commits until this is done, and it is the gate most often skipped:
 3. The implementation records from phase 9 are written, with the automated test record, and the
    manual testing guide is walked — all owned by
    `project-management/workflows/22-implementation-documentation/`, which also refreshes the
-   code-review-graph so the docs and the graph stay in lockstep, and graphify alongside it,
-   advisory.
+   code-review-graph so the docs and the graph stay in lockstep, with graphify's code layer
+   alongside (advisory); its doc layer is the developer's `/graphify --update`.
 4. `GAPS.md` and `DEFERRED.md` are current.
 
 ## Definition of done

@@ -89,7 +89,8 @@ Diagnosis, not repair: the phase ends at a documented root cause and a recommend
 that fix, regression-testing it and committing it is the full `bugfix` sequence, entered
 separately.
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `bugfix`, the `## Root cause` phase only — no fix, no commit · **Model:** opus · **MCP:** code-review-graph (graphify as fallback)
+> **↳ New dispatch:** `general-purpose` · **Skill:** `bugfix`, the `## Root cause` phase only — no
+> fix, no commit · **Model:** opus · **MCP:** code-review-graph (graphify as fallback)
 
 ### Step 6 — Document and Fix
 

@@ -99,9 +99,15 @@ hook's own header carries the rest of the reasoning, including why a `permission
 
 `graph-update.sh` is registered under `hooks.PostToolUse` on `Edit|Write|Bash`. It runs the
 incremental `code-review-graph update --skip-flows`, then reports how many **untracked** files in
-a parsed language sit outside the graph. Beside it, it starts `graphify update .` detached under a
-lock, never with `--force`; an absent graphify, a refusal or a failed run is reported
-**unmeasured** (`code/docs/GATE-REPORTING.md`) and never blocks.
+a parsed language sit outside the graph. Beside it, it starts `graphify update .` detached (its
+own session where `setsid` exists) under a `flock` lock, never with `--force`, and only when the
+tree's fingerprint (HEAD, status, diff, `graphify-out/graph.json`'s mtime) differs from the one
+the last run started from. That refreshes graphify's **code layer** only; its doc layer is the
+developer's `/graphify --update`. The outcome is one file, `.code-review-graph/graphify.last`,
+ending `exit=<N>`. Per edit, an absent graphify or `flock`, a refusal or a failed run is reported
+**unmeasured** (`code/docs/GATE-REPORTING.md`) once per state change; lefthook's `graphify` step
+calls `graph-update.sh --commit`, which reports the same outcome on every commit and starts the
+same refresh. Neither mode blocks. `graphify` and `flock` are host prerequisites.
 
 The report exists because the refresh is honest about the wrong thing: it diffs against a git
 ref, so a new and unstaged file is never parsed and the update still reports success. The graph

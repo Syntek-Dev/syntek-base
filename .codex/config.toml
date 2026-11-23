@@ -41,8 +41,10 @@ command = "uvx"
 args = ["code-review-graph", "serve"]
 
 # Cross-artefact knowledge graph (docs, PM artefacts and code together) over the local
-# graphify-out/ store. Advisory beside code-review-graph: an absent store is reported
-# unmeasured, never a failure (code/docs/CODE-REVIEW-GRAPH.md). Unpinned, like its sibling.
+# graphify-out/ store. The server itself runs through uvx and needs no host install, but the
+# store it reads is built only by the host-provided graphify CLI. Advisory beside
+# code-review-graph: without a store the agent, not the server, reports graphify unmeasured,
+# never clean (code/docs/CODE-REVIEW-GRAPH.md). Unpinned, like its sibling.
 [mcp_servers.graphify]
 command = "uvx"
 args = ["--from", "graphifyy[mcp]", "graphify-mcp"]

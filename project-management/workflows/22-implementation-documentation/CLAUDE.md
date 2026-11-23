@@ -9,8 +9,9 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 ## Purpose (one line)
 
 The documentation closeout after code is built — update every touched `CONTEXT.md`/`CLAUDE.md`
-and refresh the code-review-graph (the documentation hard gate; graphify alongside, advisory), write the
-IMPLEMENTATION-side record for each design/compliance spec that applied to the story, write
+and refresh the code-review-graph (the documentation hard gate; graphify's code layer alongside,
+advisory; its doc layer is the developer's `/graphify --update`), write the IMPLEMENTATION-side
+record for each design/compliance spec that applied to the story, write
 the story's automated test record and walk its manual testing guide in `src/18-TESTS/`, and
 record its findings in `src/20-FINDINGS/`, before the PR is raised in `23-pr-and-review`.
 
@@ -31,7 +32,8 @@ record its findings in `src/20-FINDINGS/`, before the PR is raised in `23-pr-and
   walk the story's pre-authored guide in `src/18-TESTS/MANUAL/`, marking every row and amending a
   deliberate departure with its trail → write the findings record, amendments included, from
   `src/20-FINDINGS/FINDING-US000-TEMPLATE.md` → update the touched
-  `CONTEXT.md`/`CLAUDE.md` across every layer → refresh the code-review-graph (graphify alongside, advisory) → confirm
+  `CONTEXT.md`/`CLAUDE.md` across every layer → refresh the code-review-graph (graphify's code
+  layer alongside, advisory; its doc layer is the developer's `/graphify --update`) → confirm
   every record is cross-linked to its `US###` → satisfy `CHECKLIST.md`.
 - **Definition of done:** every applicable IMPLEMENTATION record written from template and
   linked to `US###`; no spec left with a `PLANNING/` record but no `IMPLEMENTATION/`
@@ -49,8 +51,9 @@ record its findings in `src/20-FINDINGS/`, before the PR is raised in `23-pr-and
 
 - **Documentation is a hard gate** — implementation docs and every touched
   `CONTEXT.md`/`CLAUDE.md` must be complete, and the code-review-graph refreshed, **before
-  any commit**. Not optional. graphify is refreshed alongside but is **advisory** — an absent tool or
-  a refused refresh is recorded unmeasured and never blocks.
+  any commit**. Not optional. graphify's code layer is refreshed alongside but is **advisory** —
+  an absent tool or a refused refresh is recorded unmeasured and never blocks; its doc layer is
+  the developer's `/graphify --update`.
 - **This workflow writes the records; `23-pr-and-review` only verifies them** — do not
   defer record-writing to the PR workflow. **That includes the `src/18-TESTS/` pair**: the
   automated record is written here and the manual guide walked here, for every story, and both

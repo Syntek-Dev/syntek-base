@@ -41,7 +41,8 @@ Dispatch `code-reviewer` across the scope being reviewed.
 review [scope — file, app, or feature]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `review` · **Model:** opus · **MCP:** code-review-graph (review playbook — `.claude/skills/review-changes.md`), graphify as fallback
+> **↳ New dispatch:** `general-purpose` · **Skill:** `review` · **Model:** opus · **MCP:**
+> code-review-graph (review playbook — `.claude/skills/review-changes.md`), graphify as fallback
 
 The review runs on **two independent axes — reported separately, never merged or ranked, with
 no single cross-axis winner**:
@@ -65,7 +66,8 @@ Dispatch `security` to verify OWASP compliance on the same scope.
 security [scope]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** opus · **MCP:** code-review-graph, graphify as fallback
+> **↳ New dispatch:** `general-purpose` · **Skill:** `security` · **Model:** opus · **MCP:**
+> code-review-graph, graphify as fallback
 
 Address all critical and high findings. Document any accepted lower-severity risks.
 
@@ -75,7 +77,8 @@ Address all critical and high findings. Document any accepted lower-severity ris
 qa-tester [scope]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus · **MCP:** code-review-graph, graphify as fallback
+> **↳ New dispatch:** `general-purpose` · **Skill:** `qa-tester` · **Model:** opus · **MCP:**
+> code-review-graph, graphify as fallback
 
 Confirm no regressions and that acceptance criteria are met.
 
@@ -87,7 +90,12 @@ Confirm no regressions and that acceptance criteria are met.
 2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
 3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
 4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
-5. Refresh the code-review-graph so its flows match the updated docs: `code-review-graph update` (or the `build_or_update_graph_tool` MCP tool) — keeps the graph and the layered docs in lockstep; refresh graphify alongside (`graphify update .`, never `--force`) — advisory: an absent tool or a refused or failed refresh is recorded unmeasured (`code/docs/GATE-REPORTING.md`), never blocking
+5. Refresh the code-review-graph so its flows match the updated docs: `code-review-graph update`
+   (or the `build_or_update_graph_tool` MCP tool) — keeps the graph and the layered docs in
+   lockstep; refresh graphify's code layer alongside (`graphify update .`, never `--force`) —
+   advisory: an absent tool or a refused or failed refresh is recorded unmeasured
+   (`code/docs/GATE-REPORTING.md`), never blocking; its doc layer is the developer's
+   `/graphify --update`
 
 ---
 

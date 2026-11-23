@@ -61,7 +61,8 @@ None — log-based debugging is observational; start with whichever signal is av
   at a suspect area; graphify as fallback and for cross-artefact questions
 - `code/docs/logging/DJANGO-LOGGING.md` — Django logging configuration, log levels, Django Ninja extension
 - `code/docs/logging/FRONTEND-LOGGING.md` — browser logging setup, HTMX error forwarding, dev vs prod behaviour
-- `code/docs/logging/OBSERVABILITY.md` — <%ERROR_TRACKING%>, <%LOG_AGGREGATOR%>, Prometheus, Grafana tool details
+- `code/docs/logging/OBSERVABILITY.md` — <%ERROR_TRACKING%>, <%LOG_AGGREGATOR%>, Prometheus, Grafana
+  tool details
 - `code/workflows/10-debug/` — code-logic debugging workflow (complements this one)
 - `how-to/workflows/08-debugging/` — operational complement to this observability workflow
 - `code/src/logs/CONTEXT.md` — local log file location and access commands

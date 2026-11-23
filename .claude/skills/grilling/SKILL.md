@@ -101,7 +101,8 @@ If something is discoverable from the codebase or environment, **find it yoursel
 ask <%DEVELOPER_NAME%> for it.
 
 - Look up facts with the `code-review-graph` MCP first (structural context) — or `graphify`, for
-  cross-artefact questions; each is the other's fallback — then Read/Grep/Glob, then `.claude/plugins/*.py` (`project`/`db`/`env`) for project facts.
+  cross-artefact questions; each is the other's fallback — then Read/Grep/Glob, then
+  `.claude/plugins/*.py` (`project`/`db`/`env`) for project facts.
 - Dispatch a sub-agent for anything wider than a couple of lookups.
 - Do **not** ask "does a `Customer` model exist?" — check. **Do** ask "should a booking
   belong to a `Customer` or a `User`?" — that is a decision with a real trade-off.

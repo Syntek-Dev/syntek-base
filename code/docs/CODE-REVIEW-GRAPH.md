@@ -46,17 +46,27 @@ A second graph, **graphify**, sits beside code-review-graph. They answer differe
 
 - **Each is the other's fallback.** When the first graph is absent or silent, ask the other, then
   Grep/Glob/Read.
-- **graphify is advisory.** Its refresh runs per edit (the `PostToolUse` hook
-  `.claude/hooks/graph-update.sh`, detached under a lock) and at commit (beside `detect-changes` in `lefthook.yml`). It is **never run with
-  `--force`**. An absent tool or a refused or failed refresh is reported **unmeasured**
-  (`code/docs/GATE-REPORTING.md`) and never blocks.
+- **graphify is advisory.** One script, `.claude/hooks/graph-update.sh`, owns its refresh: per
+  edit as the `PostToolUse` hook, and at commit as `--commit`, lefthook's `graphify` step beside
+  `detect-changes`. Either way it starts `graphify update .` detached, under a lock, and only when
+  the tree differs from the last run's; it is **never run with `--force`**. An absent tool or a
+  refused or failed refresh is reported **unmeasured** (`code/docs/GATE-REPORTING.md`) — once per
+  state change per edit, on every commit — and never blocks.
+- **The automatic refresh reaches graphify's code layer only.** `graphify update .` re-extracts
+  code, with no LLM; a docs or PM change reaches graphify's doc layer only through the
+  developer's `/graphify --update`. So wherever a procedure refreshes the graphs alongside a docs
+  change, it means **graphify's code layer alongside (advisory); its doc layer is the developer's
+  `/graphify --update`**.
 - **The commit gate stays code-review-graph's alone** — staged first, then refreshed
-  (`.claude/CLAUDE.md` Section 6). graphify is refreshed alongside it, never instead of it.
+  (`.claude/CLAUDE.md` Section 6). graphify's code layer is refreshed alongside it, never instead
+  of it.
 - **The semantic rebuild (`/graphify`) is the developer's call.** The automatic refresh is
   AST-only; it refuses to overwrite semantic nodes it cannot rebuild, and that refusal is the
   unmeasured case above, not a fault.
 - Both are host-provided, like every CLI here: `install.sh` installs neither. graphify's output is
-  `graphify-out/` (gitignored).
+  `graphify-out/` (gitignored). The automatic refresh has one further **advisory host
+  prerequisite, `flock`** (util-linux): without it no refresh starts, and the hook reports that
+  unmeasured rather than run unlocked.
 
 ## The four task playbooks
 
@@ -176,5 +186,5 @@ Always preview before applying; behaviour must stay identical (workflow `11` gol
   the diff after changing any assistant configuration.
 - Tool config lives in `.mcp.json` for Claude Code and `.codex/config.toml` for Codex, both
   servers in each; the stores are `.code-review-graph/` and `graphify-out/` (both gitignored).
-  Codex uses the explicit refresh procedure above, plus `graphify update .` for graphify; Claude's
-  lifecycle hooks do not run in Codex.
+  Codex uses the explicit refresh procedure above, plus `graphify update .` for graphify's code
+  layer (its doc layer is `/graphify --update`); Claude's lifecycle hooks do not run in Codex.

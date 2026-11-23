@@ -30,7 +30,8 @@ the service-layer wiring.
 - **Definition of done:** the `CHECKLIST.md` is satisfied end to end; lint, both suites, audit and
   the release build exit `0`; coverage floors met on the Python side; `08-security-hardening` run
   if crypto is involved; touched `CONTEXT.md` files and the code-review-graph refreshed
-  (graphify alongside, advisory).
+  (graphify's code layer alongside, advisory; its doc layer is the developer's
+  `/graphify --update`).
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry
   `workflow`/`phase`/`skills`/`model` frontmatter — read it first (`.claude/CLAUDE.md` Section 2.5).
 

@@ -86,21 +86,14 @@ pre-commit:
     code-review-graph:
       run: if command -v code-review-graph >/dev/null 2>&1; then code-review-graph detect-changes --brief || true; fi
 
-    # graphify beside it (US013, 23/11/2026): advisory too, its status discarded the same way,
-    # and never --force. `check-update` only reads graphify-out/'s pending-changes flag, so the
-    # commit pays nothing for it; the per-edit hook (.claude/hooks/graph-update.sh) runs the
-    # update itself, detached. An absent graphify or graph is named, never read as clean
-    # (code/docs/GATE-REPORTING.md).
+    # graphify beside it (US013, 23/11/2026; review M2): advisory too, and never --force. The
+    # hook's commit mode reports the per-edit run's last recorded outcome (none yet, refused,
+    # failed, absent) as unmeasured on every commit, then starts the same detached, locked,
+    # fingerprinted `graphify update .` the per-edit hook does — one implementation, in
+    # .claude/hooks/graph-update.sh. It returns at once, so the commit never waits on graphify;
+    # an absent graphify is named, never read as clean (code/docs/GATE-REPORTING.md).
     graphify:
-      run: |
-        if ! command -v graphify >/dev/null 2>&1; then
-          echo "graphify: not on PATH - cross-artefact graph unmeasured (advisory, host-provided)"
-        elif [ ! -f graphify-out/graph.json ]; then
-          echo "graphify: no graphify-out/graph.json - cross-artefact graph unmeasured (advisory)"
-        else
-          graphify check-update . || true
-        fi
-        exit 0
+      run: bash .claude/hooks/graph-update.sh --commit || true
 
     # Reconcile the Directory Tree block in any CONTEXT.md whose directory has a staged
     # change, and re-stage what it fixed. Scoped to --staged so a one-file commit does

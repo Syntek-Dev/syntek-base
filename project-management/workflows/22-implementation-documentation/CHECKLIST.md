@@ -91,7 +91,8 @@ model: opus
 - [ ] `**Last Updated**` date is current in any `CONTEXT.md`/`CLAUDE.md` modified
 - [ ] Every new directory created during this workflow has a `CONTEXT.md` + `CLAUDE.md`
 - [ ] Code-review-graph refreshed (`code-review-graph update` / `build_or_update_graph_tool`)
-- [ ] graphify refreshed alongside (`graphify update .`, never `--force`) — or recorded unmeasured; advisory
+- [ ] graphify's code layer refreshed alongside (`graphify update .`, never `--force`) — or
+      recorded unmeasured; advisory. Its doc layer is the developer's `/graphify --update`
 - [ ] Every instructional `.md` touched stays ≤ 300 code lines — `bash code/src/scripts/audits/docs-length.sh`
 
 ---

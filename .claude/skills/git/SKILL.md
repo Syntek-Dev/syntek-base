@@ -49,8 +49,10 @@ Confirm the current branch matches the work in hand. Feature and bugfix work bel
   time.
 - **No secrets in a commit** — scan the diff for keys, tokens and passwords before staging.
 - **The docs hard gate.** Implementation records and every affected `CONTEXT.md` must be
-  complete **before** the commit, with the code-review-graph refreshed alongside them (graphify
-  too, advisory — it never blocks the commit). **If they are not, stop and hand back** — do not commit, and do not commit with red tests.
+  complete **before** the commit, with the code-review-graph refreshed alongside them (graphify's
+  code layer alongside, advisory — it never blocks the commit; its doc layer is the developer's
+  `/graphify --update`). **If they are not, stop and hand back** — do not commit, and do not
+  commit with red tests.
 - **Never force-push a protected branch**, and never merge a PR that skips a stage in the
   branch flow.
 - **British English** in every commit message, PR title and body.

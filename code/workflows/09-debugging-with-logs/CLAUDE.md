@@ -14,8 +14,8 @@ query named below describes that deployment; a project that answered another log
 aggregator adapts it to its own.
 
 The procedure for observational, log-led debugging — working from the cheapest signal
-(local log files) up to <%ERROR_TRACKING%>, <%LOG_AGGREGATOR%>, and Grafana across dev, test, staging,
-and prod.
+(local log files) up to <%ERROR_TRACKING%>, <%LOG_AGGREGATOR%>, and Grafana across dev, test,
+staging, and prod.
 
 ## How to work here
 
@@ -35,8 +35,8 @@ and prod.
   exceptions. **Never invoke `docker`, `python`, or `pytest` directly — use the shell
   scripts.**
 - **Definition of done:** root cause identified and documented; the fix and its
-  regression test handed to `code/workflows/10-debug/`; a staging/prod incident filed as a bug report
-  in `project-management/src/21-BUGS/`.
+  regression test handed to `code/workflows/10-debug/`; a staging/prod incident filed as a bug
+  report in `project-management/src/21-BUGS/`.
 - **Routing frontmatter:** this folder's `STEPS.md` and `CHECKLIST.md` carry `skills`/`model` frontmatter — read it first (see `.claude/CLAUDE.md` Section 2.5).
 
 ## Guardrails

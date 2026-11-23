@@ -107,6 +107,6 @@ a map drawn from the plans alone loses the drift.
 - `.claude/skills/research/SKILL.md` — for research nodes needing primary sources
 - `.claude/skills/prototype/SKILL.md` — for tracer nodes needing a spike
 - `project-management/src/15-DECISIONS/` — where hard-to-reverse outcomes graduate
-- `code/docs/CODE-REVIEW-GRAPH.md` — the explore playbook for mapping the surface, and the role split
-  with graphify
+- `code/docs/CODE-REVIEW-GRAPH.md` — the explore playbook for mapping the surface, and the role
+  split with graphify
 - `project-management/workflows/02-story-creation/` — the next workflow; stories cut from the map

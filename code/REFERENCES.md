@@ -37,7 +37,8 @@ Internal and external references for all coding work in this repository.
 - `code/docs/API-DESIGN.md` — Django Ninja conventions, JSON API patterns
 - `code/docs/ARCHITECTURE-PATTERNS.md` — service layer, Django app structure, page routing
 - `code/docs/BACKEND-CODING-PRINCIPLES.md` — Django/Python/Celery specifics: class vs function, error handling, caching (read with `CODING-PRINCIPLES.md`)
-- `code/docs/CODE-REVIEW-GRAPH.md` — code-review-graph MCP playbooks (explore, debug, review, refactor) and the role split with graphify
+- `code/docs/CODE-REVIEW-GRAPH.md` — code-review-graph MCP playbooks (explore, debug, review,
+  refactor) and the role split with graphify
 - `code/docs/CODING-PRINCIPLES.md` — file-length limits, Rob Pike and Linus Torvalds rules
 - `code/docs/DATABASE.md` — pre-flight data-layer rules: scope columns, database-level constraints, lock-safe migrations, search, deferred infrastructure with trigger conditions
 - `code/docs/DATA-STRUCTURES.md` — domain modelling, PostgreSQL schema design, indexing

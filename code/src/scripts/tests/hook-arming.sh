@@ -309,6 +309,12 @@ filtered_path() {  # dir names… — a PATH directory with every host executabl
   done
 }
 
+# graphify is advisory and host-provided, and no probe here exercises it; left on PATH, lefthook's
+# graphify step would start a real detached refresh inside every commit fixture (US013 review,
+# 23/11/2026). Hide it — and its graphify-* siblings — for the whole suite.
+filtered_path "$SCRATCH/path-no-graphify" graphify
+PATH="$SCRATCH/path-no-graphify"
+
 # ── The predicate, the runners and the oracles ────────────────────────────────
 # The hook DIRECTORY is resolved, then /pre-commit appended: resolving the hook FILE with
 # --path-format=absolute follows a symlinked pre-commit to its target (measured 17/11/2026),

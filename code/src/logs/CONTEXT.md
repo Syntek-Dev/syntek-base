@@ -6,7 +6,8 @@ The reference deployment runs Grafana Alloy shipping logs to Loki, queried with 
 Grafana, and Prometheus for metrics (`how-to/src/PLATFORM-PROVIDERS.md`).
 
 > **Staging and production do not write logs to disk.** Those environments log to stdout
-> (JSON format), which Grafana Alloy captures and ships to <%LOG_AGGREGATOR%>. See `code/docs/LOGGING.md`.
+> (JSON format), which Grafana Alloy captures and ships to <%LOG_AGGREGATOR%>. See
+> `code/docs/LOGGING.md`.
 
 ## Directory Tree
 

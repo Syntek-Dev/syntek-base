@@ -122,5 +122,5 @@ never edit the check. That is a licence breach, not a lint failure.
 
 Work through `CHECKLIST.md`. Hand off to
 `project-management/workflows/22-implementation-documentation/` for the implementation record, the
-`CONTEXT.md` closeout and the code-review-graph refresh (graphify alongside, advisory) — do not
-write those here.
+`CONTEXT.md` closeout and the code-review-graph refresh (graphify's code layer alongside,
+advisory; its doc layer is the developer's `/graphify --update`) — do not write those here.

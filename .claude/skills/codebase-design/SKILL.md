@@ -103,8 +103,9 @@ _in parallel_, then choose — do not iterate one shape:
 Naming a deepened module after a new concept, or settling a load-bearing trade-off, is a domain-model
 change — run **`.claude/skills/domain-modelling`** to record it (add the term to the nearest
 `CONTEXT.md`; offer an ADR for a decision future reviews must not re-suggest). Refresh the
-code-review-graph after the doc change so structure and docs stay in lockstep, and graphify
-alongside it, advisory (`code/docs/CODE-REVIEW-GRAPH.md`).
+code-review-graph after the doc change so structure and docs stay in lockstep, with graphify's
+code layer alongside (advisory); its doc layer is the developer's `/graphify --update`
+(`code/docs/CODE-REVIEW-GRAPH.md`).
 
 ## Governing procedures (route here — do not restate at length)
 

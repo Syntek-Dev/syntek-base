@@ -268,8 +268,11 @@ DOCKER_PNPM="n/a"  # no Node toolchain in the django image — pnpm is host-only
 # The code-review-graph refresh is incremental: it diffs against a git ref, so an untracked
 # source file is never parsed and the refresh still reports success. Warn rather than gate —
 # staging is a judgement about what belongs in the commit, not a quality failure. What it
-# serves is the commit gate that requires the graph refreshed over staged work. graphify, refreshed
-# alongside at commit, is advisory and not counted here (code/docs/CODE-REVIEW-GRAPH.md).
+# serves is the commit gate that requires the graph refreshed over staged work. graphify is not
+# counted here: lefthook's `graphify` step (graph-update.sh --commit) reports the last refresh's
+# outcome unmeasured when it was not ok, then starts a detached, locked refresh of graphify's code
+# layer only and never blocks; its doc layer is the developer's /graphify --update
+# (code/docs/CODE-REVIEW-GRAPH.md).
 UNGRAPHED=$(git -C "$PROJECT_ROOT" ls-files --others --exclude-standard 2>/dev/null \
   | grep -cE '\.(sh|bash|py|ts|tsx|js|mjs|cjs|rs)$' || true)
 [[ "${UNGRAPHED:-0}" -gt 0 ]] && \

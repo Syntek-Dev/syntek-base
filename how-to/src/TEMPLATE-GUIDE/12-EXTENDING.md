@@ -279,8 +279,9 @@ iOS development builds need macOS or a paid cloud build service; neither is assu
 5. Does it carry routing frontmatter, if it is a guide or workflow file?
 6. British English?
 7. Do all developer commands resolve to `code/src/scripts/**`?
-8. Have you refreshed the code-review-graph (`code-review-graph update`), and graphify alongside
-   (`graphify update .`, advisory, never `--force`)?
+8. Have you refreshed the code-review-graph (`code-review-graph update`), and graphify's
+   code layer alongside (`graphify update .`, advisory, never `--force`)? Its doc layer is the
+   developer's `/graphify --update`.
 
 Points 1–7 are the documentation hard gate, and it is checked before commit — not optional.
 

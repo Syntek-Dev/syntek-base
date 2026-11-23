@@ -28,6 +28,21 @@
 #               notice fires on a change of the untracked set exactly as before (may pass today)
 #   one-json    an untracked file and an absent graphify in one call: stdout is still ONE JSON
 #               object, carrying both notices (two JSON lines would lose both)
+#   fp          (review M1) a finished run on an unchanged tree is not restarted: two further
+#               calls start nothing; an untracked file, a second edit to the same tracked file,
+#               and a touched graphify-out/graph.json each re-arm exactly one run. The run's
+#               fingerprint lives in .code-review-graph/graphify.fp
+#   commit      (review M2) `graph-update.sh --commit`, the lefthook pre-commit mode: graphify
+#               only (no code-review-graph call); reports the last recorded outcome as unmeasured
+#               on EVERY commit when it is not ok (none recorded yet, refused, failed, absent),
+#               silent when ok; starts the same detached, locked, fingerprinted run; exit 0,
+#               never --force
+#   nolock      (review m5) no flock on PATH: unmeasured, naming flock, once; no run started
+#   rc          (review n1) a non-numeric exit code in the recorded outcome still yields ONE
+#               valid JSON line (the code is sanitised to digits before interpolation)
+#   atomic      (review n2) outcome and exit code are ONE file, .code-review-graph/graphify.last,
+#               whose last line is `exit=<digits>`, moved into place by a single rename; no
+#               graphify.last.rc is written, and a stale one is never paired with the output
 #
 # The fixture: `git archive HEAD` extracted into a `mktemp -d`, with the WORKING-TREE hook copied
 # over its committed one (so the suite judges the hook as edited, before and after the build),
@@ -49,7 +64,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 HOOK_REL=".claude/hooks/graph-update.sh"
 
-ALL_PROBES=(absent lock refuse success fail detached regression one-json)
+ALL_PROBES=(absent lock refuse success fail detached regression one-json fp commit nolock rc atomic)
 PROBES=()
 KEEP=false
 while [[ $# -gt 0 ]]; do
@@ -57,7 +72,7 @@ while [[ $# -gt 0 ]]; do
     --probe) [[ $# -ge 2 ]] || { echo "graph-update.sh: --probe needs a name" >&2; exit 2; }
              PROBES+=("$2"); shift 2 ;;
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '4,45p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '4,61p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'graph-update.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -133,6 +148,7 @@ make_fixture() {
   git -C "$FX" add -A
   git -C "$FX" -c user.name=probe -c user.email=probe@example.invalid commit -q -m fixture
   STUB_DIRS+=("$SB")
+  HOOK_PATH=""
   write_crg_stub
 }
 
@@ -181,17 +197,33 @@ wait_done() {
   sleep 1
 }
 
-# hook — one PostToolUse call; sets OUT (stdout+stderr), RC and MS (wall time until EOF).
+# hook [ARGS] — one PostToolUse call (or, with --commit, one pre-commit call); sets OUT
+# (stdout+stderr), RC and MS (wall time until EOF). HOOK_PATH, when set, replaces the PATH.
+HOOK_PATH=""
 hook() {
-  local t0 t1
+  local t0 t1 path="${HOOK_PATH:-$SB:$SYSBIN}"
   t0="$(date +%s%N)"
   RC=0
   OUT="$(cd "$FX" && printf '{"hook_event_name":"PostToolUse","tool_name":"Edit"}' \
-    | env -i HOME="$TMP/home" PATH="$SB:$SYSBIN" GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 \
-        "$BASH_BIN" "$HOOK_REL" 2>&1)" || RC=$?
+    | env -i HOME="$TMP/home" PATH="$path" GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 \
+        "$BASH_BIN" "$HOOK_REL" "$@" 2>&1)" || RC=$?
   t1="$(date +%s%N)"
   MS=$(((t1 - t0) / 1000000))
 }
+
+# still_started N — give a wrongly started run 1.5 s to show, then require exactly N starts.
+still_started() { sleep 1.5; [[ "$(started "$SB")" -eq "$1" ]]; }
+crg_calls() { if [[ -f "$SB/crg.argv" ]]; then grep -c . "$SB/crg.argv" || true; else echo 0; fi; }
+one_valid_json() {
+  [[ "$(grep -c . <<< "$OUT")" -eq 1 ]] || return 1
+  if [[ -n "$JQ" ]]; then
+    printf '%s' "$OUT" | "$JQ" -e '.systemMessage | type == "string"' >/dev/null
+  else
+    [[ $OUT =~ ^\{\"systemMessage\":\"([^\"\\]|\\.)*\"\}$ ]]
+  fi
+}
+G_LAST() { printf '%s' "$FX/.code-review-graph/graphify.last"; }
+last_exit_is() { [[ -f "$(G_LAST)" ]] && [[ "$(tail -n 1 "$(G_LAST)")" == "exit=$1" ]]; }
 
 says_graphify() { grep -qi 'systemMessage' <<< "$OUT" && grep -qi 'graphify' <<< "$OUT"; }
 silent_graphify() { ! grep -qi 'graphify' <<< "$OUT"; }
@@ -321,6 +353,145 @@ probe_one_json() {
   fi
   check "  carrying the untracked notice" says 'untracked source file'
   check "  and graphify reported unmeasured" bash -c 'grep -qi graphify <<< "$1" && grep -qi unmeasured <<< "$1"' _ "$OUT"
+}
+
+# ── review-fix probes (M1, M2, m5, n1, n2) ────────────────────────────────────
+probe_fp() {
+  make_fixture fp; graphify_stub ok
+  mkdir -p "$FX/graphify-out"
+  printf '{}\n' > "$FX/graphify-out/graph.json"
+  touch -d '2026-01-01 00:00:00' "$FX/graphify-out/graph.json"
+  hook
+  check "first call starts one run" wait_started 1
+  wait_done
+  hook
+  check "a second call on the unchanged tree starts nothing (still 1)" still_started 1
+  hook
+  check "  nor does a third (still 1)" still_started 1
+  check "  and the fingerprint is recorded in .code-review-graph/graphify.fp" \
+    test -s "$FX/.code-review-graph/graphify.fp"
+  printf 'probe\n' > "$FX/probe-change.txt"
+  hook
+  check "an untracked file re-arms it: one more run (2)" wait_started 2
+  wait_done
+  hook
+  check "  and the call after that run starts nothing (still 2)" still_started 2
+  printf 'edit one\n' >> "$FX/README.md"
+  hook
+  check "an edit to a tracked file re-arms it (3)" wait_started 3
+  wait_done
+  printf 'edit two\n' >> "$FX/README.md"
+  hook
+  check "a second edit to the same file (same status, new diff) re-arms it (4)" wait_started 4
+  wait_done
+  touch -d '2026-06-01 00:00:00' "$FX/graphify-out/graph.json"
+  hook
+  check "a rebuilt graphify-out/graph.json (new mtime) re-arms it (5)" wait_started 5
+  wait_done
+  hook
+  check "  and the next call starts nothing (still 5)" still_started 5
+}
+
+probe_commit() {
+  make_fixture commit; graphify_stub sleep5
+  hook --commit
+  check "--commit with no run recorded exits 0" rc0
+  check "  returns inside 2 s with a 5 s graphify run (took ${MS} ms)" test "$MS" -lt 2000
+  check "  reports graphify unmeasured" bash -c 'grep -qi graphify <<< "$1" && grep -qi unmeasured <<< "$1"' _ "$OUT"
+  check "  saying no outcome is recorded yet" says 'no (graphify )?(run|outcome|update)[a-z ]* recorded|none recorded|not yet recorded'
+  check "  and starts the detached refresh" wait_started 1
+  check "  as exactly: graphify update ." started_as_update_dot
+  check "  without calling code-review-graph (lefthook owns that step)" test "$(crg_calls)" -eq 0
+  wait_done
+  hook --commit
+  check "--commit after a successful run exits 0" rc0
+  check "  and says nothing unmeasured about graphify" bash -c '! grep -qi unmeasured <<< "$1"' _ "$OUT"
+  check "  and, the tree unchanged, starts nothing (still 1)" still_started 1
+  graphify_stub refuse
+  printf 'probe\n' > "$FX/probe-commit-a.txt"
+  hook
+  check "a per-edit call on a changed tree starts the refusing run (2)" wait_started 2
+  wait_done
+  hook --commit
+  check "--commit after a refusal exits 0" rc0
+  check "  reports it unmeasured" says 'unmeasured'
+  check "  with its reason (Refusing to overwrite)" says 'Refusing to overwrite'
+  hook --commit
+  check "  and reports it again at the next commit (every commit, not once)" says 'Refusing to overwrite'
+  graphify_stub fail
+  printf 'probe\n' > "$FX/probe-commit-b.txt"
+  hook --commit
+  check "--commit on a changed tree starts the refresh itself (3)" wait_started 3
+  wait_done
+  hook --commit
+  check "--commit after a failed run reports it unmeasured" says 'unmeasured'
+  check "  saying the run failed" says 'fail'
+  check "only the one per-edit call ran code-review-graph (1)" test "$(crg_calls)" -eq 1
+  check "no recorded graphify invocation carries --force" no_force_recorded
+  no_graphify
+  hook --commit
+  check "--commit with no graphify on PATH exits 0" rc0
+  check "  reporting it unmeasured and absent" bash -c 'grep -qi unmeasured <<< "$1" && grep -qiE "absent|not on PATH" <<< "$1"' _ "$OUT"
+}
+
+probe_nolock() {
+  make_fixture nolock; graphify_stub ok
+  local nolock="$TMP/nolock/sysbin"
+  mkdir -p "$nolock"
+  local f
+  for f in "$SYSBIN"/*; do [[ "${f##*/}" == flock ]] || ln -s "$(readlink "$f")" "$nolock/${f##*/}"; done
+  HOOK_PATH="$SB:$nolock"
+  hook
+  check "exits 0 with no flock on PATH" rc0
+  check "  reports graphify unmeasured" bash -c 'grep -qi graphify <<< "$1" && grep -qi unmeasured <<< "$1"' _ "$OUT"
+  check "  naming flock" says 'flock'
+  check "  and starts no run" still_started 0
+  hook
+  check "a second call, same state, says nothing about graphify" silent_graphify
+}
+
+probe_rc() {
+  make_fixture rc; graphify_stub ok
+  mkdir -p "$FX/.code-review-graph"
+  # The same hostile code under both contracts: the legacy .rc file and the single-file trailer.
+  printf 'Traceback (most recent call last): probe\nexit=7"}\\x\n' > "$(G_LAST)"
+  printf '7"}\\x\n' > "$FX/.code-review-graph/graphify.last.rc"
+  hook
+  check "exits 0 with a non-numeric recorded exit code" rc0
+  check "  stdout is ONE valid JSON line with a systemMessage" one_valid_json
+  check "  reporting the run failed" says 'fail'
+  check "  with the code sanitised to digits (no raw quote or backslash from it)" \
+    bash -c '! grep -qF "7\"}" <<< "$1" && ! grep -qF "\\x" <<< "$1"' _ "$OUT"
+}
+
+probe_atomic() {
+  make_fixture atomic; graphify_stub refuse
+  hook
+  check "a refusing run starts" wait_started 1
+  wait_done
+  check "  its outcome is one file whose last line is exit=1" last_exit_is 1
+  check "  carrying the output too (Refusing to overwrite)" grep -q 'Refusing to overwrite' "$(G_LAST)"
+  check "  and no separate graphify.last.rc is written" test ! -e "$FX/.code-review-graph/graphify.last.rc"
+  graphify_stub fail
+  printf 'probe\n' > "$FX/probe-atomic-a.txt"
+  hook
+  check "a failing run starts" wait_started 2
+  wait_done
+  check "  its outcome's last line is exit=2" last_exit_is 2
+  graphify_stub ok
+  printf 'probe\n' > "$FX/probe-atomic-b.txt"
+  hook
+  check "a successful run starts" wait_started 3
+  wait_done
+  check "  its outcome's last line is exit=0" last_exit_is 0
+  check "no temporary is left beside it" bash -c '! ls "$1"/graphify.last*.tmp* >/dev/null 2>&1' _ "$FX/.code-review-graph"
+  # A torn pair: the new refusal in graphify.last, a stale success in graphify.last.rc.
+  printf '%s\n' '[graphify] WARNING: Refusing to overwrite — probe' 'exit=1' > "$(G_LAST)"
+  printf '0\n' > "$FX/.code-review-graph/graphify.last.rc"
+  rm -f "$FX/.code-review-graph/.graphify-notice"
+  hook
+  check "a stale graphify.last.rc is never paired with the output: the refusal is reported" \
+    says 'Refusing to overwrite'
 }
 
 for p in "${PROBES[@]}"; do

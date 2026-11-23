@@ -58,6 +58,10 @@ _exclude:
   # template-only, settled 19/11/2026 (as planned-red.sh; renamed 21/11/2026 when the planned-red
   # allowance it proved was removed).
   - /code/src/scripts/tests/template-hooks.sh
+  # US013's probes of .claude/hooks/graph-update.sh. Only audit-template.yml's [1/4] job runs
+  # them, and that workflow is the template's own, so a generated project would ship a suite no
+  # workflow of its own runs. Test-only and template-only, settled 23/11/2026 (review m3).
+  - /code/src/scripts/tests/graph-update.sh
   # toolchain-pins.sh's held register names PIN S-01 in MAP-PIN-DETECT-MOVE, and
   # /project-management/src/** below excludes that map. Shipped, it would hold the unpinned uv
   # class in every generated project against an owner that is not there and a release condition

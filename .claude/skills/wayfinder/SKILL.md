@@ -31,7 +31,8 @@ links to. The decisions it graduates land in their existing homes (ADRs, plans, 
 `clickup-sync` workflow — wayfinder writes markdown only, never to ClickUp directly.
 
 Facts are looked up, not asked: `code-review-graph` MCP (or `graphify`, across artefacts) →
-Read/Grep/Glob → `.claude/plugins/*.py` (and `context7` for library docs). Only genuine decisions with a real trade-off go to <%DEVELOPER_NAME%>.
+Read/Grep/Glob → `.claude/plugins/*.py` (and `context7` for library docs). Only genuine decisions
+with a real trade-off go to <%DEVELOPER_NAME%>.
 
 **The standing register is read, not only written.** `GAPS.md` (active gaps, blockers, sprint
 dependencies) and `DEFERRED.md` (work explicitly deferred from a shipped story to a named future
@@ -197,7 +198,8 @@ renumbered or reused. It leaves the fog by **exactly one** route:
   `Complete` or `Closed` map whose Fog of war still lists an item.
 - **An open item is a list item; a departed one may leave a record.** Once it has gone, the fog
   section may keep one bold paragraph, `**F-NN → <where it went> (route n).**`, as history — never
-  the open form `**F-NN — <title>**`, which the board counts as open with or without a leading list-item dash.
+  the open form `**F-NN — <title>**`, which the board counts as open with or without a leading
+  list-item dash.
 
 ### Claiming removes the entry
 

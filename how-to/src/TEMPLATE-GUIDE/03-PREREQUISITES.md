@@ -165,11 +165,15 @@ hostnames.
 | **Bruno**                   | Running the committed API collections through a GUI.                                                                                                                                                                  |
 | **`gh` CLI**                | PR creation from the terminal; the `pr` skill uses it.                                                                                                                                                                |
 | **Claude Chrome extension** | Rendered UI inspection and browser automation. Nothing in the repository supplies it.                                                                                                                                 |
+| **`graphify` CLI**          | Builds and refreshes `graphify-out/`, the store the `graphify` MCP server reads. Host-provided: `install.sh` does not install it. Advisory: without it, graphify is reported unmeasured, never clean.                 |
+| **`flock`** (util-linux)    | The lock the graph hook's detached graphify refresh runs under. An advisory host prerequisite: without it no refresh starts, and the hook reports that unmeasured.                                                    |
 
 The six MCP servers the project ships — `code-review-graph`, `graphify`, `context7`, `mcp-mermaid`,
 `perplexity` and `scrapling` — need **no installation**. They are declared in the shipped
 `.mcp.json` (and in `.codex/config.toml`, which must declare the same set) and launched on demand
-through `uvx` and `npx`.
+through `uvx` and `npx`. The `graphify` server is launched the same way, but it reads a
+`graphify-out/` store that only the host `graphify` CLI above builds; without one the agent, not
+the server, reports graphify unmeasured.
 
 **`perplexity` needs one optional thing more: a `PERPLEXITY_API_KEY` in your environment.** It is
 the cited web-answer tier of the lookup order, between `context7` and web search. Without the key

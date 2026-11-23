@@ -87,7 +87,8 @@ rule. **Do not copy the shape of a sibling that may predate the guide.**
 
 - **Documentation is a hard gate.** The implementation records and every affected `CONTEXT.md`
   must be complete **before** any commit, with the code-review-graph refreshed alongside them;
-  graphify is refreshed alongside, advisory.
+  graphify's code layer alongside (advisory); its doc layer is the developer's
+  `/graphify --update`.
 - **That closeout writes one `project-management/src/18-TESTS/` record and walks the other, and
   neither is drafted the way a guide is.** Half of `AUTOMATED/US###-TEST-STATUS.md` is written by
   `bash code/src/scripts/tests/test-record.sh US###`. `MANUAL/US###-MANUAL-TESTING.md` was

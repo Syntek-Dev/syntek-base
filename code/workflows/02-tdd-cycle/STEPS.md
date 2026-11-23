@@ -205,7 +205,8 @@ Do not proceed to Phase 3 if any test is red or if the type-check fails.
 refactor [scope]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `refactor` · **Model:** opus · **MCP:** code-review-graph, graphify as fallback
+> **↳ New dispatch:** `general-purpose` · **Skill:** `refactor` · **Model:** opus · **MCP:**
+> code-review-graph, graphify as fallback
 
 Improve readability and structure. No new behaviour. All tests — including Bruno API tests — must
 remain green after every refactor step.
@@ -235,14 +236,16 @@ formats, destinations, or templates here; a second copy is exactly how they drif
 doc-writer
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `doc-writer` · **Model:** opus · **MCP:** graphify (cross-artefact), code-review-graph (code) — each the other's fallback
+> **↳ New dispatch:** `general-purpose` · **Skill:** `doc-writer` · **Model:** opus · **MCP:**
+> graphify (cross-artefact), code-review-graph (code) — each the other's fallback
 
 It covers the IMPLEMENTATION record for every applicable spec (GDPR, security, QA, SEO, API),
 the story's automated test record `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md`
 written and its manual guide `project-management/src/18-TESTS/MANUAL/US###-MANUAL-TESTING.md`
 walked, the story's findings record in `project-management/src/20-FINDINGS/`, the `/GAPS.md` and
 `/DEFERRED.md` routing, the `CONTEXT.md`/`CLAUDE.md` closeout across every touched layer, and
-the code-review-graph refresh, with graphify refreshed alongside (advisory).
+the code-review-graph refresh, with graphify's code layer alongside (advisory); its doc layer is
+the developer's `/graphify --update`.
 
 **Hard gate:** implementation docs, the touched `CONTEXT.md`/`CLAUDE.md`, and the graph refresh
 must all be complete **before any commit** (`.claude/CLAUDE.md` Section 6).

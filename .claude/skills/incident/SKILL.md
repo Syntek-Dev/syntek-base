@@ -50,9 +50,10 @@ autonomously, because the blast radius is live and the human is under load.
 ### 1. Establish state, then help declare
 
 Find out what is actually known before asking anything. Look it up — `code-review-graph`
-(structure; or `graphify`, across artefacts) → Read/Grep/Glob → `.claude/plugins/*.py` — and for dev, the logs via
-`bash code/src/scripts/development/logs.sh`. Staging and production observability is
-`code/workflows/09-debugging-with-logs/`; server access is the `<%DEPLOY_REPO%>` runbooks.
+(structure; or `graphify`, across artefacts) → Read/Grep/Glob → `.claude/plugins/*.py` — and for
+dev, the logs via `bash code/src/scripts/development/logs.sh`. Staging and production
+observability is `code/workflows/09-debugging-with-logs/`; server access is the
+`<%DEPLOY_REPO%>` runbooks.
 
 Then state, in three lines: what is broken, which surfaces, and what is already ruled out by what
 you found. Recommend a severity against the project's incident-response policy and say why —

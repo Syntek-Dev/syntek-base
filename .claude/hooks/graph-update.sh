@@ -19,15 +19,34 @@
 # cross-artefact questions (docs, PM artefacts, how a concept crosses code and documentation);
 # code-review-graph answers the code relationships, and the commit gate stays its alone. A
 # graphify update is slower than one tool call should wait for, so it is started in the
-# background with its output closed, under a lock (`flock -n`): a run in flight means nothing new
-# starts, and nothing is said about the skip. Its output and exit code land in
-# .code-review-graph/graphify.last{,.rc}, and the NEXT call reads them. It is never forced: a
-# graphify that refuses to overwrite a graph has found nodes it would lose, and overriding that
-# is a person's decision, not a hook's. An absent graphify, a refusal or a failed run is
-# reported as UNMEASURED (code/docs/GATE-REPORTING.md), once per change of that state, and never
-# blocks. Everything it writes sits under the gitignored .code-review-graph/.
+# background, in its own session (`setsid`, where the host has it) with its output closed, under
+# a lock (`flock -n`): a run in flight means nothing new starts, and nothing is said about the
+# skip. `graphify update .` refreshes graphify's CODE layer only; its doc layer is the
+# developer's `/graphify --update`. It is never forced: a graphify that refuses to overwrite a
+# graph has found nodes it would lose, and overriding that is a person's decision, not a hook's.
 #
-# PostToolUse stdout is discarded (written to the debug log, not shown), so the notice is
+# WHEN A RUN STARTS (review M1). Only when the tree differs from the one the last run started
+# from. The fingerprint is HEAD, `git status --porcelain=v1 --untracked-files=all`, a checksum of
+# `git diff HEAD`, and graphify-out/graph.json's mtime (gitignored, so it must be named; a manual
+# `/graphify` rebuild re-arms the hook). It is written to .code-review-graph/graphify.fp inside
+# the locked run, before graphify starts, and the mtime half is rewritten once graphify finishes,
+# so a run never re-arms itself by rewriting graph.json.
+#
+# WHAT A RUN LEAVES (review n2). One file, .code-review-graph/graphify.last: graphify's output
+# with a final line `exit=<N>`, written to a temporary and moved into place by a single rename,
+# so a reader never pairs one run's output with another's exit code. The exit code is reduced to
+# digits before it is interpolated into JSON (n1). Refused versus failed is decided by grepping
+# that file for "Refusing to overwrite".
+#
+# TWO MODES. Per edit (no argument): an absent graphify, a missing flock, a refusal or a failed
+# run is reported as UNMEASURED (code/docs/GATE-REPORTING.md), once per change of that state.
+# `--commit` (lefthook's pre-commit `graphify` step, review M2): graphify only — no
+# code-review-graph call, no untracked notice — the last outcome reported as plain text on EVERY
+# commit when it is not ok (none recorded yet included), then the same detached, fingerprinted
+# refresh. Neither mode ever blocks. Everything it writes sits under the gitignored
+# .code-review-graph/. Host prerequisites for the refresh: graphify and flock on PATH.
+#
+# PostToolUse stdout is discarded (written to the debug log, not shown), so the per-edit notice is
 # emitted as JSON `systemMessage`, which surfaces to <%DEVELOPER_NAME%>. Both notices share ONE
 # JSON line when both fire: two lines would not parse as one object, and both would be lost.
 #
@@ -35,50 +54,115 @@
 # the session, and a stale graph is not an error worth blocking on.
 set -uo pipefail
 
+MODE="edit"
+case "${1:-}" in
+  --commit) MODE="commit" ;;
+  --graphify-run) MODE="run" ;; # internal: the detached, locked run itself
+esac
+
+SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)/$(basename "${BASH_SOURCE[0]}")"
 ROOT=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
 cd "$ROOT" || exit 0
 
-# The refresh itself. Never let its exit status escape.
-code-review-graph update --skip-flows >/dev/null 2>&1 || true
-
 readonly STATE_DIR=".code-review-graph"
-mkdir -p "$STATE_DIR" 2>/dev/null || true
-
-# ── graphify: read the last run's outcome, then start the next run ───────────
 readonly G_STATE="$STATE_DIR/.graphify-notice"
 readonly G_LOCK="$STATE_DIR/graphify.lock"
 readonly G_OUT="$STATE_DIR/graphify.last"
-readonly G_RC="$STATE_DIR/graphify.last.rc"
+readonly G_FP="$STATE_DIR/graphify.fp"
+readonly G_GRAPH="graphify-out/graph.json"
 
+# tree_fp — what graphify would see, minus its own graph: HEAD, status, and the diff's checksum.
+tree_fp() {
+  local head status diff
+  head=$(git rev-parse HEAD 2>/dev/null || echo "nohead")
+  status=$(git status --porcelain=v1 --untracked-files=all 2>/dev/null | cksum | awk '{print $1}')
+  diff=$(git diff HEAD 2>/dev/null | cksum | awk '{print $1}')
+  printf '%s %s %s' "$head" "$status" "$diff"
+}
+# graph_mtime — whole seconds; GNU stat, then BSD stat, then "none" for no graph yet.
+graph_mtime() {
+  [ -f "$G_GRAPH" ] || { echo "none"; return 0; }
+  stat -c %Y "$G_GRAPH" 2>/dev/null || stat -f %m "$G_GRAPH" 2>/dev/null || echo "unknown"
+}
+
+# ── the run itself: locked, fingerprinted, one-file outcome ──────────────────
+if [ "$MODE" = "run" ]; then
+  trap '' HUP
+  tree="${2:-}"
+  exec 9>"$G_LOCK" || exit 0
+  flock -n 9 || exit 0
+  printf '%s %s\n' "$tree" "$(graph_mtime)" >"$G_FP" 2>/dev/null || true
+  tmp=$(mktemp "$G_OUT.tmp.XXXXXX" 2>/dev/null) || exit 0
+  graphify update . >"$tmp" 2>&1
+  printf 'exit=%s\n' "$?" >>"$tmp"
+  mv -f "$tmp" "$G_OUT"
+  # Absorb graphify's own rewrite of graph.json, keeping the tree half the run started from, so
+  # a change made while it ran still re-arms the next call.
+  printf '%s %s\n' "$tree" "$(graph_mtime)" >"$G_FP" 2>/dev/null || true
+  exit 0
+fi
+
+mkdir -p "$STATE_DIR" 2>/dev/null || true
+
+# The code-review-graph refresh — per edit only; lefthook owns it at commit. Never let its exit
+# status escape.
+if [ "$MODE" = "edit" ]; then
+  code-review-graph update --skip-flows >/dev/null 2>&1 || true
+fi
+
+# ── graphify: read the last run's outcome, then start the next run ───────────
 gstate=""
 if ! command -v graphify >/dev/null 2>&1; then
   gstate="absent"
 elif ! command -v flock >/dev/null 2>&1; then
   gstate="nolock"
-elif [ -f "$G_RC" ]; then
-  grc=$(cat "$G_RC" 2>/dev/null || echo "?")
-  if [ "$grc" = "0" ]; then
-    gstate="ok"
-  elif grep -q 'Refusing to overwrite' "$G_OUT" 2>/dev/null; then
-    gstate="refused"
-  else
-    gstate="failed:$grc"
-  fi
+elif [ -f "$G_OUT" ]; then
+  glast=$(tail -n 1 "$G_OUT" 2>/dev/null || echo "")
+  case "$glast" in
+    exit=*)
+      grc="${glast#exit=}"
+      grc="${grc//[!0-9]/}"
+      if [ "$grc" = "0" ]; then
+        gstate="ok"
+      elif grep -q 'Refusing to overwrite' "$G_OUT" 2>/dev/null; then
+        gstate="refused"
+      else
+        gstate="failed:${grc:-unknown}"
+      fi
+      ;;
+  esac
 fi
 
 if [ "$gstate" != "absent" ] && [ "$gstate" != "nolock" ]; then
-  # Detached: every descriptor the hook's caller reads is closed, so the hook never waits. The
-  # lock is held on fd 9 for the life of the run; a second caller's `flock -n` fails and exits.
-  # Output and exit code are written to temporaries and moved, so a reader never sees half a run.
-  (
-    trap '' HUP
-    flock -n 9 || exit 0
-    graphify update . >"$G_OUT.tmp" 2>&1
-    printf '%s\n' "$?" >"$G_RC.tmp"
-    mv -f "$G_OUT.tmp" "$G_OUT"
-    mv -f "$G_RC.tmp" "$G_RC"
-  ) 9>"$G_LOCK" </dev/null >/dev/null 2>&1 &
-  disown 2>/dev/null || true
+  tree=$(tree_fp)
+  stored=$(cat "$G_FP" 2>/dev/null || echo "")
+  if [ "$tree $(graph_mtime)" != "$stored" ]; then
+    # Detached: every descriptor the caller reads is closed, so the hook never waits; its own
+    # session where setsid exists, so a closing terminal or process group cannot reach it.
+    if command -v setsid >/dev/null 2>&1; then
+      setsid "$BASH" "$SELF" --graphify-run "$tree" </dev/null >/dev/null 2>&1 &
+    else
+      "$BASH" "$SELF" --graphify-run "$tree" </dev/null >/dev/null 2>&1 &
+    fi
+    disown 2>/dev/null || true
+  fi
+fi
+
+readonly G_TAIL="(advisory; code/docs/GATE-REPORTING.md)"
+graphify_message() {
+  case "$1" in
+    absent) echo "graphify unmeasured: it is not on PATH, so its cross-artefact graph was not updated (host-provided; $G_TAIL)." ;;
+    nolock) echo "graphify unmeasured: flock is not on PATH, so no graphify update was started (a host prerequisite; $G_TAIL)." ;;
+    refused) echo "graphify unmeasured: its last update stopped at Refusing to overwrite — saved nodes are missing from the rebuild, see $G_OUT; the hook never overrides it $G_TAIL." ;;
+    failed:*) echo "graphify unmeasured: its last update failed (exit ${1#failed:}), see $G_OUT $G_TAIL." ;;
+    "") echo "graphify unmeasured: no graphify update recorded yet, so its cross-artefact graph is unknown $G_TAIL." ;;
+  esac
+}
+
+# ── commit mode: the last outcome, every commit, as plain text ───────────────
+if [ "$MODE" = "commit" ]; then
+  [ "$gstate" = "ok" ] || graphify_message "$gstate"
+  exit 0
 fi
 
 gmsg=""
@@ -86,13 +170,8 @@ if [ -n "$gstate" ]; then
   gprevious=$(cat "$G_STATE" 2>/dev/null || echo "")
   # Record first, so a failure to emit never re-fires on the next tool call.
   printf '%s' "$gstate" >"$G_STATE" 2>/dev/null || true
-  if [ "$gstate" != "$gprevious" ]; then
-    case "$gstate" in
-      absent) gmsg="graphify unmeasured: it is not on PATH, so its cross-artefact graph was not updated (host-provided and advisory; code/docs/GATE-REPORTING.md)." ;;
-      nolock) gmsg="graphify unmeasured: flock is not on PATH, so no graphify update was started (advisory; code/docs/GATE-REPORTING.md)." ;;
-      refused) gmsg="graphify unmeasured: its last update stopped at Refusing to overwrite — saved nodes are missing from the rebuild, see .code-review-graph/graphify.last; the hook never overrides it (advisory; code/docs/GATE-REPORTING.md)." ;;
-      failed:*) gmsg="graphify unmeasured: its last update failed (exit ${gstate#failed:}), see .code-review-graph/graphify.last (advisory; code/docs/GATE-REPORTING.md)." ;;
-    esac
+  if [ "$gstate" != "$gprevious" ] && [ "$gstate" != "ok" ]; then
+    gmsg=$(graphify_message "$gstate")
   fi
 fi
 

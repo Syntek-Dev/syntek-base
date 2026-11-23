@@ -63,9 +63,9 @@ first, the pass is `grilling` — run inline, before this skill is dispatched.
 ## Before you write code
 
 1. **Reuse first, create second.** Use `code-review-graph` (`graphify` as its fallback, or
-   Grep/Glob) to find the existing models, managers, query scopes, services, validators and Policy classes. Copy-pasted query
-   logic, duplicated validation, or a permission check repeated across endpoints are all
-   defects — extract a shared manager, service method or Policy instead.
+   Grep/Glob) to find the existing models, managers, query scopes, services, validators and Policy
+   classes. Copy-pasted query logic, duplicated validation, or a permission check repeated across
+   endpoints are all defects — extract a shared manager, service method or Policy instead.
 2. **Read the target directory's `CONTEXT.md`** before working in it.
 3. **Check the data-layer pre-flight rules** (`code/docs/DATABASE.md`) — scope columns,
    database-level constraints, lock-safe migration shape, and the deferred-infrastructure

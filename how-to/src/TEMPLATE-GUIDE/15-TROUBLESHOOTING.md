@@ -286,7 +286,9 @@ graphify update .
 ```
 
 Refresh both whenever you revise the layered docs — they are views of one codebase and are
-meant to move together. graphify is **advisory**: never run it with `--force`. If it is absent, or
+meant to move together. `graphify update .` refreshes graphify's **code layer** only; a docs
+change reaches its doc layer through `/graphify --update`. graphify is **advisory**: never run it
+with `--force`. If it is absent, or
 refuses because it would drop semantic nodes, record it unmeasured; the semantic rebuild
 (`/graphify`) is your call.
 

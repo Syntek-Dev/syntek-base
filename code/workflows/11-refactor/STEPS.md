@@ -56,7 +56,8 @@ Load the `refactor` skill to identify issues and plan the changes.
 refactor [describe the scope and the problem to address]
 ```
 
-> **↳ New dispatch:** `general-purpose` · **Skill:** `refactor` · **Model:** opus · **MCP:** code-review-graph (refactor playbook — `.claude/skills/refactor-safely.md`), graphify as fallback
+> **↳ New dispatch:** `general-purpose` · **Skill:** `refactor` · **Model:** opus · **MCP:**
+> code-review-graph (refactor playbook — `.claude/skills/refactor-safely.md`), graphify as fallback
 
 ### Step 3 — Apply the Refactoring
 
@@ -86,7 +87,12 @@ bash code/src/scripts/syntax/check.sh
 2. Update the `**Last Updated**` date at the top of any `CONTEXT.md` you modified
 3. Add any new constraint, pattern, or decision to the relevant `CONTEXT.md`
 4. If this workflow created a new directory, add a `CONTEXT.md` inside it describing its purpose, contents, and when to use it
-5. Refresh the code-review-graph so its flows match the updated docs: `code-review-graph update` (or the `build_or_update_graph_tool` MCP tool) — keeps the graph and the layered docs in lockstep; refresh graphify alongside (`graphify update .`, never `--force`) — advisory: an absent tool or a refused or failed refresh is recorded unmeasured (`code/docs/GATE-REPORTING.md`), never blocking
+5. Refresh the code-review-graph so its flows match the updated docs: `code-review-graph update`
+   (or the `build_or_update_graph_tool` MCP tool) — keeps the graph and the layered docs in
+   lockstep; refresh graphify's code layer alongside (`graphify update .`, never `--force`) —
+   advisory: an absent tool or a refused or failed refresh is recorded unmeasured
+   (`code/docs/GATE-REPORTING.md`), never blocking; its doc layer is the developer's
+   `/graphify --update`
 
 ---
 

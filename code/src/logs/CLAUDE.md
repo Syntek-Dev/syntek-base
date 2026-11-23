@@ -33,8 +33,8 @@ Grafana, and Prometheus for metrics (`how-to/src/PLATFORM-PROVIDERS.md`).
   <%LOG_AGGREGATOR%>; never wire disk logging into a non-local settings module.
 - **Everything except the tracked marker files is gitignored** — never commit a log,
   and never add application code here.
-- Exception reports go to <%ERROR_TRACKING%>, metrics to Prometheus, aggregated logs to <%LOG_AGGREGATOR%>,
-  bug notes to `project-management/src/21-BUGS/` — not here.
+- Exception reports go to <%ERROR_TRACKING%>, metrics to Prometheus, aggregated logs to
+  <%LOG_AGGREGATOR%>, bug notes to `project-management/src/21-BUGS/` — not here.
 
 ## Output & naming
 
