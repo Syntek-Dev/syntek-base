@@ -50,8 +50,8 @@ A second graph, **graphify**, sits beside code-review-graph. They answer differe
   edit as the `PostToolUse` hook, and at commit as `--commit`, lefthook's `graphify` step beside
   `detect-changes`. Either way it starts `graphify update .` detached, under a lock, and only when
   the tree's content differs from the last run's or that run died mid-way; it is **never run with
-  `--force`**, nor with `GRAPHIFY_FORCE` set. An absent tool or a refused, killed or failed
-  refresh is reported **unmeasured** (`code/docs/GATE-REPORTING.md`) — once per state change per
+  `--force`**, nor with `GRAPHIFY_FORCE` set. An absent tool or a refused, killed, timed-out or
+  failed refresh is reported **unmeasured** (`code/docs/GATE-REPORTING.md`) — once per state change per
   edit, on every commit — and never blocks.
 - **The automatic refresh reaches graphify's code layer only.** `graphify update .` re-extracts
   code, with no LLM; a docs or PM change reaches graphify's doc layer only through the
@@ -65,9 +65,11 @@ A second graph, **graphify**, sits beside code-review-graph. They answer differe
   AST-only; it refuses to overwrite semantic nodes it cannot rebuild, and that refusal is the
   unmeasured case above, not a fault.
 - Both are host-provided, like every CLI here: `install.sh` installs neither. graphify's output is
-  `graphify-out/` (gitignored). The automatic refresh has one further **advisory host
-  prerequisite, `flock`** (util-linux): without it no refresh starts, and the hook reports that
-  unmeasured rather than run unlocked.
+  `graphify-out/` (gitignored). The automatic refresh has two further **advisory host
+  prerequisites, `flock`** (util-linux) **and `timeout`** (coreutils): without either no refresh
+  starts, and the hook reports that unmeasured rather than run unlocked or unbounded. Each run is
+  bounded at 600 s (`GRAPH_UPDATE_GRAPHIFY_TIMEOUT` overrides it), so a hung graphify is reported
+  timed out rather than leaving the last success standing.
 
 ## The four task playbooks
 

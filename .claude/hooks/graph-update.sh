@@ -20,9 +20,14 @@
 # code-review-graph answers the code relationships, and the commit gate stays its alone. A
 # graphify update is slower than one tool call should wait for, so it is started in the
 # background, in its own session (`setsid`, where the host has it) with its output closed, under
-# a lock (`flock -n`): a run in flight means nothing new starts, and nothing is said about the
-# skip. `graphify update .` refreshes graphify's CODE layer only; its doc layer is the
-# developer's `/graphify --update`. It is never forced: a graphify that refuses to overwrite a
+# a lock (`flock -w 1`, so a reader's momentary probe of the lock never stops a run): a run in
+# flight means nothing new starts, and nothing is said about the skip. Each run is bounded by
+# `timeout` (600 s, or GRAPH_UPDATE_GRAPHIFY_TIMEOUT), so a hung graphify cannot hold the lock
+# for good. A run the bound stopped, by TERM (exit 124) or by the KILL 10 s later (exit 137),
+# writes `timeout=<bound>` before its trailer and is reported as timed out after that bound;
+# graphify's own 124 or 137, inside the bound, is an ordinary failure. `graphify update .`
+# refreshes graphify's CODE layer only; its doc layer is the developer's `/graphify --update`.
+# It is never forced: a graphify that refuses to overwrite a
 # graph has found nodes it would lose, and overriding that is a person's decision, not a hook's.
 # graphify also honours GRAPHIFY_FORCE from the environment as a forced overwrite, so the hook
 # unsets it (QA Q1).
@@ -43,22 +48,25 @@
 # WHAT A RUN LEAVES (review n2). One file, .code-review-graph/graphify.last: graphify's output
 # with a final line `exit=<N>` (always on a line of its own, QA Q6), written to a temporary and
 # moved into place by a single rename, so a reader never pairs one run's output with another's
-# exit code. The exit code is reduced to digits before it is interpolated into JSON (n1). Refused
+# exit code. The exit code is reduced to digits before it is interpolated into JSON (n1). Timed
+# out is the line `timeout=<bound>` just before that trailer, never the exit code alone; refused
 # versus failed is decided by grepping that file for "Refusing to overwrite".
 #
 # A KILLED RUN (QA Q4). The run writes .code-review-graph/graphify.running under the lock before
 # graphify starts and removes it, still under the lock, after the outcome is in place. A marker
 # with the lock HELD is a run in flight (the previous outcome stands, nothing new starts); a
 # marker with the lock FREE is a run that died mid-way — reported unmeasured, never as the
-# previous run's exit=0, and the same tree is retried. The next run clears stale temporaries.
+# previous run's exit=0, and the same tree is retried. The next run clears stale temporaries. A
+# run that cannot make its temporary records a failed outcome directly and clears the marker.
 #
-# TWO MODES. Per edit (no argument): an absent graphify, a missing flock, a refusal or a failed
-# run is reported as UNMEASURED (code/docs/GATE-REPORTING.md), once per change of that state.
+# TWO MODES. Per edit (no argument): an absent graphify, a missing flock or timeout, a refusal, a
+# timed-out or a failed run is reported as UNMEASURED (code/docs/GATE-REPORTING.md), once per
+# change of that state.
 # `--commit` (lefthook's pre-commit `graphify` step, review M2): graphify only — no
 # code-review-graph call, no untracked notice — the last outcome reported as plain text on EVERY
 # commit when it is not ok (none recorded yet included), then the same detached, fingerprinted
 # refresh. Neither mode ever blocks. Everything it writes sits under the gitignored
-# .code-review-graph/. Host prerequisites for the refresh: graphify and flock on PATH.
+# .code-review-graph/. Host prerequisites for the refresh: graphify, flock and timeout on PATH.
 #
 # PostToolUse stdout is discarded (written to the debug log, not shown), so the per-edit notice is
 # emitted as JSON `systemMessage`, which surfaces to <%DEVELOPER_NAME%>. Both notices share ONE
@@ -89,6 +97,10 @@ readonly G_OUT="$STATE_DIR/graphify.last"
 readonly G_FP="$STATE_DIR/graphify.fp"
 readonly G_RUN="$STATE_DIR/graphify.running"
 readonly G_GRAPH="graphify-out/graph.json"
+# The bound on one graphify run, in seconds: a positive integer, or 600.
+G_TIMEOUT="${GRAPH_UPDATE_GRAPHIFY_TIMEOUT:-600}"
+case "$G_TIMEOUT" in '' | *[!0-9]* | 0 | 0*) G_TIMEOUT=600 ;; esac
+readonly G_TIMEOUT
 
 # tree_fp — what graphify would see, minus its own graph, by content alone: the index, the
 # worktree's diff against it, and each untracked file's path and content. Read-only git only.
@@ -116,16 +128,30 @@ if [ "$MODE" = "run" ]; then
   trap '' HUP
   tree="${2:-}"
   exec 9>"$G_LOCK" || exit 0
-  flock -n 9 || exit 0
+  # A short wait rides out a reader's lock_free instant; a run in flight holds it far longer.
+  flock -w 1 9 || exit 0
   # Under the lock from here on. Any temporary left now is a killed run's, never a live one's.
   rm -f "$G_OUT".tmp.* 2>/dev/null || true
   printf '%s\n' "$tree" >"$G_RUN" 2>/dev/null || true
   printf '%s %s\n' "$tree" "$(graph_mtime)" >"$G_FP" 2>/dev/null || true
-  tmp=$(mktemp "$G_OUT.tmp.XXXXXX" 2>/dev/null) || exit 0
-  graphify update . >"$tmp" 2>&1
+  # No temporary: record the failure directly and clear the marker, so the next call reads
+  # failed rather than killed. If even that write fails, the marker stays and killed is honest.
+  if ! tmp=$(mktemp "$G_OUT.tmp.XXXXXX" 2>/dev/null); then
+    printf 'graph-update.sh: mktemp failed, so graphify was not run\nexit=1\n' >"$G_OUT" 2>/dev/null \
+      && rm -f "$G_RUN" 2>/dev/null
+    exit 0
+  fi
+  # Bounded (exit=124 on timeout; -k: a graphify ignoring TERM is killed, exit=137), and fd 9
+  # closed so no descendant of a stopped graphify keeps holding the lock.
+  g_start=$SECONDS
+  timeout -k 10 "$G_TIMEOUT" graphify update . >"$tmp" 2>&1 9>&-
   rc=$?
   # The trailer always starts a line of its own, so output without a final newline keeps it.
   [ -s "$tmp" ] && [ -n "$(tail -c 1 "$tmp" 2>/dev/null)" ] && printf '\n' >>"$tmp"
+  # The bound fired only if the run lasted it: graphify's own 124 or 137 inside it is a failure.
+  if { [ "$rc" -eq 124 ] || [ "$rc" -eq 137 ]; } && [ $((SECONDS - g_start)) -ge "$G_TIMEOUT" ]; then
+    printf 'timeout=%s\n' "$G_TIMEOUT" >>"$tmp"
+  fi
   printf 'exit=%s\n' "$rc" >>"$tmp"
   mv -f "$tmp" "$G_OUT"
   rm -f "$G_RUN" 2>/dev/null || true
@@ -149,6 +175,8 @@ if ! command -v graphify >/dev/null 2>&1; then
   gstate="absent"
 elif ! command -v flock >/dev/null 2>&1; then
   gstate="nolock"
+elif ! command -v timeout >/dev/null 2>&1; then
+  gstate="notimeout"
 elif [ -f "$G_RUN" ] && lock_free; then
   # A run marker nobody holds the lock for: that run died mid-way, so its outcome is unknown —
   # never the previous run's exit=0.
@@ -159,8 +187,12 @@ elif [ -f "$G_OUT" ]; then
     exit=*)
       grc="${glast#exit=}"
       grc="${grc//[!0-9]/}"
+      # The run's own marker, on the line before the trailer, carries the bound that fired.
+      gmark=$(tail -n 2 "$G_OUT" 2>/dev/null | head -n 1)
       if [ "$grc" = "0" ]; then
         gstate="ok"
+      elif [[ "$gmark" =~ ^timeout=[0-9]+$ ]]; then
+        gstate="timeout:${gmark#timeout=}"
       elif grep -q 'Refusing to overwrite' "$G_OUT" 2>/dev/null; then
         gstate="refused"
       else
@@ -170,7 +202,7 @@ elif [ -f "$G_OUT" ]; then
   esac
 fi
 
-if [ "$gstate" != "absent" ] && [ "$gstate" != "nolock" ]; then
+if [ "$gstate" != "absent" ] && [ "$gstate" != "nolock" ] && [ "$gstate" != "notimeout" ]; then
   tree=$(tree_fp)
   stored=$(cat "$G_FP" 2>/dev/null || echo "")
   # A killed run recorded its tree before dying, so the same tree is retried regardless.
@@ -191,6 +223,8 @@ graphify_message() {
   case "$1" in
     absent) echo "graphify unmeasured: it is not on PATH, so its cross-artefact graph was not updated (host-provided; $G_TAIL)." ;;
     nolock) echo "graphify unmeasured: flock is not on PATH, so no graphify update was started (a host prerequisite; $G_TAIL)." ;;
+    notimeout) echo "graphify unmeasured: timeout is not on PATH, so no graphify update was started (a host prerequisite; $G_TAIL)." ;;
+    timeout:*) echo "graphify unmeasured: its last update timed out after ${1#timeout:} s, see $G_OUT $G_TAIL." ;;
     refused) echo "graphify unmeasured: its last update stopped at Refusing to overwrite — saved nodes are missing from the rebuild, see $G_OUT; the hook never overrides it $G_TAIL." ;;
     killed) echo "graphify unmeasured: its last update did not finish (killed or interrupted), so its outcome is unknown; the same tree is being retried $G_TAIL." ;;
     failed:*) echo "graphify unmeasured: its last update failed (exit ${1#failed:}), see $G_OUT $G_TAIL." ;;

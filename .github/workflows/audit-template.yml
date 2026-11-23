@@ -74,9 +74,9 @@ jobs:
         run: bash code/src/scripts/tests/pm-boards.sh
 
       # The per-edit graph hook's probes (.claude/hooks/graph-update.sh, US013): graphify started
-      # detached under a lock, never forced, an absent tool or a refused or failed run reported
-      # unmeasured once, and code-review-graph's pass unchanged. The tenth self-test the push leg
-      # runs (23/11/2026). Stubs only; git, tar and flock.
+      # detached under a lock and a timeout, never forced, an absent tool or a refused, failed or
+      # timed-out run reported unmeasured once, and code-review-graph's pass unchanged. The tenth
+      # self-test the push leg runs (23/11/2026). Stubs only; git, tar, flock and timeout.
       - name: Prove the graph hook (graphify detached, advisory; code-review-graph unchanged)
         run: bash code/src/scripts/tests/graph-update.sh
 

@@ -167,6 +167,7 @@ hostnames.
 | **Claude Chrome extension** | Rendered UI inspection and browser automation. Nothing in the repository supplies it.                                                                                                                                 |
 | **`graphify` CLI**          | Builds and refreshes `graphify-out/`, the store the `graphify` MCP server reads. Host-provided: `install.sh` does not install it. Advisory: without it, graphify is reported unmeasured, never clean.                 |
 | **`flock`** (util-linux)    | The lock the graph hook's detached graphify refresh runs under. An advisory host prerequisite: without it no refresh starts, and the hook reports that unmeasured.                                                    |
+| **`timeout`** (coreutils)   | The bound on each graphify refresh, so a hung run is reported timed out. Advisory: without it no refresh starts, and the hook reports that unmeasured. macOS needs coreutils on PATH under that name, not `gtimeout`. |
 
 The six MCP servers the project ships — `code-review-graph`, `graphify`, `context7`, `mcp-mermaid`,
 `perplexity` and `scrapling` — need **no installation**. They are declared in the shipped

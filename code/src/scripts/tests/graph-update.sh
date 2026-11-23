@@ -63,6 +63,20 @@
 #               line, exit=<N>, and the failure is reported with its code
 #   setsid      (QA Q12) setsid on PATH (a recording stand-in): the detached run is started
 #               through it; with no setsid on PATH the run still starts, detached, inside 2 s
+#   timeout     (bugfix) GRAPH_UPDATE_GRAPHIFY_TIMEOUT=1, a 5 s graphify: graphify.last ends
+#               timeout=1 then exit=124, reported timed out once per edit, every --commit
+#   notimeout   (bugfix) no timeout on PATH: unmeasured, naming timeout; no run started
+#   mktemp      (bugfix) mktemp fails in the run: a failed outcome, no marker left, never killed, no restart loop
+#   lockwait    (bugfix) a lock held 0.7 s as the run starts does not stop it; one held 2.5 s still starts none
+#   timeout-kill   (bugfix 2, M1) a graphify ignoring TERM under bound 1 is SIGKILLed after the
+#               kill grace: graphify.last ends timeout=1 then exit=137, reported timed out after 1 s
+#               (slow: the hook's 10 s kill grace is real, ~12 s)
+#   timeout-reader (bugfix 2, M2) timed out under bound 1, then read with no
+#               GRAPH_UPDATE_GRAPHIFY_TIMEOUT, per edit and by --commit: still "after 1 s"
+#   rc124       (bugfix 2, L1) graphify itself exiting 124 at once: no timeout= line, reported
+#               failed (exit 124), never timed out
+#   timeout-env (bugfix 2) GRAPH_UPDATE_GRAPHIFY_TIMEOUT 1.5, 10m, 010, 0, empty, " 5" each run
+#               under the 600 s bound, observed through a recording timeout (7 runs under 7)
 #
 # The fixture: `git archive HEAD` extracted into a `mktemp -d`, with the WORKING-TREE hook copied
 # over its committed one (so the suite judges the hook as edited, before and after the build),
@@ -85,7 +99,8 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 HOOK_REL=".claude/hooks/graph-update.sh"
 
 ALL_PROBES=(absent lock refuse success fail detached regression one-json fp commit nolock rc atomic
-  env-force git-locks killed content newline setsid)
+  env-force git-locks killed content newline setsid timeout notimeout mktemp lockwait
+  timeout-kill timeout-reader rc124 timeout-env)
 PROBES=()
 KEEP=false
 while [[ $# -gt 0 ]]; do
@@ -110,9 +125,10 @@ BASH_BIN="$(command -v bash)"
 JQ="$(command -v jq 2>/dev/null || true)"
 
 TMP="$(mktemp -d)"
-STUB_DIRS=()
+STUB_DIRS=() HOLDERS=()
 cleanup() {
   local d i
+  for d in "${HOLDERS[@]}"; do kill "$d" 2>/dev/null || true; done # lockwait's lock holders
   # Let every stub a detached run started finish before its directory goes (bounded: 12 s).
   for d in "${STUB_DIRS[@]}"; do
     for ((i = 0; i < 120; i++)); do [[ "$(started "$d")" -le "$(finished "$d")" ]] && break; sleep 0.1; done
@@ -181,7 +197,8 @@ write_crg_stub() {
 
 # graphify_stub MODE — install a recording graphify stub. MODE: ok | slow (3 s) | sleep5 | refuse |
 # fail | nonl (output with no final newline, exit 3) | hang (records the --graphify-run processes
-# above it and its own pid, then becomes a 30 s sleep, for kill_run). Every mode records
+# above it and its own pid, then becomes a 30 s sleep, for kill_run) | termignore (ignores TERM,
+# sleeps 30 s) | rc124 (graphify's own exit 124, at once). Every mode records
 # GRAPHIFY_FORCE as it saw it ("<unset>" when unset) in graphify.env.
 graphify_stub() {
   printf '%s\n' "$1" > "$SB/graphify.mode"
@@ -205,6 +222,8 @@ case "$(cat "$D/graphify.mode")" in
     rc=1 ;;
   fail) echo "Traceback (most recent call last): probe failure" >&2; rc=2 ;;
   nonl) printf 'partial output, no newline'; rc=3 ;;
+  termignore) trap '' TERM; sleep 30 ;; # ignored TERM is inherited by sleep: only KILL ends it
+  rc124) echo "graphify: its own failure, exit 124" >&2; rc=124 ;;
   hang)
     p=$PPID
     while [ -n "$p" ] && [ "$p" -gt 1 ]; do
@@ -730,6 +749,183 @@ STUB
   check "no setsid on PATH: exits 0" rc0
   check "  returns inside 2 s with a 5 s graphify run (took ${MS} ms)" test "$MS" -lt 2000
   check "  and the run starts all the same (2)" wait_started 2
+}
+
+# ── bugfix probes: an unbounded run, a stranded marker, the lock_free window ──
+# await_last RE [TENTHS] — up to TENTHS/10 s (default 4 s) for graphify.last's last line to match RE.
+await_last() {
+  local i
+  for ((i = 0; i < ${2:-40}; i++)); do
+    [[ -f "$(G_LAST)" && "$(tail -n 1 "$(G_LAST)")" =~ $1 ]] && return 0; sleep 0.1
+  done
+  return 1
+}
+# last_two_are A B — graphify.last ends with line A then line B (the timeout marker, then the trailer).
+last_two_are() { [[ -f "$(G_LAST)" ]] && [[ "$(tail -n 2 "$(G_LAST)")" == "$1"$'\n'"$2" ]]; }
+no_timeout_marker() { [[ -f "$(G_LAST)" ]] && ! grep -q '^timeout=' "$(G_LAST)"; }
+never_says() { ! grep -qiE -- "$1" <<< "$OUT"; }
+
+# The run's graphify call (the `timeout -k … graphify update .` line in the --graphify-run block)
+# must be bounded: unbounded, a hung run would keep the lock and the marker for good. The bound
+# that fired is written as `timeout=<N>` just before the `exit=<rc>` trailer.
+probe_timeout() {
+  make_fixture timeout; graphify_stub sleep5
+  HOOK_ENV=(GRAPH_UPDATE_GRAPHIFY_TIMEOUT=1)
+  hook
+  check "a 5 s graphify under GRAPH_UPDATE_GRAPHIFY_TIMEOUT=1 starts" wait_started 1
+  check "  and is stopped: graphify.last ends exit=124 inside 4 s" await_last '^exit=124$'
+  check "  preceded by the run's bound: timeout=1 then exit=124" last_two_are 'timeout=1' 'exit=124'
+  hook
+  check "the next call reports it timed out after 1 s" says 'graphify unmeasured: its last update timed out after 1 s'
+  check "  naming graphify.last" says 'graphify\.last'
+  hook
+  check "a third call, the same timeout, says nothing more" silent_graphify
+  hook --commit
+  check "--commit reports the timeout" says 'timed out after 1 s'
+  hook --commit
+  check "  and again at the next commit (every commit)" says 'timed out after 1 s'
+  touch "$SB/graphify.done.timeout-$(date +%s%N)" # a stopped stub never records its own end
+}
+
+# The fix bounds the run with `timeout`; with none on PATH nothing may start unbounded.
+probe_notimeout() {
+  make_fixture notimeout; graphify_stub ok
+  HOOK_PATH="$SB:$(shadow_without timeout)"
+  hook
+  check "exits 0 with no timeout on PATH" rc0
+  check "  reports graphify unmeasured: timeout is not on PATH" says 'graphify unmeasured: timeout is not on PATH'
+  check "  and starts no run" still_started 0
+  hook --commit
+  check "--commit reports it too" says 'timeout is not on PATH'
+}
+
+# The run marker (graphify.running) is written before the run's mktemp: a failed mktemp that
+# simply exited would release the lock and leave the marker, so every later call would read
+# `killed` and restart the same tree. The run must record a failed outcome and clear the marker.
+probe_mktemp() {
+  make_fixture mktemp; graphify_stub ok
+  printf '#!%s\nprintf "%%s\\n" "$*" >> %q\nexit 1\n' "$BASH_BIN" "$SB/mktemp.argv" > "$SB/mktemp"
+  chmod +x "$SB/mktemp"
+  hook
+  check "a run whose mktemp fails records a failed outcome (exit=<non-zero>)" await_last '^exit=[1-9][0-9]*$'
+  check "  and leaves no graphify.running" test ! -e "$FX/.code-review-graph/graphify.running"
+  local runs; runs="$(grep -c . "$SB/mktemp.argv" 2>/dev/null || echo 0)"
+  hook
+  check "the next call reports the failure" says 'graphify unmeasured: its last update failed'
+  check "  never as killed or unfinished" bash -c '! grep -qiE "killed|did not finish" <<< "$1"' _ "$OUT"
+  hook
+  check "  and neither call restarts the same tree (mktemp still $runs)" \
+    bash -c 'sleep 1.5; [[ $(grep -c . "$1") -eq $2 ]]' _ "$SB/mktemp.argv" "$runs"
+}
+
+# lock_free() takes the lock for an instant; the run's `flock -w 1 9` must ride that instant out
+# (a non-blocking flock landing in it would exit unrun) yet still give way to a run in flight.
+# hold_lock SECS holds graphify.lock from the probe, returning once it is held.
+hold_lock() {
+  local ready="$FX/../held.$1" i
+  mkdir -p "$FX/.code-review-graph"
+  flock "$FX/.code-review-graph/graphify.lock" -c "touch '$ready'; sleep $1" & HOLDERS+=("$!")
+  for ((i = 0; i < 30; i++)); do [[ -e "$ready" ]] && return 0; sleep 0.1; done; return 1
+}
+probe_lockwait() {
+  make_fixture lockwait; graphify_stub ok
+  hold_lock 0.7
+  hook
+  check "a lock held 0.7 s (a lock_free instant, stretched) as the run starts does not stop it" wait_started 1
+  wait_done
+  local n; n="$(started "$SB")"
+  printf 'probe\n' > "$FX/probe-lockwait.txt"
+  hold_lock 2.5
+  hook
+  check "a lock held 2.5 s (a run in flight) starts no second graphify (still $n)" still_started "$n"
+  wait "${HOLDERS[-1]}" 2>/dev/null || true
+  check "  nor once it is released (still $n)" still_started "$n"
+}
+
+# ── bugfix 2 probes: timed out is the run's marker, never an exit code (M1, M2, L1) ──
+# A graphify ignoring TERM outlives the bound; `timeout -k` SIGKILLs it after the kill grace, so
+# the run ends exit=137 — still the bound firing, so still a timeout, and still marked as one.
+probe_timeout_kill() {
+  make_fixture timeout-kill; graphify_stub termignore
+  HOOK_ENV=(GRAPH_UPDATE_GRAPHIFY_TIMEOUT=1)
+  hook
+  check "a TERM-ignoring graphify under GRAPH_UPDATE_GRAPHIFY_TIMEOUT=1 starts" wait_started 1
+  # 1 s bound + the hook's 10 s kill grace + margin: polled, up to 16 s.
+  check "  and is killed: graphify.last ends exit=137 inside 16 s" await_last '^exit=137$' 160
+  check "  preceded by the run's bound: timeout=1 then exit=137" last_two_are 'timeout=1' 'exit=137'
+  hook
+  check "the next call reports it timed out after 1 s" says 'graphify unmeasured: its last update timed out after 1 s'
+  check "  never as a failure (exit 137)" never_says 'failed|exit 137'
+  touch "$SB/graphify.done.timeout-kill-$(date +%s%N)" # a killed stub never records its own end
+}
+
+# The reader must print the bound the run had, read from the run's own marker, never its own env.
+probe_timeout_reader() {
+  make_fixture timeout-reader; graphify_stub sleep5
+  HOOK_ENV=(GRAPH_UPDATE_GRAPHIFY_TIMEOUT=1)
+  hook
+  check "a 5 s graphify under GRAPH_UPDATE_GRAPHIFY_TIMEOUT=1 starts" wait_started 1
+  check "  and is stopped: graphify.last ends exit=124 inside 4 s" await_last '^exit=124$'
+  touch "$SB/graphify.done.timeout-reader-$(date +%s%N)" # a stopped stub never records its own end
+  HOOK_ENV=()
+  hook
+  check "the next per-edit call, no GRAPH_UPDATE_GRAPHIFY_TIMEOUT, says after 1 s" says 'timed out after 1 s'
+  check "  never the reader's own 600 s" never_says 'after 600 s'
+  hook --commit
+  check "--commit, no GRAPH_UPDATE_GRAPHIFY_TIMEOUT, says after 1 s" says 'timed out after 1 s'
+  check "  never the reader's own 600 s" never_says 'after 600 s'
+  check "  and the unchanged tree started no second run (still 1)" still_started 1
+}
+
+# graphify's own exit 124, at once and far inside the bound: no bound fired, so no marker, and it
+# is an ordinary failure.
+probe_rc124() {
+  make_fixture rc124; graphify_stub rc124
+  hook
+  check "a graphify exiting 124 at once starts" wait_started 1
+  wait_done
+  check "  graphify.last ends exit=124" last_exit_is 124
+  check "  with no timeout= marker (the bound never fired)" no_timeout_marker
+  hook
+  check "the next call reports it failed (exit 124)" says 'graphify unmeasured: its last update failed \(exit 124\)'
+  check "  never as timed out" never_says 'timed out'
+  hook --commit
+  check "--commit reports it failed (exit 124) too" says 'failed \(exit 124\)'
+  check "  never as timed out" never_says 'timed out'
+}
+
+# timeout_recorder — a timeout ahead of the shadow one that records its argv, then execs the real one.
+timeout_recorder() {
+  cat > "$SB/timeout" <<STUB
+#!$BASH_BIN
+printf '%s\n' "\$*" >> $(printf '%q' "$SB/timeout.argv")
+exec $(printf '%q' "$SYSBIN/timeout") "\$@"
+STUB
+  chmod +x "$SB/timeout"
+}
+# bound_was N — the most recent recorded timeout call bounded `graphify update .` at N seconds.
+bound_was() {
+  [[ -s "$SB/timeout.argv" ]] && [[ "$(tail -n 1 "$SB/timeout.argv")" =~ (^|\ )$1\ graphify\ update\ \.$ ]]
+}
+probe_timeout_env() {
+  make_fixture timeout-env; graphify_stub ok; timeout_recorder
+  local v n=0 i=0
+  # The control first: a valid value is passed through, so the recorder sees the bound at all.
+  HOOK_ENV=(GRAPH_UPDATE_GRAPHIFY_TIMEOUT=7)
+  printf 'probe\n' > "$FX/probe-env-control.txt"
+  hook; n=$((n + 1))
+  check "GRAPH_UPDATE_GRAPHIFY_TIMEOUT=7 starts a run (control)" wait_started "$n"
+  wait_done
+  check "  bounded at 7 s" bound_was 7
+  for v in 1.5 10m 010 0 '' ' 5'; do
+    i=$((i + 1))
+    HOOK_ENV=("GRAPH_UPDATE_GRAPHIFY_TIMEOUT=$v")
+    printf 'probe\n' > "$FX/probe-env-$i.txt"
+    hook; n=$((n + 1))
+    check "GRAPH_UPDATE_GRAPHIFY_TIMEOUT='$v' starts a run ($n)" wait_started "$n"
+    wait_done
+    check "  bounded at the 600 s fallback" bound_was 600
+  done
 }
 
 for p in "${PROBES[@]}"; do

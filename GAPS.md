@@ -1746,3 +1746,28 @@ stays green. Found by US013's QA pass (Q9); that line now carries the marker by 
 **Blocked by / Action:** Nothing blocks it. Extract the path operand of a backticked `bash <path>`
 (and `sh`, `./<path>`) token and test it as the bare path is tested, with a fixture that fails
 without the fix. No map or story claims this entry.
+
+---
+
+## 23/11/2026 — two graphify-hook defects left open by the hung-run fix
+
+**Type:** Active gap
+**Summary:** The `bugfix` run behind
+"project-management/src/21-BUGS/BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md" closed
+its Medium and two Lows; its second, independent QA pass found two further Lows in
+`.claude/hooks/graph-update.sh`, recorded rather than fixed (<%DEVELOPER_NAME%>, 23/11/2026;
+findings F-018 and F-019 of the US013 record). Neither can report `ok` for a run that did not
+finish, which is the defect the fix exists for.
+
+- **graphify can forge the timeout marker.** The reader takes a penultimate line
+  `timeout=<digits>` as the bound having fired without checking the exit code beside it. A
+  graphify whose own output ends `timeout=30`, exiting 1, is reported "timed out after 30 s",
+  and a refusal printed in the same run is masked. Still unmeasured, never `ok`. Smallest fix:
+  accept the marker only when the trailer is `exit=124` or `exit=137`, with a probe for each case
+- **The `mktemp`-failure branch writes `graphify.last` in place.** Every other outcome lands by
+  rename; this one truncates and rewrites, so a reader landing in that instant reads no outcome
+  and reports "no graphify update recorded yet" for one call, against the header's single-rename
+  claim. Smallest fix: write a sibling path and rename it, or say so in the header
+
+**Blocked by / Action:** Nothing blocks them. One small `bugfix` pass on the hook, red probes
+first. No map or story claims this entry.
