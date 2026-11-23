@@ -64,8 +64,10 @@ the shipped template documentation read-only in a generated project.
   so a failure must not interrupt the session. It reports untracked files rather than adding
   them: a hook that ran `git add` would silently stage work nobody chose to commit. Keep its
   extension list in step with `code-review-graph status` → Languages, or the count under-reports.
-  Its graphify run stays **advisory** — detached, locked, fingerprinted, never `--force`; absent
-  or refused is unmeasured. `--commit` is lefthook's mode: keep graphify logic in this one script.
+  Its graphify run stays **advisory** — detached, locked, fingerprinted, never `--force`; absent,
+  refused or killed is unmeasured. Keep `GRAPHIFY_FORCE` unset and every git call read-only and
+  free of optional locks — it runs beside lefthook's parallel staging steps, so it must never take
+  `.git/index.lock`. `--commit` is lefthook's mode: keep graphify logic in this one script.
 - **`template-docs-readonly.sh` must stand down in syntek-base** — the `copier.yml` check is <!-- doc-references: template-only -->
   what keeps these guides editable here, where they are the product. Never drop it, and keep
   the hook paired with the `template-docs-readonly` job in `lefthook.yml`; a guard on one write

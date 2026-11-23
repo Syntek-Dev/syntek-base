@@ -49,9 +49,10 @@ A second graph, **graphify**, sits beside code-review-graph. They answer differe
 - **graphify is advisory.** One script, `.claude/hooks/graph-update.sh`, owns its refresh: per
   edit as the `PostToolUse` hook, and at commit as `--commit`, lefthook's `graphify` step beside
   `detect-changes`. Either way it starts `graphify update .` detached, under a lock, and only when
-  the tree differs from the last run's; it is **never run with `--force`**. An absent tool or a
-  refused or failed refresh is reported **unmeasured** (`code/docs/GATE-REPORTING.md`) — once per
-  state change per edit, on every commit — and never blocks.
+  the tree's content differs from the last run's or that run died mid-way; it is **never run with
+  `--force`**, nor with `GRAPHIFY_FORCE` set. An absent tool or a refused, killed or failed
+  refresh is reported **unmeasured** (`code/docs/GATE-REPORTING.md`) — once per state change per
+  edit, on every commit — and never blocks.
 - **The automatic refresh reaches graphify's code layer only.** `graphify update .` re-extracts
   code, with no LLM; a docs or PM change reaches graphify's doc layer only through the
   developer's `/graphify --update`. So wherever a procedure refreshes the graphs alongside a docs

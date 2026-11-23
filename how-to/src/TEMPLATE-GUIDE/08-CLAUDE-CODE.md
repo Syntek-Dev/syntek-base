@@ -208,14 +208,14 @@ Silent compaction loses decisions; a written handoff does not.
 
 Six scripts in `.claude/hooks/`, wired to five Claude Code events in `settings.json`:
 
-| Hook                           | Fires                                                                                                                                              |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pre-pr-check.sh`              | Before `gh pr create` — 8 gates: cloc, lockfiles, format, lint, stubs, typecheck, tests, security. Blocks the PR on failure.                       |
-| `template-docs-readonly.sh`    | Before any `Edit`/`Write` — makes `TEMPLATE-GUIDE/` and `TEMPLATE-TOKENS.md` read-only **in your project**, never here                             |
-| `post-pr-comment.sh`           | Posts gate results as a PR comment                                                                                                                 |
-| `graph-update.sh`              | After every `Edit`/`Write`/`Bash` — keeps the code-review-graph in step with the tree, and starts graphify's update beside it (detached, advisory) |
-| `context-threshold-handoff.sh` | Every prompt — measures context use and advises at 50%, insists at 75%                                                                             |
-| `pre-compact-handoff.sh`       | Intercepts compaction, on both the `auto` and `manual` matchers                                                                                    |
+| Hook                           | Fires                                                                                                                                                                                                                                                      |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pre-pr-check.sh`              | Before `gh pr create` — 8 gates: cloc, lockfiles, format, lint, stubs, typecheck, tests, security. Blocks the PR on failure.                                                                                                                               |
+| `template-docs-readonly.sh`    | Before any `Edit`/`Write` — makes `TEMPLATE-GUIDE/` and `TEMPLATE-TOKENS.md` read-only **in your project**, never here                                                                                                                                     |
+| `post-pr-comment.sh`           | Posts gate results as a PR comment                                                                                                                                                                                                                         |
+| `graph-update.sh`              | After every `Edit`/`Write`/`Bash` — keeps the code-review-graph in step with the tree, and starts graphify's code-layer update beside it only when the tree's content fingerprint differs from the last run's, or that run was killed (detached, advisory) |
+| `context-threshold-handoff.sh` | Every prompt — measures context use and advises at 50%, insists at 75%                                                                                                                                                                                     |
+| `pre-compact-handoff.sh`       | Intercepts compaction, on both the `auto` and `manual` matchers                                                                                                                                                                                            |
 
 `context-threshold-handoff.sh` assumes a **1M-token window**. On a smaller plan, set
 `CLAUDE_CONTEXT_WINDOW` in your environment or it fires from the opening prompt.

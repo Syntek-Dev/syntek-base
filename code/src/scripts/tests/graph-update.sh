@@ -14,8 +14,9 @@
 # Probes — each in its own fresh scratch copy (QA plan HP-16, ES-10 to ES-13):
 #   absent      no graphify on PATH: exit 0, graphify reported unmeasured and absent, once;
 #               the second call with the same state says nothing about graphify
-#   lock        a run in flight (a stub that sleeps 3 s): a second call starts no second run,
-#               and reports nothing for the skip
+#   lock        a run in flight (a stub that sleeps 3 s): a second call, on a tree CHANGED while
+#               that run holds the lock (so the fingerprint asks for a run), starts no second run
+#               and reports nothing for the skip — only the lock can stop it (QA Q2)
 #   refuse      graphify refuses to overwrite (its fail-closed lines, exit 1): the next call
 #               reports the refusal as unmeasured with its reason, once; no recorded invocation
 #               and no line of the hook carries `--force`
@@ -43,6 +44,25 @@
 #   atomic      (review n2) outcome and exit code are ONE file, .code-review-graph/graphify.last,
 #               whose last line is `exit=<digits>`, moved into place by a single rename; no
 #               graphify.last.rc is written, and a stale one is never paired with the output
+#   env-force   (QA Q1) GRAPHIFY_FORCE=1 exported into the hook: graphify still runs with the
+#               variable UNSET, in the per-edit and the --commit mode (graphify honours it as
+#               --force, the overwrite the hook never makes)
+#   git-locks   (QA Q3) a recording git on PATH: every `git status` and `git diff` the hook makes
+#               carries --no-optional-locks (or runs under GIT_OPTIONAL_LOCKS=0), and every
+#               index-writing git command it makes names a GIT_INDEX_FILE other than .git/index,
+#               so the hook never takes .git/index.lock beside lefthook's parallel staging
+#   killed      (QA Q4) a run killed mid-way (SIGKILL to the run and its graphify): while it was
+#               in flight a call is silent; afterwards --commit and the next per-edit call each
+#               report graphify unmeasured (never ok from the previous run's exit=0), each
+#               retries the SAME tree, and no stale graphify.last.tmp.* survives the retry
+#   content     (QA Q5, Q7, Q12) the fingerprint is content, not HEAD: a content-free commit
+#               (--allow-empty) re-arms nothing; a staged-only change, a staged rename, a nested
+#               untracked file, a second untracked file in the same nested directory, and an
+#               edit to an untracked file's content each re-arm exactly one run
+#   newline     (QA Q6) graphify output with no final newline: the trailer is still its own last
+#               line, exit=<N>, and the failure is reported with its code
+#   setsid      (QA Q12) setsid on PATH (a recording stand-in): the detached run is started
+#               through it; with no setsid on PATH the run still starts, detached, inside 2 s
 #
 # The fixture: `git archive HEAD` extracted into a `mktemp -d`, with the WORKING-TREE hook copied
 # over its committed one (so the suite judges the hook as edited, before and after the build),
@@ -64,7 +84,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 HOOK_REL=".claude/hooks/graph-update.sh"
 
-ALL_PROBES=(absent lock refuse success fail detached regression one-json fp commit nolock rc atomic)
+ALL_PROBES=(absent lock refuse success fail detached regression one-json fp commit nolock rc atomic
+  env-force git-locks killed content newline setsid)
 PROBES=()
 KEEP=false
 while [[ $# -gt 0 ]]; do
@@ -72,7 +93,7 @@ while [[ $# -gt 0 ]]; do
     --probe) [[ $# -ge 2 ]] || { echo "graph-update.sh: --probe needs a name" >&2; exit 2; }
              PROBES+=("$2"); shift 2 ;;
     --keep) KEEP=true; shift ;;
-    --help|-h) sed -n '4,61p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --help|-h) sed -n '4,/^set -euo pipefail$/{/^#/p}' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) printf 'graph-update.sh: unknown argument %s\n' "$1" >&2; exit 2 ;;
   esac
 done
@@ -149,6 +170,7 @@ make_fixture() {
   git -C "$FX" -c user.name=probe -c user.email=probe@example.invalid commit -q -m fixture
   STUB_DIRS+=("$SB")
   HOOK_PATH=""
+  HOOK_ENV=()
   write_crg_stub
 }
 
@@ -157,7 +179,10 @@ write_crg_stub() {
   chmod +x "$SB/code-review-graph"
 }
 
-# graphify_stub MODE — install a recording graphify stub. MODE: ok | slow (3 s) | sleep5 | refuse | fail.
+# graphify_stub MODE — install a recording graphify stub. MODE: ok | slow (3 s) | sleep5 | refuse |
+# fail | nonl (output with no final newline, exit 3) | hang (records the --graphify-run processes
+# above it and its own pid, then becomes a 30 s sleep, for kill_run). Every mode records
+# GRAPHIFY_FORCE as it saw it ("<unset>" when unset) in graphify.env.
 graphify_stub() {
   printf '%s\n' "$1" > "$SB/graphify.mode"
   cat > "$SB/graphify" <<STUB
@@ -168,6 +193,7 @@ STUB
 id="$(date +%s%N)-$$"
 { printf '%q ' "$@"; printf '\n'; } >> "$D/graphify.argv"
 printf '%s\n' "$PWD" >> "$D/graphify.cwd"
+printf '%s\n' "${GRAPHIFY_FORCE-<unset>}" >> "$D/graphify.env"
 rc=0
 case "$(cat "$D/graphify.mode")" in
   ok) echo "[graphify] graph updated" ;;
@@ -178,6 +204,15 @@ case "$(cat "$D/graphify.mode")" in
     echo "Nothing to update or rebuild failed — check output above." >&2
     rc=1 ;;
   fail) echo "Traceback (most recent call last): probe failure" >&2; rc=2 ;;
+  nonl) printf 'partial output, no newline'; rc=3 ;;
+  hang)
+    p=$PPID
+    while [ -n "$p" ] && [ "$p" -gt 1 ]; do
+      case "$(ps -o args= -p "$p" 2>/dev/null)" in *--graphify-run*) echo "$p" >> "$D/graphify.runpid" ;; esac
+      p=$(ps -o ppid= -p "$p" 2>/dev/null | tr -d ' ')
+    done
+    echo "$$" >> "$D/graphify.stubpid"
+    exec sleep 30 ;;
 esac
 touch "$D/graphify.done.$id"
 exit "$rc"
@@ -185,6 +220,31 @@ STUB
   chmod +x "$SB/graphify"
 }
 no_graphify() { rm -f "$SB/graphify"; }
+
+# kill_run — SIGKILL every process a hang-mode run recorded (the hook's --graphify-run wrapper
+# and graphify itself), count it finished for the waits, and give the lock a moment to drop.
+kill_run() {
+  local pids i
+  # The hang stub records its argv before its pids, so wait (up to 3 s) for the pids it writes
+  # last — killing on the argv alone races the stub (US013 QA round, 23/11/2026).
+  for ((i = 0; i < 30; i++)); do [[ -s "$SB/graphify.stubpid" ]] && break; sleep 0.1; done
+  pids="$(cat "$SB/graphify.runpid" "$SB/graphify.stubpid" 2>/dev/null || true)"
+  [[ -n "$pids" ]] || return 1
+  # shellcheck disable=SC2086 # one pid per word
+  kill -KILL $pids 2>/dev/null || true
+  rm -f "$SB/graphify.runpid" "$SB/graphify.stubpid"
+  touch "$SB/graphify.done.killed-$(date +%s%N)"
+  sleep 0.5
+}
+
+# shadow_without NAME — a copy of the shadow PATH lacking NAME; prints its directory.
+shadow_without() {
+  local dir f
+  dir="$TMP/$(basename "$(dirname "$SB")")/sysbin-no-$1"
+  mkdir -p "$dir"
+  for f in "$SYSBIN"/*; do [[ "${f##*/}" == "$1" ]] || ln -s "$(readlink "$f")" "$dir/${f##*/}"; done
+  printf '%s' "$dir"
+}
 
 started() { if [[ -f "$1/graphify.argv" ]]; then grep -c . "$1/graphify.argv" || true; else echo 0; fi; }
 finished() { find "$1" -maxdepth 1 -name 'graphify.done.*' | grep -c . || true; }
@@ -198,15 +258,17 @@ wait_done() {
 }
 
 # hook [ARGS] — one PostToolUse call (or, with --commit, one pre-commit call); sets OUT
-# (stdout+stderr), RC and MS (wall time until EOF). HOOK_PATH, when set, replaces the PATH.
+# (stdout+stderr), RC and MS (wall time until EOF). HOOK_PATH, when set, replaces the PATH;
+# HOOK_ENV adds NAME=VALUE pairs to the hook's otherwise empty environment.
 HOOK_PATH=""
+HOOK_ENV=()
 hook() {
   local t0 t1 path="${HOOK_PATH:-$SB:$SYSBIN}"
   t0="$(date +%s%N)"
   RC=0
   OUT="$(cd "$FX" && printf '{"hook_event_name":"PostToolUse","tool_name":"Edit"}' \
     | env -i HOME="$TMP/home" PATH="$path" GIT_CONFIG_GLOBAL=/dev/null GIT_CONFIG_NOSYSTEM=1 \
-        "$BASH_BIN" "$HOOK_REL" "$@" 2>&1)" || RC=$?
+        "${HOOK_ENV[@]}" "$BASH_BIN" "$HOOK_REL" "$@" 2>&1)" || RC=$?
   t1="$(date +%s%N)"
   MS=$(((t1 - t0) / 1000000))
 }
@@ -255,11 +317,15 @@ probe_lock() {
   hook
   check "first call exits 0" rc0
   check "  and starts one graphify run" wait_started 1
+  # Change the tree while the run is in flight, so the fingerprint asks for a run and only the
+  # lock can refuse it (QA Q2: on an unchanged tree the fingerprint alone hid a missing flock).
+  printf 'probe\n' > "$FX/probe-lock.txt"
   hook
-  check "a second call while that run holds the lock exits 0" rc0
+  check "a second call, tree changed, while that run holds the lock exits 0" rc0
   check "  and reports nothing for the skip" silent_graphify
   wait_done
   check "  and no second graphify run was started (exactly 1)" test "$(started "$SB")" -eq 1
+  check "  and the one run's outcome stands: exit=0" last_exit_is 0
 }
 
 probe_refuse() {
@@ -492,6 +558,178 @@ probe_atomic() {
   hook
   check "a stale graphify.last.rc is never paired with the output: the refusal is reported" \
     says 'Refusing to overwrite'
+}
+
+# ── QA-fix probes (Q1 to Q7, Q12) ─────────────────────────────────────────────
+# rearms LABEL / no_rearm LABEL — one per-edit call, then exactly one more start / none, counted
+# from the starts before it, so one step's verdict never shifts the next step's count.
+rearms() {
+  local before
+  before="$(started "$SB")"
+  hook
+  check "$1 ($((before + 1)))" wait_started "$((before + 1))"
+  wait_done
+}
+no_rearm() {
+  local before
+  before="$(started "$SB")"
+  hook
+  check "$1 (still $before)" still_started "$before"
+}
+force_never_seen() { [[ -s "$SB/graphify.env" ]] && ! grep -vqxF '<unset>' "$SB/graphify.env"; }
+
+probe_env_force() {
+  make_fixture env-force; graphify_stub ok
+  HOOK_ENV=(GRAPHIFY_FORCE=1)
+  hook
+  check "per edit, GRAPHIFY_FORCE=1 exported: exits 0 and starts a run" wait_started 1
+  wait_done
+  check "  and graphify ran with GRAPHIFY_FORCE unset" force_never_seen
+  printf 'probe\n' > "$FX/probe-force.txt"
+  hook --commit
+  check "--commit, GRAPHIFY_FORCE=1 exported: starts a run" wait_started 2
+  wait_done
+  check "  and graphify ran with GRAPHIFY_FORCE unset in that mode too (2 of 2)" \
+    bash -c '[[ $(grep -cxF "<unset>" "$1") -eq 2 ]]' _ "$SB/graphify.env"
+  check "no recorded graphify invocation carries --force" no_force_recorded
+}
+
+# git_wrapper — a recording git ahead of the shadow one: GIT_OPTIONAL_LOCKS|GIT_INDEX_FILE|argv.
+git_wrapper() {
+  cat > "$SB/git" <<STUB
+#!$BASH_BIN
+{ printf '%s|%s|' "\${GIT_OPTIONAL_LOCKS-<unset>}" "\${GIT_INDEX_FILE-<unset>}"; printf '%q ' "\$@"; printf '\n'; } >> $(printf '%q' "$SB/git.argv")
+exec $(printf '%q' "$SYSBIN/git") "\$@"
+STUB
+  chmod +x "$SB/git"
+}
+# git_lock_free — the hook's recorded git calls never take .git/index.lock: status and diff carry
+# --no-optional-locks (or GIT_OPTIONAL_LOCKS=0); index writers name another GIT_INDEX_FILE.
+git_lock_free() {
+  local line locks rest idx nol sub i
+  local -a a
+  [[ -s "$SB/git.argv" ]] || return 1
+  while IFS= read -r line; do
+    locks="${line%%|*}"; rest="${line#*|}"; idx="${rest%%|*}"
+    read -r -a a <<< "${rest#*|}"
+    nol=false; [[ "$locks" == 0 ]] && nol=true
+    i=0
+    while [[ "${a[i]:-}" == -* ]]; do
+      [[ "${a[i]}" == --no-optional-locks ]] && nol=true
+      case "${a[i]}" in -C|-c) i=$((i + 2)) ;; *) i=$((i + 1)) ;; esac
+    done
+    sub="${a[i]:-}"
+    case "$sub" in
+      status|diff) $nol || { echo "takes optional locks: $line"; return 1; } ;;
+      write-tree|add|update-index|read-tree|reset|rm|mv|stash|checkout|commit)
+        [[ "$idx" != "<unset>" && "$idx" != *.git/index ]] || { echo "writes .git/index: $line"; return 1; } ;;
+    esac
+  done < "$SB/git.argv"
+}
+
+probe_git_locks() {
+  make_fixture git-locks; graphify_stub ok; git_wrapper
+  printf 'edit\n' >> "$FX/README.md"
+  printf 'probe\n' > "$FX/probe-locks.txt"
+  hook
+  check "per edit: exits 0 and starts a run" wait_started 1
+  wait_done
+  printf 'edit two\n' >> "$FX/README.md"
+  hook --commit
+  check "--commit: starts a run" wait_started 2
+  wait_done
+  check "the hook's git calls were recorded" test -s "$SB/git.argv"
+  check "  and none of them takes .git/index.lock (status/diff with --no-optional-locks)" git_lock_free
+  check "  and no .git/index.lock is left" test ! -e "$FX/.git/index.lock"
+}
+
+probe_killed() {
+  make_fixture killed; graphify_stub ok
+  hook
+  check "a first run completes with exit=0" bash -c 'for ((i=0;i<50;i++)); do [[ -f "$1" ]] && [[ "$(tail -n 1 "$1")" == exit=0 ]] && exit 0; sleep 0.1; done; exit 1' _ "$(G_LAST)"
+  wait_done
+  graphify_stub hang
+  printf 'probe\n' > "$FX/probe-killed.txt"
+  hook
+  check "a changed tree starts a second run, which hangs (2)" wait_started 2
+  hook
+  check "  while it is in flight a call is silent about graphify" silent_graphify
+  check "  and starts nothing more (still 2)" still_started 2
+  check "  the run is killed mid-way (SIGKILL)" kill_run
+  hook --commit
+  check "--commit after the killed run reports graphify unmeasured (not the old exit=0)" \
+    bash -c 'grep -qi graphify <<< "$1" && grep -qi unmeasured <<< "$1"' _ "$OUT"
+  check "  and retries the same tree (3)" wait_started 3
+  check "  that retry is killed too" kill_run
+  graphify_stub ok
+  hook
+  check "the next per-edit call reports graphify unmeasured" \
+    bash -c 'grep -qi graphify <<< "$1" && grep -qi unmeasured <<< "$1"' _ "$OUT"
+  check "  as one valid JSON line" one_valid_json
+  check "  and retries the same tree once more (4)" wait_started 4
+  wait_done
+  check "  which records exit=0" last_exit_is 0
+  check "  and leaves no stale graphify.last.tmp.* behind" \
+    bash -c '! ls "$1"/graphify.last.tmp.* >/dev/null 2>&1' _ "$FX/.code-review-graph"
+  hook
+  check "the call after that is silent about graphify" silent_graphify
+  check "  and starts nothing (still 4)" still_started 4
+}
+
+probe_content() {
+  make_fixture content; graphify_stub ok
+  hook
+  check "first call starts one run" wait_started 1
+  wait_done
+  git -C "$FX" -c user.name=probe -c user.email=probe@example.invalid commit -q --allow-empty -m empty
+  no_rearm "a content-free commit (--allow-empty) re-arms nothing"
+  printf 'staged\n' >> "$FX/README.md"
+  git -C "$FX" add README.md
+  rearms "a staged-only change re-arms it"
+  git -C "$FX" mv VERSION probe-VERSION
+  rearms "a staged rename, content unchanged, re-arms it"
+  mkdir -p "$FX/probe-dir/sub"
+  printf 'a\n' > "$FX/probe-dir/sub/a.txt"
+  rearms "a nested untracked file re-arms it"
+  printf 'b\n' > "$FX/probe-dir/sub/b.txt"
+  rearms "a second untracked file in the same nested directory re-arms it"
+  printf 'more\n' >> "$FX/probe-dir/sub/a.txt"
+  rearms "an edit to an untracked file's content re-arms it"
+  no_rearm "  and the call after that starts nothing"
+}
+
+probe_newline() {
+  make_fixture newline; graphify_stub nonl
+  hook
+  check "a run whose output has no final newline starts" wait_started 1
+  wait_done
+  check "  its outcome's last line is still exit=3" last_exit_is 3
+  check "  with the output kept on its own line" grep -qxF 'partial output, no newline' "$(G_LAST)"
+  hook
+  check "the next call reports graphify unmeasured" says 'unmeasured'
+  check "  saying the run failed, exit 3" bash -c 'grep -qi fail <<< "$1" && grep -q "exit 3" <<< "$1"' _ "$OUT"
+}
+
+probe_setsid() {
+  make_fixture setsid; graphify_stub ok
+  cat > "$SB/setsid" <<STUB
+#!$BASH_BIN
+printf '%s\n' "\$*" >> $(printf '%q' "$SB/setsid.argv")
+exec $(printf '%q' "$SYSBIN/setsid") "\$@"
+STUB
+  chmod +x "$SB/setsid"
+  hook
+  check "setsid on PATH: a run starts" wait_started 1
+  wait_done
+  check "  through setsid (its own session)" grep -q -- '--graphify-run' "$SB/setsid.argv"
+  rm -f "$SB/setsid"
+  graphify_stub sleep5
+  HOOK_PATH="$SB:$(shadow_without setsid)"
+  printf 'probe\n' > "$FX/probe-setsid.txt"
+  hook
+  check "no setsid on PATH: exits 0" rc0
+  check "  returns inside 2 s with a 5 s graphify run (took ${MS} ms)" test "$MS" -lt 2000
+  check "  and the run starts all the same (2)" wait_started 2
 }
 
 for p in "${PROBES[@]}"; do

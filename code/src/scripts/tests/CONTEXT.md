@@ -7,7 +7,7 @@ Shell scripts for running the automated test suites. The backend and API runners
 containers; `e2e-py.sh` runs on the host against an already-running stack. Never run `pytest`
 directly.
 
-<!-- docs-length-allow: US013 registered graph-update.sh at 269; split this file at the US013 closeout (expires 23/12/2026) -->
+<!-- docs-length-allow: at 274 counted lines, 4 over the 270 ratchet, because US013 registered the template-only graph-update.sh in the tree, the runner table, its own paragraph and the audit-template.yml row; split this file at the US013 closeout (expires 23/12/2026) -->
 
 ## Two-phase backend execution
 
@@ -212,7 +212,7 @@ findings and bugs boards, on a synthetic `git init` holding **copies** of the th
 a path back into this checkout. Host only, git and python3; exit `0` / `1` / `2` as below.
 `template-hooks.sh` proves the template's own hook legs the same way, template-only. <!-- doc-references: template-only --> <!-- 21/11/2026: replaced planned-red.sh -->
 
-`bash code/src/scripts/tests/graph-update.sh` (`--probe NAME`, `--keep`) proves the hook
+`bash code/src/scripts/tests/graph-update.sh` (`--probe NAME`, `--keep`) proves the hook <!-- doc-references: template-only -->
 `.claude/hooks/graph-update.sh` in a `git archive HEAD` scratch copy per probe, with stub `graphify`
 and `code-review-graph` on `PATH`; host only, exit `0` / `1` / `2`; test-only and copier-excluded.
 

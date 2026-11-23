@@ -101,13 +101,16 @@ hook's own header carries the rest of the reasoning, including why a `permission
 incremental `code-review-graph update --skip-flows`, then reports how many **untracked** files in
 a parsed language sit outside the graph. Beside it, it starts `graphify update .` detached (its
 own session where `setsid` exists) under a `flock` lock, never with `--force`, and only when the
-tree's fingerprint (HEAD, status, diff, `graphify-out/graph.json`'s mtime) differs from the one
-the last run started from. That refreshes graphify's **code layer** only; its doc layer is the
-developer's `/graphify --update`. The outcome is one file, `.code-review-graph/graphify.last`,
-ending `exit=<N>`. Per edit, an absent graphify or `flock`, a refusal or a failed run is reported
-**unmeasured** (`code/docs/GATE-REPORTING.md`) once per state change; lefthook's `graphify` step
-calls `graph-update.sh --commit`, which reports the same outcome on every commit and starts the
-same refresh. Neither mode blocks. `graphify` and `flock` are host prerequisites.
+tree's content fingerprint (the index, the worktree diff, each untracked file's content and
+`graphify-out/graph.json`'s mtime, never HEAD) differs from the one the last run started from, or
+the last run died mid-way. It unsets `GRAPHIFY_FORCE` and takes no git optional locks. That
+refreshes graphify's **code layer** only; its doc layer is the developer's `/graphify --update`.
+The outcome is one file, `.code-review-graph/graphify.last`, ending `exit=<N>` on its own line;
+`graphify.running` marks a run in progress, so one that was killed reads as unknown, never as the
+previous success. Per edit, an absent graphify or `flock`, a refusal, a killed or a failed run
+is reported **unmeasured** (`code/docs/GATE-REPORTING.md`) once per state change; lefthook's
+`graphify` step calls `graph-update.sh --commit`, which reports the same outcome on every commit
+and starts the same refresh. Neither mode blocks. `graphify` and `flock` are host prerequisites.
 
 The report exists because the refresh is honest about the wrong thing: it diffs against a git
 ref, so a new and unstaged file is never parsed and the update still reports success. The graph

@@ -1132,30 +1132,19 @@ lock agreement only. No map or story claims this entry.
 
 **Type:** Active gap
 **Heading updated 23/11/2026:** was "two small doc and lint defects found during the Node 26
-move" (11/11/2026). The lint defect is closed below; the heading now states what is still open.
-**Summary:**
-
-- `how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md` says the floors in its table "are the ones
-  `install.sh` actually checks ... it refuses rather than warning". `install.sh` compares no
-  version of any tool. It checks that git, openssl, uv, pnpm and the Docker Compose v2 plugin are
-  on `PATH` and prints their versions; it does not check Python or Node at all. So the sentence
-  is false for every row of the table: Docker 24+, uv 0.13+, Python 3.14+, Node 26+ and pnpm
-  12.18.0+ (pnpm's floor is enforced, but by `package.json` `packageManager` and `engines`, not by
-  `install.sh`). Found for Node while moving the floor to 26, and widened on 11/11/2026; the
-  header and `--help` of `install.sh`, which also implied floors, now say presence only.
-- ✅ CLOSED 23/11/2026 — fixed in US013 (the graphify widening): `.markdownlint-cli2.jsonc`
-  carries `!graphify-out/**` in `globs` (since `edbdd20c`, US006, 15/11/2026) and now in
-  `ignores` too, so the exclusion holds when a file is named explicitly; a scoped
-  `lint.sh --file-type markdown --path graphify-out/GRAPH_REPORT.md` lints 0 files. Was:
-  `code/src/scripts/syntax/lint.sh --file-type markdown` lints the gitignored `graphify-out/`
-  directory, because its markdownlint globs carry no `!graphify-out/**` exclusion. A local
-  graphify run (412 issues in `GRAPH_REPORT.md` on 11/11/2026) therefore turns the whole
-  markdown lint red on any machine that has one.
+move" (11/11/2026). US013 claimed the lint half, so it has left this entry.
+**Summary:** `how-to/src/TEMPLATE-GUIDE/03-PREREQUISITES.md` says the floors in its table "are the
+ones `install.sh` actually checks ... it refuses rather than warning". `install.sh` compares no
+version of any tool. It checks that git, openssl, uv, pnpm and the Docker Compose v2 plugin are on
+`PATH` and prints their versions; it does not check Python or Node at all. So the sentence is false
+for every row of the table: Docker 24+, uv 0.13+, Python 3.14+, Node 26+ and pnpm 12.18.0+ (pnpm's
+floor is enforced, but by `package.json` `packageManager` and `engines`, not by `install.sh`). Found
+for Node while moving the floor to 26, and widened on 11/11/2026; the header and `--help` of
+`install.sh`, which also implied floors, now say presence only.
 
 **Blocked by / Action:** Nothing blocks it. Add real floor checks to `install.sh` for uv,
 Python, Node and Docker, read from the same sources `audits/toolchain-pins.sh` uses, or narrow the
-guide's sentence to "presence only". The lint half is closed (23/11/2026, above). No map or
-story claims this entry.
+guide's sentence to "presence only". No map or story claims this entry.
 
 ---
 
@@ -1740,3 +1729,20 @@ owns them — the one fitting slice, `S-04` of `MAP-RULE-OWNERSHIP`, took the th
 
 **Blocked by / Action:** Nothing blocks them. Each needs a feature map to claim it; the first three
 are one provider-neutrality slice in waiting. No map or story claims this entry.
+
+---
+
+## 23/11/2026 — `doc-references.sh` does not test a `bash <path>` token for a template-only citation
+
+**Type:** Active gap
+**Summary:** `code/src/scripts/audits/doc-references.sh` flags a bare backticked path to a
+copier-excluded file as a `[template-only citation]`, but not the same path written as a
+backticked command, `bash <path>`. Proof, in a `git archive HEAD` scratch copy at `5b622651`:
+`code/src/scripts/tests/CONTEXT.md:215` opened with the unmarked `bash` form of the excluded
+`graph-update.sh` suite and `--path` on that file reported "Clean"; with the token cut to the bare
+path, the same run reported `code/src/scripts/tests/CONTEXT.md:215 [template-only citation]`. So a
+shipped guide can promise a generated project a command whose script never travels, and the gate
+stays green. Found by US013's QA pass (Q9); that line now carries the marker by hand.
+**Blocked by / Action:** Nothing blocks it. Extract the path operand of a backticked `bash <path>`
+(and `sh`, `./<path>`) token and test it as the bare path is tested, with a fixture that fails
+without the fix. No map or story claims this entry.
