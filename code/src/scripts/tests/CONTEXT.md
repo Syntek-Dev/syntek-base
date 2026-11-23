@@ -7,6 +7,8 @@ Shell scripts for running the automated test suites. The backend and API runners
 containers; `e2e-py.sh` runs on the host against an already-running stack. Never run `pytest`
 directly.
 
+<!-- docs-length-allow: US013 registered graph-update.sh at 269; split this file at the US013 closeout (expires 23/12/2026) -->
+
 ## Two-phase backend execution
 
 `backend.sh` and `backend-coverage.sh` run pytest in two sequential phases:
@@ -36,6 +38,7 @@ code/src/scripts/tests/
 ├── CONTEXT.md                ← this file
 ├── cookie-preview-fixture.sh ← test-only: US008's generated scratch project + template-update preview proof
 ├── e2e-py.sh                 ← playwright-python browser suite (host; needs a running stack)
+├── graph-update.sh           ← US013 probes: the per-edit graph hook, graphify beside code-review-graph
 ├── hook-arming.sh            ← US009 probes: install-hooks.sh, its --notice mode, the manifest edits
 ├── mutmut.sh                 ← Python mutation testing (local-only; dev stack required)
 ├── open-coverage.sh          ← opens the backend coverage HTML in a browser
@@ -63,6 +66,7 @@ code/src/scripts/tests/
 | `backend-coverage.sh`       | pytest + cov        | exec    | Full test stack up  | `reports/backend-coverage/` (HTML, coverage.xml, 2 JUnit XML files)                          |
 | `cookie-preview-fixture.sh` | Copier + git        | host    | None (needs Copier) | N/A (console output; scratch removed on exit) <!-- doc-references: template-only -->         |
 | `e2e-py.sh`                 | pytest + playwright | host    | Dev stack up (:81)  | `reports/a11y/` + `reports/e2e/results.xml`                                                  |
+| `graph-update.sh`           | git + tar + stubs   | host    | None                | N/A (console output; scratch copies removed on exit)                                         |
 | `hook-arming.sh`            | git + pnpm + strace | host    | None                | `reports/hook-arming/<fixture>/` (evidence; scratch fixtures removed on exit)                |
 | `mutmut.sh`                 | mutmut              | exec    | Dev stack up        | N/A (console output)                                                                         |
 | `open-coverage.sh`          | xdg-open / open     | host    | None                | N/A                                                                                          |
@@ -207,6 +211,9 @@ runs. The `change-filter` fixture tests that decision offline against a scratch 
 findings and bugs boards, on a synthetic `git init` holding **copies** of the three scripts — never
 a path back into this checkout. Host only, git and python3; exit `0` / `1` / `2` as below.
 `template-hooks.sh` proves the template's own hook legs the same way, template-only. <!-- doc-references: template-only --> <!-- 21/11/2026: replaced planned-red.sh -->
+
+`bash code/src/scripts/tests/graph-update.sh` (`--probe NAME`, `--keep`) proves `.claude/hooks/graph-update.sh` in a
+`git archive HEAD` scratch copy per probe, with stub `graphify` and `code-review-graph` on `PATH`; host only, exit `0` / `1` / `2`.
 
 ## --output flag
 
