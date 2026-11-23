@@ -12,8 +12,8 @@
 | **Found during** | Manual walk — an out-of-scope observation by the independent GRAPH-row walker's `qa-tester` pass                   |
 | **Reporter**     | Claude (independent walker, `qa-tester`); fixed through `bugfix` at <%DEVELOPER_NAME%>'s instruction               |
 
-**Status:** Open
-**Status note:** Fix committed on `us013/log-debug-workflow-seam`; `Fixed` when the US013 PR merges, `Verified` once seen to hold after it
+**Status:** Fixed
+**Status note:** Fix `a3a4f86d` and its regression probes (`code/src/scripts/tests/graph-update.sh`, 199/199) merged into `dev` via PR #43 at `73cee9a5`, 23/11/2026; `Verified` once seen to hold after the merge
 
 ---
 

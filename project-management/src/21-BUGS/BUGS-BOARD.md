@@ -9,8 +9,8 @@ One row per bug report in `21-BUGS/` and `21-BUGS/archive/`, filed under its sta
 
 | Column   | Items |
 | -------- | ----- |
-| Open     | 10    |
-| Fixed    | 2     |
+| Open     | 9     |
+| Fixed    | 3     |
 | Verified | 2     |
 
 ## Open
@@ -26,7 +26,6 @@ One row per bug report in `21-BUGS/` and `21-BUGS/archive/`, filed under its sta
 | BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026                            | `doc-references.sh` outside a git work tree reports "Nothing to check" and exits 0               | Open   | [BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026.md](BUG-US008-DOC-REFERENCES-NO-GIT-16-11-2026.md)                                                       |
 | BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026                           | `lint.sh --path` runs markdownlint over a non-Markdown file                                      | Open   | [BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026.md](BUG-US008-LINT-PATH-NON-MARKDOWN-16-11-2026.md)                                                     |
 | BUG-US010-TIMING-PROBES-LOAD-SENSITIVE-21-11-2026                     | `shipped-boards.sh`'s three 2 s timing probes fail under load                                    | Open   | [BUG-US010-TIMING-PROBES-LOAD-SENSITIVE-21-11-2026.md](BUG-US010-TIMING-PROBES-LOAD-SENSITIVE-21-11-2026.md)                                         |
-| BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026                    | a hung graphify run leaves the graph hook reporting the last success indefinitely                | Open   | [BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md](BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md)                                       |
 
 ## Fixed
 
@@ -34,6 +33,7 @@ One row per bug report in `21-BUGS/` and `21-BUGS/archive/`, filed under its sta
 | ------------------------------------------------------ | ---------------------------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------- |
 | BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026 | `restore.sh` drops the database before discovering a relative backup path is wrong | Fixed  | [BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md](BUG-RESTORE-RELATIVE-BACKUP-PATH-AFTER-DROP-15-11-2026.md) |
 | BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026          | `install.sh`'s host-profile probes abort the whole install when one probe fails    | Fixed  | [BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md](BUG-US009-MACHINE-SPEC-PROBE-ABORT-17-11-2026.md)                   |
+| BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026     | a hung graphify run leaves the graph hook reporting the last success indefinitely  | Fixed  | [BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md](BUG-US013-GRAPHIFY-HOOK-HUNG-RUN-SILENT-23-11-2026.md)         |
 
 ## Verified
 
