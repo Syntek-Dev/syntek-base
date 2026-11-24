@@ -116,11 +116,13 @@ live (`.claude/CLAUDE.md` Section 0, posture `development`).
 | Reviewer           | Role                                   | Date       |
 | ------------------ | -------------------------------------- | ---------- |
 | Claude Code (Opus) | Recorder — re-assessment from evidence | 24/11/2026 |
-| <%DEVELOPER_NAME%> | Developer sign-off — **owed**          | —          |
+| <%DEVELOPER_NAME%> | Developer sign-off — countersignature  | 24/11/2026 |
 
 **Overall verdict:** no CRITICAL or HIGH was planned or introduced; every planned threat is
 mitigated in shipped code or contract text, or is a known, tracked residual. Not a security pass —
 the collector and edge half is untested here by construction, and the developer's sign-off is owed.
+
+**Countersigned 24/11/2026 by Sam**, the developer — not this record's author — with all US014 work: "I countersign, I give permission to tick the acceptance criteria on the stories." The TM-08 shape residual's ruling was given the same day: omit (findings F-003). The record is `../../../18-TESTS/MANUAL/US014-MANUAL-TESTING.md` → _Countersignature — 24/11/2026_. It is not a security pass for the collector and edge half, which stays untested here.
 
 ---
 

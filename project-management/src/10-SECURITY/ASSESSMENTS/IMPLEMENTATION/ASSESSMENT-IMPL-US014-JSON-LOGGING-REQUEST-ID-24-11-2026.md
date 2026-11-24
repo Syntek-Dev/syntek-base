@@ -125,12 +125,14 @@ day.
 | Reviewer           | Role                                 | Date       |
 | ------------------ | ------------------------------------ | ---------- |
 | Claude Code (Opus) | Recorder — evidence against the plan | 24/11/2026 |
-| <%DEVELOPER_NAME%> | Security sign-off — **owed**         | —          |
+| <%DEVELOPER_NAME%> | Security sign-off — countersignature | 24/11/2026 |
 
 **Overall verdict:** the story meets the plan's posture targets — fourteen of fourteen
 constraints closed with evidence, no CRITICAL or HIGH introduced, the two review MEDIUMs fixed.
 The collector and edge half is contract text this repository cannot exercise; the developer's
 security sign-off and the L3 ruling are owed before merge.
+
+**Countersigned 24/11/2026 by Sam**, the developer — not this record's author — with all US014 work: "I countersign, I give permission to tick the acceptance criteria on the stories." The L3 ruling was given the same day: omit (findings F-003), so F-004's ruling is no longer owed. The record is `../../../18-TESTS/MANUAL/US014-MANUAL-TESTING.md` → _Countersignature — 24/11/2026_.
 
 ---
 

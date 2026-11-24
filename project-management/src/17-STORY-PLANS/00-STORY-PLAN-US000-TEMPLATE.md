@@ -550,6 +550,10 @@ fixtures; parametrise; no stubs / `NotImplementedError` in green code.
 | [id]    | [behaviour] | [expected outcome] |
 
 - [Template and component behaviour is covered by backend pytest (`tests/backend.sh`).]
+- **Where the tests live — name the prefix, not a file:** `apps/<app>/tests/unit/test_<module>*.py`
+  carrying `pytest.mark.story("US###")`. A large scenario set splits across
+  `test_<module>_<concern>.py` modules to stay under the 750-line source limit, so a plan that
+  pins one filename forces a deviation it could have foreseen.
 
 ### API / contract — `tests/api.sh` (Bruno)
 

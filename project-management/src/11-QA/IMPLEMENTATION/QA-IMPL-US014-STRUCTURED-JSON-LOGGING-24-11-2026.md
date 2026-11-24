@@ -183,7 +183,7 @@ carries `X-Request-ID` (`DOCS-04`). Both are in
 - [x] Accessibility observations confirmed against the build — N/A
 - [x] GDPR & security observations confirmed
 - [x] Coverage floors met for all modules in scope — `observability.py` 93.4% / 87.8%, `middleware.py` 100%
-- [x] Manual testing sign-off (see `../../18-TESTS/MANUAL/US014-MANUAL-TESTING.md`) — walked 24/11/2026, Outcome Pass, 41 of 41 walked (CLOSE-04 retired); DOCS-04 and CLOSE-03 re-walked at `2a849997`
+- [x] Manual testing sign-off (see `../../18-TESTS/MANUAL/US014-MANUAL-TESTING.md`) — walked 24/11/2026, Outcome Pass, 41 of 41 walked (CLOSE-04 retired); DOCS-04 and CLOSE-03 re-walked at `2a849997`; countersigned by Sam 24/11/2026
 - [ ] Reviewer approval — **blocks merge until complete**
 
 ---

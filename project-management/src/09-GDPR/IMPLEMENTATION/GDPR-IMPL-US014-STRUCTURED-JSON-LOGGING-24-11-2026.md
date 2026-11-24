@@ -114,6 +114,8 @@ Each Section 10 task of the plan, closed **only with evidence** from the working
 | RESOLVED R2-Q8 — narrow every "dev is JSON" claim to Django's lines                  | Closed                   | `code/src/docker/CONTEXT.md` _Logs and observability_ table ("uvicorn access and error lines, plain text, console"); `config/settings/dev.py` comment above `LOGGING`                          |
 | ANSWERED by QA (AC-GAP-14, ES-10) — the test-stack access-line check                 | **Unmeasured** (runtime) | Static half read: no `--access-logfile` in `entrypoint.test.sh`. Runtime half not run — no script reads the test stack's output (`code/docs/GATE-REPORTING.md`). Never reported as passed      |
 
+**Countersigned 24/11/2026 by Sam**, the developer, with all US014 work: "I countersign, I give permission to tick the acceptance criteria on the stories." It closes none of the rows above marked **Open by design**: the LIA, the confirmed retention numbers, the edge access log's retention and the Art. 11 legal sign-off stay the controller's. The countersignature is the developer's sign-off of the template's engineering work, **not a legal sign-off**. The record is `../../18-TESTS/MANUAL/US014-MANUAL-TESTING.md` → _Countersignature — 24/11/2026_.
+
 ## 6. Deviations from plan
 
 - **None to the data flows, the claims or the rights position.**

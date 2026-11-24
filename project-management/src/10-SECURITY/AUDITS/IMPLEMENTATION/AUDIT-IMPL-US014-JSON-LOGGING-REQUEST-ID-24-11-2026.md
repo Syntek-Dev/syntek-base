@@ -86,10 +86,12 @@ Section 6: fourteen Closed, none Deferred.
 
 ## 8. Sign-off
 
-| Auditor            | Role                         | Date       |
-| ------------------ | ---------------------------- | ---------- |
-| Claude Code (Opus) | Recorder — independent walk  | 24/11/2026 |
-| <%DEVELOPER_NAME%> | Security sign-off — **owed** | —          |
+| Auditor            | Role                                 | Date       |
+| ------------------ | ------------------------------------ | ---------- |
+| Claude Code (Opus) | Recorder — independent walk          | 24/11/2026 |
+| <%DEVELOPER_NAME%> | Security sign-off — countersignature | 24/11/2026 |
+
+**Countersigned 24/11/2026 by Sam**, the developer — not this record's author — with all US014 work: "I countersign, I give permission to tick the acceptance criteria on the stories." The record is `../../../18-TESTS/MANUAL/US014-MANUAL-TESTING.md` → _Countersignature — 24/11/2026_.
 
 ---
 

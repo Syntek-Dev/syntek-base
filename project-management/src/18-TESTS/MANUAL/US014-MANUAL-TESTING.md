@@ -301,6 +301,25 @@ Filled at the walk.
 - [x] No secrets, real credentials, or personal data used or exposed during the walk
 - [x] Cross-checked against `../AUTOMATED/US014-TEST-STATUS.md` — a manual `Fail` and a green suite means a missing test
 
+### Countersignature — 24/11/2026
+
+**Sam countersigns all US014 work, 24/11/2026.** He first said: "I have also read through
+everything and we can countersign after this work is done". With workflow 22 complete at
+`86823ad6`, he gave it: "I countersign, I give permission to tick the acceptance criteria on the
+stories."
+
+- **What it covers:** the build at `e2dfde22`, the walk fixes at `2a849997`, this walk and its
+  re-walk, and the workflow-22 records at `86823ad6`. The developer sign-off rows of the threat
+  model, assessment and audit implementation records now read 24/11/2026, and so does the logging
+  record's status. His rulings on review L3 (omit) and F-004 (no change) were given separately the
+  same day (findings F-003, F-004).
+- **It changes no `Result`** in this guide, and it does not stand in for the walk or for the
+  _Tester sign-off_ above.
+- **Not covered by it:** the items the GDPR record leaves open by design for the controller (the
+  Art. 6(1)(f) LIA, the confirmed retention numbers, the edge access log's retention and the Art. 11
+  legal sign-off), because this countersignature is not a legal sign-off. Also not covered:
+  ES-10's runtime half (unmeasured), and the PR review, CI and merge at `23-pr-and-review`.
+
 ---
 
 ## Cross-references
