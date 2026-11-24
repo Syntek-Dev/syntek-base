@@ -81,7 +81,7 @@ _The manual testing guide for US008 — the checks and the one browser journey a
 
 The figures and the readings the rows below point at. The implementer pastes the baseline half
 here at the plan's P0, before the first edit — never reconstructed afterwards
-(`../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+(`../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which supersedes `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, puts it in this file);
 the walker pastes the close half at the walk. Each captured set is a fenced block beneath this
 table. Every figure carries its date. Nothing here carries a `Result`.

@@ -115,7 +115,7 @@ SPRINT-02's stretch, and its Decision states it binds **every story in this back
 is green**; US007's own Decisions section says it binds US007 "not only US003", and extends the
 same treatment to `skill-conformance.sh`. US001 predates both and is deliberately left as it
 stands, per the citation record's own Consequences. The citation record was superseded on
-30/09/2026 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+30/09/2026 by `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged — its Consequences included — but for the manual testing guide's
 path, so it binds US007 on the same terms. <!-- UPDATED 30/09/2026: successor added beside the superseded record,
 which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
@@ -475,7 +475,7 @@ question** — the rule `code/docs/GATE-REPORTING.md` states. Per gate:
   against a baseline captured before the first edit, never as exit 0 —
   `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which binds every story
   in this backlog until US004, now in SPRINT-03, retires it — superseded 30/09/2026 by
-  `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which restates it unchanged but for the manual testing guide's path <!-- UPDATED 30/09/2026: successor added beside the superseded record,
   which the 18-TESTS split superseded for the manual testing guide's path alone (settled
   30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->. US007's Scenario 13 states the regime

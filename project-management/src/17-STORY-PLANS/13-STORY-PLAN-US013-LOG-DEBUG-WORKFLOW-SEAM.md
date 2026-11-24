@@ -142,7 +142,7 @@
 **Implements no ADR, and the absence is the story's own reading.** `../02-STORIES/US013.md` →
 _Decisions_ records none, confirmed at `15-decisions` on 31/10/2026: every decision is a settled map
 node or reversible documentation. Its citation criterion is read under
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` (`Accepted`,
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` (`Accepted`,
 measured 01/11/2026): while `doc-references.sh` is red, the criterion is a baseline captured before
 the first edit and read as a diff, the baseline kept in the manual testing guide. US004 reads
 `Open`, so the regime applies.

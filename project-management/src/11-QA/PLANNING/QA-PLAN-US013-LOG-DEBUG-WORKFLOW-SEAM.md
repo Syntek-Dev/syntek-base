@@ -489,7 +489,7 @@ HP-04) is a dev log of a disposable stack, trimmed to what proves the command ra
 
 - **Precondition — recapture the `doc-references.sh` baseline before the first edit, finding by
   finding.** Per
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   the whole-tree count and every finding by identity go into
   `project-management/src/18-TESTS/MANUAL/US013-MANUAL-TESTING.md` before any file is touched. The
   gate-triage whole-tree run did not finish in 16 minutes, so no baseline exists yet; give it the
@@ -595,7 +595,7 @@ Taken on `pm/story-creation` at `9ee3ea7`, clean tree, before this plan was writ
 - `project-management/src/02-STORIES/US013.md` — the story this plan tests; AC-GAP-1 to -5 resolved in it 31/10/2026, the `qa-tester` fold applied 31/10/2026, AC-GAP-6 to -10 resolved in it 31/10/2026 (11-qa round 3), AC-GAP-11 and -12 resolved in it 31/10/2026 (11-qa round 4)
 - `project-management/src/03-SPRINTS/SPRINT-08.md` — the record US013 opens as its `Must`
 - `project-management/src/01-FEATURE-MAPS/MAP-RULE-OWNERSHIP.md` — slice `S-01`, nodes N-001, N-012, N-013; `S-07` owns the LogQL blocks
-- `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` — the baseline-and-diff regime
+- `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` — the baseline-and-diff regime
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US012-SEED-PRESENCE-GATE.md` — the CI-render and fixture precedent
 - `project-management/src/11-QA/PLANNING/QA-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md` — the docs-only precedent
 - `project-management/src/11-QA/IMPLEMENTATION/QA-IMPL-US000-TEMPLATE.md` — the post-implementation review that verifies this plan

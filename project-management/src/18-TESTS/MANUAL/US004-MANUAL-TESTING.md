@@ -35,7 +35,7 @@ _The manual testing guide for US004: the steps a tester follows against the cita
   explanatory footer repeats the class labels (`../../16-SPRINT-PLANS/03-SPRINT-PLAN-03.md`).
 - **The build captures:** taken on the story branch **before its first edit** and filled under
   _Recorded during the build_ — the story makes that a criterion, and
-  `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which supersedes `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, records the baseline
   here "before editing begins". Every row below is walked at `22`, the baseline rows reading
   those captures back.

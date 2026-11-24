@@ -185,7 +185,7 @@ file was overwritten.
 | `pm-board.sh --check`                          | —                  | pass                    | Boards current                                                                                                    |
 
 Findings over identities, compared as a multiset with line numbers stripped, per
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`.
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`.
 The close figures predate this closeout's records; the automated record's generated block is
 expected to add one identity of its own (finding F-009).
 

@@ -824,9 +824,9 @@ still exits 1 on 28 forward references owned by US005, US006, US010 and US014 (r
 15/11/2026 on `us006/posture-guard`: 18, owned by US005 (9), US014 (7) and US011 (2); US006
 now owns none). The baseline-diff
 regime of
-`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`
+`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`
 retires only when `S-06` lands **and** the gate goes green, so it stays in force, and so does
-`project-management/src/15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`, whose
+`project-management/src/15-DECISIONS/archive/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`, whose
 trigger is the same. Separately,
 `project-management/src/15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md` still
 says no gate verifies a PM `src/` citation, which Check 1 now does for the path form. Findings

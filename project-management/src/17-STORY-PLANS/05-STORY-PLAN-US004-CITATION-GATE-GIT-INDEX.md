@@ -124,7 +124,7 @@ Three further defects compound it, all measured at `7a82095` plus the working tr
 The cost is live and recorded: every story since 01/09/2026 carries a written disposition for this
 script's output, and `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` —
 superseded 30/09/2026 by
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged, retirement terms included — binds
 the whole backlog to reading a red gate as a diff against a baseline **until the gate is green**,
 not merely until US004's owned repairs land (clarified 09/10/2026). <!-- UPDATED 30/09/2026: successor added beside the superseded record,

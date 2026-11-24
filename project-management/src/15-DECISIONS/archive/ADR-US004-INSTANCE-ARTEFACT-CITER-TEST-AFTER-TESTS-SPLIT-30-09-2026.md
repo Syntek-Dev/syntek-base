@@ -181,7 +181,7 @@ keep policing.
   to discover it had lapsed. Recorded here rather than by a status change. _Carried forward
   unchanged. "Not superseded" means not superseded by US004's landing: on 30/09/2026 that record
   was superseded for the same 18-TESTS split by
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which restates its decision unchanged, so the retirement attaches to that decision wherever it
   is recorded._
 - **Follow-on:** the wider question of a gate meaning the same thing downstream is

@@ -207,14 +207,14 @@ this record opened with on 09/09/2026 is repaired rather than inherited; see Not
   reporting regime — "A story cannot be blocked on a gate it is forbidden to repair" — binding
   every story until `doc-references.sh` goes green; it sequences nothing. Its successor of
   30/09/2026,
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   restates it unchanged but for the manual testing guide's path. <!-- UPDATED 30/09/2026: successor added beside the superseded record,
   which the 18-TESTS split superseded for the manual testing guide's path alone (settled
   30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
   `project-management/src/03-SPRINTS/SPRINT-04.md` -> Dependencies states "**US006 does not block
   on US004**" and names both branches of its citation check, and the same applies here. US008 goes
   one step further than US006 did:
-  `project-management/src/15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md` makes the
+  `project-management/src/15-DECISIONS/archive/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md` makes the
   story's own criterion the scoped `--path code/docs` run, with ADR-US003 "stands as decided"
   and binds the story for the whole-tree figure. See Verification Checks.
 - **US008 shares no file with any placed story.** It edits five guides under `code/docs/` —
@@ -712,7 +712,7 @@ tasks on 30/09/2026, at gate `11`'s, from both QA plans as signed off that day (
 **The citation gate is inherited red, and this record adds its own findings to it — expected, not
 a regression.** `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
 superseded 30/09/2026 by
-`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged but for the manual testing guide's path, <!-- UPDATED 30/09/2026: successor added beside the superseded record,
 which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
@@ -1060,7 +1060,7 @@ rewritten to `bash install.sh` and its Development-scripts table gains an "insta
       at close classified by whether its file is in the story's edit set — a count is never the
       test (`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
       superseded 30/09/2026 by
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+      `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
       which restates it unchanged)
       <!-- UPDATED 30/09/2026: successor added beside the superseded record, which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 - [ ] **US008 — the five-document read-across is recorded**: each of the five states the rule or

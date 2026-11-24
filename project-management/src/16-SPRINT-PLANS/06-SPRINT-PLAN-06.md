@@ -568,11 +568,11 @@ its supply-chain subject.
 
 ### Decisions binding this sprint
 
-| ADR                                                                                     | Authored at           | What it binds                                                                                                                                                                 |
-| --------------------------------------------------------------------------------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `../15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`          | `15-decisions`, 21/09 | A map's Status header is one of five plain values, any prose after the first middle dot; every live map re-derived by measurement against the map's own counts                |
-| `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                | `15-decisions`, 21/09 | One rule for reading any register's Status into an index row, across all seven registers; US011 applies it and `S-03` inherits it                                             |
-| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` | Inherited, 30/09      | A red `doc-references.sh` is read as a diff against a baseline captured before the first edit. It supersedes the 02/09/2026 record and restates it unchanged but for one path |
+| ADR                                                                                             | Authored at           | What it binds                                                                                                                                                                 |
+| ----------------------------------------------------------------------------------------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `../15-DECISIONS/archive/ADR-US010-MAP-STATUS-IS-AN-ENUM-PREFIX-21-09-2026.md`                  | `15-decisions`, 21/09 | A map's Status header is one of five plain values, any prose after the first middle dot; every live map re-derived by measurement against the map's own counts                |
+| `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                        | `15-decisions`, 21/09 | One rule for reading any register's Status into an index row, across all seven registers; US011 applies it and `S-03` inherits it                                             |
+| `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` | Inherited, 30/09      | A red `doc-references.sh` is read as a diff against a baseline captured before the first edit. It supersedes the 02/09/2026 record and restates it unchanged but for one path |
 
 **All three read `Accepted`, measured 03/10/2026.** Both US010 records were written `Proposed` on
 21/09/2026 and accepted after an independent review, before the US010 commit `0c5e635` of

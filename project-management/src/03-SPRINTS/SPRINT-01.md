@@ -539,7 +539,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       (`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
       which binds every story in this backlog until US004 — now in SPRINT-03 — retires it;
       superseded 30/09/2026 by
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+      `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
       which restates it unchanged but for the manual testing guide's path). US001's
       flag predates that ADR and is deliberately left as it stands, per
       `project-management/src/16-SPRINT-PLANS/01-SPRINT-PLAN-01.md`: every citation resolves, and

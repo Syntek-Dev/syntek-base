@@ -245,7 +245,7 @@ countersignature of the walk is the open manual criterion.
 | code-review-graph                                                                                              | —                  | current at `426986d`                          | The `22-implementation-documentation` Step 7 refresh, confirmed at `23-pr-and-review` Step 6 (S6-07)                                                                                                                                                                   |
 
 Findings over identities, compared as a multiset with line numbers stripped, per
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`. The walk
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`. The walk
 figures predate this closeout's records; the automated record's generated block adds one identity
 of its own (finding F-025).
 

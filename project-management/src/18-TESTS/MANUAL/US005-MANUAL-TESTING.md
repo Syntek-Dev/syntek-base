@@ -37,7 +37,7 @@ _The manual testing guide for US005: the reads, recomputations and gate runs a t
   `code/docs/reliability/RETRIES.md` (Sam, 12/11/2026); the rows that read it say so.
 - **The build captures:** taken on the story branch **before its first edit** and filled under
   _Recorded during the build_ — the story requires the inventory captured before any statement is
-  edited, and `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  edited, and `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which supersedes `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, records a
   baseline "before editing begins". Every row below is walked at `22`, the first section reading
   those captures back.

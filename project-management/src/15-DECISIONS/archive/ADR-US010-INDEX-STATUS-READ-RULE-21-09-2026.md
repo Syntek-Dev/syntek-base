@@ -354,7 +354,7 @@ register (round 1 Q7).
   15-decisions pass" (its :8-9); that pass ran on 02/09/2026, before the record existed
   (`project-management/src/02-STORIES/US004.md:165-166`), and US004's Decisions list names four other
   records (:129-148). On 21/09/2026, among files tracked before this pass, the filename is cited
-  only by US011, `project-management/src/15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`
+  only by US011, `project-management/src/15-DECISIONS/archive/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`
   and `project-management/src/17-STORY-PLANS/01-STORY-PLAN-US007-STATUS-VOCABULARY-ONE-OWNER.md`.
   This pass's untracked artefacts also cite it: this record,
   `project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US010-SEEDED-REGISTER-INDEXES.md`

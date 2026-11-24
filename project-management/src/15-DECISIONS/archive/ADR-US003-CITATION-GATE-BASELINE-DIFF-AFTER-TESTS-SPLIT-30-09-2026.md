@@ -172,10 +172,10 @@ one **Supersedes** filename and one driving story to each ADR (D).
   who reaches the superseded record follows its **Superseded by** line here.
 - **Negative / trade-off:** Records that relate to the superseded decision relate to the same
   decision, now stated here, and none of them is edited.
-  `project-management/src/15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md` is a
+  `project-management/src/15-DECISIONS/archive/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md` is a
   scoped exception to its method. **This supersession is not the retirement that record's
   Follow-on names**
-  (`project-management/src/15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md:248-251`),
+  (`project-management/src/15-DECISIONS/archive/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md:248-251`),
   though this record does supersede the record it calls binding: this one restates a path, and
   that Follow-on is triggered by US004 landing with the whole-tree gate green. ADR-US008-SCOPED
   stays Accepted, now excepting from the method as this record states it, and its trigger is

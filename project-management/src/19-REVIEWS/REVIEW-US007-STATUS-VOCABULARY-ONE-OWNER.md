@@ -129,7 +129,7 @@ byte for byte.
 | `syntax/lint.sh --path` (each changed file) | —                  | exit 0                 | Whole-tree Markdown leg: exit 1, all in `graphify-out/` (F-002) |
 
 The identity diff compares `(file, kind, token)` with line numbers stripped and multiplicity kept,
-per `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`.
+per `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`.
 PR #19 (`a9378ec`), which landed between capture and close, moved no finding.
 
 ### Known reds for the PR body

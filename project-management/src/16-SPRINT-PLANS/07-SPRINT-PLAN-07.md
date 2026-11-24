@@ -248,7 +248,7 @@ diff and holds whichever of US011 and US012 lands first; landing US012 first mea
 exercised by the stronger check.
 
 **Neither member blocks on US004.**
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` is a
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` is a
 reporting regime and sequences nothing; see _Gate honesty_.
 
 ---
@@ -515,10 +515,10 @@ the same change as this plan. Both guides are authored at Step 7.2 and walked at
 
 ### Decisions binding this sprint
 
-| ADR                                                                                     | Authored at                                                               | What it binds                                                                                                                                                                                                                      |
-| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                | `15-decisions` for US010, 21/09; committed `Accepted` in `0c5e635`, 27/09 | US011: every row's `Status`, and `DECISION-INDEX.md`'s tail values, read by one rule — bold markers, backticks, any trailing HTML comment and everything from the first middle dot onward removed, then trimmed. US011 owns no ADR |
-| `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` | Inherited; supersedes its predecessor, 30/09                              | Binds every story in this backlog until the citation gate is green. US011's citation criterion is read against it as a baseline diff; US012's criteria run no citation gate                                                        |
+| ADR                                                                                             | Authored at                                                               | What it binds                                                                                                                                                                                                                      |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md`                        | `15-decisions` for US010, 21/09; committed `Accepted` in `0c5e635`, 27/09 | US011: every row's `Status`, and `DECISION-INDEX.md`'s tail values, read by one rule — bold markers, backticks, any trailing HTML comment and everything from the first middle dot onward removed, then trimmed. US011 owns no ADR |
+| `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` | Inherited; supersedes its predecessor, 30/09                              | Binds every story in this backlog until the citation gate is green. US011's citation criterion is read against it as a baseline diff; US012's criteria run no citation gate                                                        |
 
 **One superseded record is named beside its successor rather than dropped.**
 `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` reads `Superseded` since

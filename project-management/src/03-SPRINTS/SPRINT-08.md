@@ -160,7 +160,7 @@ are **owed** once every member has cleared the specify tier. See Notes.
   US014, which is also P8's order.
 - **Neither US013 nor US014 blocks on US004**, for the reason SPRINT-04 to SPRINT-07 each record for their
   own members: the citation gate's baseline-diff regime
-  (`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`)
+  (`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`)
   is a reporting regime and sequences nothing. US013's own QA criterion reads `doc-references.sh`
   under it unless US004 has landed and the gate is green, and US014's doc-gate row does the same
   (added 01/11/2026 on its admission).
@@ -504,7 +504,7 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       four H2s
 - [ ] `bash code/src/scripts/audits/doc-references.sh` — **read as a diff against the baseline
       captured before the first edit**, per
-      `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+      `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
       unless US004 has landed and the gate is green; never reported as a bare pass while the
       baseline stands
 - [ ] `bash code/src/scripts/audits/doctrine-drift.sh` — **regression guard only**: it reads fenced

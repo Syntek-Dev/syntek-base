@@ -40,11 +40,11 @@ a story that specifies a mitigation owns the channel that delivers it) and
 `../15-DECISIONS/ADR-US008-FORWARDED-PROTO-IS-A-PRECONDITION-17-09-2026.md` (`SECURE_PROXY_SSL_HEADER`
 is a stated precondition of the doctrine, and the requirement that satisfies it is written into
 `how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` Section 6), under
-`../15-DECISIONS/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md` (this story's citation criterion
+`../15-DECISIONS/archive/ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md` (this story's citation criterion
 is the scoped run) and `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (a red
 `doc-references.sh` is read as a diff against a recorded baseline until US004 retires the regime;
 superseded 30/09/2026, outside this story, by
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged but for the manual testing guide's path). <!-- UPDATED 30/09/2026: successor added beside the superseded record,
 which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
@@ -144,7 +144,7 @@ script reads; `code/src/scripts/audits/CONTEXT.md`'s clause register, deliberate
 under-counting by three (Q3); the `shared-ai-symlinks.sh` register row missing since 14/09/2026
 (a `GAPS.md` row of 17/09/2026); `S-01`'s rule-section filename and content; `S-03`'s dev/test host
 hygiene; `S-04`'s Phase 2 table; and **amending, appending to or superseding
-`project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which stays exactly as it
+`project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which stays exactly as it
 is** (Q13, <%DEVELOPER_NAME%> explicit, its object moved to that record: settled 30/09/2026, 16-sprint-plans grilling round 8 Q19) — its **Superseded by** reads `—` today and must
 still read `—` at close, its **Supersedes** names the record it replaced, and this story edits neither ADR. That record,
 `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, was superseded on 30/09/2026 —
@@ -1459,7 +1459,7 @@ bash project-management/src/00-ASSETS/scripts/export-clickup-stories.sh US008
       obligation reaches the workflow that executes it rather than living only in this plan —
       **or, if the implementer declines the scope addition (<%DEVELOPER_NAME%> left the call to
       them, 18/09/2026), a `GAPS.md` row stands in its place.** One of the two, never neither
-- [ ] `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` is **cited and
+- [ ] `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` is **cited and
       unchanged** — not amended, appended to or superseded, its **Superseded by** still reading `—` (Q13, <%DEVELOPER_NAME%> explicit, its object moved to this record: settled 30/09/2026, 16-sprint-plans grilling round 8 Q19).
       `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, which it superseded 30/09/2026 for the 18-TESTS split, outside this story, is
       cited beside it and not edited by this story either

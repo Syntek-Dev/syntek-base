@@ -133,7 +133,7 @@ stretch. It is not counted until it does.
   survives the re-plan: the ADR retires when the repair lands **and the gate goes green**, a
   conjunction, and it calls for a superseding record nobody has yet written. A plain pass is not
   promised here; see Verification Checks. The record was superseded on 30/09/2026 by
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   but not by that retiring record: the successor restates the regime unchanged, retirement terms
   included, but for the manual testing guide's path, so the retiring record is still unwritten.
   <!-- UPDATED 30/09/2026: the last two sentences above are new (settled 30/09/2026,

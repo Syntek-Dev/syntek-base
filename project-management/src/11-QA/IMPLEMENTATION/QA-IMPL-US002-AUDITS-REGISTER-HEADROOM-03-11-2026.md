@@ -73,7 +73,7 @@ four amended. The QA breaker pass's own scenario verdicts (at `6745d12`) are cit
 
 **The citation gate, read as a diff (Scenario 8).** `code/src/scripts/audits/doc-references.sh`
 exits 1 at both ends and is reported per
-`../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`. Baseline
+`../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`. Baseline
 at `357db65`, tree clean: 579 findings, 280 identities. Walk run at `9da4e30`, same index state,
 detector sha256 matching: 563 findings, 268 identities. **0 new identities**; 12 identities (16 findings) gone — 5 identities / 8 findings on
 `slop-family/` (planned), 6 / 7 on the superseded "SLOP-FAMILY.md" (Q1c), and 1 / 1 GAPS anchor. This is not

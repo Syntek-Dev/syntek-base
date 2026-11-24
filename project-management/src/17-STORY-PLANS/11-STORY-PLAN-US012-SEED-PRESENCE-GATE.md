@@ -56,7 +56,7 @@
 **Implements no ADR, and the absence is the story's own reading.** `../02-STORIES/US012.md` ->
 _Decisions_ records none: the ownership split with US010 is a scoping decision either story could
 reverse by moving two criteria back, and the remedy wording is a message string.
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` binds every
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` binds every
 story's **citation criterion** while `doc-references.sh` is red, and this story has none — its
 criteria run no citation gate (`../16-SPRINT-PLANS/07-SPRINT-PLAN-07.md` -> _Decisions binding this
 sprint_) — so no baseline is owed; why that holds is under _Testing_.
@@ -663,7 +663,7 @@ unmeasured and its full-coverage completion criterion cannot be ticked.
 Python in the diff. The proof is the `--self-test`.
 
 **No citation baseline is owed, and the reason is stated rather than assumed.**
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` makes **a
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` makes **a
 story's citation criterion** a diff against a baseline, and reads it over "any shipped file the story
 writes or edits". This story has no citation criterion, and the one file it edits never ships:
 `.github/workflows/audit-template.yml:201-205` asserts `.github/scripts` absent from every generated

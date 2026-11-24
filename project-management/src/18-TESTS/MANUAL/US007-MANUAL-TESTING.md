@@ -80,7 +80,7 @@ _The manual testing guide for US007 — the checks a tester runs step by step, a
 ## Recorded during the build
 
 The captured sets and the figures the rows below read. Story Scenario 13 and
-`../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+`../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which supersedes `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, put the baseline in this
 file, so the implementer pastes its half here at the plan's Phase 0, before the first edit —
 never reconstructed afterwards; the walker pastes the close half at the walk. Each set is a fenced
@@ -327,7 +327,7 @@ Filled at the walk.
 - `../../11-QA/IMPLEMENTATION/` — whether the specified scenarios were met, recorded at the closeout
 - `../../05-USER-FLOW/CONSOLIDATED-IDEAS/` — where the `Flow` column's step numbers would be defined; this story has no user flow, so every `Flow` cell is `—`
 - `../../20-FINDINGS/` — where each amendment made at the walk is recorded
-- `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the baseline-diff regime the gate rows run under; superseded 30/09/2026 by `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged and names this file as where the baseline is recorded
+- `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` — the baseline-diff regime the gate rows run under; superseded 30/09/2026 by `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged and names this file as where the baseline is recorded
 - `code/docs/GATE-REPORTING.md` — why a gate that could not decide is never reported as a pass
 
 <!-- CORRECTED 09/10/2026 after adversarial review: the casing-check population excludes

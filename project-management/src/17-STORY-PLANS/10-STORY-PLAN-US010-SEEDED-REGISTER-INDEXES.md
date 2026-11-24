@@ -43,7 +43,7 @@ and `../15-DECISIONS/archive/ADR-US010-INDEX-STATUS-READ-RULE-21-09-2026.md` (an
 register's Status by one rule: the carrier value with the trailing HTML comment, bold markers,
 backticks and everything from the first space-middle-dot-space removed, then trimmed, applied to
 the value after the key), under
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` (while
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` (while
 `doc-references.sh` is red, this story's citation criterion is a baseline captured before the first
 edit and read as a diff, the baseline recorded in the manual testing guide). All three read
 `Accepted`, measured 03/10/2026. Nothing else binds:
@@ -342,7 +342,7 @@ reads; P4 by the search step's first `[3/4]` run and the diff against P0.
 
 Captured on the story branch before its first edit, and pasted into the manual guide's _Recorded
 during the build_ at capture — never reconstructed afterwards
-(`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`).
+(`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`).
 
 | Baseline                               | How it is taken                                                                                                                                                                                                                                                                                                                                                                |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

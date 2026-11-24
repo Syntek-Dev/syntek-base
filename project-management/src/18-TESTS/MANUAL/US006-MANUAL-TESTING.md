@@ -47,7 +47,7 @@ _The manual testing guide for US006: the enumerated proof-case list walked by ha
 
 - **The build captures:** taken on the story branch **before its first edit** and filled under
   _Recorded during the build_ — the story's _Verification Checks_ and the plan's P0 require it,
-  and `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  and `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   which supersedes `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, records a baseline
   here "before editing begins". Every row below is walked at `22`, the first section reading
   those captures back.

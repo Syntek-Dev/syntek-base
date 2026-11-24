@@ -192,7 +192,7 @@ justification into every line it touches — 22 of them, as measured that day.
 - **Follow-on:** the baseline-diff regime of
   `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`,
   restated unchanged on 30/09/2026 by
-  `project-management/src/15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+  `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
   retires by its own terms when US004 lands — recorded here and in the sibling record,
   `project-management/src/15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`,
   rather than by a status change, because its reasoning was never overturned. Its supersession on

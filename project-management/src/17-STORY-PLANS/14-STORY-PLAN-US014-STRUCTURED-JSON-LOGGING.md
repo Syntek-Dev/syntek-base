@@ -94,7 +94,7 @@
 Implements **`../15-DECISIONS/ADR-US014-STRUCTURED-LOG-CONTRACT-01-11-2026.md`** (the line
 contract, the edge/collector contract, minimisation in place of redaction) — **Accepted
 01/11/2026**. Its citation criterion is read under
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` (a baseline
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md` (a baseline
 captured before the first edit, read as a diff, kept in the manual testing guide) unless US004 has
 landed and `doc-references.sh` is green.
 

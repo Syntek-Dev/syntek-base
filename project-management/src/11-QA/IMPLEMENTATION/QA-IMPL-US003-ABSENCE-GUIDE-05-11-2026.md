@@ -74,7 +74,7 @@ Each row ID refers to `../../18-TESTS/MANUAL/US003-MANUAL-TESTING.md`, walked 05
 
 **The citation gate, read as a diff (EC-07).** `code/src/scripts/audits/doc-references.sh` exits 1
 at both ends and is reported per
-`../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`.
+`../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`.
 Baseline at `5baaac2`, tree clean: **564 findings, 269 identities**. After the build (`99187e7`)
 and at the walk run (`01dd924`), detector sha256 matching: **499 findings, 251 identities**. **0 new
 identities; 18 identities (65 findings) gone**, every one a dangling path to `code/docs/ABSENCE.md`.

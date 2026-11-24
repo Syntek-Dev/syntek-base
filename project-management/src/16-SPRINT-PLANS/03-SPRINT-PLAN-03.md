@@ -319,7 +319,7 @@ order is what revives US003's revision pass: the Gherkin scenario _"The citation
 against a recorded baseline, never as a bare pass"_, the QA task recording before/after finding
 counts, and `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (superseded
 30/09/2026 by
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which
 restates it unchanged but for the manual testing guide's path) are all written against a defect
 US004 will by then have removed, and the scenario is read as a plain pass. **That pass is not owed
 in SPRINT-02**, where US003 is worked under exactly the regime its scenario was written for; it is
@@ -665,7 +665,7 @@ US003's other twelve rows being `N/A`.
 | `../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-02-09-2026.md`   | Check 2 reads the citing file's name, never `is_template_only()`. Superseded 30/09/2026 by `../15-DECISIONS/archive/ADR-US004-INSTANCE-ARTEFACT-CITER-TEST-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the 18-TESTS template paths in its allowlist                                          |
 | `../15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-02-09-2026.md` | A `PROJECT-PATHS.md` row may name a class; `###` is three digits exactly. Superseded 30/09/2026 by `../15-DECISIONS/archive/ADR-US004-REGISTER-ROWS-MAY-BIND-A-CLASS-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the two rows' paths, now under `18-TESTS/MANUAL/` and `18-TESTS/AUTOMATED/` |
 | `../15-DECISIONS/ADR-US001-INSTANCE-CITATION-UNVERIFIED-02-09-2026.md`           | The full-path citation form, and that no gate verifies a PM `src/` instance citation. **US004 makes the second half false**, which the ADR names as its own retirement condition                                                                                                                                       |
-| `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`    | A red `doc-references.sh` is read as a diff. **Still in force** — see below. Superseded 30/09/2026 by `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path                                                     |
+| `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`    | A red `doc-references.sh` is read as a diff. **Still in force** — see below. Superseded 30/09/2026 by `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`, which restates it unchanged but for the manual testing guide's path                                             |
 | `../15-DECISIONS/ADR-US001-PROSE-DOCTRINE-VERIFICATION-02-09-2026.md`            | Prose doctrine is verified by human read-across; `doctrine-drift.sh` is a guard only                                                                                                                                                                                                                                   |
 
 <!-- UPDATED 30/09/2026: the first, second and fourth rows gain their successors, beside the three

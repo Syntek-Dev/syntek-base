@@ -66,7 +66,7 @@ that authored neither the change, its review nor its QA pass: 36 of 36 rows Pass
 | HP-06 | The rule inventory balances                                                                            | Deviation | INVENTORY-01 to INVENTORY-06 Pass; INVENTORY-05 amended at the walk (F-001), because deletion reasons cite three homes, not TA alone, and A-07 is deleted as a contradiction |
 
 **The citation gate, read as a diff (HP-05).** `code/src/scripts/audits/doc-references.sh` exits 1 at both ends and is
-reported per `../../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`.
+reported per `../../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`.
 Baseline at `e1ab25a`: 610 findings, 295 distinct identities. Close: 578 findings, 279 identities.
 0 new identities; 16 identities (32 findings) resolved, every one a `dangling path` on
 `code/docs/reliability/` that resolved when the family was created. The 578 survivors are

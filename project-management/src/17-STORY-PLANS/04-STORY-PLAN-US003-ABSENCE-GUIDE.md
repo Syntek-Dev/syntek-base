@@ -57,7 +57,7 @@
 > read as first written. In SPRINT-02 the story's own reading wins: the `doc-references.sh`
 > baseline is captured before any file is edited and the gate is read as a diff against it, per
 > `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, superseded 30/09/2026 by
-> `../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+> `../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 > which restates it unchanged but for the manual testing guide's path. <!-- UPDATED 30/09/2026: successor added beside the superseded record, which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026, 16-sprint-plans grilling round 6 Q17; settled 30/09/2026, 16-sprint-plans grilling round 7 Q18). -->
 > The reservation is
 > `../03-SPRINTS/SPRINT-02.md` → _Definition of Done_, second row; `../03-SPRINTS/SPRINT-03.md`
@@ -256,7 +256,7 @@ main path and not the fallback: the `doc-references.sh` baseline is captured by 
 any file is edited, recorded in `../18-TESTS/MANUAL/US003-MANUAL-TESTING.md`, and the gate is read as a
 diff against it, never as a pass while the baseline stands
 (`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md`, superseded 30/09/2026 by
-`../15-DECISIONS/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
+`../15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-AFTER-TESTS-SPLIT-30-09-2026.md`,
 which restates it unchanged and is the record that names that path;
 `../03-SPRINTS/SPRINT-02.md` → _Verification Checks_). <!-- UPDATED 30/09/2026: successor added beside the superseded record,
 which the 18-TESTS split superseded for the manual testing guide's path alone (settled 30/09/2026,
