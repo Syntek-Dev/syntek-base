@@ -839,9 +839,11 @@ full filename on both. The ADR-US001 supersession is blocked by nothing and need
 no map or story claims either.
 **Update 24/11/2026:** both retirement conditions now hold. `S-06` landed as US004 (Completed,
 7.9.0), and US014 cleared the last survivors: `doc-references.sh` exits 0 on `dev` at the PR #44
-merge `94db8f02` ("Clean — every citation resolves"). US014 is therefore the story that owes the
-superseding ADR retiring the regime and `ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`; it is
-not yet written, and goes through `project-management/workflows/15-decisions/`.
+merge `94db8f02` ("Clean — every citation resolves"). US014 therefore owed the superseding ADR, and wrote it the same day:
+`project-management/src/15-DECISIONS/ADR-US014-CITATION-GATE-FLAT-MUST-PASS-24-11-2026.md`
+(Accepted) supersedes ADR-US003 and ADR-US008-SCOPED, so **the regime half of this entry is
+closed** — the gate is a flat must-pass. **Still open:** the ADR-US001 supersession, which needs a
+driving story; no map or story claims it.
 
 ---
 

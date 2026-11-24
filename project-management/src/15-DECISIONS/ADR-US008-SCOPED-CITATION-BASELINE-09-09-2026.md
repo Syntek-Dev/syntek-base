@@ -1,10 +1,10 @@
 # ADR-US008: The citation criterion is the scoped `code/docs` run, and the whole-tree red is reported, never claimed
 
-**Status:** Accepted
+**Status:** Superseded
 **Date:** 09/09/2026
 **Deciders:** <%DEVELOPER_NAME%>
 **Supersedes:** None
-**Superseded by:** None
+**Superseded by:** ADR-US014-CITATION-GATE-FLAT-MUST-PASS-24-11-2026.md
 **Related:** US008 · `project-management/src/15-DECISIONS/archive/ADR-US003-CITATION-GATE-BASELINE-DIFF-02-09-2026.md` (stands as decided and binds this story; this record is a scoped exception to its method and replaces nothing in it) · `project-management/src/15-DECISIONS/archive/ADR-US008-FIRST-MINOR-MIGRATION-KEY-09-09-2026.md` (the story's other record, on the migration key; decides nothing argued here)
 
 ---
