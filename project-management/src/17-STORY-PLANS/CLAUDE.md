@@ -9,8 +9,8 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 Per-story implementation plans — one `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`
 per user story, and no other kind of file — no cross-cutting plan sits here — written **before**
-implementation to fix the technical approach, key decisions, dependencies, risks, and per-story
-worktree isolation files. Tier 15: the **master a developer codes from**.
+implementation to fix the technical approach, key decisions, dependencies, risks, and — for a story
+running in parallel — its worktree isolation files. Tier 15: the **master a developer codes from**.
 
 ## How to work here
 
@@ -33,7 +33,7 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
 - **Definition of done:** file named `<exec-order>-STORY-PLAN-US###-<SCREAMING-KEBAB-DESC>.md`,
   the prefix 2-digit zero-padded and matching the story's position in the current build order;
   indexed against its sprint in that sprint plan's _Story Plans — the code master_ table, linked
-  to its `US###`, its sprint plan (16), and the decisions (15) it rests on; the four worktree isolation files named per the story number; British English
+  to its `US###`, its sprint plan (16), and the decisions (15) it rests on; the four worktree isolation files named per the story number when the story runs in parallel, else the one line "Runs in the main checkout; no parallel story"; British English
   throughout, dates DD/MM/YYYY.
 
 ## Guardrails
@@ -52,7 +52,8 @@ worktree isolation files. Tier 15: the **master a developer codes from**.
 - **This is a planning document, not code** — no source, secrets, or `.env` content
   lands here. GDPR/security/IDOR obligations are _specified_ in the plan and _enforced_
   in `code/`; keep them consistent with `code/docs/SECURITY.md`.
-- **Docker & Nginx isolation files** referenced by a plan follow the fixed
+- **Docker & Nginx isolation files exist only for a story running in parallel** (the rule is
+  `how-to/docs/GIT-WORKTREES.md`'s; a story running alone names none). Where a plan names them they follow the fixed
   `docker-compose.us###.{dev,test}.yml` / `nginx/{dev,test}-us###.conf` naming with a
   unique `127.0.0.N` IP and the documented port block — collisions break parallel
   worktrees.

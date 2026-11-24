@@ -10,7 +10,7 @@ One row per findings record in `20-FINDINGS/` and `20-FINDINGS/archive/`, filed 
 | Column   | Items |
 | -------- | ----- |
 | Open     | 0     |
-| Resolved | 12    |
+| Resolved | 13    |
 
 ## Open
 
@@ -32,3 +32,4 @@ _None._
 | FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026     | The seven register indexes are born seeded, and the map index leaves the file that ships                                   | Resolved | [FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md](archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md)         |
 | FINDING-US012-SEED-PRESENCE-GATE-22-11-2026          | A seeded file that never lands is reported, and the gate's header claim becomes true                                       | Resolved | [FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md](archive/FINDING-US012-SEED-PRESENCE-GATE-22-11-2026.md)                   |
 | FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026     | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | Resolved | [FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md](archive/FINDING-US013-LOG-DEBUG-WORKFLOW-SEAM-23-11-2026.md)         |
+| FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026     | Structured JSON logging with a `request_id` on every entry, queried by Compose service label                               | Resolved | [FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md](FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md)                 |

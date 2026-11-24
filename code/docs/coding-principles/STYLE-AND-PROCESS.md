@@ -165,7 +165,8 @@ the browser, and nothing should start to.
 - Include enough context to diagnose the issue without re-running: include IDs, paths, and relevant
   values alongside the error.
 - Never log sensitive data: passwords, tokens, secret values, or PII.
-- In production, use structured logging (JSON) where possible.
+- Use the configured logger: every line Django's `LOGGING` emits is already structured JSON in dev,
+  staging and production (`../logging/DJANGO-LOGGING.md`), so never format a JSON string by hand.
 
 ---
 

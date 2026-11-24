@@ -26,6 +26,5 @@ exec gunicorn config.asgi:application \
   --max-requests "${GUNICORN_MAX_REQUESTS:-1000}" \
   --max-requests-jitter 50 \
   --timeout "${GUNICORN_TIMEOUT:-30}" \
-  --log-level info \
-  --access-logfile - \
+  --log-level warning \
   --error-logfile -

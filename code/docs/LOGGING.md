@@ -20,7 +20,7 @@ the error tracker rather than the log pipeline.
 
 | Document                                                     | Covers                                                                                                                                                                                                                                                      |
 | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`logging/DJANGO-LOGGING.md`](logging/DJANGO-LOGGING.md)     | Django `LOGGING` config (dev/test and staging/prod), Django Ninja request/exception logging, log levels, logger-not-print rule, never-log-raw-IP rule                                                                                                       |
+| [`logging/DJANGO-LOGGING.md`](logging/DJANGO-LOGGING.md)     | Django `LOGGING` config per environment (JSON formatter, `request_id` filter, the process-server stream), Django Ninja request/exception logging, log levels, logger-not-print rule, never-log-raw-IP rule                                                  |
 | [`logging/FRONTEND-LOGGING.md`](logging/FRONTEND-LOGGING.md) | Browser logging via the Sentry browser SDK + a small project logger, dev vs prod behaviour, the no-`console` rule                                                                                                                                           |
 | [`logging/OBSERVABILITY.md`](logging/OBSERVABILITY.md)       | The four observability interfaces and the default behind each — error tracking (Django + browser), log aggregation (pipeline, queries, retention), metrics and dashboards (Django `/metrics/`), distributed tracing (OTLP — seam adopted, backend deferred) |
 | [`logging/HEALTH-CONTRACT.md`](logging/HEALTH-CONTRACT.md)   | Health/metrics endpoints the app exposes and what the NixOS deploy repo must provision (uptime probe, metrics scrape)                                                                                                                                       |
@@ -35,19 +35,19 @@ next is this project's answer. Swapping an answer is configuration
 
 | Capability             | This project            | Layer   | dev | test | staging | prod | Notes                                        |
 | ---------------------- | ----------------------- | ------- | --- | ---- | ------- | ---- | -------------------------------------------- |
-| File logging           | Django `FileHandler`    | Backend | ✅  | ✅   | ❌      | ❌   | `code/src/logs/django.log` — local artefacts |
+| File logging           | `RotatingFileHandler`   | Backend | ✅  | ❌   | ❌      | ❌   | `code/src/logs/django.log` — dev, host mount |
 | Error tracking         | <%ERROR_TRACKING%>      | Both    | ❌  | ❌   | ✅      | ✅   | Django + browser, via the Sentry SDK         |
 | Log shipping           | Alloy                   | Infra   | ❌  | ❌   | ✅      | ✅   | Server host → the log store; no app config   |
-| Log aggregation        | <%LOG_AGGREGATOR%>      | Infra   | ❌  | ❌   | ✅      | ✅   | Reads structured JSON on stdout              |
+| Log aggregation        | <%LOG_AGGREGATOR%>      | Infra   | ❌  | ❌   | ✅      | ✅   | Django's `LOGGING` lines: JSON on stdout     |
 | Metrics and dashboards | <%OBSERVABILITY_STACK%> | Backend | ❌  | ❌   | ✅      | ✅   | Exposition format via `django-prometheus`    |
 | Distributed tracing    | <%TRACING_BACKEND%>     | Backend | ❌  | ❌   | ❌      | ❌   | Seam adopted (OTLP); nothing instrumented    |
 | Media storage          | Cloudinary              | Both    | ✅  | ✅   | ✅      | ✅   | Hypothetical seam — one implementation       |
 
 ## Cross-references
 
-- `code/src/logs/CONTEXT.md` — where local log files are written in dev/test
+- `code/src/logs/CONTEXT.md` — where the dev log file is written, and how the host reads it
 - `code/workflows/09-debugging-with-logs/` — step-by-step debugging workflow
-- `code/src/docker/CONTEXT.md` — observability section (per-environment summary)
+- `code/src/docker/CONTEXT.md` — _Logs and observability_ section (the dev logs mount, per-environment streams)
 - `code/docs/SECURITY.md` — security logging requirements (audit trails, sensitive data)
 - `code/docs/PERFORMANCE.md` — application metrics for performance monitoring
 - `code/docs/architecture/PROVIDER-NEUTRALITY.md` — why each heading above names a capability

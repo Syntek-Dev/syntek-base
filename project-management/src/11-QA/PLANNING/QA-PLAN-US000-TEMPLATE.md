@@ -33,6 +33,9 @@ was added) before sprint planning proceeds. If none were found, state "None iden
 
 Given / When / Then scenarios derived from the wireframe and user flow, grouped into four
 categories. These become the story's test suite; developers write tests against them.
+Where a plan says where those tests live, it names the module **prefix** and the story marker
+(`test_<module>*.py`, `pytest.mark.story("US###")`), never one filename: a large set splits
+across modules to stay under the 750-line source limit.
 
 ### Happy path (HP-nn)
 

@@ -579,10 +579,11 @@ Every command is a project script under `code/src/scripts/**/*.sh` — never a r
       full they have cleared before US004 is worked; if US003 slipped here, its three stand until it
       lands. Two classes this order cannot clear: US006's forward references to
       `code/src/scripts/_lib/posture-guard.sh`, in SPRINT-04, and US005's to
-      `how-to/src/OUTBOUND-TIMEOUTS.md`, owned by an uncut slice. The set is **re-measured at
+      "how-to/src/OUTBOUND-TIMEOUTS.md", owned by an uncut slice. The set is **re-measured at
       implementation, never inherited from this list**, and a bare pass is reported only if the run
       actually exits 0 — `QA-PLAN-US004-CITATION-GATE-GIT-INDEX` AC-GAP-3 stands: completion of
       US004 does not of itself make this a pass
+      <!-- UPDATED 23/11/2026 (US014 P0b): path quoted, was backticked — a forward reference to the register uncut slice S-09 of MAP-RETRY-AND-IDEMPOTENCY creates; cleared a doc-references dangling-path finding. -->
 - [ ] `bash code/src/scripts/audits/doc-references.sh --self-test` exits 0
 - [ ] `bash code/src/scripts/audits/docs-length.sh` — no file created or edited this sprint enters
       the warn tier without a dated allowance; `how-to/src/PROJECT-PATHS.md` and

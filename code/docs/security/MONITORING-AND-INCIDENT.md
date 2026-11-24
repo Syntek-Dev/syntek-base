@@ -37,10 +37,18 @@ alerting, and tamper protection.
 
 ### Log format and integrity
 
-- Use structured logging (JSON) with consistent fields: `timestamp`, `event_type`, `actor` (user ID
-  or service name), `resource`, `action`, `outcome` (success/failure), `ip_address`, `request_id`.
+- **Two streams, one shared field.** The field list below governs **security and audit events**
+  (`AUDIT-TRAIL.md`). The **application stream** — every line Django's `LOGGING` emits — has its
+  own fixed contract (`timestamp`, `level`, `logger`, `message`, `request_id`;
+  `../logging/DJANGO-LOGGING.md`). `request_id` is the field that crosses both, so an audit event
+  and the application lines of the same request join on it.
+- Security and audit events use structured logging (JSON) with consistent fields: `timestamp`,
+  `event_type`, `actor` (user ID or service name), `resource`, `action`, `outcome`
+  (success/failure), `ip_address`, `request_id`.
 - Include a correlation ID / request ID in every log entry so that events from the same request can
-  be traced across services.
+  be traced across services. **The exception is the process-server stream** (`gunicorn.error`,
+  `uvicorn.error`): plain text on stderr, outside Django's `LOGGING`, with no `request_id`. A record
+  logged outside the request middleware's extent also carries it null.
 - Store security logs separately from application logs where possible. Security logs should have a
   longer retention period and stricter access controls.
 - Security logs must be append-only. Application code must not be able to delete or modify existing

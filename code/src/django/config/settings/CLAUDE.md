@@ -39,6 +39,16 @@ differs, selected at runtime via `DJANGO_SETTINGS_MODULE`.
 - **A value that differs per environment goes in the environment module; a shared one in
   `base.py`.** An override that happens to match the base value is a future divergence
   nobody will notice.
+  **One dated exception (US014, 23/11/2026): `LOGGING`.** `base.py` assigns none, and every
+  environment module carries its own complete dict — dev wide JSON, staging and production
+  minimal JSON, test a bare console — and `staging.py` and `production.py` hold
+  two identical copies rather than sharing one through `base.py`. The logging shape is the
+  part of an environment most likely to diverge deliberately, and a shared dict each module
+  rewrote wholesale left `base.py`'s copy describing nothing that ran. Drift between the two
+  copies is caught by the suite, not by inheritance:
+  `code/src/django/apps/core/tests/unit/test_observability_settings.py` asserts
+  `staging.LOGGING == production.LOGGING`. The line contract both copies serve is
+  `code/docs/logging/DJANGO-LOGGING.md`.
 - Adding to `INSTALLED_APPS` or `MIDDLEWARE` is a deliberate act — the baseline is
   `django.contrib.*` plus `apps.core`, and Django's default middleware plus the one local
   entry the error taxonomy requires (`RequestIDMiddleware`). It stays that way until a

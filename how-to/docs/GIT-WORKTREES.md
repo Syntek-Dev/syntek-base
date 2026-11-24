@@ -37,6 +37,12 @@ A git worktree is a separate checkout of the same repository in a different dire
 on its own branch. Use worktrees when two or more user stories can be implemented in parallel
 — each story gets its own Zed window, its own Docker stack, and its own local URL.
 
+**A worktree is for parallel work only.** A single story in flight runs in the main checkout on
+its `us###/` branch, against the main dev stack — no worktree, no per-story override files, no
+hosts entry. A worktree is created only when a second story runs at the same time. This guide
+owns that rule; the story-plan template, the `17-STORY-PLANS` pair and the worktree workflow
+route here rather than restating it.
+
 Without worktrees, switching between feature branches forces you to stash work, rebuild
 images, and reapply database migrations. With worktrees, each story's environment stays warm
 and isolated. There is one app process family (Django ASGI) per stack — it serves the

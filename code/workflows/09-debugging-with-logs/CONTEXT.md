@@ -36,7 +36,7 @@ environments with different tooling at each tier.
 
 | Tool                                    | dev | test | staging | prod |
 | --------------------------------------- | --- | ---- | ------- | ---- |
-| Local log files (`code/src/logs/`)      | ✅  | ✅   | ❌      | ❌   |
+| Local log files (`code/src/logs/`)      | ✅  | ❌   | ❌      | ❌   |
 | Console output (`docker compose logs`)  | ✅  | ✅   | ✅      | ✅   |
 | <%ERROR_TRACKING%> exception tracker    | ❌  | ❌   | ✅      | ✅   |
 | Loki / Alloy (LogQL queries in Grafana) | ❌  | ❌   | ✅      | ✅   |

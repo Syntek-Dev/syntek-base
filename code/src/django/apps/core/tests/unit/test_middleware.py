@@ -7,7 +7,9 @@ request on a reused worker thread.
 
 from __future__ import annotations
 
-from django.http import HttpResponse
+import re
+
+from django.http import HttpRequest, HttpResponse
 from django.test import RequestFactory
 
 import pytest
@@ -96,3 +98,40 @@ class TestContextVarLifecycle:
 
     def test_it_is_empty_outside_a_request(self) -> None:
         assert current_request_id() == ""
+
+
+class TestStoredIdentifier:
+    """US014 — ``request.request_id``, for a record logged after the ``ContextVar`` is reset.
+
+    Django logs a returned 4xx/5xx after the middleware's ``finally``, so the logging filter
+    can only reach the id through the request. Function-level story marks: the module's other
+    tests are not US014's.
+    """
+
+    @pytest.mark.story("US014")
+    @pytest.mark.parametrize(
+        ("inbound", "kept_as_received"),
+        [(None, False), ("bad id!", False), ("abc-123_XY.z", True)],
+        ids=["absent", "rejected", "well-formed"],
+    )
+    def test_stores_the_validated_or_minted_id_never_the_raw_header(
+        self, rf: RequestFactory, inbound: str | None, kept_as_received: bool
+    ) -> None:
+        """EC-16 — the stored id equals the response header, inside the view and after it."""
+        served: list[HttpRequest] = []
+        seen: list[str | None] = []
+
+        def view(request: HttpRequest) -> HttpResponse:
+            served.append(request)
+            seen.append(getattr(request, "request_id", None))
+            return HttpResponse("ok")
+
+        headers = {} if inbound is None else {"HTTP_X_REQUEST_ID": inbound}
+        response = RequestIDMiddleware(view)(rf.get("/", **headers))
+
+        assert seen == [response["X-Request-ID"]]
+        assert getattr(served[0], "request_id", None) == response["X-Request-ID"]
+        if kept_as_received:
+            assert response["X-Request-ID"] == inbound
+        else:
+            assert re.fullmatch(r"[0-9a-f]{32}", response["X-Request-ID"])

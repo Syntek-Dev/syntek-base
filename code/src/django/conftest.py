@@ -73,6 +73,21 @@ def _junit_address(nodeid: str) -> tuple[str, str]:
     return ".".join(names[:-1]), names[-1]
 
 
+def _read_previous_map() -> list[dict[str, object]]:
+    """Return the entries an earlier session wrote, or none if there is no usable map.
+
+    An unreadable file — absent, truncated by an interrupted run, or not a list — is treated as
+    empty and rewritten, never raised: the record is best-effort and must not fail the suite.
+    """
+    try:
+        loaded: object = json.loads(STORY_MAP_PATH.read_text(encoding="utf-8"))
+    except OSError, ValueError:
+        return []
+    if not isinstance(loaded, list):
+        return []
+    return [entry for entry in loaded if isinstance(entry, dict)]
+
+
 def pytest_collection_finish(session: pytest.Session) -> None:
     """Write the story map the per-story test record is generated from.
 
@@ -85,10 +100,19 @@ def pytest_collection_finish(session: pytest.Session) -> None:
     The docstring travels with it because it is the only prose the report artefacts cannot supply,
     and the record's *Why* column is where it lands.
 
+    **The map describes the run, not the last session.** Every backend runner calls pytest twice —
+    ``-m unit``, then ``-m integration`` — so a session that overwrote the file would erase the
+    unit phase's entries whenever the integration phase selected none of a story's tests. So the
+    previous map is read back and merged by ``nodeid``: this session is authoritative for the
+    tests it collected (re-marked, or dropped when a marker was removed) and leaves every other
+    entry alone. An entry for a test no longer collected is harmless — the generator joins on the
+    run's JUnit XML, so a test that did not run gets no row.
+
     Writing is best-effort: a read-only or absent reports directory must never fail a test run,
     because this file's job is a record and the suite's job is the truth.
     """
-    entries: list[dict[str, object]] = []
+    collected = {item.nodeid for item in session.items}
+    entries = [entry for entry in _read_previous_map() if entry.get("nodeid") not in collected]
 
     for item in session.items:
         stories = [
@@ -111,6 +135,7 @@ def pytest_collection_finish(session: pytest.Session) -> None:
 
     try:
         STORY_MAP_PATH.parent.mkdir(parents=True, exist_ok=True)
+        entries.sort(key=lambda entry: str(entry["nodeid"]))
         STORY_MAP_PATH.write_text(json.dumps(entries, indent=2, sort_keys=True), encoding="utf-8")
     except OSError:
         pass

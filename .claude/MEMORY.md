@@ -86,6 +86,13 @@ only in a template or an artefact is a question, not a fact.
   an ADR needs a driving `US###`, and a map reaches one only through the slice that becomes a
   story — is in `project-management/src/15-DECISIONS/CLAUDE.md` and the wayfinder graduation
   table. There is no non-shipping doc that could hold the permission itself.
+- **A forking skill inside parallel workflow agents collides in the working tree** (23/11/2026,
+  US014 P1). `test-writer` (and every skill marked `context: fork`) runs as its own subagent in the
+  same checkout, so two workflow agents that each loaded it put four writers on one set of files;
+  they overwrote each other's `observability*.py` and the run was stopped and re-run. A Workflow
+  script whose agents run concurrently tells each one, in terms, **not** to invoke a forking skill
+  or spawn an agent — read the `SKILL.md` and apply it inline — and gives each a disjoint file set.
+  Sequential stages may fork; concurrent ones may not.
 
 ---
 

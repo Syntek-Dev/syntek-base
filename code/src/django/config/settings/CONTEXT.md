@@ -20,13 +20,13 @@ config/settings/
 
 ## Settings Module Map
 
-| File            | `DJANGO_SETTINGS_MODULE`     | Key overrides                                                                                                                                                                            |
-| --------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `base.py`       | _(never used directly)_      | Apps, middleware, DB, cache, i18n, static — all shared                                                                                                                                   |
-| `dev.py`        | `config.settings.dev`        | `DEBUG` from env, `ALLOWED_HOSTS=["*"]`, `:81` CSRF origins plus `DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA` (worktree overlay; wildcard or malformed raises), file logging, `string_if_invalid` |
-| `staging.py`    | `config.settings.staging`    | `DEBUG=False`, env `ALLOWED_HOSTS`, secure, `__Host-`-named cookies                                                                                                                      |
-| `production.py` | `config.settings.production` | As staging, plus HSTS                                                                                                                                                                    |
-| `test.py`       | `config.settings.test`       | MD5 hasher, in-memory cache and email, `string_if_invalid`                                                                                                                               |
+| File            | `DJANGO_SETTINGS_MODULE`     | Key overrides                                                                                                                                                                                                                                                                      |
+| --------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `base.py`       | _(never used directly)_      | Apps, middleware, DB, cache, i18n, static — all shared. **No `LOGGING`**: each environment module carries its own                                                                                                                                                                  |
+| `dev.py`        | `config.settings.dev`        | `DEBUG` from env, `ALLOWED_HOSTS=["*"]`, `:81` CSRF origins plus `DJANGO_CSRF_TRUSTED_ORIGINS_EXTRA` (worktree overlay; wildcard or malformed raises), `string_if_invalid`; `LOGGING` wide JSON to console and a `RotatingFileHandler` at `code/src/logs/django.log`, root `DEBUG` |
+| `staging.py`    | `config.settings.staging`    | `DEBUG=False`, env `ALLOWED_HOSTS`, secure, `__Host-`-named cookies; `LOGGING` minimal JSON to stdout, root `WARNING`, `django` at `WARNING` with no handlers                                                                                                                      |
+| `production.py` | `config.settings.production` | As staging, plus HSTS; its `LOGGING` is identical to staging's, deliberately                                                                                                                                                                                                       |
+| `test.py`       | `config.settings.test`       | MD5 hasher, in-memory cache and email, `string_if_invalid`; `LOGGING` one console handler, no formatter, no file, root `WARNING`                                                                                                                                                   |
 
 ## Critical Settings (base.py)
 
@@ -51,6 +51,9 @@ config/settings/
 | `CSRF_COOKIE_HTTPONLY`    | `True`                                  | Shared — the CSRF cookie is never readable from page script; the token reaches a form through `{% csrf_token %}`                                           |
 | `SESSION_COOKIE_NAME`     | _absent_                                | `staging.py` and `production.py` set `"__Host-sessionid"`; dev inherits Django's plain `sessionid`, because a browser rejects an insecure `__Host-` cookie |
 | `CSRF_COOKIE_NAME`        | _absent_                                | `staging.py` and `production.py` set `"__Host-csrftoken"`; dev inherits Django's plain `csrftoken`, for the same reason                                    |
+
+Every handler in every `LOGGING` carries the `request_id` filter from `apps.core.observability`
+(`code/docs/logging/DJANGO-LOGGING.md`).
 
 ## Not yet configured
 

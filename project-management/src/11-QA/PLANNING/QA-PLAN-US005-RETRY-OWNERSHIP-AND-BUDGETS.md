@@ -81,12 +81,13 @@
   term. Added on 05/09/2026.
 - **AC-GAP-7** `[RESOLVED]` — **the story requires the guide to name a register that will not
   exist.** Scenario 1 requires the delegation escape hatch to point at "a row in the outbound
-  timeout register" — `how-to/src/OUTBOUND-TIMEOUTS.md`, which is slice `S-09`'s and runs _beside_
+  timeout register" — "how-to/src/OUTBOUND-TIMEOUTS.md", which is slice `S-09`'s and runs _beside_
   this story, not before it. Scenario 7 simultaneously requires "no new dangling citation against
   the recorded baseline". Those two are satisfiable together only if the reference is written on
   the terms `code/docs/FORWARD-VOICE.md` sets. Resolved: the criterion now names the register by
   role, states the forward reference explicitly as one, and the expected finding is budgeted in
   Section 7 below rather than discovered at the gate. Added on 05/09/2026.
+  <!-- UPDATED 23/11/2026 (US014 P0b): path quoted, was backticked — a forward reference to the register uncut slice S-09 of MAP-RETRY-AND-IDEMPOTENCY creates; cleared a doc-references dangling-path finding. -->
 - **AC-GAP-8** `[RESOLVED]` — **a guide will state the inverse of the doctrine and nothing
   repairs it.** From the security gate (TM-08): `code/docs/mcp-server/TOOL-DESIGN.md:139-141` tells
   its reader that transient failures are retried **server-side** by FastMCP's `RetryMiddleware`,
@@ -312,8 +313,9 @@ because a regression guard with no recorded starting point cannot show a regress
 `project-management/src/02-STORIES/US005.md:128` and
 `project-management/src/15-DECISIONS/ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026.md:14`, both
 citing `code/docs/reliability/`; and that ADR at `:122`, citing
-`how-to/src/OUTBOUND-TIMEOUTS.md`. **A fourth is masked** — see AC-GAP-12 — and removing the marker
+"how-to/src/OUTBOUND-TIMEOUTS.md". **A fourth is masked** — see AC-GAP-12 — and removing the marker
 makes it visible rather than creating it.
+<!-- UPDATED 23/11/2026 (US014 P0b): path quoted, was backticked — a forward reference to the register uncut slice S-09 of MAP-RETRY-AND-IDEMPOTENCY creates; cleared a doc-references dangling-path finding. -->
 
 **Budgeted delta from this session's artefacts, measured 05/09/2026 rather than estimated.**
 The six files — this plan, the two security artefacts, `SPRINT-03.md`,
@@ -324,9 +326,11 @@ one is correct and none is deferred; each clears when the file it names exists:
 | Target                            | Findings | Created by                             |
 | --------------------------------- | -------- | -------------------------------------- |
 | `code/docs/reliability/`          | 7        | US001, SPRINT-01                       |
-| `how-to/src/OUTBOUND-TIMEOUTS.md` | 4        | slice `S-09`, not yet cut into a story |
+| "how-to/src/OUTBOUND-TIMEOUTS.md" | 4        | slice `S-09`, not yet cut into a story |
 | `code/docs/ABSENCE.md`            | 2        | US003, now a SPRINT-03 member          |
 | plus the ADR's own two            | —        | counted in the seven and four above    |
+
+<!-- UPDATED 23/11/2026 (US014 P0b): the OUTBOUND-TIMEOUTS row's path quoted, was backticked — a forward reference to the register uncut slice S-09 of MAP-RETRY-AND-IDEMPOTENCY creates; cleared a doc-references dangling-path finding. -->
 
 The two `code/docs/ABSENCE.md` references arrived with US003's admission to SPRINT-03 on
 05/09/2026 and sit in `project-management/src/03-SPRINTS/SPRINT-03.md`, not in this plan.

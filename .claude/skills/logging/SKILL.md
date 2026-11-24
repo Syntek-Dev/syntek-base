@@ -80,7 +80,7 @@ restatement here is exactly how this section was wrong before.**
 - All DSNs, endpoints and secrets via environment variables; `.env.*.example` carries names
   only.
 - `DEBUG=False` outside local, and debug-level logging is never enabled in production.
-- Messages in British English; timestamps <%TIMEZONE%>.
+- Line timestamps are UTC ISO-8601 (`YYYY-MM-DDTHH:MM:SS.mmm+00:00`); message prose in British English (en_GB).
 
 ## Definition of done
 

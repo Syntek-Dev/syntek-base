@@ -420,7 +420,9 @@ obsolete, and the reason is build order.**
 | `code/docs/reliability/`          | 7     | US001        | **Yes** — SPRINT-01, exec `01`                                                                                                        |
 | `[template-only citation]` sweep  | many  | US004        | **Yes** — SPRINT-03, exec `03` (SPRINT-02, exec `02`, until 07/09/2026)                                                               |
 | `code/docs/ABSENCE.md`            | 2     | US003        | **Yes, if SPRINT-02 completes** — SPRINT-02's `Should` since 07/09/2026; a slip carries it into SPRINT-03, still ahead of this sprint |
-| `how-to/src/OUTBOUND-TIMEOUTS.md` | 4     | slice `S-09` | **No** — not yet a story                                                                                                              |
+| "how-to/src/OUTBOUND-TIMEOUTS.md" | 4     | slice `S-09` | **No** — not yet a story                                                                                                              |
+
+<!-- UPDATED 23/11/2026 (US014 P0b): the OUTBOUND-TIMEOUTS row's path quoted, was backticked — a forward reference to the register uncut slice S-09 of MAP-RETRY-AND-IDEMPOTENCY creates; cleared a doc-references dangling-path finding. -->
 
 <!-- The US004 and US003 rows read "**Yes** — SPRINT-02, exec `02`" and "Same sprint, `Should` —
      may slip" from 05/09/2026 until 07/09/2026, when the cascade re-plan moved US004 to SPRINT-03
@@ -437,9 +439,10 @@ survive, named below. The ADR also says a **new record should supersede it rathe
 edited**, so the retirement is not automatic and nobody has written that record yet. Treat the
 baseline discipline as still in force and the diff as still required. So:
 
-- **The surviving class is the `how-to/src/OUTBOUND-TIMEOUTS.md` forward reference**, four of them,
+- **The surviving class is the "how-to/src/OUTBOUND-TIMEOUTS.md" forward reference**, four of them,
   owned by slice `S-09` — which runs _beside_ this story and shares no file with it. Each is named
   with its owner; none is deferred.
+  <!-- UPDATED 23/11/2026 (US014 P0b): path quoted, was backticked — a forward reference to the register uncut slice S-09 of MAP-RETRY-AND-IDEMPOTENCY creates; cleared a doc-references dangling-path finding. -->
 - **A plain pass is still unavailable**, and for a smaller reason than the story states: four
   correct forward references remain, and `code/docs/GATE-REPORTING.md` forbids reporting that as
   clean.
@@ -843,8 +846,9 @@ pre-empt a claimed slice and create a fresh citation of a surface about to be na
   decision creates rather than removes.** Recorded in `DEFERRED.md` at ship by `22`, naming `S-05`
   as owner and the first client-wiring story as its deadline.
 - **The delegation escape hatch is inert until `S-09` ships.** The rule names a register row to
-  write into, and `how-to/src/OUTBOUND-TIMEOUTS.md` does not exist yet. The exception path is
+  write into, and "how-to/src/OUTBOUND-TIMEOUTS.md" does not exist yet. The exception path is
   stated and unusable, which is correct and must be said rather than discovered.
+  <!-- UPDATED 23/11/2026 (US014 P0b): path quoted, was backticked — a forward reference to the register uncut slice S-09 of MAP-RETRY-AND-IDEMPOTENCY creates; cleared a doc-references dangling-path finding. -->
 - **The idempotency half** — slice `S-03`, not yet a story. This story states the precondition and
   names `TASK-AUTHORING.md`'s proof ladder as where the proof lives until then; it does not close
   it.

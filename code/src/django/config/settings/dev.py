@@ -90,24 +90,31 @@ TEMPLATES[0]["OPTIONS"]["string_if_invalid"] = "[INVALID TEMPLATE VARIABLE: %s]"
 _LOGS_DIR = Path(__file__).resolve().parents[4] / "src" / "logs"
 _LOGS_DIR.mkdir(exist_ok=True)
 
+# Wide JSON — every extra and the full traceback, the fixed keys written after the extras so
+# none can be displaced. Uncapped: this file never leaves the host (ADR-US014). Every handler
+# carries the request_id filter; only Django's own lines are JSON, uvicorn's stay plain text.
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "filters": {
+        "request_id": {"()": "apps.core.observability.RequestIDFilter"},
+    },
     "formatters": {
-        "verbose": {
-            "format": "{asctime} {levelname} {name} {message}",
-            "style": "{",
-            "datefmt": "%Y-%m-%d %H:%M:%S",
-        },
+        "json": {"()": "apps.core.observability.JSONFormatter", "mode": "wide"},
     },
     "handlers": {
-        "console": {"class": "logging.StreamHandler", "formatter": "verbose"},
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "json",
+            "filters": ["request_id"],
+        },
         "file": {
             "class": "logging.handlers.RotatingFileHandler",
             "filename": _LOGS_DIR / "django.log",
             "maxBytes": 10 * 1024 * 1024,
             "backupCount": 5,
-            "formatter": "verbose",
+            "formatter": "json",
+            "filters": ["request_id"],
         },
     },
     "root": {"handlers": ["console", "file"], "level": "DEBUG"},

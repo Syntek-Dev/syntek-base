@@ -43,11 +43,13 @@ If the issue only occurs in staging/prod, skip to Step 3.
 
 ---
 
-## Step 2 — Read local log files (dev / test)
+## Step 2 — Read the local log file (dev only)
 
 > **Model:** opus · **MCP:** none
 
-Open one shell in the `django` container, then type each read inside it:
+Only dev writes `django.log` — test keeps no log file. Each line is one JSON object (wide mode:
+every extra and the full traceback); uvicorn's own lines stay on the console in plain text. Open one
+shell in the `django` container, then type each read inside it:
 
 ```bash
 bash code/src/scripts/development/shell.sh
@@ -99,16 +101,21 @@ log aggregator or metrics stack adapts them to its own.
 
 > **↳ New dispatch:** `general-purpose` · **Skill:** `bugfix` (`## Root cause` phase only) · **Model:** opus · **MCP:** none
 
-Open Grafana → Explore → select the Loki datasource.
+Open Grafana → Explore → select the Loki datasource. Every selector reads the Compose service
+label as the collector relabels it, `service_name` — never a container name
+(`how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md`, _Log collection_).
 
 ### Find errors around the time of the incident
 
 ```logql
-{container="<%PROJECT_SLUG%>-backend"}
+{service_name="django"}
   | json
   | level=~"ERROR|CRITICAL"
   | __error__=""
 ```
+
+`| __error__=""` keeps every line Django's `LOGGING` emits, which is JSON. It drops the
+process-server stream — see _The process-server stream_ below.
 
 ### Filter by time window (use the <%ERROR_TRACKING%> first-seen timestamp)
 
@@ -117,7 +124,7 @@ Set the Grafana time picker to ±5 minutes around the incident time.
 ### Narrow to a specific request path
 
 ```logql
-{container="<%PROJECT_SLUG%>-backend"}
+{service_name="django"}
   | json
   | message=~".*api.*"
   | level="ERROR"
@@ -125,8 +132,11 @@ Set the Grafana time picker to ±5 minutes around the incident time.
 
 ### Find all logs for a specific Django logger
 
+Applies once a project declares that logger at `INFO`: root is `WARNING` in staging and
+production, so nothing below `WARNING` reaches the stream today.
+
 ```logql
-{container="<%PROJECT_SLUG%>-backend"}
+{service_name="django"}
   | json
   | logger=~"apps.users.*"
 ```
@@ -136,12 +146,12 @@ Set the Grafana time picker to ±5 minutes around the incident time.
 The template ships Django-only — one ASGI process family, no separate frontend
 container — so there is no frontend log stream in <%LOG_AGGREGATOR%>. Server-side logs for pages,
 HTMX partials, and Django Ninja endpoints all live in the single
-`<%PROJECT_SLUG%>-backend` stream (queried above); scope them to the app serving the
+`django` service stream (queried above); scope them to the app serving the
 page or endpoint:
 
 ```logql
 # Narrow to the app that rendered the failing page or partial
-{container="<%PROJECT_SLUG%>-backend"}
+{service_name="django"}
   | json
   | logger=~"apps.marketing.*"
   | level=~"ERROR|CRITICAL"
@@ -152,6 +162,19 @@ forwarded by `observability.js` — are captured by the browser SDK, which forwa
 <%ERROR_TRACKING%> (Step 3), never to <%LOG_AGGREGATOR%>. A failed HTMX swap usually
 appears **twice**: as the Django exception in <%LOG_AGGREGATOR%> and as the forwarded response
 error in <%ERROR_TRACKING%>. Start from the Django side; it has the stack trace.
+
+### The process-server stream — worker-level faults
+
+Gunicorn's and Uvicorn's own error lines (`gunicorn.error`, `uvicorn.error`) and the boot output
+are plain text on stderr with no `request_id`, outside Django's `LOGGING`. A worker crash, a
+boot failure or a mid-stream "Exception in ASGI application" lands here, rarely with the
+exception's message. Keep those lines with:
+
+```logql
+{service_name="django"} | json | __error__!=""
+```
+
+A traceback arrives **one entry per line** unless the collector runs a multiline stage.
 
 Look for the chain of log lines leading up to the error — the context lines above
 the exception often contain the root cause (invalid input, failed external call, etc.).

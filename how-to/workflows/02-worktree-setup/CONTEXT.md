@@ -1,8 +1,8 @@
 # Workflow: Worktree Setup
 
-Two stories in one checkout means one Docker stack, one database and one set of ports. A
-worktree per story is what makes parallel work possible without the two contaminating each
-other.
+Two stories in one checkout means one Docker stack, one database and one set of ports. When
+stories run in parallel, a worktree for each is what keeps them from contaminating each other.
+A story running alone needs none — it runs in the main checkout on its branch.
 
 **Last Updated**: <%DATE%>
 
@@ -18,9 +18,9 @@ how-to/workflows/02-worktree-setup/
 
 ## When to use this
 
-Use this workflow when you need to work on two or more user stories in parallel — each story
-gets its own git worktree, its own Docker stack, and its own local URL, so they never
-interfere with each other.
+This workflow is entered **only** when two or more user stories run in parallel — each story
+then gets its own git worktree, its own Docker stack, and its own local URL, so they never
+interfere with each other. The rule that decides it is `how-to/docs/GIT-WORKTREES.md`'s.
 
 ## When NOT to use this
 

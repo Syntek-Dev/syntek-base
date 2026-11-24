@@ -686,10 +686,11 @@ Section 3 — is verified the way that ADR says, not because anything in the sto
 green** — a conjunction, and US004 **is** `S-06`. The second half will not hold when it lands,
 because correct forward references survive it: US006's to
 `code/src/scripts/_lib/posture-guard.sh`, in SPRINT-04, and US005's to
-`how-to/src/OUTBOUND-TIMEOUTS.md`, owned by an uncut slice. The ADR also calls for a **new record
+"how-to/src/OUTBOUND-TIMEOUTS.md", owned by an uncut slice. The ADR also calls for a **new record
 to supersede it** rather than being edited, and nobody has written one. The baseline discipline
 therefore stands for US004 itself — its run is read as a diff and never reported as a plain pass
 while a survivor stands, which is what `QA-PLAN-US004` AC-GAP-3 already requires.
+<!-- UPDATED 23/11/2026 (US014 P0b): path quoted, was backticked — a forward reference to the register uncut slice S-09 of MAP-RETRY-AND-IDEMPOTENCY creates; cleared a doc-references dangling-path finding. -->
 
 <!-- The table read, until 07/09/2026: ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026 ("One
      layer decides; layers beneath make a single attempt; SDK retries clamped by default"),
@@ -720,10 +721,11 @@ apply throughout, from `code/docs/GATE-REPORTING.md`:
   scheduled **ahead** of this sprint in SPRINT-02, so if SPRINT-02 completed in full they have
   cleared before US004 is worked, and if US003 slipped here its three stand until it lands. Two
   classes this order cannot clear: US006's forward references to
-  `code/src/scripts/_lib/posture-guard.sh` and US005's to `how-to/src/OUTBOUND-TIMEOUTS.md`. The
+  `code/src/scripts/_lib/posture-guard.sh` and US005's to "how-to/src/OUTBOUND-TIMEOUTS.md". The
   set is **re-measured at implementation, never inherited from this list**, every survivor is
   named with its owner in `../18-TESTS/AUTOMATED/US004-TEST-STATUS.md`, and a bare pass is reported only if
   the run actually exits 0.
+  <!-- UPDATED 23/11/2026 (US014 P0b): path quoted, was backticked — a forward reference to the register uncut slice S-09 of MAP-RETRY-AND-IDEMPOTENCY creates; cleared a doc-references dangling-path finding. -->
 - **A baseline is only comparable against a run in the same git-index state** — and that
   dependence is the defect US004 removes, so it binds hardest before US004 lands.
   `../11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md` measured a **24-finding swing**
