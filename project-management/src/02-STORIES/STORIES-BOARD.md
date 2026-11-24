@@ -10,8 +10,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 1     |
-| In Progress       | 0     |
+| Pending           | 0     |
+| In Progress       | 1     |
 | In Review         | 2     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
@@ -28,13 +28,13 @@ _None._
 
 ## Pending
 
-| ID    | Title                                                                                        | Status  | File                 |
-| ----- | -------------------------------------------------------------------------------------------- | ------- | -------------------- |
-| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label | Pending | [US014.md](US014.md) |
+_None._
 
 ## In Progress
 
-_None._
+| ID    | Title                                                                                        | Status      | File                 |
+| ----- | -------------------------------------------------------------------------------------------- | ----------- | -------------------- |
+| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label | In Progress | [US014.md](US014.md) |
 
 ## In Review
 

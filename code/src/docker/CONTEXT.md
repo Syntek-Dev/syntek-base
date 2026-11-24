@@ -49,6 +49,25 @@ separate frontend container.
 - **staging / prod** — Gunicorn + Uvicorn workers, count tuned by `GUNICORN_WORKERS`,
   `GUNICORN_TIMEOUT`, `GUNICORN_MAX_REQUESTS`.
 
+## Logs and observability
+
+| Environment    | Django's `LOGGING` lines                  | App-server lines                                        |
+| -------------- | ----------------------------------------- | ------------------------------------------------------- |
+| dev            | Wide JSON to the console and `django.log` | uvicorn access and error lines, plain text, console     |
+| test           | Console only, no formatter, no file       | Gunicorn error log to stderr; no access log             |
+| staging / prod | Minimal JSON to stdout                    | Gunicorn error log to stderr, plain text; no access log |
+
+- **The dev logs mount.** The dev `django` service bind-mounts `../logs` to
+  `/workspace/code/src/logs`, so `dev.py`'s `RotatingFileHandler` writes `django.log` into
+  `code/src/logs/` on the host (gitignored). The container runs as root, so the host file is
+  root-owned.
+- **No `--access-logfile` outside dev.** `entrypoint.staging.sh`, `entrypoint.prod.sh` and
+  `entrypoint.test.sh` pass only `--error-logfile -`; staging and production run at
+  `--log-level warning`, test at `info`. The edge access log owns access records.
+- **Collection** is the deploy repository's: stdout and stderr read through the Docker daemon with
+  Compose labels (`how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md`, _Log collection_). The
+  guide is `code/docs/logging/DJANGO-LOGGING.md`.
+
 ## Path routing (Nginx — dev / test)
 
 Every route resolves to the django upstream, with one test-only exception: `/static/`.

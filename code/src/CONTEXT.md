@@ -44,7 +44,7 @@ code/src/
 │   └── tests/                ← test suite runners (pytest, Bruno, playwright-python)
 ├── tests/                    ← API integration tests (Bruno collection)
 │   └── api/
-├── logs/                     ← runtime log files (dev/test only; all gitignored)
+├── logs/                     ← dev log file, host-mounted (dev only; all gitignored)
 │   ├── .gitignore
 │   └── .gitkeep
 └── improvement-architecture/ ← gitignored HTML architecture-review reports (local history)

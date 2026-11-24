@@ -98,39 +98,43 @@ dev/test.
 
 ## Log aggregation
 
-**Interface:** structured JSON on stdout (12-factor)
+**Interface:** structured JSON on stdout (12-factor) — every line Django's `LOGGING` emits
 **Seam kind:** protocol
 **Default:** <%LOG_AGGREGATOR%>
 **Proven alternates:** Vector · Fluent Bit · Alloy · CloudWatch Logs
 
-The application's whole obligation is to write structured JSON to stdout. What reads it, ships it
-and stores it is a deployment choice with **no application-side configuration at all** — which is
-what makes this the cheapest seam in the stack. Browser errors do not flow through it; they reach
-the stack via the error tracker above.
+The application's whole obligation is to write every line Django's `LOGGING` emits as structured
+JSON to stdout (`DJANGO-LOGGING.md`). What reads it, ships it and stores it is a deployment choice
+with **no application-side configuration at all** — which is what makes this the cheapest seam in
+the stack. The one exception is the process-server stream below. Browser errors do not flow through
+it; they reach the stack via the error tracker above.
 
 ### Log pipeline
 
 The reference deployment runs Grafana Alloy on the server host, shipping Docker stdout/stderr to
-<%LOG_AGGREGATOR%>:
+<%LOG_AGGREGATOR%>. The collector contract — labels, relabels, rotation, retention — is
+`how-to/src/SERVER-ARCHITECTURE/EDGE-REQUIREMENTS.md` Section _Log collection_:
 
 ```text
-Django web container (stdout — structured JSON)   Celery worker container (stdout — JSON)
+django service (stdout — Django's lines, JSON;     Celery worker (forward reference —
+  stderr — process-server lines, plain text)          joins once Celery is wired)
     │                                                │
     └───────────────────┬───────────────────────────┘
                         │
-              Docker log driver (json-file)
+     Docker log driver (json-file, max-size/max-file rotation)
                         │
                  Log shipper on server host
-              (reads /var/lib/docker/containers/*/*.log)
+   (reads container stdout and stderr through the Docker daemon,
+    with Compose labels relabelled to service_name and environment)
                         │
                   Log store and index
                         │
                 Query UI / dashboards
 ```
 
-> **The `<%PROJECT_SLUG%>-worker` container does not exist yet.** `celery[redis]` is declared in
-> `pyproject.toml`, but no Compose file defines a `worker` or `beat` service — so the right-hand
-> leg above, and the two worker queries below, only apply once Celery is wired
+> **The worker service does not exist yet.** `celery[redis]` is declared in `pyproject.toml`, but
+> no Compose file defines a `worker` or `beat` service — so the right-hand leg above, and the worker
+> query below, are **forward references** gated on Celery being wired
 > (`how-to/docs/CELERY-FIRST-RUN.md`).
 
 ### Key queries
@@ -138,24 +142,39 @@ Django web container (stdout — structured JSON)   Celery worker container (std
 Written in LogQL, the query language of the default. A different collector expresses the same
 five questions in its own dialect; the questions are the portable part.
 
+Selectors use the Compose service label as relabelled, `service_name`, never a container name.
+
 ```logql
 # All backend errors
-{container="<%PROJECT_SLUG%>-web"} | json | level="ERROR"
+{service_name="django"} | json | level="ERROR"
 
-# Slow API operations (requires duration_ms field in log)
-{container="<%PROJECT_SLUG%>-web"} | json | logger="api" | duration_ms > 500
+# Slow API operations — applies once a project declares the `api` logger at INFO
+# (root is WARNING in staging and production, so nothing writes INFO to it today)
+{service_name="django"} | json | logger="api" | duration_ms > 500
 
-# Specific Django logger
-{container="<%PROJECT_SLUG%>-web"} | json | logger=~"apps.users.*"
+# Specific Django logger — applies once a project declares apps.users.* at INFO
+{service_name="django"} | json | logger=~"apps.users.*"
 
-# Celery worker errors
+# Celery worker errors — forward reference, gated on Celery: no worker service exists, so this
+# is not relabelled yet; it takes the worker's service_name once Celery is wired
 {container="<%PROJECT_SLUG%>-worker"} | json | level="ERROR"
 
-# Combined error stream across app containers
-{container=~"<%PROJECT_SLUG%>-(web|worker)"} | json | level=~"ERROR|CRITICAL"
+# Combined error stream — the worker leg joins once Celery is wired
+{service_name="django"} | json | level=~"ERROR|CRITICAL"
+
+# Process-server stream (gunicorn.error / uvicorn.error, boot output): plain text on stderr,
+# no request_id — `| json | __error__=""` drops it, this keeps it
+{service_name="django"} | json | __error__!=""
 ```
 
+The process-server stream sits outside Django's `LOGGING`, can rarely carry an escaped "Exception
+in ASGI application" traceback with its message, and arrives **one entry per line** unless the
+collector runs a multiline stage (`DJANGO-LOGGING.md`, _The process-server stream_).
+
 ### Retention
+
+Reference defaults **the controller confirms**, enforced by the collector
+(`EDGE-REQUIREMENTS.md`, _Log collection_):
 
 - Staging: 14 days
 - Production: 90 days
@@ -253,7 +272,7 @@ backends rather than independently.
 | Error rate (5xx)         | Metrics     | `rate(django_http_requests_total{status=~"5.."}[5m])`                             |
 | P95 latency              | Metrics     | `histogram_quantile(0.95, rate(django_http_request_duration_seconds_bucket[5m]))` |
 | DB query rate            | Metrics     | `rate(django_db_execute_total[5m])`                                               |
-| Backend error log stream | Logs        | `{container="<%PROJECT_SLUG%>-web"} \| json \| level="ERROR"`                     |
+| Backend error log stream | Logs        | `{service_name="django"} \| json \| level="ERROR"`                                |
 
 **Browser errors are viewed in the error tracker, not the dashboard.** Configure it as a
 datasource, or use dashboard annotations to correlate deployments with browser error spikes
@@ -316,7 +335,7 @@ trigger, not a shrug.
 | **`django_prometheus` in `INSTALLED_APPS`**              | A scrape target exists to read `/metrics/`. Exposing the endpoint with nothing scraping it is an unmonitored public surface, not an early win                                                                                                                                         |
 | **The browser SDK bundle**                               | The first non-local environment, as above. `FRONTEND-LOGGING.md` holds the shape                                                                                                                                                                                                      |
 | **Tracing instrumentation, and a backend to send it to** | **Either** is sufficient: a **second deployable** exists, so a trace crosses a process boundary; **or** a latency budget in [`../PERFORMANCE.md`](../PERFORMANCE.md) is breached and metrics plus logs cannot localise it. The seam is already settled above — only the backend waits |
-| **The `<%PROJECT_SLUG%>-worker` log leg**                | Celery is wired and a `worker`/`beat` service exists in a Compose file (`how-to/docs/CELERY-FIRST-RUN.md`)                                                                                                                                                                            |
+| **The worker log leg (forward reference)**               | Celery is wired and a `worker`/`beat` service exists in a Compose file (`how-to/docs/CELERY-FIRST-RUN.md`)                                                                                                                                                                            |
 | **Log-based alerting rules**                             | An on-call rotation exists to receive them. Until then the status page and the error tracker are the signal (`HEALTH-CONTRACT.md`)                                                                                                                                                    |
 
 ---

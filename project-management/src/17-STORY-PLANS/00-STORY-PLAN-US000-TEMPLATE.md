@@ -249,7 +249,7 @@ is fixed by prior decisions vs what this story is free to choose.]
 
 **Blocked by:** [stories/artefacts that must land first — or "none".]
 **Blocks:** [stories that depend on this — or "none".]
-**Can be done now:** [the slice startable immediately inside this worktree, independent of blockers.]
+**Can be done now:** [the slice startable immediately on this story's branch, independent of blockers.]
 
 > Where this story must serialise against another in a parallel worktree, name that story's
 > `US###` in **Blocked by** or **Blocks** above — each story's own plan carries its side of the
@@ -334,9 +334,10 @@ is fixed by prior decisions vs what this story is free to choose.]
 
 <!-- ★ Always. The three sub-tables below are the spine of the plan. -->
 
-> Standard implementation path for this story, followed inside its worktree. Layer scope is driven
-> by the story's scope table; always-on rows apply regardless. PM workflows 02–17 (design/planning)
-> must be complete before any code; 18–22 (implementation/delivery) run inside the worktree.
+> Standard implementation path for this story, followed on its branch (in a worktree only when
+> running in parallel — `how-to/docs/GIT-WORKTREES.md`). Layer scope is driven by the story's scope
+> table; always-on rows apply regardless. PM workflows 02–17 (design/planning) must be complete
+> before any code; 18–22 (implementation/delivery) run on that branch.
 
 ### PM workflow chain (in order)
 
@@ -500,7 +501,7 @@ Docker behaviour aligned — everyone runs the same tool versions against the sa
 | Mutation testing              | `bash code/src/scripts/tests/mutmut.sh` (local only)                                                                     | Docker |
 | Everything                    | `bash code/src/scripts/tests/all.sh [--api] [--coverage]`                                                                | Both   |
 | Lockfiles (regen / verify)    | `development/install-backend.sh [--sync\|--check]` · `install-frontend.sh [--local\|--check]`                            | Local  |
-| Worktree `/etc/hosts`         | `bash code/src/scripts/development/hosts-story-add.sh us###` / `hosts-story-remove.sh`                                   | Local  |
+| Worktree `/etc/hosts`         | Parallel only — `bash code/src/scripts/development/hosts-story-add.sh us###` / `hosts-story-remove.sh`; delete if alone  | Local  |
 
 > **Secret scanning** has no wrapper script — it runs in CI (`.github/workflows/audit-secrets.yml`).
 > `audits/security.sh` covers dependency CVEs only. There is **no schema-export / codegen
@@ -592,7 +593,7 @@ fixtures; parametrise; no stubs / `NotImplementedError` in green code.
 | GDPR implementation record                 | `GDPR-IMPL-US###-*.md`                                              | `…/src/09-GDPR/IMPLEMENTATION/`                                                                  | PM `23-pr-and-review` (write-back)                                                         | Conditional                |
 | Security audit / assessment / threat model | `AUDIT-…`, `ASSESSMENT-…`, threat-model, `VULN-…` (`-DD-MM-YYYY`)   | `…/src/10-SECURITY/{AUDITS,ASSESSMENTS,THREAT-MODEL,VULNERABILITIES}/{PLANNING,IMPLEMENTATION}/` | PM `10-security-checks` + `22-implementation-documentation` / code `08-security-hardening` | Conditional                |
 | QA plan (pre-dev)                          | `QA-PLAN-US###-<DESC>.md`                                           | `…/src/11-QA/PLANNING/`                                                                          | PM `11-qa-checks`                                                                          | Always                     |
-| QA implementation review                   | `QA-IMPL-US###-<DESC>.md`                                           | `…/src/11-QA/IMPLEMENTATION/`                                                                    | PM `23-pr-and-review`                                                                      | Always                     |
+| QA implementation review                   | `QA-IMPL-US###-<DESC>.md`                                           | `…/src/11-QA/IMPLEMENTATION/`                                                                    | PM `22-implementation-documentation`, verified at `23-pr-and-review`                       | Always                     |
 | SEO implementation record                  | `SEO-IMPL-US###-<DESC>-DD-MM-YYYY.md`                               | `…/src/12-SEO/IMPLEMENTATION/`                                                                   | PM `21-frontend-code` → `12-seo-checks`                                                    | Conditional (public pages) |
 | API design doc                             | `API-PLAN-US###-<DESC>.md`                                          | `…/src/13-API-DESIGN/PLANNING/`                                                                  | PM `13-api-design`                                                                         | Conditional                |
 | API implementation record                  | `API-IMPL-US###-<DESC>-DD-MM-YYYY.md`                               | `…/src/13-API-DESIGN/IMPLEMENTATION/`                                                            | PM `20-api-code` (write-back)                                                              | Conditional                |
@@ -693,7 +694,11 @@ or a generated client file is staged, so the export can never drift from the sou
 
 ## Docker & Nginx Infrastructure
 
-<!-- ★ Always (worktree isolation). N = the story number; use the canonical `127.0.0.N` IP scheme. -->
+<!-- ★ Parallel only. A worktree exists only when two or more stories run at the same time — the
+     rule is how-to/docs/GIT-WORKTREES.md's. A story running alone replaces everything below this
+     comment with one line, "Runs in the main checkout; no parallel story.", and lists no files.
+     A story running in parallel keeps the four files: N = the story number; use the canonical
+     `127.0.0.N` IP scheme. -->
 
 Four per-story worktree-isolation files (create alongside the worktree):
 

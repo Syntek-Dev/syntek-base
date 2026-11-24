@@ -144,6 +144,7 @@ and `project-management/src/01-FEATURE-MAPS/MAP-RETRY-AND-IDEMPOTENCY.md` node `
   client added without that configuration silently inherits the vendor default and breaches this
   rule — the one failure mode this decision creates rather than removes.
 - **Follow-on:** The delegation escape hatch needs the register row to write into, which is
-  `S-09`'s `how-to/src/OUTBOUND-TIMEOUTS.md` and its retry-owner column — so this ADR's exception
+  `S-09`'s "how-to/src/OUTBOUND-TIMEOUTS.md" and its retry-owner column — so this ADR's exception
   path is inert until that slice ships. The enforcement is `S-05`'s. Revisit if a wired client
   demonstrates a transport failure class the application layer handles measurably worse.
+  <!-- UPDATED 23/11/2026 (US014 P0b): path quoted, was backticked — a forward reference to the register uncut slice S-09 of MAP-RETRY-AND-IDEMPOTENCY creates; cleared a doc-references dangling-path finding. -->

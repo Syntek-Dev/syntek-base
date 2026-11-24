@@ -14,6 +14,7 @@ apps/core/
 ├── __init__.py       ← package marker
 ├── apps.py           ← CoreConfig — registered as `apps.core`
 ├── middleware.py     ← RequestIDMiddleware + current_request_id() — the correlation ID
+├── observability.py  ← JSONFormatter + RequestIDFilter — the structured log line LOGGING names
 ├── schemas.py        ← Schema · OutSchema · QuerySchema — the Ninja bases
 ├── management/        ← the command base (see its CONTEXT.md)
 │   ├── __init__.py
@@ -33,6 +34,7 @@ apps/core/
 ├── tests/             ← the suite: each primitive in isolation, then the command base
 │   ├── unit/test_errors.py       ← the ServiceError tree and its taxonomy
 │   ├── unit/test_middleware.py   ← RequestIDMiddleware and current_request_id()
+│   ├── unit/test_observability*.py ← the line contract, the cap, real requests, each LOGGING
 │   ├── unit/test_schemas.py      ← the Ninja Schema bases
 │   ├── unit/test_templatetags.py ← {% request_id %}, rendered
 │   └── test_management_base.py   ← ManagementCommand and its exit codes
@@ -45,13 +47,14 @@ an empty migrations package on a model-less app is scaffolding that has to be ex
 
 ## What is here, and why each thing is here
 
-| Module                 | Holds                                                                          | Decided by                         |
-| ---------------------- | ------------------------------------------------------------------------------ | ---------------------------------- |
-| `middleware.py`        | The correlation identifier on every response, and the accessor that reads it   | `code/docs/NEGATIVE-SPACE.md`      |
-| `schemas.py`           | Three Ninja bases — request bodies forbid unknown fields, the other two do not | `code/docs/NEGATIVE-SPACE.md`      |
-| `services/errors.py`   | The `ServiceError` tree, plus the two classes deliberately outside it          | `code/docs/NEGATIVE-SPACE.md`      |
-| `management/base.py`   | The command base — those three classes mapped onto exit codes and output       | `code/docs/MANAGEMENT-COMMANDS.md` |
-| `templatetags/core.py` | `{% request_id %}` — the identifier, for templates rendered without a context  | `code/docs/NEGATIVE-SPACE.md`      |
+| Module                 | Holds                                                                                                                                                                                                                                        | Decided by                            |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `middleware.py`        | The correlation identifier on every response, and the accessor that reads it; `RequestIDMiddleware` also stores the validated or minted id on the request (`request.request_id`), for records logged after the chain resets the `ContextVar` | `code/docs/NEGATIVE-SPACE.md`         |
+| `observability.py`     | The JSON log formatter (`minimal` off dev, `wide` in dev) and the `request_id` filter every handler carries                                                                                                                                  | `code/docs/logging/DJANGO-LOGGING.md` |
+| `schemas.py`           | Three Ninja bases — request bodies forbid unknown fields, the other two do not                                                                                                                                                               | `code/docs/NEGATIVE-SPACE.md`         |
+| `services/errors.py`   | The `ServiceError` tree, plus the two classes deliberately outside it                                                                                                                                                                        | `code/docs/NEGATIVE-SPACE.md`         |
+| `management/base.py`   | The command base — those three classes mapped onto exit codes and output                                                                                                                                                                     | `code/docs/MANAGEMENT-COMMANDS.md`    |
+| `templatetags/core.py` | `{% request_id %}` — the identifier, for templates rendered without a context                                                                                                                                                                | `code/docs/NEGATIVE-SPACE.md`         |
 
 `middleware.py` is a **module, not a package**. Request logging, when it lands, is a second
 class in this file rather than `middleware/request_log.py` — a package and a module cannot
@@ -61,8 +64,8 @@ share the name, and one middleware does not earn a package.
 
 `code/docs/` names a dozen further `apps.core` modules — `utils.get_client_ip`,
 `crypto`, `encryption`, `api_auth`, `views/seo`, `mcp_auth`, request logging in
-`middleware`, `observability`, `db.get_or_cache`, `conf.get_setting`, `validators`, and
-`models`. **None of them exist yet**, and that is deliberate: a module lands here when the
+`middleware`, the scrub hooks once imagined in `observability` (the deferred
+`syntek-observability` half), `db.get_or_cache`, `conf.get_setting`, `validators`, and `models`. **None of them exist yet**, and that is deliberate: a module lands here when the
 decision that governs it lands, not in anticipation. The register of what is still owed is
 `GAPS.md`.
 

@@ -7,8 +7,8 @@ Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTE
 
 ## Purpose (one line)
 
-Runtime log files written by the Django backend in **dev and test only**
-(`django.log` + rotations) — all gitignored; nothing here is source.
+Runtime log files written by the Django backend in **dev only**, host-mounted
+(`django.log` + rotations, Django's lines as JSON) — all gitignored; nothing here is source.
 
 ## How to work here
 
@@ -19,7 +19,7 @@ Runtime log files written by the Django backend in **dev and test only**
 - **Model:** Opus — this folder is read-only operational output; there is nothing
   to author here.
 - **Concrete steps:** follow a service with `logs.sh --service <name> --follow`, or
-  `grep ERROR code/src/logs/django.log`; to reset,
+  `grep '"level":"ERROR"' code/src/logs/django.log`; to reset,
   truncate the file inside a `shell.sh` session, as `CONTEXT.md` → _Log rotation_ shows.
 - **Definition of done:** no file in this directory is committed; only `CONTEXT.md`,
   `CLAUDE.md`, `.gitignore`, and `.gitkeep` are tracked.
@@ -29,8 +29,11 @@ Runtime log files written by the Django backend in **dev and test only**
 The reference deployment runs Grafana Alloy shipping logs to Loki, queried with LogQL in
 Grafana, and Prometheus for metrics (`how-to/src/PLATFORM-PROVIDERS.md`).
 
-- **Dev/test only** — staging and production log to stdout (JSON) for Grafana Alloy →
-  <%LOG_AGGREGATOR%>; never wire disk logging into a non-local settings module.
+- **Dev only** — test logs to the console only; staging and production write every line Django's
+  `LOGGING` emits as JSON to stdout for Grafana Alloy → <%LOG_AGGREGATOR%>; never wire disk
+  logging into a non-dev settings module.
+- **Not every line is JSON** — uvicorn's dev access log and the process-server stream
+  (`gunicorn.error`, `uvicorn.error`, stderr) stay plain text, outside Django's `LOGGING`.
 - **Everything except the tracked marker files is gitignored** — never commit a log,
   and never add application code here.
 - Exception reports go to <%ERROR_TRACKING%>, metrics to Prometheus, aggregated logs to

@@ -9,12 +9,14 @@ One row per findings record in `20-FINDINGS/` and `20-FINDINGS/archive/`, filed 
 
 | Column   | Items |
 | -------- | ----- |
-| Open     | 0     |
+| Open     | 1     |
 | Resolved | 12    |
 
 ## Open
 
-_None._
+| ID                                               | Title                                                                                        | Status | File                                                                                                       |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------- |
+| FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label | Open   | [FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md](FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md) |
 
 ## Resolved
 

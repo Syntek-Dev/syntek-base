@@ -24,5 +24,4 @@ exec gunicorn config.asgi:application \
   --bind 0.0.0.0:8000 \
   --workers 1 \
   --log-level info \
-  --access-logfile - \
   --error-logfile -

@@ -322,7 +322,7 @@ from django.db import connection as _db_connection
 See the [global rules in CODING-PRINCIPLES.md](coding-principles/STYLE-AND-PROCESS.md#logging).
 
 **Never use `print()` in committed code.** Always use the project logger so output flows through the
-configured handlers and appears in `code/src/logs/` locally and in Loki in staging/prod. `print()`
+configured handlers and appears as JSON in `code/src/logs/django.log` in dev and in Loki in staging/prod. `print()`
 bypasses every handler — it is invisible to observability tooling.
 
 Temporary `print()` statements added while chasing a bug must be removed before the fix is

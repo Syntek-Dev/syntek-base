@@ -10,8 +10,8 @@ One row per story plan in `17-STORY-PLANS/` and `17-STORY-PLANS/archive/`, filed
 | Column            | Items |
 | ----------------- | ----- |
 | Open              | 0     |
-| Pending           | 1     |
-| In Progress       | 0     |
+| Pending           | 0     |
+| In Progress       | 1     |
 | In Review         | 2     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
@@ -28,13 +28,13 @@ _None._
 
 ## Pending
 
-| Plan                | Story                           | Title                                                                                        | Status  | File                                                                                             |
-| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------ |
-| 14-STORY-PLAN-US014 | [US014](../02-STORIES/US014.md) | Structured JSON logging with a `request_id` on every entry, queried by Compose service label | Pending | [14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md](14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md) |
+_None._
 
 ## In Progress
 
-_None._
+| Plan                | Story                           | Title                                                                                        | Status      | File                                                                                             |
+| ------------------- | ------------------------------- | -------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------ |
+| 14-STORY-PLAN-US014 | [US014](../02-STORIES/US014.md) | Structured JSON logging with a `request_id` on every entry, queried by Compose service label | In Progress | [14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md](14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md) |
 
 ## In Review
 

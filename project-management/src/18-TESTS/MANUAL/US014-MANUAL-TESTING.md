@@ -23,15 +23,21 @@ _The manual testing guide for US014 — the probe journey and the static and gat
 
 ## Preconditions and environment
 
-- **Stack:** for _Dev-stack probe_ only — the US014 worktree's dev stack, brought up by
-  `bash code/src/scripts/development/server.sh up` on the `us014/` branch (its isolation files:
-  the plan's _Docker & Nginx Infrastructure_). Its host entry, `dev-us014.<%PROJECT_SLUG%>.localhost`
-  on `127.0.0.14`, is added by `bash code/src/scripts/development/hosts-story-add.sh 014` before
-  `server.sh up` and removed at CLOSE-04. Every other journey needs no stack
-- **Tree:** the `us014/` branch, cut from `main` only after **both US013 and US008 have merged**
+- **Stack:** for _Dev-stack probe_ only — the main dev stack, brought up by
+  `bash code/src/scripts/development/server.sh up` in the main checkout on the `us014/` branch.
+  No worktree, no isolation files and no hosts entry (plan Key Decision 19). Every other journey
+  needs no stack
+- **Tree:** the `us014/` branch, cut from `dev` only after **both US013 and US008 have merged**
   — they are hard start gates, so the walked tree contains both by construction (plan → P0;
   17-story-plans grilling round 2, Q3) — plus any P5R rebase onto a later upstream merge recorded
   in slot **E**
+  <!-- AMENDED 23/11/2026 (US014 P0b) — was: Stack "the US014 worktree's dev stack ... (its
+       isolation files: the plan's Docker & Nginx Infrastructure). Its host entry,
+       dev-us014.<%PROJECT_SLUG%>.localhost on 127.0.0.14, is added by hosts-story-add.sh 014
+       before server.sh up and removed at CLOSE-04"; Tree "cut from `main`". Why: developer
+       instruction 23/11/2026, no worktree for a story running alone, and the 7.10.0 chain cuts
+       a feature branch from `dev`. Evidence: plan Key Decision 19 and its P0b note. CLOSE-04
+       retired and CLOSE-03 amended in the same change. -->
 - **Base URL:** the live URL `server.sh up` printed — never quoted from memory
 - **Seed data:** none. The probe is an unauthenticated request to an unmatched path
 - **Accounts / roles:** none. The story adds no role boundary
@@ -91,14 +97,72 @@ missed, never reconstructed, and no row that reads it can be marked `Pass` — i
 _Unmeasured rows_ requires. Each captured set is a fenced block beneath this
 table, with its date.
 
-| Capture                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Required by                                                                                                                                       | Taken                                                                                                                                                                              | Value |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
-| **A.** The four doc gates — `docs-length.sh`, `docs-pairing.sh`, `doc-references.sh`, `doctrine-drift.sh` — exit code and findings by identity (file, kind, token; line dropped, multiplicity kept), with `HEAD`, the `doc-references.sh` `git hash-object` and the index state                                                                                                                                                                             | QA plan Section 6 (_Capture the doc-gate baselines before the first edit_); ADR-US003 (after the tests split)                                     | Plan P0 — before the first edit, naming `HEAD` as the base commit (a `main` commit already containing both US013 and US008); superseded as the diff base by any later slot E entry |       |
-| **B.** The same four gates, same form, same index state                                                                                                                                                                                                                                                                                                                                                                                                     | `../../02-STORIES/US014.md` QA Acceptance Criteria — Manual (the doc gates); QA plan HP-15                                                        | At the walk                                                                                                                                                                        |       |
-| **C.** The host-path log-read commands the docs cite, re-measured on the post-US013 tree — each command's exact text, file and line (today `code/src/logs/CONTEXT.md`:41, :44, :47 and `CLAUDE.md`:21-22; the story counts five)                                                                                                                                                                                                                            | `../../02-STORIES/US014.md` Dependencies ("re-measured after US013 merges, never inherited"); QA plan HP-14                                       | Plan P0 — on the branch's base commit, before the first edit; re-taken at P5R only if a later upstream merge edits a cited file                                                    |       |
-| **D.** The LogQL selector lines in `code/workflows/09-debugging-with-logs/STEPS.md` and `code/docs/logging/OBSERVABILITY.md`, re-measured on the post-US013 tree (today 09 `STEPS.md`:103, :116, :125, :135, :140; `OBSERVABILITY.md`:139, :142, :145, :148, :151, :252, :315)                                                                                                                                                                              | `../../02-STORIES/US014.md` Dependencies; Logging Acceptance Criteria                                                                             | Plan P0 — on the branch's base commit, before the first edit; re-taken at P5R only if a later upstream merge edits a cited file                                                    |       |
-| **E.** A re-baseline per **later** upstream merge — only if a further upstream story US014 depends on (a later edit to the same settings modules, the 09 folder, the `code/src/logs/` pair or `EDGE-REQUIREMENTS.md`) merges to `main` after the branch is cut: the four gates in slot A's form, run on a checkout of that merge commit (no US014 edit in it), each entry naming that commit. US013 and US008 never appear here — they are in slot A's base | Plan P5R (re-baseline); ADR-US003 — so an upstream story's own findings are attributed to it, never to US014; 17-story-plans grilling round 2, Q4 | Plan P5R — once per such rebase; if none occurs, `None — no upstream merge after the branch was cut`, dated, at P6                                                                 |       |
-| **F.** The borderline lines — 09 `CLAUDE.md` (today `:26`), `code/docs/BACKEND-CODING-PRINCIPLES.md` (`:324`), `code/docs/coding-principles/STYLE-AND-PROCESS.md` (`:168`) — and the four tree annotations, each file and line re-measured on the post-US013 tree                                                                                                                                                                                           | `../../02-STORIES/US014.md` Documentation Tasks (the borderline row; "re-measured after US013 merges")                                            | Plan P0 — on the branch's base commit, before the first edit; re-taken at P5R only if a later upstream merge edits a cited file                                                    |       |
+| Capture                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Required by                                                                                                                                       | Taken                                                                                                                                                                              | Value                                |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| **A.** The four doc gates — `docs-length.sh`, `docs-pairing.sh`, `doc-references.sh`, `doctrine-drift.sh` — exit code and findings by identity (file, kind, token; line dropped, multiplicity kept), with `HEAD`, the `doc-references.sh` `git hash-object` and the index state                                                                                                                                                                             | QA plan Section 6 (_Capture the doc-gate baselines before the first edit_); ADR-US003 (after the tests split)                                     | Plan P0 — before the first edit, naming `HEAD` as the base commit (a `main` commit already containing both US013 and US008); superseded as the diff base by any later slot E entry | Taken 23/11/2026 22:22 — block below |
+| **B.** The same four gates, same form, same index state                                                                                                                                                                                                                                                                                                                                                                                                     | `../../02-STORIES/US014.md` QA Acceptance Criteria — Manual (the doc gates); QA plan HP-15                                                        | At the walk                                                                                                                                                                        |                                      |
+| **C.** The host-path log-read commands the docs cite, re-measured on the post-US013 tree — each command's exact text, file and line (today `code/src/logs/CONTEXT.md`:41, :44, :47 and `CLAUDE.md`:21-22; the story counts five)                                                                                                                                                                                                                            | `../../02-STORIES/US014.md` Dependencies ("re-measured after US013 merges, never inherited"); QA plan HP-14                                       | Plan P0 — on the branch's base commit, before the first edit; re-taken at P5R only if a later upstream merge edits a cited file                                                    | Taken 23/11/2026 22:22 — block below |
+| **D.** The LogQL selector lines in `code/workflows/09-debugging-with-logs/STEPS.md` and `code/docs/logging/OBSERVABILITY.md`, re-measured on the post-US013 tree (today 09 `STEPS.md`:103, :116, :125, :135, :140; `OBSERVABILITY.md`:139, :142, :145, :148, :151, :252, :315)                                                                                                                                                                              | `../../02-STORIES/US014.md` Dependencies; Logging Acceptance Criteria                                                                             | Plan P0 — on the branch's base commit, before the first edit; re-taken at P5R only if a later upstream merge edits a cited file                                                    | Taken 23/11/2026 22:22 — block below |
+| **E.** A re-baseline per **later** upstream merge — only if a further upstream story US014 depends on (a later edit to the same settings modules, the 09 folder, the `code/src/logs/` pair or `EDGE-REQUIREMENTS.md`) merges to `main` after the branch is cut: the four gates in slot A's form, run on a checkout of that merge commit (no US014 edit in it), each entry naming that commit. US013 and US008 never appear here — they are in slot A's base | Plan P5R (re-baseline); ADR-US003 — so an upstream story's own findings are attributed to it, never to US014; 17-story-plans grilling round 2, Q4 | Plan P5R — once per such rebase; if none occurs, `None — no upstream merge after the branch was cut`, dated, at P6                                                                 |                                      |
+| **F.** The borderline lines — 09 `CLAUDE.md` (today `:26`), `code/docs/BACKEND-CODING-PRINCIPLES.md` (`:324`), `code/docs/coding-principles/STYLE-AND-PROCESS.md` (`:168`) — and the four tree annotations, each file and line re-measured on the post-US013 tree                                                                                                                                                                                           | `../../02-STORIES/US014.md` Documentation Tasks (the borderline row; "re-measured after US013 merges")                                            | Plan P0 — on the branch's base commit, before the first edit; re-taken at P5R only if a later upstream merge edits a cited file                                                    | Taken 23/11/2026 22:22 — block below |
+
+**Slot A — 23/11/2026 22:22, plan P0, before the first edit.** `HEAD` `b170540888348cbf0ac565a603f3910596cb47e4`
+(the `us014/structured-json-logging` base, cut from `dev`, containing US013 and US008); `doc-references.sh`
+`git hash-object` `12e81359308e194bcb607eb04b30583b3ab5089b`; index clean (`git status --porcelain` empty).
+
+```text
+docs-length.sh     exit 0 — 818 files within 300 lines, 3 approaching
+docs-pairing.sh    exit 0 — 238 CONTEXT.md, 228 CLAUDE.md, split intact
+doctrine-drift.sh  exit 0 — 4 claims, each with one home
+doc-references.sh  exit 1 — 21 findings (file | kind | token | multiplicity)
+GAPS.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md | 1
+GAPS.md | dangling path | code/src/django/apps/core/observability.py | 1
+GAPS.md | dangling path | project-management/src/21-BUGS/BUG-INDEX.md | 1
+project-management/src/02-STORIES/US014.md | dangling path | code/src/django/apps/core/observability.py | 2
+project-management/src/02-STORIES/US014.md | dangling path | code/src/django/apps/core/tests/unit/test_observability.py | 2
+project-management/src/03-SPRINTS/SPRINT-03.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md | 1
+project-management/src/10-SECURITY/THREAT-MODEL/PLANNING/THREAT-MODEL-PLAN-US014-JSON-LOGGING-REQUEST-ID.md | dangling path | code/src/django/apps/core/observability.py | 1
+project-management/src/11-QA/PLANNING/QA-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md | 3
+project-management/src/11-QA/PLANNING/QA-PLAN-US011-REGISTER-INDEX-BACKFILL.md | dangling path | project-management/src/21-BUGS/BUG-INDEX.md | 2
+project-management/src/11-QA/PLANNING/QA-PLAN-US014-STRUCTURED-JSON-LOGGING.md | dangling path | code/src/django/apps/core/tests/unit/test_observability.py | 1
+project-management/src/15-DECISIONS/ADR-US005-ONE-LAYER-DECIDES-TO-RETRY-04-09-2026.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md | 1
+project-management/src/16-SPRINT-PLANS/03-SPRINT-PLAN-03.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md | 2
+project-management/src/17-STORY-PLANS/06-STORY-PLAN-US005-RETRY-OWNERSHIP-AND-BUDGETS.md | dangling path | how-to/src/OUTBOUND-TIMEOUTS.md | 3
+```
+
+**Slot C — 23/11/2026 22:22, plan P0, on the base commit.** Four host-path commands found, against the
+story's five; recorded as found, not reconciled.
+
+```text
+code/src/logs/CONTEXT.md:48   tail -f code/src/logs/django.log
+code/src/logs/CONTEXT.md:51   grep ERROR code/src/logs/django.log
+code/src/logs/CONTEXT.md:68   truncate -s 0 /workspace/code/src/logs/django.log   (in-container path, a reset, not a read)
+code/src/logs/CLAUDE.md:22    grep ERROR code/src/logs/django.log
+```
+
+**Slot D — 23/11/2026 22:22, plan P0, on the base commit.**
+
+```text
+code/workflows/09-debugging-with-logs/STEPS.md:107, :120, :129, :144   {container="<slug>-backend"}
+code/workflows/09-debugging-with-logs/STEPS.md:139                    <slug>-backend stream (prose)
+code/docs/logging/OBSERVABILITY.md:143, :146, :149, :256               {container="<slug>-web"}
+code/docs/logging/OBSERVABILITY.md:152                                 {container="<slug>-worker"}
+code/docs/logging/OBSERVABILITY.md:155                                 {container=~"<slug>-(web|worker)"}
+code/docs/logging/OBSERVABILITY.md:131, :319                           <slug>-worker marked absent
+code/docs/logging/OBSERVABILITY.md:233                                 job_name: <org>-backend (the Prometheus scrape job — deferred, not this pipeline)
+```
+
+**Slot F — 23/11/2026 22:22, plan P0, on the base commit.**
+
+```text
+code/workflows/09-debugging-with-logs/CLAUDE.md:32    "dev/test — tail local logs via the dev scripts under" (was :26)
+code/docs/BACKEND-CODING-PRINCIPLES.md:325            "appears in code/src/logs/ locally and in Loki in staging/prod" (was :324)
+code/docs/coding-principles/STYLE-AND-PROCESS.md:168  "In production, use structured logging (JSON) where possible."
+CONTEXT.md:57             logs/ ← runtime log files (dev/test; gitignored)
+code/CONTEXT.md:55        logs/ ← runtime log files (dev/test; all gitignored)
+code/src/CONTEXT.md:47    logs/ ← runtime log files (dev/test only; all gitignored)
+.copier/README.md:239     logs/ ← runtime log files (dev/test; gitignored)
+```
 
 ---
 
@@ -179,12 +243,12 @@ Tasks_ names.
 
 ### Close
 
-| ID       | Action                                                                                            | Expected outcome                                                                                                                                                                                       | Flow | QA  | Result | Notes |
-| -------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | --- | ------ | ----- |
-| CLOSE-01 | Confirm who walked this guide against the story branch's commit authors                           | The tester is not the author of the story's edits                                                                                                                                                      | —    | —   |        |       |
-| CLOSE-02 | Open `../AUTOMATED/US014-TEST-STATUS.md` and find the scenarios _Out of scope_ names as automated | Each automated HP, ES and EC scenario has a test recorded green; `apps/core` coverage is at or above 75 % line and branch. A manual `Fail` above beside a green suite is a missing test, and is routed | —    | —   |        |       |
-| CLOSE-03 | Run `bash code/src/scripts/development/server.sh down`                                            | The US014 dev stack stops                                                                                                                                                                              | —    | —   |        |       |
-| CLOSE-04 | Run `bash code/src/scripts/development/hosts-story-remove.sh 014`                                 | The `dev-us014` / `test-us014` host entry for `127.0.0.14` is removed                                                                                                                                  | —    | —   |        |       |
+| ID       | Action                                                                                                                                                  | Expected outcome                                                                                                                                                                                       | Flow | QA  | Result | Notes                                                                                                                                    |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | --- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| CLOSE-01 | Confirm who walked this guide against the story branch's commit authors                                                                                 | The tester is not the author of the story's edits                                                                                                                                                      | —    | —   |        |                                                                                                                                          |
+| CLOSE-02 | Open `../AUTOMATED/US014-TEST-STATUS.md` and find the scenarios _Out of scope_ names as automated                                                       | Each automated HP, ES and EC scenario has a test recorded green; `apps/core` coverage is at or above 75 % line and branch. A manual `Fail` above beside a green suite is a missing test, and is routed | —    | —   |        |                                                                                                                                          |
+| CLOSE-03 | Run `bash code/src/scripts/development/server.sh down`                                                                                                  | The main dev stack US014 ran on stops                                                                                                                                                                  | —    | —   |        | Amended 23/11/2026 — was: The US014 dev stack stops; why: developer instruction, no worktree (plan Key Decision 19); evidence: plan KD19 |
+| CLOSE-04 | Retired 23/11/2026 — no hosts entry is added: US014 runs in the main checkout with no worktree (developer instruction 23/11/2026; plan Key Decision 19) | —                                                                                                                                                                                                      | —    | —   | —      | —                                                                                                                                        |
 
 ---
 

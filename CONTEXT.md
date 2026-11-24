@@ -54,7 +54,7 @@ consumes this API; none of them changes the rule above for the web.
 │   │   │                              ← incl. crates/desktop/ — DESKTOP-ONLY Slint app
 │   │   ├── docker/                  ← Dockerfiles and Compose files (dev/test/staging/prod)
 │   │   ├── improvement-architecture/ ← /improve-codebase-architecture reports
-│   │   ├── logs/                    ← runtime log files (dev/test; gitignored)
+│   │   ├── logs/                    ← dev log file, host-mounted (dev only; gitignored)
 │   │   ├── scripts/                 ← shell scripts — ALL dev operations run through here
 │   │   └── tests/                   ← API integration tests (Bruno collection)
 │   └── workflows/                   ← step-by-step coding workflows (01–13)

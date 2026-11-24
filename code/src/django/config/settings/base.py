@@ -47,7 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    # Third in the pipeline by doctrine, which puts security headers first — so a response
+    # Second in the pipeline by doctrine, which puts security headers first — so a response
     # SecurityMiddleware short-circuits itself (the SSL redirect) carries no correlation
     # identifier. Accepted: that redirect never reaches application code, so there is
     # nothing to correlate it to.
@@ -199,21 +199,3 @@ STORAGES = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Minimal console logging. Each environment module replaces this wholesale with the
-# handlers appropriate to it.
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "{asctime} {levelname} {name} {message}",
-            "style": "{",
-            "datefmt": "%Y-%m-%d %H:%M:%S",
-        },
-    },
-    "handlers": {
-        "console": {"class": "logging.StreamHandler", "formatter": "verbose"},
-    },
-    "root": {"handlers": ["console"], "level": "INFO"},
-}

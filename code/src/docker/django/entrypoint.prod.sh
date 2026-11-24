@@ -28,5 +28,4 @@ exec gunicorn config.asgi:application \
   --timeout "${GUNICORN_TIMEOUT:-30}" \
   --keep-alive 5 \
   --log-level warning \
-  --access-logfile - \
   --error-logfile -

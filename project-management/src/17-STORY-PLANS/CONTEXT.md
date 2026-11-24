@@ -64,15 +64,18 @@ A plan is created before implementation begins and documents:
 - Dependencies table (blocked-by / blocks, with a "can start now" vs "blocked" callout)
 - GDPR, security, logging, testing, and the documentation write-up map
 - Deferred items and risks
-- Docker & Nginx infrastructure — the per-story worktree isolation files
+- Docker & Nginx infrastructure — the worktree isolation files when the story runs in parallel,
+  else one line saying it runs in the main checkout
 
 **The plan's executable half is filed elsewhere.** Beside each plan the same workflow authors the
 story's manual testing guide, from the specs and before any code, into
 `../18-TESTS/MANUAL/US###-MANUAL-TESTING.md` — it becomes a record once walked, so it lives with
 the records. The plan's _Manual testing_ section points at it rather than listing steps.
 
-**Per-story worktree isolation files** — each plan references four files that keep
-parallel worktrees from colliding (unique `127.0.0.N` IP + port block per story):
+**Per-story worktree isolation files** — a plan for a story running in parallel references four
+files that keep parallel worktrees from colliding (unique `127.0.0.N` IP + port block per story); a
+story running alone has none. When a worktree is warranted is `how-to/docs/GIT-WORKTREES.md`'s
+call:
 
 - `code/src/docker/docker-compose.us###.dev.yml` — dev stack override
 - `code/src/docker/docker-compose.us###.test.yml` — test stack override

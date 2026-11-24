@@ -236,7 +236,7 @@ Two things to do on a freshly generated project:
 │   │   ├── django/                      ← Django 6 + Django Ninja (apps, config, templates, components, static)
 │   │   ├── docker/                      ← Dockerfiles and Compose files
 │   │   ├── improvement-architecture/    ← /improve-codebase-architecture reports
-│   │   ├── logs/                        ← runtime log files (dev/test; gitignored)
+│   │   ├── logs/                        ← dev log file, host-mounted (dev only; gitignored)
 │   │   ├── scripts/                     ← audits, database, deployment, development, syntax, tests (+ shared _lib/)
 │   │   └── tests/                       ← Bruno API test collections (one collection per domain)
 │   └── workflows/                       ← 11 coding workflows in three families

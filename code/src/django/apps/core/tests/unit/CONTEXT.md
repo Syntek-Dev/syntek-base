@@ -1,6 +1,6 @@
 # apps/core/tests/unit — Phase 1
 
-The primitives that need no database: the exception trees, the schema bases, the middleware and the template tag.
+The primitives that need no database: the exception trees, the schema bases, the middleware, the log formatter and filter, and the template tag.
 
 **This directory's name is functional, not descriptive.** `code/src/django/conftest.py`
 marks every test under a `tests/unit/` path as `unit`, and `backend.sh` runs phase 1 with
@@ -16,6 +16,11 @@ apps/core/tests/unit/
 ├── CONTEXT.md    ← this file
 ├── test_errors.py ← that the three exception trees stay unrelated, which is the whole point
 ├── test_middleware.py ← an inbound identifier is untrusted, and the ContextVar is always reset
+├── observability_support.py ← shared helpers for the observability tests (not collected)
+├── test_observability.py ← the JSON line contract, through JSONFormatter and RequestIDFilter
+├── test_observability_limits.py ← the 16 KiB cap and the formatter that never raises
+├── test_observability_requests.py ← the request_id on lines logged while a request is served
+├── test_observability_settings.py ← each environment's LOGGING dict, never applied
 ├── test_schemas.py ← the `extra` policy that differs across the three bases on purpose
 └── test_templatetags.py ← that the tag works with the empty Context the 500 page uses
 ```

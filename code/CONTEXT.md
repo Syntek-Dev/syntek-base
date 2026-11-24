@@ -52,7 +52,7 @@ code/
 │   │   └── CONTEXT.md
 │   ├── docker/                      ← Dockerfiles and Compose files
 │   │   └── CONTEXT.md
-│   ├── logs/                        ← runtime log files (dev/test; all gitignored)
+│   ├── logs/                        ← dev log file, host-mounted (dev only; all gitignored)
 │   │   ├── CONTEXT.md
 │   │   ├── .gitignore
 │   │   └── .gitkeep

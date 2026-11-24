@@ -29,8 +29,9 @@ staging, and prod.
   `code/docs/logging/DJANGO-LOGGING.md` and `code/docs/logging/FRONTEND-LOGGING.md`.
 - **Model:** Opus for root-cause analysis and a mechanical touch to the
   workflow files.
-- **Concrete steps:** dev/test — tail local logs via the dev scripts under
-  `code/src/scripts/development/*.sh` and `docker compose logs` through the tooling;
+- **Concrete steps:** dev — read `code/src/logs/django.log` on the host (Django's lines, JSON)
+  and the console via the dev scripts under `code/src/scripts/development/*.sh`; test keeps no
+  log file, only console output;
   staging/prod — query Loki (LogQL) and dashboards in Grafana, and <%ERROR_TRACKING%> for
   exceptions. **Never invoke `docker`, `python`, or `pytest` directly — use the shell
   scripts.**
@@ -43,7 +44,7 @@ staging, and prod.
 
 - **Observational only** — this workflow finds the cause; the fix and its regression
   test go through `code/workflows/10-debug/`.
-- **No local log files exist in staging/prod** (see the matrix) — never assume
+- **No local log file exists outside dev** (see the matrix) — never assume
   `code/src/logs/` is available there; use <%LOG_AGGREGATOR%> or <%ERROR_TRACKING%>
   instead.
 - Never paste secrets, tokens, or PII from logs into commits, bug reports, or the

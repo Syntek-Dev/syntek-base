@@ -35,9 +35,21 @@ if os.environ.get("TEST_DATABASE_URL"):
 
     DATABASES = {"default": dj_database_url.config(env="TEST_DATABASE_URL")}
 
+# One console with no formatter, root at WARNING. It carries the request_id filter only so the
+# every-handler invariant holds in every environment. The `django` logger matches staging and
+# production — WARNING, no handlers of its own, propagating — so DEFAULT_LOGGING's console and
+# mail_admins handlers do not survive here either.
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "filters": {
+        "request_id": {"()": "apps.core.observability.RequestIDFilter"},
+    },
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "filters": ["request_id"]},
+    },
     "root": {"handlers": ["console"], "level": "WARNING"},
+    "loggers": {
+        "django": {"handlers": [], "level": "WARNING"},
+    },
 }

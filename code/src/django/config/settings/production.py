@@ -38,18 +38,30 @@ STORAGES = {
     },
 }
 
+# Minimal JSON to stdout — the five fixed keys, only duration_ms, status_code and method, and a
+# message-free exc_info, each line held to 16 KiB (ADR-US014). Root at WARNING. The `django`
+# logger is declared with no handlers so Django's DEFAULT_LOGGING console and mail_admins
+# handlers do not survive; it propagates to root. This dict is identical in staging.py and
+# production.py, and the suite asserts it (config/settings/CLAUDE.md, the LOGGING exception).
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "filters": {
+        "request_id": {"()": "apps.core.observability.RequestIDFilter"},
+    },
     "formatters": {
-        "verbose": {
-            "format": "{asctime} {levelname} {name} {message}",
-            "style": "{",
-            "datefmt": "%Y-%m-%d %H:%M:%S",
-        },
+        "json": {"()": "apps.core.observability.JSONFormatter", "mode": "minimal"},
     },
     "handlers": {
-        "console": {"class": "logging.StreamHandler", "formatter": "verbose"},
+        "console": {
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stdout",
+            "formatter": "json",
+            "filters": ["request_id"],
+        },
     },
-    "root": {"handlers": ["console"], "level": "INFO"},
+    "root": {"handlers": ["console"], "level": "WARNING"},
+    "loggers": {
+        "django": {"handlers": [], "level": "WARNING"},
+    },
 }

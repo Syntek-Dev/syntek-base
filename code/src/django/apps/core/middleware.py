@@ -16,10 +16,13 @@ __all__ = ["RequestIDMiddleware", "current_request_id"]
 # rather than trusted because something in front usually sets it.
 _INBOUND_PATTERN = re.compile(r"[A-Za-z0-9._-]{1,200}")
 
-# A ContextVar rather than an attribute on the request, because the consumers — a logging
-# filter, a template context processor, the error tracker — are not handed the request object.
-# asgiref propagates context across the sync/async boundary in both directions, so this holds
-# for a sync view running under ASGI.
+# Two carriers for one value, because they serve two different moments. The ContextVar serves
+# in-chain consumers — a logging filter, a template context processor, the error tracker — which
+# are not handed the request object; asgiref propagates context across the sync/async boundary
+# in both directions, so it holds for a sync view running under ASGI. The attribute
+# ``request.request_id`` serves records logged after this middleware's ``finally`` has reset the
+# ContextVar: Django logs a returned 4xx/5xx response there, and that record carries the request
+# (US014). Both hold the validated or minted id, never the raw header.
 _current_request_id: ContextVar[str] = ContextVar("request_id", default="")
 
 
@@ -39,6 +42,7 @@ class RequestIDMiddleware:
         # would split the same request's trail between the proxy's access log and this process.
         inbound = request.META.get("HTTP_X_REQUEST_ID", "")
         request_id = inbound if _INBOUND_PATTERN.fullmatch(inbound) else uuid.uuid4().hex
+        request.request_id = request_id  # type: ignore[attr-defined]
 
         # Resetting is not optional: a worker thread is reused across requests, so a value left
         # set would be reported against whichever request that thread serves next.

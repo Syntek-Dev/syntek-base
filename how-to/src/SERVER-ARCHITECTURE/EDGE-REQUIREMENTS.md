@@ -289,7 +289,7 @@ frontend upstream to size or route.
 - **Source:** `code/docs/NEGATIVE-SPACE.md` Section _The error taxonomy_ — every response carries
   `X-Request-ID` and the error-tracker event is tagged with it, so a user reporting "I got an
   error" resolves to one event. App side: `code/src/django/apps/core/middleware.py`
-  (`RequestIDMiddleware`, registered third in `MIDDLEWARE`, after the security headers).
+  (`RequestIDMiddleware`, registered second in `MIDDLEWARE`, after `SecurityMiddleware`).
   Deploy side: `deploy:` the Nginx module — a per-request identifier passed to the upstream.
 - **Current status:** the app reads an inbound `X-Request-ID`, validates it against a
   conservative alphabet with a 200-character bound, and mints a UUID4 when it is absent or
@@ -298,9 +298,14 @@ frontend upstream to size or route.
   events, instead of two that have to be joined on timestamp.
 - **Deploy repo must implement:** pass a per-request identifier to the app in the
   `X-Request-ID` request header and record the same value in the access-log format, so both
-  sides correlate. Nginx's own `$request_id` is the natural source. **Never strip or rewrite
-  the header on the response** — that value is what a user quotes back. Entry 2 derives its
-  dormant CSP nonce from a request identifier, so the two entries must use the same one.
+  sides correlate. Nginx's own `$request_id` is the natural source. **Set the header from the
+  edge's own `$request_id` unconditionally, discarding any client-supplied `X-Request-ID`** — a
+  client value passed through would let a caller choose the id that joins the edge access log,
+  the application's lines and the tracker, and would make entry 2's CSP nonce client-chosen. The
+  app's inbound alphabet check stays as defence in depth. **The edge access log must carry
+  `$request_id`.** **Never strip or rewrite the header on the response** — that value is what a
+  user quotes back. Entry 2 derives its dormant CSP nonce from a request identifier, so the two
+  entries must use the same one.
 
 ---
 
@@ -325,6 +330,38 @@ frontend upstream to size or route.
   `Retry-After` where the window is known, carry `X-Request-ID` if one was generated at the edge
   (entry 13), and **never** be cached by Cloudflare. Keep it plain HTML with no asset references:
   the static tree is served by the same upstream that is failing.
+
+---
+
+## 15. Log collection — what the collector reads, and how it labels it
+
+- **Source:** `code/docs/logging/DJANGO-LOGGING.md` (the line contract: five fixed keys, then
+  `exc_info` and `truncated`) and `code/docs/logging/OBSERVABILITY.md`. App side:
+  `config/settings/staging.py` and `production.py` write every line Django's `LOGGING` emits as one
+  JSON object to **stdout**, each carrying `request_id`. The process-server stream
+  (`gunicorn.error`, `uvicorn.error`, boot output) is plain text on **stderr** with no
+  `request_id`, outside that pipeline; it can rarely carry an escaped "Exception in ASGI
+  application" traceback with its message. The app server writes **no access log** outside dev —
+  the edge access log (entry 13) owns access records.
+- **Current status:** the app side ships. The collector is per deployment, and stated here
+  collector-neutrally; the app needs no configuration for it.
+- **Deploy repo must implement:**
+  - **Read stdout and stderr** of each container through the Docker daemon, with its labels — not
+    a tail of the log files on disk.
+  - **Relabel** `com.docker.compose.service` to `service_name` and `com.docker.compose.project` to
+    an environment label, so staging and production never merge and a second replica stays under
+    the same selector. Every documented query is `{service_name="django"}`.
+  - **Keep the process-server stream.** `| json | __error__=""` drops it; the selector that keeps
+    it is exactly `{service_name="django"} | json | __error__!=""`. A traceback arrives one entry
+    per line unless the collector runs a multiline stage.
+  - **Rotate on the host:** the `json-file` driver with `max-size` and `max-file` set.
+  - **Retention:** 14 days staging and 90 days production, as **reference defaults the
+    controller confirms**, enforced by the collector. The **edge access log's own retention** is
+    an obligation this deploy repository records, set by the controller.
+  - **Reference realisation** (Grafana Alloy): `discovery.docker` → `discovery.relabel` →
+    `loki.source.docker`. `discovery.docker` exports
+    `__meta_docker_container_label_com_docker_compose_service`; without the explicit relabel, Loki
+    derives `service_name` from its default label list or falls back to `unknown_service`.
 
 ---
 
@@ -364,5 +401,6 @@ sent to the origin hop directly, bypassing Cloudflare:
 | 10  | Object-store public host                | boto3/presign                                               | Public vhost matching endpoint URL                                                          |
 | 11  | Cache bust + worker/beat                | Cache bust only — Celery unwired                            | Restart-after-migrate; worker/beat once wired                                               |
 | 12  | Outbound mail relay                     | SMTP env contract                                           | SMTP path + SPF/DKIM/DMARC DNS + creds                                                      |
-| 13  | Request correlation ID                  | Reads inbound, mints a fallback                             | Set `X-Request-ID`, log it, never strip it                                                  |
+| 13  | Request correlation ID                  | Validates inbound, mints a fallback, stores it on request   | Set `X-Request-ID` from `$request_id` unconditionally, log it, never strip it               |
 | 14  | The 503 page                            | None — Django cannot serve it                               | Static `503` doc, `Retry-After`, never cached                                               |
+| 15  | Log collection                          | Django's lines JSON on stdout; process server on stderr     | Read stdout+stderr with labels, relabel service/project, `json-file` rotation, retention    |
