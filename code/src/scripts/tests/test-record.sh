@@ -50,9 +50,10 @@
 #   <reports>/a11y/*.json                           axe violation counts
 #   <reports>/backend-coverage/coverage.xml         line + branch coverage
 #
-# Exit codes:  0 = block written, or printed under --dry-run
-#              1 = record missing or still at the 18-TESTS/ root, markers missing, or no
-#                  report artefacts to read
+# Exit codes:  0 = block written and the record formatted, or printed under --dry-run
+#              1 = record missing or still at the 18-TESTS/ root, markers missing, no
+#                  report artefacts to read, or the block written but the record could not
+#                  be formatted
 #              2 = script error (bad argument, python3 absent)
 #
 set -euo pipefail
@@ -539,3 +540,27 @@ except ValueError:
     shown = RECORD
 note(f"wrote {total} test rows into {shown}")
 PY
+
+# WHY THE GENERATOR FORMATS ITS OWN OUTPUT (BUG-US014-TEST-RECORD-OUTPUT-NOT-PRETTIER-STABLE,
+# 24/11/2026). The block carries each test's docstring verbatim, and docstrings here are RST —
+# ``literal`` spans, *emphasis* — which Prettier rewrites. A freshly written record therefore
+# failed the format gate every time, and each regeneration needed a hand-run formatting pass.
+# Running the project's own Markdown formatter on the record makes the written file the
+# formatter's fixed point, whatever a docstring holds; chasing Prettier rule by rule in escape()
+# would break again on the next construct. --dry-run prints the raw block and formats nothing.
+if ! $DRY_RUN; then
+  RECORD_ABS="$(cd "$(dirname "$RECORD_PATH")" && pwd)/$(basename "$RECORD_PATH")"
+  case "$RECORD_ABS" in
+    "$PROJECT_ROOT"/*)
+      RECORD_REL="${RECORD_ABS#"$PROJECT_ROOT"/}"
+      if ! (cd "$PROJECT_ROOT" && bash code/src/scripts/syntax/format.sh --fix --file-type markdown \
+          --path "$RECORD_REL" >/dev/null 2>&1); then
+        fail "wrote the block into $RECORD_REL, but syntax/format.sh could not format it — run it by hand before committing."
+      fi
+      log "formatted $RECORD_REL"
+      ;;
+    *)
+      log "the record is outside the repository, so it was not formatted"
+      ;;
+  esac
+fi

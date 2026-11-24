@@ -46,7 +46,9 @@ both excluded the same way. <!-- Purpose line extended 19/11/2026 (planned-red.s
   writes into the gitignored `reports/` tree; this one rewrites a **tracked** file in another
   layer — `project-management/src/18-TESTS/AUTOMATED/US###-TEST-STATUS.md`. It writes **only**
   between `<!-- BEGIN GENERATED: test-record -->` and `<!-- END GENERATED -->`, fails loudly when
-  either marker is absent rather than appending at the end, and **never changes a suite's exit
+  either marker is absent rather than appending at the end, then runs `syntax/format.sh` over
+  the record so it is written in the formatter's form (a hand-written half that already passes the
+  format gate is left as it is), and **never changes a suite's exit
   code**: keep it a separate invocation and never a step inside a runner, so a red run still
   records. Never hand-edit the block it owns — the next run discards the edit
   (`project-management/src/18-TESTS/AUTOMATED/CLAUDE.md`).

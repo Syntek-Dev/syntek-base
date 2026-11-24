@@ -293,9 +293,10 @@ fails the run.
 
 **`test-record.sh` reads that contract differently**, because it decides no test outcome — a red
 suite and a green one both record. Measured against the script on 09/09/2026: `0` it wrote the
-block, or printed it under `--dry-run`; `1` it wrote **nothing** — no record file at the target
-path, no `BEGIN GENERATED: test-record` / `END GENERATED` markers in it, or no report artefacts
-to read; `2` a script error — a story that is not `US###`, an unknown flag, or no `python3`.
+block and formatted the record, or printed it under `--dry-run`; `1` it wrote **nothing** — no
+record file at the target path, no `BEGIN GENERATED: test-record` / `END GENERATED` markers in
+it, or no report artefacts to read — or it wrote the block but `syntax/format.sh` could not
+format the record (24/11/2026), which it names; `2` a script error — a story that is not `US###`, an unknown flag, or no `python3`.
 
 ## CI
 

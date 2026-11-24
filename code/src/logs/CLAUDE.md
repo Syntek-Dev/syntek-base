@@ -19,7 +19,7 @@ Runtime log files written by the Django backend in **dev only**, host-mounted
 - **Model:** Opus — this folder is read-only operational output; there is nothing
   to author here.
 - **Concrete steps:** follow a service with `logs.sh --service <name> --follow`, or
-  `grep '"level":"ERROR"' code/src/logs/django.log`; to reset,
+  `grep '"level": "ERROR"' code/src/logs/django.log`; to reset,
   truncate the file inside a `shell.sh` session, as `CONTEXT.md` → _Log rotation_ shows.
 - **Definition of done:** no file in this directory is committed; only `CONTEXT.md`,
   `CLAUDE.md`, `.gitignore`, and `.gitkeep` are tracked.

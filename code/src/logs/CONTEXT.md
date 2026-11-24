@@ -53,7 +53,7 @@ bash code/src/scripts/development/logs.sh --service django --follow   # the djan
 tail -f code/src/logs/django.log
 
 # Filter by level (each line is JSON, so match the key)
-grep '"level":"ERROR"' code/src/logs/django.log
+grep '"level": "ERROR"' code/src/logs/django.log
 ```
 
 ## Log rotation
