@@ -47,7 +47,8 @@ django/
 ├── tests/                  # project-level suites (per-app tests live in apps/<app>/tests/)
 │   ├── CONTEXT.md
 │   ├── CLAUDE.md
-│   └── e2e/                # browser suite — playwright-python + axe (see its CONTEXT.md)
+│   ├── e2e/                # browser suite — playwright-python + axe (see its CONTEXT.md)
+│   └── unit/               # tests of the root conftest.py (the story-map merge)
 ├── CHANGELOG.md            # this deployable's own changelog — independent of the root's
 ├── conftest.py             # root pytest configuration
 ├── CONTEXT.md              ← this file

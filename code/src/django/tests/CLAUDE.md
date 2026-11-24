@@ -3,12 +3,13 @@
 # CLAUDE.md — code/src/django/tests/
 
 Read order: `.claude/CLAUDE.md` → `.claude/MEMORY.md` → this folder's `CONTEXT.md`
-(what belongs here and what does not, imported above) → this file → `e2e/CLAUDE.md`.
+(what belongs here and what does not, imported above) → this file → `e2e/CLAUDE.md` or
+`unit/CLAUDE.md`.
 
 ## Purpose (one line)
 
-The home for test suites that belong to no single app — currently just the browser-level
-`e2e/` suite.
+The home for test suites that belong to no single app — the browser-level `e2e/` suite and
+`unit/`, the tests of the root `conftest.py` hooks.
 
 ## How to work here
 
@@ -17,7 +18,7 @@ The home for test suites that belong to no single app — currently just the bro
 - **Model:** Opus.
 - **Concrete steps:** decide the layer first (`code/docs/testing/TAXONOMY.md`) → if the
   test belongs to one app, write it in `apps/<app>/tests/` instead → only cross-cutting,
-  browser-bound checks land here.
+  browser-bound checks (`e2e/`) and tests of the root `conftest.py` (`unit/`) land here.
 - **Definition of done:** the test lives at the cheapest layer that can actually catch
   the defect, and runs through a `code/src/scripts/tests/*.sh` runner.
 

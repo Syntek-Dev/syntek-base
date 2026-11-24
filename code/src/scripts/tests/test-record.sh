@@ -495,7 +495,9 @@ def align_tables(lines: list[str]) -> list[str]:
         stripped = line.strip()
         is_row = stripped.startswith("|") and stripped.endswith("|") and len(stripped) > 1
         if is_row:
-            cells = [cell.strip() for cell in stripped[1:-1].split("|")]
+            # Split on unescaped pipes only: escape() writes a literal pipe in a docstring as
+            # "\|", and splitting on that too cut one cell into two and broke the column count.
+            cells = [cell.strip() for cell in re.split(r"(?<!\\)\|", stripped[1:-1])]
             if run and len(cells) != len(run[0]):
                 flush()
             if not run:

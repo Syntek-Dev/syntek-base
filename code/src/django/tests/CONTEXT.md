@@ -10,14 +10,16 @@ code/src/django/tests/
 ├── __init__.py   ← package marker — makes this a test package, not a rootdir scan
 ├── CLAUDE.md     ← operating rules
 ├── CONTEXT.md    ← this file
-└── e2e/          ← browser-level suite (Playwright via pytest); see its CONTEXT.md
+├── e2e/          ← browser-level suite (Playwright via pytest); see its CONTEXT.md
+└── unit/         ← unit tests for the root conftest.py hooks; see its CONTEXT.md
 ```
 
 ## What lives here
 
-| Suite  | Scope                                                                 | Runner                             |
-| ------ | --------------------------------------------------------------------- | ---------------------------------- |
-| `e2e/` | Cross-cutting browser checks against a running stack — a11y, overflow | `code/src/scripts/tests/e2e-py.sh` |
+| Suite   | Scope                                                                 | Runner                              |
+| ------- | --------------------------------------------------------------------- | ----------------------------------- |
+| `e2e/`  | Cross-cutting browser checks against a running stack — a11y, overflow | `code/src/scripts/tests/e2e-py.sh`  |
+| `unit/` | The root `conftest.py` hooks — the story map the test record reads    | `code/src/scripts/tests/backend.sh` |
 
 ## What does not
 
