@@ -51,7 +51,7 @@ story plan's _Deferred Items_.
 ## US014 — Structured JSON logging with a `request_id` on every entry, queried by Compose service label
 
 Deferred 24/11/2026 at `22-implementation-documentation`, from
-"project-management/src/20-FINDINGS/FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md" and the
+"project-management/src/20-FINDINGS/archive/FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md" and the
 story plan's _Deferred Items_.
 
 | Item                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Finding | Target                                                          |

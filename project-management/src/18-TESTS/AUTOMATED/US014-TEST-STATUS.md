@@ -386,7 +386,7 @@ met · verified 24/11/2026.
 - `../../17-STORY-PLANS/14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md` — the implementation plan this record closes
 - `../MANUAL/US014-MANUAL-TESTING.md` — the paired manual testing guide, authored before code and walked after it; a manual `Fail` beside a green suite is a missing test
 - `../../11-QA/IMPLEMENTATION/QA-IMPL-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md` — whether the specified scenarios were met
-- `../../20-FINDINGS/FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md` — F-001, the story-map overwrite
+- `../../20-FINDINGS/archive/FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md` — F-001, the story-map overwrite
 - `../../21-BUGS/BUG-TEST-RECORD-STORY-MAP-EMPTY-AFTER-COVERAGE-RUN-21-11-2026.md` — its bug record and fix
 - `../../21-BUGS/BUG-US014-TEST-RECORD-ESCAPED-PIPE-SPLITS-CELL-24-11-2026.md` — the generator defect that broke this block's lint on regeneration, fixed the same day
 - `code/docs/TESTING.md` — coverage floors, test structure, and mocking strategy

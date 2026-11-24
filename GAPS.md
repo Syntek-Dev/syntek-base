@@ -1,6 +1,6 @@
 # GAPS.md — syntek-base's own open items
 
-**Last Updated**: 23/11/2026 | **Maintained By**: Syntek Studio
+**Last Updated**: 24/11/2026 | **Maintained By**: Syntek Studio
 **Language**: British English (en_GB)
 
 Active gaps, blockers and standing limitations belonging to **`syntek-base` itself** — the
@@ -837,6 +837,11 @@ builds the path. Until then every story captures a baseline before its first edi
 clears the last survivor writes one superseding ADR retiring the regime and ADR-US008-SCOPED by
 full filename on both. The ADR-US001 supersession is blocked by nothing and needs a driving story;
 no map or story claims either.
+**Update 24/11/2026:** both retirement conditions now hold. `S-06` landed as US004 (Completed,
+7.9.0), and US014 cleared the last survivors: `doc-references.sh` exits 0 on `dev` at the PR #44
+merge `94db8f02` ("Clean — every citation resolves"). US014 is therefore the story that owes the
+superseding ADR retiring the regime and `ADR-US008-SCOPED-CITATION-BASELINE-09-09-2026.md`; it is
+not yet written, and goes through `project-management/workflows/15-decisions/`.
 
 ---
 
@@ -1768,3 +1773,22 @@ only because each agent ignored its fork's result. Recorded from findings F-036 
 (`how-to/docs/SKILL-AUTHORING.md`): an inline entry point for an agent already dispatched for the
 skill's job, or a rule that a dispatch names the skill's procedure rather than loading the skill.
 Until then a dispatch brief says not to load the forking skill. No map or story claims this entry.
+
+---
+
+## 24/11/2026 — `test-record.sh` has no regression probe, so two of its US014 fixes are pinned by nothing
+
+**Type:** Active gap
+**Summary:** US014 fixed two defects in `code/src/scripts/tests/test-record.sh`'s inline Python:
+escaped pipes split a table cell (`1d35ae29`) and the written record was not Prettier-stable
+(`2a849997`). Both merged into `dev` at `94db8f02` with only a red-then-green reproduction
+command. The generator's Python is a heredoc that nothing can import, and no probe script for
+`test-record.sh` exists. So a regression would surface only as a failing lint or format on the
+next story's regenerated record. Recorded at `23-pr-and-review` Step 6 from section 7 of
+"project-management/src/21-BUGS/BUG-US014-TEST-RECORD-ESCAPED-PIPE-SPLITS-CELL-24-11-2026.md" and
+"project-management/src/21-BUGS/BUG-US014-TEST-RECORD-OUTPUT-NOT-PRETTIER-STABLE-24-11-2026.md".
+Both records are `Fixed`, not `Verified`.
+**Blocked by / Action:** Nothing blocks it. Add a `pm-boards.sh`-style probe that runs the
+generator against a fixture `--reports` directory holding an escaped pipe and RST markup, then
+format-checks and lints the result. Moving the heredoc into an importable module is the larger
+alternative, and it would make both defects unit-testable. No map or story claims this entry.

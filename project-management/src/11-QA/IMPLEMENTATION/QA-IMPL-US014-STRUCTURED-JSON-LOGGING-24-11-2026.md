@@ -150,7 +150,7 @@ findings and fixed in US014 at `2a849997`: **F-008**, the logs pair's `grep '"le
 which the formatter's `"level": "ERROR"` spacing meant could never match (seen beside
 `DEVLOG-07`), and **F-009**, the story's _Out of Scope_ bullet omitting that the response still
 carries `X-Request-ID` (`DOCS-04`). Both are in
-`../../20-FINDINGS/FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md`.
+`../../20-FINDINGS/archive/FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md`.
 
 ## 6. Deferred scenarios
 
@@ -184,7 +184,7 @@ carries `X-Request-ID` (`DOCS-04`). Both are in
 - [x] GDPR & security observations confirmed
 - [x] Coverage floors met for all modules in scope — `observability.py` 93.4% / 87.8%, `middleware.py` 100%
 - [x] Manual testing sign-off (see `../../18-TESTS/MANUAL/US014-MANUAL-TESTING.md`) — walked 24/11/2026, Outcome Pass, 41 of 41 walked (CLOSE-04 retired); DOCS-04 and CLOSE-03 re-walked at `2a849997`; countersigned by Sam 24/11/2026
-- [ ] Reviewer approval — **blocks merge until complete**
+- [x] Reviewer approval — **blocks merge until complete** — Sam, 24/11/2026: his countersignature of all US014 work covers the workflow-22 records at `86823ad6`, this one among them (`../../18-TESTS/MANUAL/US014-MANUAL-TESTING.md` → _Countersignature — 24/11/2026_), and he merged PR #44 at `94db8f02`. Ticked at `23-pr-and-review` Step 6; the code review record is `../../19-REVIEWS/REVIEW-US014-STRUCTURED-JSON-LOGGING.md`
 
 ---
 
@@ -194,6 +194,6 @@ carries `X-Request-ID` (`DOCS-04`). Both are in
 - `../../02-STORIES/US014.md` — the story under review
 - `../../18-TESTS/AUTOMATED/US014-TEST-STATUS.md` · `../../18-TESTS/MANUAL/US014-MANUAL-TESTING.md`
   — downstream test records
-- `../../20-FINDINGS/FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md` — the findings this review routes
+- `../../20-FINDINGS/archive/FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md` — the findings this review routes
 - `../../19-REVIEWS/` — code-review notes from the same PR
 - `project-management/docs/QA-GUIDE.md` — QA planning and test documentation standards

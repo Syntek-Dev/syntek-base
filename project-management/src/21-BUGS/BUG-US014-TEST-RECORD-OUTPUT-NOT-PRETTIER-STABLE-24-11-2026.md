@@ -12,8 +12,8 @@
 | **Found during** | Debug session — regenerating `../18-TESTS/AUTOMATED/US014-TEST-STATUS.md` after the story-map fix    |
 | **Reporter**     | Claude (US014 F-001 fix session; fixed on Sam's instruction, 24/11/2026)                             |
 
-**Status:** Open
-**Status note:** Fixed on `us014/structured-json-logging`, 24/11/2026 — flips to `Fixed` once merged
+**Status:** Fixed
+**Status note:** Fix `2a849997` merged into `dev` via PR #44 at `94db8f02`, 24/11/2026, with its red-then-green reproduction (section 7) — **no automated regression test**, which `GAPS.md` (24/11/2026) now carries; `Verified` once seen to hold after the merge
 
 ---
 

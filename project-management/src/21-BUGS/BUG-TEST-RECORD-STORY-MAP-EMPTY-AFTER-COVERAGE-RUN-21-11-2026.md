@@ -15,8 +15,8 @@
 | **Found during** | Automated-record generation (`tests/test-record.sh`)                              |
 | **Reporter**     | Claude (US010 automated-record session); filed by the gate-22 Step 5 subagent     |
 
-**Status:** Open
-**Status note:** Filed from finding F-034 in `../20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md`; hit again as F-001 in `../20-FINDINGS/FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md`. Root cause traced and fixed with its regression test on `us014/structured-json-logging`, 24/11/2026, uncommitted — flips to `Fixed` once merged (section 6)
+**Status:** Fixed
+**Status note:** Filed from finding F-034 in `../20-FINDINGS/archive/FINDING-US010-SEEDED-REGISTER-INDEXES-21-11-2026.md`; hit again as F-001 in `../20-FINDINGS/archive/FINDING-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md`. Fix `1d35ae29` and its four regression tests (`code/src/django/tests/unit/test_story_map.py`) merged into `dev` via PR #44 at `94db8f02`, 24/11/2026; `Verified` once seen to hold after the merge
 
 ---
 
