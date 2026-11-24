@@ -6,7 +6,7 @@ _The automated-test record for US014: what each automated check proves and wheth
 
 - **Story:** `../../02-STORIES/US014.md` — Structured JSON logging with a `request_id` on every entry, queried by Compose service label
 - **Story plan:** `../../17-STORY-PLANS/14-STORY-PLAN-US014-STRUCTURED-JSON-LOGGING.md` — the code master this record closes the loop on
-- **Manual guide:** `../MANUAL/US014-MANUAL-TESTING.md` — authored at `17`, its build slots filled; **not yet walked** (a different tester's)
+- **Manual guide:** `../MANUAL/US014-MANUAL-TESTING.md` — authored at `17`, its build slots filled; **walked 24/11/2026 — Outcome Pass**, 41 of 41 walked by independent testers (DOCS-04 and CLOSE-03 re-walked at `2a849997`; CLOSE-04 retired)
 - **QA record:** `../../11-QA/IMPLEMENTATION/QA-IMPL-US014-STRUCTURED-JSON-LOGGING-24-11-2026.md` — scenario by scenario, with test names
 - **Branch:** `us014/structured-json-logging`, cut from `dev` at `b1705408`
 
@@ -33,7 +33,7 @@ integration session wiped the map to `[]` and the generator wrote 0 rows (F-001)
 merges across sessions by `nodeid`, under
 `../../21-BUGS/BUG-TEST-RECORD-STORY-MAP-EMPTY-AFTER-COVERAGE-RUN-21-11-2026.md`, so the block
 lists the tests. It reads `reports/backend-coverage/results-unit.xml` (timestamp 24/11/2026
-09:02:24 UTC, the run in Section 2): **160 US014 cases, 0 failures, 0 errors** of the file's
+09:12:21 UTC, the run in Section 2): **160 US014 cases, 0 failures, 0 errors** of the file's
 231 — the 156 the story wrote plus the bug's 4 regression tests.
 
 The coverage figures in the block are whole-project backend figures from the same run, so they

@@ -11,8 +11,8 @@ One row per story in `02-STORIES/` and `02-STORIES/archive/`, filed under its st
 | ----------------- | ----- |
 | Open              | 0     |
 | Pending           | 0     |
-| In Progress       | 1     |
-| In Review         | 2     |
+| In Progress       | 0     |
+| In Review         | 3     |
 | Accepted          | 0     |
 | Customer Review   | 0     |
 | Customer Accepted | 0     |
@@ -32,9 +32,7 @@ _None._
 
 ## In Progress
 
-| ID    | Title                                                                                        | Status      | File                 |
-| ----- | -------------------------------------------------------------------------------------------- | ----------- | -------------------- |
-| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label | In Progress | [US014.md](US014.md) |
+_None._
 
 ## In Review
 
@@ -42,6 +40,7 @@ _None._
 | ----- | -------------------------------------------------------------------------------------------------------------------------- | --------- | -------------------- |
 | US012 | A seeded file that never lands is reported, and the gate's header claim becomes true                                       | In Review | [US012.md](US012.md) |
 | US013 | The 09 debugging workflow runs through the scripts, renders its vendor names from the answers, and stops at the root cause | In Review | [US013.md](US013.md) |
+| US014 | Structured JSON logging with a `request_id` on every entry, queried by Compose service label                               | In Review | [US014.md](US014.md) |
 
 ## Accepted
 

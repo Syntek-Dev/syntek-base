@@ -8,13 +8,13 @@ created: "24/11/2026"
 
 # Logging Record — US014: Structured JSON logging with a `request_id` on every entry, queried by Compose service label
 
-| Field      | Value                                                                                                                                               |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Story**  | US014 — Structured JSON logging with a `request_id` on every entry, queried by Compose service label                                                |
-| **Date**   | 24/11/2026                                                                                                                                          |
-| **Plan**   | `../PLANNING/LOGGING-PLAN-US014-STRUCTURED-JSON-REQUEST-ID.md` (signed off 01/11/2026)                                                              |
-| **Commit** | **None yet** — base `b1705408`, the build uncommitted on `us014/structured-json-logging`. The commit is the session's, after the documentation gate |
-| **Status** | **Verified** — every planned row confirmed against the working tree; the exclusion check run and pasted (Section 3); developer sign-off owed        |
+| Field      | Value                                                                                                                                        |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Story**  | US014 — Structured JSON logging with a `request_id` on every entry, queried by Compose service label                                         |
+| **Date**   | 24/11/2026                                                                                                                                   |
+| **Plan**   | `../PLANNING/LOGGING-PLAN-US014-STRUCTURED-JSON-REQUEST-ID.md` (signed off 01/11/2026)                                                       |
+| **Commit** | `e2dfde22` on `us014/structured-json-logging` (base `b1705408`) — the build; the manual walk's fixes in `2a849997`                           |
+| **Status** | **Verified** — every planned row confirmed against the working tree; the exclusion check run and pasted (Section 3); developer sign-off owed |
 
 ---
 
